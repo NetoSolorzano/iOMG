@@ -76,6 +76,7 @@ namespace iOMG
             dataload("todos");          // revisar
             grilla();
             grilla2();
+            grilladet();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
@@ -101,10 +102,10 @@ namespace iOMG
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
-            tx_nombre.MaxLength = 90;           // nombre
-            tx_medidas.MaxLength = 45;           // direccion
+            tx_coment.MaxLength = 90;           // nombre
+            tx_fechope.MaxLength = 45;           // direccion
         }
-        private void grilla()                               // arma la grilla
+        private void grilla()                               // arma la advancedatagrid
         {
             // id,codped,tipoes,origen,destino,fecha,entrega,coment
             Font tiplg = new Font("Arial",7, FontStyle.Bold);
@@ -184,6 +185,64 @@ namespace iOMG
             }
             dataGridView2.Columns["id"].ReadOnly = true;
         }
+        private void grilladet()                            // grilla detalle de pedido
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dataGridView1.Font = tiplg;
+            dataGridView1.DefaultCellStyle.Font = tiplg;
+            dataGridView1.RowTemplate.Height = 15;
+            dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            // id 
+            dataGridView1.Columns[0].Visible = false;
+            // cant
+            dataGridView1.Columns[1].Visible = true;            // columna visible o no
+            dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
+            dataGridView1.Columns[1].Width = 50;                // ancho
+            dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // articulo
+            dataGridView1.Columns[2].Visible = true;            // columna visible o no
+            dataGridView1.Columns[2].HeaderText = "Artículo";    // titulo de la columna
+            dataGridView1.Columns[2].Width = 100;                // ancho
+            dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // nombre del articulo
+            dataGridView1.Columns[3].Visible = true;            // columna visible o no
+            dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
+            dataGridView1.Columns[3].Width = 250;                // ancho
+            dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // medidas
+            dataGridView1.Columns[4].Visible = true;            // columna visible o no
+            dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
+            dataGridView1.Columns[4].Width = 100;                // ancho
+            dataGridView1.Columns[4].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // madera
+            dataGridView1.Columns[6].Visible = true;            // columna visible o no
+            dataGridView1.Columns[6].HeaderText = "Madera";    // titulo de la columna
+            dataGridView1.Columns[6].Width = 60;                // ancho
+            dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // detalle2
+            dataGridView1.Columns[7].Visible = true;            // columna visible o no
+            dataGridView1.Columns[7].HeaderText = "Deta2";    // titulo de la columna
+            dataGridView1.Columns[7].Width = 70;                // ancho
+            dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // acabado
+            dataGridView1.Columns[8].Visible = true;            // columna visible o no
+            dataGridView1.Columns[8].HeaderText = "Acabado";    // titulo de la columna
+            dataGridView1.Columns[8].Width = 70;                // ancho
+            dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // comentario
+            dataGridView1.Columns[9].Visible = true;            // columna visible o no
+            dataGridView1.Columns[9].HeaderText = "Comentario"; // titulo de la columna
+            dataGridView1.Columns[9].Width = 150;                // ancho
+            dataGridView1.Columns[9].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        }
         private void jalainfo()                             // obtiene datos de imagenes
         {
             try
@@ -233,15 +292,24 @@ namespace iOMG
             if (campo == "tx_idr")  //  && tx_idr.Text != ""
             {   // id,codped,tipoes,origen,destino,fecha,entrega,coment
                 // tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // 
-                tx_nombre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();    // 
-                tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();   // 
-                tx_umed.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();      // 
-                tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();    // 
-                //cmb_cap.SelectedValue = tx_dat_cap.Text;
-                //cmb_mod.SelectedValue = tx_dat_mod.Text;
-                //cmb_mad.SelectedValue = tx_dat_mad.Text;
+                tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
+                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
+                tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
+                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // destino
+                tx_fechope.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();    // fecha pedido
+                tx_fentreg.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();    // fecha entrega
+                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();     // comentario
+                //cmb_cap.SelectedValue = tx_dat_tiped.Text;
+                cmb_cap.SelectedIndex = cmb_cap.FindString(tx_dat_tiped.Text);
+                cmb_mod.SelectedIndex = cmb_mod.FindString(tx_dat_orig.Text);
+                cmb_mad.SelectedIndex = cmb_mad.FindString(tx_dat_dest.Text);
                 //cmb_tip.SelectedValue = tx_dat_tip.Text;
+
             }
+        }
+        private void jaladet(string pedido)                 // jala el detalle del pedido
+        {
+
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {   // "todos"=comboscodigo, "capit"=codigo familia, "maestra"=items de la grilla
@@ -288,8 +356,8 @@ namespace iOMG
             }
             if (quien == "todos")
             {
-                // seleccion de modelo
-                const string conmod = "select descrizionerid,idcodice from desc_mod " +
+                // seleccion de taller de produccion ... ok
+                const string conmod = "select descrizionerid,idcodice from desc_loc " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdmod = new MySqlCommand(conmod, conn);
                 DataTable dtmod = new DataTable();
@@ -297,9 +365,35 @@ namespace iOMG
                 damod.Fill(dtmod);
                 foreach (DataRow row in dtmod.Rows)
                 {
-                    cmb_mod.Items.Add(row.ItemArray[0].ToString());
-                    cmb_mod.ValueMember = row.ItemArray[0].ToString();
+                    cmb_mod.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0,6) + " - " + row.ItemArray[0].ToString());
+                    cmb_mod.ValueMember = row.ItemArray[1].ToString();
                 }
+                // seleccion del almacen de destino ... 
+                const string conmad = "select descrizionerid,idcodice from desc_alm " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmdmad = new MySqlCommand(conmad, conn);
+                DataTable dtmad = new DataTable();
+                MySqlDataAdapter damad = new MySqlDataAdapter(cmdmad);
+                damad.Fill(dtmad);
+                foreach (DataRow row in dtmad.Rows)
+                {
+                    cmb_mad.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());   // .PadRight(6).Substring(0, 6)
+                    cmb_mad.ValueMember = row.ItemArray[1].ToString();
+                }
+                // seleccion de tipo de pedido ... ok
+                const string concap = "select descrizionerid,idcodice from desc_tpe " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmdcap = new MySqlCommand(concap, conn);
+                DataTable dtcap = new DataTable();
+                MySqlDataAdapter dacap = new MySqlDataAdapter(cmdcap);
+                dacap.Fill(dtcap);
+                foreach (DataRow row in dtcap.Rows)
+                {
+                    cmb_cap.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_cap.ValueMember = row.ItemArray[1].ToString();
+                }
+                // seleccion de estado del pedido
+
             }
             //
             conn.Close();
@@ -499,10 +593,10 @@ namespace iOMG
                         string codi = "N000";
                         dr[1] = codi;
                         //micon.Parameters.AddWithValue("@jgo", "N000");
-                        dr[11] = tx_nombre.Text.Trim();
-                        dr[12] = tx_medidas.Text.Trim();
+                        dr[11] = tx_coment.Text.Trim();
+                        dr[12] = tx_fechope.Text.Trim();
                         dr[13] = "C.U.";
-                        dr[14] = tx_umed.Text;
+                        dr[14] = tx_codped.Text;
                         dtg.Rows.Add(dr);
                         dtu.Rows.Add(dr);
                     }
@@ -562,10 +656,10 @@ namespace iOMG
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@codi", codi);
                     micon.Parameters.AddWithValue("@jgo", "N000");
-                    micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
-                    micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
+                    micon.Parameters.AddWithValue("@nomb", tx_coment.Text.Trim());
+                    micon.Parameters.AddWithValue("@medi", tx_fechope.Text.Trim());
                     micon.Parameters.AddWithValue("@umed", "C.U.");
-                    micon.Parameters.AddWithValue("@prec", tx_umed.Text);
+                    micon.Parameters.AddWithValue("@prec", tx_codped.Text);
                     micon.ExecuteNonQuery();
                     retorna = true;
                 }
@@ -600,10 +694,10 @@ namespace iOMG
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@codi", codi);
                     micon.Parameters.AddWithValue("@jgo", "N000");
-                    micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
-                    micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
+                    micon.Parameters.AddWithValue("@nomb", tx_coment.Text.Trim());
+                    micon.Parameters.AddWithValue("@medi", tx_fechope.Text.Trim());
                     micon.Parameters.AddWithValue("@umed", "C.U.");
-                    micon.Parameters.AddWithValue("@prec", tx_umed.Text);
+                    micon.Parameters.AddWithValue("@prec", tx_codped.Text);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                     micon.ExecuteNonQuery();
                 }
@@ -843,17 +937,20 @@ namespace iOMG
         {
             //tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
         }
-        private void cmb_mad_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)   // tipo de pedido
         {
-            //tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_cap.SelectedValue != null) tx_dat_tiped.Text = cmb_cap.SelectedValue.ToString();
+            else tx_dat_tiped.Text = cmb_cap.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
-        private void cmb_cap_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmb_mod_SelectionChangeCommitted(object sender, EventArgs e)   // taller de origen
         {
-            //tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_mod.SelectedValue != null) tx_dat_orig.Text = cmb_mod.SelectedValue.ToString();
+            else tx_dat_orig.Text = cmb_mod.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
-        private void cmb_mod_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)   // almacen destino
         {
-            //tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_mad.SelectedValue != null) tx_dat_dest.Text = cmb_mad.SelectedValue.ToString();
+            else tx_dat_dest.Text = cmb_mad.SelectedItem.ToString().PadRight(6).Substring(0,6).Trim();
         }
         private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)
         {

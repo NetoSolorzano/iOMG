@@ -1214,7 +1214,7 @@ namespace iOMG
         {
             if(e.ColumnIndex == 1)
             {
-                string codu = "";
+                //string codu = "";
                 string idr = "";
                 tabControl1.SelectedTab = tabuser;
                 limpiar(this);

@@ -975,7 +975,7 @@ namespace iOMG
         private void Bt_edit_Click(object sender, EventArgs e)
         {
             advancedDataGridView1.Enabled = true;
-            string codu = "";
+            //string codu = "";
             string idr = "";
             if (advancedDataGridView1.CurrentRow.Index > -1)
             {

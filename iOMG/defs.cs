@@ -731,7 +731,7 @@ namespace iOMG
         {
             if(e.ColumnIndex == 1)
             {
-                string codu = "";
+                //string codu = "";
                 string idr = "";
                 idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
