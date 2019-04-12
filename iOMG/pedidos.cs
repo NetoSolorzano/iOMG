@@ -76,7 +76,7 @@ namespace iOMG
             dataload("todos");          // revisar
             grilla();
             grilla2();
-            grilladet();
+            //grilladet();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
@@ -212,34 +212,40 @@ namespace iOMG
             dataGridView1.Columns[3].Width = 250;                // ancho
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // medidas
+            // medidas 
             dataGridView1.Columns[4].Visible = true;            // columna visible o no
             dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
             dataGridView1.Columns[4].Width = 100;                // ancho
             dataGridView1.Columns[4].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // madera
+            dataGridView1.Columns[5].Visible = true;            // columna visible o no
+            dataGridView1.Columns[5].HeaderText = "Madera";    // titulo de la columna
+            dataGridView1.Columns[5].Width = 60;                // ancho
+            dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // detalle2
             dataGridView1.Columns[6].Visible = true;            // columna visible o no
-            dataGridView1.Columns[6].HeaderText = "Madera";    // titulo de la columna
-            dataGridView1.Columns[6].Width = 60;                // ancho
+            dataGridView1.Columns[6].HeaderText = "Deta2";    // titulo de la columna
+            dataGridView1.Columns[6].Width = 70;                // ancho
             dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // detalle2
+            // acabado - descrizionerid
             dataGridView1.Columns[7].Visible = true;            // columna visible o no
-            dataGridView1.Columns[7].HeaderText = "Deta2";    // titulo de la columna
+            dataGridView1.Columns[7].HeaderText = "Acabado";    // titulo de la columna
             dataGridView1.Columns[7].Width = 70;                // ancho
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // acabado
+            // comentario
             dataGridView1.Columns[8].Visible = true;            // columna visible o no
-            dataGridView1.Columns[8].HeaderText = "Acabado";    // titulo de la columna
-            dataGridView1.Columns[8].Width = 70;                // ancho
+            dataGridView1.Columns[8].HeaderText = "Comentario"; // titulo de la columna
+            dataGridView1.Columns[8].Width = 150;                // ancho
             dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // comentario
-            dataGridView1.Columns[9].Visible = true;            // columna visible o no
-            dataGridView1.Columns[9].HeaderText = "Comentario"; // titulo de la columna
-            dataGridView1.Columns[9].Width = 150;                // ancho
+            // codigo de acabado - idcodice
+            dataGridView1.Columns[9].Visible = false;            // columna visible o no
+            dataGridView1.Columns[9].HeaderText = "Codest"; // titulo de la columna
+            dataGridView1.Columns[9].Width = 50;                // ancho
             dataGridView1.Columns[9].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
@@ -309,7 +315,34 @@ namespace iOMG
         }
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
-            
+            // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado
+            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado " +
+                "from detaped a left join desc_est b on b.idcodice=a.estado " +
+                "where a.pedidoh=@pedi";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if(conn.State == ConnectionState.Open)
+                {
+                    MySqlCommand micon = new MySqlCommand(jalad, conn);
+                    micon.Parameters.AddWithValue("@pedi", pedido);
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                    grilladet();
+                    dt.Dispose();
+                    da.Dispose();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error en código");
+                Application.Exit();
+                return;
+            }
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {   // "todos"=comboscodigo, "capit"=codigo familia, "maestra"=items de la grilla

@@ -61,7 +61,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MySql.Data">
-      <HintPath>..\..\almacen_excel\packages\Mysql\MySql.Data.dll</HintPath>
+      <HintPath>E:\almacen_excel\packages\Mysql\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
