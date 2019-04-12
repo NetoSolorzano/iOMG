@@ -304,12 +304,12 @@ namespace iOMG
                 cmb_mod.SelectedIndex = cmb_mod.FindString(tx_dat_orig.Text);
                 cmb_mad.SelectedIndex = cmb_mad.FindString(tx_dat_dest.Text);
                 //cmb_tip.SelectedValue = tx_dat_tip.Text;
-
+                jaladet(tx_codped.Text);
             }
         }
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
-
+            
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {   // "todos"=comboscodigo, "capit"=codigo familia, "maestra"=items de la grilla
