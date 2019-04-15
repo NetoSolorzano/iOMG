@@ -629,21 +629,47 @@ namespace iOMG
         private void armani()                               // arma el codigo y busca en la maestra
         {
             string fam="", mod="", mad="", tip="", de1 = "", aca = "", tal = "", de2 = "", de3 = "";
-            if (cmb_fam.SelectedItem != null) fam = cmb_fam.SelectedItem.ToString().Substring(0, 1);   // 1
-            if (cmb_mod.SelectedItem != null) mod = cmb_mod.SelectedItem.ToString().Substring(0, 3);   // 3
-            if (cmb_mad.SelectedItem != null) mad = cmb_mad.SelectedItem.ToString().Substring(0, 1);   // 1
-            if (cmb_tip.SelectedItem != null) tip = cmb_tip.SelectedItem.ToString().Substring(0, 2);   // 2
+            if (cmb_fam.SelectedItem != null) fam = cmb_fam.SelectedItem.ToString().Substring(0, 1);    // 1
+            if (cmb_mod.SelectedItem != null) mod = cmb_mod.SelectedItem.ToString().Substring(0, 3);    // 3
+            if (cmb_mad.SelectedItem != null) mad = cmb_mad.SelectedItem.ToString().Substring(0, 1);    // 1
+            if (cmb_tip.SelectedItem != null) tip = cmb_tip.SelectedItem.ToString().Substring(0, 2);    // 2
             if (cmb_det1.SelectedItem != null) de1 = cmb_det1.SelectedItem.ToString().Substring(0, 2);  // 2
             if (cmb_aca.SelectedItem != null) aca = cmb_aca.SelectedItem.ToString().Substring(0, 1);    // 1
-            if (cmb_tal.SelectedItem != null) tal = cmb_tal.SelectedItem.ToString().Substring(0, 2);    // 3
-            if (cmb_det2.SelectedItem != null) de2 = cmb_det2.SelectedItem.ToString().Substring(0, 3);  // 2
-            if (cmb_det3.SelectedItem != null) de3 = cmb_det3.SelectedItem.ToString().Substring(0, 3);  // 3
+            if (cmb_tal.SelectedItem != null) tal = cmb_tal.SelectedItem.ToString().Substring(0, 2);    // 2
+            if (cmb_det2.SelectedItem != null) de2 = cmb_det2.SelectedItem.ToString().Substring(0, 3);  // 3
+            if (cmb_det3.SelectedItem != null) de3 = cmb_det3.SelectedItem.ToString().Substring(0, 3);  // 3 _____ total 18
             tx_d_codi.Text = fam + mod + mad + tip + de1 + aca + tal + de2 + de3;
-            if(fam != "" && mod != "" && tip != "" && de1 != "" && de2 != "" && de3 != "")
+            if(fam != "" && mod != "" && tip != "" && de1 != "" && aca != "" && de2 != "" && de3 != "")
             {
                 try
                 {
-
+                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    {
+                        conn.Open();
+                        if(conn.State == ConnectionState.Open)
+                        {
+                            string codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
+                            string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
+                            MySqlCommand micon = new MySqlCommand(busca, conn);
+                            micon.Parameters.AddWithValue("@cod", codbs);
+                            MySqlDataReader dr = micon.ExecuteReader();
+                            if (!dr.HasRows)
+                            {
+                                MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                            if (dr.Read())
+                            {
+                                tx_d_nom.Text = dr.GetString(1);
+                                tx_d_med.Text = dr.GetString(2);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se puede conectar a la base de datos", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            return;
+                        }
+                    }
                 }
                 catch(Exception ex)
                 {

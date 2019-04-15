@@ -677,17 +677,17 @@
             // 
             // tx_d_est
             // 
-            this.tx_d_est.Location = new System.Drawing.Point(905, 3);
+            this.tx_d_est.Location = new System.Drawing.Point(898, 3);
             this.tx_d_est.Name = "tx_d_est";
             this.tx_d_est.ReadOnly = true;
-            this.tx_d_est.Size = new System.Drawing.Size(54, 20);
+            this.tx_d_est.Size = new System.Drawing.Size(61, 20);
             this.tx_d_est.TabIndex = 268;
             this.tx_d_est.Tag = "Id";
             this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_det2
             // 
-            this.tx_d_det2.Location = new System.Drawing.Point(849, 3);
+            this.tx_d_det2.Location = new System.Drawing.Point(842, 3);
             this.tx_d_det2.Name = "tx_d_det2";
             this.tx_d_det2.ReadOnly = true;
             this.tx_d_det2.Size = new System.Drawing.Size(56, 20);
@@ -697,7 +697,7 @@
             // 
             // tx_d_mad
             // 
-            this.tx_d_mad.Location = new System.Drawing.Point(793, 3);
+            this.tx_d_mad.Location = new System.Drawing.Point(786, 3);
             this.tx_d_mad.Name = "tx_d_mad";
             this.tx_d_mad.ReadOnly = true;
             this.tx_d_mad.Size = new System.Drawing.Size(56, 20);
@@ -707,7 +707,7 @@
             // 
             // tx_d_med
             // 
-            this.tx_d_med.Location = new System.Drawing.Point(688, 3);
+            this.tx_d_med.Location = new System.Drawing.Point(681, 3);
             this.tx_d_med.Name = "tx_d_med";
             this.tx_d_med.Size = new System.Drawing.Size(105, 20);
             this.tx_d_med.TabIndex = 265;
@@ -718,7 +718,7 @@
             // 
             this.tx_d_nom.Location = new System.Drawing.Point(373, 3);
             this.tx_d_nom.Name = "tx_d_nom";
-            this.tx_d_nom.Size = new System.Drawing.Size(315, 20);
+            this.tx_d_nom.Size = new System.Drawing.Size(308, 20);
             this.tx_d_nom.TabIndex = 264;
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -737,7 +737,6 @@
             // 
             this.tx_d_can.Location = new System.Drawing.Point(65, 25);
             this.tx_d_can.Name = "tx_d_can";
-            this.tx_d_can.ReadOnly = true;
             this.tx_d_can.Size = new System.Drawing.Size(37, 20);
             this.tx_d_can.TabIndex = 262;
             this.tx_d_can.Tag = "Id";
