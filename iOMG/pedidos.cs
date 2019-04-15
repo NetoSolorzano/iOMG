@@ -34,6 +34,8 @@ namespace iOMG
         string img_btq = "";
         string img_grab = "";
         string img_anul = "";
+        string tipede = "";             // tipo de pedido por defecto
+        string tiesta = "";             // estado inicial por defecto del pedido
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -82,6 +84,7 @@ namespace iOMG
             Bt_anul.Enabled = true;
             tabControl1.SelectedTab = tabgrilla;
             advancedDataGridView1.Enabled = false;
+            tabControl1.Enabled = false;
         }
         private void init()
         {
@@ -192,12 +195,15 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dataGridView1.ColumnCount = 10;
             // id 
-            dataGridView1.Columns[0].Visible = false;
+            dataGridView1.Columns[0].Visible = true;
+            dataGridView1.Columns[0].Width = 30;                // ancho
+            dataGridView1.Columns[0].HeaderText = "It";    // titulo de la columna
             // cant
             dataGridView1.Columns[1].Visible = true;            // columna visible o no
             dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
-            dataGridView1.Columns[1].Width = 50;                // ancho
+            dataGridView1.Columns[1].Width = 30;                // ancho
             dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // articulo
@@ -209,9 +215,9 @@ namespace iOMG
             // nombre del articulo
             dataGridView1.Columns[3].Visible = true;            // columna visible o no
             dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
-            dataGridView1.Columns[3].Width = 250;                // ancho
+            dataGridView1.Columns[3].Width = 200;                // ancho
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // medidas 
             dataGridView1.Columns[4].Visible = true;            // columna visible o no
             dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
@@ -255,16 +261,17 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select campo,param,valor from enlaces where formulario=@nofo";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@nofo", "main");   // nomform
+                micon.Parameters.AddWithValue("@nofo", "main");
+                micon.Parameters.AddWithValue("@ped", nomform);
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 for (int t = 0; t < dt.Rows.Count; t++)
                 {
                     DataRow row = dt.Rows[t];
-                    if (row["campo"].ToString() == "imagenes")
+                    if (row["campo"].ToString() == "imagenes" && row["formulario"].ToString() == "main")
                     {
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
@@ -280,6 +287,11 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                    }
+                    if(row["formulario"].ToString() == "pedidos")
+                    {
+                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
                     }
                 }
                 da.Dispose();
@@ -426,7 +438,18 @@ namespace iOMG
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion de estado del pedido
-
+                const string conestado = "select descrizionerid,idcodice from desc_stp " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmdestado = new MySqlCommand(conestado, conn);
+                DataTable dtestado = new DataTable();
+                MySqlDataAdapter daestado = new MySqlDataAdapter(cmdestado);
+                daestado.Fill(dtestado);
+                foreach (DataRow row in dtestado.Rows)
+                {
+                    cmb_estado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_estado.ValueMember = row.ItemArray[1].ToString();
+                }
+                //
                 // seleccion de familia de art
                 cmb_fam.Items.Clear();
                 //tx_dat_fam.Text = "";
@@ -678,6 +701,12 @@ namespace iOMG
                     return;
                 }
             }
+        }
+        private void bt_det_Click(object sender, EventArgs e)   // agrega a la grilla de detalle el articulo
+        {
+            dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text, tx_d_mad.Text,
+                tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString());
+
         }
 
         #region limpiadores_modos
@@ -1018,7 +1047,8 @@ namespace iOMG
         #region botones
         private void Bt_add_Click(object sender, EventArgs e)
         {
-            advancedDataGridView1.Enabled = true;
+            //advancedDataGridView1.Enabled = true;
+            tabControl1.Enabled = true;
             tabControl1.SelectedTab = tabreg;
             escribe(this);
             Tx_modo.Text = "NUEVO";
@@ -1027,6 +1057,14 @@ namespace iOMG
             limpiar(this);
             limpia_otros();
             limpia_combos();
+            limpiapag(tabreg);
+            dataGridView1.Rows.Clear();
+            grilladet();
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            cmb_tipo.Enabled = false;
+            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            cmb_estado.Enabled = false;
+            tx_codped.ReadOnly = true;  // al grabar debe generar su codificacion
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1166,7 +1204,8 @@ namespace iOMG
         }
         private void cmb_estado_SelectedIndexChanged(object sender, EventArgs e)        // estado del pedido
         {
-
+            if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
+            else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
         //
         private void cmb_fam_SelectionChangeCommitted(object sender, EventArgs e)       // capitulo familia
@@ -1201,7 +1240,7 @@ namespace iOMG
         }
         private void cmb_det2_SelectedIndexChanged(object sender, EventArgs e)          // detalle2
         {
-            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(5, cmb_det2.SelectedItem.ToString().Length-5).Trim();
+            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length-6).Trim();
             armani();
         }
         private void cmb_det3_SelectedIndexChanged(object sender, EventArgs e)          // detalle3
@@ -1234,6 +1273,18 @@ namespace iOMG
                 advancedDataGridView1.HorizontalScrollingOffset = e.NewValue;
             }
         }
+        #endregion
+
+        #region datagridview1
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 1 && e.RowIndex > -1)
+            {
+                tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString();
+                tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["Medidas"].Value.ToString();
+            }
+        }
+
         #endregion
 
         #region advancedatagridview

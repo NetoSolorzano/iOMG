@@ -156,6 +156,7 @@ namespace iOMG
                 conn.Open();
                 string consulta = "select * from baseconf limit 1";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.CommandTimeout = 300;
                 MySqlDataReader dr = micon.ExecuteReader();
                 if (dr.HasRows)
                 {

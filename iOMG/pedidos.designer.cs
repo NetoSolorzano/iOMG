@@ -444,10 +444,10 @@
             this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(3, 5);
+            this.dataGridView2.Location = new System.Drawing.Point(2, 5);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(996, 26);
+            this.dataGridView2.Size = new System.Drawing.Size(966, 26);
             this.dataGridView2.TabIndex = 28;
             this.dataGridView2.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellLeave);
             this.dataGridView2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView2_Scroll);
@@ -459,9 +459,9 @@
             this.advancedDataGridView1.AutoGenerateContextFilters = true;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.DateWithTime = false;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(-3, 32);
+            this.advancedDataGridView1.Location = new System.Drawing.Point(2, 32);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.Size = new System.Drawing.Size(996, 310);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(966, 310);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.TimeFilter = false;
             this.advancedDataGridView1.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
@@ -554,9 +554,10 @@
             this.bt_det.Location = new System.Drawing.Point(876, 23);
             this.bt_det.Name = "bt_det";
             this.bt_det.Size = new System.Drawing.Size(80, 23);
-            this.bt_det.TabIndex = 279;
+            this.bt_det.TabIndex = 13;
             this.bt_det.Text = "Agrega";
             this.bt_det.UseVisualStyleBackColor = true;
+            this.bt_det.Click += new System.EventHandler(this.bt_det_Click);
             // 
             // cmb_det3
             // 
@@ -567,7 +568,7 @@
             this.cmb_det3.Location = new System.Drawing.Point(328, 2);
             this.cmb_det3.Name = "cmb_det3";
             this.cmb_det3.Size = new System.Drawing.Size(43, 21);
-            this.cmb_det3.TabIndex = 278;
+            this.cmb_det3.TabIndex = 8;
             this.cmb_det3.SelectionChangeCommitted += new System.EventHandler(this.cmb_det3_SelectedIndexChanged);
             // 
             // cmb_det2
@@ -579,7 +580,7 @@
             this.cmb_det2.Location = new System.Drawing.Point(284, 2);
             this.cmb_det2.Name = "cmb_det2";
             this.cmb_det2.Size = new System.Drawing.Size(43, 21);
-            this.cmb_det2.TabIndex = 277;
+            this.cmb_det2.TabIndex = 7;
             this.cmb_det2.SelectionChangeCommitted += new System.EventHandler(this.cmb_det2_SelectedIndexChanged);
             // 
             // cmb_tal
@@ -591,7 +592,7 @@
             this.cmb_tal.Location = new System.Drawing.Point(244, 2);
             this.cmb_tal.Name = "cmb_tal";
             this.cmb_tal.Size = new System.Drawing.Size(39, 21);
-            this.cmb_tal.TabIndex = 276;
+            this.cmb_tal.TabIndex = 6;
             this.cmb_tal.SelectionChangeCommitted += new System.EventHandler(this.cmb_tal_SelectedIndexChanged);
             // 
             // cmb_aca
@@ -603,7 +604,7 @@
             this.cmb_aca.Location = new System.Drawing.Point(208, 2);
             this.cmb_aca.Name = "cmb_aca";
             this.cmb_aca.Size = new System.Drawing.Size(35, 21);
-            this.cmb_aca.TabIndex = 275;
+            this.cmb_aca.TabIndex = 5;
             this.cmb_aca.SelectionChangeCommitted += new System.EventHandler(this.cmb_aca_SelectionChangeCommitted);
             // 
             // cmb_det1
@@ -615,7 +616,7 @@
             this.cmb_det1.Location = new System.Drawing.Point(168, 2);
             this.cmb_det1.Name = "cmb_det1";
             this.cmb_det1.Size = new System.Drawing.Size(39, 21);
-            this.cmb_det1.TabIndex = 274;
+            this.cmb_det1.TabIndex = 4;
             this.cmb_det1.SelectionChangeCommitted += new System.EventHandler(this.cmb_det1_SelectionChangeCommitted);
             // 
             // cmb_tip
@@ -627,7 +628,7 @@
             this.cmb_tip.Location = new System.Drawing.Point(127, 2);
             this.cmb_tip.Name = "cmb_tip";
             this.cmb_tip.Size = new System.Drawing.Size(39, 21);
-            this.cmb_tip.TabIndex = 273;
+            this.cmb_tip.TabIndex = 3;
             this.cmb_tip.SelectionChangeCommitted += new System.EventHandler(this.cmb_tip_SelectedIndexChanged);
             // 
             // cmb_mad
@@ -639,7 +640,7 @@
             this.cmb_mad.Location = new System.Drawing.Point(89, 2);
             this.cmb_mad.Name = "cmb_mad";
             this.cmb_mad.Size = new System.Drawing.Size(36, 21);
-            this.cmb_mad.TabIndex = 272;
+            this.cmb_mad.TabIndex = 2;
             this.cmb_mad.SelectionChangeCommitted += new System.EventHandler(this.cmb_mad_SelectionChangeCommitted);
             // 
             // cmb_mod
@@ -651,7 +652,7 @@
             this.cmb_mod.Location = new System.Drawing.Point(42, 2);
             this.cmb_mod.Name = "cmb_mod";
             this.cmb_mod.Size = new System.Drawing.Size(45, 21);
-            this.cmb_mod.TabIndex = 271;
+            this.cmb_mod.TabIndex = 1;
             this.cmb_mod.SelectionChangeCommitted += new System.EventHandler(this.cmb_mod_SelectionChangeCommitted);
             // 
             // cmb_fam
@@ -663,7 +664,7 @@
             this.cmb_fam.Location = new System.Drawing.Point(4, 2);
             this.cmb_fam.Name = "cmb_fam";
             this.cmb_fam.Size = new System.Drawing.Size(36, 21);
-            this.cmb_fam.TabIndex = 270;
+            this.cmb_fam.TabIndex = 0;
             this.cmb_fam.SelectionChangeCommitted += new System.EventHandler(this.cmb_fam_SelectionChangeCommitted);
             // 
             // tx_d_com
@@ -671,9 +672,8 @@
             this.tx_d_com.Location = new System.Drawing.Point(272, 25);
             this.tx_d_com.Name = "tx_d_com";
             this.tx_d_com.Size = new System.Drawing.Size(599, 20);
-            this.tx_d_com.TabIndex = 269;
+            this.tx_d_com.TabIndex = 12;
             this.tx_d_com.Tag = "Id";
-            this.tx_d_com.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_est
             // 
@@ -719,7 +719,7 @@
             this.tx_d_nom.Location = new System.Drawing.Point(373, 3);
             this.tx_d_nom.Name = "tx_d_nom";
             this.tx_d_nom.Size = new System.Drawing.Size(308, 20);
-            this.tx_d_nom.TabIndex = 264;
+            this.tx_d_nom.TabIndex = 10;
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -729,7 +729,7 @@
             this.tx_d_codi.Name = "tx_d_codi";
             this.tx_d_codi.ReadOnly = true;
             this.tx_d_codi.Size = new System.Drawing.Size(170, 20);
-            this.tx_d_codi.TabIndex = 263;
+            this.tx_d_codi.TabIndex = 11;
             this.tx_d_codi.Tag = "Id";
             this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -873,6 +873,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(963, 189);
             this.dataGridView1.TabIndex = 9;
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
             // groupBox13
             // 
