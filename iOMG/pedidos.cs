@@ -188,14 +188,14 @@ namespace iOMG
             }
             dataGridView2.Columns["id"].ReadOnly = true;
         }
-        private void grilladet()                            // grilla detalle de pedido
+        private void grilladet(string modo)                            // grilla detalle de pedido
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dataGridView1.ColumnCount = 10;
+            if(modo=="nuevo") dataGridView1.ColumnCount = 10;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -343,7 +343,7 @@ namespace iOMG
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridView1.DataSource = dt;
-                    grilladet();
+                    grilladet("edita");     // obtiene contenido de grilla con DT
                     dt.Dispose();
                     da.Dispose();
                 }
@@ -1058,8 +1058,9 @@ namespace iOMG
             limpia_otros();
             limpia_combos();
             limpiapag(tabreg);
+            dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            grilladet();
+            grilladet("nuevo");
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             cmb_tipo.Enabled = false;
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
@@ -1202,7 +1203,7 @@ namespace iOMG
             if (cmb_destino.SelectedValue != null) tx_dat_dest.Text = cmb_destino.SelectedValue.ToString();
             else tx_dat_dest.Text = cmb_destino.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
-        private void cmb_estado_SelectedIndexChanged(object sender, EventArgs e)        // estado del pedido
+        private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
             else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();

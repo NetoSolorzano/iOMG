@@ -1116,7 +1116,7 @@
             this.cmb_estado.Name = "cmb_estado";
             this.cmb_estado.Size = new System.Drawing.Size(85, 21);
             this.cmb_estado.TabIndex = 1;
-            this.cmb_estado.SelectedIndexChanged += new System.EventHandler(this.cmb_estado_SelectedIndexChanged);
+            this.cmb_estado.SelectionChangeCommitted += new System.EventHandler(this.cmb_estado_SelectionChangeCommitted);
             // 
             // cmb_destino
             // 
