@@ -78,7 +78,6 @@ namespace iOMG
             dataload("todos");          // revisar
             grilla();
             grilla2();
-            //grilladet();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
@@ -199,24 +198,28 @@ namespace iOMG
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
-            dataGridView1.Columns[0].HeaderText = "It";    // titulo de la columna
+            dataGridView1.Columns[0].HeaderText = "Id";         // titulo de la columna
+            dataGridView1.Columns[0].Name = "iddetaped";
             // cant
             dataGridView1.Columns[1].Visible = true;            // columna visible o no
             dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
             dataGridView1.Columns[1].Width = 30;                // ancho
             dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[1].Name = "cant";
             // articulo
             dataGridView1.Columns[2].Visible = true;            // columna visible o no
             dataGridView1.Columns[2].HeaderText = "Artículo";    // titulo de la columna
             dataGridView1.Columns[2].Width = 100;                // ancho
             dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[2].Name = "item";
             // nombre del articulo
             dataGridView1.Columns[3].Visible = true;            // columna visible o no
             dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
             dataGridView1.Columns[3].Width = 200;                // ancho
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[3].Name = "nombre";
             //dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // medidas 
             dataGridView1.Columns[4].Visible = true;            // columna visible o no
@@ -224,36 +227,42 @@ namespace iOMG
             dataGridView1.Columns[4].Width = 100;                // ancho
             dataGridView1.Columns[4].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[4].Name = "medidas";
             // madera
             dataGridView1.Columns[5].Visible = true;            // columna visible o no
             dataGridView1.Columns[5].HeaderText = "Madera";    // titulo de la columna
             dataGridView1.Columns[5].Width = 60;                // ancho
             dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[5].Name = "madera";
             // detalle2
             dataGridView1.Columns[6].Visible = true;            // columna visible o no
             dataGridView1.Columns[6].HeaderText = "Deta2";    // titulo de la columna
             dataGridView1.Columns[6].Width = 70;                // ancho
             dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[6].Name = "piedra";
             // acabado - descrizionerid
             dataGridView1.Columns[7].Visible = true;            // columna visible o no
             dataGridView1.Columns[7].HeaderText = "Acabado";    // titulo de la columna
             dataGridView1.Columns[7].Width = 70;                // ancho
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[7].Name = "descrizionerid";
             // comentario
             dataGridView1.Columns[8].Visible = true;            // columna visible o no
             dataGridView1.Columns[8].HeaderText = "Comentario"; // titulo de la columna
             dataGridView1.Columns[8].Width = 150;                // ancho
             dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[8].Name = "coment";
             // codigo de acabado - idcodice
             dataGridView1.Columns[9].Visible = false;            // columna visible o no
             dataGridView1.Columns[9].HeaderText = "Codest"; // titulo de la columna
             dataGridView1.Columns[9].Width = 50;                // ancho
             dataGridView1.Columns[9].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[9].Name = "estado";
         }
         private void jalainfo()                             // obtiene datos de imagenes
         {
@@ -342,6 +351,9 @@ namespace iOMG
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Columns.Clear();
                     dataGridView1.DataSource = dt;
                     grilladet("edita");     // obtiene contenido de grilla con DT
                     dt.Dispose();
@@ -1060,6 +1072,7 @@ namespace iOMG
             limpiapag(tabreg);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
             grilladet("nuevo");
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             cmb_tipo.Enabled = false;
@@ -1276,13 +1289,49 @@ namespace iOMG
         }
         #endregion
 
-        #region datagridview1
+        #region datagridview1 - grilla detalle de pedido
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 1 && e.RowIndex > -1)
             {
-                tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString();
-                tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["Medidas"].Value.ToString();
+                tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+                tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
+                tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
+                tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetaped"].Value.ToString();
+                tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
+                tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
+
+                string fam = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0, 1);
+                string mod = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(1, 3);
+                string mad = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(4, 1);
+                string tip = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(5, 2);
+                string de1 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(7, 2);
+                string aca = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(9, 1);
+                string tal = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(10, 2);
+                string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
+                string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
+
+                cmb_fam.Tag = fam;
+                cmb_fam.SelectedIndex = cmb_fam.FindString(cmb_fam.Tag.ToString());
+                cmb_mod.Tag = mod;
+                cmb_mod.SelectedIndex = cmb_mod.FindString(cmb_mod.Tag.ToString());
+                cmb_mad.Tag = mad;
+                cmb_mad.SelectedIndex = cmb_mad.FindString(cmb_mad.Tag.ToString());
+                cmb_mad_SelectionChangeCommitted(null, null);
+                cmb_tip.Tag = tip;
+                cmb_tip.SelectedIndex = cmb_tip.FindString(cmb_tip.Tag.ToString());
+                cmb_det1.Tag = de1;
+                cmb_det1.SelectedIndex = cmb_det1.FindString(cmb_det1.Tag.ToString());
+                cmb_det1_SelectionChangeCommitted(null, null);
+                cmb_aca.Tag = aca;
+                cmb_aca.SelectedIndex = cmb_aca.FindString(cmb_aca.Tag.ToString());
+                cmb_aca_SelectionChangeCommitted(null, null);
+                cmb_tal.Tag = tal;
+                cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
+                cmb_det2.Tag = de2;
+                cmb_det2.SelectedIndex = cmb_det2.FindString(cmb_det2.Tag.ToString());
+                cmb_det3.Tag = de3;
+                cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
             }
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)

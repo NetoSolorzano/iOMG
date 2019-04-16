@@ -77,10 +77,11 @@ namespace iOMG
                 return;
             }
             //desencrip(contra); no funca
-            MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
-            cn.Open();
             try
             {
+                MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
+                cn.Open();
+
                 //validamos que el usuario y passw son los correctos
                 string query = "select a.bloqueado,a.local,trim(a.mod1),trim(a.mod2),trim(a.mod3),a.nombre," +
                     "a.ruc,ifnull(b.descrizione,'- SIN ASIGNAR -') " +
@@ -141,6 +142,7 @@ namespace iOMG
                     MessageBox.Show("Usuario y/o Contraseña erronea", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                cn.Close();
             }
             catch (MySqlException ex)
             {
@@ -148,7 +150,6 @@ namespace iOMG
                 Application.Exit();
                 return;
             }
-            cn.Close();
         }
 
         private void Button2_Click(object sender, EventArgs e)
