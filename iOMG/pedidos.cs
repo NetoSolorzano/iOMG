@@ -1284,6 +1284,20 @@ namespace iOMG
                 tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["Medidas"].Value.ToString();
             }
         }
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            var aa = MessageBox.Show("una fila para borrar", "Confirma?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (aa == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                // si es edicion, si es el usuario autorizado y el pedido es reciente => borra la(s) filas de detalle
+                // busca en la base de datos y lo borra, debe actualizar estado del pedido y saldos
+
+            }
+        }
 
         #endregion
 
