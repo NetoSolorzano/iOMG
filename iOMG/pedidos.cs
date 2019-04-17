@@ -70,20 +70,23 @@ namespace iOMG
             toolTipNombre.ReshowDelay = 500;
             toolTipNombre.ShowAlways = true;                 // Force the ToolTip text to be displayed whether or not the form is active.
             toolTipNombre.SetToolTip(toolStrip1, nomform);   // Set up the ToolTip text for the object
+            //dataload("maestra");        // revisar  
+            //grilla();
             init();
             toolboton();
             limpiar(this);
             sololee(this);
             dataload("maestra");        // revisar  
             dataload("todos");          // revisar
-            grilla();
+            //grilla();
+            advancedDataGridView1.DataSource = dtg;
             grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
             tabControl1.SelectedTab = tabgrilla;
-            advancedDataGridView1.Enabled = false;
-            tabControl1.Enabled = false;
+            //advancedDataGridView1.Enabled = false;
+            //tabControl1.Enabled = false;
         }
         private void init()
         {
@@ -1356,6 +1359,10 @@ namespace iOMG
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
         {
             dtg.DefaultView.RowFilter = advancedDataGridView1.FilterString;
+        }
+        private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)
+        {
+            dtg.DefaultView.Sort = advancedDataGridView1.SortString;
         }
         private void advancedDataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)            // almacena valor previo al ingresar a la celda
         {

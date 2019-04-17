@@ -148,6 +148,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="repspedidos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="repspedidos.Designer.cs">
+      <DependentUpon>repspedidos.cs</DependentUpon>
+    </Compile>
     <Compile Include="sernum.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +200,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="repspedidos.resx">
+      <DependentUpon>repspedidos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="sernum.resx">
       <DependentUpon>sernum.cs</DependentUpon>
