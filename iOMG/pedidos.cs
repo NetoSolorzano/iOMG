@@ -1252,9 +1252,9 @@ namespace iOMG
         {
             armani();
         }
-        private void cmb_det2_SelectedIndexChanged(object sender, EventArgs e)          // detalle2
+        private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
         {
-            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length-6).Trim();
+            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
             armani();
         }
         private void cmb_det3_SelectedIndexChanged(object sender, EventArgs e)          // detalle3
@@ -1292,7 +1292,7 @@ namespace iOMG
         #region datagridview1 - grilla detalle de pedido
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 1 && e.RowIndex > -1)
+            if (e.ColumnIndex == 0 && e.RowIndex > -1)
             {
                 tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
                 tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
@@ -1330,6 +1330,7 @@ namespace iOMG
                 cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
                 cmb_det2.Tag = de2;
                 cmb_det2.SelectedIndex = cmb_det2.FindString(cmb_det2.Tag.ToString());
+                //cmb_det2.SelectionChangeCommitted(null, null);
                 cmb_det3.Tag = de3;
                 cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
             }

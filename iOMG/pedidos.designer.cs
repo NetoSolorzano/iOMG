@@ -581,7 +581,7 @@
             this.cmb_det2.Name = "cmb_det2";
             this.cmb_det2.Size = new System.Drawing.Size(43, 21);
             this.cmb_det2.TabIndex = 7;
-            this.cmb_det2.SelectionChangeCommitted += new System.EventHandler(this.cmb_det2_SelectedIndexChanged);
+            this.cmb_det2.SelectionChangeCommitted += new System.EventHandler(this.cmb_det2_SelectionChangeCommitted);
             // 
             // cmb_tal
             // 
