@@ -148,11 +148,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="repspedidos.cs">
+    <Compile Include="pedsalm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="repspedidos.Designer.cs">
-      <DependentUpon>repspedidos.cs</DependentUpon>
+    <Compile Include="pedsalm.Designer.cs">
+      <DependentUpon>pedsalm.cs</DependentUpon>
     </Compile>
     <Compile Include="sernum.cs">
       <SubType>Form</SubType>
@@ -201,8 +201,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="repspedidos.resx">
-      <DependentUpon>repspedidos.cs</DependentUpon>
+    <EmbeddedResource Include="pedsalm.resx">
+      <DependentUpon>pedsalm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="sernum.resx">
       <DependentUpon>sernum.cs</DependentUpon>

@@ -70,16 +70,13 @@ namespace iOMG
             toolTipNombre.ReshowDelay = 500;
             toolTipNombre.ShowAlways = true;                 // Force the ToolTip text to be displayed whether or not the form is active.
             toolTipNombre.SetToolTip(toolStrip1, nomform);   // Set up the ToolTip text for the object
-            //dataload("maestra");        // revisar  
-            //grilla();
             init();
             toolboton();
             limpiar(this);
             sololee(this);
             dataload("maestra");        // revisar  
             dataload("todos");          // revisar
-            //grilla();
-            advancedDataGridView1.DataSource = dtg;
+            grilla();
             grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
@@ -190,7 +187,7 @@ namespace iOMG
             }
             dataGridView2.Columns["id"].ReadOnly = true;
         }
-        private void grilladet(string modo)                            // grilla detalle de pedido
+        private void grilladet(string modo)                 // grilla detalle de pedido
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
@@ -381,7 +378,7 @@ namespace iOMG
                 Application.Exit();
                 return;
             }
-            tabControl1.SelectedTab = tabreg;
+            tabControl1.SelectedTab = tabgrilla;
             if (quien == "maestra")
             {
                 // datos de los pedidos

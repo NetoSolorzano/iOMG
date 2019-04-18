@@ -452,7 +452,7 @@ namespace iOMG
         }
         private void pe_reportes_Click(object sender, EventArgs e)
         {
-            repspedidos frp = new repspedidos();
+            pedsalm frp = new pedsalm();
             frp.TopLevel = false;
             frp.Parent = this;
             pn_centro.Controls.Add(frp);
