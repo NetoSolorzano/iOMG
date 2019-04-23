@@ -673,36 +673,65 @@ namespace iOMG
         private bool graba()                                // graba cabecera y detalle
         {
             bool retorna = false;
+            string ncp = "";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
                 try
                 {
-                    string lee = "select codped from pedidos where tipoes='TPE001' order by id desc limit 1";
-                    // me quede aca
+                    string lee = "SELECT right(codped,length(codped)-2) FROM pedidos WHERE tipoes='TPE001' ORDER BY id DESC LIMIT 1";
+                    MySqlCommand comlee = new MySqlCommand(lee, conn);
+                    MySqlDataReader dr = comlee.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        int np = dr.GetInt16(0) + 1;
+                        ncp = "AL" + (np.ToString());
+                        tx_codped.Text = ncp;
+                    }
+                    dr.Close();
                 }
                 catch(MySqlException ex)
                 {
-                    MessageBox.Show(ex.Message, "Error en obtener pedido");
+                    MessageBox.Show(ex.Message, "Error en obtener # pedido");
                     Application.Exit();
                 }
                 try
                 {
-                    string codi = "N000";
-                    string inserta = "insert into xxx (" +
-                        "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,medid,umed,soles2018) values (" +
-                        "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@jgo,@nomb,@medi,@umed,@prec)";
+                    string inserta = "insert into pedidos (" +
+                        "fecha,tipoes,origen,destino,coment,USER,dia,codped,estado,entrega) values (" +
+                        "@fepe,@tipe,@tall,@dest,@come,@asd,now(),@cope,@esta,@entr)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
-                    micon.Parameters.AddWithValue("@codi", codi);
-                    micon.Parameters.AddWithValue("@jgo", "N000");
-                    micon.Parameters.AddWithValue("@nomb", tx_coment.Text.Trim());
-                    micon.Parameters.AddWithValue("@medi", "");
-                    micon.Parameters.AddWithValue("@umed", "C.U.");
-                    micon.Parameters.AddWithValue("@prec", tx_codped.Text);
+                    micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
+                    micon.Parameters.AddWithValue("@come", tx_coment.Text);
+                    micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@cope", tx_codped.Text);
+                    micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
+                    micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
                     micon.ExecuteNonQuery();
                     // detalle
-
+                    for(int i=0; i<dataGridView1.Rows.Count - 1; i++)
+                    {
+                        //id,cant,articulo,nombre,medidas,madera,Deta2,acabado,comentario,Codest
+                        string insdet = "insert into detaped (" +
+                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment) values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come)";
+                        micon = new MySqlCommand(insdet, conn);
+                        micon.Parameters.AddWithValue("@cope", tx_codped.Text);
+                        micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                        micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[2].Value.ToString());
+                        micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
+                        micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
+                        micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());
+                        micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[6].Value.ToString());
+                        micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                        micon.ExecuteNonQuery();
+                    }
                     retorna = true;
                 }
                 catch (MySqlException ex)
@@ -720,32 +749,52 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private void edita()            // falta esto
+        private bool edita()                                // actualiza cabecera y detalle
         {
+            bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
                 try
                 {
-                    string codi = "N000";
-                    string actua = "update xxx set " +
-                        "codig=@codi,capit=@capi,model=@mode,mader=@made,tipol=@tipo,deta1=@det1,acaba=@acab,talle=@tall," +
-                        "deta2=@det2,deta3=@det3,juego=@jgo,nombr=@nomb,medid=@medi,umed=@umed,soles2018=@prec " +
+                    string actua = "update pedidos set " +
+                        "fecha=@fepe,origen=@tall,destino=@dest,coment=@come,user=@asd,dia=now(),estado=@esta,entrega=@entr " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
-                    micon.Parameters.AddWithValue("@codi", codi);
-                    micon.Parameters.AddWithValue("@jgo", "N000");
-                    micon.Parameters.AddWithValue("@nomb", tx_coment.Text.Trim());
-                    micon.Parameters.AddWithValue("@medi", "");
-                    micon.Parameters.AddWithValue("@umed", "C.U.");
-                    micon.Parameters.AddWithValue("@prec", tx_codped.Text);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
+                    micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
+                    micon.Parameters.AddWithValue("@come", tx_coment.Text);
+                    micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
+                    micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
                     micon.ExecuteNonQuery();
+                    // detalle
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                    {
+                        //id,cant,articulo,nombre,medidas,madera,Deta2,acabado,comentario,Codest
+                        string insdet = "update detaped set " +
+                            "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come " +
+                            "where iddetaped=@idr";
+                        micon = new MySqlCommand(insdet, conn);
+                        micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
+                        micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[2].Value.ToString());
+                        micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
+                        micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
+                        micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());
+                        micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[6].Value.ToString());
+                        micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                        micon.ExecuteNonQuery();
+                    }
+                    retorna = true;
                 }
                 catch (MySqlException ex)
                 {
-                    MessageBox.Show(ex.Message, "Error en conexión");
+                    MessageBox.Show(ex.Message, "Error en edicion");
                     Application.Exit();
                 }
             }
@@ -753,8 +802,9 @@ namespace iOMG
             {
                 MessageBox.Show("No fue posible conectarse al servidor de datos");
                 Application.Exit();
-                return;
+                return retorna;
             }
+            return retorna;
             conn.Close();
         }
 
@@ -942,10 +992,13 @@ namespace iOMG
             }
             if (modo == "EDITAR")
             {
-                var aa = MessageBox.Show("Confirma que desea modificar el artículo?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var aa = MessageBox.Show("Confirma que desea modificar el pedido?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    edita();
+                    if(edita() == true)
+                    {
+
+                    }
                 }
                 else
                 {
