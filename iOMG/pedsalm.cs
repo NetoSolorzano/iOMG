@@ -9,7 +9,7 @@ namespace iOMG
 {
     public partial class Pedsalm : Form
     {
-        static string nomform = "pedsalm";      // nombre del formulario
+        static string nomform = "pedidos";      // nombre del formulario
         string asd = iOMG.Program.vg_user;      // usuario conectado al sistema
         string colback = iOMG.Program.colbac;   // color de fondo
         string colpage = iOMG.Program.colpag;   // color de los pageframes
@@ -232,9 +232,7 @@ namespace iOMG
                 tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
                 tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // destino
-                //tx_fechope.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();    // fecha pedido
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());   // fecha pedido
-                //tx_fentreg.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();    // fecha entrega
                 dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());    // fecha entrega
                 tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();     // comentario
                 //cmb_cap.SelectedValue = tx_dat_tiped.Text;
@@ -243,6 +241,30 @@ namespace iOMG
                 cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
                 //cmb_tip.SelectedValue = tx_dat_tip.Text;
                 jaladet(tx_codped.Text);
+            }
+            if(campo == "tx_codped" && tx_codped.Text != "")
+            {
+                int cta = 0;
+                foreach (DataRow row in dtg.Rows)
+                {
+                    if (row["codped"].ToString().Trim() == tx_codped.Text.Trim())
+                    {
+                        //id,codped,tipoes,origen,destino,fecha,entrega,coment
+                        tx_idr.Text = row["id"].ToString();            // id del registro
+                        tx_rind.Text = cta.ToString();
+                        tx_dat_tiped.Text = row["tipoes"].ToString();  // tipo pedido
+                        tx_dat_orig.Text = row["origen"].ToString();   // taller origen
+                        tx_dat_dest.Text = row["destino"].ToString();   // destino
+                        dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());   // fecha pedido
+                        dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());    // fecha entrega
+                        tx_coment.Text = row["coment"].ToString();     // comentario
+                        cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
+                        cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                        cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
+                        jaladet(tx_codped.Text);
+                    }
+                    cta = cta + 1;
+                }
             }
         }
         private void jaladet(string pedido)                 // jala el detalle del pedido
@@ -1082,6 +1104,13 @@ namespace iOMG
         {
 
         }
+        private void tx_codped_Leave(object sender, EventArgs e)
+        {
+            if(Tx_modo.Text != "NUEVO" && tx_codped.Text != "")
+            {
+                jalaoc("tx_codped");
+            }
+        }
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
@@ -1157,7 +1186,6 @@ namespace iOMG
             escribe(this);
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
-            cmb_taller.Focus();
             dtp_pedido.Value = DateTime.Now;
             dtp_entreg.Value = DateTime.Now;
             limpiar(this);
@@ -1167,10 +1195,13 @@ namespace iOMG
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
+            tabControl1.SelectedTab = tabuser;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            tx_dat_estad.Text = tiesta;
             tx_codped.ReadOnly = true;
+            cmb_taller.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {

@@ -489,6 +489,7 @@
             this.tx_dat_estad.Name = "tx_dat_estad";
             this.tx_dat_estad.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_estad.TabIndex = 297;
+            this.tx_dat_estad.Visible = false;
             // 
             // tx_dat_dest
             // 
@@ -496,6 +497,7 @@
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_dest.TabIndex = 296;
+            this.tx_dat_dest.Visible = false;
             // 
             // tx_dat_orig
             // 
@@ -503,6 +505,7 @@
             this.tx_dat_orig.Name = "tx_dat_orig";
             this.tx_dat_orig.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_orig.TabIndex = 295;
+            this.tx_dat_orig.Visible = false;
             // 
             // tx_dat_tiped
             // 
@@ -510,6 +513,7 @@
             this.tx_dat_tiped.Name = "tx_dat_tiped";
             this.tx_dat_tiped.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_tiped.TabIndex = 294;
+            this.tx_dat_tiped.Visible = false;
             // 
             // groupBox19
             // 
@@ -699,6 +703,7 @@
             this.tx_codped.Size = new System.Drawing.Size(81, 20);
             this.tx_codped.TabIndex = 266;
             this.tx_codped.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_codped.Leave += new System.EventHandler(this.tx_codped_Leave);
             // 
             // label3
             // 
