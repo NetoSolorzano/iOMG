@@ -86,8 +86,9 @@ namespace iOMG
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
             //Bt_add_Click(null, null);
-            tabControl1.SelectedTab = tabgrilla;
-            advancedDataGridView1.Enabled = false;
+            //tabControl1.SelectedTab = tabgrilla;
+            //advancedDataGridView1.Enabled = false;
+            tabControl1.Enabled = false;
             cmb_tipo.Enabled = false;
             tx_d_nom.Enabled = false;
         }
@@ -111,6 +112,7 @@ namespace iOMG
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
             tx_coment.MaxLength = 90;           // nombre
+            tx_codped.CharacterCasing = CharacterCasing.Upper;
         }
         private void grilla()                   // arma la grilla
         {
@@ -130,12 +132,12 @@ namespace iOMG
             advancedDataGridView1.Columns[1].ReadOnly = true;           // lectura o no
             advancedDataGridView1.Columns[1].Tag = "validaNO";
             advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // tipo de pedido
+            // tipo de pedido ==> situacion del pedido, status
             advancedDataGridView1.Columns[2].Visible = true;
-            advancedDataGridView1.Columns[2].HeaderText = "Tipo Ped";    // titulo de la columna
+            advancedDataGridView1.Columns[2].HeaderText = "Sit.Ped";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 70;                // ancho
             advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
-            advancedDataGridView1.Columns[2].Tag = "validaNO";
+            advancedDataGridView1.Columns[2].Tag = "validaSI";
             advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Origen - taller
             advancedDataGridView1.Columns[3].Visible = true;
@@ -229,7 +231,8 @@ namespace iOMG
             {   // id,codped,tipoes,origen,destino,fecha,entrega,coment
                 // tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // 
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
-                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
+                //tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
+                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // estado del pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
                 tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // destino
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());   // fecha pedido
@@ -239,6 +242,7 @@ namespace iOMG
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
                 cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
+                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                 //cmb_tip.SelectedValue = tx_dat_tip.Text;
                 jaladet(tx_codped.Text);
             }
@@ -252,7 +256,8 @@ namespace iOMG
                         //id,codped,tipoes,origen,destino,fecha,entrega,coment
                         tx_idr.Text = row["id"].ToString();            // id del registro
                         tx_rind.Text = cta.ToString();
-                        tx_dat_tiped.Text = row["tipoes"].ToString();  // tipo pedido
+                        //tx_dat_tiped.Text = row["tipoes"].ToString();  // tipo pedido
+                        tx_dat_estad.Text = row["status"].ToString();   // estado del pedido
                         tx_dat_orig.Text = row["origen"].ToString();   // taller origen
                         tx_dat_dest.Text = row["destino"].ToString();   // destino
                         dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());   // fecha pedido
@@ -392,7 +397,7 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los pedidos
-                string datgri = "select id,codped,tipoes,origen,destino,date_format(date(fecha),'%Y-%m-%d') as fecha,date_format(date(entrega),'%Y-%m-%d') as entrega,coment " +
+                string datgri = "select id,codped,status,origen,destino,date_format(date(fecha),'%Y-%m-%d') as fecha,date_format(date(entrega),'%Y-%m-%d') as entrega,coment,tipoes " +
                     "from pedidos where tipoes=@tip";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", "TPE001");
@@ -704,8 +709,9 @@ namespace iOMG
             {
                 try
                 {
-                    string lee = "SELECT right(codped,length(codped)-2) FROM pedidos WHERE tipoes='TPE001' ORDER BY id DESC LIMIT 1";
+                    string lee = "SELECT right(codped,length(codped)-2) FROM pedidos WHERE tipoes=@tpe ORDER BY id DESC LIMIT 1";
                     MySqlCommand comlee = new MySqlCommand(lee, conn);
+                    comlee.Parameters.AddWithValue("@tpe", tipede);
                     MySqlDataReader dr = comlee.ExecuteReader();
                     if (dr.Read())
                     {
@@ -723,7 +729,7 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into pedidos (" +
-                        "fecha,tipoes,origen,destino,coment,USER,dia,codped,estado,entrega) values (" +
+                        "fecha,tipoes,origen,destino,coment,USER,dia,codped,status,entrega) values (" +
                         "@fepe,@tipe,@tall,@dest,@come,@asd,now(),@cope,@esta,@entr)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
@@ -783,7 +789,7 @@ namespace iOMG
                 try
                 {
                     string actua = "update pedidos set " +
-                        "fecha=@fepe,origen=@tall,destino=@dest,coment=@come,user=@asd,dia=now(),estado=@esta,entrega=@entr " +
+                        "fecha=@fepe,origen=@tall,destino=@dest,coment=@come,user=@asd,dia=now(),status=@esta,entrega=@entr " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
@@ -934,6 +940,7 @@ namespace iOMG
             //tabControl1.SelectedTab = pag;
             cmb_taller.SelectedIndex = -1;
             cmb_destino.SelectedIndex = -1;
+            cmb_estado.SelectedIndex = -1;
             cmb_fam.SelectedIndex = -1;
             cmb_mod.SelectedIndex = -1;
             cmb_mad.SelectedIndex = -1;
@@ -992,7 +999,7 @@ namespace iOMG
                         string cid = "0";
                         dr[0] = cid;
                         dr[1] = tx_codped.Text;
-                        dr[2] = tx_dat_tiped.Text;
+                        dr[2] = tx_dat_estad.Text;    //tx_dat_tiped.Text;
                         dr[3] = tx_dat_orig.Text;
                         dr[4] = tx_dat_dest.Text;
                         dr[5] = dtp_pedido.Value.ToString("yyy-MM-dd");
@@ -1181,6 +1188,7 @@ namespace iOMG
         #region botones
         private void Bt_add_Click(object sender, EventArgs e)
         {
+            tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             tabControl1.SelectedTab = tabuser;
             escribe(this);
@@ -1205,6 +1213,7 @@ namespace iOMG
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
+            tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             string codu = "";
             string idr = "";
@@ -1246,6 +1255,7 @@ namespace iOMG
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
+            tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             string codu = "";
             string idr = "";
@@ -1487,71 +1497,26 @@ namespace iOMG
                 {
                     if (advancedDataGridView1.Columns[e.ColumnIndex].Tag.ToString() == "validaSI")   // la columna se valida?
                     {
+                        // id,codped,status,origen,destino,fecha,entrega,coment,tipoes
                         // valida si el dato ingresado es valido en la columna
-                        if (e.ColumnIndex == 2)                         // valida familia o capitulo
+                        if (e.ColumnIndex == 2)                         // valida estado del pedido
                         {
-                            if (lib.validac("desc_gru", "idcodice", e.FormattedValue.ToString()) == true)
+                            if (lib.validac("desc_stp", "idcodice", e.FormattedValue.ToString()) == true)
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
                                 lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                             }
                             else
                             {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
+                                MessageBox.Show("El valor no es válido para el estado", "Atención - Corrija");
                                 e.Cancel = true;
                             }
                         }
-                        if (e.ColumnIndex == 3)                      // valida modelo
+                        if (e.ColumnIndex == 3)                         // valida taller de origen
                         {
-                            /*
-                            if(lib.validac("desc_mod", "idcodice", e.FormattedValue.ToString()) == true)
+                            if(lib.validac("desc_loc", "idcodice", e.FormattedValue.ToString()) == true)
                             {
-                                MessageBox.Show("El valor no es valido en la columna", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                            else
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            */
-                            if (e.FormattedValue.ToString().Length != 3)
-                            {
-                                MessageBox.Show("El valor debe tener 3 dígitos", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
-                        if (e.ColumnIndex == 4)           // valida madera
-                        {
-                            if (lib.validac("desc_mad", "idcodice", e.FormattedValue.ToString()) == true)
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            else
-                            {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
-                        if (e.ColumnIndex == 5)           // valida tipologia
-                        {
-                            if (lib.validac("desc_tip", "idcodice", e.FormattedValue.ToString()) == true)
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            else
-                            {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
-                        if (e.ColumnIndex == 6)           // valida detalle 1
-                        {
-                            if (lib.validac("desc_dt1", "idcodice", e.FormattedValue.ToString()) == false)
-                            {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
+                                MessageBox.Show("El valor no es valido para el taller", "Atención - Corrija");
                                 e.Cancel = true;
                             }
                             else
@@ -1560,45 +1525,34 @@ namespace iOMG
                                 lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                             }
                         }
-                        if (e.ColumnIndex == 7)          // valida acabado
+                        if (e.ColumnIndex == 4)                         // valida almacen destino
                         {
-                            if (lib.validac("desc_est", "idcodice", e.FormattedValue.ToString()) == false)
-                            {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                            else
+                            if (lib.validac("desc_alm", "idcodice", e.FormattedValue.ToString()) == true)
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
                                 lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                            }
+                            else
+                            {
+                                MessageBox.Show("El valor no es válido para almacen", "Atención - Corrija");
+                                e.Cancel = true;
                             }
                         }
-                        // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles,soles2018
-                        if (e.ColumnIndex == 8)          // valida detalle 2
+                        if (e.ColumnIndex == 5)           // fecha pedido
                         {
-                            if (lib.validac("desc_dt2", "idcodice", e.FormattedValue.ToString()) == false)
-                            {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                            else
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
+                            // no se valida
                         }
-                        if (e.ColumnIndex == 9)          // valida detalle 3
+                        if (e.ColumnIndex == 6)           // fecha entrega
                         {
-                            if (lib.validac("desc_dt3", "idcodice", e.FormattedValue.ToString()) == false)
-                            {
-                                MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                            else
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
+                            // no se valida
+                        }
+                        if (e.ColumnIndex == 7)          // comentario
+                        {
+                            // no se valida
+                        }
+                        if (e.ColumnIndex == 8)          // tipo pedido
+                        {
+                            // no se valida
                         }
                     }
                     else
