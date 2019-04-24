@@ -32,30 +32,8 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_add = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_close = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_edit = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_anul = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.Tx_modo = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_ini = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_sig = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_ret = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_fin = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_print = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
+            this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bt_det = new System.Windows.Forms.Button();
             this.cmb_det3 = new System.Windows.Forms.ComboBox();
@@ -117,14 +95,35 @@
             this.tx_rind = new System.Windows.Forms.TextBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_add = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_close = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_edit = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_print = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_anul = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.bt_exc = new System.Windows.Forms.ToolStripButton();
-            this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
-            this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.Tx_modo = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_ini = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_sig = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_ret = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_fin = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
@@ -135,6 +134,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -223,256 +223,23 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             // 
-            // toolStrip1
+            // dtp_entreg
             // 
-            this.toolStrip1.AutoSize = false;
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSeparator2,
-            this.Bt_add,
-            this.toolStripSeparator6,
-            this.toolStripSeparator5,
-            this.Bt_close,
-            this.toolStripSeparator7,
-            this.Bt_edit,
-            this.toolStripSeparator13,
-            this.Bt_print,
-            this.toolStripSeparator12,
-            this.Bt_anul,
-            this.toolStripSeparator1,
-            this.bt_exc,
-            this.toolStripSeparator4,
-            this.Tx_modo,
-            this.toolStripSeparator3,
-            this.Bt_ini,
-            this.toolStripSeparator8,
-            this.Bt_sig,
-            this.toolStripSeparator9,
-            this.Bt_ret,
-            this.toolStripSeparator10,
-            this.Bt_fin,
-            this.toolStripSeparator11});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 468);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(977, 35);
-            this.toolStrip1.TabIndex = 161;
-            this.toolStrip1.Text = "toolStrip1";
+            this.dtp_entreg.Checked = false;
+            this.dtp_entreg.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_entreg.Location = new System.Drawing.Point(784, 63);
+            this.dtp_entreg.Name = "dtp_entreg";
+            this.dtp_entreg.Size = new System.Drawing.Size(95, 20);
+            this.dtp_entreg.TabIndex = 300;
             // 
-            // toolStripSeparator2
+            // dtp_pedido
             // 
-            this.toolStripSeparator2.AutoSize = false;
-            this.toolStripSeparator2.BackColor = System.Drawing.Color.Black;
-            this.toolStripSeparator2.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Bt_add
-            // 
-            this.Bt_add.AutoSize = false;
-            this.Bt_add.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_add.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_add.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_add.Name = "Bt_add";
-            this.Bt_add.Size = new System.Drawing.Size(32, 32);
-            this.Bt_add.Text = "Bt_close";
-            this.Bt_add.ToolTipText = "Nuevo usuario";
-            this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.AutoSize = false;
-            this.toolStripSeparator6.BackColor = System.Drawing.Color.Black;
-            this.toolStripSeparator6.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(3, 45);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripSeparator5.AutoSize = false;
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Bt_close
-            // 
-            this.Bt_close.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.Bt_close.AutoSize = false;
-            this.Bt_close.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_close.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_close.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_close.Name = "Bt_close";
-            this.Bt_close.Size = new System.Drawing.Size(32, 32);
-            this.Bt_close.ToolTipText = "Salir del formulario";
-            this.Bt_close.Click += new System.EventHandler(this.Bt_close_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripSeparator7.AutoSize = false;
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Bt_edit
-            // 
-            this.Bt_edit.AutoSize = false;
-            this.Bt_edit.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_edit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_edit.Name = "Bt_edit";
-            this.Bt_edit.Size = new System.Drawing.Size(32, 32);
-            this.Bt_edit.ToolTipText = "Editar usuario";
-            this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.AutoSize = false;
-            this.toolStripSeparator1.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Bt_anul
-            // 
-            this.Bt_anul.AutoSize = false;
-            this.Bt_anul.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_anul.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_anul.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_anul.Name = "Bt_anul";
-            this.Bt_anul.Size = new System.Drawing.Size(32, 32);
-            this.Bt_anul.Text = "Bt_close";
-            this.Bt_anul.ToolTipText = "Anular usuario";
-            this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.AutoSize = false;
-            this.toolStripSeparator4.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Tx_modo
-            // 
-            this.Tx_modo.Name = "Tx_modo";
-            this.Tx_modo.ReadOnly = true;
-            this.Tx_modo.Size = new System.Drawing.Size(100, 35);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.AutoSize = false;
-            this.toolStripSeparator3.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Bt_ini
-            // 
-            this.Bt_ini.AutoSize = false;
-            this.Bt_ini.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_ini.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_ini.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_ini.Name = "Bt_ini";
-            this.Bt_ini.Size = new System.Drawing.Size(32, 32);
-            this.Bt_ini.Text = "Bt_close";
-            this.Bt_ini.ToolTipText = "Ir al inicio";
-            this.Bt_ini.Visible = false;
-            this.Bt_ini.Click += new System.EventHandler(this.Bt_first_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.AutoSize = false;
-            this.toolStripSeparator8.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(3, 45);
-            this.toolStripSeparator8.Visible = false;
-            // 
-            // Bt_sig
-            // 
-            this.Bt_sig.AutoSize = false;
-            this.Bt_sig.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_sig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_sig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_sig.Name = "Bt_sig";
-            this.Bt_sig.Size = new System.Drawing.Size(32, 32);
-            this.Bt_sig.Text = "Bt_close";
-            this.Bt_sig.ToolTipText = "Siguiente";
-            this.Bt_sig.Visible = false;
-            this.Bt_sig.Click += new System.EventHandler(this.Bt_next_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.AutoSize = false;
-            this.toolStripSeparator9.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(3, 45);
-            this.toolStripSeparator9.Visible = false;
-            // 
-            // Bt_ret
-            // 
-            this.Bt_ret.AutoSize = false;
-            this.Bt_ret.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_ret.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_ret.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_ret.Name = "Bt_ret";
-            this.Bt_ret.Size = new System.Drawing.Size(32, 32);
-            this.Bt_ret.Text = "Bt_close";
-            this.Bt_ret.ToolTipText = "Regresar";
-            this.Bt_ret.Visible = false;
-            this.Bt_ret.Click += new System.EventHandler(this.Bt_back_Click);
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.AutoSize = false;
-            this.toolStripSeparator10.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(3, 45);
-            this.toolStripSeparator10.Visible = false;
-            // 
-            // Bt_fin
-            // 
-            this.Bt_fin.AutoSize = false;
-            this.Bt_fin.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_fin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_fin.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_fin.Name = "Bt_fin";
-            this.Bt_fin.Size = new System.Drawing.Size(32, 32);
-            this.Bt_fin.Text = "Bt_close";
-            this.Bt_fin.ToolTipText = "Ir al final";
-            this.Bt_fin.Visible = false;
-            this.Bt_fin.Click += new System.EventHandler(this.Bt_last_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.AutoSize = false;
-            this.toolStripSeparator11.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
-            // 
-            // Bt_print
-            // 
-            this.Bt_print.AutoSize = false;
-            this.Bt_print.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_print.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_print.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_print.Name = "Bt_print";
-            this.Bt_print.Size = new System.Drawing.Size(32, 32);
-            this.Bt_print.ToolTipText = "Imprimir";
-            this.Bt_print.Click += new System.EventHandler(this.Bt_print_Click);
-            // 
-            // toolStripSeparator12
-            // 
-            this.toolStripSeparator12.AutoSize = false;
-            this.toolStripSeparator12.BackColor = System.Drawing.Color.Black;
-            this.toolStripSeparator12.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(3, 45);
-            // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.AutoSize = false;
-            this.toolStripSeparator13.BackColor = System.Drawing.Color.Black;
-            this.toolStripSeparator13.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(3, 45);
+            this.dtp_pedido.Checked = false;
+            this.dtp_pedido.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_pedido.Location = new System.Drawing.Point(784, 35);
+            this.dtp_pedido.Name = "dtp_pedido";
+            this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
+            this.dtp_pedido.TabIndex = 299;
             // 
             // panel1
             // 
@@ -722,7 +489,6 @@
             this.tx_dat_estad.Name = "tx_dat_estad";
             this.tx_dat_estad.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_estad.TabIndex = 297;
-            this.tx_dat_estad.Visible = false;
             // 
             // tx_dat_dest
             // 
@@ -730,7 +496,6 @@
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_dest.TabIndex = 296;
-            this.tx_dat_dest.Visible = false;
             // 
             // tx_dat_orig
             // 
@@ -738,7 +503,6 @@
             this.tx_dat_orig.Name = "tx_dat_orig";
             this.tx_dat_orig.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_orig.TabIndex = 295;
-            this.tx_dat_orig.Visible = false;
             // 
             // tx_dat_tiped
             // 
@@ -746,7 +510,6 @@
             this.tx_dat_tiped.Name = "tx_dat_tiped";
             this.tx_dat_tiped.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_tiped.TabIndex = 294;
-            this.tx_dat_tiped.Visible = false;
             // 
             // groupBox19
             // 
@@ -825,7 +588,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(3, 151);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(963, 284);
+            this.dataGridView1.Size = new System.Drawing.Size(963, 285);
             this.dataGridView1.TabIndex = 273;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
@@ -1082,6 +845,154 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.AutoSize = false;
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator2,
+            this.Bt_add,
+            this.toolStripSeparator6,
+            this.toolStripSeparator5,
+            this.Bt_close,
+            this.toolStripSeparator7,
+            this.Bt_edit,
+            this.toolStripSeparator13,
+            this.Bt_print,
+            this.toolStripSeparator12,
+            this.Bt_anul,
+            this.toolStripSeparator1,
+            this.bt_exc,
+            this.toolStripSeparator4,
+            this.Tx_modo,
+            this.toolStripSeparator3,
+            this.Bt_ini,
+            this.toolStripSeparator8,
+            this.Bt_sig,
+            this.toolStripSeparator9,
+            this.Bt_ret,
+            this.toolStripSeparator10,
+            this.Bt_fin,
+            this.toolStripSeparator11});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 468);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(977, 35);
+            this.toolStrip1.TabIndex = 161;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.AutoSize = false;
+            this.toolStripSeparator2.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator2.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_add
+            // 
+            this.Bt_add.AutoSize = false;
+            this.Bt_add.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_add.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_add.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_add.Name = "Bt_add";
+            this.Bt_add.Size = new System.Drawing.Size(32, 32);
+            this.Bt_add.Text = "Bt_close";
+            this.Bt_add.ToolTipText = "Nuevo usuario";
+            this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.AutoSize = false;
+            this.toolStripSeparator6.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator6.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(3, 45);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator5.AutoSize = false;
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_close
+            // 
+            this.Bt_close.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.Bt_close.AutoSize = false;
+            this.Bt_close.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_close.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_close.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_close.Name = "Bt_close";
+            this.Bt_close.Size = new System.Drawing.Size(32, 32);
+            this.Bt_close.ToolTipText = "Salir del formulario";
+            this.Bt_close.Click += new System.EventHandler(this.Bt_close_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator7.AutoSize = false;
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_edit
+            // 
+            this.Bt_edit.AutoSize = false;
+            this.Bt_edit.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_edit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_edit.Name = "Bt_edit";
+            this.Bt_edit.Size = new System.Drawing.Size(32, 32);
+            this.Bt_edit.ToolTipText = "Editar usuario";
+            this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.AutoSize = false;
+            this.toolStripSeparator13.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator13.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_print
+            // 
+            this.Bt_print.AutoSize = false;
+            this.Bt_print.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_print.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_print.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_print.Name = "Bt_print";
+            this.Bt_print.Size = new System.Drawing.Size(32, 32);
+            this.Bt_print.ToolTipText = "Imprimir";
+            this.Bt_print.Click += new System.EventHandler(this.Bt_print_Click);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.AutoSize = false;
+            this.toolStripSeparator12.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator12.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_anul
+            // 
+            this.Bt_anul.AutoSize = false;
+            this.Bt_anul.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_anul.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_anul.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_anul.Name = "Bt_anul";
+            this.Bt_anul.Size = new System.Drawing.Size(32, 32);
+            this.Bt_anul.Text = "Bt_close";
+            this.Bt_anul.ToolTipText = "Anular usuario";
+            this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.AutoSize = false;
+            this.toolStripSeparator1.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(3, 45);
+            // 
             // bt_exc
             // 
             this.bt_exc.AutoSize = false;
@@ -1093,23 +1004,108 @@
             this.bt_exc.Text = "Bt_close";
             this.bt_exc.ToolTipText = "Exportar";
             // 
-            // dtp_pedido
+            // toolStripSeparator4
             // 
-            this.dtp_pedido.Checked = false;
-            this.dtp_pedido.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_pedido.Location = new System.Drawing.Point(784, 35);
-            this.dtp_pedido.Name = "dtp_pedido";
-            this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
-            this.dtp_pedido.TabIndex = 299;
+            this.toolStripSeparator4.AutoSize = false;
+            this.toolStripSeparator4.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(3, 45);
             // 
-            // dtp_entreg
+            // Tx_modo
             // 
-            this.dtp_entreg.Checked = false;
-            this.dtp_entreg.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_entreg.Location = new System.Drawing.Point(784, 63);
-            this.dtp_entreg.Name = "dtp_entreg";
-            this.dtp_entreg.Size = new System.Drawing.Size(95, 20);
-            this.dtp_entreg.TabIndex = 300;
+            this.Tx_modo.Name = "Tx_modo";
+            this.Tx_modo.ReadOnly = true;
+            this.Tx_modo.Size = new System.Drawing.Size(100, 35);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.AutoSize = false;
+            this.toolStripSeparator3.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_ini
+            // 
+            this.Bt_ini.AutoSize = false;
+            this.Bt_ini.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_ini.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_ini.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_ini.Name = "Bt_ini";
+            this.Bt_ini.Size = new System.Drawing.Size(32, 32);
+            this.Bt_ini.Text = "Bt_close";
+            this.Bt_ini.ToolTipText = "Ir al inicio";
+            this.Bt_ini.Visible = false;
+            this.Bt_ini.Click += new System.EventHandler(this.Bt_first_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.AutoSize = false;
+            this.toolStripSeparator8.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(3, 45);
+            this.toolStripSeparator8.Visible = false;
+            // 
+            // Bt_sig
+            // 
+            this.Bt_sig.AutoSize = false;
+            this.Bt_sig.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_sig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_sig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_sig.Name = "Bt_sig";
+            this.Bt_sig.Size = new System.Drawing.Size(32, 32);
+            this.Bt_sig.Text = "Bt_close";
+            this.Bt_sig.ToolTipText = "Siguiente";
+            this.Bt_sig.Visible = false;
+            this.Bt_sig.Click += new System.EventHandler(this.Bt_next_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.AutoSize = false;
+            this.toolStripSeparator9.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(3, 45);
+            this.toolStripSeparator9.Visible = false;
+            // 
+            // Bt_ret
+            // 
+            this.Bt_ret.AutoSize = false;
+            this.Bt_ret.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_ret.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_ret.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_ret.Name = "Bt_ret";
+            this.Bt_ret.Size = new System.Drawing.Size(32, 32);
+            this.Bt_ret.Text = "Bt_close";
+            this.Bt_ret.ToolTipText = "Regresar";
+            this.Bt_ret.Visible = false;
+            this.Bt_ret.Click += new System.EventHandler(this.Bt_back_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.AutoSize = false;
+            this.toolStripSeparator10.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(3, 45);
+            this.toolStripSeparator10.Visible = false;
+            // 
+            // Bt_fin
+            // 
+            this.Bt_fin.AutoSize = false;
+            this.Bt_fin.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_fin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_fin.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_fin.Name = "Bt_fin";
+            this.Bt_fin.Size = new System.Drawing.Size(32, 32);
+            this.Bt_fin.Text = "Bt_close";
+            this.Bt_fin.ToolTipText = "Ir al final";
+            this.Bt_fin.Visible = false;
+            this.Bt_fin.Click += new System.EventHandler(this.Bt_last_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.AutoSize = false;
+            this.toolStripSeparator11.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
             // Pedsalm
             // 
@@ -1126,8 +1122,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox19.ResumeLayout(false);
@@ -1139,6 +1133,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }

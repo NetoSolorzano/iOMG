@@ -49,6 +49,7 @@ namespace iOMG
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         DataTable dtg = new DataTable();
         DataTable dtu = new DataTable();    // dtg primario, original con la carga del 
+        DataTable dttaller = new DataTable();   // combo taller de fabric.
 
         public Pedsalm()
         {
@@ -87,6 +88,8 @@ namespace iOMG
             //Bt_add_Click(null, null);
             tabControl1.SelectedTab = tabgrilla;
             advancedDataGridView1.Enabled = false;
+            cmb_tipo.Enabled = false;
+            tx_d_nom.Enabled = false;
         }
         private void init()
         {
@@ -399,10 +402,9 @@ namespace iOMG
             if (quien == "todos")
             {
                 // seleccion de taller de produccion ... ok
-                const string contaller = "select descrizionerid,idcodice from desc_loc " +
+                const string contaller = "select descrizionerid,idcodice,codigo from desc_loc " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdtaller = new MySqlCommand(contaller, conn);
-                DataTable dttaller = new DataTable();
                 MySqlDataAdapter dataller = new MySqlDataAdapter(cmdtaller);
                 dataller.Fill(dttaller);
                 foreach (DataRow row in dttaller.Rows)
@@ -804,8 +806,8 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            return retorna;
             conn.Close();
+            return retorna;
         }
 
         #region limpiadores_modos
@@ -1022,6 +1024,17 @@ namespace iOMG
         }
         private void bt_det_Click(object sender, EventArgs e)
         {
+            if(tx_d_nom.Text == "")
+            {
+                MessageBox.Show("El código no existe en la maestra", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                return;
+            }
+            if(tx_d_can.Text == "")
+            {
+                MessageBox.Show("Falta la cantidad de muebles", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_d_can.Focus();
+                return;
+            }
             if(Tx_modo.Text == "NUEVO")
             {
                 dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text, tx_d_mad.Text,
@@ -1041,6 +1054,10 @@ namespace iOMG
                 obj.Cells[8].Value = tx_d_com.Text;
                 obj.Cells[9].Value = cmb_aca.Tag.ToString();
             }
+            tx_d_nom.Text = "";
+            tx_d_can.Text = "";
+            tx_d_com.Text = "";
+            tx_d_med.Text = "";
         }
         #endregion boton_form;
 
@@ -1150,6 +1167,10 @@ namespace iOMG
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_tiped.Text = tipede;
+            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            tx_codped.ReadOnly = true;
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1329,6 +1350,19 @@ namespace iOMG
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
             else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            if(Tx_modo.Text == "NUEVO")
+            {
+                string cod2d = "";
+                foreach (DataRow row in dttaller.Rows)
+                {
+                    if (row["idcodice"].ToString().Trim() == tx_dat_orig.Text.Trim())
+                    {
+                        cod2d = row["codigo"].ToString();
+                    }
+                }
+                cmb_tal.Tag = cod2d;
+                cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
+            }
         }
         private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
         {
