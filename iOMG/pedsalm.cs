@@ -756,9 +756,9 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
                         micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                         micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());
-                        micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
-                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[6].Value.ToString());
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());   // 
+                        micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // 
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
@@ -1006,7 +1006,7 @@ namespace iOMG
                         dr[6] = dtp_entreg.Value.ToString("yyy-MM-dd");
                         dr[7] = tx_coment.Text;
                         dtg.Rows.Add(dr);
-                        dtu.Rows.Add(dr);
+                        //dtu.Rows.Add(dr); da error porque la fila ya pertenece a otra tabla
                     }
                     else
                     {
@@ -1420,7 +1420,8 @@ namespace iOMG
         }
         private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
         {
-            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+            //tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
             armani();
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
@@ -1433,7 +1434,8 @@ namespace iOMG
         }
         private void cmb_aca_SelectionChangeCommitted(object sender, EventArgs e)       // acabado
         {
-            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
+            //tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
+            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
             armani();
         }
         private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)           // taller
@@ -1442,7 +1444,8 @@ namespace iOMG
         }
         private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
         {
-            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
+            //tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
+            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
             armani();
         }
         private void cmb_det3_SelectedIndexChanged(object sender, EventArgs e)          // detalle3
