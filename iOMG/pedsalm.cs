@@ -16,7 +16,7 @@ namespace iOMG
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
         static string nomtab = "pedidos";
-        public int totfilgrid, cta;      // variables para impresion
+        public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion
         public string perAg = "";
         public string perMo = "";
         public string perAn = "";
@@ -39,6 +39,7 @@ namespace iOMG
         string cn_sup = "";     // codigo nivel usuario superusuario
         string cn_est = "";     // codigo nivel usuario estandar
         string cn_mir = "";     // codigo nivel usuario solo mira
+        string cliente = "";    // razon social para los reportes
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -67,6 +68,10 @@ namespace iOMG
         }
         private void repspedidos_Load(object sender, EventArgs e)
         {
+            main fma = new main();
+            TextBox rasoc = fma.tx_empresa;
+            cliente = rasoc.ToString();                      // razon social
+            fma.Close();
             ToolTip toolTipNombre = new ToolTip();           // Create the ToolTip and associate with the Form container.
             // Set up the delays for the ToolTip.
             toolTipNombre.AutoPopDelay = 5000;
@@ -1226,15 +1231,13 @@ namespace iOMG
             tabControl1.SelectedTab = tabuser;
             escribe(this);
             Tx_modo.Text = "EDITAR";
-            //button1.Image = Image.FromFile(img_grab);
-            //textBox1.Focus();
+            button1.Image = Image.FromFile(img_grab);
             limpiar(this);
             limpiapag(tabuser);
             limpia_otros(tabuser);
             limpia_combos(tabuser);
-            //chk_res.Enabled = true;
-            //textBox1.Text = codu;
-            //tx_idr.Text = idr;
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_tiped.Text = tipede;
             jalaoc("tx_idr");
         }
         private void Bt_close_Click(object sender, EventArgs e)
@@ -1243,15 +1246,16 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
-            sololee(this);
+            //sololee(this);
             Tx_modo.Text = "IMPRIMIR";
             //button1.Image = Image.FromFile("print48");
             //chk_res.Enabled = false;
             //textBox1.Focus();
             //limpiar(this);
             //totfilgrid = dataGridView1.Rows.Count - 1;
-            //printPreviewDialog1.Document = printDocument1;
-            //printPreviewDialog1.ShowDialog();
+            printDocument1.DefaultPageSettings.Landscape = true;
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.ShowDialog();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1448,10 +1452,11 @@ namespace iOMG
             tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
             armani();
         }
-        private void cmb_det3_SelectedIndexChanged(object sender, EventArgs e)          // detalle3
+        private void cmb_det3_SelectionChangeCommitted(object sender, EventArgs e)
         {
             armani();
         }
+
         #endregion comboboxes
 
         #region advancedatagridview
@@ -1482,6 +1487,7 @@ namespace iOMG
                 limpia_combos(tabuser);
                 tx_idr.Text = idr;
                 tx_rind.Text = rind;
+                tx_dat_tiped.Text = tipede;
                 jalaoc("tx_idr");
             }
         }
@@ -1613,9 +1619,10 @@ namespace iOMG
                 cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
                 cmb_det2.Tag = de2;
                 cmb_det2.SelectedIndex = cmb_det2.FindString(cmb_det2.Tag.ToString());
-                //cmb_det2.SelectionChangeCommitted(null, null);
+                cmb_det2_SelectionChangeCommitted(null, null);
                 cmb_det3.Tag = de3;
                 cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
+                cmb_det3_SelectionChangeCommitted(null, null);
             }
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -1634,5 +1641,172 @@ namespace iOMG
         }
         #endregion
 
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
+            float pix = 50.0F;      // punto inicial X
+            float piy = 30.0F;      // punto inicial Y
+            float alfi = 13.0F;     // alto de cada fila
+            float alin = 45.0F;     // alto inicial
+            float posi = 80.0F;     // posición de impresión
+            float coli = 30.0F;     // columna mas a la izquierda
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+            imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
+        }
+        private void imprime(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            // columnas del reporte
+            float col0 = coli;              // ID
+            float col1 = coli + 40.0F;      // SerGR
+            float col2 = coli + 90.0F;      // CorGR
+            float col3 = coli + 170.0F;     // MOn
+            float col4 = coli + 200.0F;     // valor
+            float col5 = coli + 290.0F;     // fec GR
+            float col6 = coli + 380.0F;     // SerMan
+            float col7 = coli + 420.0F;     // CorMan
+            float col8 = coli + 500.0F;     // placa
+            float col9 = coli + 570.0F;     // origen
+            float col10 = coli + 650.0F;    // destino
+            //
+            float posit = impcab2(piy, coli, alin, posi, alfi, e,
+                col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10);
+            posi = posit;
+            Font lt_tit = new Font("Arial", 9);
+            PointF ptoimp;
+            Pen blackPen = new Pen(Color.Black, 2);
+            // leemos las columnas del data table
+            for (int fila = cuenta; fila < dataGridView1.Rows.Count - 1; fila++)
+            {
+                string data0 = (fila + 1).ToString("##");    // IT
+                string data1 = dataGridView1.Rows[fila].Cells[0].Value.ToString();    // serGR
+                string data2 = dataGridView1.Rows[fila].Cells[1].Value.ToString();    // corgR
+                string data3 = dataGridView1.Rows[fila].Cells[2].Value.ToString();    // moneda
+                string data4 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // valor
+                string data5 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // fecha gr
+                string data6 = dataGridView1.Rows[fila].Cells[5].Value.ToString();    // serman
+                string data7 = dataGridView1.Rows[fila].Cells[6].Value.ToString();    // corman
+                string data8 = dataGridView1.Rows[fila].Cells[9].Value.ToString();    // placa 
+                string data9 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // origen
+                string data10 = dataGridView1.Rows[fila].Cells[8].Value.ToString();   // destino
+                //
+                ptoimp = new PointF(col0, posi);
+                e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col1, posi);
+                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col2, posi);
+                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col3, posi);
+                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col4, posi);
+                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col5, posi);
+                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col6, posi);
+                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col7, posi);
+                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col8, posi);
+                e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col9, posi);
+                e.Graphics.DrawString(data9, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col10, posi);
+                e.Graphics.DrawString(data10, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                //
+                posi = posi + alfi;             // avance de fila
+                cuenta = cuenta + 1;
+                if (posi >= e.PageBounds.Height - 20.0F)
+                {
+                    e.HasMorePages = true;
+                    return;
+                }
+                else
+                {
+                    e.HasMorePages = false;
+                }
+            }
+            //posi = posi + alfi;             // avance de fila
+            e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
+            posi = posi + alfi;             // avance de fila
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
+            cuenta = 0;
+        }
+        private float impcab2(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8, float col9, float col10)
+        {
+            float colm = coli + 280.0F;                                 // columna media
+            float cold = coli + 530.0F;                                 // columna derecha
+            Font lt_cliente = new Font("Arial", 11);
+            PointF ptocli = new PointF(coli, piy);
+            e.Graphics.DrawString(cliente, lt_cliente, Brushes.Black, ptocli, StringFormat.GenericTypographic);
+            // pintamos contador de pág.
+            Font lt_pag = new Font("Arial", 9);
+            PointF ptopag = new PointF(730.0F, piy);
+            string pag = "Pág. " + pageCount.ToString();
+            e.Graphics.DrawString(pag, lt_pag, Brushes.Black, ptopag, StringFormat.GenericTypographic);
+            // pintamos la direccion del local
+            PointF ptodir = new PointF(coli, piy + 15.0F);
+            //string dircli = lnp.dirloca(tx_dat_lori.Text);
+            //e.Graphics.DrawString(dircli, lt_pag, Brushes.Black, ptodir, StringFormat.GenericTypographic);
+            // pintamos la fecha
+            Font lt_fec = new Font("Arial", 10);
+            PointF ptofec = new PointF(730.0F, piy + 15.0F);
+            string fecha = DateTime.Today.ToShortDateString();
+            e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
+            // pintamos la hora
+            Font lt_hor = new Font("Arial", 10);
+            PointF ptohor = new PointF(730.0F, piy + 30.0F);
+            string hora = DateTime.Now.ToShortTimeString();
+            e.Graphics.DrawString(hora, lt_hor, Brushes.Black, ptohor, StringFormat.GenericTypographic);
+            // titulo del reporte
+            Font lt_tit = new Font("Arial", 11);                            // tipo de letra del titulo
+            PointF puntoF = new PointF(coli, alin);
+            float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
+            puntoF = new PointF((ancho_pag - (this.Text.Trim().Length) * 8.0F) / 2, posi);
+            e.Graphics.DrawString(this.Text, lt_tit, Brushes.Black, puntoF, StringFormat.GenericTypographic); // titulo del reporte
+            posi = posi + alfi + 5.0F;
+            //puntoF = new PointF((ancho_pag - ((this.tabPage2.Text.Trim() + " - Ruc: " + tx_ruc3.Text).Length) * 8.0F) / 2, posi);
+            //e.Graphics.DrawString(this.tabPage2.Text.Trim() + " - Ruc: " + tx_ruc3.Text, lt_tit, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+            //
+            lt_tit = new Font("Arial", 8);
+            posi = posi + alfi + alfi + alfi;                                         // avance de fila
+            colm = coli + 280.0F;
+            cold = colm + 280.0F;
+            PointF ptoimp = new PointF(coli, posi);
+            //
+            posi = posi + alfi + alfi / 2;                                         // avance de fila
+            Pen blackPen = new Pen(Color.Black, 2);                              // color y grosor de la línea separadora
+            e.Graphics.DrawLine(blackPen, coli - 1, posi, cold + 160.0F, posi);
+            posi = posi + alfi;                                         // avance de fila
+            // titulo de las columnas
+            ptoimp = new PointF(col0, posi);
+            e.Graphics.DrawString("IT", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col1, posi);
+            e.Graphics.DrawString("SerGR", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawString("CorGR", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col3, posi);
+            e.Graphics.DrawString("", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col4, posi);
+            e.Graphics.DrawString("Valor", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col5, posi);
+            e.Graphics.DrawString("Fecha", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col6, posi);
+            e.Graphics.DrawString("SerM", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col7, posi);
+            e.Graphics.DrawString("CorM", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col8, posi);
+            e.Graphics.DrawString("Placa", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col9, posi);
+            e.Graphics.DrawString("Origen", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col10, posi);
+            e.Graphics.DrawString("Destino", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            posi = posi + alfi + 7.0F;             // avance de fila
+            blackPen = new Pen(Color.Black, 1); // color y grosor de la línea
+            e.Graphics.DrawLine(blackPen, coli - 1, posi, cold + 160.0F, posi);
+            posi = posi + 2;             // avance de fila
+            //
+            return posi;
+        }
     }
 }

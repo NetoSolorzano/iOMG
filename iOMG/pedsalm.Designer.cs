@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pedsalm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
@@ -120,6 +121,8 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -290,7 +293,7 @@
             this.cmb_det3.Name = "cmb_det3";
             this.cmb_det3.Size = new System.Drawing.Size(43, 21);
             this.cmb_det3.TabIndex = 8;
-            this.cmb_det3.SelectionChangeCommitted += new System.EventHandler(this.cmb_det3_SelectedIndexChanged);
+            this.cmb_det3.SelectionChangeCommitted += new System.EventHandler(this.cmb_det3_SelectionChangeCommitted);
             // 
             // cmb_det2
             // 
@@ -1112,6 +1115,20 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // printDocument1
+            // 
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            // 
             // Pedsalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1120,7 +1137,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tabControl1);
             this.Name = "Pedsalm";
-            this.Text = "repspedidos";
+            this.Text = "Pedidos de Almacén";
             this.Load += new System.EventHandler(this.repspedidos_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabgrilla.ResumeLayout(false);
@@ -1238,5 +1255,7 @@
         private System.Windows.Forms.ToolStripButton bt_exc;
         private System.Windows.Forms.DateTimePicker dtp_pedido;
         private System.Windows.Forms.DateTimePicker dtp_entreg;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
     }
 }

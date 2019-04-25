@@ -41,6 +41,7 @@
             this.tx_user = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pn_pver = new System.Windows.Forms.Panel();
+            this.bt_pedidos = new System.Windows.Forms.Button();
             this.bt_maestras = new System.Windows.Forms.Button();
             this.bt_almacen = new System.Windows.Forms.Button();
             this.bt_pcontrol = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@
             this.bt_salir = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.pn_centro = new System.Windows.Forms.Panel();
-            this.bt_pedidos = new System.Windows.Forms.Button();
             this.pn_phor.SuspendLayout();
             this.pn_menu.SuspendLayout();
             this.pn_user.SuspendLayout();
@@ -185,6 +185,22 @@
             this.pn_pver.Size = new System.Drawing.Size(189, 447);
             this.pn_pver.TabIndex = 1;
             // 
+            // bt_pedidos
+            // 
+            this.bt_pedidos.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.bt_pedidos.FlatAppearance.BorderSize = 0;
+            this.bt_pedidos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bt_pedidos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bt_pedidos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.bt_pedidos.Location = new System.Drawing.Point(2, 226);
+            this.bt_pedidos.Name = "bt_pedidos";
+            this.bt_pedidos.Size = new System.Drawing.Size(185, 50);
+            this.bt_pedidos.TabIndex = 8;
+            this.bt_pedidos.Text = "Pedidos Fab.";
+            this.bt_pedidos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.bt_pedidos.UseVisualStyleBackColor = true;
+            this.bt_pedidos.Click += new System.EventHandler(this.bt_pedidos_Click);
+            // 
             // bt_maestras
             // 
             this.bt_maestras.FlatAppearance.BorderColor = System.Drawing.Color.White;
@@ -302,22 +318,6 @@
             this.pn_centro.Size = new System.Drawing.Size(736, 393);
             this.pn_centro.TabIndex = 2;
             // 
-            // bt_pedidos
-            // 
-            this.bt_pedidos.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.bt_pedidos.FlatAppearance.BorderSize = 0;
-            this.bt_pedidos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bt_pedidos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bt_pedidos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bt_pedidos.Location = new System.Drawing.Point(2, 226);
-            this.bt_pedidos.Name = "bt_pedidos";
-            this.bt_pedidos.Size = new System.Drawing.Size(185, 50);
-            this.bt_pedidos.TabIndex = 8;
-            this.bt_pedidos.Text = "Pedidos Fab.";
-            this.bt_pedidos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.bt_pedidos.UseVisualStyleBackColor = true;
-            this.bt_pedidos.Click += new System.EventHandler(this.bt_pedidos_Click);
-            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -355,7 +355,6 @@
         private System.Windows.Forms.Panel pn_user;
         private System.Windows.Forms.TextBox tx_user;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tx_empresa;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tx_nuser;
         private System.Windows.Forms.Button bt_pcontrol;
@@ -365,5 +364,6 @@
         private System.Windows.Forms.Button bt_maestras;
         private System.Windows.Forms.Button bt_almacen;
         private System.Windows.Forms.Button bt_pedidos;
+        public System.Windows.Forms.TextBox tx_empresa;
     }
 }

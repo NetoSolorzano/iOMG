@@ -441,7 +441,7 @@ namespace iOMG
         }
         private void pe_registro_Click(object sender, EventArgs e)
         {
-            pedidos fpe = new pedidos();
+            Pedsalm fpe = new Pedsalm();
             fpe.TopLevel = false;
             fpe.Parent = this;
             pn_centro.Controls.Add(fpe);
@@ -452,14 +452,7 @@ namespace iOMG
         }
         private void pe_reportes_Click(object sender, EventArgs e)
         {
-            Pedsalm frp = new Pedsalm();
-            frp.TopLevel = false;
-            frp.Parent = this;
-            pn_centro.Controls.Add(frp);
-            frp.Location = new Point((pn_centro.Width - frp.Width) / 2, (pn_centro.Height - frp.Height) / 2);
-            frp.Anchor = AnchorStyles.None;
-            frp.Show();
-            frp.BringToFront();
+            // reportes de pedidos de almacen
         }
         //
         private void bt_pcontrol_Click(object sender, EventArgs e)
