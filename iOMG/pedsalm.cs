@@ -137,7 +137,7 @@ namespace iOMG
             advancedDataGridView1.Columns[2].Visible = true;
             advancedDataGridView1.Columns[2].HeaderText = "Sit.Ped";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 70;                // ancho
-            advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
+            advancedDataGridView1.Columns[2].ReadOnly = false;           // lectura o no
             advancedDataGridView1.Columns[2].Tag = "validaSI";
             advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Origen - taller
@@ -1029,7 +1029,20 @@ namespace iOMG
                 {
                     if(edita() == true)
                     {
-
+                        // actualizamos el datatable
+                        for (int i = 0; i < dtg.Rows.Count; i++)
+                        {
+                            DataRow row = dtg.Rows[i];
+                            if (row[0].ToString() == tx_idr.Text)
+                            {
+                                //id,codped,tipoes,origen,destino,fecha,entrega,coment
+                                dtg.Rows[i][3] = tx_dat_orig.Text;
+                                dtg.Rows[i][4] = tx_dat_dest.Text;
+                                dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][7] = tx_coment.Text;
+                            }
+                        }
                     }
                 }
                 else
@@ -1232,6 +1245,8 @@ namespace iOMG
             limpiapag(tabuser);
             limpia_otros(tabuser);
             limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
             jalaoc("tx_idr");
@@ -1662,7 +1677,7 @@ namespace iOMG
             float col1 = coli + 40.0F;      // Cant
             float col2 = coli + 90.0F;      // Codigo
             float col3 = coli + 260.0F;     // Nombre del articulo
-            float col4 = coli + 550.0F;     // Comentario
+            float col4 = coli + 515.0F;     // Comentario
             float col5 = coli + 800.0F;     // Detalle2
             float col6 = coli + 850.0F;     // Madera
             float col7 = coli + 900.0F;     // Medidas
@@ -1671,9 +1686,13 @@ namespace iOMG
             float posit = impcab2(piy, coli, alin, posi, alfi, e,
                 col0, col1, col2, col3, col4, col5, col6, col7, col8);
             posi = posit;
-            Font lt_tit = new Font("Arial", 9);
+            SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
+            Font lt_tit = new Font("Arial", 8);
             PointF ptoimp;
             Pen blackPen = new Pen(Color.Black, 2);
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.FormatFlags = StringFormatFlags.NoWrap;
             // leemos las columnas del data table
             for (int fila = cuenta; fila < dataGridView1.Rows.Count - 1; fila++)
             {
@@ -1695,9 +1714,11 @@ namespace iOMG
                 ptoimp = new PointF(col2, posi);
                 e.Graphics.DrawString(data2, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col3, posi);
-                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                RectangleF recn = new RectangleF(ptoimp,espnom);
+                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, recn, sf);
                 ptoimp = new PointF(col4, posi);
-                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                RectangleF recco = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, ptoimp, sf);
                 ptoimp = new PointF(col5, posi);
                 e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col6, posi);
@@ -1709,7 +1730,7 @@ namespace iOMG
                 //
                 posi = posi + alfi + 5;             // avance de fila
                 e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
-                posi = posi + alfi + 5;             // avance de fila
+                posi = posi + alfi - 5;             // avance de fila
                 cuenta = cuenta + 1;
                 if (posi >= e.PageBounds.Height - 20.0F)
                 {
@@ -1722,11 +1743,12 @@ namespace iOMG
                     e.HasMorePages = false;
                 }
             }
-            //posi = posi + alfi;             // avance de fila
-            //e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
-            //posi = posi + alfi;             // avance de fila
-            //ptoimp = new PointF(col2, posi);
-            //e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
+            posi = posi + alfi * 2;             // avance de fila
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawString("OBSERVACIONES", lt_tit, Brushes.Black, ptoimp);
+            posi = posi + alfi;             // avance de fila
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawString(tx_coment.Text, lt_tit, Brushes.Black, ptoimp);
             cuenta = 0;
         }
         private float impcab2(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
@@ -1782,7 +1804,7 @@ namespace iOMG
             e.Graphics.DrawString(dtp_entreg.Value.ToShortDateString(), lt_tit, Brushes.Black, recent, sf);
             posi = posi + alfi * 6;
             // pintamos el recuadro de la familia productora        
-            SizeF reclargo = new SizeF(ancho_pag, piy);
+            SizeF reclargo = new SizeF(ancho_pag - 50.0F, piy);
             ptodir = new PointF(coli, posi);
             RectangleF recfam = new RectangleF(ptodir,reclargo);
             e.Graphics.DrawRectangle(delgado, Rectangle.Round(recfam));
@@ -1806,15 +1828,15 @@ namespace iOMG
             ptoimp = new PointF(col4, posi);
             e.Graphics.DrawString("Comentario", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col5, posi);
-            e.Graphics.DrawString("Deta 2", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Deta2", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col6, posi);
-            e.Graphics.DrawString("Madera", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Mad.", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col7, posi);
             e.Graphics.DrawString("Medidas", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col8, posi);
             e.Graphics.DrawString("Acabado", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             posi = posi + alfi + 7.0F;             // avance de fila
-            e.Graphics.DrawLine(delgado, coli, posi, ancho_pag, posi);
+            e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
             posi = posi + 2;             // avance de fila
             //
             return posi;
