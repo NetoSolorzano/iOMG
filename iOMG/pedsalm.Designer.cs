@@ -1013,6 +1013,7 @@
             this.bt_exc.Size = new System.Drawing.Size(32, 32);
             this.bt_exc.Text = "Bt_close";
             this.bt_exc.ToolTipText = "Exportar";
+            this.bt_exc.Click += new System.EventHandler(this.bt_exc_Click);
             // 
             // toolStripSeparator4
             // 

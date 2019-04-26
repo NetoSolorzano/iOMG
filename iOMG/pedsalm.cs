@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using ClosedXML.Excel;
 
 namespace iOMG
 {
@@ -1289,6 +1290,21 @@ namespace iOMG
             //tx_idr.Text = idr;
             jalaoc("tx_idr");
         }
+        private void bt_exc_Click(object sender, EventArgs e)
+        {
+            string nombre = "";
+            nombre = "Pedidos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+            var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (aa == DialogResult.Yes)
+            {
+                var wb = new XLWorkbook();
+                wb.Worksheets.Add(dtg, "Articulos");
+                wb.SaveAs(nombre);
+                MessageBox.Show("Archivo generado con exito!");
+                this.Close();
+            }
+        }
         private void Bt_first_Click(object sender, EventArgs e)
         {
             limpiar(this);
@@ -1657,7 +1673,6 @@ namespace iOMG
             Bt_print.Enabled = true;
             bt_exc.Enabled = false;
         }
-
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //

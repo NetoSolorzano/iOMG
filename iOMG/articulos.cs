@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using ClosedXML.Excel;
 
 namespace iOMG
 {
@@ -75,7 +76,7 @@ namespace iOMG
             dataload("maestra");
             dataload("todos");
             grilla();
-            grilla2();
+            //grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
@@ -218,9 +219,11 @@ namespace iOMG
         {
             dataGridView2.AllowUserToResizeColumns = false;
             dataGridView2.AllowUserToAddRows = false;
-            dataGridView2.ColumnCount = (advancedDataGridView1.Rows.Count > 0) ? advancedDataGridView1.Rows[0].Cells.Count : advancedDataGridView1.ColumnCount;
+            //dataGridView2.ColumnCount = (advancedDataGridView1.Rows.Count > 0) ? advancedDataGridView1.Rows[0].Cells.Count : advancedDataGridView1.ColumnCount;
+            dataGridView2.ColumnCount = 14;
             dataGridView2.ColumnHeadersVisible = false;
             dataGridView2.Rows.Add();
+            /*
             for (int i = 0; i < ((advancedDataGridView1.Rows.Count > 0) ? advancedDataGridView1.Rows[0].Cells.Count : advancedDataGridView1.Columns.Count); i++)
             {
                 dataGridView2.Columns[i].Width = advancedDataGridView1.Columns[i].Width;
@@ -232,6 +235,7 @@ namespace iOMG
                 }
             }
             dataGridView2.Columns["id"].ReadOnly = true;
+            */
         }
         private void jalainfo()                             // obtiene datos de imagenes
         {
@@ -975,13 +979,12 @@ namespace iOMG
         private void Bt_edit_Click(object sender, EventArgs e)
         {
             advancedDataGridView1.Enabled = true;
-            //string codu = "";
-            string idr = "";
-            if (advancedDataGridView1.CurrentRow.Index > -1)
-            {
-                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-                tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
-            }
+            //string idr = "";
+            //if (advancedDataGridView1.CurrentRow.Index > -1)
+            //{
+            //    idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
+            //    tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
+            //}
             tabControl1.SelectedTab = tabgrilla;
             escribe(this);
             Tx_modo.Text = "EDITAR";
@@ -989,7 +992,7 @@ namespace iOMG
             limpiar(this);
             limpia_otros();
             limpia_combos();
-            jalaoc("tx_idr");
+            //jalaoc("tx_idr");
         }
         private void Bt_close_Click(object sender, EventArgs e)
         {
@@ -1024,7 +1027,19 @@ namespace iOMG
         }
         private void bt_exc_Click(object sender, EventArgs e)           // exporta a excel
         {
-            // me quede aca!
+            string nombre = "";
+            //nombre = "Maestra_articulos_" + DateTime.Now.ToShortDateString().ToString("yyyy-MM-dd") + ".xlsx";
+            nombre = "Maestra_articulos_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+            var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (aa == DialogResult.Yes)
+            {
+                var wb = new XLWorkbook();
+                wb.Worksheets.Add(dtg, "Articulos");
+                wb.SaveAs(nombre);
+                MessageBox.Show("Archivo generado con exito!");
+                this.Close();
+            }
         }
         private void Bt_first_Click(object sender, EventArgs e)
         {
@@ -1162,10 +1177,6 @@ namespace iOMG
         #endregion
 
         #region advancedatagridview
-        private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
-        {
-            dtg.DefaultView.RowFilter = advancedDataGridView1.FilterString;
-        }
         private void advancedDataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)            // almacena valor previo al ingresar a la celda
         {
             advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
@@ -1333,14 +1344,22 @@ namespace iOMG
         {
             if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
             {
-                dataGridView2.HorizontalScrollingOffset = e.NewValue;
+                //dataGridView2.HorizontalScrollingOffset = e.NewValue;
             }
+        }
+        private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)
+        {
+            dtg.DefaultView.Sort = advancedDataGridView1.SortString;
+        }
+        private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)
+        {
+            dtg.DefaultView.RowFilter = advancedDataGridView1.FilterString;
         }
         private void advancedDataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
             if (dataGridView2.ColumnCount > 1 && advancedDataGridView1.Rows.Count > 1)
             {
-                dataGridView2.Columns[e.Column.Index].Width = e.Column.Width;
+                //dataGridView2.Columns[e.Column.Index].Width = e.Column.Width;
             }
         }
         #endregion
