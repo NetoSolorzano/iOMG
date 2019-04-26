@@ -344,6 +344,17 @@ namespace iOMG
                 }
             }
         }
+        public void limpiatab(TabPage tab)
+        {
+            tabControl1.SelectedTab = tab;
+            foreach (Control oControls in tab.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
+        }
         public void limpia_chk()    
         {
             checkBox1.Checked = false;
@@ -386,6 +397,18 @@ namespace iOMG
             string verapp = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
             if (modo == "NUEVO")
             {
+                // valida que no este repitiendo el idcodice
+                for (int i = 0; i < dtg.Rows.Count; i++)
+                {
+                    DataRow row = dtg.Rows[i];
+                    if (row[1].ToString() == textBox4.Text && row[2].ToString() == textBox1.Text)
+                    {
+                        //id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero
+                        MessageBox.Show("Esta repitiendo el código", "Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        textBox1.Focus();
+                        return;
+                    }
+                }
                 string consulta = "insert into descrittive (" +
                     "idtabella,idcodice,codigo,descrizione,descrizionerid,numero)" +
                     " values (" +
@@ -418,6 +441,18 @@ namespace iOMG
                         iserror = "si";
                     }
                     conn.Close();
+                    // insertamos en el datatable
+                    DataRow dr = dtg.NewRow();
+                    // id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero
+                    string cid = "0";
+                    dr[0] = cid;
+                    dr[1] = textBox4.Text;
+                    dr[2] = textBox1.Text;
+                    dr[3] = textBox2.Text;
+                    dr[4] = textBox3.Text;
+                    dr[5] = textBox5.Text;
+                    dr[6] = (checkBox1.Checked == true) ? "1" : "0";
+                    dtg.Rows.Add(dr);
                 }
                 else
                 {
@@ -439,9 +474,8 @@ namespace iOMG
                     mycom.Parameters.AddWithValue("@cod", textBox2.Text);
                     mycom.Parameters.AddWithValue("@des", textBox3.Text);
                     mycom.Parameters.AddWithValue("@der", textBox5.Text);
-                    mycom.Parameters.AddWithValue("@ruc", textBox4.Text);
                     mycom.Parameters.AddWithValue("@num", (checkBox1.Checked == true) ? "1" : "0");
-                    mycom.Parameters.AddWithValue("@usuario", textBox1.Text);
+                    mycom.Parameters.AddWithValue("@idc", tx_idr.Text);
                     try
                     {
                         mycom.ExecuteNonQuery();
@@ -460,6 +494,19 @@ namespace iOMG
                     }
                     conn.Close();
                     //permisos();
+                    // actualizamos el datatable
+                    for (int i = 0; i < dtg.Rows.Count; i++)
+                    {
+                        DataRow row = dtg.Rows[i];
+                        if (row[0].ToString() == tx_idr.Text)
+                        {
+                            //id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero
+                            dtg.Rows[i][3] = textBox2.Text;
+                            dtg.Rows[i][4] = textBox3.Text;
+                            dtg.Rows[i][5] = textBox5.Text;
+                            dtg.Rows[i][6] = (checkBox1.Checked == true) ? "1" : "0";
+                        }
+                    }
                 }
                 else
                 {
@@ -476,8 +523,9 @@ namespace iOMG
             {
                 // debe limpiar los campos y actualizar la grilla
                 limpiar(this);
+                limpiatab(tabreg);
                 limpia_otros();
-                this.textBox1.Focus();
+                textBox1.Focus();
                 //dataload();
             }
         }
@@ -740,6 +788,7 @@ namespace iOMG
                 limpia_otros();
                 limpia_combos();
                 jalaoc("tx_idr");
+                tx_idr.Text = idr;
             }
         }
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda

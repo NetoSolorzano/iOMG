@@ -433,7 +433,7 @@
             // 
             // tx_rind
             // 
-            this.tx_rind.Location = new System.Drawing.Point(372, 37);
+            this.tx_rind.Location = new System.Drawing.Point(8, 44);
             this.tx_rind.Name = "tx_rind";
             this.tx_rind.Size = new System.Drawing.Size(36, 20);
             this.tx_rind.TabIndex = 188;
@@ -455,7 +455,7 @@
             // 
             // tx_idr
             // 
-            this.tx_idr.Location = new System.Drawing.Point(330, 37);
+            this.tx_idr.Location = new System.Drawing.Point(8, 13);
             this.tx_idr.Name = "tx_idr";
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
             this.tx_idr.TabIndex = 185;
