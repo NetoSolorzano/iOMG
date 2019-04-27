@@ -148,6 +148,12 @@
     <Compile Include="pedsalm.Designer.cs">
       <DependentUpon>pedsalm.cs</DependentUpon>
     </Compile>
+    <Compile Include="repspedalm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="repspedalm.designer.cs">
+      <DependentUpon>repspedalm.cs</DependentUpon>
+    </Compile>
     <Compile Include="sernum.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="pedsalm.resx">
       <DependentUpon>pedsalm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="repspedalm.resx">
+      <DependentUpon>repspedalm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="sernum.resx">
       <DependentUpon>sernum.cs</DependentUpon>

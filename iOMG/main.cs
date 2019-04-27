@@ -453,6 +453,14 @@ namespace iOMG
         private void pe_reportes_Click(object sender, EventArgs e)
         {
             // reportes de pedidos de almacen
+            repspedalm frp = new repspedalm();
+            frp.TopLevel = false;
+            frp.Parent = this;
+            pn_centro.Controls.Add(frp);
+            frp.Location = new Point((pn_centro.Width - frp.Width) / 2, (pn_centro.Height - frp.Height) / 2);
+            frp.Anchor = AnchorStyles.None;
+            frp.Show();
+            frp.BringToFront();
         }
         //
         private void bt_pcontrol_Click(object sender, EventArgs e)

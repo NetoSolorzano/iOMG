@@ -115,6 +115,7 @@
             this.Bt_add.Size = new System.Drawing.Size(32, 32);
             this.Bt_add.Text = "Bt_add";
             this.Bt_add.ToolTipText = "Nuevo Cliente";
+            this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
             // 
             // toolStripSeparator6
             // 
@@ -141,6 +142,7 @@
             this.Bt_close.Name = "Bt_close";
             this.Bt_close.Size = new System.Drawing.Size(32, 32);
             this.Bt_close.ToolTipText = "Salir del formulario";
+            this.Bt_close.Click += new System.EventHandler(this.Bt_close_Click);
             // 
             // toolStripSeparator7
             // 
@@ -158,6 +160,7 @@
             this.Bt_edit.Name = "Bt_edit";
             this.Bt_edit.Size = new System.Drawing.Size(32, 32);
             this.Bt_edit.ToolTipText = "Editar";
+            this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
             // 
             // toolStripSeparator1
             // 
@@ -175,6 +178,7 @@
             this.Bt_print.Name = "Bt_print";
             this.Bt_print.Size = new System.Drawing.Size(32, 32);
             this.Bt_print.ToolTipText = "Imprimir";
+            this.Bt_print.Click += new System.EventHandler(this.Bt_print_Click);
             // 
             // toolStripSeparator13
             // 
@@ -193,6 +197,7 @@
             this.Bt_anul.Size = new System.Drawing.Size(32, 32);
             this.Bt_anul.Text = "Bt_close";
             this.Bt_anul.ToolTipText = "Anular";
+            this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
             // 
             // toolStripSeparator8
             // 
@@ -211,6 +216,7 @@
             this.bt_exc.Size = new System.Drawing.Size(32, 32);
             this.bt_exc.Text = "Bt_close";
             this.bt_exc.ToolTipText = "Exportar";
+            this.bt_exc.Click += new System.EventHandler(this.bt_exc_Click);
             // 
             // toolStripSeparator4
             // 
@@ -309,7 +315,6 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Left;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(81, 26);
@@ -321,20 +326,20 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(23, 4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(593, 278);
+            this.tabPage1.Size = new System.Drawing.Size(612, 260);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Pedidos";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(23, 4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(593, 278);
+            this.tabPage2.Size = new System.Drawing.Size(612, 260);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
