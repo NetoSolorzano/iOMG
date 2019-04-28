@@ -319,7 +319,22 @@ namespace iOMG
                 tx_dat_estad.Text = "";
             }
         }
-
+        private void cmb_taller_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_taller.SelectedIndex = -1;
+                tx_dat_orig.Text = "";
+            }
+        }
+        private void cmb_destino_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_destino.SelectedIndex = -1;
+                tx_dat_dest.Text = "";
+            }
+        }
         #endregion
 
         #region botones de comando
@@ -436,17 +451,25 @@ namespace iOMG
         {
             // id,codped,tipoes,origen,destino,fecha,entrega,coment
             string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
-            string parte0 = "";
+            string parte0 = "", parte1 = "", parte2 = "";
             if(tx_dat_orig.Text != "")          // taller
             {
-                parte0 = " and  a.origen=@tal";
+                parte0 = " and a.origen=@tal";
+            }
+            if(tx_dat_dest.Text != "")
+            {
+                parte1 = " and a.destino=@des";
+            }
+            if (tx_dat_estad.Text != "")
+            {
+                parte2 = " and a.status=@sta";
             }
             string consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
                 "d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen " +
                 "from pedidos a left join detaped d on d.pedidoh=a.codped " +
                 "left join desc_stp b on b.idcodice=a.status " +
                 "left join desc_loc c on c.idcodice=a.origen " +
-                parte + parte0; // d.coment, a.coment,
+                parte + parte0 + parte1 + parte2; // d.coment, a.coment,
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
