@@ -34,7 +34,7 @@ namespace iOMG
         string img_btq = "";
         string img_grab = "";
         string img_anul = "";
-        string img_imprime = "";        // imagen del boton imprimir reporte
+        string img_imprime = "", img_preview = "";        // imagen del boton preview e imprimir reporte
         int pageCount = 0, cuenta = 0;
         string cliente = Program.cliente;    // razon social para los reportes
         libreria lib = new libreria();
@@ -93,6 +93,7 @@ namespace iOMG
             bt_exc.Image = Image.FromFile(img_btexc);
             Bt_close.Image = Image.FromFile(img_btq);
             bt_imprime.Image = Image.FromFile(img_imprime);
+            bt_preview.Image = Image.FromFile(img_preview);
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -122,6 +123,7 @@ namespace iOMG
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
                         if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
+                        if (row["param"].ToString() == "img_preview") img_preview = row["valor"].ToString().Trim();  // imagen del boton VISTA PRELIMINAR
                     }
                     if (row["formulario"].ToString() == "pedidos")
                     {

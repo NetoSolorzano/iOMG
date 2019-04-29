@@ -86,7 +86,7 @@ namespace iOMG
             //grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
-            Bt_anul.Enabled = true;
+            Bt_anul.Enabled = false;            // LA ANULACION O CIERRE DE PEDIDO SE HACE CON "EDIT"
             //Bt_add_Click(null, null);
             //tabControl1.SelectedTab = tabgrilla;
             //advancedDataGridView1.Enabled = false;
@@ -209,6 +209,7 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                        //if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
                     }
                     if (row["formulario"].ToString() == "pedidos")
                     {
@@ -1025,7 +1026,7 @@ namespace iOMG
             }
             if (modo == "EDITAR")
             {
-                var aa = MessageBox.Show("Confirma que desea modificar el pedido?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var aa = MessageBox.Show("Confirma que desea MODIFICAR el pedido?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     if(edita() == true)
@@ -1037,6 +1038,7 @@ namespace iOMG
                             if (row[0].ToString() == tx_idr.Text)
                             {
                                 //id,codped,tipoes,origen,destino,fecha,entrega,coment
+                                dtg.Rows[i][2] = tx_dat_estad.Text;
                                 dtg.Rows[i][3] = tx_dat_orig.Text;
                                 dtg.Rows[i][4] = tx_dat_dest.Text;
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
@@ -1054,8 +1056,7 @@ namespace iOMG
             }
             if (modo == "ANULAR")       // opción para borrar
             {
-                // 
-
+                // en modo edicion se anula o cierra
             }
             if (iserror == "no")
             {
@@ -1063,6 +1064,11 @@ namespace iOMG
                 limpiar(this);
                 limpiapag(tabuser);
                 limpia_otros(tabuser);
+                limpia_combos(tabuser);
+                dtp_entreg.Value = DateTime.Now;
+                dtp_pedido.Value = DateTime.Now;
+                dataGridView1.DataSource = null;
+                dataGridView1.Rows.Clear();
                 cmb_tipo.Focus();
             }
         }
@@ -1258,11 +1264,14 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
-            Tx_modo.Text = "IMPRIMIR";
-            pageCount = 1;
-            printDocument1.DefaultPageSettings.Landscape = true;
-            printPreviewDialog1.Document = printDocument1;
-            printPreviewDialog1.ShowDialog();
+            if(tx_idr.Text != "" && tx_rind.Text != "")
+            {
+                Tx_modo.Text = "IMPRIMIR";
+                pageCount = 1;
+                printDocument1.DefaultPageSettings.Landscape = true;
+                printPreviewDialog1.Document = printDocument1;
+                printPreviewDialog1.ShowDialog();
+            }
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1597,6 +1606,10 @@ namespace iOMG
                     e.Cancel = true;
                 }
             }
+        }
+        private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            e.Cancel = true;
         }
         #endregion
 
