@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(repspedalm));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_add = new System.Windows.Forms.ToolStripButton();
@@ -55,6 +56,9 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPed = new System.Windows.Forms.TabPage();
+            this.bt_imprime = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.cmb_estado = new System.Windows.Forms.ComboBox();
@@ -76,9 +80,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabIng = new System.Windows.Forms.TabPage();
             this.tabSal = new System.Windows.Forms.TabPage();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.bt_preview = new System.Windows.Forms.Button();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
@@ -351,6 +360,9 @@
             // 
             // tabPed
             // 
+            this.tabPed.Controls.Add(this.bt_preview);
+            this.tabPed.Controls.Add(this.bt_imprime);
+            this.tabPed.Controls.Add(this.groupBox3);
             this.tabPed.Controls.Add(this.tx_dat_estad);
             this.tabPed.Controls.Add(this.label12);
             this.tabPed.Controls.Add(this.cmb_estado);
@@ -376,12 +388,42 @@
             this.tabPed.Text = "Pedidos";
             this.tabPed.UseVisualStyleBackColor = true;
             // 
+            // bt_imprime
+            // 
+            this.bt_imprime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_imprime.Location = new System.Drawing.Point(721, 3);
+            this.bt_imprime.Name = "bt_imprime";
+            this.bt_imprime.Size = new System.Drawing.Size(61, 44);
+            this.bt_imprime.TabIndex = 317;
+            this.bt_imprime.UseVisualStyleBackColor = true;
+            this.bt_imprime.Click += new System.EventHandler(this.bt_imprime_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox3.Location = new System.Drawing.Point(220, 24);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(110, 1);
+            this.groupBox3.TabIndex = 316;
+            this.groupBox3.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Location = new System.Drawing.Point(0, -26);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(164, 1);
+            this.groupBox4.TabIndex = 113;
+            this.groupBox4.TabStop = false;
+            // 
             // tx_dat_estad
             // 
-            this.tx_dat_estad.Location = new System.Drawing.Point(319, 25);
+            this.tx_dat_estad.Location = new System.Drawing.Point(316, 27);
             this.tx_dat_estad.Name = "tx_dat_estad";
             this.tx_dat_estad.Size = new System.Drawing.Size(29, 20);
             this.tx_dat_estad.TabIndex = 315;
+            this.tx_dat_estad.Visible = false;
             // 
             // label12
             // 
@@ -487,7 +529,7 @@
             // 
             this.dtp_entreg.Checked = false;
             this.dtp_entreg.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_entreg.Location = new System.Drawing.Point(443, 25);
+            this.dtp_entreg.Location = new System.Drawing.Point(443, 26);
             this.dtp_entreg.Name = "dtp_entreg";
             this.dtp_entreg.Size = new System.Drawing.Size(95, 20);
             this.dtp_entreg.TabIndex = 2;
@@ -546,7 +588,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(387, 30);
+            this.label7.Location = new System.Drawing.Point(387, 31);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 13);
             this.label7.TabIndex = 305;
@@ -580,6 +622,34 @@
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
             // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
+            // printDocument1
+            // 
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            // 
+            // bt_preview
+            // 
+            this.bt_preview.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_preview.Location = new System.Drawing.Point(654, 3);
+            this.bt_preview.Name = "bt_preview";
+            this.bt_preview.Size = new System.Drawing.Size(61, 44);
+            this.bt_preview.TabIndex = 318;
+            this.bt_preview.UseVisualStyleBackColor = true;
+            this.bt_preview.Click += new System.EventHandler(this.bt_preview_Click);
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            // 
             // repspedalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -597,6 +667,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPed.ResumeLayout(false);
             this.tabPed.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).EndInit();
@@ -654,5 +725,12 @@
         private System.Windows.Forms.TextBox tx_dat_estad;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox cmb_estado;
+        private System.Windows.Forms.Button bt_imprime;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.PrintDialog printDialog1;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.Button bt_preview;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
     }
 }

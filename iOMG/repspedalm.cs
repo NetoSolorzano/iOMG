@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
@@ -33,6 +34,9 @@ namespace iOMG
         string img_btq = "";
         string img_grab = "";
         string img_anul = "";
+        string img_imprime = "";        // imagen del boton imprimir reporte
+        int pageCount = 0, cuenta = 0;
+        string cliente = Program.cliente;    // razon social para los reportes
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -88,8 +92,9 @@ namespace iOMG
             Bt_anul.Image = Image.FromFile(img_btA);
             bt_exc.Image = Image.FromFile(img_btexc);
             Bt_close.Image = Image.FromFile(img_btq);
+            bt_imprime.Image = Image.FromFile(img_imprime);
         }
-        private void jalainfo()                 // obtiene datos de imagenes
+        private void jalainfo()                                     // obtiene datos de imagenes
         {
             try
             {
@@ -113,9 +118,10 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
                         if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
                         if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
-                        //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
+                        //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();        // imagen del boton de accion IMPRIMIR
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                        if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
                     }
                     if (row["formulario"].ToString() == "pedidos")
                     {
@@ -134,7 +140,7 @@ namespace iOMG
                 return;
             }
         }
-        public void dataload(string quien)                  // jala datos para los combos y la grilla
+        public void dataload(string quien)                          // jala datos para los combos y la grilla
         {
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -186,7 +192,7 @@ namespace iOMG
             //
             conn.Close();
         }
-        private void grilla()                   // arma la grilla
+        private void grilla()                                       // arma la grilla
         {
             // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
             //d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen
@@ -292,6 +298,66 @@ namespace iOMG
             // resto de campos
             dgv_pedidos.Columns[13].Visible = false;
             dgv_pedidos.Columns[14].Visible = false;
+        }
+        private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info
+        {
+            // id,codped,tipoes,origen,destino,fecha,entrega,coment
+            string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
+            string parte0 = "", parte1 = "", parte2 = "";
+            if (tx_dat_orig.Text != "")          // taller
+            {
+                parte0 = " and a.origen=@tal";
+            }
+            if (tx_dat_dest.Text != "")
+            {
+                parte1 = " and a.destino=@des";
+            }
+            if (tx_dat_estad.Text != "")
+            {
+                parte2 = " and a.status=@sta";
+            }
+            string consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
+                "d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen " +
+                "from pedidos a left join detaped d on d.pedidoh=a.codped " +
+                "left join desc_stp b on b.idcodice=a.status " +
+                "left join desc_loc c on c.idcodice=a.origen " +
+                parte + parte0 + parte1 + parte2; // d.coment, a.coment,
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    dgv_pedidos.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@tip", tipede);
+                    micon.Parameters.AddWithValue("@fec1", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fec2", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_orig.Text);
+                    if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_dest.Text);
+                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_estad.Text);
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_pedidos.DataSource = dt;
+                    dt.Dispose();
+                    da.Dispose();
+                    grilla();
+                }
+                else
+                {
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos");
+                Application.Exit();
+                return;
+            }
         }
 
         #region combos
@@ -447,64 +513,177 @@ namespace iOMG
          }
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info
+        private void bt_imprime_Click(object sender, EventArgs e)   // imprime el reporte
         {
-            // id,codped,tipoes,origen,destino,fecha,entrega,coment
-            string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
-            string parte0 = "", parte1 = "", parte2 = "";
-            if(tx_dat_orig.Text != "")          // taller
+            PrintDialog printDlg = new PrintDialog();
+            //PrintDocument printDoc = new PrintDocument();
+            //printDoc.DocumentName = "reportes_pedidos";
+
+            printDlg.Document = printDocument1; //printDoc;
+            printDlg.AllowSomePages = true;
+            printDlg.AllowSelection = true;
+            //
+            pageCount = 1;
+            printDocument1.DefaultPageSettings.Landscape = true;
+            //
+            if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
+        }
+
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
+            float pix = 50.0F;      // punto inicial X
+            float piy = 30.0F;      // punto inicial Y
+            float alfi = 13.0F;     // alto de cada fila
+            float alin = 45.0F;     // alto inicial
+            float posi = 80.0F;     // posición de impresión
+            float coli = 30.0F;     // columna mas a la izquierda
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+            imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
+        }
+
+        private void bt_preview_Click(object sender, EventArgs e)
+        {
+            pageCount = 1;
+            printDocument1.DefaultPageSettings.Landscape = true;
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.ShowDialog();
+        }
+
+        private void imprime(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            // columnas del reporte
+            float col0 = coli;              // Fecha
+            float col1 = coli + 40.0F;      // Llegada
+            float col2 = coli + 90.0F;      // Pedido
+            float col3 = coli + 260.0F;     // Estado
+            float col4 = coli + 515.0F;     // Articulo
+            float col5 = coli + 800.0F;     // Nombre
+            float col6 = coli + 850.0F;     // Madera
+            float col7 = coli + 900.0F;     // Detalle2
+            float col8 = coli + 1000.0F;     // Acabado
+            //
+            float posit = impcab2(piy, coli, alin, posi, alfi, e,
+                col0, col1, col2, col3, col4, col5, col6, col7, col8);
+            posi = posit;
+            SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
+            Font lt_tit = new Font("Arial", 8);
+            PointF ptoimp;
+            Pen blackPen = new Pen(Color.Black, 2);
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.FormatFlags = StringFormatFlags.NoWrap;
+            // leemos las columnas del data table
+            for (int fila = cuenta; fila < dgv_pedidos.Rows.Count - 1; fila++)
             {
-                parte0 = " and a.origen=@tal";
-            }
-            if(tx_dat_dest.Text != "")
-            {
-                parte1 = " and a.destino=@des";
-            }
-            if (tx_dat_estad.Text != "")
-            {
-                parte2 = " and a.status=@sta";
-            }
-            string consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-                "d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen " +
-                "from pedidos a left join detaped d on d.pedidoh=a.codped " +
-                "left join desc_stp b on b.idcodice=a.status " +
-                "left join desc_loc c on c.idcodice=a.origen " +
-                parte + parte0 + parte1 + parte2; // d.coment, a.coment,
-            try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if(conn.State == ConnectionState.Open)
+                // a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado
+                string data0 = (fila + 1).ToString("###");                          // Fecha
+                string data1 = dgv_pedidos.Rows[fila].Cells[1].Value.ToString();    // Llegada
+                string data2 = dgv_pedidos.Rows[fila].Cells[2].Value.ToString();    // Pedido
+                string data3 = dgv_pedidos.Rows[fila].Cells[3].Value.ToString();    // Estado
+                string data4 = dgv_pedidos.Rows[fila].Cells[8].Value.ToString();    // Articulo
+                string data5 = dgv_pedidos.Rows[fila].Cells[6].Value.ToString();    // Nombre
+                string data6 = dgv_pedidos.Rows[fila].Cells[5].Value.ToString();    // Madera
+                string data7 = dgv_pedidos.Rows[fila].Cells[4].Value.ToString();    // Detalle 2
+                string data8 = dgv_pedidos.Rows[fila].Cells[7].Value.ToString();    // acabado
+                //
+                ptoimp = new PointF(col0, posi);
+                e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col1, posi);
+                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col2, posi);
+                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col3, posi);
+                RectangleF recn = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, recn, sf);
+                ptoimp = new PointF(col4, posi);
+                RectangleF recco = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, ptoimp, sf);
+                ptoimp = new PointF(col5, posi);
+                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col6, posi);
+                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col7, posi);
+                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col8, posi);
+                e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                //
+                posi = posi + alfi + 5;             // avance de fila
+                e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
+                posi = posi + alfi - 5;             // avance de fila
+                cuenta = cuenta + 1;
+                if (posi >= e.PageBounds.Height - 20.0F)
                 {
-                    dgv_pedidos.DataSource = null;
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@tip", tipede);
-                    micon.Parameters.AddWithValue("@fec1", dtp_pedido.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@fec2", dtp_entreg.Value.ToString("yyyy-MM-dd"));
-                    if(parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_orig.Text);
-                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgv_pedidos.DataSource = dt;
-                    dt.Dispose();
-                    da.Dispose();
-                    grilla();
+                    pageCount = pageCount + 1;
+                    e.HasMorePages = true;
+                    return;
                 }
                 else
                 {
-                    conn.Close();
-                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    e.HasMorePages = false;
                 }
-                conn.Close();
             }
-            catch(MySqlException ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener datos");
-                Application.Exit();
-                return;
-            }
+            posi = posi + alfi * 2;             // avance de fila
+            cuenta = 0;
         }
-
+        private float impcab2(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8)
+        {
+            float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
+            float colm = coli + 280.0F;                                 // columna media
+            float cold = coli + 530.0F;                                 // columna derecha
+            Font lt_cliente = new Font("Arial", 15, FontStyle.Bold);
+            Font lt_pag = new Font("Arial", 9);
+            Font lt_fec = new Font("Arial", 9);
+            Font lt_tit = new Font("Arial", 11);                        // tipo de letra del titulo
+            Pen grueso = new Pen(Color.Black, 2);                       // linea gruesa
+            Pen delgado = new Pen(Color.Black, 1);                      // linea delgada
+            StringFormat sf = new StringFormat();                       // formato centrado
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+            // logo
+            e.Graphics.DrawImage(Image.FromFile("recursos/logo_artesanos_omg_peru.jpeg"), 30, 20, 200, 150);
+            //
+            SizeF anctit = new SizeF();
+            anctit = e.Graphics.MeasureString(cliente, lt_cliente);
+            PointF ptocli = new PointF((ancho_pag - anctit.Width) / 2, piy);
+            e.Graphics.DrawString(cliente, lt_cliente, Brushes.Black, ptocli, StringFormat.GenericTypographic);
+            // pintamos contador de pág.
+            PointF ptopag = new PointF(ancho_pag - 80.0F, piy);
+            string pag = "Pág. " + pageCount.ToString();
+            e.Graphics.DrawString(pag, lt_pag, Brushes.Black, ptopag, StringFormat.GenericTypographic);
+            // pintamos la fecha
+            PointF ptofec = new PointF(ancho_pag - 80.0F, piy + 15.0F);
+            string fecha = DateTime.Today.ToShortDateString();
+            e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
+            // 
+            posi = posi + alfi;
+            // titulo de las columnas
+            //a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
+            //d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen
+            PointF ptoimp = new PointF(col0, posi);
+            e.Graphics.DrawString("Fecha", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col1, posi);
+            e.Graphics.DrawString("Llegada", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawString("Pedido", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col3, posi);
+            e.Graphics.DrawString("Estado", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col4, posi);
+            e.Graphics.DrawString("Articulo", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col5, posi);
+            e.Graphics.DrawString("Nombre", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col6, posi);
+            e.Graphics.DrawString("Mad.", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col7, posi);
+            e.Graphics.DrawString("Det.2", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col8, posi);
+            e.Graphics.DrawString("Acabado", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            posi = posi + alfi + 7.0F;             // avance de fila
+            e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
+            posi = posi + 2;             // avance de fila
+            //
+            return posi;
+        }
     }
 }
