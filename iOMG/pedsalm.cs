@@ -36,6 +36,9 @@ namespace iOMG
         string img_anul = "";
         string tipede = "";             // tipo de pedido por defecto
         string tiesta = "";             // estado inicial por defecto del pedido
+        string escambio = "";           // estados de pedido que admiten modif el pedido
+        string canovald2 = "";          // captitulos donde no se valida det2
+        string conovald2 = "";          // valor por defecto al no validar det2
         string cn_adm = "";     // codigo nivel usuario admin
         string cn_sup = "";     // codigo nivel usuario superusuario
         string cn_est = "";     // codigo nivel usuario estandar
@@ -219,6 +222,9 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
+                        if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
+                        if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();         // valor por defecto al no validar det2
                     }
                 }
                 da.Dispose();
@@ -282,8 +288,8 @@ namespace iOMG
         }
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
-            // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado
-            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,b.descrizionerid,a.coment,a.estado,a.madera,a.piedra " +
+            // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
+            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
@@ -324,7 +330,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 12;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 13;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -397,6 +403,13 @@ namespace iOMG
             dataGridView1.Columns[10].Visible = false;
             // codigo detalle 2
             dataGridView1.Columns[11].Visible = false;
+            // fecha de ingreso del articulo
+            dataGridView1.Columns[12].Visible = true;            // columna visible o no
+            dataGridView1.Columns[12].HeaderText = "F.Ingreso"; // titulo de la columna
+            dataGridView1.Columns[12].Width = 80;                // ancho
+            dataGridView1.Columns[12].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[12].Name = "fingreso";
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -684,7 +697,15 @@ namespace iOMG
                         conn.Open();
                         if (conn.State == ConnectionState.Open)
                         {
-                            string codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
+                            string codbs = "";
+                            if (canovald2.Contains(fam))
+                            {   // fam = A,C,D,E,F => det2 = conovald2 = R00
+                                codbs = fam + mod + "X" + tip + de1 + aca + "XX" + conovald2 + de3 + "N000";
+                            }
+                            else
+                            {
+                                codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
+                            }
                             string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
                             MySqlCommand micon = new MySqlCommand(busca, conn);
                             micon.Parameters.AddWithValue("@cod", codbs);
@@ -1042,7 +1063,7 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea MODIFICAR el pedido?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    if(edita() == true)
+                    if (edita() == true)
                     {
                         // actualizamos el datatable
                         for (int i = 0; i < dtg.Rows.Count; i++)
@@ -1106,6 +1127,12 @@ namespace iOMG
             }
             if (Tx_modo.Text != "NUEVO")
             {
+                if (!escambio.Contains(tx_dat_estad.Text))
+                {
+                    MessageBox.Show("El estado actual del pedido no permite modificar el detalle",
+                        "No puede continuar",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                    return;
+                }
                 //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado
                 DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                 obj.Cells[1].Value = tx_d_can.Text;
