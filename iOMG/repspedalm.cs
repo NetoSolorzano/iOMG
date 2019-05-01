@@ -196,15 +196,16 @@ namespace iOMG
         }
         private void grilla()                                       // arma la grilla
         {
-            // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-            //d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen
+            // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
+            // d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid,
+            // a.status,a.origen,d.estado,d.madera,d.piedra 
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_pedidos.Font = tiplg;
             dgv_pedidos.DefaultCellStyle.Font = tiplg;
             dgv_pedidos.RowTemplate.Height = 15;
             dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_pedidos.AllowUserToAddRows = false;
-            if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 15;
+            if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 19;
             //dgv_ped.DataSource = dtg;
             // Fecha pedido
             dgv_pedidos.Columns[0].Visible = true;
@@ -297,9 +298,18 @@ namespace iOMG
             dgv_pedidos.Columns[12].ReadOnly = true;
             dgv_pedidos.Columns[12].Tag = "validaNO";          // las celdas de esta columna SI se validan
             //dgv_pedidos.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // acabado
+            dgv_pedidos.Columns[13].Visible = true;
+            dgv_pedidos.Columns[13].HeaderText = "Acabado";
+            dgv_pedidos.Columns[13].Width = 50;
+            dgv_pedidos.Columns[13].ReadOnly = true;
+            dgv_pedidos.Columns[13].Tag = "validaNO";          // las celdas de esta columna SI se validan
             // resto de campos
-            dgv_pedidos.Columns[13].Visible = false;
             dgv_pedidos.Columns[14].Visible = false;
+            dgv_pedidos.Columns[15].Visible = false;
+            dgv_pedidos.Columns[16].Visible = false;
+            dgv_pedidos.Columns[17].Visible = false;
+            dgv_pedidos.Columns[18].Visible = false;
         }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info
         {
@@ -319,11 +329,14 @@ namespace iOMG
                 parte2 = " and a.status=@sta";
             }
             string consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-                "d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen,d.estado,e.descrizionerid " +
+                "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
+                "a.status,a.origen,d.estado,d.madera,d.piedra " +
                 "from pedidos a left join detaped d on d.pedidoh=a.codped " +
                 "left join desc_stp b on b.idcodice=a.status " +
                 "left join desc_loc c on c.idcodice=a.origen " +
                 "left join desc_est e on e.idcodice=d.estado " +
+                "left join desc_mad f on f.idcodice=d.madera " +
+                "left join desc_dt2 g on g.idcodice=d.piedra " +
                 parte + parte0 + parte1 + parte2; // d.coment, a.coment,
             try
             {
@@ -581,8 +594,6 @@ namespace iOMG
             // leemos las columnas del data table
             for (int fila = cuenta; fila < dgv_pedidos.Rows.Count - 1; fila++)
             {
-                // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
-                // d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen,d.estado,e.descrizionerid
                 string data0 = (fila + 1).ToString("###");                          
                 string dataI = dgv_pedidos.Rows[fila].Cells[0].Value.ToString().Substring(0,10);    // Fecha
                 string data1 = dgv_pedidos.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);    // Llegada
@@ -592,7 +603,7 @@ namespace iOMG
                 string data5 = dgv_pedidos.Rows[fila].Cells[7].Value.ToString();    // Nombre
                 string data6 = dgv_pedidos.Rows[fila].Cells[8].Value.ToString();    // Madera
                 string data7 = dgv_pedidos.Rows[fila].Cells[9].Value.ToString();    // Detalle 2
-                string data8 = dgv_pedidos.Rows[fila].Cells[16].Value.ToString();    // acabado
+                string data8 = dgv_pedidos.Rows[fila].Cells[13].Value.ToString();    // acabado
                 string data9 = dgv_pedidos.Rows[fila].Cells[10].Value.ToString();    // medidas
                 string data10 = dgv_pedidos.Rows[fila].Cells[11].Value.ToString();    // cant
                 //

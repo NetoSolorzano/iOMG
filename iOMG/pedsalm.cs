@@ -118,7 +118,7 @@ namespace iOMG
         }
         private void grilla()                   // arma la grilla
         {
-            // id,codped,tipoes,origen,destino,fecha,entrega,coment
+            // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -138,8 +138,8 @@ namespace iOMG
             advancedDataGridView1.Columns[2].Visible = true;
             advancedDataGridView1.Columns[2].HeaderText = "Sit.Ped";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 70;                // ancho
-            advancedDataGridView1.Columns[2].ReadOnly = false;           // lectura o no
-            advancedDataGridView1.Columns[2].Tag = "validaSI";
+            advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
+            advancedDataGridView1.Columns[2].Tag = "validaNO";
             advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Origen - taller
             advancedDataGridView1.Columns[3].Visible = true;
@@ -176,6 +176,10 @@ namespace iOMG
             advancedDataGridView1.Columns[7].ReadOnly = false;
             advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // codigo tipo
+            advancedDataGridView1.Columns[8].Visible = false;
+            // codigo estado
+            advancedDataGridView1.Columns[9].Visible = false;
         }
         private void jalainfo()                 // obtiene datos de imagenes
         {
@@ -235,7 +239,7 @@ namespace iOMG
                 // tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // 
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
                 //tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
-                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // estado del pedido
+                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();  // estado del pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
                 tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // destino
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());   // fecha pedido
@@ -267,6 +271,7 @@ namespace iOMG
                         dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());    // fecha entrega
                         tx_coment.Text = row["coment"].ToString();     // comentario
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
+                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
                         cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
                         jaladet(tx_codped.Text);
@@ -278,8 +283,11 @@ namespace iOMG
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
             // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado
-            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado " +
-                "from detaped a left join desc_est b on b.idcodice=a.estado " +
+            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,b.descrizionerid,a.coment,a.estado,a.madera,a.piedra " +
+                "from detaped a " +
+                "left join desc_est b on b.idcodice=a.estado " +
+                "left join desc_mad c on c.idcodice=a.madera " +
+                "left join desc_dt2 d on d.idcodice=a.piedra " +
                 "where a.pedidoh=@pedi";
             try
             {
@@ -316,7 +324,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 10;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 12;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -385,6 +393,10 @@ namespace iOMG
             dataGridView1.Columns[9].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[9].Name = "estado";
+            // codigo madera
+            dataGridView1.Columns[10].Visible = false;
+            // codigo detalle 2
+            dataGridView1.Columns[11].Visible = false;
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -400,10 +412,11 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los pedidos
-                string datgri = "select id,codped,status,origen,destino,date_format(date(fecha),'%Y-%m-%d') as fecha,date_format(date(entrega),'%Y-%m-%d') as entrega,coment,tipoes " +
-                    "from pedidos where tipoes=@tip";
+                string datgri = "select a.id,a.codped,b.descrizionerid,a.origen,a.destino,date_format(date(a.fecha),'%Y-%m-%d') as fecha," +
+                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
+                    "from pedidos a left join desc_stp b on b.idcodice=a.status where a.tipoes=@tip";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
-                cdg.Parameters.AddWithValue("@tip", "TPE001");
+                cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
@@ -759,9 +772,9 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
                         micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                         micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());   // 
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // 
-                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
@@ -817,9 +830,9 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
                         micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                         micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
-                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[6].Value.ToString());
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
@@ -1088,7 +1101,8 @@ namespace iOMG
             if(Tx_modo.Text == "NUEVO")
             {
                 dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text, tx_d_mad.Text,
-                    tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString());
+                    tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text,
+                    cmb_aca.Tag.ToString(), cmb_mad.SelectedItem.ToString().Substring(0,1), cmb_det2.SelectedItem.ToString().Substring(0,3));
             }
             if (Tx_modo.Text != "NUEVO")
             {
@@ -1098,11 +1112,13 @@ namespace iOMG
                 obj.Cells[2].Value = tx_d_codi.Text;
                 obj.Cells[3].Value = tx_d_nom.Text;
                 obj.Cells[4].Value = tx_d_med.Text;
-                obj.Cells[5].Value = tx_d_mad.Text;
+                obj.Cells[5].Value = tx_d_mad.Text; 
                 obj.Cells[6].Value = tx_d_det2.Text;
                 obj.Cells[7].Value = tx_d_est.Text;
                 obj.Cells[8].Value = tx_d_com.Text;
                 obj.Cells[9].Value = cmb_aca.Tag.ToString();
+                obj.Cells[10].Value = cmb_mad.Tag.ToString();
+                obj.Cells[11].Value = cmb_det2.Tag.ToString();
             }
             tx_d_nom.Text = "";
             tx_d_can.Text = "";
@@ -1455,8 +1471,8 @@ namespace iOMG
         }
         private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
         {
-            //tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
-            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
+            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+            //tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
             armani();
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
@@ -1469,8 +1485,8 @@ namespace iOMG
         }
         private void cmb_aca_SelectionChangeCommitted(object sender, EventArgs e)       // acabado
         {
-            //tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
-            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
+            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
+            //tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
             armani();
         }
         private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)           // taller
@@ -1479,8 +1495,8 @@ namespace iOMG
         }
         private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
         {
-            //tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
-            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
+            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
+            //tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
             armani();
         }
         private void cmb_det3_SelectionChangeCommitted(object sender, EventArgs e)

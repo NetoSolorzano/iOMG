@@ -56,6 +56,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPed = new System.Windows.Forms.TabPage();
+            this.bt_preview = new System.Windows.Forms.Button();
             this.bt_imprime = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -82,7 +83,6 @@
             this.tabSal = new System.Windows.Forms.TabPage();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.bt_preview = new System.Windows.Forms.Button();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -388,10 +388,20 @@
             this.tabPed.Text = "Pedidos";
             this.tabPed.UseVisualStyleBackColor = true;
             // 
+            // bt_preview
+            // 
+            this.bt_preview.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_preview.Location = new System.Drawing.Point(654, 3);
+            this.bt_preview.Name = "bt_preview";
+            this.bt_preview.Size = new System.Drawing.Size(61, 44);
+            this.bt_preview.TabIndex = 318;
+            this.bt_preview.UseVisualStyleBackColor = true;
+            this.bt_preview.Click += new System.EventHandler(this.bt_preview_Click);
+            // 
             // bt_imprime
             // 
             this.bt_imprime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_imprime.Location = new System.Drawing.Point(721, 3);
+            this.bt_imprime.Location = new System.Drawing.Point(724, 3);
             this.bt_imprime.Name = "bt_imprime";
             this.bt_imprime.Size = new System.Drawing.Size(61, 44);
             this.bt_imprime.TabIndex = 317;
@@ -629,16 +639,6 @@
             // printDocument1
             // 
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
-            // 
-            // bt_preview
-            // 
-            this.bt_preview.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_preview.Location = new System.Drawing.Point(654, 3);
-            this.bt_preview.Name = "bt_preview";
-            this.bt_preview.Size = new System.Drawing.Size(61, 44);
-            this.bt_preview.TabIndex = 318;
-            this.bt_preview.UseVisualStyleBackColor = true;
-            this.bt_preview.Click += new System.EventHandler(this.bt_preview_Click);
             // 
             // printPreviewDialog1
             // 
