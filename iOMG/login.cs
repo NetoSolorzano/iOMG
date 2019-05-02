@@ -19,7 +19,8 @@ namespace iOMG
         //static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         //string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";ConnectionLifeTime=" + ctl + ";";
-        //
+        libreria lib = new libreria();
+
         public login()
         {
             InitializeComponent();
@@ -65,7 +66,8 @@ namespace iOMG
         {
             // validamos los campos
             string usuari = this.Tx_user.Text;     // usuario
-            string contra = this.Tx_pwd.Text;      // passw
+            //string contra = this.Tx_pwd.Text;      // passw
+            string contra = lib.md5(Tx_pwd.Text);
             if (usuari == "")
             {
                 MessageBox.Show("Por favor, ingrese el usuario", "Atención");
@@ -76,12 +78,10 @@ namespace iOMG
                 MessageBox.Show("Por favor, ingrese la contraseña", "Atención");
                 return;
             }
-            //desencrip(contra); no funca
             try
             {
                 MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
                 cn.Open();
-
                 //validamos que el usuario y passw son los correctos
                 string query = "select a.bloqueado,a.local,trim(a.mod1),trim(a.mod2),trim(a.mod3),a.nombre," +
                     "a.ruc,ifnull(b.descrizione,'- SIN ASIGNAR -') " +
@@ -89,8 +89,8 @@ namespace iOMG
                     "left join desc_raz b on b.idcodice=a.ruc " +
                     "where a.nom_user=@usuario and a.pwd_user=@contra";
                 MySqlCommand mycomand = new MySqlCommand(query, cn);
-                mycomand.Parameters.AddWithValue("@usuario", this.Tx_user.Text);
-                mycomand.Parameters.AddWithValue("@contra", this.Tx_pwd.Text);
+                mycomand.Parameters.AddWithValue("@usuario", Tx_user.Text);
+                mycomand.Parameters.AddWithValue("@contra", contra);
 
                 MySqlDataReader dr = mycomand.ExecuteReader();
                 if (dr.HasRows)
@@ -219,7 +219,7 @@ namespace iOMG
                 {
                     string consulta = "update usuarios set pwd_user=@npa where nom_user=@nus";
                     MySqlCommand micon = new MySqlCommand(consulta, cn);
-                    micon.Parameters.AddWithValue("@npa", tx_newcon.Text);
+                    micon.Parameters.AddWithValue("@npa", lib.md5(tx_newcon.Text));
                     micon.Parameters.AddWithValue("@nus", Tx_user.Text);
                     try
                     {
