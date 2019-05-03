@@ -84,6 +84,29 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.bt_preview_ing = new System.Windows.Forms.Button();
+            this.bt_imp_ing = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tx_dat_esting = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmb_estad_ing = new System.Windows.Forms.ComboBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.tx_dat_desing = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmb_dest_ing = new System.Windows.Forms.ComboBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.dgv_ingresos = new System.Windows.Forms.DataGridView();
+            this.dtp_final_ing = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtp_fini_ing = new System.Windows.Forms.DateTimePicker();
+            this.bt_filtra_ing = new System.Windows.Forms.Button();
+            this.tx_dat_taling = new System.Windows.Forms.TextBox();
+            this.cmb_tall_ing = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
@@ -91,6 +114,11 @@
             this.groupBox1.SuspendLayout();
             this.groupBox11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
+            this.tabIng.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -615,6 +643,26 @@
             // 
             // tabIng
             // 
+            this.tabIng.Controls.Add(this.bt_preview_ing);
+            this.tabIng.Controls.Add(this.bt_imp_ing);
+            this.tabIng.Controls.Add(this.groupBox5);
+            this.tabIng.Controls.Add(this.tx_dat_esting);
+            this.tabIng.Controls.Add(this.label1);
+            this.tabIng.Controls.Add(this.cmb_estad_ing);
+            this.tabIng.Controls.Add(this.groupBox7);
+            this.tabIng.Controls.Add(this.tx_dat_desing);
+            this.tabIng.Controls.Add(this.label3);
+            this.tabIng.Controls.Add(this.cmb_dest_ing);
+            this.tabIng.Controls.Add(this.groupBox9);
+            this.tabIng.Controls.Add(this.dgv_ingresos);
+            this.tabIng.Controls.Add(this.dtp_final_ing);
+            this.tabIng.Controls.Add(this.label4);
+            this.tabIng.Controls.Add(this.dtp_fini_ing);
+            this.tabIng.Controls.Add(this.bt_filtra_ing);
+            this.tabIng.Controls.Add(this.tx_dat_taling);
+            this.tabIng.Controls.Add(this.cmb_tall_ing);
+            this.tabIng.Controls.Add(this.label5);
+            this.tabIng.Controls.Add(this.label6);
             this.tabIng.Location = new System.Drawing.Point(4, 22);
             this.tabIng.Name = "tabIng";
             this.tabIng.Padding = new System.Windows.Forms.Padding(3);
@@ -650,6 +698,231 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // bt_preview_ing
+            // 
+            this.bt_preview_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_preview_ing.Location = new System.Drawing.Point(654, 3);
+            this.bt_preview_ing.Name = "bt_preview_ing";
+            this.bt_preview_ing.Size = new System.Drawing.Size(61, 44);
+            this.bt_preview_ing.TabIndex = 338;
+            this.bt_preview_ing.UseVisualStyleBackColor = true;
+            this.bt_preview_ing.Click += new System.EventHandler(this.bt_preview_ing_Click);
+            // 
+            // bt_imp_ing
+            // 
+            this.bt_imp_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_imp_ing.Location = new System.Drawing.Point(724, 3);
+            this.bt_imp_ing.Name = "bt_imp_ing";
+            this.bt_imp_ing.Size = new System.Drawing.Size(61, 44);
+            this.bt_imp_ing.TabIndex = 337;
+            this.bt_imp_ing.UseVisualStyleBackColor = true;
+            this.bt_imp_ing.Click += new System.EventHandler(this.bt_imp_ing_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox5.Location = new System.Drawing.Point(220, 24);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(110, 1);
+            this.groupBox5.TabIndex = 336;
+            this.groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(0, -26);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(164, 1);
+            this.groupBox6.TabIndex = 113;
+            this.groupBox6.TabStop = false;
+            // 
+            // tx_dat_esting
+            // 
+            this.tx_dat_esting.Location = new System.Drawing.Point(316, 27);
+            this.tx_dat_esting.Name = "tx_dat_esting";
+            this.tx_dat_esting.Size = new System.Drawing.Size(29, 20);
+            this.tx_dat_esting.TabIndex = 335;
+            this.tx_dat_esting.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(221, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.TabIndex = 334;
+            this.label1.Text = "Estado";
+            // 
+            // cmb_estad_ing
+            // 
+            this.cmb_estad_ing.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_estad_ing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_estad_ing.DropDownWidth = 100;
+            this.cmb_estad_ing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_estad_ing.FormattingEnabled = true;
+            this.cmb_estad_ing.Location = new System.Drawing.Point(263, 4);
+            this.cmb_estad_ing.Name = "cmb_estad_ing";
+            this.cmb_estad_ing.Size = new System.Drawing.Size(85, 21);
+            this.cmb_estad_ing.TabIndex = 333;
+            this.cmb_estad_ing.SelectionChangeCommitted += new System.EventHandler(this.cmb_estad_ing_SelectionChangeCommitted);
+            this.cmb_estad_ing.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_estad_ing_KeyDown);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox7.Controls.Add(this.groupBox8);
+            this.groupBox7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox7.Location = new System.Drawing.Point(31, 45);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(136, 1);
+            this.groupBox7.TabIndex = 332;
+            this.groupBox7.TabStop = false;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Location = new System.Drawing.Point(0, -26);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(164, 1);
+            this.groupBox8.TabIndex = 113;
+            this.groupBox8.TabStop = false;
+            // 
+            // tx_dat_desing
+            // 
+            this.tx_dat_desing.Location = new System.Drawing.Point(188, 26);
+            this.tx_dat_desing.Name = "tx_dat_desing";
+            this.tx_dat_desing.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_desing.TabIndex = 331;
+            this.tx_dat_desing.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(32, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(66, 13);
+            this.label3.TabIndex = 330;
+            this.label3.Text = "Alm. Destino";
+            // 
+            // cmb_dest_ing
+            // 
+            this.cmb_dest_ing.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_dest_ing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_dest_ing.DropDownWidth = 150;
+            this.cmb_dest_ing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_dest_ing.FormattingEnabled = true;
+            this.cmb_dest_ing.Location = new System.Drawing.Point(100, 25);
+            this.cmb_dest_ing.Name = "cmb_dest_ing";
+            this.cmb_dest_ing.Size = new System.Drawing.Size(85, 21);
+            this.cmb_dest_ing.TabIndex = 329;
+            this.cmb_dest_ing.SelectionChangeCommitted += new System.EventHandler(this.cmb_dest_ing_SelectionChangeCommitted);
+            this.cmb_dest_ing.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_dest_ing_KeyDown);
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox9.Controls.Add(this.groupBox10);
+            this.groupBox9.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox9.Location = new System.Drawing.Point(30, 23);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(137, 1);
+            this.groupBox9.TabIndex = 328;
+            this.groupBox9.TabStop = false;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Location = new System.Drawing.Point(0, -26);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(164, 1);
+            this.groupBox10.TabIndex = 113;
+            this.groupBox10.TabStop = false;
+            // 
+            // dgv_ingresos
+            // 
+            this.dgv_ingresos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ingresos.Location = new System.Drawing.Point(3, 49);
+            this.dgv_ingresos.Name = "dgv_ingresos";
+            this.dgv_ingresos.Size = new System.Drawing.Size(789, 250);
+            this.dgv_ingresos.TabIndex = 327;
+            // 
+            // dtp_final_ing
+            // 
+            this.dtp_final_ing.Checked = false;
+            this.dtp_final_ing.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_final_ing.Location = new System.Drawing.Point(443, 26);
+            this.dtp_final_ing.Name = "dtp_final_ing";
+            this.dtp_final_ing.Size = new System.Drawing.Size(95, 20);
+            this.dtp_final_ing.TabIndex = 321;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(32, 8);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 324;
+            this.label4.Text = "Taller Prod.";
+            // 
+            // dtp_fini_ing
+            // 
+            this.dtp_fini_ing.Checked = false;
+            this.dtp_fini_ing.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_fini_ing.Location = new System.Drawing.Point(443, 4);
+            this.dtp_fini_ing.Name = "dtp_fini_ing";
+            this.dtp_fini_ing.Size = new System.Drawing.Size(95, 20);
+            this.dtp_fini_ing.TabIndex = 320;
+            // 
+            // bt_filtra_ing
+            // 
+            this.bt_filtra_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_filtra_ing.Location = new System.Drawing.Point(544, 8);
+            this.bt_filtra_ing.Name = "bt_filtra_ing";
+            this.bt_filtra_ing.Size = new System.Drawing.Size(59, 29);
+            this.bt_filtra_ing.TabIndex = 322;
+            this.bt_filtra_ing.Text = "Filtra";
+            this.bt_filtra_ing.UseVisualStyleBackColor = true;
+            this.bt_filtra_ing.Click += new System.EventHandler(this.bt_filtra_ing_Click);
+            // 
+            // tx_dat_taling
+            // 
+            this.tx_dat_taling.Location = new System.Drawing.Point(188, 4);
+            this.tx_dat_taling.Name = "tx_dat_taling";
+            this.tx_dat_taling.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_taling.TabIndex = 326;
+            this.tx_dat_taling.Visible = false;
+            // 
+            // cmb_tall_ing
+            // 
+            this.cmb_tall_ing.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_tall_ing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_tall_ing.DropDownWidth = 100;
+            this.cmb_tall_ing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_tall_ing.FormattingEnabled = true;
+            this.cmb_tall_ing.Location = new System.Drawing.Point(100, 3);
+            this.cmb_tall_ing.Name = "cmb_tall_ing";
+            this.cmb_tall_ing.Size = new System.Drawing.Size(85, 21);
+            this.cmb_tall_ing.TabIndex = 319;
+            this.cmb_tall_ing.SelectionChangeCommitted += new System.EventHandler(this.cmb_tall_ing_SelectionChangeCommitted);
+            this.cmb_tall_ing.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_tall_ing_KeyDown);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(387, 31);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 13);
+            this.label5.TabIndex = 325;
+            this.label5.Text = "Fech final";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(379, 8);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(61, 13);
+            this.label6.TabIndex = 323;
+            this.label6.Text = "Fech Inicial";
+            // 
             // repspedalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -671,6 +944,12 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).EndInit();
+            this.tabIng.ResumeLayout(false);
+            this.tabIng.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -732,5 +1011,28 @@
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.Button bt_preview;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.Button bt_preview_ing;
+        private System.Windows.Forms.Button bt_imp_ing;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TextBox tx_dat_esting;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cmb_estad_ing;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TextBox tx_dat_desing;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmb_dest_ing;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.DataGridView dgv_ingresos;
+        private System.Windows.Forms.DateTimePicker dtp_final_ing;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker dtp_fini_ing;
+        private System.Windows.Forms.Button bt_filtra_ing;
+        private System.Windows.Forms.TextBox tx_dat_taling;
+        private System.Windows.Forms.ComboBox cmb_tall_ing;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

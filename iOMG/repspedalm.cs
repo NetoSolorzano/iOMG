@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
-using System.Text.RegularExpressions;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
@@ -50,7 +48,6 @@ namespace iOMG
         {
             InitializeComponent();
         }
-
         private void repspedalm_Load(object sender, EventArgs e)
         {
             ToolTip toolTipNombre = new ToolTip();           // Create the ToolTip and associate with the Form container.
@@ -165,6 +162,9 @@ namespace iOMG
                 {
                     cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
                     cmb_taller.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_tall_ing.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
+                    cmb_tall_ing.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen de destino ... 
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -177,6 +177,9 @@ namespace iOMG
                 {
                     cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_destino.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_dest_ing.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_dest_ing.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del estado
                 const string conestado = "select descrizionerid,idcodice from desc_stp " +
@@ -189,6 +192,9 @@ namespace iOMG
                 {
                     cmb_estado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_estado.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_estad_ing.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_estad_ing.ValueMember = row.ItemArray[1].ToString();
                 }
             }
             //
@@ -317,7 +323,7 @@ namespace iOMG
             dgv_pedidos.Columns[19].ReadOnly = true;
             dgv_pedidos.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
         }
-        private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info
+        private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
             // id,codped,tipoes,origen,destino,fecha,entrega,coment
             string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
@@ -381,6 +387,10 @@ namespace iOMG
                 return;
             }
         }
+        private void bt_filtra_ing_Click(object sender, EventArgs e)// filtra y muestra info - INGRESOS
+        {
+
+        }
 
         #region combos
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
@@ -397,6 +407,21 @@ namespace iOMG
         {
             if (cmb_destino.SelectedValue != null) tx_dat_dest.Text = cmb_destino.SelectedValue.ToString();
             else tx_dat_dest.Text = cmb_destino.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_tall_ing_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_tall_ing.SelectedValue != null) tx_dat_taling.Text = cmb_tall_ing.SelectedValue.ToString();
+            else tx_dat_taling.Text = cmb_tall_ing.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_estad_ing_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_estad_ing.SelectedValue != null) tx_dat_esting.Text = cmb_estad_ing.SelectedValue.ToString();
+            else tx_dat_esting.Text = cmb_estad_ing.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_dest_ing_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_dest_ing.SelectedValue != null) tx_dat_desing.Text = cmb_dest_ing.SelectedValue.ToString();
+            else tx_dat_desing.Text = cmb_dest_ing.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
         // 
         private void cmb_estado_KeyDown(object sender, KeyEventArgs e)
@@ -421,6 +446,30 @@ namespace iOMG
             {
                 cmb_destino.SelectedIndex = -1;
                 tx_dat_dest.Text = "";
+            }
+        }
+        private void cmb_tall_ing_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_tall_ing.SelectedIndex = -1;
+                tx_dat_taling.Text = "";
+            }
+        }
+        private void cmb_estad_ing_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_estad_ing.SelectedIndex = -1;
+                tx_dat_esting.Text = "";
+            }
+        }
+        private void cmb_dest_ing_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_dest_ing.SelectedIndex = -1;
+                tx_dat_desing.Text = "";
             }
         }
         #endregion
@@ -520,21 +569,41 @@ namespace iOMG
         private void bt_exc_Click(object sender, EventArgs e)
         {
             string nombre = "";
-            nombre = "Reporte_Pedidos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
-            var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
-                "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (aa == DialogResult.Yes)
+            if (tabControl1.SelectedTab == tabPed)
             {
-                var wb = new XLWorkbook();
-                DataTable dt = (DataTable)dgv_pedidos.DataSource;
-                wb.Worksheets.Add(dt, "Reporte_Pedidos");
-                wb.SaveAs(nombre);
-                MessageBox.Show("Archivo generado con exito!");
-                this.Close();
+                nombre = "Reporte_Pedidos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_pedidos.DataSource;
+                    wb.Worksheets.Add(dt, "Reporte_Pedidos");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
             }
-         }
+            if(tabControl1.SelectedTab == tabIng)
+            {
+                nombre = "Reporte_Ingresos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_ingresos.DataSource;
+                    wb.Worksheets.Add(dt, "Reporte_Ingresos");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+        }
         #endregion
 
+        #region impresion
+        // pedidos
         private void bt_imprime_Click(object sender, EventArgs e)   // imprime el reporte
         {
             PrintDialog printDlg = new PrintDialog();
@@ -550,20 +619,6 @@ namespace iOMG
             //
             if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
         }
-
-        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
-            float pix = 50.0F;      // punto inicial X
-            float piy = 30.0F;      // punto inicial Y
-            float alfi = 10.0F;     // alto de cada fila
-            float alin = 45.0F;     // alto inicial
-            float posi = 160.0F;     // posición de impresión
-            float coli = 30.0F;     // columna mas a la izquierda
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-            imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
-        }
-
         private void bt_preview_Click(object sender, EventArgs e)
         {
             pageCount = 1;
@@ -571,7 +626,33 @@ namespace iOMG
             printPreviewDialog1.Document = printDocument1;
             printPreviewDialog1.ShowDialog();
         }
-
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            if(tabControl1.SelectedTab == tabPed)
+            {
+                // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
+                float pix = 50.0F;      // punto inicial X
+                float piy = 30.0F;      // punto inicial Y
+                float alfi = 10.0F;     // alto de cada fila
+                float alin = 45.0F;     // alto inicial
+                float posi = 160.0F;     // posición de impresión
+                float coli = 30.0F;     // columna mas a la izquierda
+                // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+                imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
+            }
+            if(tabControl1.SelectedTab == tabIng)
+            {
+                // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
+                float pix = 50.0F;      // punto inicial X
+                float piy = 30.0F;      // punto inicial Y
+                float alfi = 10.0F;     // alto de cada fila
+                float alin = 45.0F;     // alto inicial
+                float posi = 160.0F;     // posición de impresión
+                float coli = 30.0F;     // columna mas a la izquierda
+                // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+                impri_ing(pix, piy, cliente, coli, alin, posi, alfi, e);
+            }
+        }
         private void imprime(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
         {
             // columnas del reporte
@@ -750,5 +831,106 @@ namespace iOMG
             //
             return posi;
         }
+        // ingresos
+        private void bt_imp_ing_Click(object sender, EventArgs e)
+        {
+            PrintDialog printDlg = new PrintDialog();
+
+            printDlg.Document = printDocument1; //printDoc;
+            printDlg.AllowSomePages = true;
+            printDlg.AllowSelection = true;
+            //
+            pageCount = 1;
+            printDocument1.DefaultPageSettings.Landscape = true;
+            //
+            if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
+        }
+        private void bt_preview_ing_Click(object sender, EventArgs e)
+        {
+            pageCount = 1;
+            printDocument1.DefaultPageSettings.Landscape = true;
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.ShowDialog();
+        }
+        private void impri_ing(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+
+        }
+        private float impcab_ing(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8, float col9, float co10, float co11, float co12)
+        {
+            float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
+            float colm = coli + 280.0F;                                 // columna media
+            float cold = coli + 530.0F;                                 // columna derecha
+            Font lt_cliente = new Font("Arial", 15, FontStyle.Bold);
+            Font lt_pag = new Font("Arial", 9);
+            Font lt_fec = new Font("Arial", 7, FontStyle.Bold);
+            Font lt_tit = new Font("Arial", 11);                        // tipo de letra del titulo
+            Pen grueso = new Pen(Color.Black, 2);                       // linea gruesa
+            Pen delgado = new Pen(Color.Black, 1);                      // linea delgada
+            StringFormat sf = new StringFormat();                       // formato centrado
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+            // logo
+            e.Graphics.DrawImage(Image.FromFile("recursos/logo_artesanos_omg_peru.jpeg"), 30, 20, 200, 150);
+            // pagina y fecha
+            SizeF anctit = new SizeF();
+            anctit = e.Graphics.MeasureString(cliente, lt_cliente);
+            PointF ptocli = new PointF((ancho_pag - anctit.Width) / 2, piy);
+            e.Graphics.DrawString(cliente, lt_cliente, Brushes.Black, ptocli, StringFormat.GenericTypographic);
+            // pintamos contador de pág.
+            PointF ptopag = new PointF(ancho_pag - 80.0F, piy);
+            string pag = "Pág. " + pageCount.ToString();
+            e.Graphics.DrawString(pag, lt_pag, Brushes.Black, ptopag, StringFormat.GenericTypographic);
+            // pintamos la fecha
+            PointF ptofec = new PointF(ancho_pag - 80.0F, piy + 15.0F);
+            string fecha = DateTime.Today.ToShortDateString();
+            e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
+            // titulo y filtros
+            SizeF anctyf = new SizeF();
+            anctyf = e.Graphics.MeasureString(this.Text, lt_cliente);
+            PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
+            e.Graphics.DrawString(this.Text, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            string ddd = "Del " + dtp_pedido.Value.ToString("dd/MM/yyyy") + " Al " + dtp_entreg.Value.ToString("dd/MM/yyyy");
+            anctyf = e.Graphics.MeasureString(ddd, lt_tit);
+            ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
+            e.Graphics.DrawString(ddd, lt_tit, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            // titulo de las columnas
+            //a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
+            //d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen
+            posi = posi + alfi;
+            PointF ptoimp = new PointF(col0, posi);
+            e.Graphics.DrawString("Fecha", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col1, posi);
+            e.Graphics.DrawString("Llegada", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col3, posi);
+            e.Graphics.DrawString("Estado", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col4, posi);
+            e.Graphics.DrawString("Articulo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col5, posi);
+            e.Graphics.DrawString("Nombre", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col6, posi);
+            e.Graphics.DrawString("Mad.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col7, posi);
+            e.Graphics.DrawString("Det.2", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col8, posi);
+            e.Graphics.DrawString("Acabado", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col9, posi);
+            e.Graphics.DrawString("Medidas", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(co10, posi);
+            e.Graphics.DrawString("Cant", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(co11, posi);
+            e.Graphics.DrawString("Saldo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(co12, posi);
+            e.Graphics.DrawString("F.Ingreso", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            posi = posi + alfi + 7.0F;             // avance de fila
+            e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
+            posi = posi + 2;             // avance de fila
+            //
+            return posi;
+        }
+        #endregion
     }
 }
