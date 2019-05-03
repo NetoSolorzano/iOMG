@@ -200,11 +200,9 @@ namespace iOMG
             //
             conn.Close();
         }
-        private void grilla()                                       // arma la grilla
+        private void grilla()                                       // arma la grilla pedidos
         {
-            // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
-            // d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid,
-            // a.status,a.origen,d.estado,d.madera,d.piedra 
+            //
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_pedidos.Font = tiplg;
             dgv_pedidos.DefaultCellStyle.Font = tiplg;
@@ -322,6 +320,10 @@ namespace iOMG
             dgv_pedidos.Columns[19].Width = 80;
             dgv_pedidos.Columns[19].ReadOnly = true;
             dgv_pedidos.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
+        }
+        private void grilla_ing()                                   // arma la grilla ingresos
+        {
+            
         }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
