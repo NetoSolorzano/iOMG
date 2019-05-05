@@ -323,7 +323,70 @@ namespace iOMG
         }
         private void grilla_ing()                                   // arma la grilla ingresos
         {
-            
+            // a.fecha,c.descrizionerid,a.docum,a.item,a.cant,a.coment,a.almad,b.status
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_ingresos.Font = tiplg;
+            dgv_ingresos.DefaultCellStyle.Font = tiplg;
+            dgv_ingresos.RowTemplate.Height = 15;
+            dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_ingresos.AllowUserToAddRows = false;
+            if (dgv_ingresos.DataSource == null) dgv_ingresos.ColumnCount = 8;
+            // Fecha ingreso real
+            dgv_ingresos.Columns[0].Visible = true;
+            dgv_ingresos.Columns[0].HeaderText = "Fecha";    // titulo de la columna
+            dgv_ingresos.Columns[0].Width = 70;                // ancho
+            dgv_ingresos.Columns[0].ReadOnly = false;           // lectura o no
+            dgv_ingresos.Columns[0].Tag = "validaNO";
+            //dgv_pedidos.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // almacen ingresado
+            dgv_ingresos.Columns[1].Visible = true;            // columna visible o no
+            dgv_ingresos.Columns[1].HeaderText = "Almacén";    // titulo de la columna
+            dgv_ingresos.Columns[1].Width = 60;                // ancho
+            dgv_ingresos.Columns[1].ReadOnly = true;           // lectura o no
+            dgv_ingresos.Columns[1].Tag = "validaSI";
+            //dgv_pedidos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // codigo pedido
+            dgv_ingresos.Columns[2].Visible = true;
+            dgv_ingresos.Columns[2].HeaderText = "Pedido";    // titulo de la columna
+            dgv_ingresos.Columns[2].Width = 80;                // ancho
+            dgv_ingresos.Columns[2].ReadOnly = true;           // lectura o no
+            dgv_ingresos.Columns[2].Tag = "validaNO";
+            //dgv_pedidos.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // codigo articulo
+            dgv_ingresos.Columns[3].Visible = true;
+            dgv_ingresos.Columns[3].HeaderText = "Artículo";
+            dgv_ingresos.Columns[3].Width = 100;
+            dgv_ingresos.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            dgv_ingresos.Columns[3].Tag = "validaNO";          // las celdas de esta columna se SI se validan
+            //dgv_pedidos.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Cant
+            dgv_ingresos.Columns[4].Visible = true;
+            dgv_ingresos.Columns[4].HeaderText = "Cant";
+            dgv_ingresos.Columns[4].Width = 50;
+            dgv_ingresos.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            dgv_ingresos.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
+            //dgv_pedidos.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Comentarios
+            dgv_ingresos.Columns[5].Visible = true;
+            dgv_ingresos.Columns[5].HeaderText = "Comentario";
+            dgv_ingresos.Columns[5].Width = 190;
+            dgv_ingresos.Columns[5].ReadOnly = true;
+            dgv_ingresos.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            //dgv_pedidos.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // resto 
+            dgv_ingresos.Columns[6].Visible = false;
+            dgv_ingresos.Columns[6].HeaderText = "";
+            dgv_ingresos.Columns[6].Width = 10;
+            dgv_ingresos.Columns[6].ReadOnly = true;
+            dgv_ingresos.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_pedidos.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // 
+            dgv_ingresos.Columns[7].Visible = false;
+            dgv_ingresos.Columns[7].HeaderText = "";
+            dgv_ingresos.Columns[7].Width = 20;
+            dgv_ingresos.Columns[7].ReadOnly = true;
+            dgv_ingresos.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_pedidos.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
@@ -391,7 +454,60 @@ namespace iOMG
         }
         private void bt_filtra_ing_Click(object sender, EventArgs e)// filtra y muestra info - INGRESOS
         {
-
+            // a.fecha,c.descrizionerid,a.docum,a.item,a.cant,a.coment,a.almad,b.status
+            string parte = "where a.tipmov = 'INGRES' and a.fecha between @fec1 and @fec2";
+            string parte0 = "", parte1 = "", parte2 = "";
+            if (tx_dat_orig.Text != "")
+            {
+                parte0 = " and a.origen=@tal";
+            }
+            if (tx_dat_dest.Text != "")
+            {
+                parte1 = " and a.almad=@des";
+            }
+            if (tx_dat_estad.Text != "")
+            {
+                parte2 = " and b.status=@sta";
+            }
+            string consulta = "select a.fecha,c.descrizionerid,a.docum,a.item,a.cant,a.coment,a.almad,b.status " +
+                "FROM movalm a left join pedidos b on b.codped=a.docum " +
+                "left join desc_alm c on trim(c.idcodice)=trim(a.almad) " +
+                parte + parte0 + parte1 + parte2 + " order by a.fecha,a.docum";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    dgv_pedidos.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@fec1", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fec2", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_orig.Text);
+                    if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_dest.Text);
+                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_estad.Text);
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dti = new DataTable();
+                    da.Fill(dti);
+                    dgv_ingresos.DataSource = dti;
+                    dti.Dispose();
+                    da.Dispose();
+                    grilla_ing();
+                }
+                else
+                {
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos");
+                Application.Exit();
+                return;
+            }
         }
 
         #region combos
