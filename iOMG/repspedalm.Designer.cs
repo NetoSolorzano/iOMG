@@ -80,10 +80,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabIng = new System.Windows.Forms.TabPage();
-            this.tabSal = new System.Windows.Forms.TabPage();
-            this.printDialog1 = new System.Windows.Forms.PrintDialog();
-            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.bt_preview_ing = new System.Windows.Forms.Button();
             this.bt_imp_ing = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -107,6 +103,10 @@
             this.cmb_tall_ing = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.tabSal = new System.Windows.Forms.TabPage();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
@@ -671,33 +671,6 @@
             this.tabIng.Text = "Ingresos";
             this.tabIng.UseVisualStyleBackColor = true;
             // 
-            // tabSal
-            // 
-            this.tabSal.Location = new System.Drawing.Point(4, 22);
-            this.tabSal.Name = "tabSal";
-            this.tabSal.Size = new System.Drawing.Size(795, 302);
-            this.tabSal.TabIndex = 2;
-            this.tabSal.Text = "Salidas";
-            this.tabSal.UseVisualStyleBackColor = true;
-            // 
-            // printDialog1
-            // 
-            this.printDialog1.UseEXDialog = true;
-            // 
-            // printDocument1
-            // 
-            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
-            // 
-            // printPreviewDialog1
-            // 
-            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
-            this.printPreviewDialog1.Enabled = true;
-            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
-            this.printPreviewDialog1.Name = "printPreviewDialog1";
-            this.printPreviewDialog1.Visible = false;
-            // 
             // bt_preview_ing
             // 
             this.bt_preview_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -791,7 +764,7 @@
             // 
             this.tx_dat_desing.Location = new System.Drawing.Point(188, 26);
             this.tx_dat_desing.Name = "tx_dat_desing";
-            this.tx_dat_desing.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_desing.Size = new System.Drawing.Size(51, 20);
             this.tx_dat_desing.TabIndex = 331;
             this.tx_dat_desing.Visible = false;
             // 
@@ -922,6 +895,33 @@
             this.label6.Size = new System.Drawing.Size(61, 13);
             this.label6.TabIndex = 323;
             this.label6.Text = "Fech Inicial";
+            // 
+            // tabSal
+            // 
+            this.tabSal.Location = new System.Drawing.Point(4, 22);
+            this.tabSal.Name = "tabSal";
+            this.tabSal.Size = new System.Drawing.Size(795, 302);
+            this.tabSal.TabIndex = 2;
+            this.tabSal.Text = "Salidas";
+            this.tabSal.UseVisualStyleBackColor = true;
+            // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
+            // printDocument1
+            // 
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
             // 
             // repspedalm
             // 

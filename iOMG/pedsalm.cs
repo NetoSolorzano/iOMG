@@ -1522,8 +1522,8 @@ namespace iOMG
         }
         private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
         {
-            tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
-            //tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_det2.SelectedIndex == -1) tx_d_det2.Text = "";
+            else tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
             armani();
         }
         private void cmb_det3_SelectionChangeCommitted(object sender, EventArgs e)

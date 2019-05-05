@@ -91,6 +91,8 @@ namespace iOMG
             Bt_close.Image = Image.FromFile(img_btq);
             bt_imprime.Image = Image.FromFile(img_imprime);
             bt_preview.Image = Image.FromFile(img_preview);
+            bt_imp_ing.Image = Image.FromFile(img_imprime);
+            bt_preview_ing.Image = Image.FromFile(img_preview);
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -355,38 +357,41 @@ namespace iOMG
             // codigo articulo
             dgv_ingresos.Columns[3].Visible = true;
             dgv_ingresos.Columns[3].HeaderText = "Artículo";
-            dgv_ingresos.Columns[3].Width = 100;
+            dgv_ingresos.Columns[3].Width = 150;
             dgv_ingresos.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             dgv_ingresos.Columns[3].Tag = "validaNO";          // las celdas de esta columna se SI se validan
             //dgv_pedidos.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Cant
+            // Nombre
             dgv_ingresos.Columns[4].Visible = true;
-            dgv_ingresos.Columns[4].HeaderText = "Cant";
-            dgv_ingresos.Columns[4].Width = 50;
+            dgv_ingresos.Columns[4].HeaderText = "Nombre";
+            dgv_ingresos.Columns[4].Width = 200;
             dgv_ingresos.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             dgv_ingresos.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
             //dgv_pedidos.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Comentarios
+            // Cant
             dgv_ingresos.Columns[5].Visible = true;
-            dgv_ingresos.Columns[5].HeaderText = "Comentario";
-            dgv_ingresos.Columns[5].Width = 190;
+            dgv_ingresos.Columns[5].HeaderText = "Cant";
+            dgv_ingresos.Columns[5].Width = 50;
             dgv_ingresos.Columns[5].ReadOnly = true;
             dgv_ingresos.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             //dgv_pedidos.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // resto 
-            dgv_ingresos.Columns[6].Visible = false;
-            dgv_ingresos.Columns[6].HeaderText = "";
-            dgv_ingresos.Columns[6].Width = 10;
+            // madera
+            dgv_ingresos.Columns[6].Visible = true;
+            dgv_ingresos.Columns[6].HeaderText = "Madera";
+            dgv_ingresos.Columns[6].Width = 70;
             dgv_ingresos.Columns[6].ReadOnly = true;
             dgv_ingresos.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
             //dgv_pedidos.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // 
-            dgv_ingresos.Columns[7].Visible = false;
-            dgv_ingresos.Columns[7].HeaderText = "";
-            dgv_ingresos.Columns[7].Width = 20;
+            // comentario
+            dgv_ingresos.Columns[7].Visible = true;
+            dgv_ingresos.Columns[7].HeaderText = "Comentario";
+            dgv_ingresos.Columns[7].Width = 200;
             dgv_ingresos.Columns[7].ReadOnly = true;
             dgv_ingresos.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
             //dgv_pedidos.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // resto
+            dgv_ingresos.Columns[8].Visible = false;
+            dgv_ingresos.Columns[9].Visible = false;
         }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
@@ -454,24 +459,26 @@ namespace iOMG
         }
         private void bt_filtra_ing_Click(object sender, EventArgs e)// filtra y muestra info - INGRESOS
         {
-            // a.fecha,c.descrizionerid,a.docum,a.item,a.cant,a.coment,a.almad,b.status
+            // a.fecha,c.descrizionerid,a.docum,a.item,'nombreArt',a.cant,madera,a.coment,a.almad,''
             string parte = "where a.tipmov = 'INGRES' and a.fecha between @fec1 and @fec2";
             string parte0 = "", parte1 = "", parte2 = "";
-            if (tx_dat_orig.Text != "")
+            if (tx_dat_taling.Text != "")
             {
                 parte0 = " and a.origen=@tal";
             }
-            if (tx_dat_dest.Text != "")
+            if (tx_dat_desing.Text != "")
             {
                 parte1 = " and a.almad=@des";
             }
-            if (tx_dat_estad.Text != "")
+            if (tx_dat_esting.Text != "")
             {
                 parte2 = " and b.status=@sta";
             }
-            string consulta = "select a.fecha,c.descrizionerid,a.docum,a.item,a.cant,a.coment,a.almad,b.status " +
-                "FROM movalm a left join pedidos b on b.codped=a.docum " +
-                "left join desc_alm c on trim(c.idcodice)=trim(a.almad) " +
+            string consulta = "SELECT a.fecha,b.descrizionerid,a.docum,a.item,i.nombr,a.cant,a.madera,a.coment,a.almad,'' " +
+                "FROM movalm a " +
+                "LEFT JOIN items i ON concat(i.capit, left(i.model, 3), i.mader, i.tipol, left(i.deta1, 2), i.acaba, i.talle, i.deta2) = " +
+                "concat(SUBSTRING(a.item, 1, 1), SUBSTRING(a.item, 2, 3), 'X', SUBSTRING(a.item, 6, 2), SUBSTRING(a.item, 8, 2), SUBSTRING(a.item, 10, 1), 'XX', SUBSTRING(a.item, 13, 3)) " +
+                "LEFT JOIN desc_alm b ON b.IDCodice = a.almad " +
                 parte + parte0 + parte1 + parte2 + " order by a.fecha,a.docum";
             try
             {
@@ -479,13 +486,13 @@ namespace iOMG
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
-                    dgv_pedidos.DataSource = null;
+                    dgv_ingresos.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@fec1", dtp_pedido.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@fec2", dtp_entreg.Value.ToString("yyyy-MM-dd"));
-                    if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_orig.Text);
-                    if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_dest.Text);
-                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_estad.Text);
+                    micon.Parameters.AddWithValue("@fec1", dtp_fini_ing.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fec2", dtp_final_ing.Value.ToString("yyyy-MM-dd"));
+                    if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_taling.Text);
+                    if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_desing.Text);
+                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_esting.Text);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dti = new DataTable();
                     da.Fill(dti);
@@ -673,6 +680,8 @@ namespace iOMG
         {
             Tx_modo.Text = "IMPRIMIR";
             tabControl1.Enabled = true;
+            cmb_tall_ing.Enabled = false;
+            cmb_estad_ing.Enabled = false;
             /*
             pageCount = 1;
             printDocument1.DefaultPageSettings.Landscape = true;
@@ -972,10 +981,85 @@ namespace iOMG
         }
         private void impri_ing(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
         {
-
+            // a.fecha,c.descrizionerid,a.docum,a.item,'nombreArt',a.cant,madera,a.coment,a.almad,b.status
+            // columnas del reporte
+            float col0 = coli;              // it contador filas
+            float col1 = coli + 50.0F;      // Fecha
+            float col2 = coli + 150.0F;     // almacen
+            float col3 = coli + 250.0F;     // pedido
+            float col4 = coli + 310.0F;     // Articulo
+            float col5 = coli + 480.0F;     // Nombre
+            float col6 = coli + 700.0F;     // cant
+            float col7 = coli + 750.0F;     // madera
+            float col8 = coli + 800.0F;     // coment
+            //
+            float posit = impcab_ing(piy, coli, alin, posi, alfi, e,
+                col0, col1, col2, col3, col4, col5, col6, col7, col8);
+            posi = posit;
+            SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
+            Font lt_tit = new Font("Arial", 7);
+            Font lt_quie = new Font("Arial", 8, FontStyle.Bold);
+            PointF ptoimp;
+            Pen blackPen = new Pen(Color.Black, 1);
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.FormatFlags = StringFormatFlags.NoWrap;
+            // leemos las columnas del data table
+            for (int fila = cuenta; fila < dgv_ingresos.Rows.Count; fila++)
+            {
+                string data0 = (fila + 1).ToString("###");                                             // contador
+                string dataI = dgv_ingresos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);     // Fecha
+                string data1 = dgv_ingresos.Rows[fila].Cells[1].Value.ToString().Substring(0, 10);     // almacen
+                string data2 = dgv_ingresos.Rows[fila].Cells[2].Value.ToString();                      // Pedido
+                string data3 = dgv_ingresos.Rows[fila].Cells[3].Value.ToString();                      // articulo
+                string data4 = dgv_ingresos.Rows[fila].Cells[4].Value.ToString();                      // nombre
+                string data5 = dgv_ingresos.Rows[fila].Cells[5].Value.ToString();                      // cant
+                string data6 = dgv_ingresos.Rows[fila].Cells[6].Value.ToString();                      // madera
+                string data7 = dgv_ingresos.Rows[fila].Cells[7].Value.ToString();                      // coment
+                // a.fecha,c.descrizionerid,a.docum,a.item,'nombreArt',a.cant,madera,a.coment,a.almad,b.status
+                ptoimp = new PointF(col0, posi);
+                e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col1, posi);
+                e.Graphics.DrawString(dataI, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col2, posi);
+                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col3, posi);
+                RectangleF recn = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, recn, sf);
+                ptoimp = new PointF(col4, posi);
+                RectangleF recco = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, ptoimp, sf);
+                ptoimp = new PointF(col5, posi);
+                Size siznom = new Size(200, 15);
+                RectangleF recnom = new RectangleF(ptoimp, siznom);
+                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, recnom, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col6, posi);
+                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col7, posi);
+                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col8, posi);
+                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                //
+                posi = posi + alfi + 5;             // avance de fila
+                e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
+                posi = posi + alfi - 5;             // avance de fila
+                cuenta = cuenta + 1;
+                if (posi >= e.PageBounds.Height - 20.0F)
+                {
+                    pageCount = pageCount + 1;
+                    e.HasMorePages = true;
+                    return;
+                }
+                else
+                {
+                    e.HasMorePages = false;
+                }
+            }
+            posi = posi + alfi * 2;             // avance de fila
+            cuenta = 0;
         }
         private float impcab_ing(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
-            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8, float col9, float co10, float co11, float co12)
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8)
         {
             float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
             float colm = coli + 280.0F;                                 // columna media
@@ -1006,43 +1090,34 @@ namespace iOMG
             e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
             // titulo y filtros
             SizeF anctyf = new SizeF();
-            anctyf = e.Graphics.MeasureString(this.Text, lt_cliente);
+            anctyf = e.Graphics.MeasureString("INGRESOS DE ALMACEN", lt_cliente);
             PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
-            e.Graphics.DrawString(this.Text, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
-            string ddd = "Del " + dtp_pedido.Value.ToString("dd/MM/yyyy") + " Al " + dtp_entreg.Value.ToString("dd/MM/yyyy");
+            e.Graphics.DrawString("INGRESOS DE ALMACEN", lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            string ddd = "Del " + dtp_fini_ing.Value.ToString("dd/MM/yyyy") + " Al " + dtp_final_ing.Value.ToString("dd/MM/yyyy");
             anctyf = e.Graphics.MeasureString(ddd, lt_tit);
             ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
             e.Graphics.DrawString(ddd, lt_tit, Brushes.Black, ptotit, StringFormat.GenericTypographic);
             // titulo de las columnas
-            //a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
-            //d.item,d.nombre,d.madera,d.piedra,d.medidas,d.cant,d.saldo,a.status,a.origen
+            // a.fecha,c.descrizionerid,a.docum,a.item,'nombreArt',a.cant,'saldo',a.coment,a.almad,b.status
             posi = posi + alfi;
             PointF ptoimp = new PointF(col0, posi);
-            e.Graphics.DrawString("Fecha", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("It", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col1, posi);
-            e.Graphics.DrawString("Llegada", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("F.Ingreso", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Almacén", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col3, posi);
-            e.Graphics.DrawString("Estado", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col4, posi);
             e.Graphics.DrawString("Articulo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col5, posi);
             e.Graphics.DrawString("Nombre", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col6, posi);
-            e.Graphics.DrawString("Mad.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col7, posi);
-            e.Graphics.DrawString("Det.2", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col8, posi);
-            e.Graphics.DrawString("Acabado", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col9, posi);
-            e.Graphics.DrawString("Medidas", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(co10, posi);
             e.Graphics.DrawString("Cant", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(co11, posi);
-            e.Graphics.DrawString("Saldo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(co12, posi);
-            e.Graphics.DrawString("F.Ingreso", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col7, posi);
+            e.Graphics.DrawString("Madera", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col8, posi);
+            e.Graphics.DrawString("Comentario", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             posi = posi + alfi + 7.0F;             // avance de fila
             e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
             posi = posi + 2;             // avance de fila
