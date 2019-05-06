@@ -289,7 +289,8 @@ namespace iOMG
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
             // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
-            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso " +
+            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
+                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso,a.saldo " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
@@ -330,7 +331,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 13;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -410,6 +411,13 @@ namespace iOMG
             dataGridView1.Columns[12].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[12].Name = "fingreso";
+            // saldo
+            dataGridView1.Columns[13].Visible = true;            // columna visible o no
+            dataGridView1.Columns[13].HeaderText = "Saldo"; // titulo de la columna
+            dataGridView1.Columns[13].Width = 60;                // ancho
+            dataGridView1.Columns[13].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[13].Name = "saldo";
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -698,11 +706,12 @@ namespace iOMG
                         if (conn.State == ConnectionState.Open)
                         {
                             string codbs = "";
+                            /*
                             if (canovald2.Contains(fam))
                             {   // fam = A,C,D,E,F => det2 = conovald2 = R00
                                 codbs = fam + mod + "X" + tip + de1 + aca + "XX" + conovald2 + de3 + "N000";
-                            }
-                            else
+                            } 
+                            else */
                             {
                                 codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
                             }
@@ -782,10 +791,11 @@ namespace iOMG
                     // detalle
                     for(int i=0; i<dataGridView1.Rows.Count - 1; i++)
                     {
-                        //id,cant,articulo,nombre,medidas,madera,Deta2,acabado,comentario,Codest
+                        // a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,b.descrizionerid,a.coment,
+                        // a.estado,a.madera,a.piedra,a.fingreso,a.saldo
                         string insdet = "insert into detaped (" +
-                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment) values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come)";
+                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,fingreso,saldo) values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@fing,@sald)";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                         micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -797,6 +807,8 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                        micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                        micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -843,7 +855,7 @@ namespace iOMG
                     {
                         //id,cant,articulo,nombre,medidas,madera,Deta2,acabado,comentario,Codest
                         string insdet = "update detaped set " +
-                            "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come " +
+                            "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
                             "where iddetaped=@idr";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -855,6 +867,8 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                        micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                        micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1032,11 +1046,11 @@ namespace iOMG
                     {
                         // insertamos en el datatable
                         DataRow dr = dtg.NewRow();
-                        // id,codped,tipoes,origen,destino,fecha,entrega,coment
+                        // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
                         string cid = "0";
                         dr[0] = cid;
                         dr[1] = tx_codped.Text;
-                        dr[2] = tx_dat_estad.Text;    //tx_dat_tiped.Text;
+                        dr[2] = tx_dat_estad.Text;     // 
                         dr[3] = tx_dat_orig.Text;
                         dr[4] = tx_dat_dest.Text;
                         dr[5] = dtp_pedido.Value.ToString("yyy-MM-dd");
@@ -1071,8 +1085,8 @@ namespace iOMG
                             DataRow row = dtg.Rows[i];
                             if (row[0].ToString() == tx_idr.Text)
                             {
-                                //id,codped,tipoes,origen,destino,fecha,entrega,coment
-                                dtg.Rows[i][2] = tx_dat_estad.Text;
+                                // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
+                                dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 7);    // tx_dat_estad.Text;
                                 dtg.Rows[i][3] = tx_dat_orig.Text;
                                 dtg.Rows[i][4] = tx_dat_dest.Text;
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
@@ -1530,7 +1544,6 @@ namespace iOMG
         {
             armani();
         }
-
         #endregion comboboxes
 
         #region advancedatagridview
@@ -1661,6 +1674,16 @@ namespace iOMG
         {
             if (e.ColumnIndex == 0 && e.RowIndex > -1)
             {
+                if(Tx_modo.Text == "EDITAR")
+                {
+                    tx_fingreso.Enabled = true;
+                    tx_saldo.Enabled = true;
+                }
+                else
+                {
+                    tx_fingreso.Enabled = false;
+                    tx_saldo.Enabled = false;
+                }
                 tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
                 tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
                 tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
@@ -1701,6 +1724,9 @@ namespace iOMG
                 cmb_det3.Tag = de3;
                 cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
                 cmb_det3_SelectionChangeCommitted(null, null);
+
+                tx_fingreso.Text = dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString();        // f. ingreso
+                tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
             }
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)

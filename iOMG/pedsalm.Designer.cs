@@ -123,6 +123,10 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tx_saldo = new System.Windows.Forms.TextBox();
+            this.tx_fingreso = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -251,6 +255,10 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_fingreso);
+            this.panel1.Controls.Add(this.tx_saldo);
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.bt_det);
             this.panel1.Controls.Add(this.cmb_det3);
             this.panel1.Controls.Add(this.cmb_det2);
@@ -273,16 +281,16 @@
             this.panel1.Controls.Add(this.tx_d_it);
             this.panel1.Location = new System.Drawing.Point(3, 101);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(963, 49);
+            this.panel1.Size = new System.Drawing.Size(963, 68);
             this.panel1.TabIndex = 298;
             // 
             // bt_det
             // 
-            this.bt_det.Location = new System.Drawing.Point(876, 23);
+            this.bt_det.Location = new System.Drawing.Point(862, 24);
             this.bt_det.Name = "bt_det";
-            this.bt_det.Size = new System.Drawing.Size(80, 23);
-            this.bt_det.TabIndex = 13;
-            this.bt_det.Text = "Agrega";
+            this.bt_det.Size = new System.Drawing.Size(80, 39);
+            this.bt_det.TabIndex = 22;
+            this.bt_det.Text = "Agrega / Actualiza";
             this.bt_det.UseVisualStyleBackColor = true;
             this.bt_det.Click += new System.EventHandler(this.bt_det_Click);
             // 
@@ -292,7 +300,7 @@
             this.cmb_det3.DropDownWidth = 100;
             this.cmb_det3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_det3.FormattingEnabled = true;
-            this.cmb_det3.Location = new System.Drawing.Point(329, 2);
+            this.cmb_det3.Location = new System.Drawing.Point(329, 1);
             this.cmb_det3.Name = "cmb_det3";
             this.cmb_det3.Size = new System.Drawing.Size(43, 21);
             this.cmb_det3.TabIndex = 8;
@@ -304,7 +312,7 @@
             this.cmb_det2.DropDownWidth = 100;
             this.cmb_det2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_det2.FormattingEnabled = true;
-            this.cmb_det2.Location = new System.Drawing.Point(278, 2);
+            this.cmb_det2.Location = new System.Drawing.Point(278, 1);
             this.cmb_det2.Name = "cmb_det2";
             this.cmb_det2.Size = new System.Drawing.Size(50, 21);
             this.cmb_det2.TabIndex = 7;
@@ -316,7 +324,7 @@
             this.cmb_tal.DropDownWidth = 100;
             this.cmb_tal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_tal.FormattingEnabled = true;
-            this.cmb_tal.Location = new System.Drawing.Point(238, 2);
+            this.cmb_tal.Location = new System.Drawing.Point(238, 1);
             this.cmb_tal.Name = "cmb_tal";
             this.cmb_tal.Size = new System.Drawing.Size(39, 21);
             this.cmb_tal.TabIndex = 6;
@@ -328,7 +336,7 @@
             this.cmb_aca.DropDownWidth = 100;
             this.cmb_aca.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_aca.FormattingEnabled = true;
-            this.cmb_aca.Location = new System.Drawing.Point(202, 2);
+            this.cmb_aca.Location = new System.Drawing.Point(202, 1);
             this.cmb_aca.Name = "cmb_aca";
             this.cmb_aca.Size = new System.Drawing.Size(35, 21);
             this.cmb_aca.TabIndex = 5;
@@ -340,7 +348,7 @@
             this.cmb_det1.DropDownWidth = 100;
             this.cmb_det1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_det1.FormattingEnabled = true;
-            this.cmb_det1.Location = new System.Drawing.Point(162, 2);
+            this.cmb_det1.Location = new System.Drawing.Point(162, 1);
             this.cmb_det1.Name = "cmb_det1";
             this.cmb_det1.Size = new System.Drawing.Size(39, 21);
             this.cmb_det1.TabIndex = 4;
@@ -352,7 +360,7 @@
             this.cmb_tip.DropDownWidth = 100;
             this.cmb_tip.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_tip.FormattingEnabled = true;
-            this.cmb_tip.Location = new System.Drawing.Point(122, 2);
+            this.cmb_tip.Location = new System.Drawing.Point(122, 1);
             this.cmb_tip.Name = "cmb_tip";
             this.cmb_tip.Size = new System.Drawing.Size(39, 21);
             this.cmb_tip.TabIndex = 3;
@@ -364,7 +372,7 @@
             this.cmb_mad.DropDownWidth = 100;
             this.cmb_mad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_mad.FormattingEnabled = true;
-            this.cmb_mad.Location = new System.Drawing.Point(85, 2);
+            this.cmb_mad.Location = new System.Drawing.Point(85, 1);
             this.cmb_mad.Name = "cmb_mad";
             this.cmb_mad.Size = new System.Drawing.Size(36, 21);
             this.cmb_mad.TabIndex = 2;
@@ -376,7 +384,7 @@
             this.cmb_mod.DropDownWidth = 100;
             this.cmb_mod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_mod.FormattingEnabled = true;
-            this.cmb_mod.Location = new System.Drawing.Point(39, 2);
+            this.cmb_mod.Location = new System.Drawing.Point(39, 1);
             this.cmb_mod.Name = "cmb_mod";
             this.cmb_mod.Size = new System.Drawing.Size(45, 21);
             this.cmb_mod.TabIndex = 1;
@@ -388,7 +396,7 @@
             this.cmb_fam.DropDownWidth = 100;
             this.cmb_fam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_fam.FormattingEnabled = true;
-            this.cmb_fam.Location = new System.Drawing.Point(2, 2);
+            this.cmb_fam.Location = new System.Drawing.Point(2, 1);
             this.cmb_fam.Name = "cmb_fam";
             this.cmb_fam.Size = new System.Drawing.Size(36, 21);
             this.cmb_fam.TabIndex = 0;
@@ -396,54 +404,54 @@
             // 
             // tx_d_com
             // 
-            this.tx_d_com.Location = new System.Drawing.Point(272, 25);
+            this.tx_d_com.Location = new System.Drawing.Point(272, 24);
             this.tx_d_com.Name = "tx_d_com";
-            this.tx_d_com.Size = new System.Drawing.Size(599, 20);
-            this.tx_d_com.TabIndex = 12;
+            this.tx_d_com.Size = new System.Drawing.Size(570, 20);
+            this.tx_d_com.TabIndex = 19;
             this.tx_d_com.Tag = "Id";
             // 
             // tx_d_est
             // 
-            this.tx_d_est.Location = new System.Drawing.Point(898, 3);
+            this.tx_d_est.Location = new System.Drawing.Point(898, 2);
             this.tx_d_est.Name = "tx_d_est";
             this.tx_d_est.ReadOnly = true;
             this.tx_d_est.Size = new System.Drawing.Size(61, 20);
-            this.tx_d_est.TabIndex = 268;
+            this.tx_d_est.TabIndex = 14;
             this.tx_d_est.Tag = "Id";
             this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_det2
             // 
-            this.tx_d_det2.Location = new System.Drawing.Point(842, 3);
+            this.tx_d_det2.Location = new System.Drawing.Point(842, 2);
             this.tx_d_det2.Name = "tx_d_det2";
             this.tx_d_det2.ReadOnly = true;
             this.tx_d_det2.Size = new System.Drawing.Size(56, 20);
-            this.tx_d_det2.TabIndex = 267;
+            this.tx_d_det2.TabIndex = 13;
             this.tx_d_det2.Tag = "Id";
             this.tx_d_det2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_mad
             // 
-            this.tx_d_mad.Location = new System.Drawing.Point(786, 3);
+            this.tx_d_mad.Location = new System.Drawing.Point(786, 2);
             this.tx_d_mad.Name = "tx_d_mad";
             this.tx_d_mad.ReadOnly = true;
             this.tx_d_mad.Size = new System.Drawing.Size(56, 20);
-            this.tx_d_mad.TabIndex = 266;
+            this.tx_d_mad.TabIndex = 12;
             this.tx_d_mad.Tag = "Id";
             this.tx_d_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_med
             // 
-            this.tx_d_med.Location = new System.Drawing.Point(681, 3);
+            this.tx_d_med.Location = new System.Drawing.Point(681, 2);
             this.tx_d_med.Name = "tx_d_med";
             this.tx_d_med.Size = new System.Drawing.Size(105, 20);
-            this.tx_d_med.TabIndex = 265;
+            this.tx_d_med.TabIndex = 11;
             this.tx_d_med.Tag = "Id";
             this.tx_d_med.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_nom
             // 
-            this.tx_d_nom.Location = new System.Drawing.Point(373, 3);
+            this.tx_d_nom.Location = new System.Drawing.Point(373, 2);
             this.tx_d_nom.Name = "tx_d_nom";
             this.tx_d_nom.Size = new System.Drawing.Size(308, 20);
             this.tx_d_nom.TabIndex = 10;
@@ -452,40 +460,40 @@
             // 
             // tx_d_codi
             // 
-            this.tx_d_codi.Location = new System.Drawing.Point(102, 25);
+            this.tx_d_codi.Location = new System.Drawing.Point(102, 24);
             this.tx_d_codi.Name = "tx_d_codi";
             this.tx_d_codi.ReadOnly = true;
             this.tx_d_codi.Size = new System.Drawing.Size(170, 20);
-            this.tx_d_codi.TabIndex = 11;
+            this.tx_d_codi.TabIndex = 18;
             this.tx_d_codi.Tag = "Id";
             this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_can
             // 
-            this.tx_d_can.Location = new System.Drawing.Point(65, 25);
+            this.tx_d_can.Location = new System.Drawing.Point(65, 24);
             this.tx_d_can.Name = "tx_d_can";
             this.tx_d_can.Size = new System.Drawing.Size(37, 20);
-            this.tx_d_can.TabIndex = 262;
+            this.tx_d_can.TabIndex = 17;
             this.tx_d_can.Tag = "Id";
             this.tx_d_can.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_id
             // 
-            this.tx_d_id.Location = new System.Drawing.Point(28, 25);
+            this.tx_d_id.Location = new System.Drawing.Point(28, 24);
             this.tx_d_id.Name = "tx_d_id";
             this.tx_d_id.ReadOnly = true;
             this.tx_d_id.Size = new System.Drawing.Size(37, 20);
-            this.tx_d_id.TabIndex = 261;
+            this.tx_d_id.TabIndex = 16;
             this.tx_d_id.Tag = "Id";
             this.tx_d_id.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_it
             // 
-            this.tx_d_it.Location = new System.Drawing.Point(3, 25);
+            this.tx_d_it.Location = new System.Drawing.Point(3, 24);
             this.tx_d_it.Name = "tx_d_it";
             this.tx_d_it.ReadOnly = true;
             this.tx_d_it.Size = new System.Drawing.Size(25, 20);
-            this.tx_d_it.TabIndex = 260;
+            this.tx_d_it.TabIndex = 15;
             this.tx_d_it.Tag = "Id";
             this.tx_d_it.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -596,9 +604,9 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 151);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 171);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(963, 285);
+            this.dataGridView1.Size = new System.Drawing.Size(963, 266);
             this.dataGridView1.TabIndex = 273;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
@@ -1133,6 +1141,42 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(281, 49);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(90, 13);
+            this.label8.TabIndex = 301;
+            this.label8.Text = "Fecha de Ingreso";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(559, 49);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(83, 13);
+            this.label9.TabIndex = 303;
+            this.label9.Text = "Saldo por recibir";
+            // 
+            // tx_saldo
+            // 
+            this.tx_saldo.Location = new System.Drawing.Point(644, 45);
+            this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.Size = new System.Drawing.Size(37, 20);
+            this.tx_saldo.TabIndex = 21;
+            this.tx_saldo.Tag = "Id";
+            this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_fingreso
+            // 
+            this.tx_fingreso.Location = new System.Drawing.Point(373, 45);
+            this.tx_fingreso.Name = "tx_fingreso";
+            this.tx_fingreso.Size = new System.Drawing.Size(106, 20);
+            this.tx_fingreso.TabIndex = 20;
+            this.tx_fingreso.Tag = "Id";
+            this.tx_fingreso.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // Pedsalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1261,5 +1305,9 @@
         private System.Windows.Forms.DateTimePicker dtp_entreg;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.TextBox tx_saldo;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tx_fingreso;
     }
 }
