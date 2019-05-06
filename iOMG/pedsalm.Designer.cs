@@ -36,6 +36,9 @@
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_saldo = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.bt_det = new System.Windows.Forms.Button();
             this.cmb_det3 = new System.Windows.Forms.ComboBox();
             this.cmb_det2 = new System.Windows.Forms.ComboBox();
@@ -123,10 +126,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tx_saldo = new System.Windows.Forms.TextBox();
-            this.tx_fingreso = new System.Windows.Forms.TextBox();
+            this.dtp_fingreso = new System.Windows.Forms.DateTimePicker();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -255,7 +255,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.tx_fingreso);
+            this.panel1.Controls.Add(this.dtp_fingreso);
             this.panel1.Controls.Add(this.tx_saldo);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label8);
@@ -283,6 +283,33 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 68);
             this.panel1.TabIndex = 298;
+            // 
+            // tx_saldo
+            // 
+            this.tx_saldo.Location = new System.Drawing.Point(644, 45);
+            this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.Size = new System.Drawing.Size(37, 20);
+            this.tx_saldo.TabIndex = 21;
+            this.tx_saldo.Tag = "Id";
+            this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(559, 49);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(83, 13);
+            this.label9.TabIndex = 303;
+            this.label9.Text = "Saldo por recibir";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(281, 49);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(90, 13);
+            this.label8.TabIndex = 301;
+            this.label8.Text = "Fecha de Ingreso";
             // 
             // bt_det
             // 
@@ -476,6 +503,7 @@
             this.tx_d_can.TabIndex = 17;
             this.tx_d_can.Tag = "Id";
             this.tx_d_can.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_can.Leave += new System.EventHandler(this.tx_d_can_Leave);
             // 
             // tx_d_id
             // 
@@ -1141,41 +1169,14 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // label8
+            // dtp_fingreso
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(281, 49);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(90, 13);
-            this.label8.TabIndex = 301;
-            this.label8.Text = "Fecha de Ingreso";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(559, 49);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(83, 13);
-            this.label9.TabIndex = 303;
-            this.label9.Text = "Saldo por recibir";
-            // 
-            // tx_saldo
-            // 
-            this.tx_saldo.Location = new System.Drawing.Point(644, 45);
-            this.tx_saldo.Name = "tx_saldo";
-            this.tx_saldo.Size = new System.Drawing.Size(37, 20);
-            this.tx_saldo.TabIndex = 21;
-            this.tx_saldo.Tag = "Id";
-            this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_fingreso
-            // 
-            this.tx_fingreso.Location = new System.Drawing.Point(373, 45);
-            this.tx_fingreso.Name = "tx_fingreso";
-            this.tx_fingreso.Size = new System.Drawing.Size(106, 20);
-            this.tx_fingreso.TabIndex = 20;
-            this.tx_fingreso.Tag = "Id";
-            this.tx_fingreso.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.dtp_fingreso.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_fingreso.Location = new System.Drawing.Point(379, 45);
+            this.dtp_fingreso.Name = "dtp_fingreso";
+            this.dtp_fingreso.ShowCheckBox = true;
+            this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
+            this.dtp_fingreso.TabIndex = 304;
             // 
             // Pedsalm
             // 
@@ -1308,6 +1309,6 @@
         private System.Windows.Forms.TextBox tx_saldo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tx_fingreso;
+        private System.Windows.Forms.DateTimePicker dtp_fingreso;
     }
 }

@@ -290,7 +290,7 @@ namespace iOMG
         {
             // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
             string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
-                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso,a.saldo " +
+                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
@@ -319,7 +319,7 @@ namespace iOMG
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error en código");
+                MessageBox.Show(ex.Message, "Error en obtener detalle del pedido");
                 Application.Exit();
                 return;
             }
@@ -793,9 +793,15 @@ namespace iOMG
                     {
                         // a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,b.descrizionerid,a.coment,
                         // a.estado,a.madera,a.piedra,a.fingreso,a.saldo
+                        string tfingreso = "", tfing = "";
+                        if (dtp_fingreso.Checked == true)
+                        {
+                            tfingreso = ",fingreso";
+                            tfing = ",@fing";
+                        }
                         string insdet = "insert into detaped (" +
-                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,fingreso,saldo) values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@fing,@sald)";
+                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo" + tfingreso + ") values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + tfing + ")";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                         micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -807,7 +813,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
-                        micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                        if (dtp_fingreso.Checked == true) micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
@@ -853,7 +859,7 @@ namespace iOMG
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
-                        //id,cant,articulo,nombre,medidas,madera,Deta2,acabado,comentario,Codest
+                        //
                         string insdet = "update detaped set " +
                             "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
                             "where iddetaped=@idr";
@@ -867,7 +873,14 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
-                        micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                        if(dataGridView1.Rows[i].Cells[12].Value.ToString() == "")
+                        {
+                            micon.Parameters.AddWithValue("@fing", DBNull.Value);
+                        }
+                        else
+                        {
+                            micon.Parameters.AddWithValue("@fing", Convert.ToDateTime(dataGridView1.Rows[i].Cells[12].Value.ToString()));
+                        }
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
@@ -1049,7 +1062,7 @@ namespace iOMG
                         // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
                         string cid = "0";
                         dr[0] = cid;
-                        dr[1] = tx_codped.Text;
+                        dr[1] = cmb_estado.SelectedItem.ToString().Substring(9, 6); // tx_codped.Text;
                         dr[2] = tx_dat_estad.Text;     // 
                         dr[3] = tx_dat_orig.Text;
                         dr[4] = tx_dat_dest.Text;
@@ -1086,7 +1099,7 @@ namespace iOMG
                             if (row[0].ToString() == tx_idr.Text)
                             {
                                 // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
-                                dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 7);    // tx_dat_estad.Text;
+                                dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 6);    // tx_dat_estad.Text;
                                 dtg.Rows[i][3] = tx_dat_orig.Text;
                                 dtg.Rows[i][4] = tx_dat_dest.Text;
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
@@ -1135,9 +1148,9 @@ namespace iOMG
             }
             if(Tx_modo.Text == "NUEVO")
             {
-                dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text, tx_d_mad.Text,
-                    tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text,
-                    cmb_aca.Tag.ToString(), cmb_mad.SelectedItem.ToString().Substring(0,1), cmb_det2.SelectedItem.ToString().Substring(0,3));
+                dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                     tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
+                    cmb_mad.SelectedItem.ToString().Substring(0,1), cmb_det2.SelectedItem.ToString().Substring(0,3),"",tx_saldo.Text);
             }
             if (Tx_modo.Text != "NUEVO")
             {
@@ -1147,7 +1160,8 @@ namespace iOMG
                         "No puede continuar",MessageBoxButtons.OK,MessageBoxIcon.Stop);
                     return;
                 }
-                //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado
+                //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,
+                //b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso,a.saldo
                 DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                 obj.Cells[1].Value = tx_d_can.Text;
                 obj.Cells[2].Value = tx_d_codi.Text;
@@ -1160,11 +1174,30 @@ namespace iOMG
                 obj.Cells[9].Value = cmb_aca.Tag.ToString();
                 obj.Cells[10].Value = cmb_mad.Tag.ToString();
                 obj.Cells[11].Value = cmb_det2.Tag.ToString();
+                if(dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
+                obj.Cells[13].Value = tx_saldo.Text;
             }
             tx_d_nom.Text = "";
             tx_d_can.Text = "";
             tx_d_com.Text = "";
             tx_d_med.Text = "";
+            tx_d_mad.Text = "";
+            tx_d_det2.Text = "";
+            tx_d_est.Text = "";
+            tx_d_id.Text = "";
+            tx_d_codi.Text = "";
+            //tx_fingreso.Text = "";
+            tx_saldo.Text = "";
+            //limpia_combos(tabuser);
+            cmb_fam.SelectedIndex = -1;
+            cmb_mod.SelectedIndex = -1;
+            cmb_mad.SelectedIndex = -1;
+            cmb_tip.SelectedIndex = -1;
+            cmb_det1.SelectedIndex = -1;
+            cmb_aca.SelectedIndex = -1;
+            cmb_tal.SelectedIndex = -1;
+            cmb_det2.SelectedIndex = -1;
+            cmb_det3.SelectedIndex = -1;
         }
         #endregion boton_form;
 
@@ -1195,6 +1228,10 @@ namespace iOMG
             {
                 jalaoc("tx_codped");
             }
+        }
+        private void tx_d_can_Leave(object sender, EventArgs e)
+        {
+            tx_saldo.Text = tx_d_can.Text;
         }
         #endregion leaves;
 
@@ -1287,6 +1324,7 @@ namespace iOMG
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
             tx_dat_estad.Text = tiesta;
             tx_codped.ReadOnly = true;
+            dtp_fingreso.Checked = false;
             cmb_taller.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1313,6 +1351,7 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
+            dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
         }
         private void Bt_close_Click(object sender, EventArgs e)
@@ -1676,12 +1715,12 @@ namespace iOMG
             {
                 if(Tx_modo.Text == "EDITAR")
                 {
-                    tx_fingreso.Enabled = true;
+                    dtp_fingreso.Enabled = true;
                     tx_saldo.Enabled = true;
                 }
                 else
                 {
-                    tx_fingreso.Enabled = false;
+                    dtp_fingreso.Enabled = false;
                     tx_saldo.Enabled = false;
                 }
                 tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
@@ -1724,8 +1763,22 @@ namespace iOMG
                 cmb_det3.Tag = de3;
                 cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
                 cmb_det3_SelectionChangeCommitted(null, null);
-
-                tx_fingreso.Text = dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString();        // f. ingreso
+                if(dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value != null)
+                {   
+                    if (dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString() != "")         // f. ingreso
+                    {   // tx_fingreso.Text = dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString().Substring(0, 10)
+                        if(dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString().Substring(0, 10) == "00/00/0000")
+                        {
+                            dtp_fingreso.Value = DateTime.Now;
+                            dtp_fingreso.Checked = false;
+                        }
+                        else
+                        {
+                            dtp_fingreso.Value = Convert.ToDateTime(dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString());
+                        }
+                    }
+                    else dtp_fingreso.Checked = false;  // tx_fingreso.Text = ""
+                }
                 tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
             }
         }
