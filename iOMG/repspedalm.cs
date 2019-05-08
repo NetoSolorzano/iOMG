@@ -419,7 +419,7 @@ namespace iOMG
                 "left join desc_est e on e.idcodice=d.estado " +
                 "left join desc_mad f on f.idcodice=d.madera " +
                 "left join desc_dt2 g on g.idcodice=d.piedra " +
-                parte + parte0 + parte1 + parte2 + " order by a.origen,a.codped"; // d.coment, a.coment,
+                parte + parte0 + parte1 + parte2 + " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1124,6 +1124,8 @@ namespace iOMG
             //
             return posi;
         }
+        // salidas
+
         #endregion
     }
 }

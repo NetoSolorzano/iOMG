@@ -705,29 +705,84 @@ namespace iOMG
                         conn.Open();
                         if (conn.State == ConnectionState.Open)
                         {
-                            string codbs = "";
                             /*
+                            string codbs = "";
                             if (canovald2.Contains(fam))
                             {   // fam = A,C,D,E,F => det2 = conovald2 = R00
                                 codbs = fam + mod + "X" + tip + de1 + aca + "XX" + conovald2 + de3 + "N000";
                             } 
-                            else */
+                            else
                             {
                                 codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
                             }
-                            string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
+                            */
+                            //string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
+                            string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3 " +
+                                "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1"; // and deta3=@dt3
                             MySqlCommand micon = new MySqlCommand(busca, conn);
-                            micon.Parameters.AddWithValue("@cod", codbs);
-                            MySqlDataReader dr = micon.ExecuteReader();
-                            if (!dr.HasRows)
+                            //micon.Parameters.AddWithValue("@cod", codbs);
+                            micon.Parameters.AddWithValue("@fam", fam);
+                            micon.Parameters.AddWithValue("@mod", mod);
+                            micon.Parameters.AddWithValue("@tip", tip);
+                            micon.Parameters.AddWithValue("@dt1", de1);
+                            //micon.Parameters.AddWithValue("@dt3", de3);
+                            //MySqlDataReader dr = micon.ExecuteReader();
+                            MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                            DataTable dtm = new DataTable();
+                            da.Fill(dtm);
+                            if (dtm.Rows.Count == 0)
                             {
                                 MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                 return;
                             }
-                            if (dr.Read())
+                            string gol = "";
+                            for (int i = 0; i < dtm.Rows.Count; i++)
                             {
-                                tx_d_nom.Text = dr.GetString(1);
-                                tx_d_med.Text = dr.GetString(2);
+                                DataRow fila = dtm.Rows[i];
+                                if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
+                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
+                                {
+                                    tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                    tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                    gol = "1";
+                                    break;
+                                }
+                            }
+                            if (gol == "")
+                            {
+                                for (int i = 0; i < dtm.Rows.Count; i++)
+                                {
+                                    DataRow fila = dtm.Rows[i];
+                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == aca &&
+                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
+                                    {
+                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        gol = "1";
+                                        break;
+                                    }
+                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
+                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
+                                    {
+                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        gol = "1";
+                                        break;
+                                    }
+                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
+                                    fila["deta3"].ToString() == de3)
+                                    {
+                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        gol = "1";
+                                        break;
+                                    }
+                                }
+                            }
+                            if(gol == "")
+                            {
+                                MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
                             }
                         }
                         else
