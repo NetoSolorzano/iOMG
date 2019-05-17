@@ -36,6 +36,7 @@
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.dtp_fingreso = new System.Windows.Forms.DateTimePicker();
             this.tx_saldo = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -126,7 +127,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.dtp_fingreso = new System.Windows.Forms.DateTimePicker();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -283,6 +283,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 68);
             this.panel1.TabIndex = 298;
+            // 
+            // dtp_fingreso
+            // 
+            this.dtp_fingreso.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_fingreso.Location = new System.Drawing.Point(379, 45);
+            this.dtp_fingreso.Name = "dtp_fingreso";
+            this.dtp_fingreso.ShowCheckBox = true;
+            this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
+            this.dtp_fingreso.TabIndex = 304;
             // 
             // tx_saldo
             // 
@@ -946,7 +955,7 @@
             this.Bt_add.Name = "Bt_add";
             this.Bt_add.Size = new System.Drawing.Size(32, 32);
             this.Bt_add.Text = "Bt_close";
-            this.Bt_add.ToolTipText = "Nuevo usuario";
+            this.Bt_add.ToolTipText = "Nuevo pedido";
             this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
             // 
             // toolStripSeparator6
@@ -991,7 +1000,7 @@
             this.Bt_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Bt_edit.Name = "Bt_edit";
             this.Bt_edit.Size = new System.Drawing.Size(32, 32);
-            this.Bt_edit.ToolTipText = "Editar usuario";
+            this.Bt_edit.ToolTipText = "Editar pedido";
             this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
             // 
             // toolStripSeparator13
@@ -1030,7 +1039,7 @@
             this.Bt_anul.Name = "Bt_anul";
             this.Bt_anul.Size = new System.Drawing.Size(32, 32);
             this.Bt_anul.Text = "Bt_close";
-            this.Bt_anul.ToolTipText = "Anular usuario";
+            this.Bt_anul.ToolTipText = "Vista preliminar";
             this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
             // 
             // toolStripSeparator1
@@ -1168,15 +1177,6 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
-            // 
-            // dtp_fingreso
-            // 
-            this.dtp_fingreso.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fingreso.Location = new System.Drawing.Point(379, 45);
-            this.dtp_fingreso.Name = "dtp_fingreso";
-            this.dtp_fingreso.ShowCheckBox = true;
-            this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
-            this.dtp_fingreso.TabIndex = 304;
             // 
             // Pedsalm
             // 
