@@ -299,7 +299,7 @@ namespace iOMG
             // DATOS DEL COMBOBOX3  LOCAL
             this.comboBox3.Items.Clear();
             ComboItem citem_sds = new ComboItem();
-            const string conssed = "select descrizionerid,idcodice from desc_loc " +
+            const string conssed = "select descrizionerid,idcodice from desc_alm " +
                 "where numero=1";
             MySqlCommand cmd3 = new MySqlCommand(conssed, conn);
             DataTable dt3 = new DataTable();
@@ -579,12 +579,25 @@ namespace iOMG
                             Application.Exit();
                             return;
                         }
-                        if (confper("edita", textBox1.Text) == false)
+                        if(chk_permisos.Checked == true)
                         {
-                            MessageBox.Show("No fue posible actualizar los permisos del" + Environment.NewLine +
-                                "usuario, deberá hacerlo manualmente"
-                                , "Error en tabla de permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
+                            if (confper("reini", textBox1.Text) == false)
+                            {
+                                MessageBox.Show("No fue posible re-inicializar los permisos del" + Environment.NewLine +
+                                    "usuario, deberá hacerlo manualmente"
+                                    , "Error en tabla de permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (confper("edita", textBox1.Text) == false)
+                            {
+                                MessageBox.Show("No fue posible actualizar los permisos del" + Environment.NewLine +
+                                    "usuario, deberá hacerlo manualmente"
+                                    , "Error en tabla de permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
                         }
                         // actualizamos el tdg
                         if (tx_rind.Text.Trim() != "")
@@ -845,6 +858,7 @@ namespace iOMG
             limpia_otros(tabuser);
             limpia_combos(tabuser);
             chk_res.Enabled = false;
+            chk_permisos.Enabled = false;
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -867,6 +881,7 @@ namespace iOMG
             limpia_otros(tabuser);
             limpia_combos(tabuser);
             chk_res.Enabled = true;
+            chk_permisos.Enabled = true;
             //textBox1.Text = codu;
             //tx_idr.Text = idr;
             jalaoc("tx_idr");
@@ -881,6 +896,7 @@ namespace iOMG
             this.Tx_modo.Text = "IMPRIMIR";
             this.button1.Image = Image.FromFile("print48");
             chk_res.Enabled = false;
+            chk_permisos.Enabled = false;
             this.textBox1.Focus();
             //limpiar(this);
             //totfilgrid = dataGridView1.Rows.Count - 1;
@@ -908,6 +924,7 @@ namespace iOMG
             limpia_otros(tabuser);
             limpia_combos(tabuser);
             chk_res.Enabled = true;
+            chk_permisos.Enabled = false;
             //textBox1.Text = codu;
             //tx_idr.Text = idr;
             jalaoc("tx_idr");
@@ -1165,6 +1182,32 @@ namespace iOMG
                         "where usuario='" + textBox1.Text.Trim() + "'";   //  and formulario=@for
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.ExecuteNonQuery();
+                    retorna = true;
+                    break;
+                case "reini":
+                    string parter = "";
+                    string rtuadm = ",'S','S','S','S','S','S',";   // administrador, todo de todo
+                    string rtusup = ",'S','S','S','S','S','S',";   // superusuario, todo menos config del sist.
+                    string rtuest = ",'S','S','N','S','S','S',";   // estandar, todo menos anular y panel de control
+                    string rtusmi = ",'N','N','N','S','S','S',";   // solo mira
+                    if (textBox5.Text == cn_adm) parter = rtuadm;       // administrador del sistema 
+                    if (textBox5.Text == cn_sup) parter = rtusup;       // superusuario
+                    if (textBox5.Text == cn_est) parter = rtuest;       // estandar
+                    if (textBox5.Text == cn_mir) parter = rtusmi;       // solo mira
+                    consulta = "delete from permisos where usuario='" + textBox1.Text.Trim() + "'";
+                    micon = new MySqlCommand(consulta, conn);
+                    micon.ExecuteNonQuery();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        DataRow fil = dt.Rows[i];
+                        {
+                            string inserta = "insert into permisos (" +
+                                "formulario,btn1,btn2,btn3,btn4,btn5,btn6,usuario,coment,rutaf) values ('" +
+                                fil[0].ToString().Trim() + "'" + parter + "'" + textBox1.Text.Trim() + "','" + fil[2].ToString() + "','" + fil[9].ToString() + "')";
+                            MySqlCommand minser = new MySqlCommand(inserta, conn);
+                            minser.ExecuteNonQuery();
+                        }
+                    }
                     retorna = true;
                     break;
             }

@@ -70,7 +70,7 @@ namespace iOMG
             sololee(this);
             dataload();
             grilla();
-            this.KeyPreview = true;
+            KeyPreview = true;
             //Bt_add_Click(null, null);
             tabControl1.SelectedTab = tabgrilla;
             advancedDataGridView1.Enabled = false;

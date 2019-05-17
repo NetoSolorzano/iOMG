@@ -90,6 +90,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.chk_permisos = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
@@ -375,6 +376,7 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.chk_permisos);
             this.tabuser.Controls.Add(this.tx_rind);
             this.tabuser.Controls.Add(this.comboBox3);
             this.tabuser.Controls.Add(this.comboBox1);
@@ -668,7 +670,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.ForeColor = System.Drawing.Color.Black;
-            this.checkBox1.Location = new System.Drawing.Point(437, 25);
+            this.checkBox1.Location = new System.Drawing.Point(85, 195);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(132, 17);
             this.checkBox1.TabIndex = 167;
@@ -744,6 +746,17 @@
             this.button1.TabIndex = 159;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // chk_permisos
+            // 
+            this.chk_permisos.AutoSize = true;
+            this.chk_permisos.ForeColor = System.Drawing.Color.Black;
+            this.chk_permisos.Location = new System.Drawing.Point(85, 218);
+            this.chk_permisos.Name = "chk_permisos";
+            this.chk_permisos.Size = new System.Drawing.Size(123, 17);
+            this.chk_permisos.TabIndex = 189;
+            this.chk_permisos.Text = "Reinicializa permisos";
+            this.chk_permisos.UseVisualStyleBackColor = true;
             // 
             // users
             // 
@@ -844,5 +857,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.TextBox tx_rind;
+        private System.Windows.Forms.CheckBox chk_permisos;
     }
 }
