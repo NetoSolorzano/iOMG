@@ -127,6 +127,8 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.bt_view = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -345,7 +347,7 @@
             // cmb_det2
             // 
             this.cmb_det2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_det2.DropDownWidth = 100;
+            this.cmb_det2.DropDownWidth = 200;
             this.cmb_det2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_det2.FormattingEnabled = true;
             this.cmb_det2.Location = new System.Drawing.Point(278, 1);
@@ -381,7 +383,7 @@
             // cmb_det1
             // 
             this.cmb_det1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_det1.DropDownWidth = 100;
+            this.cmb_det1.DropDownWidth = 160;
             this.cmb_det1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_det1.FormattingEnabled = true;
             this.cmb_det1.Location = new System.Drawing.Point(162, 1);
@@ -921,6 +923,8 @@
             this.Bt_anul,
             this.toolStripSeparator1,
             this.bt_exc,
+            this.toolStripSeparator14,
+            this.bt_view,
             this.toolStripSeparator4,
             this.Tx_modo,
             this.toolStripSeparator3,
@@ -1178,6 +1182,24 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // bt_view
+            // 
+            this.bt_view.AutoSize = false;
+            this.bt_view.BackColor = System.Drawing.SystemColors.Control;
+            this.bt_view.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_view.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_view.Name = "bt_view";
+            this.bt_view.Size = new System.Drawing.Size(32, 32);
+            this.bt_view.Text = "Bt_close";
+            this.bt_view.ToolTipText = "Exportar";
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.AutoSize = false;
+            this.toolStripSeparator14.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(3, 45);
+            // 
             // Pedsalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1310,5 +1332,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DateTimePicker dtp_fingreso;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripButton bt_view;
     }
 }

@@ -1388,12 +1388,12 @@ namespace iOMG
             if (mdtb.Rows.Count > 0)
             {
                 DataRow row = mdtb.Rows[0];
-                if (Convert.ToString(row["btn1"]) == "S")
+                if (Convert.ToString(row["btn1"]) == "S")               // nuevo
                 {
                     this.Bt_add.Visible = true;
                 }
                 else { this.Bt_add.Visible = false; }
-                if (Convert.ToString(row["btn2"]) == "S")
+                if (Convert.ToString(row["btn2"]) == "S")               // editar
                 {
                     this.Bt_edit.Visible = true;
                 }
@@ -1403,7 +1403,7 @@ namespace iOMG
                 //    this.Bt_print.Visible = true;
                 //}
                 //else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")
+                if (Convert.ToString(row["btn3"]) == "S")               // 
                 {
                     this.Bt_anul.Visible = true;
                 }
@@ -1755,7 +1755,7 @@ namespace iOMG
                         }
                         if (e.ColumnIndex == 3)                         // valida taller de origen
                         {
-                            if(lib.validac("desc_loc", "idcodice", e.FormattedValue.ToString()) == true)
+                            if(lib.validac("desc_loc", "idcodice", e.FormattedValue.ToString().Trim()) == false)
                             {
                                 MessageBox.Show("El valor no es valido para el taller", "Atención - Corrija");
                                 e.Cancel = true;
