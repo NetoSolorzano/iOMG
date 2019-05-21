@@ -114,6 +114,8 @@
             this.Bt_anul = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.bt_exc = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.bt_view = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.Tx_modo = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -127,8 +129,8 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.bt_view = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.bt_prev = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -917,14 +919,16 @@
             this.Bt_close,
             this.toolStripSeparator7,
             this.Bt_edit,
+            this.toolStripSeparator15,
+            this.Bt_anul,
             this.toolStripSeparator13,
+            this.bt_view,
+            this.toolStripSeparator14,
             this.Bt_print,
             this.toolStripSeparator12,
-            this.Bt_anul,
+            this.bt_prev,
             this.toolStripSeparator1,
             this.bt_exc,
-            this.toolStripSeparator14,
-            this.bt_view,
             this.toolStripSeparator4,
             this.Tx_modo,
             this.toolStripSeparator3,
@@ -1065,6 +1069,25 @@
             this.bt_exc.ToolTipText = "Exportar";
             this.bt_exc.Click += new System.EventHandler(this.bt_exc_Click);
             // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.AutoSize = false;
+            this.toolStripSeparator14.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(3, 45);
+            // 
+            // bt_view
+            // 
+            this.bt_view.AutoSize = false;
+            this.bt_view.BackColor = System.Drawing.SystemColors.Control;
+            this.bt_view.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_view.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_view.Name = "bt_view";
+            this.bt_view.Size = new System.Drawing.Size(32, 32);
+            this.bt_view.Text = "Bt_close";
+            this.bt_view.ToolTipText = "Solo ver";
+            this.bt_view.Click += new System.EventHandler(this.bt_view_Click);
+            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.AutoSize = false;
@@ -1182,23 +1205,24 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // bt_view
+            // bt_prev
             // 
-            this.bt_view.AutoSize = false;
-            this.bt_view.BackColor = System.Drawing.SystemColors.Control;
-            this.bt_view.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_view.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bt_view.Name = "bt_view";
-            this.bt_view.Size = new System.Drawing.Size(32, 32);
-            this.bt_view.Text = "Bt_close";
-            this.bt_view.ToolTipText = "Exportar";
+            this.bt_prev.AutoSize = false;
+            this.bt_prev.BackColor = System.Drawing.SystemColors.Control;
+            this.bt_prev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_prev.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_prev.Name = "bt_prev";
+            this.bt_prev.Size = new System.Drawing.Size(32, 32);
+            this.bt_prev.ToolTipText = "Imprimir";
+            this.bt_prev.Click += new System.EventHandler(this.bt_prev_Click);
             // 
-            // toolStripSeparator14
+            // toolStripSeparator15
             // 
-            this.toolStripSeparator14.AutoSize = false;
-            this.toolStripSeparator14.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(3, 45);
+            this.toolStripSeparator15.AutoSize = false;
+            this.toolStripSeparator15.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator15.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(3, 45);
             // 
             // Pedsalm
             // 
@@ -1334,5 +1358,7 @@
         private System.Windows.Forms.DateTimePicker dtp_fingreso;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripButton bt_view;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+        private System.Windows.Forms.ToolStripButton bt_prev;
     }
 }

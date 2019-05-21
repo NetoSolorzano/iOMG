@@ -35,6 +35,7 @@ namespace iOMG
         string img_grab = "";
         string img_anul = "";
         string img_pre = "";            // imagen del boton vista preliminar
+        string img_ver = "";            // imagen del boton visualizacion (solo ver)
         string tipede = "";             // tipo de pedido por defecto
         string tiesta = "";             // estado inicial por defecto del pedido
         string escambio = "";           // estados de pedido que admiten modif el pedido
@@ -110,12 +111,15 @@ namespace iOMG
             this.tabuser.BackColor = Color.FromName(iOMG.Program.colgri);
 
             jalainfo();
-            Bt_add.Image = Image.FromFile(img_btN);
-            Bt_edit.Image = Image.FromFile(img_btE);
-            Bt_print.Image = Image.FromFile(img_btP);
-            Bt_anul.Image = Image.FromFile(img_pre);    // img_btA
-            bt_exc.Image = Image.FromFile(img_btexc);
-            Bt_close.Image = Image.FromFile(img_btq);
+            Bt_add.Image = Image.FromFile(img_btN);     // oki
+            Bt_edit.Image = Image.FromFile(img_btE);    // oki
+            Bt_anul.Image = Image.FromFile(img_anul);   // oki
+            bt_view.Image = Image.FromFile(img_ver);    // oki
+            Bt_print.Image = Image.FromFile(img_btP);   // oki
+            bt_prev.Image = Image.FromFile(img_pre);    // oki
+            bt_exc.Image = Image.FromFile(img_btexc);   // oki
+            Bt_close.Image = Image.FromFile(img_btq);   // oki
+            //
             Bt_ini.Image = Image.FromFile(img_bti);
             Bt_sig.Image = Image.FromFile(img_bts);
             Bt_ret.Image = Image.FromFile(img_btr);
@@ -234,6 +238,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();         // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
                     }
                 }
                 da.Dispose();
@@ -1398,26 +1403,31 @@ namespace iOMG
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                //if (Convert.ToString(row["btn5"]) == "S")
-                //{
-                //    this.Bt_print.Visible = true;
-                //}
-                //else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // 
+                if (Convert.ToString(row["btn3"]) == "S")               // imprimir
+                {
+                    this.Bt_print.Visible = true;
+                }
+                else { this.Bt_print.Visible = false; }
+                if (Convert.ToString(row["btn4"]) == "S")               // vista preliminar
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                //if (Convert.ToString(row["btn4"]) == "S")
-                //{
-                //    this.Bt_ver.Visible = true;
-                //}
-                //else { this.Bt_ver.Visible = false; }
-                if (Convert.ToString(row["btn6"]) == "S")
+                if (Convert.ToString(row["btn5"]) == "S")               // exporta hoja de calculo
+                {
+                    this.bt_exc.Visible = true;
+                }
+                else { this.bt_exc.Visible = false; }
+                if (Convert.ToString(row["btn6"]) == "S")               // salir del form
                 {
                     this.Bt_close.Visible = true;
                 }
                 else { this.Bt_close.Visible = false; }
+                if (Convert.ToString(row["btn7"]) == "S")               // visualizacion (solo mira)
+                {
+                    this.bt_view.Visible = true;
+                }
+                else { this.bt_view.Visible = false; }
             }
         }
         #region botones
@@ -1474,9 +1484,36 @@ namespace iOMG
             dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
         }
-        private void Bt_close_Click(object sender, EventArgs e)
+        private void Bt_anul_Click(object sender, EventArgs e)
         {
-            this.Close();
+
+            // nada que hacer
+        }
+        private void bt_view_Click(object sender, EventArgs e)
+        {
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            string codu = "";
+            string idr = "";
+            if (advancedDataGridView1.CurrentRow.Index > -1)
+            {
+                codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
+                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
+            }
+            tabControl1.SelectedTab = tabgrilla;
+            sololee(this);
+            Tx_modo.Text = "VISUALIZAR";
+            button1.Image = null;    // Image.FromFile(img_grab);
+            limpiar(this);
+            limpiapag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_tiped.Text = tipede;
+            dtp_fingreso.Checked = false;
+            jalaoc("tx_idr");
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -1490,7 +1527,7 @@ namespace iOMG
             //
             if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
         }
-        private void Bt_anul_Click(object sender, EventArgs e)              // vista preliminar
+        private void bt_prev_Click(object sender, EventArgs e)
         {
             if (tx_idr.Text != "" && tx_rind.Text != "")
             {
@@ -1503,7 +1540,8 @@ namespace iOMG
         }
         private void bt_exc_Click(object sender, EventArgs e)
         {
-            string nombre = "";
+            
+string nombre = "";
             nombre = "Pedidos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
             var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                 "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -1516,6 +1554,11 @@ namespace iOMG
                 this.Close();
             }
         }
+        private void Bt_close_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        //
         private void Bt_first_Click(object sender, EventArgs e)
         {
             limpiar(this);
@@ -1959,15 +2002,17 @@ namespace iOMG
 
         private void tabgrilla_Enter(object sender, EventArgs e)
         {
-            Bt_print.Enabled = false;
-            bt_exc.Enabled = true;
             Bt_anul.Enabled = false;
+            Bt_print.Enabled = false;
+            bt_prev.Enabled = false;
+            bt_exc.Enabled = true;
         }
         private void tabuser_Enter(object sender, EventArgs e)
         {
+            Bt_anul.Enabled = false;
             Bt_print.Enabled = true;
+            bt_prev.Enabled = true;
             bt_exc.Enabled = false;
-            Bt_anul.Enabled = true;
         }
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
