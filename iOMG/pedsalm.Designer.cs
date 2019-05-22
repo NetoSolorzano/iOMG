@@ -108,14 +108,16 @@
             this.Bt_close = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_edit = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.Bt_anul = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.bt_view = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_print = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.Bt_anul = new System.Windows.Forms.ToolStripButton();
+            this.bt_prev = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.bt_exc = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-            this.bt_view = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.Tx_modo = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -129,8 +131,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.bt_prev = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -1011,6 +1011,26 @@
             this.Bt_edit.ToolTipText = "Editar pedido";
             this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
             // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.AutoSize = false;
+            this.toolStripSeparator15.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator15.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(3, 45);
+            // 
+            // Bt_anul
+            // 
+            this.Bt_anul.AutoSize = false;
+            this.Bt_anul.BackColor = System.Drawing.SystemColors.Control;
+            this.Bt_anul.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Bt_anul.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Bt_anul.Name = "Bt_anul";
+            this.Bt_anul.Size = new System.Drawing.Size(32, 32);
+            this.Bt_anul.Text = "Bt_close";
+            this.Bt_anul.ToolTipText = "Anulación";
+            this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
+            // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.AutoSize = false;
@@ -1018,6 +1038,25 @@
             this.toolStripSeparator13.ForeColor = System.Drawing.Color.Black;
             this.toolStripSeparator13.Name = "toolStripSeparator13";
             this.toolStripSeparator13.Size = new System.Drawing.Size(3, 45);
+            // 
+            // bt_view
+            // 
+            this.bt_view.AutoSize = false;
+            this.bt_view.BackColor = System.Drawing.SystemColors.Control;
+            this.bt_view.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_view.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_view.Name = "bt_view";
+            this.bt_view.Size = new System.Drawing.Size(32, 32);
+            this.bt_view.Text = "Bt_close";
+            this.bt_view.ToolTipText = "Solo ver";
+            this.bt_view.Click += new System.EventHandler(this.bt_view_Click);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.AutoSize = false;
+            this.toolStripSeparator14.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(3, 45);
             // 
             // Bt_print
             // 
@@ -1038,17 +1077,16 @@
             this.toolStripSeparator12.Name = "toolStripSeparator12";
             this.toolStripSeparator12.Size = new System.Drawing.Size(3, 45);
             // 
-            // Bt_anul
+            // bt_prev
             // 
-            this.Bt_anul.AutoSize = false;
-            this.Bt_anul.BackColor = System.Drawing.SystemColors.Control;
-            this.Bt_anul.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Bt_anul.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Bt_anul.Name = "Bt_anul";
-            this.Bt_anul.Size = new System.Drawing.Size(32, 32);
-            this.Bt_anul.Text = "Bt_close";
-            this.Bt_anul.ToolTipText = "Vista preliminar";
-            this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
+            this.bt_prev.AutoSize = false;
+            this.bt_prev.BackColor = System.Drawing.SystemColors.Control;
+            this.bt_prev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_prev.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_prev.Name = "bt_prev";
+            this.bt_prev.Size = new System.Drawing.Size(32, 32);
+            this.bt_prev.ToolTipText = "Pre-visualizar";
+            this.bt_prev.Click += new System.EventHandler(this.bt_prev_Click);
             // 
             // toolStripSeparator1
             // 
@@ -1068,25 +1106,6 @@
             this.bt_exc.Text = "Bt_close";
             this.bt_exc.ToolTipText = "Exportar";
             this.bt_exc.Click += new System.EventHandler(this.bt_exc_Click);
-            // 
-            // toolStripSeparator14
-            // 
-            this.toolStripSeparator14.AutoSize = false;
-            this.toolStripSeparator14.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(3, 45);
-            // 
-            // bt_view
-            // 
-            this.bt_view.AutoSize = false;
-            this.bt_view.BackColor = System.Drawing.SystemColors.Control;
-            this.bt_view.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_view.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bt_view.Name = "bt_view";
-            this.bt_view.Size = new System.Drawing.Size(32, 32);
-            this.bt_view.Text = "Bt_close";
-            this.bt_view.ToolTipText = "Solo ver";
-            this.bt_view.Click += new System.EventHandler(this.bt_view_Click);
             // 
             // toolStripSeparator4
             // 
@@ -1204,25 +1223,6 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
-            // 
-            // bt_prev
-            // 
-            this.bt_prev.AutoSize = false;
-            this.bt_prev.BackColor = System.Drawing.SystemColors.Control;
-            this.bt_prev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_prev.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bt_prev.Name = "bt_prev";
-            this.bt_prev.Size = new System.Drawing.Size(32, 32);
-            this.bt_prev.ToolTipText = "Imprimir";
-            this.bt_prev.Click += new System.EventHandler(this.bt_prev_Click);
-            // 
-            // toolStripSeparator15
-            // 
-            this.toolStripSeparator15.AutoSize = false;
-            this.toolStripSeparator15.BackColor = System.Drawing.Color.Black;
-            this.toolStripSeparator15.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(3, 45);
             // 
             // Pedsalm
             // 

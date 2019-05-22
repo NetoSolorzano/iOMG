@@ -156,20 +156,34 @@ namespace iOMG
             advancedDataGridView1.Columns[8].ReadOnly = true;
             advancedDataGridView1.Columns[8].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // coment
+            // btn7
             advancedDataGridView1.Columns[9].Visible = true;
-            advancedDataGridView1.Columns[9].HeaderText = "COMENTARIOS";
-            advancedDataGridView1.Columns[9].Width = 150;
+            advancedDataGridView1.Columns[9].HeaderText = "PREVIEW";
+            advancedDataGridView1.Columns[9].Width = 50;
             advancedDataGridView1.Columns[9].ReadOnly = false;
-            advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[9].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //usuario
+            // btn8
             advancedDataGridView1.Columns[10].Visible = true;
-            advancedDataGridView1.Columns[10].HeaderText = "USUARIO";
-            advancedDataGridView1.Columns[10].Width = 70;
+            advancedDataGridView1.Columns[10].HeaderText = "EXPORTA";
+            advancedDataGridView1.Columns[10].Width = 50;
             advancedDataGridView1.Columns[10].ReadOnly = false;
             advancedDataGridView1.Columns[10].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // coment
+            advancedDataGridView1.Columns[11].Visible = true;
+            advancedDataGridView1.Columns[11].HeaderText = "COMENTARIOS";
+            advancedDataGridView1.Columns[11].Width = 150;
+            advancedDataGridView1.Columns[11].ReadOnly = false;
+            advancedDataGridView1.Columns[11].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //usuario
+            advancedDataGridView1.Columns[12].Visible = true;
+            advancedDataGridView1.Columns[12].HeaderText = "USUARIO";
+            advancedDataGridView1.Columns[12].Width = 70;
+            advancedDataGridView1.Columns[12].ReadOnly = false;
+            advancedDataGridView1.Columns[12].Tag = "validaSI";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void jalainfo()                 // obtiene datos de imagenes
         {
@@ -225,6 +239,10 @@ namespace iOMG
                 chk_edita.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString() == "S") ? true : false;
                 chk_anula.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString() == "S") ? true : false;
                 chk_visua.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString() == "S") ? true : false;
+                chk_impri.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString() == "S") ? true : false;
+                chk_salir.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString() == "S") ? true : false;
+                chk_prev.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString() == "S") ? true : false;
+                chk_expor.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString() == "S") ? true : false;
                 // advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString()    // imprimir
                 // advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString()    // salir
                 comboBox1.SelectedValue = textBox2.Text;
@@ -242,7 +260,7 @@ namespace iOMG
             }
             tabControl1.SelectedTab = tabreg;
             // datos de los permisos
-            string datgri = "SELECT id,rutaf,formulario,btn1,btn2,btn3,btn4,btn5,btn6,coment,usuario FROM permisos";
+            string datgri = "SELECT id,rutaf,formulario,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,coment,usuario FROM permisos";
             MySqlCommand cdg = new MySqlCommand(datgri, conn);
             MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
             dtg.Clear();
@@ -374,6 +392,10 @@ namespace iOMG
             chk_edita.Checked = false;
             chk_nuevo.Checked = false;
             chk_visua.Checked = false;
+            chk_impri.Checked = false;
+            chk_salir.Checked = false;
+            chk_prev.Checked = false;
+            chk_expor.Checked = false;
         }
         public void limpia_otros()
         {
@@ -414,8 +436,8 @@ namespace iOMG
             if (modo == "EDITAR")
             {
                 string consulta = "update permisos set " +
-                        "rutaf=@rut,usuario=@usu,btn1=@bt1,btn2=@bt2,btn3=@bt3,btn4=@bt4,coment=@com " +
-                        "where id=@idc";
+                        "rutaf=@rut,usuario=@usu,btn1=@bt1,btn2=@bt2,btn3=@bt3,btn4=@bt4,btn5=@bt5,btn6=@bt6,btn7=@bt7,btn8=@bt8," +
+                        "coment=@com where id=@idc";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
@@ -428,6 +450,10 @@ namespace iOMG
                     mycom.Parameters.AddWithValue("@bt2", (chk_edita.Checked == true) ? "S" : "N");
                     mycom.Parameters.AddWithValue("@bt3", (chk_anula.Checked == true) ? "S" : "N");
                     mycom.Parameters.AddWithValue("@bt4", (chk_visua.Checked == true) ? "S" : "N");
+                    mycom.Parameters.AddWithValue("@bt5", (chk_impri.Checked == true) ? "S" : "N");
+                    mycom.Parameters.AddWithValue("@bt6", (chk_salir.Checked == true) ? "S" : "N");
+                    mycom.Parameters.AddWithValue("@bt7", (chk_prev.Checked == true) ? "S" : "N");
+                    mycom.Parameters.AddWithValue("@bt8", (chk_expor.Checked == true) ? "S" : "N");
                     mycom.Parameters.AddWithValue("@com", textBox3.Text);
                     try
                     {
@@ -523,36 +549,41 @@ namespace iOMG
             if (mdtb.Rows.Count > 0)
             {
                 DataRow row = mdtb.Rows[0];
-                if (Convert.ToString(row["btn1"]) == "S")
+                if (Convert.ToString(row["btn1"]) == "S")               // nuevo
                 {
                     this.Bt_add.Visible = true;
                 }
                 else { this.Bt_add.Visible = false; }
-                if (Convert.ToString(row["btn2"]) == "S")
+                if (Convert.ToString(row["btn2"]) == "S")               // editar
                 {
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                //if (Convert.ToString(row["btn5"]) == "S")
-                //{
-                //    this.Bt_print.Visible = true;
-                //}
-                //else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")
+                if (Convert.ToString(row["btn3"]) == "S")               // imprimir
+                {
+                    //this.Bt_print.Visible = true;
+                }
+                //else { //this.Bt_print.Visible = false; }
+                if (Convert.ToString(row["btn4"]) == "S")               // vista preliminar
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                //if (Convert.ToString(row["btn4"]) == "S")
-                //{
-                //    this.Bt_ver.Visible = true;
-                //}
-                //else { this.Bt_ver.Visible = false; }
-                if (Convert.ToString(row["btn6"]) == "S")
+                if (Convert.ToString(row["btn5"]) == "S")               // exporta hoja de calculo
+                {
+                    //this.bt_exc.Visible = true;
+                }
+                //else { //this.bt_exc.Visible = false; }
+                if (Convert.ToString(row["btn6"]) == "S")               // salir del form
                 {
                     this.Bt_close.Visible = true;
                 }
                 else { this.Bt_close.Visible = false; }
+                if (Convert.ToString(row["btn7"]) == "S")               // visualizacion (solo mira)
+                {
+                    //this.bt_view.Visible = true;
+                }
+                //else { //this.bt_view.Visible = false; }
             }
         }
         #region botones

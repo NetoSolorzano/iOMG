@@ -77,6 +77,10 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.chk_expor = new System.Windows.Forms.CheckBox();
+            this.chk_prev = new System.Windows.Forms.CheckBox();
+            this.chk_salir = new System.Windows.Forms.CheckBox();
+            this.chk_impri = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
@@ -359,6 +363,10 @@
             // 
             // tabreg
             // 
+            this.tabreg.Controls.Add(this.chk_expor);
+            this.tabreg.Controls.Add(this.chk_prev);
+            this.tabreg.Controls.Add(this.chk_salir);
+            this.tabreg.Controls.Add(this.chk_impri);
             this.tabreg.Controls.Add(this.groupBox5);
             this.tabreg.Controls.Add(this.groupBox3);
             this.tabreg.Controls.Add(this.comboBox1);
@@ -591,6 +599,50 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // chk_expor
+            // 
+            this.chk_expor.AutoSize = true;
+            this.chk_expor.ForeColor = System.Drawing.Color.Black;
+            this.chk_expor.Location = new System.Drawing.Point(167, 268);
+            this.chk_expor.Name = "chk_expor";
+            this.chk_expor.Size = new System.Drawing.Size(91, 17);
+            this.chk_expor.TabIndex = 206;
+            this.chk_expor.Text = "Exporta a xlsx";
+            this.chk_expor.UseVisualStyleBackColor = true;
+            // 
+            // chk_prev
+            // 
+            this.chk_prev.AutoSize = true;
+            this.chk_prev.ForeColor = System.Drawing.Color.Black;
+            this.chk_prev.Location = new System.Drawing.Point(167, 246);
+            this.chk_prev.Name = "chk_prev";
+            this.chk_prev.Size = new System.Drawing.Size(132, 17);
+            this.chk_prev.TabIndex = 205;
+            this.chk_prev.Text = "Pre-visualiza impresion";
+            this.chk_prev.UseVisualStyleBackColor = true;
+            // 
+            // chk_salir
+            // 
+            this.chk_salir.AutoSize = true;
+            this.chk_salir.ForeColor = System.Drawing.Color.Black;
+            this.chk_salir.Location = new System.Drawing.Point(167, 224);
+            this.chk_salir.Name = "chk_salir";
+            this.chk_salir.Size = new System.Drawing.Size(111, 17);
+            this.chk_salir.TabIndex = 204;
+            this.chk_salir.Text = "Salir del formulario";
+            this.chk_salir.UseVisualStyleBackColor = true;
+            // 
+            // chk_impri
+            // 
+            this.chk_impri.AutoSize = true;
+            this.chk_impri.ForeColor = System.Drawing.Color.Black;
+            this.chk_impri.Location = new System.Drawing.Point(167, 202);
+            this.chk_impri.Name = "chk_impri";
+            this.chk_impri.Size = new System.Drawing.Size(62, 17);
+            this.chk_impri.TabIndex = 203;
+            this.chk_impri.Text = "Imprime";
+            this.chk_impri.UseVisualStyleBackColor = true;
+            // 
             // permisos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -674,5 +726,9 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox chk_expor;
+        private System.Windows.Forms.CheckBox chk_prev;
+        private System.Windows.Forms.CheckBox chk_salir;
+        private System.Windows.Forms.CheckBox chk_impri;
     }
 }

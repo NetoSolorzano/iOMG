@@ -77,13 +77,6 @@ namespace iOMG
         }
         private void repspedidos_Load(object sender, EventArgs e)
         {
-            ToolTip toolTipNombre = new ToolTip();           // Create the ToolTip and associate with the Form container.
-            // Set up the delays for the ToolTip.
-            toolTipNombre.AutoPopDelay = 5000;
-            toolTipNombre.InitialDelay = 1000;
-            toolTipNombre.ReshowDelay = 500;
-            toolTipNombre.ShowAlways = true;                 // Force the ToolTip text to be displayed whether or not the form is active.
-            toolTipNombre.SetToolTip(toolStrip1, nomform);   // Set up the ToolTip text for the object
             init();
             toolboton();
             limpiar(this);
@@ -96,6 +89,7 @@ namespace iOMG
             Bt_add.Enabled = true;
             Bt_anul.Enabled = false;            // LA ANULACION O CIERRE DE PEDIDO SE HACE CON "EDIT", BOTON PARA PRE-VISUALIZAR
             Bt_print.Enabled = false;
+            bt_prev.Enabled = false;
             //Bt_add_Click(null, null);
             //tabControl1.SelectedTab = tabgrilla;
             //advancedDataGridView1.Enabled = false;
@@ -1039,6 +1033,64 @@ namespace iOMG
                 }
             }
         }
+        public void sololeepag(TabPage pag)
+        {
+            foreach (Control oControls in pag.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = false;
+                }
+            }
+            //
+            foreach (Control oControls in panel1.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = false;
+                }
+            }
+        }
         public void escribe(Form efrm)
         {
             foreach (Control oControls in efrm.Controls)
@@ -1267,7 +1319,7 @@ namespace iOMG
                     return;
                 }
             }
-            if (Tx_modo.Text != "NUEVO")
+            if (Tx_modo.Text == "EDITAR")
             {
                 if (!escambio.Contains(tx_dat_estad.Text))
                 {
@@ -1506,6 +1558,8 @@ namespace iOMG
             button1.Image = null;    // Image.FromFile(img_grab);
             limpiar(this);
             limpiapag(tabuser);
+            sololeepag(tabuser);
+            tx_codped.Enabled = true;
             limpia_otros(tabuser);
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
