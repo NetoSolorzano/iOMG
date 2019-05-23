@@ -1424,7 +1424,7 @@ namespace iOMG
                 try
                 {
                     MySqlCommand consulb = new MySqlCommand(consbot, conn);
-                    consulb.Parameters.AddWithValue("@nomform", nomform);
+                    consulb.Parameters.AddWithValue("@nomform", "pedsalm");
                     consulb.Parameters.AddWithValue("@use", asd);
                     MySqlDataAdapter mab = new MySqlDataAdapter(consulb);
                     mab.Fill(mdtb);
@@ -1455,17 +1455,17 @@ namespace iOMG
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // imprimir
+                if (Convert.ToString(row["btn3"]) == "S")               // anular
                 {
                     this.Bt_print.Visible = true;
                 }
                 else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn4"]) == "S")               // vista preliminar
+                if (Convert.ToString(row["btn4"]) == "S")               // visualizar
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                if (Convert.ToString(row["btn5"]) == "S")               // exporta hoja de calculo
+                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
                 {
                     this.bt_exc.Visible = true;
                 }
@@ -1475,11 +1475,16 @@ namespace iOMG
                     this.Bt_close.Visible = true;
                 }
                 else { this.Bt_close.Visible = false; }
-                if (Convert.ToString(row["btn7"]) == "S")               // visualizacion (solo mira)
+                if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar
                 {
                     this.bt_view.Visible = true;
                 }
                 else { this.bt_view.Visible = false; }
+                if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx
+                {
+                    this.bt_exc.Visible = true;
+                }
+                else { this.bt_exc.Visible = false; }
             }
         }
         #region botones

@@ -56,6 +56,10 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabreg = new System.Windows.Forms.TabPage();
+            this.chk_expor = new System.Windows.Forms.CheckBox();
+            this.chk_prev = new System.Windows.Forms.CheckBox();
+            this.chk_salir = new System.Windows.Forms.CheckBox();
+            this.chk_impri = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -77,10 +81,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.chk_expor = new System.Windows.Forms.CheckBox();
-            this.chk_prev = new System.Windows.Forms.CheckBox();
-            this.chk_salir = new System.Windows.Forms.CheckBox();
-            this.chk_impri = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
@@ -393,6 +393,50 @@
             this.tabreg.Text = "Registro";
             this.tabreg.UseVisualStyleBackColor = true;
             // 
+            // chk_expor
+            // 
+            this.chk_expor.AutoSize = true;
+            this.chk_expor.ForeColor = System.Drawing.Color.Black;
+            this.chk_expor.Location = new System.Drawing.Point(167, 268);
+            this.chk_expor.Name = "chk_expor";
+            this.chk_expor.Size = new System.Drawing.Size(91, 17);
+            this.chk_expor.TabIndex = 206;
+            this.chk_expor.Text = "Exporta a xlsx";
+            this.chk_expor.UseVisualStyleBackColor = true;
+            // 
+            // chk_prev
+            // 
+            this.chk_prev.AutoSize = true;
+            this.chk_prev.ForeColor = System.Drawing.Color.Black;
+            this.chk_prev.Location = new System.Drawing.Point(167, 246);
+            this.chk_prev.Name = "chk_prev";
+            this.chk_prev.Size = new System.Drawing.Size(132, 17);
+            this.chk_prev.TabIndex = 205;
+            this.chk_prev.Text = "Pre-visualiza impresion";
+            this.chk_prev.UseVisualStyleBackColor = true;
+            // 
+            // chk_salir
+            // 
+            this.chk_salir.AutoSize = true;
+            this.chk_salir.ForeColor = System.Drawing.Color.Black;
+            this.chk_salir.Location = new System.Drawing.Point(167, 224);
+            this.chk_salir.Name = "chk_salir";
+            this.chk_salir.Size = new System.Drawing.Size(111, 17);
+            this.chk_salir.TabIndex = 204;
+            this.chk_salir.Text = "Salir del formulario";
+            this.chk_salir.UseVisualStyleBackColor = true;
+            // 
+            // chk_impri
+            // 
+            this.chk_impri.AutoSize = true;
+            this.chk_impri.ForeColor = System.Drawing.Color.Black;
+            this.chk_impri.Location = new System.Drawing.Point(167, 202);
+            this.chk_impri.Name = "chk_impri";
+            this.chk_impri.Size = new System.Drawing.Size(62, 17);
+            this.chk_impri.TabIndex = 203;
+            this.chk_impri.Text = "Imprime";
+            this.chk_impri.UseVisualStyleBackColor = true;
+            // 
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.Color.White;
@@ -577,13 +621,13 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(94, 18);
             this.textBox2.TabIndex = 2;
+            this.textBox2.Visible = false;
             // 
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.Window;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(167, 40);
-            this.textBox1.MaxLength = 10;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(393, 18);
             this.textBox1.TabIndex = 0;
@@ -598,50 +642,6 @@
             this.button1.TabIndex = 9;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // chk_expor
-            // 
-            this.chk_expor.AutoSize = true;
-            this.chk_expor.ForeColor = System.Drawing.Color.Black;
-            this.chk_expor.Location = new System.Drawing.Point(167, 268);
-            this.chk_expor.Name = "chk_expor";
-            this.chk_expor.Size = new System.Drawing.Size(91, 17);
-            this.chk_expor.TabIndex = 206;
-            this.chk_expor.Text = "Exporta a xlsx";
-            this.chk_expor.UseVisualStyleBackColor = true;
-            // 
-            // chk_prev
-            // 
-            this.chk_prev.AutoSize = true;
-            this.chk_prev.ForeColor = System.Drawing.Color.Black;
-            this.chk_prev.Location = new System.Drawing.Point(167, 246);
-            this.chk_prev.Name = "chk_prev";
-            this.chk_prev.Size = new System.Drawing.Size(132, 17);
-            this.chk_prev.TabIndex = 205;
-            this.chk_prev.Text = "Pre-visualiza impresion";
-            this.chk_prev.UseVisualStyleBackColor = true;
-            // 
-            // chk_salir
-            // 
-            this.chk_salir.AutoSize = true;
-            this.chk_salir.ForeColor = System.Drawing.Color.Black;
-            this.chk_salir.Location = new System.Drawing.Point(167, 224);
-            this.chk_salir.Name = "chk_salir";
-            this.chk_salir.Size = new System.Drawing.Size(111, 17);
-            this.chk_salir.TabIndex = 204;
-            this.chk_salir.Text = "Salir del formulario";
-            this.chk_salir.UseVisualStyleBackColor = true;
-            // 
-            // chk_impri
-            // 
-            this.chk_impri.AutoSize = true;
-            this.chk_impri.ForeColor = System.Drawing.Color.Black;
-            this.chk_impri.Location = new System.Drawing.Point(167, 202);
-            this.chk_impri.Name = "chk_impri";
-            this.chk_impri.Size = new System.Drawing.Size(62, 17);
-            this.chk_impri.TabIndex = 203;
-            this.chk_impri.Text = "Imprime";
-            this.chk_impri.UseVisualStyleBackColor = true;
             // 
             // permisos
             // 

@@ -97,7 +97,7 @@ namespace iOMG
         }
         private void grilla()                   // arma la grilla
         {
-            // SELECT id,rutaf,formulario,btn1,btn2,btn3,btn4,btn5,btn6,coment,usuario FROM coop2018.permisos;
+            // id,rutaf,formulario,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,coment,usuario
             Font tiplg = new Font("Arial",7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -111,6 +111,7 @@ namespace iOMG
             advancedDataGridView1.Columns[1].HeaderText = "RUTA DE MENU";    // titulo de la columna
             advancedDataGridView1.Columns[1].Width = 100;                // ancho
             advancedDataGridView1.Columns[1].ReadOnly = false;           // lectura o no
+            advancedDataGridView1.Columns[1].Tag = "validaNO";
             advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // formulario
             advancedDataGridView1.Columns[2].Visible = false;
@@ -233,8 +234,8 @@ namespace iOMG
             {
                 //SELECT id, rutaf, formulario, btn1, btn2, btn3, btn4, btn5, btn6, coment, usuario FROM coop2018.permisos; textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // formulario
                 textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // ruta
-                textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();  // usuario
-                textBox3.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();  // comentario
+                textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();  // usuario
+                textBox3.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();  // comentario
                 chk_nuevo.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString() == "S") ? true : false;
                 chk_edita.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString() == "S") ? true : false;
                 chk_anula.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString() == "S") ? true : false;
@@ -243,8 +244,6 @@ namespace iOMG
                 chk_salir.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString() == "S") ? true : false;
                 chk_prev.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString() == "S") ? true : false;
                 chk_expor.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString() == "S") ? true : false;
-                // advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString()    // imprimir
-                // advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString()    // salir
                 comboBox1.SelectedValue = textBox2.Text;
             }
         }
@@ -385,6 +384,32 @@ namespace iOMG
                 }
             }
         }
+        public void limpiapag(TabPage pag)
+        {
+            tabControl1.SelectedTab = pag;
+            foreach (Control oControls in pag.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+                if(oControls is CheckBox)
+                {
+                    chk_anula.Checked = false;
+                    chk_edita.Checked = false;
+                    chk_expor.Checked = false;
+                    chk_impri.Checked = false;
+                    chk_nuevo.Checked = false;
+                    chk_prev.Checked = false;
+                    chk_salir.Checked = false;
+                    chk_visua.Checked = false;
+                }
+                if(oControls is ComboBox)
+                {
+                    comboBox1.SelectedIndex = -1;
+                }
+            }
+        }
         public void limpia_chk()    
         {
             checkBox1.Checked = false;
@@ -458,13 +483,33 @@ namespace iOMG
                     try
                     {
                         mycom.ExecuteNonQuery();
-                        //string resulta = lib.ult_mov(nomform, nomtab, asd);
-                        //if (resulta != "OK")                                        // actualizamos la tabla usuarios
-                        //{
-                        //    MessageBox.Show(resulta, "Error en actualización de tabla usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //    Application.Exit();
-                        //    return;
-                        //}
+                        // actualizamos el datatable
+                        for (int i = 0; i < dtg.Rows.Count; i++)
+                        {
+                            DataRow row = dtg.Rows[i];
+                            if (row[0].ToString() == tx_idr.Text)
+                            {
+                                // id,rutaf,formulario,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,coment,usuario
+                                dtg.Rows[i][1] = textBox1.Text.Trim();
+                                dtg.Rows[i][3] = (chk_nuevo.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][4] = (chk_edita.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][5] = (chk_anula.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][6] = (chk_visua.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][7] = (chk_impri.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][8] = (chk_salir.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][9] = (chk_prev.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][10] = (chk_expor.Checked == true) ? "S" : "N";
+                                dtg.Rows[i][11] = textBox3.Text.Trim();
+                            }
+                        }
+                        // actualizamos la tabla seguimiento de usuarios
+                        string resulta = lib.ult_mov(nomform, nomtab, asd);
+                        if (resulta != "OK")
+                        {
+                            MessageBox.Show(resulta, "Error en actualización de seguimiento", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Application.Exit();
+                            return;
+                        }
                     }
                     catch (MySqlException ex)
                     {
@@ -489,6 +534,7 @@ namespace iOMG
             {
                 // debe limpiar los campos y actualizar la grilla
                 limpiar(this);
+                limpiapag(tabreg);
                 limpia_otros();
                 this.textBox1.Focus();
                 //dataload();
@@ -716,7 +762,7 @@ namespace iOMG
         }
         private void advancedDataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)            // almacena valor previo al ingresar a la celda
         {
-            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Trim();
         }
         private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -750,7 +796,7 @@ namespace iOMG
                     if(advancedDataGridView1.Columns[e.ColumnIndex].Tag.ToString() == "validaSI")   // la columna se valida?
                     {
                         // valida si el dato ingresado es valido en la columna
-                        if(e.ColumnIndex == 10)                         // valida usuarios
+                        if(e.ColumnIndex == 12)                         // valida usuarios
                         {
                             if (lib.validac("usuarios", "nom_user", e.FormattedValue.ToString()) == true)
                             {
@@ -763,9 +809,9 @@ namespace iOMG
                                 e.Cancel = true;
                             }
                         }
-                        if(e.ColumnIndex > 2 && e.ColumnIndex < 8)  // valida S ó N
+                        if(e.ColumnIndex > 2 && e.ColumnIndex < 11)  // valida S ó N
                         {
-                            if(e.FormattedValue.ToString() != "S" && e.FormattedValue.ToString() != "N")
+                            if(e.FormattedValue.ToString().Trim() != "S" && e.FormattedValue.ToString().Trim() != "N")
                             {
                                 MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
                                 e.Cancel = true;
