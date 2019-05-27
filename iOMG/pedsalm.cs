@@ -253,6 +253,7 @@ namespace iOMG
                 // tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // 
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
                 //tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
+                tx_dat_tiped.Text = tipede;
                 tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();  // estado del pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
                 tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // destino
@@ -275,6 +276,7 @@ namespace iOMG
                     if (row["codped"].ToString().Trim() == tx_codped.Text.Trim())
                     {
                         //id,codped,tipoes,origen,destino,fecha,entrega,coment
+                        tx_dat_tiped.Text = tipede;
                         tx_idr.Text = row["id"].ToString();            // id del registro
                         tx_rind.Text = cta.ToString();
                         //tx_dat_tiped.Text = row["tipoes"].ToString();  // tipo pedido
@@ -1248,6 +1250,19 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea MODIFICAR el pedido?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
+                    // calcula el estado del pedido segun el saldo de muebles
+                    int vasa = 0;   // saldo
+                    int vaca = 0;   // cantidad
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                    {
+                        vasa = vasa + Int16.Parse(dataGridView1.Rows[i].Cells[13].Value.ToString());
+                        vaca = vaca + Int16.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                    }
+                    if (vasa > 0 && vasa < vaca) tx_dat_estad.Text = estpend;    // atendido parcial
+                    if (vasa > 0 && vasa >= vaca) tx_dat_estad.Text = estenv;   // sin atender
+                    if (vasa <= 0) tx_dat_estad.Text = estcomp;                  // atendido total
+                    cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                    //
                     if (edita() == true)
                     {
                         // actualizamos el datatable
@@ -1304,7 +1319,61 @@ namespace iOMG
                 tx_d_can.Focus();
                 return;
             }
-            if(Tx_modo.Text == "NUEVO")
+            if(cmb_det3.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el detalle 3", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_det3.Focus();
+                return;
+            }
+            if (cmb_det2.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el detalle 2", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_det2.Focus();
+                return;
+            }
+            if (cmb_tal.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el taller", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_tal.Focus();
+                return;
+            }
+            if (cmb_aca.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el acabado", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_aca.Focus();
+                return;
+            }
+            if (cmb_det1.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el detalle 1", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_det1.Focus();
+                return;
+            }
+            if (cmb_tip.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione la tipología", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_tip.Focus();
+                return;
+            }
+            if (cmb_mad.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione la madera", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_mad.Focus();
+                return;
+            }
+            if (cmb_mod.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el modelo", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_mod.Focus();
+                return;
+            }
+            if (cmb_fam.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione el capitulo o familia", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_fam.Focus();
+                return;
+            }
+            if (Tx_modo.Text == "NUEVO")
             {
                 if(dataGridView1.Rows.Count < 100)
                 {
@@ -1945,6 +2014,20 @@ string nombre = "";
                 string de1 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(7, 2);
                 string aca = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(9, 1);
                 string tal = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(10, 2);
+                if (Tx_modo.Text == "EDITAR")
+                {
+                    string cod2d = "";
+                    foreach (DataRow row in dttaller.Rows)
+                    {
+                        if (row["idcodice"].ToString().Trim() == tx_dat_orig.Text.Trim())
+                        {
+                            cod2d = row["codigo"].ToString();
+                        }
+                    }
+                    //cmb_tal.Tag = cod2d;
+                    //cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
+                    tal = cod2d;
+                }
                 string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
                 string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
 
