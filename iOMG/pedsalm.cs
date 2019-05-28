@@ -44,10 +44,10 @@ namespace iOMG
         string estenv = "";             // estado de pedido enviado a producción
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
-        string cn_adm = "";     // codigo nivel usuario admin
-        string cn_sup = "";     // codigo nivel usuario superusuario
-        string cn_est = "";     // codigo nivel usuario estandar
-        string cn_mir = "";     // codigo nivel usuario solo mira
+        //string cn_adm = "";     // codigo nivel usuario admin
+        //string cn_sup = "";     // codigo nivel usuario superusuario
+        //string cn_est = "";     // codigo nivel usuario estandar
+        //string cn_mir = "";     // codigo nivel usuario solo mira
         string cliente = Program.cliente;    // razon social para los reportes
         libreria lib = new libreria();
         // string de conexion
@@ -1561,6 +1561,7 @@ namespace iOMG
         {
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = true;
             tabControl1.SelectedTab = tabuser;
             escribe(this);
             Tx_modo.Text = "NUEVO";
@@ -1587,6 +1588,7 @@ namespace iOMG
         {
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = false;
             string codu = "";
             string idr = "";
             if (advancedDataGridView1.CurrentRow.Index > -1)
@@ -1612,13 +1614,13 @@ namespace iOMG
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
-
             // nada que hacer
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = true;
             string codu = "";
             string idr = "";
             if (advancedDataGridView1.CurrentRow.Index > -1)
@@ -1668,8 +1670,7 @@ namespace iOMG
         }
         private void bt_exc_Click(object sender, EventArgs e)
         {
-            
-string nombre = "";
+            string nombre = "";
             nombre = "Pedidos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
             var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                 "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -1735,7 +1736,7 @@ string nombre = "";
         }
         #endregion botones;
         // permisos para habilitar los botones de comando
-        private void permisos()
+        /*private void permisos()
         {
             string consulta = "select formulario,nivel,coment,btn1,btn2,btn3,btn4,btn5,btn6 from setupform";
             DataTable dt = new DataTable();
@@ -1780,7 +1781,7 @@ string nombre = "";
                 com = fil[2].ToString();    // comentario - descripcion del form
             }
             conn.Close();
-        }
+        }*/
         // configurador de permisos
         #endregion botones_de_comando_y_permisos  ;
 
@@ -1897,7 +1898,8 @@ string nombre = "";
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
         {
             if (e.RowIndex > -1 && e.ColumnIndex > 0
-                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString())
+                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString() 
+                && Tx_modo.Text == "EDITAR")
             {
                 string campo = advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString();
                 string[] noeta = equivinter(advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString());    // retorna la tabla segun el titulo de la columna
@@ -1977,6 +1979,10 @@ string nombre = "";
                 {
                     e.Cancel = true;
                 }
+            }
+            else
+            {
+                //if(Tx_modo.Text == "NUEVO" || Tx_modo.Text == "VISUALIZAR") e.Cancel = true;
             }
         }
         private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
