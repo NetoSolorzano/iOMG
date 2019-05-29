@@ -1238,6 +1238,11 @@ namespace iOMG
                         Application.Exit();
                         return;
                     }
+                    // vista previa
+                    pageCount = 1;
+                    printDocument1.DefaultPageSettings.Landscape = true;
+                    printPreviewDialog1.Document = printDocument1;
+                    printPreviewDialog1.ShowDialog();
                 }
                 else
                 {
@@ -1375,17 +1380,39 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO")
             {
-                if(dataGridView1.Rows.Count < 100)
+                if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
-                    dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                         tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                        cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                    //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,
+                    //b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso,a.saldo
+                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                    obj.Cells[1].Value = tx_d_can.Text;
+                    obj.Cells[2].Value = tx_d_codi.Text;
+                    obj.Cells[3].Value = tx_d_nom.Text;
+                    obj.Cells[4].Value = tx_d_med.Text;
+                    obj.Cells[5].Value = tx_d_mad.Text;
+                    obj.Cells[6].Value = tx_d_det2.Text;
+                    obj.Cells[7].Value = tx_d_est.Text;
+                    obj.Cells[8].Value = tx_d_com.Text;
+                    obj.Cells[9].Value = cmb_aca.Tag.ToString();
+                    obj.Cells[10].Value = cmb_mad.Tag.ToString();
+                    obj.Cells[11].Value = cmb_det2.Tag.ToString();
+                    if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
+                    obj.Cells[13].Value = tx_saldo.Text;
                 }
                 else
                 {
-                    MessageBox.Show("Límite de filas por pedido alcanzado", "No se puede insertar mas filas",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    if (dataGridView1.Rows.Count < 100)
+                    {
+                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                             tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
+                            cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Límite de filas por pedido alcanzado", "No se puede insertar mas filas",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                 }
             }
             if (Tx_modo.Text == "EDITAR")
@@ -2206,7 +2233,11 @@ namespace iOMG
                 string data2 = dataGridView1.Rows[fila].Cells[2].Value.ToString();    // item
                 string data3 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
                 string data4 = dataGridView1.Rows[fila].Cells[8].Value.ToString();    // coment
-                string data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString().PadRight(6).Substring(0,6);    // detalle 2
+                string data5 = "";
+                if (dataGridView1.Rows[fila].Cells[6].Value.ToString().Substring(0, 1) == "R")
+                {
+                    data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString().PadRight(6).Substring(0, 6);    // detalle 2
+                }
                 string data6 = dataGridView1.Rows[fila].Cells[5].Value.ToString();    // madera
                 string data7 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
                 string data8 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // acabado
