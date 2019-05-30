@@ -42,6 +42,8 @@ namespace iOMG
         string estpend = "";            // estado de pedido con articulos pendientes de recibir
         string estcomp = "";            // estado de pedido con articulos recibidos en su totalidad
         string estenv = "";             // estado de pedido enviado a producción
+        string estanu = "";             // estado de pedido anulado
+        string estcer = "";             // estado de pedido cerrado tal como esta, ya no se atiende
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
         //string cn_adm = "";     // codigo nivel usuario admin
@@ -229,6 +231,8 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "recibido") estcomp = row["valor"].ToString().Trim();         // estado del pedido con llegada total
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "enviado") estenv = row["valor"].ToString().Trim();         // estado del pedido enviado a producción
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();         // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
@@ -1229,6 +1233,9 @@ namespace iOMG
                         dr[5] = dtp_pedido.Value.ToString("yyy-MM-dd");
                         dr[6] = dtp_entreg.Value.ToString("yyy-MM-dd");
                         dr[7] = tx_coment.Text;
+                        dr[8] = tx_dat_tiped.Text;
+                        dr[9] = tx_dat_estad.Text;
+
                         dtg.Rows.Add(dr);
                         //dtu.Rows.Add(dr); da error porque la fila ya pertenece a otra tabla
                     }
@@ -1255,18 +1262,25 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea MODIFICAR el pedido?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    // calcula el estado del pedido segun el saldo de muebles
-                    int vasa = 0;   // saldo
-                    int vaca = 0;   // cantidad
-                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                    if(tx_dat_estad.Text == estanu || tx_dat_estad.Text == estcer)    // si estado actual es anulado o cerrado
                     {
-                        vasa = vasa + Int16.Parse(dataGridView1.Rows[i].Cells[13].Value.ToString());
-                        vaca = vaca + Int16.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                        // se cierra o anula, no se calcula el estado
                     }
-                    if (vasa > 0 && vasa < vaca) tx_dat_estad.Text = estpend;    // atendido parcial
-                    if (vasa > 0 && vasa >= vaca) tx_dat_estad.Text = estenv;   // sin atender
-                    if (vasa <= 0) tx_dat_estad.Text = estcomp;                  // atendido total
-                    cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                    else
+                    {
+                        // calcula el estado del pedido segun el saldo de muebles
+                        int vasa = 0;   // saldo
+                        int vaca = 0;   // cantidad
+                        for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                        {
+                            vasa = vasa + Int16.Parse(dataGridView1.Rows[i].Cells[13].Value.ToString());
+                            vaca = vaca + Int16.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                        }
+                        if (vasa > 0 && vasa < vaca) tx_dat_estad.Text = estpend;    // atendido parcial
+                        if (vasa > 0 && vasa >= vaca) tx_dat_estad.Text = estenv;   // sin atender
+                        if (vasa <= 0) tx_dat_estad.Text = estcomp;                  // atendido total
+                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                    }
                     //
                     if (edita() == true)
                     {
@@ -1283,6 +1297,8 @@ namespace iOMG
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][7] = tx_coment.Text;
+                                dtg.Rows[i][8] = tx_dat_tiped.Text;
+                                dtg.Rows[i][9] = tx_dat_estad.Text;
                             }
                         }
                     }
@@ -2234,7 +2250,7 @@ namespace iOMG
                 string data3 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
                 string data4 = dataGridView1.Rows[fila].Cells[8].Value.ToString();    // coment
                 string data5 = "";
-                if (dataGridView1.Rows[fila].Cells[6].Value.ToString().Substring(0, 1) == "R")
+                if (dataGridView1.Rows[fila].Cells[6].Value.ToString().Substring(0, 1) == "R")  // hardcodeado que feo!
                 {
                     data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString().PadRight(6).Substring(0, 6);    // detalle 2
                 }
