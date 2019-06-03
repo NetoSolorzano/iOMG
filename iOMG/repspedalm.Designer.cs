@@ -104,6 +104,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabSal = new System.Windows.Forms.TabPage();
+            this.tabres = new System.Windows.Forms.TabPage();
+            this.tx_codped = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.dgv_resumen = new System.Windows.Forms.DataGridView();
+            this.bt_resumen = new System.Windows.Forms.Button();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
@@ -119,6 +126,8 @@
             this.groupBox7.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
+            this.tabres.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -379,6 +388,7 @@
             this.tabControl1.Controls.Add(this.tabPed);
             this.tabControl1.Controls.Add(this.tabIng);
             this.tabControl1.Controls.Add(this.tabSal);
+            this.tabControl1.Controls.Add(this.tabres);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -905,6 +915,76 @@
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
             // 
+            // tabres
+            // 
+            this.tabres.Controls.Add(this.tx_codped);
+            this.tabres.Controls.Add(this.label8);
+            this.tabres.Controls.Add(this.button2);
+            this.tabres.Controls.Add(this.button3);
+            this.tabres.Controls.Add(this.dgv_resumen);
+            this.tabres.Controls.Add(this.bt_resumen);
+            this.tabres.Location = new System.Drawing.Point(4, 22);
+            this.tabres.Name = "tabres";
+            this.tabres.Size = new System.Drawing.Size(795, 302);
+            this.tabres.TabIndex = 3;
+            this.tabres.Text = "Resumen de pedido";
+            this.tabres.UseVisualStyleBackColor = true;
+            // 
+            // tx_codped
+            // 
+            this.tx_codped.Location = new System.Drawing.Point(304, 16);
+            this.tx_codped.Name = "tx_codped";
+            this.tx_codped.Size = new System.Drawing.Size(81, 20);
+            this.tx_codped.TabIndex = 359;
+            this.tx_codped.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_codped.Leave += new System.EventHandler(this.tx_codped_Leave);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(230, 19);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 13);
+            this.label8.TabIndex = 360;
+            this.label8.Text = "Cod.Pedido";
+            // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.Location = new System.Drawing.Point(654, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(61, 44);
+            this.button2.TabIndex = 358;
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button3.Location = new System.Drawing.Point(724, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(61, 44);
+            this.button3.TabIndex = 357;
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // dgv_resumen
+            // 
+            this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_resumen.Location = new System.Drawing.Point(3, 49);
+            this.dgv_resumen.Name = "dgv_resumen";
+            this.dgv_resumen.Size = new System.Drawing.Size(789, 250);
+            this.dgv_resumen.TabIndex = 347;
+            // 
+            // bt_resumen
+            // 
+            this.bt_resumen.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_resumen.Location = new System.Drawing.Point(412, 11);
+            this.bt_resumen.Name = "bt_resumen";
+            this.bt_resumen.Size = new System.Drawing.Size(59, 29);
+            this.bt_resumen.TabIndex = 342;
+            this.bt_resumen.Text = "Genera";
+            this.bt_resumen.UseVisualStyleBackColor = true;
+            this.bt_resumen.Click += new System.EventHandler(this.bt_resumen_Click);
+            // 
             // printDialog1
             // 
             this.printDialog1.UseEXDialog = true;
@@ -950,6 +1030,9 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
+            this.tabres.ResumeLayout(false);
+            this.tabres.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1034,5 +1117,12 @@
         private System.Windows.Forms.ComboBox cmb_tall_ing;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabPage tabres;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.DataGridView dgv_resumen;
+        private System.Windows.Forms.Button bt_resumen;
+        private System.Windows.Forms.TextBox tx_codped;
+        private System.Windows.Forms.Label label8;
     }
 }

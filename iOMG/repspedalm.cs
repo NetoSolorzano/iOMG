@@ -75,6 +75,9 @@ namespace iOMG
             Bt_sig.Visible = false;
             Bt_ret.Visible = false;
             Bt_fin.Visible = false;
+            //
+            tx_codped.CharacterCasing = CharacterCasing.Upper;
+            tx_codped.TextAlign = HorizontalAlignment.Center;
         }
         private void init()
         {
@@ -393,6 +396,125 @@ namespace iOMG
             dgv_ingresos.Columns[8].Visible = false;
             dgv_ingresos.Columns[9].Visible = false;
         }
+        private void grillares()                                    // arma la grilla del resumen de pedido
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_resumen.Font = tiplg;
+            dgv_resumen.DefaultCellStyle.Font = tiplg;
+            dgv_resumen.RowTemplate.Height = 15;
+            dgv_resumen.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_resumen.AllowUserToAddRows = false;
+            if (dgv_resumen.DataSource == null) dgv_resumen.ColumnCount = 20;
+            // Fecha pedido
+            dgv_resumen.Columns[0].Visible = true;
+            dgv_resumen.Columns[0].HeaderText = "Fecha";    // titulo de la columna
+            dgv_resumen.Columns[0].Width = 70;                // ancho
+            dgv_resumen.Columns[0].ReadOnly = true;           // lectura o no
+            dgv_resumen.Columns[0].Tag = "validaNO";
+            //dgv_resumen.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Pedido
+            dgv_resumen.Columns[1].Visible = true;            // columna visible o no
+            dgv_resumen.Columns[1].HeaderText = "Pedido";    // titulo de la columna
+            dgv_resumen.Columns[1].Width = 60;                // ancho
+            dgv_resumen.Columns[1].ReadOnly = true;           // lectura o no
+            dgv_resumen.Columns[1].Tag = "validaNO";
+            //dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Estado
+            dgv_resumen.Columns[2].Visible = true;
+            dgv_resumen.Columns[2].HeaderText = "Estado";    // titulo de la columna
+            dgv_resumen.Columns[2].Width = 80;                // ancho
+            dgv_resumen.Columns[2].ReadOnly = true;           // lectura o no
+            dgv_resumen.Columns[2].Tag = "validaNO";
+            //dgv_resumen.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // taller
+            dgv_resumen.Columns[3].Visible = true;
+            dgv_resumen.Columns[3].HeaderText = "Taller";
+            dgv_resumen.Columns[3].Width = 100;
+            dgv_resumen.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            dgv_resumen.Columns[3].Tag = "validaNO";          // las celdas de esta columna se SI se validan
+            //dgv_resumen.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Destino
+            dgv_resumen.Columns[4].Visible = true;
+            dgv_resumen.Columns[4].HeaderText = "Destino";
+            dgv_resumen.Columns[4].Width = 70;
+            dgv_resumen.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            dgv_resumen.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
+            //dgv_resumen.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Fech entrega
+            dgv_resumen.Columns[5].Visible = true;
+            dgv_resumen.Columns[5].HeaderText = "Fecha Ent";
+            dgv_resumen.Columns[5].Width = 70;
+            dgv_resumen.Columns[5].ReadOnly = true;
+            dgv_resumen.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            //dgv_resumen.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // items
+            dgv_resumen.Columns[6].Visible = true;
+            dgv_resumen.Columns[6].HeaderText = "Código";
+            dgv_resumen.Columns[6].Width = 100;
+            dgv_resumen.Columns[6].ReadOnly = true;
+            dgv_resumen.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Nombre
+            dgv_resumen.Columns[7].Visible = true;
+            dgv_resumen.Columns[7].HeaderText = "Nombre del artículo";
+            dgv_resumen.Columns[7].Width = 200;
+            dgv_resumen.Columns[7].ReadOnly = true;
+            dgv_resumen.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // madera
+            dgv_resumen.Columns[8].Visible = true;
+            dgv_resumen.Columns[8].HeaderText = "Madera";
+            dgv_resumen.Columns[8].Width = 30;
+            dgv_resumen.Columns[8].ReadOnly = true;
+            dgv_resumen.Columns[8].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // detalle 2
+            dgv_resumen.Columns[9].Visible = true;
+            dgv_resumen.Columns[9].HeaderText = "Det.2";
+            dgv_resumen.Columns[9].Width = 60;
+            dgv_resumen.Columns[9].ReadOnly = true;
+            dgv_resumen.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // medidas
+            dgv_resumen.Columns[10].Visible = true;
+            dgv_resumen.Columns[10].HeaderText = "Medidas";
+            dgv_resumen.Columns[10].Width = 100;
+            dgv_resumen.Columns[10].ReadOnly = true;
+            dgv_resumen.Columns[10].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Cant
+            dgv_resumen.Columns[11].Visible = true;
+            dgv_resumen.Columns[11].HeaderText = "Cant";
+            dgv_resumen.Columns[11].Width = 50;
+            dgv_resumen.Columns[11].ReadOnly = true;
+            dgv_resumen.Columns[11].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Saldo
+            dgv_resumen.Columns[12].Visible = true;
+            dgv_resumen.Columns[12].HeaderText = "Saldo";
+            dgv_resumen.Columns[12].Width = 50;
+            dgv_resumen.Columns[12].ReadOnly = true;
+            dgv_resumen.Columns[12].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // acabado
+            dgv_resumen.Columns[13].Visible = true;
+            dgv_resumen.Columns[13].HeaderText = "Acabado";
+            dgv_resumen.Columns[13].Width = 50;
+            dgv_resumen.Columns[13].ReadOnly = true;
+            dgv_resumen.Columns[13].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            // resto de campos
+            dgv_resumen.Columns[14].Visible = false;
+            dgv_resumen.Columns[15].Visible = false;
+            dgv_resumen.Columns[16].Visible = false;
+            dgv_resumen.Columns[17].Visible = false;
+            dgv_resumen.Columns[18].Visible = false;
+            // fecha de ingreso
+            dgv_resumen.Columns[19].Visible = true;
+            dgv_resumen.Columns[19].HeaderText = "Fech.Ing.";
+            dgv_resumen.Columns[19].Width = 80;
+            dgv_resumen.Columns[19].ReadOnly = true;
+            dgv_resumen.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
+        }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
             // id,codped,tipoes,origen,destino,fecha,entrega,coment
@@ -514,6 +636,87 @@ namespace iOMG
                 MessageBox.Show(ex.Message, "Error en obtener datos");
                 Application.Exit();
                 return;
+            }
+        }
+        private void tx_codped_Leave(object sender, EventArgs e)    // valida existencia de pedido - RESUMEN DE PEDIDO
+        {
+            if(tx_codped.Text != "")
+            {
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        string consu = "select count(id) from pedidos where codped=@ped";
+                        MySqlCommand micon = new MySqlCommand(consu, conn);
+                        micon.Parameters.AddWithValue("@ped", tx_codped.Text);
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            if(dr.GetInt16(0) == 0)
+                            {
+                                MessageBox.Show("No existe el pedido!", "Atención verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                tx_codped.Text = "";
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                    return;
+                }
+            }
+        }
+        private void bt_resumen_Click(object sender, EventArgs e)   // genera resumen de pedido
+        {
+            if(tx_codped.Text != "")
+            {
+                string consulta =
+                    "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
+                    "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
+                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso " +
+                    "from pedidos a left join detaped d on d.pedidoh=a.codped " +
+                    "left join desc_stp b on b.idcodice=a.status " +
+                    "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
+                    "left join desc_est e on e.idcodice=d.estado " +
+                    "left join desc_mad f on f.idcodice=d.madera " +
+                    "left join desc_dt2 g on g.idcodice=d.piedra " +
+                    "where a.codped=@ped";
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        dgv_resumen.DataSource = null;
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.Parameters.AddWithValue("@ped", tx_codped.Text);
+                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_resumen.DataSource = dt;
+                        dt.Dispose();
+                        da.Dispose();
+                        grillares();
+                    }
+                    else
+                    {
+                        conn.Close();
+                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en obtener datos");
+                    Application.Exit();
+                    return;
+                }
             }
         }
 
