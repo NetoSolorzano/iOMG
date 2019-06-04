@@ -103,7 +103,6 @@
             this.cmb_tall_ing = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.tabSal = new System.Windows.Forms.TabPage();
             this.tabres = new System.Windows.Forms.TabPage();
             this.tx_codped = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -387,7 +386,6 @@
             // 
             this.tabControl1.Controls.Add(this.tabPed);
             this.tabControl1.Controls.Add(this.tabIng);
-            this.tabControl1.Controls.Add(this.tabSal);
             this.tabControl1.Controls.Add(this.tabres);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Multiline = true;
@@ -906,15 +904,6 @@
             this.label6.TabIndex = 323;
             this.label6.Text = "Fech Inicial";
             // 
-            // tabSal
-            // 
-            this.tabSal.Location = new System.Drawing.Point(4, 22);
-            this.tabSal.Name = "tabSal";
-            this.tabSal.Size = new System.Drawing.Size(795, 302);
-            this.tabSal.TabIndex = 2;
-            this.tabSal.Text = "Salidas";
-            this.tabSal.UseVisualStyleBackColor = true;
-            // 
             // tabres
             // 
             this.tabres.Controls.Add(this.tx_codped);
@@ -1067,7 +1056,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPed;
         private System.Windows.Forms.TabPage tabIng;
-        private System.Windows.Forms.TabPage tabSal;
         private System.Windows.Forms.DateTimePicker dtp_entreg;
         private System.Windows.Forms.DateTimePicker dtp_pedido;
         private System.Windows.Forms.TextBox tx_dat_orig;
