@@ -354,14 +354,14 @@ namespace iOMG
             // cant
             dataGridView1.Columns[1].Visible = true;            // columna visible o no
             dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
-            dataGridView1.Columns[1].Width = 30;                // ancho
+            dataGridView1.Columns[1].Width = 20;                // ancho
             dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[1].Name = "cant";
             // articulo
             dataGridView1.Columns[2].Visible = true;            // columna visible o no
             dataGridView1.Columns[2].HeaderText = "Artículo";    // titulo de la columna
-            dataGridView1.Columns[2].Width = 100;                // ancho
+            dataGridView1.Columns[2].Width = 70;                // ancho
             dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[2].Name = "item";
