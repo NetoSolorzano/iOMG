@@ -260,14 +260,14 @@ namespace iOMG
                 tx_dat_tiped.Text = tipede;
                 tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();  // estado del pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
-                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // destino
+
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());   // fecha pedido
                 dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());    // fecha entrega
                 tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();     // comentario
                 //cmb_cap.SelectedValue = tx_dat_tiped.Text;
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-                cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
+
                 cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                 //cmb_tip.SelectedValue = tx_dat_tip.Text;
                 jaladet(tx_codped.Text);
@@ -286,14 +286,14 @@ namespace iOMG
                         //tx_dat_tiped.Text = row["tipoes"].ToString();  // tipo pedido
                         tx_dat_estad.Text = row["status"].ToString();   // estado del pedido
                         tx_dat_orig.Text = row["origen"].ToString();   // taller origen
-                        tx_dat_dest.Text = row["destino"].ToString();   // destino
+
                         dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());   // fecha pedido
                         dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());    // fecha entrega
                         tx_coment.Text = row["coment"].ToString();     // comentario
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-                        cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
+
                         jaladet(tx_codped.Text);
                     }
                     cta = cta + 1;
@@ -499,8 +499,8 @@ namespace iOMG
                 dadest.Fill(dtdest);
                 foreach (DataRow row in dtdest.Rows)
                 {
-                    cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
-                    cmb_destino.ValueMember = row.ItemArray[1].ToString();
+                    //cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    //cmb_destino.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion de tipo de pedido ... ok
                 const string conpedido = "select descrizionerid,idcodice from desc_tpe " +
@@ -850,7 +850,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
-                    micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
+
                     micon.Parameters.AddWithValue("@come", tx_coment.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@cope", tx_codped.Text);
@@ -927,7 +927,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
-                    micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
+
                     micon.Parameters.AddWithValue("@come", tx_coment.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
@@ -1167,7 +1167,7 @@ namespace iOMG
         {
             //tabControl1.SelectedTab = pag;
             cmb_taller.SelectedIndex = -1;
-            cmb_destino.SelectedIndex = -1;
+            //cmb_destino.SelectedIndex = -1;
             cmb_estado.SelectedIndex = -1;
             cmb_fam.SelectedIndex = -1;
             cmb_mod.SelectedIndex = -1;
@@ -1203,12 +1203,6 @@ namespace iOMG
                 cmb_taller.Focus();
                 return;
             }
-            if(tx_dat_dest.Text == "")
-            {
-                MessageBox.Show("Seleccione el destino", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                cmb_destino.Focus();
-                return;
-            }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;
             string iserror = "no";
@@ -1229,7 +1223,7 @@ namespace iOMG
                         dr[1] = tx_codped.Text; 
                         dr[2] = cmb_estado.SelectedItem.ToString().Substring(9, 6); // tx_dat_estad.Text;
                         dr[3] = tx_dat_orig.Text;
-                        dr[4] = tx_dat_dest.Text;
+                        //dr[4] = tx_dat_dest.Text;
                         dr[5] = dtp_pedido.Value.ToString("yyy-MM-dd");
                         dr[6] = dtp_entreg.Value.ToString("yyy-MM-dd");
                         dr[7] = tx_coment.Text;
@@ -1293,7 +1287,7 @@ namespace iOMG
                                 // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
                                 dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 6);    // tx_dat_estad.Text;
                                 dtg.Rows[i][3] = tx_dat_orig.Text;
-                                dtg.Rows[i][4] = tx_dat_dest.Text;
+                                //dtg.Rows[i][4] = tx_dat_dest.Text;
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][7] = tx_coment.Text;
@@ -1834,11 +1828,6 @@ namespace iOMG
             if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
             else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
-        private void cmb_destino_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cmb_destino.SelectedValue != null) tx_dat_dest.Text = cmb_destino.SelectedValue.ToString();
-            else tx_dat_dest.Text = cmb_destino.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-        }
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
@@ -2175,7 +2164,7 @@ namespace iOMG
                                 // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
                                 dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 6);    // tx_dat_estad.Text;
                                 dtg.Rows[i][3] = tx_dat_orig.Text;
-                                dtg.Rows[i][4] = tx_dat_dest.Text;
+                                //dtg.Rows[i][4] = tx_dat_dest.Text;
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][7] = tx_coment.Text;
@@ -2205,6 +2194,12 @@ namespace iOMG
             bt_prev.Enabled = true;
             bt_exc.Enabled = false;
         }
+
+        private void tabuser_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
@@ -2344,7 +2339,7 @@ namespace iOMG
             ptodir = new PointF(coli + 300, posi + 15.0F);
             RectangleF recped = new RectangleF(ptodir, sizrec);
             e.Graphics.DrawRectangle(grueso, Rectangle.Round(recped));
-            e.Graphics.DrawString(cmb_destino.Text.Substring(0,6) + "   " + tx_codped.Text, lt_tit, Brushes.Black, recped, sf);
+            //e.Graphics.DrawString(cmb_destino.Text.Substring(0,6) + "   " + tx_codped.Text, lt_tit, Brushes.Black, recped, sf);
             ptodir = new PointF(coli + 500, posi + 15.0F);
             RectangleF recfep = new RectangleF(ptodir, sizrec);
             e.Graphics.DrawRectangle(grueso, Rectangle.Round(recfep));

@@ -70,8 +70,10 @@ namespace iOMG
         string imgpc5 = "";                                             // imagen5 de menu panel de control
         string imgma1 = "";                                             // imagen 1 maestras - clientes
         string imgma2 = "";                                             // imagen 2 maestras - artículos
-        string imgpe1 = "";                                             // imagen1 pedidos - registro
-        string imgpe2 = "";                                             // imagen2 pedidos - reportes
+        string imgpe1 = "";                                             // imagen 1 pedidos - registro
+        string imgpe2 = "";                                             // imagen 2 pedidos - reportes
+        string imgvc1 = "";                                             // imagen 1 ventas - contratos
+        string imgvp1 = "";                                             // imagen 1 ventas - pedidos
         // botones de accion
         string img_btN = "";                                            // imagen del boton de accion NUEVO
         string img_btE = "";                                            // imagen del boton de accion EDITAR
@@ -238,6 +240,8 @@ namespace iOMG
                         if (row["param"].ToString() == "imgma2") imgma2 = row["valor"].ToString().Trim();         // imagen2 de maestras - articulos 
                         if (row["param"].ToString() == "imgpe1") imgpe1 = row["valor"].ToString().Trim();         // imagen1 de pedidos - registro
                         if (row["param"].ToString() == "imgpe2") imgpe2 = row["valor"].ToString().Trim();         // imagen1 de pedidos - reportes
+                        if (row["param"].ToString() == "imgvc1") imgvc1 = row["valor"].ToString().Trim();         // imagen1 de ventas contratos
+                        // .. resto de imagenes de ventas
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
                         if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
@@ -423,11 +427,29 @@ namespace iOMG
         //
         private void bt_ventas_Click(object sender, EventArgs e)
         {
+            Image img_v_c = Image.FromFile(imgvc1);
+            //Image img_v_p = Image.FromFile("");
+            //Image img_v_i = Image.FromFile("");
+            //Image img_v_s = Image.FromFile("");
+            //Image img_v_r = Image.FromFile("");
             menuStrip1.Items.Clear();
-            menuStrip1.Items.Add("Contratos");
-            menuStrip1.Items.Add("Pedidos");
-
+            menuStrip1.Items.Add("Contratos",img_v_c, vc_registro_Click);
+            menuStrip1.Items.Add("Pedidos a diseño");
+            menuStrip1.Items.Add("Ingresos");
+            menuStrip1.Items.Add("Salidas");
+            menuStrip1.Items.Add("Reportes");
             menuStrip1.Visible = true;
+        }
+        private void vc_registro_Click(object sender, EventArgs e)
+        {
+            contclte fvc = new contclte();
+            fvc.TopLevel = false;
+            fvc.Parent = this;
+            pn_centro.Controls.Add(fvc);
+            fvc.Location = new Point((pn_centro.Width - fvc.Width) / 2, (pn_centro.Height - fvc.Height) / 2);
+            fvc.Anchor = AnchorStyles.None;
+            fvc.Show();
+            fvc.BringToFront();
         }
         //
         private void bt_pedidos_Click(object sender, EventArgs e)       // pedidos de fabricación
