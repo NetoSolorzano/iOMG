@@ -89,7 +89,7 @@ namespace iOMG
             //grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
-            Bt_anul.Enabled = false;            // LA ANULACION O CIERRE DE PEDIDO SE HACE CON "EDIT", BOTON PARA PRE-VISUALIZAR
+            Bt_anul.Enabled = true;     // borra si no tiene enlaces, anula si ya tiene relacionados
             Bt_print.Enabled = false;
             bt_prev.Enabled = false;
             //Bt_add_Click(null, null);
@@ -107,14 +107,14 @@ namespace iOMG
             this.tabuser.BackColor = Color.FromName(iOMG.Program.colgri);
 
             jalainfo();
-            Bt_add.Image = Image.FromFile(img_btN);     // oki
-            Bt_edit.Image = Image.FromFile(img_btE);    // oki
-            Bt_anul.Image = Image.FromFile(img_anul);   // oki
-            bt_view.Image = Image.FromFile(img_ver);    // oki
-            Bt_print.Image = Image.FromFile(img_btP);   // oki
-            bt_prev.Image = Image.FromFile(img_pre);    // oki
-            bt_exc.Image = Image.FromFile(img_btexc);   // oki
-            Bt_close.Image = Image.FromFile(img_btq);   // oki
+            Bt_add.Image = Image.FromFile(img_btN);
+            Bt_edit.Image = Image.FromFile(img_btE);
+            Bt_anul.Image = Image.FromFile(img_anul);
+            bt_view.Image = Image.FromFile(img_ver);
+            Bt_print.Image = Image.FromFile(img_btP);
+            bt_prev.Image = Image.FromFile(img_pre);
+            bt_exc.Image = Image.FromFile(img_btexc);
+            Bt_close.Image = Image.FromFile(img_btq);
             //
             Bt_ini.Image = Image.FromFile(img_bti);
             Bt_sig.Image = Image.FromFile(img_bts);
@@ -126,7 +126,8 @@ namespace iOMG
         }
         private void grilla()                   // arma la grilla
         {
-            // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
+            // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+            // a.valor,a.acuenta,a.saldo,a.dscto 
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -135,59 +136,72 @@ namespace iOMG
             advancedDataGridView1.DataSource = dtg;
             // id 
             advancedDataGridView1.Columns[0].Visible = false;
-            // codigo de pedido
-            advancedDataGridView1.Columns[1].Visible = true;            // columna visible o no
-            advancedDataGridView1.Columns[1].HeaderText = "Pedido";    // titulo de la columna
-            advancedDataGridView1.Columns[1].Width = 70;                // ancho
-            advancedDataGridView1.Columns[1].ReadOnly = true;           // lectura o no
-            advancedDataGridView1.Columns[1].Tag = "validaNO";
-            advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // tipo de pedido ==> situacion del pedido, status
-            advancedDataGridView1.Columns[2].Visible = true;
-            advancedDataGridView1.Columns[2].HeaderText = "Sit.Ped";    // titulo de la columna
+            // tipo contrato
+            advancedDataGridView1.Columns[1].Visible = false;
+            // codigo de contrato
+            advancedDataGridView1.Columns[2].Visible = true;            // columna visible o no
+            advancedDataGridView1.Columns[2].HeaderText = "Contrato";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 70;                // ancho
             advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             advancedDataGridView1.Columns[2].Tag = "validaNO";
             advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Origen - taller
+            // estado del contrato
             advancedDataGridView1.Columns[3].Visible = true;
-            advancedDataGridView1.Columns[3].HeaderText = "Taller";
-            advancedDataGridView1.Columns[3].Width = 80;
-            advancedDataGridView1.Columns[3].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
-            advancedDataGridView1.Columns[3].Tag = "validaSI";          // las celdas de esta columna se SI se validan
+            advancedDataGridView1.Columns[3].HeaderText = "Estado";    // titulo de la columna
+            advancedDataGridView1.Columns[3].Width = 70;                // ancho
+            advancedDataGridView1.Columns[3].ReadOnly = true;           // lectura o no
+            advancedDataGridView1.Columns[3].Tag = "validaNO";
             advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Destino
+            // Local venta
             advancedDataGridView1.Columns[4].Visible = true;
-            advancedDataGridView1.Columns[4].HeaderText = "Destino";
+            advancedDataGridView1.Columns[4].HeaderText = "Local Vta.";
             advancedDataGridView1.Columns[4].Width = 80;
             advancedDataGridView1.Columns[4].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
-            advancedDataGridView1.Columns[4].Tag = "validaSI";          // las celdas de esta columna se validan
+            advancedDataGridView1.Columns[4].Tag = "validaSI";          // las celdas de esta columna se SI se validan
             advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Fecha del pedido
+            // Fecha del contrato
             advancedDataGridView1.Columns[5].Visible = true;
-            advancedDataGridView1.Columns[5].HeaderText = "Fecha Ped.";
-            advancedDataGridView1.Columns[5].Width = 100;
-            advancedDataGridView1.Columns[5].ReadOnly = false;
+            advancedDataGridView1.Columns[5].HeaderText = "Fecha";
+            advancedDataGridView1.Columns[5].Width = 70;
+            advancedDataGridView1.Columns[5].ReadOnly = true;
             advancedDataGridView1.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Fecha de Entrega
+            // id cliente
             advancedDataGridView1.Columns[6].Visible = true;
-            advancedDataGridView1.Columns[6].HeaderText = "Fecha Ent.";
-            advancedDataGridView1.Columns[6].Width = 100;
-            advancedDataGridView1.Columns[6].ReadOnly = false;
-            advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            advancedDataGridView1.Columns[6].HeaderText = "Cliente";
+            advancedDataGridView1.Columns[6].Width = 80;
+            advancedDataGridView1.Columns[6].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // comentarios
+            // nombre cliente
             advancedDataGridView1.Columns[7].Visible = true;
-            advancedDataGridView1.Columns[7].HeaderText = "Comentarios";
-            advancedDataGridView1.Columns[7].Width = 250;
-            advancedDataGridView1.Columns[7].ReadOnly = false;
+            advancedDataGridView1.Columns[7].HeaderText = "Nombre del cliente";
+            advancedDataGridView1.Columns[7].Width = 200;
+            advancedDataGridView1.Columns[7].ReadOnly = true;
             advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // codigo tipo
-            advancedDataGridView1.Columns[8].Visible = false;
-            // codigo estado
-            advancedDataGridView1.Columns[9].Visible = false;
+            // comentarios
+            advancedDataGridView1.Columns[8].Visible = true;
+            advancedDataGridView1.Columns[8].HeaderText = "Comentarios";
+            advancedDataGridView1.Columns[8].Width = 250;
+            advancedDataGridView1.Columns[8].ReadOnly = false;
+            advancedDataGridView1.Columns[8].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Fecha de Entrega
+            advancedDataGridView1.Columns[9].Visible = true;
+            advancedDataGridView1.Columns[9].HeaderText = "Fecha Ent";
+            advancedDataGridView1.Columns[9].Width = 70;
+            advancedDataGridView1.Columns[9].ReadOnly = false;
+            advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // valor
+            advancedDataGridView1.Columns[10].Visible = false;
+            // a cuenta
+            advancedDataGridView1.Columns[11].Visible = false;
+            // saldo
+            advancedDataGridView1.Columns[12].Visible = false;
+            // descuento %
+            advancedDataGridView1.Columns[13].Visible = false;
         }
         private void jalainfo()                 // obtiene datos de imagenes
         {
@@ -212,31 +226,28 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
                         if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
                         if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
+                        if (row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
+                        if (row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
                         if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
-                        //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
-                        // boton de vista preliminar .... esta por verse su utlidad
                         if (row["param"].ToString() == "img_bti") img_bti = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL INICIO
                         if (row["param"].ToString() == "img_bts") img_bts = row["valor"].ToString().Trim();         // imagen del boton de accion SIGUIENTE
                         if (row["param"].ToString() == "img_btr") img_btr = row["valor"].ToString().Trim();         // imagen del boton de accion RETROCEDE
                         if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
-                        //if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
                     }
-                    if (row["formulario"].ToString() == "pedidos")
+                    if (row["formulario"].ToString() == "contratos")
                     {
-                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "pendiente") estpend = row["valor"].ToString().Trim();         // estado del pedido con llegada parcial
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "recibido") estcomp = row["valor"].ToString().Trim();         // estado del pedido con llegada total
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "enviado") estenv = row["valor"].ToString().Trim();         // estado del pedido enviado a producción
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
+                        if (row["campo"].ToString() == "tipocon" && row["param"].ToString() == "normal") tipede = row["valor"].ToString().Trim();       // tipo de contrato x defecto "normal"
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();       // estado del contrato inicial
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "") estpend = row["valor"].ToString().Trim();    // estado del contrato con llegada parcial
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "recibido") estcomp = row["valor"].ToString().Trim();         // estado del pedido con llegada total
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "enviado") estenv = row["valor"].ToString().Trim();         // estado del pedido enviado a producción
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();         // valor por defecto al no validar det2
-                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
-                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
                     }
                 }
                 da.Dispose();
@@ -253,23 +264,20 @@ namespace iOMG
         public void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
-            {   // id,codped,tipoes,origen,destino,fecha,entrega,coment
-                // tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // 
-                tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
-                //tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipo pedido
-                tx_dat_tiped.Text = tipede;
-                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();  // estado del pedido
-                tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // taller origen
-
-                dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());   // fecha pedido
-                dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());    // fecha entrega
+            {
+                tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
+                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
+                tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // local venta
+                dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());
+                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // estado
+                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();     // comentario
-                //cmb_cap.SelectedValue = tx_dat_tiped.Text;
-                cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
-                cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-
-                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
-                //cmb_tip.SelectedValue = tx_dat_tip.Text;
+                tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();     // direc. de entrega
+                dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString());    // fecha entrega
+                //
+                cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
+                cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
+                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);    // estado
                 jaladet(tx_codped.Text);
             }
             if(campo == "tx_codped" && tx_codped.Text != "")
@@ -277,39 +285,73 @@ namespace iOMG
                 int cta = 0;
                 foreach (DataRow row in dtg.Rows)
                 {
-                    if (row["codped"].ToString().Trim() == tx_codped.Text.Trim())
+                    if (row["contrato"].ToString().Trim() == tx_codped.Text.Trim())
                     {
-                        //id,codped,tipoes,origen,destino,fecha,entrega,coment
-                        tx_dat_tiped.Text = tipede;
-                        tx_idr.Text = row["id"].ToString();            // id del registro
+                        // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                        // a.valor,a.acuenta,a.saldo,a.dscto 
+                        tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
+                        tx_idr.Text = row["id"].ToString();                                 // id del registro
                         tx_rind.Text = cta.ToString();
-                        //tx_dat_tiped.Text = row["tipoes"].ToString();  // tipo pedido
-                        tx_dat_estad.Text = row["status"].ToString();   // estado del pedido
-                        tx_dat_orig.Text = row["origen"].ToString();   // taller origen
-
-                        dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());   // fecha pedido
-                        dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());    // fecha entrega
-                        tx_coment.Text = row["coment"].ToString();     // comentario
+                        tx_dat_estad.Text = row["status"].ToString();                       // estado
+                        tx_dat_orig.Text = row["tipoes"].ToString();                        // local venta
+                        dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha 
+                        jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
+                        dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
+                        tx_coment.Text = row["coment"].ToString();                          // comentario
+                        tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
+                        //
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-
                         jaladet(tx_codped.Text);
                     }
                     cta = cta + 1;
                 }
             }
         }
-        private void jaladet(string pedido)                 // jala el detalle del pedido
+        private void jaladatclt(string id)      // jala datos del cliente
         {
-            // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
-            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
-                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo " +
-                "from detaped a " +
-                "left join desc_est b on b.idcodice=a.estado " +
-                "left join desc_mad c on c.idcodice=a.madera " +
-                "left join desc_dt2 d on d.idcodice=a.piedra " +
-                "where a.pedidoh=@pedi";
+            string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
+                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,'') " +
+                "from anag_cli where id=@idc";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@idc", id);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_dat_tdoc.Text = dr.GetString(6);
+                        tx_ndc.Text = dr.GetString(7);
+                        tx_nombre.Text = dr.GetString(0);
+                        tx_direc.Text = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
+                        tx_dist.Text = dr.GetString(3);
+                        tx_prov.Text = dr.GetString(4);
+                        tx_dpto.Text = dr.GetString(5);
+                        tx_telef1.Text = dr.GetString(8);
+                        tx_telef2.Text = dr.GetString(9);
+                        tx_mail.Text = dr.GetString(10);
+                    }
+                    dr.Close();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos del cliente");
+                Application.Exit();
+                return;
+            }
+        }
+        private void jaladet(string pedido)     // jala el detalle del contrato
+        {
+            // 
+            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref " +
+                "FROM detacon WHERE contratoh = @cont";
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -317,7 +359,7 @@ namespace iOMG
                 if (conn.State == ConnectionState.Open)
                 {
                     MySqlCommand micon = new MySqlCommand(jalad, conn);
-                    micon.Parameters.AddWithValue("@pedi", pedido);
+                    micon.Parameters.AddWithValue("@cont", pedido);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -338,7 +380,7 @@ namespace iOMG
                 return;
             }
         }
-        private void grilladet(string modo)                 // grilla detalle de pedido
+        private void grilladet(string modo)                 // grilla detalle de pedido   ME QUEDE ACA!
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;

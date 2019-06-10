@@ -33,9 +33,26 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tx_telef2 = new iOMG.NumericTextBox();
+            this.tx_telef1 = new iOMG.NumericTextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tx_mail = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tx_dpto = new System.Windows.Forms.TextBox();
+            this.tx_prov = new System.Windows.Forms.TextBox();
+            this.tx_dist = new System.Windows.Forms.TextBox();
+            this.tx_direc = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tx_nombre = new System.Windows.Forms.TextBox();
+            this.cmb_tdoc = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tx_ndc = new iOMG.NumericTextBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tx_dirent = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
@@ -130,23 +147,8 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.tx_ndc = new iOMG.NumericTextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.cmb_tdoc = new System.Windows.Forms.ComboBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.tx_dist = new System.Windows.Forms.TextBox();
-            this.tx_prov = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.tx_mail = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.tx_telef1 = new iOMG.NumericTextBox();
-            this.tx_telef2 = new iOMG.NumericTextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
+            this.chk_cliente = new System.Windows.Forms.CheckBox();
+            this.tx_dat_tdoc = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -209,6 +211,8 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_dat_tdoc);
+            this.tabuser.Controls.Add(this.chk_cliente);
             this.tabuser.Controls.Add(this.label19);
             this.tabuser.Controls.Add(this.label18);
             this.tabuser.Controls.Add(this.label17);
@@ -217,17 +221,17 @@
             this.tabuser.Controls.Add(this.label16);
             this.tabuser.Controls.Add(this.tx_mail);
             this.tabuser.Controls.Add(this.label15);
-            this.tabuser.Controls.Add(this.textBox4);
+            this.tabuser.Controls.Add(this.tx_dpto);
             this.tabuser.Controls.Add(this.tx_prov);
             this.tabuser.Controls.Add(this.tx_dist);
-            this.tabuser.Controls.Add(this.textBox3);
+            this.tabuser.Controls.Add(this.tx_direc);
             this.tabuser.Controls.Add(this.label14);
-            this.tabuser.Controls.Add(this.textBox2);
+            this.tabuser.Controls.Add(this.tx_nombre);
             this.tabuser.Controls.Add(this.cmb_tdoc);
             this.tabuser.Controls.Add(this.label13);
             this.tabuser.Controls.Add(this.tx_ndc);
             this.tabuser.Controls.Add(this.groupBox9);
-            this.tabuser.Controls.Add(this.textBox1);
+            this.tabuser.Controls.Add(this.tx_dirent);
             this.tabuser.Controls.Add(this.label11);
             this.tabuser.Controls.Add(this.dtp_entreg);
             this.tabuser.Controls.Add(this.dtp_pedido);
@@ -270,6 +274,152 @@
             this.tabuser.Click += new System.EventHandler(this.tabuser_Click);
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(837, 58);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(33, 13);
+            this.label19.TabIndex = 320;
+            this.label19.Text = "Dpto.";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(709, 58);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(32, 13);
+            this.label18.TabIndex = 319;
+            this.label18.Text = "Prov.";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(583, 58);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(28, 13);
+            this.label17.TabIndex = 318;
+            this.label17.Text = "Dist.";
+            // 
+            // tx_telef2
+            // 
+            this.tx_telef2.AllowSpace = false;
+            this.tx_telef2.Location = new System.Drawing.Point(632, 77);
+            this.tx_telef2.Name = "tx_telef2";
+            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef2.TabIndex = 317;
+            // 
+            // tx_telef1
+            // 
+            this.tx_telef1.AllowSpace = false;
+            this.tx_telef1.Location = new System.Drawing.Point(547, 77);
+            this.tx_telef1.Name = "tx_telef1";
+            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef1.TabIndex = 316;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(490, 81);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 13);
+            this.label16.TabIndex = 315;
+            this.label16.Text = "Teléfonos";
+            // 
+            // tx_mail
+            // 
+            this.tx_mail.Location = new System.Drawing.Point(216, 77);
+            this.tx_mail.Name = "tx_mail";
+            this.tx_mail.Size = new System.Drawing.Size(262, 20);
+            this.tx_mail.TabIndex = 314;
+            this.tx_mail.Tag = "Id";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(153, 80);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(51, 13);
+            this.label15.TabIndex = 313;
+            this.label15.Text = "Correo E.";
+            // 
+            // tx_dpto
+            // 
+            this.tx_dpto.Location = new System.Drawing.Point(870, 54);
+            this.tx_dpto.Name = "tx_dpto";
+            this.tx_dpto.Size = new System.Drawing.Size(83, 20);
+            this.tx_dpto.TabIndex = 312;
+            this.tx_dpto.Tag = "Id";
+            // 
+            // tx_prov
+            // 
+            this.tx_prov.Location = new System.Drawing.Point(741, 54);
+            this.tx_prov.Name = "tx_prov";
+            this.tx_prov.Size = new System.Drawing.Size(83, 20);
+            this.tx_prov.TabIndex = 311;
+            this.tx_prov.Tag = "Id";
+            // 
+            // tx_dist
+            // 
+            this.tx_dist.Location = new System.Drawing.Point(613, 54);
+            this.tx_dist.Name = "tx_dist";
+            this.tx_dist.Size = new System.Drawing.Size(83, 20);
+            this.tx_dist.TabIndex = 310;
+            this.tx_dist.Tag = "Id";
+            // 
+            // tx_direc
+            // 
+            this.tx_direc.Location = new System.Drawing.Point(217, 54);
+            this.tx_direc.Name = "tx_direc";
+            this.tx_direc.Size = new System.Drawing.Size(356, 20);
+            this.tx_direc.TabIndex = 309;
+            this.tx_direc.Tag = "Id";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(154, 60);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(52, 13);
+            this.label14.TabIndex = 308;
+            this.label14.Text = "Dirección";
+            // 
+            // tx_nombre
+            // 
+            this.tx_nombre.Location = new System.Drawing.Point(332, 31);
+            this.tx_nombre.Name = "tx_nombre";
+            this.tx_nombre.Size = new System.Drawing.Size(389, 20);
+            this.tx_nombre.TabIndex = 307;
+            this.tx_nombre.Tag = "Id";
+            // 
+            // cmb_tdoc
+            // 
+            this.cmb_tdoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_tdoc.DropDownWidth = 100;
+            this.cmb_tdoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_tdoc.FormattingEnabled = true;
+            this.cmb_tdoc.Location = new System.Drawing.Point(195, 30);
+            this.cmb_tdoc.Name = "cmb_tdoc";
+            this.cmb_tdoc.Size = new System.Drawing.Size(40, 21);
+            this.cmb_tdoc.TabIndex = 306;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(154, 35);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(39, 13);
+            this.label13.TabIndex = 305;
+            this.label13.Text = "Cliente";
+            // 
+            // tx_ndc
+            // 
+            this.tx_ndc.AllowSpace = false;
+            this.tx_ndc.Location = new System.Drawing.Point(235, 31);
+            this.tx_ndc.Name = "tx_ndc";
+            this.tx_ndc.Size = new System.Drawing.Size(96, 20);
+            this.tx_ndc.TabIndex = 304;
+            // 
             // groupBox9
             // 
             this.groupBox9.BackColor = System.Drawing.Color.DimGray;
@@ -288,12 +438,12 @@
             this.groupBox10.TabIndex = 113;
             this.groupBox10.TabStop = false;
             // 
-            // textBox1
+            // tx_dirent
             // 
-            this.textBox1.Location = new System.Drawing.Point(76, 416);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(564, 20);
-            this.textBox1.TabIndex = 301;
+            this.tx_dirent.Location = new System.Drawing.Point(76, 416);
+            this.tx_dirent.Name = "tx_dirent";
+            this.tx_dirent.Size = new System.Drawing.Size(564, 20);
+            this.tx_dirent.TabIndex = 301;
             // 
             // label11
             // 
@@ -1243,151 +1393,23 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // tx_ndc
+            // chk_cliente
             // 
-            this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(235, 31);
-            this.tx_ndc.Name = "tx_ndc";
-            this.tx_ndc.Size = new System.Drawing.Size(96, 20);
-            this.tx_ndc.TabIndex = 304;
+            this.chk_cliente.AutoSize = true;
+            this.chk_cliente.Location = new System.Drawing.Point(730, 34);
+            this.chk_cliente.Name = "chk_cliente";
+            this.chk_cliente.Size = new System.Drawing.Size(95, 17);
+            this.chk_cliente.TabIndex = 321;
+            this.chk_cliente.Text = "Modifica datos";
+            this.chk_cliente.UseVisualStyleBackColor = true;
             // 
-            // label13
+            // tx_dat_tdoc
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(154, 35);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(39, 13);
-            this.label13.TabIndex = 305;
-            this.label13.Text = "Cliente";
-            // 
-            // cmb_tdoc
-            // 
-            this.cmb_tdoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_tdoc.DropDownWidth = 100;
-            this.cmb_tdoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_tdoc.FormattingEnabled = true;
-            this.cmb_tdoc.Location = new System.Drawing.Point(195, 30);
-            this.cmb_tdoc.Name = "cmb_tdoc";
-            this.cmb_tdoc.Size = new System.Drawing.Size(40, 21);
-            this.cmb_tdoc.TabIndex = 306;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(332, 31);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(389, 20);
-            this.textBox2.TabIndex = 307;
-            this.textBox2.Tag = "Id";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(154, 60);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(52, 13);
-            this.label14.TabIndex = 308;
-            this.label14.Text = "Dirección";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(217, 54);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(356, 20);
-            this.textBox3.TabIndex = 309;
-            this.textBox3.Tag = "Id";
-            // 
-            // tx_dist
-            // 
-            this.tx_dist.Location = new System.Drawing.Point(613, 54);
-            this.tx_dist.Name = "tx_dist";
-            this.tx_dist.Size = new System.Drawing.Size(83, 20);
-            this.tx_dist.TabIndex = 310;
-            this.tx_dist.Tag = "Id";
-            // 
-            // tx_prov
-            // 
-            this.tx_prov.Location = new System.Drawing.Point(741, 54);
-            this.tx_prov.Name = "tx_prov";
-            this.tx_prov.Size = new System.Drawing.Size(83, 20);
-            this.tx_prov.TabIndex = 311;
-            this.tx_prov.Tag = "Id";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(870, 54);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(83, 20);
-            this.textBox4.TabIndex = 312;
-            this.textBox4.Tag = "Id";
-            // 
-            // tx_mail
-            // 
-            this.tx_mail.Location = new System.Drawing.Point(216, 77);
-            this.tx_mail.Name = "tx_mail";
-            this.tx_mail.Size = new System.Drawing.Size(262, 20);
-            this.tx_mail.TabIndex = 314;
-            this.tx_mail.Tag = "Id";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(153, 80);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(51, 13);
-            this.label15.TabIndex = 313;
-            this.label15.Text = "Correo E.";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(490, 81);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(54, 13);
-            this.label16.TabIndex = 315;
-            this.label16.Text = "Teléfonos";
-            // 
-            // tx_telef1
-            // 
-            this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(547, 77);
-            this.tx_telef1.Name = "tx_telef1";
-            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef1.TabIndex = 316;
-            // 
-            // tx_telef2
-            // 
-            this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(632, 77);
-            this.tx_telef2.Name = "tx_telef2";
-            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef2.TabIndex = 317;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(583, 58);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(28, 13);
-            this.label17.TabIndex = 318;
-            this.label17.Text = "Dist.";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(709, 58);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(32, 13);
-            this.label18.TabIndex = 319;
-            this.label18.Text = "Prov.";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(837, 58);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(33, 13);
-            this.label19.TabIndex = 320;
-            this.label19.Text = "Dpto.";
+            this.tx_dat_tdoc.Location = new System.Drawing.Point(130, 32);
+            this.tx_dat_tdoc.Name = "tx_dat_tdoc";
+            this.tx_dat_tdoc.Size = new System.Drawing.Size(18, 20);
+            this.tx_dat_tdoc.TabIndex = 322;
+            this.tx_dat_tdoc.Visible = false;
             // 
             // contclte
             // 
@@ -1522,7 +1544,7 @@
         private System.Windows.Forms.ToolStripButton bt_prev;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tx_dirent;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;
         private NumericTextBox tx_ndc;
@@ -1531,15 +1553,17 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox tx_mail;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tx_dpto;
         private System.Windows.Forms.TextBox tx_prov;
         private System.Windows.Forms.TextBox tx_dist;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tx_direc;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tx_nombre;
         private System.Windows.Forms.ComboBox cmb_tdoc;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.CheckBox chk_cliente;
+        private System.Windows.Forms.TextBox tx_dat_tdoc;
     }
 }
