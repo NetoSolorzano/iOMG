@@ -380,40 +380,40 @@ namespace iOMG
                 return;
             }
         }
-        private void grilladet(string modo)                 // grilla detalle de pedido   ME QUEDE ACA!
-        {
+        private void grilladet(string modo)                 // grilla detalle de pedido
+        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 11;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
             dataGridView1.Columns[0].HeaderText = "Id";         // titulo de la columna
-            dataGridView1.Columns[0].Name = "iddetaped";
-            // cant
+            dataGridView1.Columns[0].Name = "iddetacon";
+            // item
             dataGridView1.Columns[1].Visible = true;            // columna visible o no
-            dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
-            dataGridView1.Columns[1].Width = 20;                // ancho
+            dataGridView1.Columns[1].HeaderText = "Item";    // titulo de la columna
+            dataGridView1.Columns[1].Width = 100;                // ancho
             dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[1].Name = "cant";
-            // articulo
+            dataGridView1.Columns[1].Name = "item";
+            // cant
             dataGridView1.Columns[2].Visible = true;            // columna visible o no
-            dataGridView1.Columns[2].HeaderText = "Artículo";    // titulo de la columna
-            dataGridView1.Columns[2].Width = 70;                // ancho
+            dataGridView1.Columns[2].HeaderText = "Cant";    // titulo de la columna
+            dataGridView1.Columns[2].Width = 30;                // ancho
             dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[2].Name = "item";
-            // nombre del articulo
+            dataGridView1.Columns[2].Name = "cant";
+            // nombre
             dataGridView1.Columns[3].Visible = true;            // columna visible o no
             dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
             dataGridView1.Columns[3].Width = 200;                // ancho
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[3].Name = "nombre";
-            //dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // medidas 
             dataGridView1.Columns[4].Visible = true;            // columna visible o no
             dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
@@ -428,52 +428,41 @@ namespace iOMG
             dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[5].Name = "madera";
-            // detalle2
+            // precio
             dataGridView1.Columns[6].Visible = true;            // columna visible o no
-            dataGridView1.Columns[6].HeaderText = "Deta2";    // titulo de la columna
+            dataGridView1.Columns[6].HeaderText = "Precio";    // titulo de la columna
             dataGridView1.Columns[6].Width = 70;                // ancho
             dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[6].Name = "piedra";
-            // acabado - descrizionerid
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[6].Name = "precio";
+            // total
             dataGridView1.Columns[7].Visible = true;            // columna visible o no
-            dataGridView1.Columns[7].HeaderText = "Acabado";    // titulo de la columna
+            dataGridView1.Columns[7].HeaderText = "Total";    // titulo de la columna
             dataGridView1.Columns[7].Width = 70;                // ancho
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[7].Name = "descrizionerid";
-            // comentario
-            dataGridView1.Columns[8].Visible = true;            // columna visible o no
-            dataGridView1.Columns[8].HeaderText = "Comentario"; // titulo de la columna
-            dataGridView1.Columns[8].Width = 150;                // ancho
-            dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[8].Name = "coment";
-            // codigo de acabado - idcodice
-            dataGridView1.Columns[9].Visible = false;            // columna visible o no
-            dataGridView1.Columns[9].HeaderText = "Codest"; // titulo de la columna
-            dataGridView1.Columns[9].Width = 50;                // ancho
-            dataGridView1.Columns[9].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[9].Name = "estado";
-            // codigo madera
-            dataGridView1.Columns[10].Visible = false;
-            // codigo detalle 2
-            dataGridView1.Columns[11].Visible = false;
-            // fecha de ingreso del articulo
-            dataGridView1.Columns[12].Visible = true;            // columna visible o no
-            dataGridView1.Columns[12].HeaderText = "F.Ingreso"; // titulo de la columna
-            dataGridView1.Columns[12].Width = 80;                // ancho
-            dataGridView1.Columns[12].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[12].Name = "fingreso";
+            dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[7].Name = "total";
             // saldo
-            dataGridView1.Columns[13].Visible = true;            // columna visible o no
-            dataGridView1.Columns[13].HeaderText = "Saldo"; // titulo de la columna
-            dataGridView1.Columns[13].Width = 60;                // ancho
-            dataGridView1.Columns[13].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[13].Name = "saldo";
+            dataGridView1.Columns[8].Visible = true;            // columna visible o no
+            dataGridView1.Columns[8].HeaderText = "Saldo"; // titulo de la columna
+            dataGridView1.Columns[8].Width = 70;                // ancho
+            dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[8].Name = "saldo";
+            // pedido
+            dataGridView1.Columns[9].Visible = true;            // columna visible o no
+            dataGridView1.Columns[9].HeaderText = "Pedido";      // titulo de la columna
+            dataGridView1.Columns[9].Width = 60;                 // ancho
+            dataGridView1.Columns[9].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[9].Name = "pedido";
+            // codref
+            dataGridView1.Columns[10].Visible = true;
+            dataGridView1.Columns[10].HeaderText = "Codref";      // titulo de la columna
+            dataGridView1.Columns[10].Width = 60;                 // ancho
+            dataGridView1.Columns[10].ReadOnly = true;            // lectura o no
+            //dataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[10].Name = "codref";
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -489,11 +478,11 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los pedidos
-                string datgri = "select a.id,a.codped,b.descrizionerid,a.origen,a.destino,date_format(date(a.fecha),'%Y-%m-%d') as fecha," +
-                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
-                    "from pedidos a left join desc_stp b on b.idcodice=a.status where a.tipoes=@tip";
+                string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment," +
+                    "a.entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto " +
+                    "from contrat a";   //  where a.tipocon=@tip
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
-                cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
+                //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
@@ -521,31 +510,8 @@ namespace iOMG
             }
             if (quien == "todos")
             {
-                // seleccion de taller de produccion ... ok
-                const string contaller = "select descrizionerid,idcodice,codigo from desc_loc " +
-                                       "where numero=1 order by idcodice";
-                MySqlCommand cmdtaller = new MySqlCommand(contaller, conn);
-                MySqlDataAdapter dataller = new MySqlDataAdapter(cmdtaller);
-                dataller.Fill(dttaller);
-                foreach (DataRow row in dttaller.Rows)
-                {
-                    cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
-                    cmb_taller.ValueMember = row.ItemArray[1].ToString();
-                }
-                // seleccion del almacen de destino ... ok
-                const string condest = "select descrizionerid,idcodice from desc_alm " +
-                                       "where numero=1 order by idcodice";
-                MySqlCommand cmddest = new MySqlCommand(condest, conn);
-                DataTable dtdest = new DataTable();
-                MySqlDataAdapter dadest = new MySqlDataAdapter(cmddest);
-                dadest.Fill(dtdest);
-                foreach (DataRow row in dtdest.Rows)
-                {
-                    //cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
-                    //cmb_destino.ValueMember = row.ItemArray[1].ToString();
-                }
-                // seleccion de tipo de pedido ... ok
-                const string conpedido = "select descrizionerid,idcodice from desc_tpe " +
+                // seleccion de tipo de contrato
+                const string conpedido = "select descrizionerid,idcodice from desc_tco " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdpedido = new MySqlCommand(conpedido, conn);
                 DataTable dtpedido = new DataTable();
@@ -556,8 +522,19 @@ namespace iOMG
                     cmb_tipo.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
-                // seleccion de estado del pedido
-                const string conestado = "select descrizionerid,idcodice from desc_stp " +
+                // seleccion del local de ventas 
+                const string contaller = "select descrizionerid,idcodice,codigo from desc_alm " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmdtaller = new MySqlCommand(contaller, conn);
+                MySqlDataAdapter dataller = new MySqlDataAdapter(cmdtaller);
+                dataller.Fill(dttaller);
+                foreach (DataRow row in dttaller.Rows)
+                {
+                    cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
+                    cmb_taller.ValueMember = row.ItemArray[1].ToString();
+                }
+                // seleccion de estado del contrato
+                const string conestado = "select descrizionerid,idcodice from desc_sta " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdestado = new MySqlCommand(conestado, conn);
                 DataTable dtestado = new DataTable();
@@ -568,7 +545,18 @@ namespace iOMG
                     cmb_estado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_estado.ValueMember = row.ItemArray[1].ToString();
                 }
-                //
+                // seleccion del tipo documento cliente
+                const string condest = "select descrizionerid,idcodice from desc_doc " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmddest = new MySqlCommand(condest, conn);
+                DataTable dtdest = new DataTable();
+                MySqlDataAdapter dadest = new MySqlDataAdapter(cmddest);
+                dadest.Fill(dtdest);
+                foreach (DataRow row in dtdest.Rows)
+                {
+                    cmb_tdoc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
+                }
                 // seleccion de familia de art
                 cmb_fam.Items.Clear();
                 //tx_dat_fam.Text = "";
@@ -856,7 +844,7 @@ namespace iOMG
                 }
             }
         }
-        private bool graba()                                // graba cabecera y detalle
+        private bool graba()                                // graba cabecera y detalle .... ME QUEDE ACA
         {
             bool retorna = false;
             string ncp = "";
