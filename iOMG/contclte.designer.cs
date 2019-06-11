@@ -33,6 +33,8 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.tx_dat_tdoc = new System.Windows.Forms.TextBox();
+            this.chk_cliente = new System.Windows.Forms.CheckBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -57,10 +59,6 @@
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dtp_fingreso = new System.Windows.Forms.DateTimePicker();
-            this.tx_saldo = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.bt_det = new System.Windows.Forms.Button();
             this.cmb_det3 = new System.Windows.Forms.ComboBox();
             this.cmb_det2 = new System.Windows.Forms.ComboBox();
@@ -147,8 +145,23 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.chk_cliente = new System.Windows.Forms.CheckBox();
-            this.tx_dat_tdoc = new System.Windows.Forms.TextBox();
+            this.tx_idcli = new System.Windows.Forms.TextBox();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tx_valor = new iOMG.NumericTextBox();
+            this.tx_acta = new iOMG.NumericTextBox();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tx_saldo = new iOMG.NumericTextBox();
+            this.groupBox21 = new System.Windows.Forms.GroupBox();
+            this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tx_dscto = new iOMG.NumericTextBox();
+            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -164,6 +177,10 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            this.groupBox19.SuspendLayout();
+            this.groupBox21.SuspendLayout();
+            this.groupBox23.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -211,6 +228,19 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_dscto);
+            this.tabuser.Controls.Add(this.groupBox23);
+            this.tabuser.Controls.Add(this.label21);
+            this.tabuser.Controls.Add(this.tx_saldo);
+            this.tabuser.Controls.Add(this.groupBox21);
+            this.tabuser.Controls.Add(this.label20);
+            this.tabuser.Controls.Add(this.tx_acta);
+            this.tabuser.Controls.Add(this.groupBox19);
+            this.tabuser.Controls.Add(this.label9);
+            this.tabuser.Controls.Add(this.tx_valor);
+            this.tabuser.Controls.Add(this.groupBox11);
+            this.tabuser.Controls.Add(this.label8);
+            this.tabuser.Controls.Add(this.tx_idcli);
             this.tabuser.Controls.Add(this.tx_dat_tdoc);
             this.tabuser.Controls.Add(this.chk_cliente);
             this.tabuser.Controls.Add(this.label19);
@@ -273,6 +303,24 @@
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Click += new System.EventHandler(this.tabuser_Click);
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // tx_dat_tdoc
+            // 
+            this.tx_dat_tdoc.Location = new System.Drawing.Point(130, 32);
+            this.tx_dat_tdoc.Name = "tx_dat_tdoc";
+            this.tx_dat_tdoc.Size = new System.Drawing.Size(18, 20);
+            this.tx_dat_tdoc.TabIndex = 322;
+            this.tx_dat_tdoc.Visible = false;
+            // 
+            // chk_cliente
+            // 
+            this.chk_cliente.AutoSize = true;
+            this.chk_cliente.Location = new System.Drawing.Point(730, 34);
+            this.chk_cliente.Name = "chk_cliente";
+            this.chk_cliente.Size = new System.Drawing.Size(95, 17);
+            this.chk_cliente.TabIndex = 321;
+            this.chk_cliente.Text = "Modifica datos";
+            this.chk_cliente.UseVisualStyleBackColor = true;
             // 
             // label19
             // 
@@ -476,10 +524,6 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.dtp_fingreso);
-            this.panel1.Controls.Add(this.tx_saldo);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.bt_det);
             this.panel1.Controls.Add(this.cmb_det3);
             this.panel1.Controls.Add(this.cmb_det2);
@@ -502,52 +546,17 @@
             this.panel1.Controls.Add(this.tx_d_it);
             this.panel1.Location = new System.Drawing.Point(3, 101);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(963, 68);
+            this.panel1.Size = new System.Drawing.Size(963, 58);
             this.panel1.TabIndex = 298;
-            // 
-            // dtp_fingreso
-            // 
-            this.dtp_fingreso.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fingreso.Location = new System.Drawing.Point(379, 45);
-            this.dtp_fingreso.Name = "dtp_fingreso";
-            this.dtp_fingreso.ShowCheckBox = true;
-            this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
-            this.dtp_fingreso.TabIndex = 304;
-            // 
-            // tx_saldo
-            // 
-            this.tx_saldo.Location = new System.Drawing.Point(644, 45);
-            this.tx_saldo.Name = "tx_saldo";
-            this.tx_saldo.Size = new System.Drawing.Size(37, 20);
-            this.tx_saldo.TabIndex = 21;
-            this.tx_saldo.Tag = "Id";
-            this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(559, 49);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(83, 13);
-            this.label9.TabIndex = 303;
-            this.label9.Text = "Saldo por recibir";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(281, 49);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(90, 13);
-            this.label8.TabIndex = 301;
-            this.label8.Text = "Fecha de Ingreso";
             // 
             // bt_det
             // 
-            this.bt_det.Location = new System.Drawing.Point(862, 24);
+            this.bt_det.Location = new System.Drawing.Point(862, 22);
             this.bt_det.Name = "bt_det";
-            this.bt_det.Size = new System.Drawing.Size(80, 39);
+            this.bt_det.Size = new System.Drawing.Size(80, 34);
             this.bt_det.TabIndex = 22;
             this.bt_det.Text = "Agrega / Actualiza";
+            this.bt_det.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.bt_det.UseVisualStyleBackColor = true;
             this.bt_det.Click += new System.EventHandler(this.bt_det_Click);
             // 
@@ -836,9 +845,9 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 171);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 162);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(963, 214);
+            this.dataGridView1.Size = new System.Drawing.Size(963, 205);
             this.dataGridView1.TabIndex = 273;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
@@ -892,7 +901,7 @@
             // 
             this.groupBox5.BackColor = System.Drawing.Color.DimGray;
             this.groupBox5.Controls.Add(this.groupBox6);
-            this.groupBox5.Location = new System.Drawing.Point(4, 411);
+            this.groupBox5.Location = new System.Drawing.Point(4, 412);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(842, 1);
             this.groupBox5.TabIndex = 285;
@@ -998,7 +1007,7 @@
             // 
             // tx_coment
             // 
-            this.tx_coment.Location = new System.Drawing.Point(76, 392);
+            this.tx_coment.Location = new System.Drawing.Point(76, 393);
             this.tx_coment.Name = "tx_coment";
             this.tx_coment.Size = new System.Drawing.Size(770, 20);
             this.tx_coment.TabIndex = 270;
@@ -1006,7 +1015,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 396);
+            this.label1.Location = new System.Drawing.Point(6, 397);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 276;
@@ -1067,7 +1076,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(882, 387);
+            this.button1.Location = new System.Drawing.Point(882, 377);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 50);
             this.button1.TabIndex = 272;
@@ -1393,23 +1402,154 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // chk_cliente
+            // tx_idcli
             // 
-            this.chk_cliente.AutoSize = true;
-            this.chk_cliente.Location = new System.Drawing.Point(730, 34);
-            this.chk_cliente.Name = "chk_cliente";
-            this.chk_cliente.Size = new System.Drawing.Size(95, 17);
-            this.chk_cliente.TabIndex = 321;
-            this.chk_cliente.Text = "Modifica datos";
-            this.chk_cliente.UseVisualStyleBackColor = true;
+            this.tx_idcli.Location = new System.Drawing.Point(741, 78);
+            this.tx_idcli.Name = "tx_idcli";
+            this.tx_idcli.Size = new System.Drawing.Size(25, 20);
+            this.tx_idcli.TabIndex = 323;
+            this.tx_idcli.Visible = false;
             // 
-            // tx_dat_tdoc
+            // groupBox11
             // 
-            this.tx_dat_tdoc.Location = new System.Drawing.Point(130, 32);
-            this.tx_dat_tdoc.Name = "tx_dat_tdoc";
-            this.tx_dat_tdoc.Size = new System.Drawing.Size(18, 20);
-            this.tx_dat_tdoc.TabIndex = 322;
-            this.tx_dat_tdoc.Visible = false;
+            this.groupBox11.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox11.Controls.Add(this.groupBox12);
+            this.groupBox11.Location = new System.Drawing.Point(4, 389);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(145, 1);
+            this.groupBox11.TabIndex = 326;
+            this.groupBox11.TabStop = false;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Location = new System.Drawing.Point(0, -26);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(164, 1);
+            this.groupBox12.TabIndex = 113;
+            this.groupBox12.TabStop = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 374);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(46, 13);
+            this.label8.TabIndex = 325;
+            this.label8.Text = "Valor S/";
+            // 
+            // tx_valor
+            // 
+            this.tx_valor.AllowSpace = false;
+            this.tx_valor.Location = new System.Drawing.Point(76, 370);
+            this.tx_valor.Name = "tx_valor";
+            this.tx_valor.Size = new System.Drawing.Size(73, 20);
+            this.tx_valor.TabIndex = 327;
+            // 
+            // tx_acta
+            // 
+            this.tx_acta.AllowSpace = false;
+            this.tx_acta.Location = new System.Drawing.Point(537, 370);
+            this.tx_acta.Name = "tx_acta";
+            this.tx_acta.Size = new System.Drawing.Size(73, 20);
+            this.tx_acta.TabIndex = 330;
+            // 
+            // groupBox19
+            // 
+            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox19.Controls.Add(this.groupBox20);
+            this.groupBox19.Location = new System.Drawing.Point(465, 389);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Size = new System.Drawing.Size(145, 1);
+            this.groupBox19.TabIndex = 329;
+            this.groupBox19.TabStop = false;
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Location = new System.Drawing.Point(0, -26);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(164, 1);
+            this.groupBox20.TabIndex = 113;
+            this.groupBox20.TabStop = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(467, 374);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 13);
+            this.label9.TabIndex = 328;
+            this.label9.Text = "A cuenta S/";
+            // 
+            // tx_saldo
+            // 
+            this.tx_saldo.AllowSpace = false;
+            this.tx_saldo.Location = new System.Drawing.Point(773, 370);
+            this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.ReadOnly = true;
+            this.tx_saldo.Size = new System.Drawing.Size(73, 20);
+            this.tx_saldo.TabIndex = 333;
+            // 
+            // groupBox21
+            // 
+            this.groupBox21.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox21.Controls.Add(this.groupBox22);
+            this.groupBox21.Location = new System.Drawing.Point(701, 389);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Size = new System.Drawing.Size(145, 1);
+            this.groupBox21.TabIndex = 332;
+            this.groupBox21.TabStop = false;
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.Location = new System.Drawing.Point(0, -26);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Size = new System.Drawing.Size(164, 1);
+            this.groupBox22.TabIndex = 113;
+            this.groupBox22.TabStop = false;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(703, 374);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(49, 13);
+            this.label20.TabIndex = 331;
+            this.label20.Text = "Saldo S/";
+            // 
+            // tx_dscto
+            // 
+            this.tx_dscto.AllowSpace = false;
+            this.tx_dscto.Location = new System.Drawing.Point(307, 370);
+            this.tx_dscto.Name = "tx_dscto";
+            this.tx_dscto.Size = new System.Drawing.Size(73, 20);
+            this.tx_dscto.TabIndex = 336;
+            // 
+            // groupBox23
+            // 
+            this.groupBox23.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox23.Controls.Add(this.groupBox24);
+            this.groupBox23.Location = new System.Drawing.Point(235, 389);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Size = new System.Drawing.Size(145, 1);
+            this.groupBox23.TabIndex = 335;
+            this.groupBox23.TabStop = false;
+            // 
+            // groupBox24
+            // 
+            this.groupBox24.Location = new System.Drawing.Point(0, -26);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Size = new System.Drawing.Size(164, 1);
+            this.groupBox24.TabIndex = 113;
+            this.groupBox24.TabStop = false;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(237, 374);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(50, 13);
+            this.label21.TabIndex = 334;
+            this.label21.Text = "Dscto S/";
             // 
             // contclte
             // 
@@ -1439,6 +1579,10 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox19.ResumeLayout(false);
+            this.groupBox21.ResumeLayout(false);
+            this.groupBox23.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1534,10 +1678,6 @@
         private System.Windows.Forms.DateTimePicker dtp_entreg;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
-        private System.Windows.Forms.TextBox tx_saldo;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DateTimePicker dtp_fingreso;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripButton bt_view;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
@@ -1565,5 +1705,22 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.CheckBox chk_cliente;
         private System.Windows.Forms.TextBox tx_dat_tdoc;
+        private System.Windows.Forms.TextBox tx_idcli;
+        private NumericTextBox tx_dscto;
+        private System.Windows.Forms.GroupBox groupBox23;
+        private System.Windows.Forms.GroupBox groupBox24;
+        private System.Windows.Forms.Label label21;
+        private NumericTextBox tx_saldo;
+        private System.Windows.Forms.GroupBox groupBox21;
+        private System.Windows.Forms.GroupBox groupBox22;
+        private System.Windows.Forms.Label label20;
+        private NumericTextBox tx_acta;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.Label label9;
+        private NumericTextBox tx_valor;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.Label label8;
     }
 }
