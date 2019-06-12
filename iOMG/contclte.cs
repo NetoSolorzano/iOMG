@@ -358,7 +358,7 @@ namespace iOMG
         private void jaladet(string pedido)     // jala el detalle del contrato
         {
             // 
-            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref " +
+            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,space(1) as na " +
                 "FROM detacon WHERE contratoh = @cont";
             try
             {
@@ -389,13 +389,13 @@ namespace iOMG
             }
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
-        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref
+        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,'na'
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 11;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 12;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -469,8 +469,9 @@ namespace iOMG
             dataGridView1.Columns[10].HeaderText = "Codref";      // titulo de la columna
             dataGridView1.Columns[10].Width = 60;                 // ancho
             dataGridView1.Columns[10].ReadOnly = true;            // lectura o no
-            //dataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[10].Name = "codref";
+            // na (nuevo o actualiza)
+            dataGridView1.Columns[11].Visible = false;
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -916,7 +917,7 @@ namespace iOMG
                         tx_idr.Text = rlid.GetString(0);
                     }
                     rlid.Close();
-                    // detalle
+                    // detalle ............. ME QUEDE ACA!
                     for (int i=0; i<dataGridView1.Rows.Count - 1; i++)
                     {
                         string insdet = "insert into detacon (" +
@@ -961,66 +962,63 @@ namespace iOMG
             {
                 try
                 {
+                    // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                    // a.valor,a.acuenta,a.saldo,a.dscto
                     string actua = "update contrat set " +
-                        "" +
-                        "where id=@idr";                        // ME QUEDE ACA!
+                        "tipocon=@tco,tipoes=@loc,fecha=@fec,cliente=@clt,coment=@com,entrega=@ent,dentrega=@den," +
+                        "valor=@val,acuenta=@acta,saldo=@sal,dscto=@dscto " +
+                        "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
-                    micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
-
-                    micon.Parameters.AddWithValue("@come", tx_coment.Text);
-                    micon.Parameters.AddWithValue("@asd", asd);
-                    micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
-                    micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tco", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@loc", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@fec", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@clt", tx_idcli.Text);
+                    micon.Parameters.AddWithValue("@com", tx_coment.Text);
+                    micon.Parameters.AddWithValue("@ent", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@den", tx_dirent.Text);
+                    micon.Parameters.AddWithValue("@val", tx_valor.Text);
+                    micon.Parameters.AddWithValue("@acta", tx_acta.Text);
+                    micon.Parameters.AddWithValue("@sal", tx_saldo.Text);
+                    micon.Parameters.AddWithValue("@dscto", tx_dscto.Text);
                     micon.ExecuteNonQuery();
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
                         string insdet = "";
-                        if (Int16.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString()) < 100) // las filas deben ser < 100
+                        if (dataGridView1.Rows[i].Cells[11].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
                         {
-                            string tfingreso = "", tfing = "";
                             insdet = "insert into detacon (" +
-                                "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo" + tfingreso + ") values (" +
-                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + tfing + ")";
+                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo) values (" +
+                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + ")";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                             micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
-                            micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            micon.Parameters.AddWithValue("@item", );
                             micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
                             micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                             micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
                             micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());   // 
-                            micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // 
-                            micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());   // 
-                            micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                            micon.Parameters.AddWithValue("@prec", );   // 
+                            micon.Parameters.AddWithValue("@tota", );
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
-                        else
+                        if (dataGridView1.Rows[i].Cells[11].Value.ToString() == "A")
                         {
-                            insdet = "update detaped set " +
-                                "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
-                                "where iddetaped=@idr";
+                            insdet = "update detacon set tipo=@tipe,item=@item,cant=@cant," +
+                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald " +
+                                "where iddetacon=@idr";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
-                            micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                            micon.Parameters.AddWithValue("@item", );
                             micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
                             micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                             micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                            micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());
-                            micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
-                            micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());
-                            micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
-                            if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "")
-                            {
-                                micon.Parameters.AddWithValue("@fing", DBNull.Value);
-                            }
-                            else
-                            {
-                                micon.Parameters.AddWithValue("@fing", Convert.ToDateTime(dataGridView1.Rows[i].Cells[12].Value.ToString()));
-                            }
+                            micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());   // 
+                            micon.Parameters.AddWithValue("@prec", );   // 
+                            micon.Parameters.AddWithValue("@tota", );
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
@@ -1441,7 +1439,6 @@ namespace iOMG
                     obj.Cells[9].Value = cmb_aca.Tag.ToString();
                     obj.Cells[10].Value = cmb_mad.Tag.ToString();
                     obj.Cells[11].Value = cmb_det2.Tag.ToString();
-                    if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
                     obj.Cells[13].Value = tx_saldo.Text;
                 }
                 else
@@ -1464,14 +1461,14 @@ namespace iOMG
             {
                 if (!escambio.Contains(tx_dat_estad.Text))
                 {
-                    MessageBox.Show("El estado actual del pedido no permite modificar el detalle",
+                    MessageBox.Show("El estado actual del contrato no permite modificar el detalle",
                         "No puede continuar",MessageBoxButtons.OK,MessageBoxIcon.Stop);
                     return;
                 }
                 if(tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
-                    //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,
-                    //b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso,a.saldo
+                    //
+                    //
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[1].Value = tx_d_can.Text;
                     obj.Cells[2].Value = tx_d_codi.Text;
@@ -1483,16 +1480,12 @@ namespace iOMG
                     obj.Cells[8].Value = tx_d_com.Text;
                     obj.Cells[9].Value = cmb_aca.Tag.ToString();
                     obj.Cells[10].Value = cmb_mad.Tag.ToString();
-                    obj.Cells[11].Value = cmb_det2.Tag.ToString();
-                    if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
-                    obj.Cells[13].Value = tx_saldo.Text;
+                    obj.Cells[11].Value = "A";  // registro actualizado
                 }
                 else
                 {
                     DataTable dtg = (DataTable)dataGridView1.DataSource;
-                    dtg.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                        tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                        cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                    dtg.Rows.Add(".....", "N"); // registro nuevo
                 }
             }
             tx_d_nom.Text = "";
