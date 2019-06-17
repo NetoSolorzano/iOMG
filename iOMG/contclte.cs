@@ -139,6 +139,7 @@ namespace iOMG
             advancedDataGridView1.DataSource = dtg;
             // id 
             advancedDataGridView1.Columns[0].Visible = false;
+            advancedDataGridView1.Columns[0].HeaderText = "id";    // titulo de la columna
             // tipo contrato
             advancedDataGridView1.Columns[1].Visible = false;
             // codigo de contrato
@@ -269,8 +270,10 @@ namespace iOMG
         }
         public void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
         {
-            if (campo == "tx_idr" && tx_idr.Text != "")
+            if (campo == "tx_idr" && tx_idr.Text != "") // ............ME QUEDE ACA! falta jalar el tipo de contrato y tip doc del cliente, ambos combos
             {
+                // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                // a.valor,a.acuenta,a.saldo,a.dscto 
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
                 tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // local venta
@@ -278,9 +281,9 @@ namespace iOMG
                 tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // estado
                 tx_idcli.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();      // id del cliente
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
-                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();     // comentario
-                tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();     // direc. de entrega
-                dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString());    // fecha entrega
+                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString();     // comentario
+                tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();     // direc. de entrega
+                dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
@@ -321,7 +324,7 @@ namespace iOMG
         {
             string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
                 "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,'') " +
-                "from anag_cli where id=@idc";
+                "from anag_cli where idanagrafica=@idc";
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -486,10 +489,10 @@ namespace iOMG
             tabControl1.SelectedTab = tabgrilla;
             if (quien == "maestra")
             {
-                // datos de los pedidos
-                string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment," +
-                    "a.entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto " +
-                    "from contrat a";   //  where a.tipocon=@tip
+                // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
+                string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
+                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto " +
+                    "from contrat a left join anag_cli b on b.idanagrafica=a.cliente";   //  where a.tipocon=@tip
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
@@ -532,7 +535,7 @@ namespace iOMG
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del local de ventas 
-                const string contaller = "select descrizionerid,idcodice,codigo from desc_alm " +
+                const string contaller = "select descrizionerid,idcodice from desc_alm " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdtaller = new MySqlCommand(contaller, conn);
                 MySqlDataAdapter dataller = new MySqlDataAdapter(cmdtaller);
@@ -917,7 +920,7 @@ namespace iOMG
                         tx_idr.Text = rlid.GetString(0);
                     }
                     rlid.Close();
-                    // detalle ............. ME QUEDE ACA!
+                    // detalle 
                     for (int i=0; i<dataGridView1.Rows.Count - 1; i++)
                     {
                         string insdet = "insert into detacon (" +
@@ -1309,21 +1312,26 @@ namespace iOMG
                 {
                     if (edita() == true)
                     {
-                        // actualizamos el datatable                    ME QUEDE ACA !!
+                        // actualizamos el datatable
                         for (int i = 0; i < dtg.Rows.Count; i++)
                         {
                             DataRow row = dtg.Rows[i];
                             if (row[0].ToString() == tx_idr.Text)
                             {
-                                // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
-                                dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 6);    // tx_dat_estad.Text;
-                                dtg.Rows[i][3] = tx_dat_orig.Text;
-                                //dtg.Rows[i][4] = tx_dat_dest.Text;
+                                // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                                // a.valor,a.acuenta,a.saldo,a.dscto
+                                dtg.Rows[i][3] = cmb_estado.SelectedText.ToString();
+                                dtg.Rows[i][4] = cmb_taller.SelectedText.ToString();
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
-                                dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
-                                dtg.Rows[i][7] = tx_coment.Text;
-                                dtg.Rows[i][8] = tx_dat_tiped.Text;
-                                dtg.Rows[i][9] = tx_dat_estad.Text;
+                                dtg.Rows[i][6] = tx_idcli.Text;
+                                dtg.Rows[i][7] = tx_nombre.Text;
+                                dtg.Rows[i][8] = tx_coment.Text;
+                                dtg.Rows[i][9] = dtp_entreg.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][10] = tx_dirent.Text;
+                                dtg.Rows[i][11] = tx_valor.Text;
+                                dtg.Rows[i][12] = tx_acta.Text;
+                                dtg.Rows[i][13] = tx_saldo.Text;
+                                dtg.Rows[i][14] = tx_dscto.Text;
                             }
                         }
                     }
@@ -1334,9 +1342,11 @@ namespace iOMG
                     return;
                 }
             }
-            if (modo == "ANULAR")       // opción para borrar
+            if (modo == "ANULAR")       // opción para borrar o anular
             {
-                // en modo edicion se anula o cierra
+                // si el contrato no tiene movimientos o enlaces se puede borrar
+                // si tiene mov. enlaces, etc. solo se puede anular
+
             }
             if (iserror == "no")
             {
@@ -1421,31 +1431,29 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO")
             {
-                if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
+                if (tx_d_id.Text.Trim() != "")
                 {
-                    //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,
-                    //b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,a.fingreso,a.saldo
+                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,'na'
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
-                    obj.Cells[1].Value = tx_d_can.Text;
-                    obj.Cells[2].Value = tx_d_codi.Text;
+                    obj.Cells[1].Value = tx_d_codi.Text;
+                    obj.Cells[2].Value = tx_d_can.Text;
                     obj.Cells[3].Value = tx_d_nom.Text;
                     obj.Cells[4].Value = tx_d_med.Text;
                     obj.Cells[5].Value = tx_d_mad.Text;
-                    obj.Cells[6].Value = tx_d_det2.Text;
-                    obj.Cells[7].Value = tx_d_est.Text;
-                    obj.Cells[8].Value = tx_d_com.Text;
-                    obj.Cells[9].Value = cmb_aca.Tag.ToString();
-                    obj.Cells[10].Value = cmb_mad.Tag.ToString();
-                    obj.Cells[11].Value = cmb_det2.Tag.ToString();
-                    obj.Cells[13].Value = tx_saldo.Text;
+                    obj.Cells[6].Value = "";
+                    obj.Cells[7].Value = "";
+                    obj.Cells[8].Value = "";
+                    obj.Cells[9].Value = "";
+                    obj.Cells[10].Value = "";
+                    obj.Cells[11].Value = "N";
                 }
                 else
                 {
                     if (dataGridView1.Rows.Count < 100)
                     {
-                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                            cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                        //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                        //     tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
+                        //    cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
                     }
                     else
                     {
@@ -1473,11 +1481,11 @@ namespace iOMG
                     obj.Cells[3].Value = tx_d_nom.Text;
                     obj.Cells[4].Value = tx_d_med.Text;
                     obj.Cells[5].Value = tx_d_mad.Text;
-                    obj.Cells[6].Value = tx_d_det2.Text;
-                    obj.Cells[7].Value = tx_d_est.Text;
-                    obj.Cells[8].Value = tx_d_com.Text;
-                    obj.Cells[9].Value = cmb_aca.Tag.ToString();
-                    obj.Cells[10].Value = cmb_mad.Tag.ToString();
+                    obj.Cells[6].Value = "";
+                    obj.Cells[7].Value = "";
+                    obj.Cells[8].Value = "";
+                    obj.Cells[9].Value = "";
+                    obj.Cells[10].Value = "";
                     obj.Cells[11].Value = "A";  // registro actualizado
                 }
                 else
@@ -1533,7 +1541,7 @@ namespace iOMG
         }
         private void tx_codped_Leave(object sender, EventArgs e)
         {
-            if(Tx_modo.Text != "NUEVO" && tx_codped.Text != "")
+            if(Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text == "")
             {
                 jalaoc("tx_codped");
             }
@@ -1644,7 +1652,6 @@ namespace iOMG
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
             tx_dat_estad.Text = tiesta;
             tx_codped.ReadOnly = true;
-            dtp_fingreso.Checked = false;
             cmb_taller.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1672,7 +1679,6 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
-            dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -1705,7 +1711,6 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
-            dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
         }
         private void Bt_print_Click(object sender, EventArgs e)
@@ -1858,19 +1863,6 @@ namespace iOMG
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
             else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-            if(Tx_modo.Text == "NUEVO")
-            {
-                string cod2d = "";
-                foreach (DataRow row in dttaller.Rows)
-                {
-                    if (row["idcodice"].ToString().Trim() == tx_dat_orig.Text.Trim())
-                    {
-                        cod2d = row["codigo"].ToString();
-                    }
-                }
-                cmb_tal.Tag = cod2d;
-                cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
-            }
         }
         private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -1936,7 +1928,7 @@ namespace iOMG
         }
         private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 1 && Tx_modo.Text != "NUEVO")
+            if (e.ColumnIndex == 2 && Tx_modo.Text != "NUEVO")
             {
                 //string codu = "";
                 string idr, rind = "";
@@ -1971,32 +1963,6 @@ namespace iOMG
                     {
                         // id,codped,status,origen,destino,fecha,entrega,coment,tipoes
                         // valida si el dato ingresado es valido en la columna
-                        if (e.ColumnIndex == 2)                         // valida estado del pedido
-                        {
-                            if (lib.validac("desc_stp", "idcodice", e.FormattedValue.ToString()) == true)
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            else
-                            {
-                                MessageBox.Show("El valor no es válido para el estado", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
-                        if (e.ColumnIndex == 3)                         // valida taller de origen
-                        {
-                            if(lib.validac("desc_loc", "idcodice", e.FormattedValue.ToString().Trim()) == false)
-                            {
-                                MessageBox.Show("El valor no es valido para el taller", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                            else
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                        }
                         if (e.ColumnIndex == 4)                         // valida almacen destino
                         {
                             if (lib.validac("desc_alm", "idcodice", e.FormattedValue.ToString()) == true)
@@ -2056,12 +2022,10 @@ namespace iOMG
             {
                 if(Tx_modo.Text == "EDITAR")
                 {
-                    dtp_fingreso.Enabled = true;
                     tx_saldo.Enabled = true;
                 }
                 else
                 {
-                    dtp_fingreso.Enabled = false;
                     tx_saldo.Enabled = false;
                 }
                 tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
@@ -2118,22 +2082,6 @@ namespace iOMG
                 cmb_det3.Tag = de3;
                 cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
                 cmb_det3_SelectionChangeCommitted(null, null);
-                if(dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value != null)
-                {   
-                    if (dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString() != "")         // f. ingreso
-                    {   // tx_fingreso.Text = dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString().Substring(0, 10)
-                        if(dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString().Substring(0, 10) == "00/00/0000")
-                        {
-                            dtp_fingreso.Value = DateTime.Now;
-                            dtp_fingreso.Checked = false;
-                        }
-                        else
-                        {
-                            dtp_fingreso.Value = Convert.ToDateTime(dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString());
-                        }
-                    }
-                    else dtp_fingreso.Checked = false;  // tx_fingreso.Text = ""
-                }
                 tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
             }
         }
