@@ -270,7 +270,7 @@ namespace iOMG
         }
         public void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
         {
-            if (campo == "tx_idr" && tx_idr.Text != "") // ............ME QUEDE ACA! falta jalar el tipo de contrato y tip doc del cliente, ambos combos
+            if (campo == "tx_idr" && tx_idr.Text != "")
             {
                 // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                 // a.valor,a.acuenta,a.saldo,a.dscto 
@@ -322,9 +322,11 @@ namespace iOMG
         }
         private void jaladatclt(string id)      // jala datos del cliente
         {
+            int vi = 0;
             string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,'') " +
-                "from anag_cli where idanagrafica=@idc";
+                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),desc_doc.cnt " +
+                "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
+                "where idanagrafica=@idc";
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -337,17 +339,29 @@ namespace iOMG
                     if (dr.Read())
                     {
                         tx_dat_tdoc.Text = dr.GetString(6);
+                        tx_dat_tdoc.Tag = dr.GetString(6);                                      // todos los tag sirven para comparar si el text fue cambiado
                         tx_ndc.Text = dr.GetString(7);
+                        tx_ndc.Tag = dr.GetString(7);                                           // si el tag no coincide con el text se graba en la tabla
                         tx_nombre.Text = dr.GetString(0);
+                        tx_nombre.Tag = dr.GetString(0);                                        // despues de grabar en la tabla actualiza el tag con el nuevo text
                         tx_direc.Text = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
+                        tx_direc.Tag = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
                         tx_dist.Text = dr.GetString(3);
+                        tx_dist.Tag = dr.GetString(3);
                         tx_prov.Text = dr.GetString(4);
+                        tx_prov.Tag = dr.GetString(4);
                         tx_dpto.Text = dr.GetString(5);
+                        tx_dpto.Tag = dr.GetString(5);
                         tx_telef1.Text = dr.GetString(8);
+                        tx_telef1.Tag = dr.GetString(8);
                         tx_telef2.Text = dr.GetString(9);
+                        tx_telef2.Tag = dr.GetString(9);
                         tx_mail.Text = dr.GetString(10);
+                        tx_mail.Tag = dr.GetString(10);
+                        vi = dr.GetInt16(11);
                     }
                     dr.Close();
+                    cmb_tdoc.SelectedIndex = vi;    //cmb_tdoc.FindString(tx_dat_tdoc.Text);
                 }
                 conn.Close();
             }
@@ -546,6 +560,7 @@ namespace iOMG
                     cmb_taller.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion de estado del contrato
+                cmb_estado.Items.Clear();
                 const string conestado = "select descrizionerid,idcodice from desc_sta " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdestado = new MySqlCommand(conestado, conn);
@@ -558,6 +573,7 @@ namespace iOMG
                     cmb_estado.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del tipo documento cliente
+                cmb_tdoc.Items.Clear();
                 const string condest = "select descrizionerid,idcodice from desc_doc " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmddest = new MySqlCommand(condest, conn);
@@ -566,7 +582,7 @@ namespace iOMG
                 dadest.Fill(dtdest);
                 foreach (DataRow row in dtdest.Rows)
                 {
-                    cmb_tdoc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_tdoc.Items.Add(row.ItemArray[0].ToString() + " - " + row.ItemArray[1].ToString());
                     cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion de familia de art
@@ -1044,6 +1060,69 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
+        private void actuacli()                             // actualiza datos del cliente
+        {
+            string parte = "";
+            string actua = "update anagrafiche set " + parte + " where idanagrafica=@idc";
+            if (tx_nombre.Text != tx_nombre.Tag.ToString())
+            {
+                parte = parte + "razonsocial='" + tx_nombre.Text.Trim() + "'";
+            }
+            if (tx_direc.Text != tx_direc.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "direcc1='" + tx_direc.Text.Trim() + "'";
+                else parte = parte + ",direcc1='" + tx_direc.Text.Trim() + "'";
+            }
+            if (tx_dist.Text != tx_dist.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "localidad='" + tx_dist.Text.Trim() + "'";
+                else parte = parte + ",localidad='" + tx_dist.Text.Trim() + "'";
+            }
+            if (tx_prov.Text != tx_prov.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "provincia='" + tx_prov.Text.Trim() + "'";
+                else parte = parte + ",provincia='" + tx_prov.Text.Trim() + "'";
+            }
+            if (tx_dpto.Text != tx_dpto.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "depart='" + tx_dpto.Text.Trim() + "'";
+                else parte = parte + ",depart='" + tx_dpto.Text.Trim() + "'";
+            }
+            if (tx_mail.Text != tx_mail.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "email='" + tx_mail.Text.Trim() + "'";
+                else parte = parte + ",email='" + tx_mail.Text.Trim() + "'";
+            }
+            if (tx_telef1.Text != tx_telef1.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "numerotel1='" + tx_telef1.Text.Trim() + "'";
+                else parte = parte + ",numerotel1='" + tx_telef1.Text.Trim() + "'";
+            }
+            if (tx_telef2.Text != tx_telef2.Tag.ToString())
+            {
+                if (parte == "") parte = parte + "numerotel2='" + tx_telef2.Text.Trim() + "'";
+                else parte = parte + ",numerotel2='" + tx_telef2.Text.Trim() + "'";
+            }
+            //
+            if (parte != "")
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlCommand micon = new MySqlCommand(actua, conn);
+                    micon.Parameters.AddWithValue("@idc", tx_idcli.Text);
+                    micon.ExecuteNonQuery();
+                }
+                else
+                {
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                    return;
+                }
+                conn.Close();
+            }
+        }
 
         #region limpiadores_modos
         public void sololee(Form lfrm)
@@ -1180,16 +1259,20 @@ namespace iOMG
                     oControls.Text = "";
                 }
             }
-            tx_d_can.Text = "";
-            tx_d_codi.Text = "";
-            tx_d_com.Text = "";
-            tx_d_det2.Text = "";
-            tx_d_est.Text = "";
-            tx_d_id.Text = "";
-            tx_d_it.Text = "";
-            tx_d_mad.Text = "";
-            tx_d_med.Text = "";
-            tx_d_nom.Text = "";
+            foreach (Control oControls in pan_cli.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
+            foreach (Control oControls in panel1.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
         }
         public void limpia_chk()
         {
@@ -1258,6 +1341,9 @@ namespace iOMG
             string iserror = "no";
             string asd = iOMG.Program.vg_user;
             string verapp = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
+            //
+            actuacli();                 // actualiza datos del cliente
+            //
             if (modo == "NUEVO")
             {
                 var aa = MessageBox.Show("Confirma que desea crear el contrato?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -1628,7 +1714,7 @@ namespace iOMG
             }
         }
         #region botones
-        private void Bt_add_Click(object sender, EventArgs e)
+        private void Bt_add_Click(object sender, EventArgs e)   // me quede aca, falta poner uncheck al "modifica datos", estado default y fecha del cont=hoy
         {
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
@@ -1679,6 +1765,7 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
+            dataload("todos");
             jalaoc("tx_idr");
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -2031,7 +2118,7 @@ namespace iOMG
                 tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
                 tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
                 tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
-                tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetaped"].Value.ToString();
+                tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
                 tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
                 tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
 
@@ -2167,11 +2254,52 @@ namespace iOMG
             Bt_print.Enabled = true;
             bt_prev.Enabled = true;
             bt_exc.Enabled = false;
+            //
+            if(Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            {
+                pan_cli.Enabled = true;
+                chk_cliente.Checked = true;
+                chk_cliente.Checked = false;
+            }
+            else
+            {
+                pan_cli.Enabled = false;
+                chk_cliente.Checked = false;
+            }
         }
-
         private void tabuser_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void chk_cliente_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chk_cliente.Checked == true)
+            {
+                cmb_tdoc.Enabled = true;
+                tx_ndc.Enabled = true;
+                tx_nombre.Enabled = true;
+                tx_direc.Enabled = true;
+                tx_dist.Enabled = true;
+                tx_prov.Enabled = true;
+                tx_dpto.Enabled = true;
+                tx_mail.Enabled = true;
+                tx_telef1.Enabled = true;
+                tx_telef2.Enabled = true;
+            }
+            else
+            {
+                cmb_tdoc.Enabled = false;
+                tx_ndc.Enabled = false;
+                tx_nombre.Enabled = false;
+                tx_direc.Enabled = false;
+                tx_dist.Enabled = false;
+                tx_prov.Enabled = false;
+                tx_dpto.Enabled = false;
+                tx_mail.Enabled = false;
+                tx_telef1.Enabled = false;
+                tx_telef2.Enabled = false;
+            }
         }
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
