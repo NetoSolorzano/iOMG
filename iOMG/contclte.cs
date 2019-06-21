@@ -37,7 +37,7 @@ namespace iOMG
         string img_pre = "";            // imagen del boton vista preliminar
         string img_ver = "";            // imagen del boton visualizacion (solo ver)
         string tipede = "";             // tipo de pedido por defecto
-        string tiesta = "";             // estado inicial por defecto del pedido
+        string tiesta = "";             // estado inicial por defecto del contrato
         string escambio = "";           // estados de pedido que admiten modif el pedido
         string estpend = "";            // estado de pedido con articulos pendientes de recibir
         string estcomp = "";            // estado de pedido con articulos recibidos en su totalidad
@@ -216,7 +216,7 @@ namespace iOMG
                 string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
-                micon.Parameters.AddWithValue("@ped", nomform);
+                micon.Parameters.AddWithValue("@ped", "contratos");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -1636,6 +1636,11 @@ namespace iOMG
         {
             tx_saldo.Text = tx_d_can.Text;
         }
+        private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
+        {
+            // ME QUEDE ACA
+        }
+
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
@@ -1714,7 +1719,7 @@ namespace iOMG
             }
         }
         #region botones
-        private void Bt_add_Click(object sender, EventArgs e)   // me quede aca, falta poner uncheck al "modifica datos", estado default y fecha del cont=hoy
+        private void Bt_add_Click(object sender, EventArgs e)   
         {
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
@@ -1733,10 +1738,13 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
             tabControl1.SelectedTab = tabuser;
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            //jalainfo();
+            //MessageBox.Show(tiesta);
+            pan_cli.Enabled = true;
             tx_dat_tiped.Text = tipede;
-            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_estad.Text = tiesta;
+            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
             tx_codped.ReadOnly = true;
             cmb_taller.Focus();
         }
@@ -2254,12 +2262,20 @@ namespace iOMG
             Bt_print.Enabled = true;
             bt_prev.Enabled = true;
             bt_exc.Enabled = false;
-            //
-            if(Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            //  || 
+            if (Tx_modo.Text == "EDITAR")
             {
                 pan_cli.Enabled = true;
                 chk_cliente.Checked = true;
                 chk_cliente.Checked = false;
+            }
+            if (Tx_modo.Text == "NUEVO")
+            {
+                pan_cli.Enabled = true;
+                cmb_tdoc.Enabled = true;
+                tx_ndc.Enabled = true;
+                tx_ndc.ReadOnly = false;
+                chk_cliente.Enabled = true;
             }
             else
             {
