@@ -63,8 +63,12 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         DataTable dtg = new DataTable();
-        DataTable dtu = new DataTable();    // dtg primario, original con la carga del 
+        DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
         DataTable dttaller = new DataTable();   // combo taller de fabric.
+
+        AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
+        AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
+        AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
 
         public contclte()
         {
@@ -80,7 +84,7 @@ namespace iOMG
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.O) Bt_ver.PerformClick();
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.S) Bt_close.PerformClick();
         }
-        private void repspedidos_Load(object sender, EventArgs e)
+        private void Repspedidos_Load(object sender, EventArgs e)
         {
             init();
             toolboton();
@@ -110,6 +114,8 @@ namespace iOMG
             this.tabuser.BackColor = Color.FromName(iOMG.Program.colgri);
 
             jalainfo();
+            autodptos();
+            autoprovi();
             Bt_add.Image = Image.FromFile(img_btN);
             Bt_edit.Image = Image.FromFile(img_btE);
             Bt_anul.Image = Image.FromFile(img_anul);
@@ -259,6 +265,21 @@ namespace iOMG
                 }
                 da.Dispose();
                 dt.Dispose();
+                // autocompletados de departamento, provincia y distrito
+                consulta = "SELECT depart,provin,distri,nombre FROM ubigeos";
+                micon = new MySqlCommand(consulta, conn);
+                try
+                {
+                    MySqlDataAdapter daa = new MySqlDataAdapter(micon);
+                    daa.Fill(dtadpd);
+                    daa.Dispose();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en obtener nombres de dptos,provin y distritos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                    return;
+                }
                 conn.Close();
             }
             catch (MySqlException ex)
@@ -512,7 +533,6 @@ namespace iOMG
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
-                dag.Fill(dtu);  // original con la carga
                 dag.Dispose();
             }
             //  datos para el combobox de tipo de documento
@@ -1123,6 +1143,35 @@ namespace iOMG
                 conn.Close();
             }
         }
+        
+        #region autocompletados
+        private void autodptos()
+        {
+            DataRow[] result = dtadpd.Select("provin='00' AND distri='00'");
+            foreach(DataRow row in result)
+            {
+                adptos.Add(row["nombre"].ToString());
+            }
+            tx_dpto.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tx_dpto.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tx_dpto.AutoCompleteCustomSource = adptos;
+        }
+        private void autoprovi()                 // ME QUEDE ACA, no funca algo falta
+        {
+            DataRow[] result = dtadpd.Select("provin<>'00' AND distri='00' AND depart='" + tx_dat_dpto.Text + "'");
+            foreach (DataRow row in result)
+            {
+                aprovi.Add(row["nombre"].ToString());
+            }
+            tx_prov.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tx_prov.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tx_prov.AutoCompleteCustomSource = aprovi;
+        }
+        private void autodistr()
+        {
+
+        }
+        #endregion autocompletados
 
         #region limpiadores_modos
         public void sololee(Form lfrm)
@@ -1328,6 +1377,12 @@ namespace iOMG
             {
                 MessageBox.Show("Falta el cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_ndc.Focus();
+                return;
+            }
+            if(tx_nombre.Text == "")
+            {
+                MessageBox.Show("Falta el nombre del cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_nombre.Focus();
                 return;
             }
             if(dataGridView1.Rows.Count < 2)
@@ -1638,7 +1693,96 @@ namespace iOMG
         }
         private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
         {
-            // ME QUEDE ACA
+            // me fui al validating
+        }
+        private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Tx_modo.Text == "NUEVO" && tx_ndc.Text != "")
+            {
+                if (tx_dat_tdoc.Text == "") cmb_tdoc.Focus();
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open) 
+                {
+                    string jala = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
+                        "ifnull(depart,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),desc_doc.cnt " +
+                        "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
+                        "where tipdoc=@tdo and ruc=@ndo";
+                    MySqlCommand micon = new MySqlCommand(jala, conn);
+                    micon.Parameters.AddWithValue("@tdo", tx_dat_tdoc.Text);
+                    micon.Parameters.AddWithValue("@ndo", tx_ndc.Text);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        if (dr.Read())
+                        {
+                            tx_nombre.Text = dr.GetString(0).Trim();
+                            tx_direc.Text = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
+                            tx_dist.Text = dr.GetString(3).Trim();
+                            tx_prov.Text = dr.GetString(4).Trim();
+                            tx_dpto.Text = dr.GetString(5).Trim();
+                            tx_mail.Text = dr.GetString(6).Trim();
+                            tx_telef1.Text = dr.GetString(7).Trim();
+                            tx_telef2.Text = dr.GetString(8).Trim();
+                        }
+                        dr.Close();
+                    }
+                    else
+                    {
+                        dr.Close();
+                        conn.Close();
+                        var aaa = MessageBox.Show("No existe el cliente" + Environment.NewLine +
+                            "desea crealo?", "Atención verifique", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (aaa == DialogResult.Yes)
+                        {
+                            chk_cliente.Checked = true;
+                            tx_nombre.Focus();
+                            /*
+                            tx_nombre.ReadOnly = false;
+                            tx_direc.ReadOnly = false;
+                            tx_dist.ReadOnly = false;
+                            tx_prov.ReadOnly = false;
+                            tx_dpto.ReadOnly = false;
+                            tx_mail.ReadOnly = false;
+                            tx_telef1.ReadOnly = false;
+                            tx_telef2.ReadOnly = false;
+                            */
+                        }
+                        else
+                        {
+                            tx_ndc.Text = "";
+                            tx_ndc.Focus();
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conectidad");
+                    Application.Exit();
+                    return;
+                }
+                conn.Close();
+            }
+        }
+        private void tx_dpto_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tx_dat_dpto.Text = "";
+            if(tx_dpto.Text.Trim() != "" && Tx_modo.Text == "NUEVO")
+            {
+                DataRow[] result = dtadpd.Select("provin='00' AND distri='00' AND nombre='" + tx_dpto.Text.Trim() + "'");
+                foreach (DataRow row in result)
+                {
+                    tx_dat_dpto.Text = row["depart"].ToString();
+                }
+                if (tx_dat_dpto.Text == "")
+                {
+                    MessageBox.Show("No existe el departamento escrito", "Por favor revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_dpto.Text = "";
+                    tx_dpto.Focus();
+                    return;
+                }
+            }
         }
 
         #endregion leaves;
@@ -1738,9 +1882,18 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
             tabControl1.SelectedTab = tabuser;
-            //jalainfo();
-            //MessageBox.Show(tiesta);
+            //
             pan_cli.Enabled = true;
+            /*
+            tx_nombre.ReadOnly = true;
+            tx_direc.ReadOnly = true;
+            tx_dist.ReadOnly = true;
+            tx_prov.ReadOnly = true;
+            tx_dpto.ReadOnly = true;
+            tx_mail.ReadOnly = true;
+            tx_telef1.ReadOnly = true;
+            tx_telef2.ReadOnly = true;
+            */
             tx_dat_tiped.Text = tipede;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_estad.Text = tiesta;
