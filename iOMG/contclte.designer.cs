@@ -34,6 +34,8 @@
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
             this.pan_cli = new System.Windows.Forms.Panel();
+            this.tx_dat_provin = new System.Windows.Forms.TextBox();
+            this.tx_dat_dpto = new System.Windows.Forms.TextBox();
             this.groupBox37 = new System.Windows.Forms.GroupBox();
             this.groupBox38 = new System.Windows.Forms.GroupBox();
             this.groupBox35 = new System.Windows.Forms.GroupBox();
@@ -55,9 +57,9 @@
             this.tx_dat_tdoc = new System.Windows.Forms.TextBox();
             this.tx_dpto = new System.Windows.Forms.TextBox();
             this.tx_prov = new System.Windows.Forms.TextBox();
-            this.tx_dist = new System.Windows.Forms.TextBox();
             this.tx_direc = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.tx_dist = new System.Windows.Forms.TextBox();
             this.tx_nombre = new System.Windows.Forms.TextBox();
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -170,8 +172,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.tx_dat_dpto = new System.Windows.Forms.TextBox();
-            this.tx_dat_provin = new System.Windows.Forms.TextBox();
+            this.tx_dat_distri = new System.Windows.Forms.TextBox();
             this.tx_telef2 = new iOMG.NumericTextBox();
             this.tx_telef1 = new iOMG.NumericTextBox();
             this.tx_ndc = new iOMG.NumericTextBox();
@@ -315,6 +316,7 @@
             // pan_cli
             // 
             this.pan_cli.BackColor = System.Drawing.Color.Gray;
+            this.pan_cli.Controls.Add(this.tx_dat_distri);
             this.pan_cli.Controls.Add(this.tx_dat_provin);
             this.pan_cli.Controls.Add(this.tx_dat_dpto);
             this.pan_cli.Controls.Add(this.groupBox37);
@@ -346,6 +348,22 @@
             this.pan_cli.Name = "pan_cli";
             this.pan_cli.Size = new System.Drawing.Size(827, 73);
             this.pan_cli.TabIndex = 344;
+            // 
+            // tx_dat_provin
+            // 
+            this.tx_dat_provin.Location = new System.Drawing.Point(698, 50);
+            this.tx_dat_provin.Name = "tx_dat_provin";
+            this.tx_dat_provin.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_provin.TabIndex = 369;
+            this.tx_dat_provin.Visible = false;
+            // 
+            // tx_dat_dpto
+            // 
+            this.tx_dat_dpto.Location = new System.Drawing.Point(676, 50);
+            this.tx_dat_dpto.Name = "tx_dat_dpto";
+            this.tx_dat_dpto.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_dpto.TabIndex = 368;
+            this.tx_dat_dpto.Visible = false;
             // 
             // groupBox37
             // 
@@ -439,9 +457,9 @@
             // 
             // tx_idcli
             // 
-            this.tx_idcli.Location = new System.Drawing.Point(599, 51);
+            this.tx_idcli.Location = new System.Drawing.Point(584, 51);
             this.tx_idcli.Name = "tx_idcli";
-            this.tx_idcli.Size = new System.Drawing.Size(25, 20);
+            this.tx_idcli.Size = new System.Drawing.Size(20, 20);
             this.tx_idcli.TabIndex = 362;
             this.tx_idcli.Visible = false;
             // 
@@ -511,7 +529,7 @@
             // 
             // tx_dat_tdoc
             // 
-            this.tx_dat_tdoc.Location = new System.Drawing.Point(651, 51);
+            this.tx_dat_tdoc.Location = new System.Drawing.Point(606, 51);
             this.tx_dat_tdoc.Name = "tx_dat_tdoc";
             this.tx_dat_tdoc.Size = new System.Drawing.Size(18, 20);
             this.tx_dat_tdoc.TabIndex = 322;
@@ -533,14 +551,7 @@
             this.tx_prov.Size = new System.Drawing.Size(83, 20);
             this.tx_prov.TabIndex = 5;
             this.tx_prov.Tag = "Id";
-            // 
-            // tx_dist
-            // 
-            this.tx_dist.Location = new System.Drawing.Point(730, 27);
-            this.tx_dist.Name = "tx_dist";
-            this.tx_dist.Size = new System.Drawing.Size(83, 20);
-            this.tx_dist.TabIndex = 4;
-            this.tx_dist.Tag = "Id";
+            this.tx_prov.Validating += new System.ComponentModel.CancelEventHandler(this.tx_prov_Validating);
             // 
             // tx_direc
             // 
@@ -558,6 +569,15 @@
             this.label14.Size = new System.Drawing.Size(52, 13);
             this.label14.TabIndex = 348;
             this.label14.Text = "Dirección";
+            // 
+            // tx_dist
+            // 
+            this.tx_dist.Location = new System.Drawing.Point(730, 27);
+            this.tx_dist.Name = "tx_dist";
+            this.tx_dist.Size = new System.Drawing.Size(83, 20);
+            this.tx_dist.TabIndex = 4;
+            this.tx_dist.Tag = "Id";
+            this.tx_dist.Validating += new System.ComponentModel.CancelEventHandler(this.tx_dist_Validating);
             // 
             // tx_nombre
             // 
@@ -1665,21 +1685,13 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // tx_dat_dpto
+            // tx_dat_distri
             // 
-            this.tx_dat_dpto.Location = new System.Drawing.Point(707, 50);
-            this.tx_dat_dpto.Name = "tx_dat_dpto";
-            this.tx_dat_dpto.Size = new System.Drawing.Size(22, 20);
-            this.tx_dat_dpto.TabIndex = 368;
-            this.tx_dat_dpto.Visible = false;
-            // 
-            // tx_dat_provin
-            // 
-            this.tx_dat_provin.Location = new System.Drawing.Point(731, 50);
-            this.tx_dat_provin.Name = "tx_dat_provin";
-            this.tx_dat_provin.Size = new System.Drawing.Size(22, 20);
-            this.tx_dat_provin.TabIndex = 369;
-            this.tx_dat_provin.Visible = false;
+            this.tx_dat_distri.Location = new System.Drawing.Point(720, 50);
+            this.tx_dat_distri.Name = "tx_dat_distri";
+            this.tx_dat_distri.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_distri.TabIndex = 370;
+            this.tx_dat_distri.Visible = false;
             // 
             // tx_telef2
             // 
@@ -1937,5 +1949,6 @@
         private NumericTextBox tx_ndc;
         private System.Windows.Forms.TextBox tx_dat_provin;
         private System.Windows.Forms.TextBox tx_dat_dpto;
+        private System.Windows.Forms.TextBox tx_dat_distri;
     }
 }

@@ -115,7 +115,6 @@ namespace iOMG
 
             jalainfo();
             autodptos();
-            autoprovi();
             Bt_add.Image = Image.FromFile(img_btN);
             Bt_edit.Image = Image.FromFile(img_btE);
             Bt_anul.Image = Image.FromFile(img_anul);
@@ -1156,9 +1155,10 @@ namespace iOMG
             tx_dpto.AutoCompleteSource = AutoCompleteSource.CustomSource;
             tx_dpto.AutoCompleteCustomSource = adptos;
         }
-        private void autoprovi()                 // ME QUEDE ACA, no funca algo falta
+        private void autoprovi()
         {
-            DataRow[] result = dtadpd.Select("provin<>'00' AND distri='00' AND depart='" + tx_dat_dpto.Text + "'");
+            aprovi.Clear();
+            DataRow[] result = dtadpd.Select("distri='00' AND depart='" + tx_dat_dpto.Text + "'");  // provin<>'00' AND 
             foreach (DataRow row in result)
             {
                 aprovi.Add(row["nombre"].ToString());
@@ -1169,7 +1169,23 @@ namespace iOMG
         }
         private void autodistr()
         {
-
+            adistr.Clear();
+            DataRow[] result;
+            if (tx_dat_dpto.Text == "07")   // callao
+            {
+                result = dtadpd.Select("provin='01' AND depart='" + tx_dat_dpto.Text + "'");  // AND distri='00' 
+            }
+            else
+            {
+                result = dtadpd.Select("provin='" + tx_dat_provin.Text + "' AND depart='" + tx_dat_dpto.Text + "'");  // AND distri='00' 
+            }
+            foreach (DataRow row in result)
+            {
+                adistr.Add(row["nombre"].ToString());
+            }
+            tx_dist.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tx_dist.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tx_dist.AutoCompleteCustomSource = adistr;
         }
         #endregion autocompletados
 
@@ -1768,7 +1784,7 @@ namespace iOMG
         private void tx_dpto_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             tx_dat_dpto.Text = "";
-            if(tx_dpto.Text.Trim() != "" && Tx_modo.Text == "NUEVO")
+            if(tx_dpto.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
             {
                 DataRow[] result = dtadpd.Select("provin='00' AND distri='00' AND nombre='" + tx_dpto.Text.Trim() + "'");
                 foreach (DataRow row in result)
@@ -1782,9 +1798,57 @@ namespace iOMG
                     tx_dpto.Focus();
                     return;
                 }
+                autoprovi();
             }
         }
-
+        private void tx_prov_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tx_dat_provin.Text = "";
+            if(tx_prov.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            {
+                DataRow[] result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND distri='00' AND nombre='" + tx_prov.Text.Trim() + "'");
+                foreach (DataRow row in result)
+                {
+                    if (tx_dat_dpto.Text == "07") tx_dat_provin.Text = "01";
+                    else tx_dat_provin.Text = row["provin"].ToString();
+                }
+                if (tx_dat_provin.Text == "")
+                {
+                    MessageBox.Show("No existe la provincia escrita", "Por favor revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_prov.Text = "";
+                    tx_prov.Focus();
+                    return;
+                }
+                autodistr();
+            }
+        }
+        private void tx_dist_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tx_dat_distri.Text = "";
+            DataRow[] result;
+            if (tx_dist.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            {
+                if(tx_dat_dpto.Text == "07")
+                {
+                    result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND provin='01' AND nombre='" + tx_dist.Text.Trim() + "'");
+                }
+                else
+                {
+                    result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND provin='" + tx_dat_provin.Text.Trim() + "' AND nombre='" + tx_dist.Text.Trim() + "'");
+                }
+                foreach (DataRow row in result)
+                {
+                    tx_dat_distri.Text = row["distri"].ToString();
+                }
+                if (tx_dat_distri.Text == "")
+                {
+                    MessageBox.Show("No existe el distrito escrito", "Por favor revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_dist.Text = "";
+                    tx_dist.Focus();
+                    return;
+                }
+            }
+        }
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
