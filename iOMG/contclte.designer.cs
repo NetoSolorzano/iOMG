@@ -34,6 +34,7 @@
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
             this.pan_cli = new System.Windows.Forms.Panel();
+            this.tx_dat_distri = new System.Windows.Forms.TextBox();
             this.tx_dat_provin = new System.Windows.Forms.TextBox();
             this.tx_dat_dpto = new System.Windows.Forms.TextBox();
             this.groupBox37 = new System.Windows.Forms.GroupBox();
@@ -172,7 +173,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.tx_dat_distri = new System.Windows.Forms.TextBox();
             this.tx_telef2 = new iOMG.NumericTextBox();
             this.tx_telef1 = new iOMG.NumericTextBox();
             this.tx_ndc = new iOMG.NumericTextBox();
@@ -349,6 +349,14 @@
             this.pan_cli.Size = new System.Drawing.Size(827, 73);
             this.pan_cli.TabIndex = 344;
             // 
+            // tx_dat_distri
+            // 
+            this.tx_dat_distri.Location = new System.Drawing.Point(720, 50);
+            this.tx_dat_distri.Name = "tx_dat_distri";
+            this.tx_dat_distri.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_distri.TabIndex = 370;
+            this.tx_dat_distri.Visible = false;
+            // 
             // tx_dat_provin
             // 
             this.tx_dat_provin.Location = new System.Drawing.Point(698, 50);
@@ -517,6 +525,7 @@
             this.tx_mail.Size = new System.Drawing.Size(262, 20);
             this.tx_mail.TabIndex = 7;
             this.tx_mail.Tag = "Id";
+            this.tx_mail.Validating += new System.ComponentModel.CancelEventHandler(this.tx_mail_Validating);
             // 
             // label15
             // 
@@ -1685,14 +1694,6 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // tx_dat_distri
-            // 
-            this.tx_dat_distri.Location = new System.Drawing.Point(720, 50);
-            this.tx_dat_distri.Name = "tx_dat_distri";
-            this.tx_dat_distri.Size = new System.Drawing.Size(22, 20);
-            this.tx_dat_distri.TabIndex = 370;
-            this.tx_dat_distri.Visible = false;
-            // 
             // tx_telef2
             // 
             this.tx_telef2.AllowSpace = false;
@@ -1759,9 +1760,11 @@
             this.ClientSize = new System.Drawing.Size(977, 503);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tabControl1);
+            this.KeyPreview = true;
             this.Name = "contclte";
             this.Text = "Contratos Clientes";
             this.Load += new System.EventHandler(this.Repspedidos_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.users_KeyDown);
             this.tabControl1.ResumeLayout(false);
             this.tabgrilla.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();

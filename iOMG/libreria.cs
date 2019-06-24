@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
@@ -2070,6 +2071,26 @@ namespace iOMG
             {
                 MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
                 Application.Exit();
+            }
+        }
+        public Boolean email_bien_escrito(String email)                    // valida correo electronico, que tenga @ y . 
+        {
+            String expresion;
+            expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (Regex.IsMatch(email, expresion))
+            {
+                if (Regex.Replace(email, expresion, String.Empty).Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
         public string cero_izq(string dato, Int16 ancho)                    // retorna dato con ceros a la izq

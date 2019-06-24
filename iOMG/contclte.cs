@@ -129,7 +129,17 @@ namespace iOMG
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
-            tx_coment.MaxLength = 90;           // nombre
+            tx_ndc.MaxLength = 11;
+            tx_nombre.MaxLength = 100;
+            tx_direc.MaxLength = 150;
+            tx_dpto.MaxLength = 45;
+            tx_prov.MaxLength = 20;
+            tx_dist.MaxLength = 20;
+            tx_mail.MaxLength = 50;
+            tx_telef1.MaxLength = 15;
+            tx_telef2.MaxLength = 15;
+            tx_coment.MaxLength = 240;           // nombre
+            tx_dirent.MaxLength = 45;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
         }
         private void grilla()                   // arma la grilla
@@ -288,7 +298,7 @@ namespace iOMG
                 return;
             }
         }
-        public void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
+        public void jalaoc(string campo)        // jala datos del contrato
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
             {
@@ -936,7 +946,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
                     micon.Parameters.AddWithValue("@come", tx_coment.Text);
                     micon.Parameters.AddWithValue("@idcl", tx_idcli.Text);
-                    micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@entr", (dtp_entreg.Checked == true)? dtp_entreg.Value.ToString("yyyy-MM-dd"):null);
                     micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                     micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
                     micon.Parameters.AddWithValue("@valo", tx_valor.Text);
@@ -1089,8 +1099,19 @@ namespace iOMG
             }
             if (tx_direc.Text != tx_direc.Tag.ToString())
             {
-                if (parte == "") parte = parte + "direcc1='" + tx_direc.Text.Trim() + "'";
-                else parte = parte + ",direcc1='" + tx_direc.Text.Trim() + "'";
+                if (tx_direc.Text.Trim().Length > 100)
+                {
+                    if (parte == "")
+                    {
+                        parte = parte + "direcc1='" + tx_direc.Text.Trim().Substring(0,99) + "',direcc2='" + tx_direc.Text.Trim().Substring(100, tx_direc.Text.Trim().Length - 100) + "'";
+                    }
+                    else parte = parte + ",direcc1='" + tx_direc.Text.Trim() + "',direcc2='" + tx_direc.Text.Trim().Substring(100, tx_direc.Text.Trim().Length - 100) + "'";
+                }
+                else
+                {
+                    if (parte == "") parte = parte + "direcc1='" + tx_direc.Text.Trim() + "',direcc2=''";
+                    else parte = parte + ",direcc1='" + tx_direc.Text.Trim() + "',direcc2=''";
+                }
             }
             if (tx_dist.Text != tx_dist.Tag.ToString())
             {
@@ -1121,6 +1142,11 @@ namespace iOMG
             {
                 if (parte == "") parte = parte + "numerotel2='" + tx_telef2.Text.Trim() + "'";
                 else parte = parte + ",numerotel2='" + tx_telef2.Text.Trim() + "'";
+            }
+            if (tx_dat_dpto.Text.Trim().Length == 2 && tx_dat_provin.Text.Trim().Length == 2 && tx_dat_distri.Text.Trim().Length == 2)
+            {
+                if (parte == "") parte = parte + "ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
+                else parte = parte + ",ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
             }
             //
             if (parte != "")
@@ -1405,6 +1431,13 @@ namespace iOMG
             {
                 MessageBox.Show("Falta el detalle del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_fam.Focus();
+                return;
+            }
+            if (tx_mail.Text.Trim() != "" && lib.email_bien_escrito(tx_mail.Text.Trim()) == false)
+            {
+                MessageBox.Show("Debe arreglar el correo electrónico" + Environment.NewLine +
+                    "porque no cumple con el formato", "Atención verifique", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                tx_mail.Focus();
                 return;
             }
             // grabamos, actualizamos, etc
@@ -1737,9 +1770,9 @@ namespace iOMG
                             tx_dist.Text = dr.GetString(3).Trim();
                             tx_prov.Text = dr.GetString(4).Trim();
                             tx_dpto.Text = dr.GetString(5).Trim();
-                            tx_mail.Text = dr.GetString(6).Trim();
-                            tx_telef1.Text = dr.GetString(7).Trim();
-                            tx_telef2.Text = dr.GetString(8).Trim();
+                            tx_mail.Text = dr.GetString(8).Trim();
+                            tx_telef1.Text = dr.GetString(6).Trim();
+                            tx_telef2.Text = dr.GetString(7).Trim();
                         }
                         dr.Close();
                     }
@@ -1849,6 +1882,15 @@ namespace iOMG
                 }
             }
         }
+        private void tx_mail_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (lib.email_bien_escrito(tx_mail.Text.Trim()) == false)
+            {
+                MessageBox.Show("El correo no tiene el formato correcto", "Atención verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_mail.Text = "";
+                return;
+            }
+        }
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
@@ -1937,7 +1979,7 @@ namespace iOMG
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
             dtp_pedido.Value = DateTime.Now;
-            dtp_entreg.Value = DateTime.Now;
+            dtp_entreg.Checked = false;
             limpiar(this);
             limpiapag(tabuser);
             limpia_otros(tabuser);
@@ -1948,16 +1990,15 @@ namespace iOMG
             tabControl1.SelectedTab = tabuser;
             //
             pan_cli.Enabled = true;
-            /*
-            tx_nombre.ReadOnly = true;
-            tx_direc.ReadOnly = true;
-            tx_dist.ReadOnly = true;
-            tx_prov.ReadOnly = true;
-            tx_dpto.ReadOnly = true;
-            tx_mail.ReadOnly = true;
-            tx_telef1.ReadOnly = true;
-            tx_telef2.ReadOnly = true;
-            */
+            tx_nombre.Enabled = false;
+            tx_direc.Enabled = false;
+            tx_dist.Enabled = false;
+            tx_prov.Enabled = false;
+            tx_dpto.Enabled = false;
+            tx_mail.Enabled = false;
+            tx_telef1.Enabled = false;
+            tx_telef2.Enabled = false;
+            //
             tx_dat_tiped.Text = tipede;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_estad.Text = tiesta;
@@ -1986,6 +2027,20 @@ namespace iOMG
             limpiapag(tabuser);
             limpia_otros(tabuser);
             limpia_combos(tabuser);
+            //
+            pan_cli.Enabled = true;
+            chk_cliente.Enabled = true;
+            cmb_tdoc.Enabled = false;
+            tx_ndc.Enabled = false;
+            tx_nombre.Enabled = false;
+            tx_direc.Enabled = false;
+            tx_dist.Enabled = false;
+            tx_prov.Enabled = false;
+            tx_dpto.Enabled = false;
+            tx_mail.Enabled = false;
+            tx_telef1.Enabled = false;
+            tx_telef2.Enabled = false;
+            //
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
@@ -2479,22 +2534,7 @@ namespace iOMG
             Bt_print.Enabled = true;
             bt_prev.Enabled = true;
             bt_exc.Enabled = false;
-            //  || 
-            if (Tx_modo.Text == "EDITAR")
-            {
-                pan_cli.Enabled = true;
-                chk_cliente.Checked = true;
-                chk_cliente.Checked = false;
-            }
-            if (Tx_modo.Text == "NUEVO")
-            {
-                pan_cli.Enabled = true;
-                cmb_tdoc.Enabled = true;
-                tx_ndc.Enabled = true;
-                tx_ndc.ReadOnly = false;
-                chk_cliente.Enabled = true;
-            }
-            else
+            if (Tx_modo.Text != "NUEVO" && Tx_modo.Text != "EDITAR")
             {
                 pan_cli.Enabled = false;
                 chk_cliente.Checked = false;

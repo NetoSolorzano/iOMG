@@ -345,26 +345,6 @@ namespace iOMG
             }
             return retorna;
         }
-        private Boolean email_bien_escrito(String email)
-        {
-            String expresion;
-            expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
-            if (Regex.IsMatch(email, expresion))
-            {
-                if (Regex.Replace(email, expresion, String.Empty).Length == 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
         #region autocompletados
         private void autopais()
         {
@@ -925,7 +905,7 @@ namespace iOMG
         {
             if(textBox12.Text != "")
             {
-                if(email_bien_escrito(textBox12.Text.Trim()) == false)
+                if(lib.email_bien_escrito(textBox12.Text.Trim()) == false)
                 {
                     MessageBox.Show("El formato del correo electrónico esta mal", "Atención - Corrija", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     textBox12.Focus();
