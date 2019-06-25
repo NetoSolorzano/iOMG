@@ -1666,25 +1666,40 @@ namespace iOMG
                         "No puede continuar",MessageBoxButtons.OK,MessageBoxIcon.Stop);
                     return;
                 }
-                if(tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
+                if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
-                    obj.Cells[1].Value = tx_d_can.Text;
-                    obj.Cells[2].Value = tx_d_codi.Text;
+                    obj.Cells[1].Value = tx_d_codi.Text;
+                    obj.Cells[2].Value = tx_d_can.Text;
                     obj.Cells[3].Value = tx_d_nom.Text;
                     obj.Cells[4].Value = tx_d_med.Text;
                     obj.Cells[5].Value = tx_d_mad.Text;
-                    obj.Cells[6].Value = "";
-                    obj.Cells[7].Value = "";
+                    obj.Cells[6].Value = tx_d_prec.Text;
+                    obj.Cells[7].Value = tx_d_total.Text;
                     obj.Cells[8].Value = "";
                     obj.Cells[9].Value = "";
                     obj.Cells[10].Value = "";
-                    obj.Cells[11].Value = "A";  // registro actualizado
+                    obj.Cells[11].Value = tx_d_com.Text;
+                    obj.Cells[12].Value = "A";  // registro actualizado
                 }
                 else
                 {
                     DataTable dtg = (DataTable)dataGridView1.DataSource;
-                    dtg.Rows.Add(".....", "N"); // registro nuevo
+                    DataRow tr = dtg.NewRow();
+                    tr["iddetacon"] = "0";  // dataGridView1.Rows.Count;
+                    tr["item"] = tx_d_codi.Text;
+                    tr["cant"] = tx_d_can.Text;
+                    tr["nombre"] = tx_d_nom.Text;
+                    tr["medidas"] = tx_d_med.Text;
+                    tr["madera"] = tx_d_mad.Text;
+                    tr["precio"] = tx_d_prec.Text;
+                    tr["total"] = tx_d_total.Text;
+                    tr["saldo"] = "";
+                    tr["pedido"] = "";
+                    tr["codref"] = "";
+                    tr["coment"] = tx_d_com.Text;
+                    tr["na"] = "N";
+                    dtg.Rows.Add(tr);
                 }
             }
             tx_d_nom.Text = "";
@@ -1696,7 +1711,8 @@ namespace iOMG
             tx_d_est.Text = "";
             tx_d_id.Text = "";
             tx_d_codi.Text = "";
-            //tx_fingreso.Text = "";
+            tx_d_prec.Text = "";
+            tx_d_total.Text = "";
             tx_saldo.Text = "";
             //limpia_combos(tabuser);
             cmb_fam.SelectedIndex = -1;
