@@ -404,8 +404,7 @@ namespace iOMG
         }
         private void jaladet(string pedido)     // jala el detalle del contrato
         {
-            // 
-            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,space(1) as na " +
+            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,space(1) as na " +
                 "FROM detacon WHERE contratoh = @cont";
             try
             {
@@ -442,7 +441,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 12;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 13;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -517,8 +516,14 @@ namespace iOMG
             dataGridView1.Columns[10].Width = 60;                 // ancho
             dataGridView1.Columns[10].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[10].Name = "codref";
+            // coment
+            dataGridView1.Columns[11].Visible = true;
+            dataGridView1.Columns[11].HeaderText = "Comentario";      // titulo de la columna
+            dataGridView1.Columns[11].Width = 160;                 // ancho
+            dataGridView1.Columns[11].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[11].Name = "coment";
             // na (nuevo o actualiza)
-            dataGridView1.Columns[11].Visible = false;
+            dataGridView1.Columns[12].Visible = false;
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -1623,27 +1628,27 @@ namespace iOMG
             {
                 if (tx_d_id.Text.Trim() != "")
                 {
-                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,'na'
+                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[1].Value = tx_d_codi.Text;
                     obj.Cells[2].Value = tx_d_can.Text;
                     obj.Cells[3].Value = tx_d_nom.Text;
                     obj.Cells[4].Value = tx_d_med.Text;
                     obj.Cells[5].Value = tx_d_mad.Text;
-                    obj.Cells[6].Value = "";
-                    obj.Cells[7].Value = "";
+                    obj.Cells[6].Value = tx_d_prec.Text;
+                    obj.Cells[7].Value = tx_d_total.Text;
                     obj.Cells[8].Value = "";
                     obj.Cells[9].Value = "";
                     obj.Cells[10].Value = "";
-                    obj.Cells[11].Value = "N";
+                    obj.Cells[11].Value = tx_d_com.Text;
+                    obj.Cells[12].Value = "N";
                 }
                 else
                 {
                     if (dataGridView1.Rows.Count < 100)
                     {
-                        //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                        //     tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                        //    cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
+                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, "", "", "", tx_d_com.Text, "N");
                     }
                     else
                     {
@@ -1653,7 +1658,7 @@ namespace iOMG
                     }
                 }
             }
-            if (Tx_modo.Text == "EDITAR")
+            if (Tx_modo.Text == "EDITAR")           // me quede aca
             {
                 if (!escambio.Contains(tx_dat_estad.Text))
                 {
@@ -1663,8 +1668,6 @@ namespace iOMG
                 }
                 if(tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
-                    //
-                    //
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[1].Value = tx_d_can.Text;
                     obj.Cells[2].Value = tx_d_codi.Text;
@@ -1738,7 +1741,11 @@ namespace iOMG
         }
         private void tx_d_can_Leave(object sender, EventArgs e)
         {
-            tx_saldo.Text = tx_d_can.Text;
+            //tx_saldo.Text = tx_d_can.Text;
+            if (tx_d_can.Text != "" || tx_d_prec.Text != "")
+            {
+                tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
+            }
         }
         private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
         {
@@ -2400,6 +2407,8 @@ namespace iOMG
                 tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
                 tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
                 tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
+                tx_d_prec.Text = dataGridView1.Rows[e.RowIndex].Cells["precio"].Value.ToString();
+                tx_d_total.Text = dataGridView1.Rows[e.RowIndex].Cells["total"].Value.ToString();
                 tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
 
                 string fam = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0, 1);
@@ -2409,20 +2418,6 @@ namespace iOMG
                 string de1 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(7, 2);
                 string aca = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(9, 1);
                 string tal = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(10, 2);
-                if (Tx_modo.Text == "EDITAR")
-                {
-                    string cod2d = "";
-                    foreach (DataRow row in dttaller.Rows)
-                    {
-                        if (row["idcodice"].ToString().Trim() == tx_dat_orig.Text.Trim())
-                        {
-                            cod2d = row["codigo"].ToString();
-                        }
-                    }
-                    //cmb_tal.Tag = cod2d;
-                    //cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
-                    tal = cod2d;
-                }
                 string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
                 string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
 
