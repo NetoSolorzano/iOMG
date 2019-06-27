@@ -307,7 +307,7 @@ namespace iOMG
         }
         public void jalaoc(string campo)        // jala datos del contrato
         {
-            if (campo == "tx_idr" && tx_idr.Text != "")     // me quede aca .... no esta jalando la fecha dir entrega y saldos
+            if (campo == "tx_idr" && tx_idr.Text != "")
             {
                 // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                 // a.valor,a.acuenta,a.saldo,a.dscto 
@@ -317,10 +317,14 @@ namespace iOMG
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());
                 tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // estado
                 tx_idcli.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();      // id del cliente
-                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString();     // comentario
                 tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();     // direc. de entrega
                 dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
+                tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
+                tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
+                tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
+                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
@@ -347,6 +351,10 @@ namespace iOMG
                         dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
                         tx_coment.Text = row["coment"].ToString();                          // comentario
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
+                        tx_valor.Text = row["valor"].ToString();     // valor del contrato
+                        tx_dscto.Text = row["dscto"].ToString();     // descuento final
+                        tx_acta.Text = row["acuenta"].ToString();     // pago a cuenta
+                        tx_saldo.Text = row["saldo"].ToString();     // saldo actual del contrato
                         //
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
@@ -857,6 +865,7 @@ namespace iOMG
                                 {
                                     tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                     tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                    if(Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                     gol = "1";
                                     break;
                                 }
@@ -871,6 +880,7 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                         gol = "1";
                                         break;
                                     }
@@ -879,6 +889,7 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                         gol = "1";
                                         break;
                                     }
@@ -887,6 +898,7 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                         gol = "1";
                                         break;
                                     }
@@ -1047,11 +1059,11 @@ namespace iOMG
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
                         string insdet = "";
-                        if (dataGridView1.Rows[i].Cells[11].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
+                        if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
                         {
                             insdet = "insert into detacon (" +
-                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo) values (" +
-                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + ")";
+                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,coment) values (" +
+                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald,@come" + ")";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                             micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -1063,12 +1075,13 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
                             micon.Parameters.AddWithValue("@tota", dataGridView1.Rows[i].Cells[7].Value.ToString());
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                            micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
-                        if (dataGridView1.Rows[i].Cells[11].Value.ToString() == "A")
-                        {
+                        if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "A")
+                        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,space(1) as na
                             insdet = "update detacon set tipo=@tipe,item=@item,cant=@cant," +
-                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald " +
+                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald,coment=@come " +
                                 "where iddetacon=@idr";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -1081,6 +1094,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
                             micon.Parameters.AddWithValue("@tota", dataGridView1.Rows[i].Cells[7].Value.ToString());
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
+                            micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -1180,7 +1194,19 @@ namespace iOMG
                 conn.Close();
             }
         }
-        
+        private void calculos()                             // calculos de total, y saldo
+        {
+            if(tx_valor.Text.Trim() == "")  // me quede aca
+            {
+                tx_valor.Text = tx_d_prec.Text;
+                tx_saldo.Text = tx_d_prec.Text;
+            }
+            if(tx_valor.Text.Trim() != "")
+            {
+                tx_valor.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_d_prec.Text)).ToString();
+            }
+        }
+
         #region autocompletados
         private void autodptos()
         {
@@ -1522,8 +1548,8 @@ namespace iOMG
                             {
                                 // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                                 // a.valor,a.acuenta,a.saldo,a.dscto
-                                dtg.Rows[i][3] = cmb_estado.SelectedText.ToString();
-                                dtg.Rows[i][4] = cmb_taller.SelectedText.ToString();
+                                // dtg.Rows[i][3] = tx_dat_estad.Text; // cmb_estado.SelectedText.ToString();
+                                dtg.Rows[i][4] = tx_dat_orig.Text;  // cmb_taller.SelectedText.ToString();
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][6] = tx_idcli.Text;
                                 dtg.Rows[i][7] = tx_nombre.Text;
@@ -1727,7 +1753,7 @@ namespace iOMG
             tx_d_codi.Text = "";
             tx_d_prec.Text = "";
             tx_d_total.Text = "";
-            tx_saldo.Text = "";
+            //tx_saldo.Text = "";
             //limpia_combos(tabuser);
             cmb_fam.SelectedIndex = -1;
             cmb_mod.SelectedIndex = -1;
@@ -1771,12 +1797,21 @@ namespace iOMG
         }
         private void tx_d_can_Leave(object sender, EventArgs e)
         {
-            //tx_saldo.Text = tx_d_can.Text;
-            if (tx_d_can.Text != "" || tx_d_prec.Text != "")
+            if (tx_d_can.Text != "" && tx_d_prec.Text != "")
             {
                 tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
+        }
+        private void tx_d_prec_Leave(object sender, EventArgs e)
+        {
+            if (tx_d_can.Text != "" && tx_d_prec.Text != "")
+            {
+                tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
+                calculos();
+            }
+            if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
+
         }
         private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
         {
@@ -1922,13 +1957,23 @@ namespace iOMG
         }
         private void tx_mail_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (lib.email_bien_escrito(tx_mail.Text.Trim()) == false)
+            if (lib.email_bien_escrito(tx_mail.Text.Trim()) == false && tx_mail.Text.Trim() != "")
             {
                 MessageBox.Show("El correo no tiene el formato correcto", "Atención verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_mail.Text = "";
                 return;
             }
         }
+        //
+        private void tx_dscto_Leave(object sender, EventArgs e)
+        {
+            calculos();
+        }
+        private void tx_acta_Leave(object sender, EventArgs e)
+        {
+            calculos();
+        }
+
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
@@ -2028,6 +2073,8 @@ namespace iOMG
             tabControl1.SelectedTab = tabuser;
             //
             pan_cli.Enabled = true;
+            cmb_tdoc.Enabled = true;
+            tx_ndc.Enabled = true;
             tx_nombre.Enabled = false;
             tx_direc.Enabled = false;
             tx_dist.Enabled = false;
@@ -2476,7 +2523,7 @@ namespace iOMG
                 cmb_det3.Tag = de3;
                 cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
                 cmb_det3_SelectionChangeCommitted(null, null);
-                tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
+                //tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
             }
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
