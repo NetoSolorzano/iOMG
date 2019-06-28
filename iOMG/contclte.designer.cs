@@ -564,7 +564,7 @@
             // 
             this.tx_dat_tdoc.Location = new System.Drawing.Point(606, 51);
             this.tx_dat_tdoc.Name = "tx_dat_tdoc";
-            this.tx_dat_tdoc.Size = new System.Drawing.Size(18, 20);
+            this.tx_dat_tdoc.Size = new System.Drawing.Size(64, 20);
             this.tx_dat_tdoc.TabIndex = 322;
             this.tx_dat_tdoc.Visible = false;
             // 
@@ -630,6 +630,7 @@
             this.cmb_tdoc.Name = "cmb_tdoc";
             this.cmb_tdoc.Size = new System.Drawing.Size(48, 21);
             this.cmb_tdoc.TabIndex = 0;
+            this.cmb_tdoc.SelectedIndexChanged += new System.EventHandler(this.cmb_tdoc_SelectedIndexChanged);
             // 
             // label13
             // 

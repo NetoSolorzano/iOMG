@@ -65,6 +65,7 @@ namespace iOMG
         DataTable dtg = new DataTable();
         DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
         DataTable dttaller = new DataTable();   // combo taller de fabric.
+        DataTable dtdest = new DataTable();     // tipos de documentos de clientes
 
         AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
         AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
@@ -623,15 +624,14 @@ namespace iOMG
                 }
                 // seleccion del tipo documento cliente
                 cmb_tdoc.Items.Clear();
-                const string condest = "select descrizionerid,idcodice from desc_doc " +
+                const string condest = "select descrizionerid,idcodice,codigo from desc_doc " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmddest = new MySqlCommand(condest, conn);
-                DataTable dtdest = new DataTable();
                 MySqlDataAdapter dadest = new MySqlDataAdapter(cmddest);
                 dadest.Fill(dtdest);
                 foreach (DataRow row in dtdest.Rows)
                 {
-                    cmb_tdoc.Items.Add(row.ItemArray[0].ToString() + " - " + row.ItemArray[1].ToString());
+                    cmb_tdoc.Items.Add(row.ItemArray[0].ToString());    //  + " - " + row.ItemArray[1].ToString()
                     cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion de familia de art
@@ -1154,21 +1154,12 @@ namespace iOMG
                 if (parte == "") parte = parte + "depart='" + tx_dpto.Text.Trim() + "'";
                 else parte = parte + ",depart='" + tx_dpto.Text.Trim() + "'";
             }
-            if (tx_mail.Text != tx_mail.Tag.ToString())
-            {
-                if (parte == "") parte = parte + "email='" + tx_mail.Text.Trim() + "'";
-                else parte = parte + ",email='" + tx_mail.Text.Trim() + "'";
-            }
-            if (tx_telef1.Text != tx_telef1.Tag.ToString())
-            {
-                if (parte == "") parte = parte + "numerotel1='" + tx_telef1.Text.Trim() + "'";
-                else parte = parte + ",numerotel1='" + tx_telef1.Text.Trim() + "'";
-            }
-            if (tx_telef2.Text != tx_telef2.Tag.ToString())
-            {
-                if (parte == "") parte = parte + "numerotel2='" + tx_telef2.Text.Trim() + "'";
-                else parte = parte + ",numerotel2='" + tx_telef2.Text.Trim() + "'";
-            }
+            if (parte == "") parte = parte + "email='" + tx_mail.Text.Trim() + "'";
+            else parte = parte + ",email='" + tx_mail.Text.Trim() + "'";
+            if (parte == "") parte = parte + "numerotel1='" + tx_telef1.Text.Trim() + "'";
+            else parte = parte + ",numerotel1='" + tx_telef1.Text.Trim() + "'";
+            if (parte == "") parte = parte + "numerotel2='" + tx_telef2.Text.Trim() + "'";
+            else parte = parte + ",numerotel2='" + tx_telef2.Text.Trim() + "'";
             if (tx_dat_dpto.Text.Trim().Length == 2 && tx_dat_provin.Text.Trim().Length == 2 && tx_dat_distri.Text.Trim().Length == 2)
             {
                 if (parte == "") parte = parte + "ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
@@ -1196,15 +1187,17 @@ namespace iOMG
         }
         private void calculos()                             // calculos de total, y saldo
         {
-            if(tx_valor.Text.Trim() == "")  // me quede aca
+            decimal val = 0, dsto = 0, acta = 0, sald = 0;
+            for (int i=0; i < dataGridView1.Rows.Count - 1; i++)
             {
-                tx_valor.Text = tx_d_prec.Text;
-                tx_saldo.Text = tx_d_prec.Text;
+                val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
             }
-            if(tx_valor.Text.Trim() != "")
-            {
-                tx_valor.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_d_prec.Text)).ToString();
-            }
+            if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
+            if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
+            tx_valor.Text = val.ToString("0.00");
+            tx_saldo.Text = (val - dsto - acta).ToString("0.00");
+            //if (tx_valor.Text.Trim() != "") val = decimal.Parse(tx_valor.Text);
+            //if (tx_saldo.Text.Trim() != "") sald = decimal.Parse(tx_saldo.Text);
         }
 
         #region autocompletados
@@ -1764,6 +1757,8 @@ namespace iOMG
             //cmb_tal.SelectedIndex = -1;
             cmb_det2.SelectedIndex = -1;
             cmb_det3.SelectedIndex = -1;
+            //
+            calculos();
         }
         #endregion boton_form;
 
@@ -1808,14 +1803,28 @@ namespace iOMG
             if (tx_d_can.Text != "" && tx_d_prec.Text != "")
             {
                 tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
-                calculos();
             }
             if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
 
         }
         private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
         {
-            // me fui al validating
+            if (tx_ndc.Text != "")                       // digitos por cada tipo de documento
+            {
+                foreach (DataRow row in dtdest.Rows)
+                {
+                    if (row["idcodice"].ToString() == tx_dat_tdoc.Text) //descrizionerid
+                    {
+                        if (row["codigo"].ToString() != tx_ndc.Text.Trim().Length.ToString())
+                        {
+                            MessageBox.Show("La longitud del documento debe ser " + row["codigo"].ToString(), "Atención - debe corregir", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            tx_ndc.Text = "";
+                            tx_ndc.Focus();
+                            return;
+                        }
+                    }
+                }
+            }
         }
         private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -1831,7 +1840,7 @@ namespace iOMG
                         "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
                         "where tipdoc=@tdo and ruc=@ndo";
                     MySqlCommand micon = new MySqlCommand(jala, conn);
-                    micon.Parameters.AddWithValue("@tdo", tx_dat_tdoc.Text);
+                    micon.Parameters.AddWithValue("@tdo", tx_dat_tdoc.Text);    // idcodice del documento
                     micon.Parameters.AddWithValue("@ndo", tx_ndc.Text);
                     MySqlDataReader dr = micon.ExecuteReader();
                     if (dr.HasRows)
@@ -1973,7 +1982,6 @@ namespace iOMG
         {
             calculos();
         }
-
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
@@ -2083,6 +2091,7 @@ namespace iOMG
             tx_mail.Enabled = false;
             tx_telef1.Enabled = false;
             tx_telef2.Enabled = false;
+            tx_valor.ReadOnly = true;
             //
             tx_dat_tiped.Text = tipede;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
@@ -2315,6 +2324,21 @@ namespace iOMG
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
             else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmb_tdoc.SelectedIndex == -1) tx_dat_tdoc.Text = "";
+            else
+            {
+                //tx_dat_tdoc.Text = cmb_tdoc.Text;
+                foreach (DataRow row in dtdest.Rows)
+                {
+                    if (row["descrizionerid"].ToString() == cmb_tdoc.Text)   // tx_dat_tdoc.Text
+                    {
+                        tx_dat_tdoc.Text = row["idcodice"].ToString();
+                    }
+                }
+            }
         }
         private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
         {
