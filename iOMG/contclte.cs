@@ -277,7 +277,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();        // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") tdc = row["valor"].ToString().Trim();             // tipo de documento para contratos
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "local") sdc = row["valor"].ToString().Trim();             // local del contrato, vacio todos los locales
-                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") tdc = row["valor"].ToString().Trim();             // tipo de documento para contratos
+                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();             // tipo de documento para contratos
                     }
                 }
                 da.Dispose();
@@ -990,11 +990,11 @@ namespace iOMG
                     }
                     rlid.Close();
                     // detalle 
-                    for (int i=0; i<dataGridView1.Rows.Count - 1; i++)
+                    for (int i=0; i<dataGridView1.Rows.Count - 1; i++)      // me quede aca
                     {
                         string insdet = "insert into detacon (" +
-                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref) values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald,@cref)";
+                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,estado,saldo,pedido,codref,coment,piedra) values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,  @esta,@det2,@come,@sald,@cref)";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                         micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -1003,6 +1003,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                         micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
                         micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());   // 
+                        // ... continuara
                         micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
                         micon.Parameters.AddWithValue("@tota", dataGridView1.Rows[i].Cells[7].Value.ToString());
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
@@ -1118,7 +1119,6 @@ namespace iOMG
         private void actuacli()                             // actualiza datos del cliente
         {
             string parte = "";
-            string actua = "update anagrafiche set " + parte + " where idanagrafica=@idc";
             if (tx_nombre.Text != tx_nombre.Tag.ToString())
             {
                 parte = parte + "razonsocial='" + tx_nombre.Text.Trim() + "'";
@@ -1165,7 +1165,7 @@ namespace iOMG
                 if (parte == "") parte = parte + "ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
                 else parte = parte + ",ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
             }
-            //
+            string actua = "update anagrafiche set " + parte + " where idanagrafica=@idc";
             if (parte != "")
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1196,8 +1196,8 @@ namespace iOMG
             if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
             tx_valor.Text = val.ToString("0.00");
             tx_saldo.Text = (val - dsto - acta).ToString("0.00");
-            //if (tx_valor.Text.Trim() != "") val = decimal.Parse(tx_valor.Text);
-            //if (tx_saldo.Text.Trim() != "") sald = decimal.Parse(tx_saldo.Text);
+            if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0";
+            if (tx_acta.Text.Trim() == "") tx_acta.Text = "0";
         }
 
         #region autocompletados
@@ -1836,7 +1836,7 @@ namespace iOMG
                 if (conn.State == ConnectionState.Open) 
                 {
                     string jala = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                        "ifnull(depart,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),desc_doc.cnt " +
+                        "ifnull(depart,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),desc_doc.cnt,idanagrafica " +
                         "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
                         "where tipdoc=@tdo and ruc=@ndo";
                     MySqlCommand micon = new MySqlCommand(jala, conn);
@@ -1855,6 +1855,7 @@ namespace iOMG
                             tx_mail.Text = dr.GetString(8).Trim();
                             tx_telef1.Text = dr.GetString(6).Trim();
                             tx_telef2.Text = dr.GetString(7).Trim();
+                            tx_idcli.Text = dr.GetString(10).Trim();
                         }
                         dr.Close();
                     }
