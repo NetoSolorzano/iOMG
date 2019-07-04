@@ -420,7 +420,7 @@ namespace iOMG
         }
         private void jaladet(string pedido)     // jala el detalle del contrato
         {
-            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,space(1) as na " +
+            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,space(1) as na " +
                 "FROM detacon WHERE contratoh = @cont";
             try
             {
@@ -451,13 +451,13 @@ namespace iOMG
             }
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
-        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
+        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,space(1) as na
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 13;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -538,8 +538,14 @@ namespace iOMG
             dataGridView1.Columns[11].Width = 160;                 // ancho
             dataGridView1.Columns[11].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[11].Name = "coment";
+            // piedra 
+            dataGridView1.Columns[12].Visible = true;
+            dataGridView1.Columns[12].HeaderText = "Piedra";      // titulo de la columna
+            dataGridView1.Columns[12].Width = 60;                 // ancho
+            dataGridView1.Columns[12].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[12].Name = "Piedra";
             // na (nuevo o actualiza)
-            dataGridView1.Columns[12].Visible = false;
+            dataGridView1.Columns[13].Visible = false;
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -826,18 +832,6 @@ namespace iOMG
                         conn.Open();
                         if (conn.State == ConnectionState.Open)
                         {
-                            /*
-                            string codbs = "";
-                            if (canovald2.Contains(fam))
-                            {   // fam = A,C,D,E,F => det2 = conovald2 = R00
-                                codbs = fam + mod + "X" + tip + de1 + aca + "XX" + conovald2 + de3 + "N000";
-                            } 
-                            else
-                            {
-                                codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
-                            }
-                            */
-                            //string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
                             string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3 " +
                                 "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1"; // and deta3=@dt3
                             MySqlCommand micon = new MySqlCommand(busca, conn);
@@ -880,7 +874,7 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
+                                        if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         gol = "1";
                                         break;
                                     }
@@ -889,7 +883,7 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
+                                        if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         gol = "1";
                                         break;
                                     }
@@ -898,7 +892,7 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
+                                        if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         gol = "1";
                                         break;
                                     }
@@ -928,7 +922,6 @@ namespace iOMG
         private bool graba()                                // graba cabecera y detalle
         {
             bool retorna = false;
-            string ncp = "";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
@@ -1009,6 +1002,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[12].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1064,8 +1058,8 @@ namespace iOMG
                         if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
                         {
                             insdet = "insert into detacon (" +
-                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,coment) values (" +
-                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@come" + ")";
+                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,coment,piedra) values (" +
+                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@come,@pied)";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                             micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -1080,12 +1074,13 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                             //micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
+                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[12].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                         if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "A")
                         {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,space(1) as na
                             insdet = "update detacon set tipo=@tipe,item=@item,cant=@cant," +
-                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald,coment=@come " +
+                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald,coment=@come,piedra=@pied " +
                                 "where iddetacon=@idr";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -1101,6 +1096,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                             //micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
+                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[12].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -1521,7 +1517,7 @@ namespace iOMG
                     }
                     // vista previa
                     pageCount = 1;
-                    printDocument1.DefaultPageSettings.Landscape = true;
+                    //printDocument1.DefaultPageSettings.Landscape = true;
                     printPreviewDialog1.Document = printDocument1;
                     printPreviewDialog1.ShowDialog();
                 }
@@ -1678,14 +1674,15 @@ namespace iOMG
                     obj.Cells[9].Value = "";
                     obj.Cells[10].Value = "";
                     obj.Cells[11].Value = tx_d_com.Text;
-                    obj.Cells[12].Value = "N";
+                    obj.Cells[12].Value = tx_d_det2.Text;
+                    obj.Cells[13].Value = "N";
                 }
                 else
                 {
                     if (dataGridView1.Rows.Count < 100)
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, "N");
+                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, "N");
                     }
                     else
                     {
@@ -1718,7 +1715,8 @@ namespace iOMG
                     obj.Cells[9].Value = "";
                     obj.Cells[10].Value = "";
                     obj.Cells[11].Value = tx_d_com.Text;
-                    obj.Cells[12].Value = "A";  // registro actualizado
+                    obj.Cells[12].Value = tx_d_det2.Text;
+                    obj.Cells[13].Value = "A";  // registro actualizado
                 }
                 else
                 {
@@ -1736,6 +1734,7 @@ namespace iOMG
                     tr["pedido"] = "";
                     tr["codref"] = "";
                     tr["coment"] = tx_d_com.Text;
+                    tr["piedra"] = tx_d_det2.Text;
                     tr["na"] = "N";
                     dtg.Rows.Add(tr);
                 }
@@ -2188,8 +2187,7 @@ namespace iOMG
             printDlg.AllowSelection = true;
             //
             pageCount = 1;
-            printDocument1.DefaultPageSettings.Landscape = true;
-            //
+            //printDocument1.DefaultPageSettings.Landscape = true;
             if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
         }
         private void bt_prev_Click(object sender, EventArgs e)
@@ -2198,7 +2196,7 @@ namespace iOMG
             {
                 Tx_modo.Text = "IMPRIMIR";
                 pageCount = 1;
-                printDocument1.DefaultPageSettings.Landscape = true;
+                //printDocument1.DefaultPageSettings.Landscape = true;
                 printPreviewDialog1.Document = printDocument1;
                 printPreviewDialog1.ShowDialog();
             }
@@ -2519,7 +2517,7 @@ namespace iOMG
                 tx_d_total.Text = dataGridView1.Rows[e.RowIndex].Cells["total"].Value.ToString();
                 tx_d_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();
                 tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
-
+                tx_d_det2.Text = dataGridView1.Rows[e.RowIndex].Cells["piedra"].Value.ToString();
                 string fam = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0, 1);
                 string mod = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(1, 3);
                 string mad = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(4, 1);
@@ -2575,11 +2573,12 @@ namespace iOMG
                     conn.Open();
                     if (conn.State == ConnectionState.Open)
                     {
-                        string borra = "delete from detaped where iddetaped=@idp";
+                        string borra = "delete from detacon where iddetacon=@idp";
                         MySqlCommand mion = new MySqlCommand(borra, conn);
                         mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString());
                         mion.ExecuteNonQuery();
-                        // estado del pedido
+                        // estado del contrato
+                        /*
                         string pedido = "";
                         string compa = "select ifnull(sum(cant),0), ifnull(sum(saldo),0) from detaped where pedidoh=@ped";
                         mion = new MySqlCommand(compa, conn);
@@ -2598,6 +2597,7 @@ namespace iOMG
                         mion.Parameters.AddWithValue("@est", pedido);
                         mion.ExecuteNonQuery();
                         conn.Close();
+
                         // actualizar el estado en el form y en la grilla
                         tx_dat_estad.Text = pedido;
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
@@ -2615,6 +2615,7 @@ namespace iOMG
                                 dtg.Rows[i][7] = tx_coment.Text;
                             }
                         }
+                        */
                     }
                     else
                     {
@@ -2681,9 +2682,9 @@ namespace iOMG
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //
-            float pix = 50.0F;      // punto inicial X
-            float piy = 30.0F;      // punto inicial Y
+            // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++  //   LA IDEA ES USAR CRYSTAL REPORTS PARA 
+            float pix = 50.0F;      // punto inicial X                                      //   MEJORAR LA CALIDAD DEL REPORTE
+            float piy = 30.0F;      // punto inicial Y                                      //   me quede instalando y config. crystal
             float alfi = 13.0F;     // alto de cada fila
             float alin = 45.0F;     // alto inicial
             float posi = 80.0F;     // posición de impresión
@@ -2693,19 +2694,19 @@ namespace iOMG
         }
         private void imprime(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            // columnas del reporte
-            float col0 = coli;              // It
-            float col1 = coli + 40.0F;      // Cant
-            float col2 = coli + 90.0F;      // Codigo
-            float col3 = coli + 260.0F;     // Nombre del articulo
-            float col4 = coli + 515.0F;     // Comentario
-            float col5 = coli + 800.0F;     // Detalle2
-            float col6 = coli + 850.0F;     // Madera
-            float col7 = coli + 900.0F;     // Medidas
-            float col8 = coli + 1000.0F;    // Acabado
+            // columnas del detalle 
+            float col0 = coli;              // can
+            float col1 = coli + 40.0F;      // descripcion
+            float col2 = coli + 190.0F;     // madera
+            float col3 = coli + 250.0F;     // piedra
+            float col4 = coli + 360.0F;     // medidas
+            float col5 = coli + 450.0F;     // precio
+            float col6 = coli + 510.0F;     // total
+            //float col7 = coli + 900.0F;     // 
+            //float col8 = coli + 1000.0F;    // Acabado
             //
             float posit = impcab2(piy, coli, alin, posi, alfi, e,
-                col0, col1, col2, col3, col4, col5, col6, col7, col8);
+                col0, col1, col2, col3, col4, col5, col6);  //, col7, col8
             posi = posit;
             SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
             Font lt_tit = new Font("Arial", 8);
@@ -2717,20 +2718,16 @@ namespace iOMG
             // leemos las columnas del data table
             for (int fila = cuenta; fila < dataGridView1.Rows.Count - 1; fila++)
             {
-                // a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado
-                string data0 = (fila + 1).ToString("###");    // IT
-                string data1 = dataGridView1.Rows[fila].Cells[1].Value.ToString();    // cant
-                string data2 = dataGridView1.Rows[fila].Cells[2].Value.ToString();    // item
-                string data3 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
-                string data4 = dataGridView1.Rows[fila].Cells[8].Value.ToString();    // coment
-                string data5 = "";
-                if (dataGridView1.Rows[fila].Cells[6].Value.ToString().Substring(0, 1) == "R")  // hardcodeado que feo!
-                {
-                    data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString().PadRight(6).Substring(0, 6);    // detalle 2
-                }
-                string data6 = dataGridView1.Rows[fila].Cells[5].Value.ToString();    // madera
-                string data7 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
-                string data8 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // acabado
+                // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,'na'
+                string data0 = dataGridView1.Rows[fila].Cells[2].Value.ToString();    // can
+                string data1 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
+                string data2 = dataGridView1.Rows[fila].Cells[5].Value.ToString();    // madera
+                string data3 = dataGridView1.Rows[fila].Cells[12].Value.ToString();     // piedra
+                string data4 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
+                string data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString();    // precio
+                string data6 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // total
+                //string data7 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
+                //string data8 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // acabado
                 //
                 ptoimp = new PointF(col0, posi);
                 e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
@@ -2748,10 +2745,10 @@ namespace iOMG
                 e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col6, posi);
                 e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col7, posi);
-                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col8, posi);
-                e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                //ptoimp = new PointF(col7, posi);
+                //e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                //ptoimp = new PointF(col8, posi);
+                //e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 //
                 posi = posi + alfi + 5;             // avance de fila
                 e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
@@ -2770,6 +2767,12 @@ namespace iOMG
             }
             posi = posi + alfi * 2;             // avance de fila
             ptoimp = new PointF(col2, posi);
+            // aca va la parte de totales 
+
+            // aca la parte del detalle de pagos
+
+            posi = posi + alfi;             // avance de fila
+            ptoimp = new PointF(col2, posi);
             e.Graphics.DrawString("OBSERVACIONES", lt_tit, Brushes.Black, ptoimp);
             posi = posi + alfi;             // avance de fila
             ptoimp = new PointF(col2, posi);
@@ -2777,7 +2780,7 @@ namespace iOMG
             cuenta = 0;
         }
         private float impcab2(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
-            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8)
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6) // , float col7, float col8
         {
             float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
             float colm = coli + 280.0F;                                 // columna media
@@ -2843,23 +2846,23 @@ namespace iOMG
             //posi = posi + alfi;                                         // avance de fila
             // titulo de las columnas
             PointF ptoimp = new PointF(col0, posi);
-            e.Graphics.DrawString("It", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("CAN", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col1, posi);
-            e.Graphics.DrawString("Cant", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("DESCRIPCION", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString("Código", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("MADERA", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col3, posi);
-            e.Graphics.DrawString("Nombre", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("PIEDRA", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col4, posi);
-            e.Graphics.DrawString("Comentario", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("MEDIDAS", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col5, posi);
-            e.Graphics.DrawString("Deta2", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("PRECIO", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col6, posi);
-            e.Graphics.DrawString("Mad.", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col7, posi);
-            e.Graphics.DrawString("Medidas", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col8, posi);
-            e.Graphics.DrawString("Acabado", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("TOTAL", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            //ptoimp = new PointF(col7, posi);
+            //e.Graphics.DrawString("Medidas", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            //ptoimp = new PointF(col8, posi);
+            //e.Graphics.DrawString("Acabado", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             posi = posi + alfi + 7.0F;             // avance de fila
             e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
             posi = posi + 2;             // avance de fila

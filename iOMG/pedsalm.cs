@@ -46,6 +46,8 @@ namespace iOMG
         string estcer = "";             // estado de pedido cerrado tal como esta, ya no se atiende
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
+        string estman = "";             // estados que se pueden seleccionar manualmente
+        int indant = -1;                // indice anterior al cambio en el combobox de estado
         //string cn_adm = "";     // codigo nivel usuario admin
         //string cn_sup = "";     // codigo nivel usuario superusuario
         //string cn_est = "";     // codigo nivel usuario estandar
@@ -233,6 +235,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "enviado") estenv = row["valor"].ToString().Trim();         // estado del pedido enviado a producción
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "manual") estman = row["valor"].ToString().Trim();         // estados que se pueden seleccionar manualmente
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();         // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
@@ -1246,10 +1249,18 @@ namespace iOMG
                         return;
                     }
                     // vista previa
+                    //pageCount = 1;
+                    //printDocument1.DefaultPageSettings.Landscape = true;
+                    //printPreviewDialog1.Document = printDocument1;
+                    //printPreviewDialog1.ShowDialog();
+                    // impresion sin vista previa, solicitud de gloria 03/07/2019
+                    PrintDialog printDlg = new PrintDialog();
+                    printDlg.Document = printDocument1;
+                    printDlg.AllowSomePages = true;
+                    printDlg.AllowSelection = true;
                     pageCount = 1;
                     printDocument1.DefaultPageSettings.Landscape = true;
-                    printPreviewDialog1.Document = printDocument1;
-                    printPreviewDialog1.ShowDialog();
+                    if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
                 }
                 else
                 {
@@ -1623,6 +1634,7 @@ namespace iOMG
             tx_dat_tiped.Text = tipede;
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
             tx_dat_estad.Text = tiesta;
+            cmb_estado.Enabled = false;
             tx_codped.ReadOnly = true;
             dtp_fingreso.Checked = false;
             cmb_taller.Focus();
@@ -1654,6 +1666,7 @@ namespace iOMG
             tx_dat_tiped.Text = tipede;
             dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
+            cmb_estado.Enabled = true;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1829,10 +1842,26 @@ namespace iOMG
         #endregion botones_de_comando_y_permisos  ;
 
         #region comboboxes
+        private void cmb_estado_Click(object sender, EventArgs e)
+        {
+            indant = cmb_estado.SelectedIndex;
+            //MessageBox.Show(indant.ToString());
+        }
         private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
-            else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            // en edicion solo debe permitir CERRAR, ANULAR o (GRABADO PARA PODER EDITAR EL DETALLE)
+            if (!estman.Contains(tx_dat_estad.Text))
+            {
+                MessageBox.Show("No puede realizar este cambio de estado", "Atención - corrija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tx_dat_estad.Text = "";
+                cmb_estado.SelectedIndex = indant;
+                cmb_estado.Focus();
+            }
+            else
+            {
+                if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
+                else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            }
         }
         private void cmb_destino_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -2205,6 +2234,7 @@ namespace iOMG
             bt_prev.Enabled = true;
             bt_exc.Enabled = false;
         }
+
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //

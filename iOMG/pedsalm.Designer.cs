@@ -283,15 +283,15 @@
             this.panel1.Controls.Add(this.tx_d_can);
             this.panel1.Controls.Add(this.tx_d_id);
             this.panel1.Controls.Add(this.tx_d_it);
-            this.panel1.Location = new System.Drawing.Point(3, 101);
+            this.panel1.Location = new System.Drawing.Point(3, 95);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(963, 68);
+            this.panel1.Size = new System.Drawing.Size(963, 87);
             this.panel1.TabIndex = 298;
             // 
             // dtp_fingreso
             // 
             this.dtp_fingreso.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fingreso.Location = new System.Drawing.Point(379, 45);
+            this.dtp_fingreso.Location = new System.Drawing.Point(379, 63);
             this.dtp_fingreso.Name = "dtp_fingreso";
             this.dtp_fingreso.ShowCheckBox = true;
             this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
@@ -299,7 +299,7 @@
             // 
             // tx_saldo
             // 
-            this.tx_saldo.Location = new System.Drawing.Point(644, 45);
+            this.tx_saldo.Location = new System.Drawing.Point(644, 63);
             this.tx_saldo.Name = "tx_saldo";
             this.tx_saldo.Size = new System.Drawing.Size(37, 20);
             this.tx_saldo.TabIndex = 21;
@@ -309,7 +309,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(559, 49);
+            this.label9.Location = new System.Drawing.Point(559, 67);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(83, 13);
             this.label9.TabIndex = 303;
@@ -318,7 +318,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(281, 49);
+            this.label8.Location = new System.Drawing.Point(281, 67);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(90, 13);
             this.label8.TabIndex = 301;
@@ -444,7 +444,7 @@
             // 
             // tx_d_com
             // 
-            this.tx_d_com.Location = new System.Drawing.Point(272, 24);
+            this.tx_d_com.Location = new System.Drawing.Point(272, 41);
             this.tx_d_com.Name = "tx_d_com";
             this.tx_d_com.Size = new System.Drawing.Size(570, 20);
             this.tx_d_com.TabIndex = 19;
@@ -500,7 +500,7 @@
             // 
             // tx_d_codi
             // 
-            this.tx_d_codi.Location = new System.Drawing.Point(102, 24);
+            this.tx_d_codi.Location = new System.Drawing.Point(102, 41);
             this.tx_d_codi.Name = "tx_d_codi";
             this.tx_d_codi.ReadOnly = true;
             this.tx_d_codi.Size = new System.Drawing.Size(170, 20);
@@ -510,7 +510,7 @@
             // 
             // tx_d_can
             // 
-            this.tx_d_can.Location = new System.Drawing.Point(65, 24);
+            this.tx_d_can.Location = new System.Drawing.Point(65, 41);
             this.tx_d_can.Name = "tx_d_can";
             this.tx_d_can.Size = new System.Drawing.Size(37, 20);
             this.tx_d_can.TabIndex = 17;
@@ -520,7 +520,7 @@
             // 
             // tx_d_id
             // 
-            this.tx_d_id.Location = new System.Drawing.Point(28, 24);
+            this.tx_d_id.Location = new System.Drawing.Point(28, 41);
             this.tx_d_id.Name = "tx_d_id";
             this.tx_d_id.ReadOnly = true;
             this.tx_d_id.Size = new System.Drawing.Size(37, 20);
@@ -530,7 +530,7 @@
             // 
             // tx_d_it
             // 
-            this.tx_d_it.Location = new System.Drawing.Point(3, 24);
+            this.tx_d_it.Location = new System.Drawing.Point(3, 41);
             this.tx_d_it.Name = "tx_d_it";
             this.tx_d_it.ReadOnly = true;
             this.tx_d_it.Size = new System.Drawing.Size(25, 20);
@@ -645,9 +645,9 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 171);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 185);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(963, 266);
+            this.dataGridView1.Size = new System.Drawing.Size(963, 251);
             this.dataGridView1.TabIndex = 273;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
@@ -819,13 +819,13 @@
             this.tx_coment.Location = new System.Drawing.Point(236, 60);
             this.tx_coment.Multiline = true;
             this.tx_coment.Name = "tx_coment";
-            this.tx_coment.Size = new System.Drawing.Size(443, 36);
+            this.tx_coment.Size = new System.Drawing.Size(443, 30);
             this.tx_coment.TabIndex = 270;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(168, 70);
+            this.label1.Location = new System.Drawing.Point(168, 67);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 276;
@@ -842,6 +842,7 @@
             this.cmb_estado.Size = new System.Drawing.Size(85, 21);
             this.cmb_estado.TabIndex = 265;
             this.cmb_estado.SelectionChangeCommitted += new System.EventHandler(this.cmb_estado_SelectionChangeCommitted);
+            this.cmb_estado.Click += new System.EventHandler(this.cmb_estado_Click);
             // 
             // cmb_destino
             // 
