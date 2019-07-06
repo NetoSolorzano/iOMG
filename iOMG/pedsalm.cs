@@ -342,7 +342,7 @@ namespace iOMG
             }
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
-        {
+        {   
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
@@ -403,7 +403,7 @@ namespace iOMG
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[7].Name = "descrizionerid";
-            // comentario
+            // comentario   
             dataGridView1.Columns[8].Visible = true;            // columna visible o no
             dataGridView1.Columns[8].HeaderText = "Comentario"; // titulo de la columna
             dataGridView1.Columns[8].Width = 150;                // ancho
@@ -722,17 +722,6 @@ namespace iOMG
                         conn.Open();
                         if (conn.State == ConnectionState.Open)
                         {
-                            /*
-                            string codbs = "";
-                            if (canovald2.Contains(fam))
-                            {   // fam = A,C,D,E,F => det2 = conovald2 = R00
-                                codbs = fam + mod + "X" + tip + de1 + aca + "XX" + conovald2 + de3 + "N000";
-                            } 
-                            else
-                            {
-                                codbs = fam + mod + "X" + tip + de1 + aca + "XX" + de2 + de3 + "N000";
-                            }
-                            */
                             //string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
                             string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3 " +
                                 "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1"; // and deta3=@dt3
@@ -749,7 +738,7 @@ namespace iOMG
                             da.Fill(dtm);
                             if (dtm.Rows.Count == 0)
                             {
-                                MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show("No existe en la base de datos!0", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                 return;
                             }
                             string gol = "";
@@ -778,6 +767,14 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
+                                    if ((fila["mader"].ToString() == "X" || fila["mader"].ToString() == mad) && fila["acaba"].ToString() == aca &&
+                                    fila["deta2"].ToString().Substring(0,1) == "R" && fila["deta3"].ToString() == de3)
+                                    {
+                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        gol = "1";
+                                        break;
+                                    }
                                     if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
                                     fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
                                     {
@@ -794,11 +791,12 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
+
                                 }
                             }
                             if(gol == "")
                             {
-                                MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show("No existe en la base de datos!1", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                 return;
                             }
                         }
@@ -2252,19 +2250,19 @@ namespace iOMG
             // columnas del reporte
             float col0 = coli;              // It
             float col1 = coli + 40.0F;      // Cant
-            float col2 = coli + 90.0F;      // Codigo
-            float col3 = coli + 260.0F;     // Nombre del articulo
-            float col4 = coli + 515.0F;     // Comentario
-            float col5 = coli + 800.0F;     // Detalle2
-            float col6 = coli + 850.0F;     // Madera
-            float col7 = coli + 900.0F;     // Medidas
-            float col8 = coli + 1000.0F;    // Acabado
+            float col2 = coli + 70.0F;      // Codigo
+            float col3 = coli + 230.0F;     // Nombre del articulo
+            float col4 = coli + 500.0F;     // Comentario
+            float col5 = coli + 780.0F;     // Detalle2
+            float col6 = coli + 860.0F;     // Madera
+            float col7 = coli + 910.0F;     // Medidas
+            float col8 = coli + 1010.0F;    // Acabado
             //
             float posit = impcab2(piy, coli, alin, posi, alfi, e,
                 col0, col1, col2, col3, col4, col5, col6, col7, col8);
             posi = posit;
             SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
-            Font lt_tit = new Font("Arial", 8);
+            Font lt_tit = new Font("Arial", 7);
             PointF ptoimp;
             Pen blackPen = new Pen(Color.Black, 2);
             StringFormat sf = new StringFormat();
@@ -2273,16 +2271,16 @@ namespace iOMG
             // leemos las columnas del data table
             for (int fila = cuenta; fila < dataGridView1.Rows.Count - 1; fila++)
             {
-                // a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,a.piedra,b.descrizionerid,a.coment,a.estado
+                //id,cant,articulo,nombre,medidas,madera,deta2,acab,coment,cod.acab,cod.made,cod.det2,feching,saldo
                 string data0 = (fila + 1).ToString("###");    // IT
                 string data1 = dataGridView1.Rows[fila].Cells[1].Value.ToString();    // cant
                 string data2 = dataGridView1.Rows[fila].Cells[2].Value.ToString();    // item
                 string data3 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
                 string data4 = dataGridView1.Rows[fila].Cells[8].Value.ToString();    // coment
                 string data5 = "";
-                if (dataGridView1.Rows[fila].Cells[6].Value.ToString().Substring(0, 1) == "R")  // hardcodeado que feo!
+                if (dataGridView1.Rows[fila].Cells[11].Value.ToString().Substring(0, 1) == "R")  // hardcodeado que feo!
                 {
-                    data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString().PadRight(6).Substring(0, 6);    // detalle 2
+                    data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString(); //.PadRight(6).Substring(0, 6); // detalle 2
                 }
                 string data6 = dataGridView1.Rows[fila].Cells[5].Value.ToString();    // madera
                 string data7 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
@@ -2341,7 +2339,7 @@ namespace iOMG
             Font lt_cliente = new Font("Arial", 15, FontStyle.Bold);
             Font lt_pag = new Font("Arial", 9);
             Font lt_fec = new Font("Arial", 9);
-            Font lt_tit = new Font("Arial", 11);                        // tipo de letra del titulo
+            Font lt_tit = new Font("Arial", 9);                        // tipo de letra del titulo
             Pen grueso = new Pen(Color.Black, 2);                       // linea gruesa
             Pen delgado = new Pen(Color.Black, 1);                      // linea delgada
             StringFormat sf = new StringFormat();                       // formato centrado
