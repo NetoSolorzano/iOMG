@@ -33,6 +33,7 @@ namespace iOMG
         string img_grab = "";
         string img_anul = "";
         string img_imprime = "", img_preview = "";        // imagen del boton preview e imprimir reporte
+        string letpied = "";            // letra indentificadora de piedra en detalle 2
         int pageCount = 0, cuenta = 0;
         string cliente = Program.cliente;    // razon social para los reportes
         libreria lib = new libreria();
@@ -131,6 +132,7 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
+                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
                     }
                 }
                 da.Dispose();
@@ -1030,7 +1032,8 @@ namespace iOMG
                 string data4 = dgv_pedidos.Rows[fila].Cells[6].Value.ToString();    // Articulo
                 string data5 = dgv_pedidos.Rows[fila].Cells[7].Value.ToString();    // Nombre
                 string data6 = dgv_pedidos.Rows[fila].Cells[8].Value.ToString();    // Madera
-                string data7 = dgv_pedidos.Rows[fila].Cells[9].Value.ToString();    // Detalle 2
+                string data7 = "";
+                if (data4.Substring(12,1) == letpied) data7 = dgv_pedidos.Rows[fila].Cells[9].Value.ToString();    // Detalle 2
                 string data8 = dgv_pedidos.Rows[fila].Cells[13].Value.ToString();    // acabado
                 string data9 = dgv_pedidos.Rows[fila].Cells[10].Value.ToString();    // medidas
                 string data10 = dgv_pedidos.Rows[fila].Cells[11].Value.ToString();   // cant

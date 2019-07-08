@@ -46,6 +46,7 @@ namespace iOMG
         string estcer = "";             // estado de pedido cerrado tal como esta, ya no se atiende
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
+        string letpied = "";            // letra identificadora de piedra en detalle2
         string estman = "";             // estados que se pueden seleccionar manualmente
         int indant = -1;                // indice anterior al cambio en el combobox de estado
         //string cn_adm = "";     // codigo nivel usuario admin
@@ -240,6 +241,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();         // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
                         if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
+                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
                     }
                 }
                 da.Dispose();
@@ -768,7 +770,7 @@ namespace iOMG
                                         break;
                                     }
                                     if ((fila["mader"].ToString() == "X" || fila["mader"].ToString() == mad) && fila["acaba"].ToString() == aca &&
-                                    fila["deta2"].ToString().Substring(0,1) == "R" && fila["deta3"].ToString() == de3)
+                                    fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
@@ -2278,7 +2280,7 @@ namespace iOMG
                 string data3 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
                 string data4 = dataGridView1.Rows[fila].Cells[8].Value.ToString();    // coment
                 string data5 = "";
-                if (dataGridView1.Rows[fila].Cells[11].Value.ToString().Substring(0, 1) == "R")  // hardcodeado que feo!
+                if (dataGridView1.Rows[fila].Cells[11].Value.ToString().Substring(0, 1) == letpied)
                 {
                     data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString(); //.PadRight(6).Substring(0, 6); // detalle 2
                 }
