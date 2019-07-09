@@ -80,6 +80,33 @@ namespace iOMG
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.O) Bt_ver.PerformClick();
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.S) Bt_close.PerformClick();
         }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)    // F1
+        {
+            string para1 = "";
+            string para2 = "";
+            string para3 = "";
+            string para4 = "";
+            if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            {
+                if(cmb_fam.Focused == true)
+                {
+                    para1 = "items";
+                    para2 = "todos";
+                    ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
+                    var result = ayu2.ShowDialog();
+                    if (result == DialogResult.Cancel)  // me quede aca
+                    {
+                        //tx_placa.Text = ayu1.ReturnValue1;
+                        //tx_idr.Text = ayu1.ReturnValue0;
+                        //tx_codigo_Leave(null, null);
+                        MessageBox.Show(ayu2.ReturnValue0, "REgrese!");
+                    }
+                }
+                return true;    // indicate that you handled this keystroke
+            }
+            // Call the base class
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
         private void repspedidos_Load(object sender, EventArgs e)
         {
             init();

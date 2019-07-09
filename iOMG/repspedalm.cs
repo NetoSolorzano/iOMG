@@ -216,7 +216,7 @@ namespace iOMG
             dgv_pedidos.RowTemplate.Height = 15;
             dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_pedidos.AllowUserToAddRows = false;
-            if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 20;
+            if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 21;
             //dgv_ped.DataSource = dtg;
             // Fecha pedido
             dgv_pedidos.Columns[0].Visible = true;
@@ -327,6 +327,12 @@ namespace iOMG
             dgv_pedidos.Columns[19].Width = 80;
             dgv_pedidos.Columns[19].ReadOnly = true;
             dgv_pedidos.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            // comentario del pedido
+            dgv_pedidos.Columns[20].Visible = false;
+            dgv_pedidos.Columns[20].HeaderText = "Comentario";
+            dgv_pedidos.Columns[20].Width = 200;
+            dgv_pedidos.Columns[20].ReadOnly = true;
+            dgv_pedidos.Columns[20].Tag = "validaNO";          // las celdas de esta columna SI se validan
         }
         private void grilla_ing()                                   // arma la grilla ingresos
         {
@@ -534,16 +540,31 @@ namespace iOMG
             {
                 parte2 = " and a.status=@sta";
             }
-            string consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-                "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
-                "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso " +
-                "from pedidos a left join detaped d on d.pedidoh=a.codped " +
-                "left join desc_stp b on b.idcodice=a.status " +
-                "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
-                "left join desc_est e on e.idcodice=d.estado " +
-                "left join desc_mad f on f.idcodice=d.madera " +
-                "left join desc_dt2 g on g.idcodice=d.piedra " +
-                parte + parte0 + parte1 + parte2 + " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
+            string consulta = "";
+            if (chk_resu.Checked == true)
+            {
+                consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
+                    "space(1) as item,space(1) as nombre,space(1) as madera, '' as piedra,'' as medidas,sum(d.cant) as cant,sum(d.saldo) as saldo," +
+                    "space(1) as acabado,a.status,trim(a.origen),'' as estado,'' as cmadera,'' as cpiedra,d.fingreso,a.coment " +
+                    "from pedidos a left join detaped d on d.pedidoh=a.codped " +
+                    "left join desc_stp b on b.idcodice=a.status " +
+                    "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
+                    "left join desc_est e on e.idcodice=d.estado " +
+                    parte + parte0 + parte1 + parte2 + " group by a.codped order by a.fecha,a.origen,a.codped";
+            }
+            else
+            {
+                consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
+                    "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
+                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso,'' as coment " +
+                    "from pedidos a left join detaped d on d.pedidoh=a.codped " +
+                    "left join desc_stp b on b.idcodice=a.status " +
+                    "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
+                    "left join desc_est e on e.idcodice=d.estado " +
+                    "left join desc_mad f on f.idcodice=d.madera " +
+                    "left join desc_dt2 g on g.idcodice=d.piedra " +
+                    parte + parte0 + parte1 + parte2 + " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
+            }
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -939,16 +960,12 @@ namespace iOMG
         private void bt_imprime_Click(object sender, EventArgs e)   // imprime el reporte
         {
             PrintDialog printDlg = new PrintDialog();
-            //PrintDocument printDoc = new PrintDocument();
-            //printDoc.DocumentName = "reportes_pedidos";
-
-            printDlg.Document = printDocument1; //printDoc;
+            printDlg.Document = printDocument1;
             printDlg.AllowSomePages = true;
             printDlg.AllowSelection = true;
             //
             pageCount = 1;
             printDocument1.DefaultPageSettings.Landscape = true;
-            //
             if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
         }
         private void bt_preview_Click(object sender, EventArgs e)
@@ -970,7 +987,15 @@ namespace iOMG
                 float posi = 160.0F;     // posición de impresión
                 float coli = 30.0F;     // columna mas a la izquierda
                 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-                imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
+                if(chk_resu.Checked == false)
+                {
+                    imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
+                }
+                else
+                {
+                    impresum(pix, piy, cliente, coli, alin, posi, alfi, e);
+                }
+
             }
             if(tabControl1.SelectedTab == tabIng)
             {
@@ -984,6 +1009,120 @@ namespace iOMG
                 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
                 impri_ing(pix, piy, cliente, coli, alin, posi, alfi, e);
             }
+        }
+        private void impresum(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            // columnas del reporte
+            float col0 = coli;              // Fecha
+            float col1 = coli + 70.0F;      // Llegada
+            float col2 = coli + 150.0F;     // Pedido
+            float col3 = coli + 210.0F;     // Estado
+            float col4 = coli + 300.0F;     // taller
+            float col5 = coli + 400.0F;     // destino - almacen
+            float col6 = coli + 500.0F;     // cant
+            float col7 = coli + 550.0F;     // saldo
+            float col8 = coli + 600.0F;     // ult fecha ingreso
+            float col9 = coli + 680.0F;     // comentario
+            //
+            //float col6 = coli + 700.0F;     // Madera
+            //float col7 = coli + 760.0F;     // Detalle2
+            //float co12 = coli + 1060.0F;    // fecha ingreso
+            //
+            float posit = impcabres(piy, coli, alin, posi, alfi, e,
+                col0, col1, col2, col3, col4, col5, col6, col7, col8, col9);    // , col6, col7, co10, co11, co12
+            posi = posit;
+            SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
+            Font lt_tit = new Font("Arial", 7);
+            Font lt_quie = new Font("Arial", 8, FontStyle.Bold);
+            PointF ptoimp;
+            Pen blackPen = new Pen(Color.Black, 1);
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.FormatFlags = StringFormatFlags.NoWrap;
+            // leemos las columnas del data table
+            //string quiebre = "";
+            for (int fila = cuenta; fila < dgv_pedidos.Rows.Count; fila++)
+            {
+                /*
+                if (dgv_pedidos.Rows[fila].Cells[15].Value.ToString() != quiebre)
+                {
+                    quiebre = dgv_pedidos.Rows[fila].Cells[15].Value.ToString();
+                    ptoimp = new PointF(col0, posi);
+                    e.Graphics.DrawString(quiebre + " - " + dgv_pedidos.Rows[fila].Cells[3].Value.ToString(), lt_quie, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                    posi = posi + alfi + 5;             // avance de fila
+                }
+                */
+                string data0 = (fila + 1).ToString("###");
+                string dataI = dgv_pedidos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);    // Fecha
+                string data1 = dgv_pedidos.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);    // Llegada
+                string data2 = dgv_pedidos.Rows[fila].Cells[1].Value.ToString();    // Pedido
+                string data3 = dgv_pedidos.Rows[fila].Cells[2].Value.ToString();    // Estado
+                string data4 = dgv_pedidos.Rows[fila].Cells[3].Value.ToString();    // taller
+                string data5 = dgv_pedidos.Rows[fila].Cells[4].Value.ToString();    // destino
+                string data6 = dgv_pedidos.Rows[fila].Cells[11].Value.ToString();   // cant
+                string data7 = dgv_pedidos.Rows[fila].Cells[12].Value.ToString();    // saldo
+                string data8 = dgv_pedidos.Rows[fila].Cells[19].Value.ToString().PadRight(10).Substring(0, 10);    // ult fecha ingresa
+                string data9 = dgv_pedidos.Rows[fila].Cells[20].Value.ToString();    // comentarios
+
+                /*
+                string data6 = dgv_pedidos.Rows[fila].Cells[8].Value.ToString();    // Madera
+                string data7 = "";
+                if (data4.Substring(12, 1) == letpied) data7 = dgv_pedidos.Rows[fila].Cells[9].Value.ToString();    // Detalle 2
+                string data12 = dgv_pedidos.Rows[fila].Cells[19].Value.ToString().PadRight(10).Substring(0, 10);    // fecha de ingreso
+                */
+                ptoimp = new PointF(col0, posi);
+                e.Graphics.DrawString(dataI, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col1, posi);
+                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col2, posi);
+                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col3, posi);
+                RectangleF recn = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, recn, sf);
+                ptoimp = new PointF(col4, posi);
+                RectangleF recco = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, ptoimp, sf);
+                ptoimp = new PointF(col5, posi);
+                Size siznom = new Size(200, 15);
+                RectangleF recnom = new RectangleF(ptoimp, siznom);
+                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, recnom, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col6, posi);
+                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col7, posi);
+                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col8, posi);
+                e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col9, posi);
+                e.Graphics.DrawString(data9, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                /*
+                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col7, posi);
+                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(co10 + 10.0F, posi);
+                e.Graphics.DrawString(data10, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(co11 + 10.0F, posi);
+                e.Graphics.DrawString(data11, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(co12, posi);
+                e.Graphics.DrawString(data12, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                */
+                //
+                posi = posi + alfi + 5;             // avance de fila
+                e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
+                posi = posi + alfi - 5;             // avance de fila
+                cuenta = cuenta + 1;
+                if (posi >= e.PageBounds.Height - 20.0F)
+                {
+                    pageCount = pageCount + 1;
+                    e.HasMorePages = true;
+                    return;
+                }
+                else
+                {
+                    e.HasMorePages = false;
+                }
+            }
+            posi = posi + alfi * 2;             // avance de fila
+            cuenta = 0;
         }
         private void imprime(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
         {
@@ -1158,6 +1297,73 @@ namespace iOMG
             e.Graphics.DrawString("Saldo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(co12, posi);
             e.Graphics.DrawString("F.Ingreso", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            posi = posi + alfi + 7.0F;             // avance de fila
+            e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
+            posi = posi + 2;             // avance de fila
+            //
+            return posi;
+        }
+        private float impcabres(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8, float col9)
+        {
+            float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
+            float colm = coli + 280.0F;                                 // columna media
+            float cold = coli + 530.0F;                                 // columna derecha
+            Font lt_cliente = new Font("Arial", 15, FontStyle.Bold);
+            Font lt_pag = new Font("Arial", 9);
+            Font lt_fec = new Font("Arial", 7, FontStyle.Bold);
+            Font lt_tit = new Font("Arial", 11);                        // tipo de letra del titulo
+            Pen grueso = new Pen(Color.Black, 2);                       // linea gruesa
+            Pen delgado = new Pen(Color.Black, 1);                      // linea delgada
+            StringFormat sf = new StringFormat();                       // formato centrado
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+            // logo
+            e.Graphics.DrawImage(Image.FromFile("recursos/logo_artesanos_omg_peru.jpeg"), 30, 20, 200, 150);
+            // pagina y fecha
+            SizeF anctit = new SizeF();
+            anctit = e.Graphics.MeasureString(cliente, lt_cliente);
+            PointF ptocli = new PointF((ancho_pag - anctit.Width) / 2, piy);
+            e.Graphics.DrawString(cliente, lt_cliente, Brushes.Black, ptocli, StringFormat.GenericTypographic);
+            // pintamos contador de pág.
+            PointF ptopag = new PointF(ancho_pag - 80.0F, piy);
+            string pag = "Pág. " + pageCount.ToString();
+            e.Graphics.DrawString(pag, lt_pag, Brushes.Black, ptopag, StringFormat.GenericTypographic);
+            // pintamos la fecha
+            PointF ptofec = new PointF(ancho_pag - 80.0F, piy + 15.0F);
+            string fecha = DateTime.Today.ToShortDateString();
+            e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
+            // titulo y filtros
+            SizeF anctyf = new SizeF();
+            anctyf = e.Graphics.MeasureString(this.Text, lt_cliente);
+            PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
+            e.Graphics.DrawString(this.Text, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            string ddd = "Del " + dtp_pedido.Value.ToString("dd/MM/yyyy") + " Al " + dtp_entreg.Value.ToString("dd/MM/yyyy");
+            anctyf = e.Graphics.MeasureString(ddd, lt_tit);
+            ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
+            e.Graphics.DrawString(ddd, lt_tit, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            // titulo de las columnas
+            posi = posi + alfi;
+            PointF ptoimp = new PointF(col0, posi);
+            e.Graphics.DrawString("Fecha", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col1, posi);
+            e.Graphics.DrawString("Llegada", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col2, posi);
+            e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col3, posi);
+            e.Graphics.DrawString("Estado", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col4, posi);
+            e.Graphics.DrawString("Taller", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col5, posi);
+            e.Graphics.DrawString("", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col6, posi);
+            e.Graphics.DrawString("Destino", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col7, posi);
+            e.Graphics.DrawString("Saldo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col8, posi);
+            e.Graphics.DrawString("F.Ingreso", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col9, posi);
+            e.Graphics.DrawString("Comentarios", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             posi = posi + alfi + 7.0F;             // avance de fila
             e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
             posi = posi + 2;             // avance de fila

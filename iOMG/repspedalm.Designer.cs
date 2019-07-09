@@ -113,6 +113,7 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.chk_resu = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
@@ -396,6 +397,7 @@
             // 
             // tabPed
             // 
+            this.tabPed.Controls.Add(this.chk_resu);
             this.tabPed.Controls.Add(this.bt_preview);
             this.tabPed.Controls.Add(this.bt_imprime);
             this.tabPed.Controls.Add(this.groupBox3);
@@ -465,9 +467,9 @@
             // 
             // tx_dat_estad
             // 
-            this.tx_dat_estad.Location = new System.Drawing.Point(316, 27);
+            this.tx_dat_estad.Location = new System.Drawing.Point(352, 4);
             this.tx_dat_estad.Name = "tx_dat_estad";
-            this.tx_dat_estad.Size = new System.Drawing.Size(29, 20);
+            this.tx_dat_estad.Size = new System.Drawing.Size(23, 20);
             this.tx_dat_estad.TabIndex = 315;
             this.tx_dat_estad.Visible = false;
             // 
@@ -601,7 +603,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(544, 8);
+            this.button1.Location = new System.Drawing.Point(544, 10);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(59, 29);
             this.button1.TabIndex = 3;
@@ -992,6 +994,16 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // chk_resu
+            // 
+            this.chk_resu.AutoSize = true;
+            this.chk_resu.Location = new System.Drawing.Point(251, 30);
+            this.chk_resu.Name = "chk_resu";
+            this.chk_resu.Size = new System.Drawing.Size(116, 17);
+            this.chk_resu.TabIndex = 319;
+            this.chk_resu.Text = "Resumido x pedido";
+            this.chk_resu.UseVisualStyleBackColor = true;
+            // 
             // repspedalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1112,5 +1124,6 @@
         private System.Windows.Forms.Button bt_resumen;
         private System.Windows.Forms.TextBox tx_codped;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox chk_resu;
     }
 }
