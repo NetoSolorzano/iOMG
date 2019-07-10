@@ -94,12 +94,25 @@ namespace iOMG
                     para2 = "todos";
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
-                    if (result == DialogResult.Cancel)  // me quede aca
+                    if (result == DialogResult.Cancel)
                     {
-                        //tx_placa.Text = ayu1.ReturnValue1;
-                        //tx_idr.Text = ayu1.ReturnValue0;
-                        //tx_codigo_Leave(null, null);
-                        MessageBox.Show(ayu2.ReturnValue0, "REgrese!");
+                        //ayu2.ReturnValue1;
+                        //ayu2.ReturnValue0;
+                        //ayu3.ReturnValue2;
+                        cmb_fam.SelectedIndex = cmb_fam.FindString(ayu2.ReturnValue1.Substring(0, 1));
+                        cmb_mod.SelectedIndex = cmb_mod.FindString(ayu2.ReturnValue1.Substring(1, 3));
+                        cmb_mad.SelectedIndex = cmb_mad.FindString(ayu2.ReturnValue1.Substring(4, 1));
+                        cmb_mad_SelectionChangeCommitted(null,null);
+                        cmb_tip.SelectedIndex = cmb_tip.FindString(ayu2.ReturnValue1.Substring(5, 2));
+                        cmb_det1.SelectedIndex = cmb_det1.FindString(ayu2.ReturnValue1.Substring(7, 2));
+                        cmb_det1_SelectionChangeCommitted(null, null);
+                        cmb_aca.SelectedIndex = cmb_aca.FindString(ayu2.ReturnValue1.Substring(9, 1));
+                        cmb_aca_SelectionChangeCommitted(null, null);
+                        cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
+                        cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
+                        cmb_det2_SelectionChangeCommitted(null, null);
+                        cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
+                        armani();  // me quede aca
                     }
                 }
                 return true;    // indicate that you handled this keystroke

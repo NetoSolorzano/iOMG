@@ -64,25 +64,23 @@
             // 
             // tx_codigo
             // 
-            this.tx_codigo.Location = new System.Drawing.Point(150, 462);
+            this.tx_codigo.Location = new System.Drawing.Point(150, 466);
             this.tx_codigo.Name = "tx_codigo";
-            this.tx_codigo.Size = new System.Drawing.Size(33, 20);
+            this.tx_codigo.Size = new System.Drawing.Size(53, 20);
             this.tx_codigo.TabIndex = 2;
-            this.tx_codigo.Visible = false;
             this.tx_codigo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tx_codigo_KeyPress);
             // 
             // tx_id
             // 
-            this.tx_id.Location = new System.Drawing.Point(189, 462);
+            this.tx_id.Location = new System.Drawing.Point(207, 466);
             this.tx_id.Name = "tx_id";
-            this.tx_id.Size = new System.Drawing.Size(49, 20);
+            this.tx_id.Size = new System.Drawing.Size(33, 20);
             this.tx_id.TabIndex = 3;
-            this.tx_id.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 465);
+            this.label1.Location = new System.Drawing.Point(12, 469);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(131, 13);
             this.label1.TabIndex = 4;
@@ -108,11 +106,10 @@
             // 
             // tx_nombre
             // 
-            this.tx_nombre.Location = new System.Drawing.Point(244, 462);
+            this.tx_nombre.Location = new System.Drawing.Point(244, 466);
             this.tx_nombre.Name = "tx_nombre";
             this.tx_nombre.Size = new System.Drawing.Size(92, 20);
             this.tx_nombre.TabIndex = 7;
-            this.tx_nombre.Visible = false;
             // 
             // lb_cred
             // 

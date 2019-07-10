@@ -222,12 +222,12 @@ namespace iOMG
         {
             if (e.KeyChar == Convert.ToChar(Keys.Enter))
             {
-                if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
-                {
+                //if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
+                //{
                     ReturnValue1 = tx_codigo.Text;
                     ReturnValue0 = tx_id.Text;
                     ReturnValue2 = tx_nombre.Text;
-                }
+                //}
                 this.Close();
             }
         }
@@ -278,6 +278,7 @@ namespace iOMG
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             tx_nombre.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+            
             string cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             tx_codigo.Text = cellva;
             this.tx_id.Text = "";
