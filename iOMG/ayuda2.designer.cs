@@ -66,15 +66,17 @@
             // 
             this.tx_codigo.Location = new System.Drawing.Point(150, 466);
             this.tx_codigo.Name = "tx_codigo";
-            this.tx_codigo.Size = new System.Drawing.Size(53, 20);
+            this.tx_codigo.ReadOnly = true;
+            this.tx_codigo.Size = new System.Drawing.Size(151, 20);
             this.tx_codigo.TabIndex = 2;
             this.tx_codigo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tx_codigo_KeyPress);
             // 
             // tx_id
             // 
-            this.tx_id.Location = new System.Drawing.Point(207, 466);
+            this.tx_id.Location = new System.Drawing.Point(312, 466);
             this.tx_id.Name = "tx_id";
-            this.tx_id.Size = new System.Drawing.Size(33, 20);
+            this.tx_id.ReadOnly = true;
+            this.tx_id.Size = new System.Drawing.Size(64, 20);
             this.tx_id.TabIndex = 3;
             // 
             // label1
@@ -85,7 +87,6 @@
             this.label1.Size = new System.Drawing.Size(131, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Información seleccionada ";
-            this.label1.Visible = false;
             // 
             // tx_buscar
             // 
@@ -106,16 +107,18 @@
             // 
             // tx_nombre
             // 
-            this.tx_nombre.Location = new System.Drawing.Point(244, 466);
+            this.tx_nombre.Location = new System.Drawing.Point(383, 466);
             this.tx_nombre.Name = "tx_nombre";
+            this.tx_nombre.ReadOnly = true;
             this.tx_nombre.Size = new System.Drawing.Size(92, 20);
             this.tx_nombre.TabIndex = 7;
+            this.tx_nombre.Visible = false;
             // 
             // lb_cred
             // 
             this.lb_cred.AutoSize = true;
             this.lb_cred.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_cred.Location = new System.Drawing.Point(413, 469);
+            this.lb_cred.Location = new System.Drawing.Point(809, 471);
             this.lb_cred.Name = "lb_cred";
             this.lb_cred.Size = new System.Drawing.Size(76, 17);
             this.lb_cred.TabIndex = 8;

@@ -278,7 +278,6 @@ namespace iOMG
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             tx_nombre.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-            
             string cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             tx_codigo.Text = cellva;
             this.tx_id.Text = "";

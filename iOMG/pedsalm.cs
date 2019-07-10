@@ -88,7 +88,9 @@ namespace iOMG
             string para4 = "";
             if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
             {
-                if(cmb_fam.Focused == true)
+                if(cmb_fam.Focused == true || cmb_mod.Focused == true || cmb_mad.Focused == true || cmb_tip.Focused == true ||
+                    cmb_det1.Focused == true || cmb_aca.Focused == true || cmb_tal.Focused == true ||
+                    cmb_det2.Focused == true || cmb_det3.Focused == true)
                 {
                     para1 = "items";
                     para2 = "todos";
@@ -96,23 +98,26 @@ namespace iOMG
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
                     {
-                        //ayu2.ReturnValue1;
-                        //ayu2.ReturnValue0;
-                        //ayu3.ReturnValue2;
-                        cmb_fam.SelectedIndex = cmb_fam.FindString(ayu2.ReturnValue1.Substring(0, 1));
-                        cmb_mod.SelectedIndex = cmb_mod.FindString(ayu2.ReturnValue1.Substring(1, 3));
-                        cmb_mad.SelectedIndex = cmb_mad.FindString(ayu2.ReturnValue1.Substring(4, 1));
-                        cmb_mad_SelectionChangeCommitted(null,null);
-                        cmb_tip.SelectedIndex = cmb_tip.FindString(ayu2.ReturnValue1.Substring(5, 2));
-                        cmb_det1.SelectedIndex = cmb_det1.FindString(ayu2.ReturnValue1.Substring(7, 2));
-                        cmb_det1_SelectionChangeCommitted(null, null);
-                        cmb_aca.SelectedIndex = cmb_aca.FindString(ayu2.ReturnValue1.Substring(9, 1));
-                        cmb_aca_SelectionChangeCommitted(null, null);
-                        cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
-                        cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
-                        cmb_det2_SelectionChangeCommitted(null, null);
-                        cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
-                        armani();  // me quede aca
+                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
+                        {
+                            //ayu2.ReturnValue1;
+                            //ayu2.ReturnValue0;
+                            //ayu3.ReturnValue2;
+                            cmb_fam.SelectedIndex = cmb_fam.FindString(ayu2.ReturnValue1.Substring(0, 1));
+                            cmb_mod.SelectedIndex = cmb_mod.FindString(ayu2.ReturnValue1.Substring(1, 3));
+                            cmb_mad.SelectedIndex = cmb_mad.FindString(ayu2.ReturnValue1.Substring(4, 1));
+                            cmb_mad_SelectionChangeCommitted(null, null);
+                            cmb_tip.SelectedIndex = cmb_tip.FindString(ayu2.ReturnValue1.Substring(5, 2));
+                            cmb_det1.SelectedIndex = cmb_det1.FindString(ayu2.ReturnValue1.Substring(7, 2));
+                            cmb_det1_SelectionChangeCommitted(null, null);
+                            cmb_aca.SelectedIndex = cmb_aca.FindString(ayu2.ReturnValue1.Substring(9, 1));
+                            cmb_aca_SelectionChangeCommitted(null, null);
+                            if(tx_dat_orig.Text == "") cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
+                            cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
+                            cmb_det2_SelectionChangeCommitted(null, null);
+                            cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
+                            armani();
+                        }
                     }
                 }
                 return true;    // indicate that you handled this keystroke
@@ -781,6 +786,11 @@ namespace iOMG
                             if (dtm.Rows.Count == 0)
                             {
                                 MessageBox.Show("No existe en la base de datos!0", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                tx_d_nom.Text = "";
+                                tx_d_med.Text = "";
+                                tx_d_mad.Text = "";
+                                tx_d_det2.Text = "";
+                                tx_d_est.Text = "";
                                 return;
                             }
                             string gol = "";
@@ -808,8 +818,8 @@ namespace iOMG
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
                                         gol = "1";
                                         break;
-                                    }
-                                    if ((fila["mader"].ToString() == "X" || fila["mader"].ToString() == mad) && fila["acaba"].ToString() == aca &&
+                                    }   // (fila["mader"].ToString() == "X" || 
+                                    if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
                                     fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
@@ -817,7 +827,8 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
-                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
+                                    /*
+                                    if (fila["mader"].ToString() != "X" && fila["acaba"].ToString() != "X" &&
                                     fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
@@ -833,12 +844,17 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
-
+                                    */
                                 }
                             }
                             if(gol == "")
                             {
                                 MessageBox.Show("No existe en la base de datos!1", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                tx_d_nom.Text = "";
+                                tx_d_med.Text = "";
+                                tx_d_mad.Text = "";
+                                tx_d_det2.Text = "";
+                                tx_d_est.Text = "";
                                 return;
                             }
                         }
@@ -1391,6 +1407,24 @@ namespace iOMG
                 tx_d_can.Focus();
                 return;
             }
+            if (tx_d_mad.Text.Trim() == "")
+            {
+                MessageBox.Show("Confirme el tipo de madera", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_mad.Focus();
+                return;
+            }
+            if(tx_d_det2.Text.Trim() == "")
+            {
+                MessageBox.Show("Confirme el detalle 2", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_det2.Focus();
+                return;
+            }
+            if(tx_d_est.Text.Trim() == "")
+            {
+                MessageBox.Show("Confirme el acabado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_aca.Focus();
+                return;
+            }
             if(cmb_det3.SelectedIndex == -1)
             {
                 MessageBox.Show("Seleccione el detalle 3", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
@@ -1445,6 +1479,26 @@ namespace iOMG
                 cmb_fam.Focus();
                 return;
             }
+            // valida que no existan X en madera y acabado, y no exista XX en taller
+            if (cmb_mad.SelectedItem.ToString().Substring(0,1) == "X")
+            {
+                MessageBox.Show("Seleccione un tipo de madera valido", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_mad.Focus();
+                return;
+            }
+            if (cmb_aca.SelectedItem.ToString().Substring(0, 1) == "X")
+            {
+                MessageBox.Show("Seleccione el acabado correcto", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_aca.Focus();
+                return;
+            }
+            if (cmb_tal.SelectedItem.ToString().Substring(0, 2) == "XX")
+            {
+                MessageBox.Show("Seleccione un taller!", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_tal.Focus();
+                return;
+            }
+            // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
