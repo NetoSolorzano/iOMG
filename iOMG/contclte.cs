@@ -1200,6 +1200,45 @@ namespace iOMG
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0";
         }
+        private void setParaCrystal()           // genera el set para el reporte de crystal
+        {
+            conClie datos = generareporte();
+            Contrato _contrato = new Contrato();
+            _contrato.SetDataSource(datos);
+            crystalReportViewer1.ReportSource = _contrato;      // me quede aca! ... no muestra el reporte
+        }
+        private conClie generareporte()
+        {
+            conClie repcontrato = new conClie();                                    // dataset
+
+            conClie.cabeceraRow rowcabeza = repcontrato.cabecera.NewcabeceraRow();  // llenamos la tabla cabecera del dataset
+            rowcabeza.contrato = tx_codped.Text;
+            rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
+            rowcabeza.id = "0";
+            rowcabeza.localVen = cmb_taller.SelectedText.ToString();
+            rowcabeza.nomClie = tx_nombre.Text.Trim();
+            rowcabeza.numDoc = tx_ndc.Text.Trim();
+            rowcabeza.tipDoc = cmb_tdoc.SelectedText;
+            rowcabeza.tipoCont = cmb_tipo.SelectedText;
+            repcontrato.cabecera.AddcabeceraRow(rowcabeza);
+
+            foreach(DataGridViewRow row in dataGridView1.Rows)  //
+            {
+                if (row.Cells["item"].Value != null)   // !string.IsNullOrEmpty(row.Cells["item"].Value.ToString())
+                {
+                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                    rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
+                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                    rowdetalle.codigo = row.Cells["item"].Value.ToString();
+                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
+                    rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                    repcontrato.detalle.AdddetalleRow(rowdetalle);
+                }
+            }
+            return repcontrato;
+        }
 
         #region autocompletados
         private void autodptos()
@@ -2181,24 +2220,28 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
+            setParaCrystal();
+            /*
             PrintDialog printDlg = new PrintDialog();
             printDlg.Document = printDocument1;
             printDlg.AllowSomePages = true;
             printDlg.AllowSelection = true;
-            //
             pageCount = 1;
-            //printDocument1.DefaultPageSettings.Landscape = true;
             if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
+            */
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
             if (tx_idr.Text != "" && tx_rind.Text != "")
             {
+                setParaCrystal();
+                /*
                 Tx_modo.Text = "IMPRIMIR";
                 pageCount = 1;
                 //printDocument1.DefaultPageSettings.Landscape = true;
                 printPreviewDialog1.Document = printDocument1;
                 printPreviewDialog1.ShowDialog();
+                */
             }
         }
         private void bt_exc_Click(object sender, EventArgs e)
