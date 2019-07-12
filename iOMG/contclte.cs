@@ -1200,14 +1200,19 @@ namespace iOMG
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0";
         }
-        private void setParaCrystal()           // genera el set para el reporte de crystal
+        
+        #region crystal
+        private void setParaCrystal()               // genera el set para el reporte de crystal
         {
-            conClie datos = generareporte();
-            Contrato _contrato = new Contrato();
-            _contrato.SetDataSource(datos);
-            crystalReportViewer1.ReportSource = _contrato;      // me quede aca! ... no muestra el reporte
+            //DataSet1 datos = generareporte();            // conClie = dataset de impresion de contrato   
+            conClie datos = generareporte();            // conClie = dataset de impresion de contrato   
+            //Contrato _contrato = new Contrato();      // Contrato = rpt creado de crystal (modelo del reporte - diseño)
+            //_contrato.SetDataSource(datos);           // <-- asignacion de los datos hacia el modelo del reporte
+            //crystalReportViewer2.ReportSource = _contrato;      // TODA ESTA PARTE NO PORQUE EL CRYSTAL REQUIERE UN FORM INDEPENDIENTE PARA MOSTRAR EL REPORTE
+            frmvizcont visualizador = new frmvizcont(datos);      // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
+            visualizador.Show();
         }
-        private conClie generareporte()
+        private conClie generareporte()             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
         {
             conClie repcontrato = new conClie();                                    // dataset
 
@@ -1220,6 +1225,11 @@ namespace iOMG
             rowcabeza.numDoc = tx_ndc.Text.Trim();
             rowcabeza.tipDoc = cmb_tdoc.SelectedText;
             rowcabeza.tipoCont = cmb_tipo.SelectedText;
+            rowcabeza.direc = tx_direc.Text.Trim();
+            rowcabeza.distrit = tx_dist.Text.Trim();
+            rowcabeza.provin = tx_prov.Text.Trim();
+            rowcabeza.depart = tx_dpto.Text.Trim();
+
             repcontrato.cabecera.AddcabeceraRow(rowcabeza);
 
             foreach(DataGridViewRow row in dataGridView1.Rows)  //
@@ -1239,6 +1249,7 @@ namespace iOMG
             }
             return repcontrato;
         }
+        #endregion crystal
 
         #region autocompletados
         private void autodptos()
@@ -1285,7 +1296,7 @@ namespace iOMG
             tx_dist.AutoCompleteCustomSource = adistr;
         }
         #endregion autocompletados
-
+         
         #region limpiadores_modos
         public void sololee(Form lfrm)
         {

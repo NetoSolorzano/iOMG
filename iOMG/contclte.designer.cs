@@ -282,16 +282,12 @@
             this.tabuser.Controls.Add(this.pan_cli);
             this.tabuser.Controls.Add(this.groupBox27);
             this.tabuser.Controls.Add(this.groupBox25);
-            this.tabuser.Controls.Add(this.tx_dscto);
             this.tabuser.Controls.Add(this.groupBox23);
             this.tabuser.Controls.Add(this.label21);
-            this.tabuser.Controls.Add(this.tx_saldo);
             this.tabuser.Controls.Add(this.groupBox21);
             this.tabuser.Controls.Add(this.label20);
-            this.tabuser.Controls.Add(this.tx_acta);
             this.tabuser.Controls.Add(this.groupBox19);
             this.tabuser.Controls.Add(this.label9);
-            this.tabuser.Controls.Add(this.tx_valor);
             this.tabuser.Controls.Add(this.groupBox11);
             this.tabuser.Controls.Add(this.label8);
             this.tabuser.Controls.Add(this.groupBox9);
@@ -328,6 +324,10 @@
             this.tabuser.Controls.Add(this.tx_rind);
             this.tabuser.Controls.Add(this.tx_idr);
             this.tabuser.Controls.Add(this.button1);
+            this.tabuser.Controls.Add(this.tx_dscto);
+            this.tabuser.Controls.Add(this.tx_saldo);
+            this.tabuser.Controls.Add(this.tx_acta);
+            this.tabuser.Controls.Add(this.tx_valor);
             this.tabuser.Location = new System.Drawing.Point(4, 22);
             this.tabuser.Name = "tabuser";
             this.tabuser.Padding = new System.Windows.Forms.Padding(3);
