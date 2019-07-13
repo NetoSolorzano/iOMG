@@ -39,16 +39,12 @@ namespace iOMG
         string tipede = "";             // tipo de pedido por defecto
         string tiesta = "";             // estado inicial por defecto del contrato
         string escambio = "";           // estados de pedido que admiten modif el pedido
-        string estpend = "";            // estado de pedido con articulos pendientes de recibir
-        string estcomp = "";            // estado de pedido con articulos recibidos en su totalidad
-        string estenv = "";             // estado de pedido enviado a producción
-        string estanu = "";             // estado de pedido anulado
-        string estcer = "";             // estado de pedido cerrado tal como esta, ya no se atiende
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
         string tdc = "";                // tipo de documento para contratos
         string sdc = "";                // local de contratos (vacio = todos los locales)
         string raz = "";                // razon social del contrato (vacio si es un solo contador para todos)
+        string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
         //string cn_adm = "";     // codigo nivel usuario admin
         //string cn_sup = "";     // codigo nivel usuario superusuario
         //string cn_est = "";     // codigo nivel usuario estandar
@@ -84,6 +80,51 @@ namespace iOMG
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.A) Bt_anul.PerformClick();
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.O) Bt_ver.PerformClick();
             //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.S) Bt_close.PerformClick();
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)    // F1
+        {
+            string para1 = "";
+            string para2 = "";
+            string para3 = "";
+            string para4 = "";
+            if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            {
+                if (cmb_fam.Focused == true || cmb_mod.Focused == true || cmb_mad.Focused == true || cmb_tip.Focused == true ||
+                    cmb_det1.Focused == true || cmb_aca.Focused == true || cmb_tal.Focused == true ||
+                    cmb_det2.Focused == true || cmb_det3.Focused == true)
+                {
+                    para1 = "items";
+                    para2 = "todos";
+                    ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
+                    var result = ayu2.ShowDialog();
+                    if (result == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
+                        {
+                            //ayu2.ReturnValue1;
+                            //ayu2.ReturnValue0;
+                            //ayu3.ReturnValue2;
+                            cmb_fam.SelectedIndex = cmb_fam.FindString(ayu2.ReturnValue1.Substring(0, 1));
+                            cmb_mod.SelectedIndex = cmb_mod.FindString(ayu2.ReturnValue1.Substring(1, 3));
+                            cmb_mad.SelectedIndex = cmb_mad.FindString(ayu2.ReturnValue1.Substring(4, 1));
+                            cmb_mad_SelectionChangeCommitted(null, null);
+                            cmb_tip.SelectedIndex = cmb_tip.FindString(ayu2.ReturnValue1.Substring(5, 2));
+                            cmb_det1.SelectedIndex = cmb_det1.FindString(ayu2.ReturnValue1.Substring(7, 2));
+                            cmb_det1_SelectionChangeCommitted(null, null);
+                            cmb_aca.SelectedIndex = cmb_aca.FindString(ayu2.ReturnValue1.Substring(9, 1));
+                            cmb_aca_SelectionChangeCommitted(null, null);
+                            if (tx_dat_orig.Text == "") cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
+                            cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
+                            cmb_det2_SelectionChangeCommitted(null, null);
+                            cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
+                            armani();
+                        }
+                    }
+                }
+                return true;    // indicate that you handled this keystroke
+            }
+            // Call the base class
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         private void Repspedidos_Load(object sender, EventArgs e)
         {
@@ -278,6 +319,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") tdc = row["valor"].ToString().Trim();             // tipo de documento para contratos
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "local") sdc = row["valor"].ToString().Trim();             // local del contrato, vacio todos los locales
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();             // tipo de documento para contratos
+                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
                     }
                 }
                 da.Dispose();
@@ -847,7 +889,12 @@ namespace iOMG
                             da.Fill(dtm);
                             if (dtm.Rows.Count == 0)
                             {
-                                MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show("No existe en la base de datos0!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                tx_d_nom.Text = "";
+                                tx_d_med.Text = "";
+                                tx_d_mad.Text = "";
+                                tx_d_det2.Text = "";
+                                tx_d_est.Text = "";
                                 return;
                             }
                             string gol = "";
@@ -878,8 +925,8 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
-                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
-                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
+                                    if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
+                                    fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
@@ -887,6 +934,7 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
+                                    /*
                                     if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
                                     fila["deta3"].ToString() == de3)
                                     {
@@ -896,11 +944,17 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
+                                    */
                                 }
                             }
                             if(gol == "")
                             {
-                                MessageBox.Show("No existe en la base de datos!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show("No existe en la base de datos1!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                tx_d_nom.Text = "";
+                                tx_d_med.Text = "";
+                                tx_d_mad.Text = "";
+                                tx_d_det2.Text = "";
+                                tx_d_est.Text = "";
                                 return;
                             }
                         }
@@ -1220,16 +1274,26 @@ namespace iOMG
             rowcabeza.contrato = tx_codped.Text;
             rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
             rowcabeza.id = "0";
-            rowcabeza.localVen = cmb_taller.SelectedText.ToString();
+            rowcabeza.localVen = cmb_taller.Text;     //.SelectedText.ToString();
             rowcabeza.nomClie = tx_nombre.Text.Trim();
             rowcabeza.numDoc = tx_ndc.Text.Trim();
-            rowcabeza.tipDoc = cmb_tdoc.SelectedText;
+            rowcabeza.tipDoc = cmb_tdoc.SelectedItem.ToString();     //.SelectedText;
             rowcabeza.tipoCont = cmb_tipo.SelectedText;
             rowcabeza.direc = tx_direc.Text.Trim();
             rowcabeza.distrit = tx_dist.Text.Trim();
             rowcabeza.provin = tx_prov.Text.Trim();
             rowcabeza.depart = tx_dpto.Text.Trim();
-
+            rowcabeza.email = tx_mail.Text.Trim();
+            rowcabeza.telef1 = tx_telef1.Text.Trim();
+            rowcabeza.telef2 = tx_telef2.Text.Trim();
+            rowcabeza.valTot = tx_valor.Text;
+            rowcabeza.valDscto = tx_dscto.Text;
+            rowcabeza.valActa = tx_acta.Text;
+            rowcabeza.valSaldo = tx_saldo.Text;
+            rowcabeza.coment = tx_coment.Text.Trim();
+            rowcabeza.dirEntreg = tx_dirent.Text.Trim();
+            rowcabeza.fechEnt = dtp_entreg.Value.ToString("dd/MM/yyyy");
+            rowcabeza.usuario = asd;
             repcontrato.cabecera.AddcabeceraRow(rowcabeza);
 
             foreach(DataGridViewRow row in dataGridView1.Rows)  //
@@ -1242,9 +1306,14 @@ namespace iOMG
                     rowdetalle.codigo = row.Cells["item"].Value.ToString();
                     rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
                     rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
                     rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
                     rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                    rowdetalle.precio = row.Cells["precio"].Value.ToString();
+                    rowdetalle.total = row.Cells["total"].Value.ToString();
+                    // aca falta el coment del articulo
                     repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
                 }
             }
             return repcontrato;
@@ -1566,10 +1635,7 @@ namespace iOMG
                         return;
                     }
                     // vista previa
-                    pageCount = 1;
-                    //printDocument1.DefaultPageSettings.Landscape = true;
-                    printPreviewDialog1.Document = printDocument1;
-                    printPreviewDialog1.ShowDialog();
+                    setParaCrystal();
                 }
                 else
                 {
@@ -1707,6 +1773,20 @@ namespace iOMG
                 cmb_fam.Focus();
                 return;
             }
+            // valida que no existan X en madera y acabado, y no exista XX en taller
+            if (cmb_mad.SelectedItem.ToString().Substring(0, 1) == "X")
+            {
+                MessageBox.Show("Seleccione un tipo de madera valido", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_mad.Focus();
+                return;
+            }
+            if (cmb_aca.SelectedItem.ToString().Substring(0, 1) == "X")
+            {
+                MessageBox.Show("Seleccione el acabado correcto", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_aca.Focus();
+                return;
+            }
+            // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {
                 if (tx_d_id.Text.Trim() != "")
@@ -1736,7 +1816,7 @@ namespace iOMG
                     }
                     else
                     {
-                        MessageBox.Show("Límite de filas por pedido alcanzado", "No se puede insertar mas filas",
+                        MessageBox.Show("Límite de filas por contrato alcanzado", "No se puede insertar mas filas",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
@@ -2232,14 +2312,6 @@ namespace iOMG
         private void Bt_print_Click(object sender, EventArgs e)
         {
             setParaCrystal();
-            /*
-            PrintDialog printDlg = new PrintDialog();
-            printDlg.Document = printDocument1;
-            printDlg.AllowSomePages = true;
-            printDlg.AllowSelection = true;
-            pageCount = 1;
-            if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
-            */
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
@@ -2258,13 +2330,13 @@ namespace iOMG
         private void bt_exc_Click(object sender, EventArgs e)
         {
             string nombre = "";
-            nombre = "Pedidos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+            nombre = "Contratos_clientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
             var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                 "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (aa == DialogResult.Yes)
             {
                 var wb = new XLWorkbook();
-                wb.Worksheets.Add(dtg, "Articulos");
+                wb.Worksheets.Add(dtg, "Contratos");
                 wb.SaveAs(nombre);
                 MessageBox.Show("Archivo generado con exito!");
                 this.Close();
@@ -2510,7 +2582,7 @@ namespace iOMG
                                 e.Cancel = true;
                             }
                         }
-                        if (e.ColumnIndex == 5)           // fecha pedido
+                        if (e.ColumnIndex == 5)           // fecha
                         {
                             // no se valida
                         }
@@ -2522,7 +2594,7 @@ namespace iOMG
                         {
                             // no se valida
                         }
-                        if (e.ColumnIndex == 8)          // tipo pedido
+                        if (e.ColumnIndex == 8)          // 
                         {
                             // no se valida
                         }
@@ -2549,7 +2621,7 @@ namespace iOMG
         }
         #endregion
 
-        #region datagridview1 - grilla detalle de pedido
+        #region datagridview1 - grilla detalle del contrato
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0 && e.RowIndex > -1)
@@ -2608,10 +2680,10 @@ namespace iOMG
                 //tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
             }
         }
-        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e) // me que de aca ..revisar y probar esto!
         {
-            // si es edicion, si es el usuario autorizado y el pedido es reciente => borra la(s) filas de detalle
-            // busca en la base de datos y lo borra, debe actualizar estado del pedido y saldos
+            // si es edicion, si es el usuario autorizado y el contrato es reciente => borra la(s) filas de detalle
+            // busca en la base de datos y lo borra, debe actualizar estado del contrato y saldos
             if (Tx_modo.Text == "EDITAR")    // y el usuario esta autorizado
             {
                 var aa = MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine + 
@@ -2622,7 +2694,6 @@ namespace iOMG
                 }
                 else
                 {
-                    //MessageBox.Show(dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString(),"los perros ladran");
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                     conn.Open();
                     if (conn.State == ConnectionState.Open)
@@ -2732,196 +2803,6 @@ namespace iOMG
                 tx_telef1.Enabled = false;
                 tx_telef2.Enabled = false;
             }
-        }
-
-        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++  //   LA IDEA ES USAR CRYSTAL REPORTS PARA 
-            float pix = 50.0F;      // punto inicial X                                      //   MEJORAR LA CALIDAD DEL REPORTE
-            float piy = 30.0F;      // punto inicial Y                                      //   me quede instalando y config. crystal
-            float alfi = 13.0F;     // alto de cada fila
-            float alin = 45.0F;     // alto inicial
-            float posi = 80.0F;     // posición de impresión
-            float coli = 30.0F;     // columna mas a la izquierda
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-            imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
-        }
-        private void imprime(float pix, float piy, string cliente, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            // columnas del detalle 
-            float col0 = coli;              // can
-            float col1 = coli + 40.0F;      // descripcion
-            float col2 = coli + 190.0F;     // madera
-            float col3 = coli + 250.0F;     // piedra
-            float col4 = coli + 360.0F;     // medidas
-            float col5 = coli + 450.0F;     // precio
-            float col6 = coli + 510.0F;     // total
-            //float col7 = coli + 900.0F;     // 
-            //float col8 = coli + 1000.0F;    // Acabado
-            //
-            float posit = impcab2(piy, coli, alin, posi, alfi, e,
-                col0, col1, col2, col3, col4, col5, col6);  //, col7, col8
-            posi = posit;
-            SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
-            Font lt_tit = new Font("Arial", 8);
-            PointF ptoimp;
-            Pen blackPen = new Pen(Color.Black, 2);
-            StringFormat sf = new StringFormat();
-            sf.Alignment = StringAlignment.Near;
-            sf.FormatFlags = StringFormatFlags.NoWrap;
-            // leemos las columnas del data table
-            for (int fila = cuenta; fila < dataGridView1.Rows.Count - 1; fila++)
-            {
-                // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,'na'
-                string data0 = dataGridView1.Rows[fila].Cells[2].Value.ToString();    // can
-                string data1 = dataGridView1.Rows[fila].Cells[3].Value.ToString();    // nombre
-                string data2 = dataGridView1.Rows[fila].Cells[5].Value.ToString();    // madera
-                string data3 = dataGridView1.Rows[fila].Cells[12].Value.ToString();     // piedra
-                string data4 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
-                string data5 = dataGridView1.Rows[fila].Cells[6].Value.ToString();    // precio
-                string data6 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // total
-                //string data7 = dataGridView1.Rows[fila].Cells[4].Value.ToString();    // medidas
-                //string data8 = dataGridView1.Rows[fila].Cells[7].Value.ToString();    // acabado
-                //
-                ptoimp = new PointF(col0, posi);
-                e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col1, posi);
-                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col2, posi);
-                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col3, posi);
-                RectangleF recn = new RectangleF(ptoimp,espnom);
-                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, recn, sf);
-                ptoimp = new PointF(col4, posi);
-                RectangleF recco = new RectangleF(ptoimp, espnom);
-                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, ptoimp, sf);
-                ptoimp = new PointF(col5, posi);
-                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col6, posi);
-                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                //ptoimp = new PointF(col7, posi);
-                //e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                //ptoimp = new PointF(col8, posi);
-                //e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                //
-                posi = posi + alfi + 5;             // avance de fila
-                e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
-                posi = posi + alfi - 5;             // avance de fila
-                cuenta = cuenta + 1;
-                if (posi >= e.PageBounds.Height - 20.0F)
-                {
-                    pageCount = pageCount + 1;
-                    e.HasMorePages = true;
-                    return;
-                }
-                else
-                {
-                    e.HasMorePages = false;
-                }
-            }
-            posi = posi + alfi * 2;             // avance de fila
-            ptoimp = new PointF(col2, posi);
-            // aca va la parte de totales 
-
-            // aca la parte del detalle de pagos
-
-            posi = posi + alfi;             // avance de fila
-            ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString("OBSERVACIONES", lt_tit, Brushes.Black, ptoimp);
-            posi = posi + alfi;             // avance de fila
-            ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString(tx_coment.Text, lt_tit, Brushes.Black, ptoimp);
-            cuenta = 0;
-        }
-        private float impcab2(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
-            float col0, float col1, float col2, float col3, float col4, float col5, float col6) // , float col7, float col8
-        {
-            float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
-            float colm = coli + 280.0F;                                 // columna media
-            float cold = coli + 530.0F;                                 // columna derecha
-            Font lt_cliente = new Font("Arial", 15, FontStyle.Bold);
-            Font lt_pag = new Font("Arial", 9);
-            Font lt_fec = new Font("Arial", 9);
-            Font lt_tit = new Font("Arial", 11);                        // tipo de letra del titulo
-            Pen grueso = new Pen(Color.Black, 2);                       // linea gruesa
-            Pen delgado = new Pen(Color.Black, 1);                      // linea delgada
-            StringFormat sf = new StringFormat();                       // formato centrado
-            sf.Alignment = StringAlignment.Center;
-            sf.LineAlignment = StringAlignment.Center;
-            // logo
-            e.Graphics.DrawImage(Image.FromFile("recursos/logo_artesanos_omg_peru.jpeg"), 30, 20,200,150);
-            //
-            SizeF anctit = new SizeF();
-            anctit = e.Graphics.MeasureString(cliente, lt_cliente);
-            PointF ptocli = new PointF((ancho_pag - anctit.Width)/2, piy);
-            e.Graphics.DrawString(cliente, lt_cliente, Brushes.Black, ptocli, StringFormat.GenericTypographic);
-            // pintamos contador de pág.
-            PointF ptopag = new PointF(ancho_pag - 80.0F, piy);
-            string pag = "Pág. " + pageCount.ToString();
-            e.Graphics.DrawString(pag, lt_pag, Brushes.Black, ptopag, StringFormat.GenericTypographic);
-            // pintamos la fecha
-            PointF ptofec = new PointF(ancho_pag - 80.0F, piy + 15.0F);
-            string fecha = DateTime.Today.ToShortDateString();
-            e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
-            // almacen destino y numero de pedido, fecha y entrega programada
-            posi = posi + alfi;
-            SizeF sizrec = new SizeF(200, piy);
-            PointF ptodir = new PointF(coli + 300, posi);
-            e.Graphics.DrawString("PEDIDO INTERNO", lt_pag, Brushes.Black, ptodir, StringFormat.GenericTypographic);
-            ptodir = new PointF(coli + 500, posi);
-            e.Graphics.DrawString("FECHA DEL PEDIDO", lt_pag, Brushes.Black, ptodir, StringFormat.GenericTypographic);
-            ptodir = new PointF(coli + 700, posi);
-            e.Graphics.DrawString("INGRESO A ALMACEN", lt_pag, Brushes.Black, ptodir, StringFormat.GenericTypographic);
-            ptodir = new PointF(coli + 300, posi + 15.0F);
-            RectangleF recped = new RectangleF(ptodir, sizrec);
-            e.Graphics.DrawRectangle(grueso, Rectangle.Round(recped));
-            //e.Graphics.DrawString(cmb_destino.Text.Substring(0,6) + "   " + tx_codped.Text, lt_tit, Brushes.Black, recped, sf);
-            ptodir = new PointF(coli + 500, posi + 15.0F);
-            RectangleF recfep = new RectangleF(ptodir, sizrec);
-            e.Graphics.DrawRectangle(grueso, Rectangle.Round(recfep));
-            e.Graphics.DrawString(dtp_pedido.Value.ToShortDateString(), lt_tit, Brushes.Black, recfep, sf);
-            ptodir = new PointF(coli + 700, posi + 15.0F);
-            RectangleF recent = new RectangleF(ptodir, sizrec);
-            e.Graphics.DrawRectangle(grueso, Rectangle.Round(recent));
-            e.Graphics.DrawString(dtp_entreg.Value.ToShortDateString(), lt_tit, Brushes.Black, recent, sf);
-            posi = posi + alfi * 6;
-            // pintamos el recuadro de la familia productora        
-            SizeF reclargo = new SizeF(ancho_pag - 50.0F, piy);
-            ptodir = new PointF(coli, posi);
-            RectangleF recfam = new RectangleF(ptodir,reclargo);
-            e.Graphics.DrawRectangle(delgado, Rectangle.Round(recfam));
-            e.Graphics.DrawString("FAMILIA PRODUCTORA " + cmb_taller.Text, lt_tit, Brushes.Black, recfam, sf);
-            //
-            colm = coli + 280.0F;
-            cold = colm + 280.0F;
-            posi = posi + alfi * 3;                                         // avance de fila
-            //Pen blackPen = new Pen(Color.Black, 2);                              // color y grosor de la línea separadora
-            //e.Graphics.DrawLine(blackPen, coli - 1, posi, cold + 160.0F, posi);
-            //posi = posi + alfi;                                         // avance de fila
-            // titulo de las columnas
-            PointF ptoimp = new PointF(col0, posi);
-            e.Graphics.DrawString("CAN", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col1, posi);
-            e.Graphics.DrawString("DESCRIPCION", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString("MADERA", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col3, posi);
-            e.Graphics.DrawString("PIEDRA", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col4, posi);
-            e.Graphics.DrawString("MEDIDAS", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col5, posi);
-            e.Graphics.DrawString("PRECIO", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col6, posi);
-            e.Graphics.DrawString("TOTAL", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            //ptoimp = new PointF(col7, posi);
-            //e.Graphics.DrawString("Medidas", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            //ptoimp = new PointF(col8, posi);
-            //e.Graphics.DrawString("Acabado", lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            posi = posi + alfi + 7.0F;             // avance de fila
-            e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
-            posi = posi + 2;             // avance de fila
-            //
-            return posi;
         }
     }
 }

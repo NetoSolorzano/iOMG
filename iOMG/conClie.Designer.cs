@@ -358,6 +358,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnusuario;
             
+            private global::System.Data.DataColumn columndirEntreg;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public cabeceraDataTable() {
@@ -569,6 +571,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn dirEntregColumn {
+                get {
+                    return this.columndirEntreg;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -626,7 +636,8 @@ namespace iOMG {
                         string valSaldo, 
                         string coment, 
                         string fechEnt, 
-                        string usuario) {
+                        string usuario, 
+                        string dirEntreg) {
                 cabeceraRow rowcabeceraRow = ((cabeceraRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -650,7 +661,8 @@ namespace iOMG {
                         valSaldo,
                         coment,
                         fechEnt,
-                        usuario};
+                        usuario,
+                        dirEntreg};
                 rowcabeceraRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcabeceraRow);
                 return rowcabeceraRow;
@@ -695,6 +707,7 @@ namespace iOMG {
                 this.columncoment = base.Columns["coment"];
                 this.columnfechEnt = base.Columns["fechEnt"];
                 this.columnusuario = base.Columns["usuario"];
+                this.columndirEntreg = base.Columns["dirEntreg"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -744,6 +757,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnfechEnt);
                 this.columnusuario = new global::System.Data.DataColumn("usuario", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnusuario);
+                this.columndirEntreg = new global::System.Data.DataColumn("dirEntreg", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndirEntreg);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1611,6 +1626,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string dirEntreg {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.dirEntregColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'dirEntreg\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.dirEntregColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecabecera.idColumn);
             }
@@ -1871,6 +1902,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetusuarioNull() {
                 this[this.tablecabecera.usuarioColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsdirEntregNull() {
+                return this.IsNull(this.tablecabecera.dirEntregColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetdirEntregNull() {
+                this[this.tablecabecera.dirEntregColumn] = global::System.Convert.DBNull;
             }
         }
         
