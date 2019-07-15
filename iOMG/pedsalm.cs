@@ -1182,6 +1182,64 @@ namespace iOMG
                 }
             }
         }
+        public void escribepag(TabPage pag)
+        {
+            foreach (Control oControls in pag.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = true;
+                }
+            }
+            //
+            foreach (Control oControls in panel1.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = true;
+                }
+            }
+        }
         public static void limpiar(Form ofrm)
         {
             foreach (Control oControls in ofrm.Controls)
@@ -1712,6 +1770,7 @@ namespace iOMG
             advancedDataGridView1.ReadOnly = true;
             tabControl1.SelectedTab = tabuser;
             escribe(this);
+            escribepag(tabuser);
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
             dtp_pedido.Value = DateTime.Now;

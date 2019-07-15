@@ -45,6 +45,7 @@ namespace iOMG
         string sdc = "";                // local de contratos (vacio = todos los locales)
         string raz = "";                // razon social del contrato (vacio si es un solo contador para todos)
         string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
+        int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
         //string cn_adm = "";     // codigo nivel usuario admin
         //string cn_sup = "";     // codigo nivel usuario superusuario
         //string cn_est = "";     // codigo nivel usuario estandar
@@ -320,6 +321,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "local") sdc = row["valor"].ToString().Trim();             // local del contrato, vacio todos los locales
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();             // tipo de documento para contratos
                         if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
+                        if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());         // cantidad de filas de detalle maximo del cont
                     }
                 }
                 da.Dispose();
@@ -462,8 +464,11 @@ namespace iOMG
         }
         private void jaladet(string pedido)     // jala el detalle del contrato
         {
-            string jalad = "SELECT iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,space(1) as na " +
-                "FROM detacon WHERE contratoh = @cont";
+            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment," +
+                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na " +
+                "FROM detacon a " +
+                "left join desc_dt2 b on b.idcodice=a.piedra " +
+                "WHERE a.contratoh = @cont ";
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -493,13 +498,13 @@ namespace iOMG
             }
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
-        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,space(1) as na
+        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 15;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -586,8 +591,14 @@ namespace iOMG
             dataGridView1.Columns[12].Width = 60;                 // ancho
             dataGridView1.Columns[12].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[12].Name = "Piedra";
-            // na (nuevo o actualiza)
+            // codigo piedra
             dataGridView1.Columns[13].Visible = false;
+            dataGridView1.Columns[13].HeaderText = "CodPie";      // titulo de la columna
+            dataGridView1.Columns[13].Width = 60;                 // ancho
+            dataGridView1.Columns[13].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[13].Name = "CodPie";
+            // na (nuevo o actualiza)
+            dataGridView1.Columns[14].Visible = false;
         }
         public void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -916,8 +927,8 @@ namespace iOMG
                                 for (int i = 0; i < dtm.Rows.Count; i++)
                                 {
                                     DataRow fila = dtm.Rows[i];
-                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == aca &&
-                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
+                                    if (mad != "X" && 
+                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
@@ -925,8 +936,8 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
-                                    if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
-                                    fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3)
+                                    if (mad != "X" && 
+                                    fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
@@ -1056,7 +1067,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
-                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                        micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1737,7 +1748,7 @@ namespace iOMG
                 cmb_tal.Focus();
                 return;
             }
-            if (cmb_aca.SelectedIndex == -1)
+            if (tx_d_est.Text.Trim() == "")    // cmb_aca.SelectedIndex == -1
             {
                 MessageBox.Show("Seleccione el acabado", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_aca.Focus();
@@ -1755,7 +1766,7 @@ namespace iOMG
                 cmb_tip.Focus();
                 return;
             }
-            if (cmb_mad.SelectedIndex == -1)
+            if (tx_d_mad.Text.Trim() == "")   //cmb_mad.SelectedIndex == -1
             {
                 MessageBox.Show("Seleccione la madera", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_mad.Focus();
@@ -1791,7 +1802,8 @@ namespace iOMG
             {
                 if (tx_d_id.Text.Trim() != "")
                 {
-                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
+                    // a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment,
+                    //piedra,codpie,na
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[1].Value = tx_d_codi.Text;
                     obj.Cells[2].Value = tx_d_can.Text;
@@ -1805,14 +1817,15 @@ namespace iOMG
                     obj.Cells[10].Value = "";
                     obj.Cells[11].Value = tx_d_com.Text;
                     obj.Cells[12].Value = tx_d_det2.Text;
-                    obj.Cells[13].Value = "N";
+                    obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();     // sera?
+                    obj.Cells[14].Value = "N";
                 }
                 else
                 {
-                    if (dataGridView1.Rows.Count < 100)
+                    if (dataGridView1.Rows.Count < vfdmax)
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, "N");
+                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0,3).Trim(), "N");
                     }
                     else
                     {
