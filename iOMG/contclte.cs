@@ -412,12 +412,12 @@ namespace iOMG
         }
         private void jaladatclt(string id)      // jala datos del cliente
         {
-            int vi = 0;
+            Int32 vi = -1;
             string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),desc_doc.cnt " +
+                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),ifnull(desc_doc.cnt,'') " +
                 "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
                 "where idanagrafica=@idc";
-            try
+            //try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -448,19 +448,19 @@ namespace iOMG
                         tx_telef2.Tag = dr.GetString(9);
                         tx_mail.Text = dr.GetString(10);
                         tx_mail.Tag = dr.GetString(10);
-                        vi = dr.GetInt16(11);
+                        if (dr.GetString(11).Trim() != "") vi = Int32.Parse(dr.GetString(11));
                     }
                     dr.Close();
                     cmb_tdoc.SelectedIndex = vi;    //cmb_tdoc.FindString(tx_dat_tdoc.Text);
                 }
                 conn.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener datos del cliente");
-                Application.Exit();
-                return;
-            }
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Error en obtener datos del cliente");
+            //    Application.Exit();
+            //    return;
+            //}
         }
         private void jaladet(string pedido)     // jala el detalle del contrato
         {
@@ -1288,7 +1288,8 @@ namespace iOMG
             rowcabeza.localVen = cmb_taller.Text;     //.SelectedText.ToString();
             rowcabeza.nomClie = tx_nombre.Text.Trim();
             rowcabeza.numDoc = tx_ndc.Text.Trim();
-            rowcabeza.tipDoc = cmb_tdoc.SelectedItem.ToString();     //.SelectedText;
+            if (cmb_tdoc.SelectedIndex == -1) rowcabeza.tipDoc = "";
+            else rowcabeza.tipDoc = cmb_tdoc.SelectedItem.ToString();     //.SelectedText;
             rowcabeza.tipoCont = cmb_tipo.SelectedText;
             rowcabeza.direc = tx_direc.Text.Trim();
             rowcabeza.distrit = tx_dist.Text.Trim();
