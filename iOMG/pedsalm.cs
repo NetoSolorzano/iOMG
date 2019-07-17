@@ -467,7 +467,7 @@ namespace iOMG
             // codigo madera
             dataGridView1.Columns[10].Visible = false;
             // codigo detalle 2
-            dataGridView1.Columns[11].Visible = false;
+            dataGridView1.Columns[11].Visible = true;   // false
             // fecha de ingreso del articulo
             dataGridView1.Columns[12].Visible = true;            // columna visible o no
             dataGridView1.Columns[12].HeaderText = "F.Ingreso"; // titulo de la columna
@@ -755,7 +755,7 @@ namespace iOMG
             if (cmb_mad.SelectedItem != null) mad = cmb_mad.SelectedItem.ToString().Substring(0, 1);    // 1
             if (cmb_tip.SelectedItem != null) tip = cmb_tip.SelectedItem.ToString().Substring(0, 2);    // 2
             if (cmb_det1.SelectedItem != null) de1 = cmb_det1.SelectedItem.ToString().Substring(0, 2);  // 2
-            if (cmb_aca.SelectedItem != null) aca = cmb_aca.SelectedItem.ToString().Substring(0, 1);    // 1
+            if (cmb_aca.SelectedItem != null) aca = cmb_aca.SelectedItem.ToString().Substring(0, 1);    // 1 
             if (cmb_tal.SelectedItem != null) tal = cmb_tal.SelectedItem.ToString().Substring(0, 2);    // 2
             if (cmb_det2.SelectedItem != null) de2 = cmb_det2.SelectedItem.ToString().Substring(0, 3);  // 3
             if (cmb_det3.SelectedItem != null) de3 = cmb_det3.SelectedItem.ToString().Substring(0, 3);  // 3 _____ total 18
@@ -810,16 +810,16 @@ namespace iOMG
                             {
                                 for (int i = 0; i < dtm.Rows.Count; i++)
                                 {
-                                    DataRow fila = dtm.Rows[i];
-                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == aca &&
+                                    DataRow fila = dtm.Rows[i]; // fila["mader"].ToString() == "X" && 
+                                    if (fila["acaba"].ToString() == aca &&
                                     fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
                                         gol = "1";
                                         break;
-                                    }   // (fila["mader"].ToString() == "X" || 
-                                    if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
+                                    }   // (fila["mader"].ToString() == "X" || ... fila["mader"].ToString() == mad && 
+                                    if (fila["acaba"].ToString() == aca &&
                                     fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
@@ -1617,7 +1617,7 @@ namespace iOMG
                     obj.Cells[8].Value = tx_d_com.Text;
                     obj.Cells[9].Value = cmb_aca.Tag.ToString();
                     obj.Cells[10].Value = cmb_mad.Tag.ToString();
-                    obj.Cells[11].Value = cmb_det2.Tag.ToString();
+                    obj.Cells[11].Value = cmb_det2.Text.Substring(0, 3);  // cmb_det2.Tag.ToString();
                     if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
                     obj.Cells[13].Value = tx_saldo.Text;
                 }

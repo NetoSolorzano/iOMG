@@ -46,6 +46,7 @@ namespace iOMG
         string raz = "";                // razon social del contrato (vacio si es un solo contador para todos)
         string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
         int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
+        string tncont = "";             // tipo de numeracion: AUTOMA o MANUAL
         //string cn_adm = "";     // codigo nivel usuario admin
         //string cn_sup = "";     // codigo nivel usuario superusuario
         //string cn_est = "";     // codigo nivel usuario estandar
@@ -322,6 +323,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();             // tipo de documento para contratos
                         if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
                         if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());         // cantidad de filas de detalle maximo del cont
+                        if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();         // tipo de numeracion de los contratos: MANUAL o AUTOMA 
                     }
                 }
                 da.Dispose();
@@ -991,32 +993,35 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                try
+                if (tncont == "AUTOMA" && tx_codped.Text.Trim() == "")  // modo automatico y el campo vacio
                 {
-                    string vamos = "UPDATE series SET actual=(CONCAT('0', CAST(actual AS SIGNED) + 1)) " +
-                        "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
-                    MySqlCommand covam = new MySqlCommand(vamos, conn);
-                    covam.Parameters.AddWithValue("@tdo", tdc);
-                    covam.Parameters.AddWithValue("@sed", sdc);
-                    covam.Parameters.AddWithValue("@raz", raz);
-                    covam.ExecuteNonQuery();
-                    vamos = "select actual from series " +
-                        "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
-                    covam = new MySqlCommand(vamos, conn);
-                    covam.Parameters.AddWithValue("@tdo", tdc);
-                    covam.Parameters.AddWithValue("@sed", sdc);
-                    covam.Parameters.AddWithValue("@raz", raz);
-                    MySqlDataReader dr = covam.ExecuteReader();
-                    if (dr.Read())
+                    try
                     {
-                        tx_codped.Text = dr.GetString(0);
+                        string vamos = "UPDATE series SET actual=(CONCAT('0', CAST(actual AS SIGNED) + 1)) " +
+                            "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
+                        MySqlCommand covam = new MySqlCommand(vamos, conn);
+                        covam.Parameters.AddWithValue("@tdo", tdc);
+                        covam.Parameters.AddWithValue("@sed", sdc);
+                        covam.Parameters.AddWithValue("@raz", raz);
+                        covam.ExecuteNonQuery();
+                        vamos = "select actual from series " +
+                            "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
+                        covam = new MySqlCommand(vamos, conn);
+                        covam.Parameters.AddWithValue("@tdo", tdc);
+                        covam.Parameters.AddWithValue("@sed", sdc);
+                        covam.Parameters.AddWithValue("@raz", raz);
+                        MySqlDataReader dr = covam.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            tx_codped.Text = dr.GetString(0);
+                        }
+                        dr.Close();
                     }
-                    dr.Close();
-                }
-                catch(MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "Error en obtener # de contrato");
-                    Application.Exit();
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error en obtener # de contrato");
+                        Application.Exit();
+                    }
                 }
                 try
                 {
@@ -1265,7 +1270,31 @@ namespace iOMG
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0";
         }
-        
+        private bool valexist(String docu)                  // valida existencia de documento
+        {
+            bool retorna = true;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string consulta = "select count(*) from contrat where contrato=@doc";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@doc", docu);
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        if (dr.GetInt16(0) > 0) retorna = true;
+                        else retorna = false;
+                    }
+                    dr.Close();
+                }
+            }
+            conn.Close();
+            return retorna;
+        }
+
         #region crystal
         private void setParaCrystal()               // genera el set para el reporte de crystal
         {
@@ -1603,6 +1632,12 @@ namespace iOMG
                 tx_mail.Focus();
                 return;
             }
+            if (tncont == "MANUAL" && tx_codped.Text.Trim() == "")
+            {
+                MessageBox.Show("Ingrese el identificador del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_codped.Focus();
+                return;
+            }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;
             string iserror = "no";
@@ -1616,6 +1651,17 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea crear el contrato?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
+                    if (tncont == "MANUAL" && tx_codped.Text.Trim() != "")  // validar que no exista 
+                    {
+                        if (valexist(tx_codped.Text.Trim()) == true)
+                        {
+                            // true = documento existe
+                            // false = documento no existe
+                            MessageBox.Show("El identificador de contrato YA existe!", "Por favor corrija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            tx_codped.Focus();
+                            return;
+                        }
+                    }
                     if (graba() == true)
                     {
                         // insertamos en el datatable
@@ -2246,7 +2292,8 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_estad.Text = tiesta;
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
-            tx_codped.ReadOnly = true;
+            if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
+            else tx_codped.ReadOnly = false;
             cmb_taller.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
