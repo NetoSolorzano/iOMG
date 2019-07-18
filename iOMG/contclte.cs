@@ -1468,7 +1468,34 @@ namespace iOMG
                 }
             }
             //
-            foreach (Control oControls in panel1.Controls)
+            foreach (Control oControls in tabcodigo.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = false;
+                }
+            }
+            foreach (Control oControls in tabadicion.Controls)
             {
                 if (oControls is TextBox)
                 {
@@ -1549,7 +1576,14 @@ namespace iOMG
                     oControls.Text = "";
                 }
             }
-            foreach (Control oControls in panel1.Controls)
+            foreach (Control oControls in tabcodigo.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
+            foreach (Control oControls in tabadicion.Controls)
             {
                 if (oControls is TextBox)
                 {
