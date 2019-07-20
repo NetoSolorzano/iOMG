@@ -319,6 +319,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\recursos\cancel16.png" />
+    <Content Include="LeeMe.txt" />
     <Content Include="solorsoft.ico" />
   </ItemGroup>
   <ItemGroup>
