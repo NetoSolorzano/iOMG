@@ -85,6 +85,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="adicionals.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="adicionals.designer.cs">
+      <DependentUpon>adicionals.cs</DependentUpon>
+    </Compile>
     <Compile Include="articulos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,6 +208,9 @@
     <Compile Include="users.designer.cs">
       <DependentUpon>users.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="adicionals.resx">
+      <DependentUpon>adicionals.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="articulos.resx">
       <DependentUpon>articulos.cs</DependentUpon>
     </EmbeddedResource>

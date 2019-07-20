@@ -123,6 +123,22 @@ namespace iOMG
                         }
                     }
                 }
+                if (tx_a_codig.Focused == true)     // adicionales
+                {
+                    para1 = "items_adic";
+                    para2 = "todos";
+                    ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
+                    var result = ayu2.ShowDialog();
+                    if (result == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
+                        {
+                            // ayu2.ReturnValue0;
+                            tx_a_codig.Text = ayu2.ReturnValue1;
+                            tx_a_nombre.Text = ayu2.ReturnValue2;
+                        }
+                    }
+                }
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class

@@ -70,6 +70,7 @@ namespace iOMG
         string imgpc5 = "";                                             // imagen5 de menu panel de control
         string imgma1 = "";                                             // imagen 1 maestras - clientes
         string imgma2 = "";                                             // imagen 2 maestras - artículos
+        string imgma3 = "";                                             // imagen 3 maestras - adicionales
         string imgpe1 = "";                                             // imagen 1 pedidos - registro
         string imgpe2 = "";                                             // imagen 2 pedidos - reportes
         string imgvc1 = "";                                             // imagen 1 ventas - contratos
@@ -238,6 +239,7 @@ namespace iOMG
                         if (row["param"].ToString() == "imgpc5") imgpc5 = row["valor"].ToString().Trim();         // imagen5 del menu de facturacion opcion4
                         if (row["param"].ToString() == "imgma1") imgma1 = row["valor"].ToString().Trim();         // imagen1 de maestras - clientes
                         if (row["param"].ToString() == "imgma2") imgma2 = row["valor"].ToString().Trim();         // imagen2 de maestras - articulos 
+                        if (row["param"].ToString() == "imgma3") imgma3 = row["valor"].ToString().Trim();         // imagen3 de maestras - adicionales 
                         if (row["param"].ToString() == "imgpe1") imgpe1 = row["valor"].ToString().Trim();         // imagen1 de pedidos - registro
                         if (row["param"].ToString() == "imgpe2") imgpe2 = row["valor"].ToString().Trim();         // imagen1 de pedidos - reportes
                         if (row["param"].ToString() == "imgvc1") imgvc1 = row["valor"].ToString().Trim();         // imagen1 de ventas contratos
@@ -505,9 +507,11 @@ namespace iOMG
         {
             Image img_ma1 = Image.FromFile(imgma1);
             Image img_ma2 = Image.FromFile(imgma2);
+            Image img_ma3 = Image.FromFile(imgma3);
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Clientes", img_ma1, ma_clientes_Click);                   // clientes
             menuStrip1.Items.Add("Artículos", img_ma2, ma_articulos_Click);                 // articulos 
+            menuStrip1.Items.Add("Adicionales", img_ma3, ma_artadic_Click);                // adicionales para los contratos clientes
             menuStrip1.Visible = true;
         }
         private void ma_clientes_Click(object sender, EventArgs e)
@@ -532,6 +536,17 @@ namespace iOMG
             fma.Anchor = AnchorStyles.None;
             fma.Show();
             fma.BringToFront();
+        }
+        private void ma_artadic_Click(object sender, EventArgs e)
+        {
+            adicionals fad = new adicionals();
+            fad.TopLevel = false;
+            fad.Parent = this;
+            pn_centro.Controls.Add(fad);
+            fad.Location = new Point((pn_centro.Width - fad.Width) / 2, (pn_centro.Height - fad.Height) / 2);
+            fad.Anchor = AnchorStyles.None;
+            fad.Show();
+            fad.BringToFront();
         }
         //
         private void pc_usuarios_Click(object sender, EventArgs e)

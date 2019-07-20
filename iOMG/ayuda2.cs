@@ -73,6 +73,26 @@ namespace iOMG
                 dataGridView1.Columns[3].Width = 80;
                 dataGridView1.Columns[3].ReadOnly = true;
             }
+            if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
+            {
+                consulta = "select codig,nombr,medid,precio " +
+                    "from items_adic";
+                // Acomodamos la grilla 891
+                dataGridView1.Rows.Clear();
+                dataGridView1.ColumnCount = 4;
+                dataGridView1.Columns[0].Name = "CODIGO";
+                dataGridView1.Columns[0].Width = 170;
+                dataGridView1.Columns[0].ReadOnly = true;
+                dataGridView1.Columns[1].Name = "NOMBRE";
+                dataGridView1.Columns[1].Width = 490;
+                dataGridView1.Columns[1].ReadOnly = true;
+                dataGridView1.Columns[2].Name = "MEDIDAS";
+                dataGridView1.Columns[2].Width = 90;
+                dataGridView1.Columns[2].ReadOnly = true;
+                dataGridView1.Columns[3].Name = "PRECIO";
+                dataGridView1.Columns[3].Width = 80;
+                dataGridView1.Columns[3].ReadOnly = true;
+            }
             if (para1 != "" && para2 != "" && para3 == "caja" && para4 == "cobranzas")   // ejemplo libre
             {
                 consulta = "select a.id,concat(a.sercob,a.corcob),b.descrizionerid,a.fechope," +
@@ -135,6 +155,25 @@ namespace iOMG
                 try
                 {
                     if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
+                    {
+                        MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
+                        if (para3 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@ser", para1);
+                        if (para4 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@cor", int.Parse(para2));
+                        mdaDatos.Fill(dtDatos);
+                        int li = 0;   // contador de las lineas a llenar el datagrid
+                        for (li = 0; li < dtDatos.Rows.Count; li++) // 
+                        {
+                            DataRow row = dtDatos.Rows[li];
+                            // (li + 1).ToString(),
+                            dataGridView1.Rows.Add(
+                                                row.ItemArray[0].ToString(),
+                                                row.ItemArray[1].ToString(),
+                                                row.ItemArray[2].ToString(),
+                                                row.ItemArray[3].ToString()
+                                                );
+                        }
+                    }
+                    if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")
                     {
                         MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
                         if (para3 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@ser", para1);
