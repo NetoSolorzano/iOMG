@@ -356,7 +356,7 @@ namespace iOMG
                     this.cmb_cap.ValueMember = row.ItemArray[1].ToString(); //citem_cap.Value.ToString();
                 }
                 // seleccion de modelo
-                const string conmod = "select descrizionerid,idcodice from desc_mda " +
+                const string conmod = "select idcodice,descrizionerid from desc_mda " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdmod = new MySqlCommand(conmod, conn);
                 DataTable dtmod = new DataTable();
@@ -380,6 +380,21 @@ namespace iOMG
                 {
                     this.cmb_mad.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());   // citem_mad
                     this.cmb_mad.ValueMember = row.ItemArray[1].ToString(); //citem_mad.Value.ToString();
+                }
+                // seleccion de tipo de adicional
+                cmb_tip.Items.Clear();
+                tx_dat_tip.Text = "";
+                const string contip = "select descrizionerid,idcodice from desc_tad " +
+                    "where numero=1";
+                MySqlCommand cmdtip = new MySqlCommand(contip, conn);
+                DataTable dttip = new DataTable();
+                MySqlDataAdapter datip = new MySqlDataAdapter(cmdtip);
+                datip.Fill(dttip);
+                foreach (DataRow row in dttip.Rows)
+                {
+                    cmb_tip.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
+                    cmb_tip.ValueMember = row.ItemArray[1].ToString();
+                    MessageBox.Show("osea voy bien", "hasta aca");
                 }
                 // seleccion de detalle1
                 this.cmb_det1.Items.Clear();
