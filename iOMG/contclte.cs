@@ -47,6 +47,7 @@ namespace iOMG
         string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
         int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
         string tncont = "";             // tipo de numeracion: AUTOMA o MANUAL
+        string letgru = "";            // letra identificado en campo "CAPIT" para ADICIONAL
         //string cn_adm = "";     // codigo nivel usuario admin
         //string cn_sup = "";     // codigo nivel usuario superusuario
         //string cn_est = "";     // codigo nivel usuario estandar
@@ -295,10 +296,11 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped)";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
                 micon.Parameters.AddWithValue("@ped", "contratos");
+                micon.Parameters.AddWithValue("@adi", "adicionals");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -341,6 +343,13 @@ namespace iOMG
                         if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());         // cantidad de filas de detalle maximo del cont
                         if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();         // tipo de numeracion de los contratos: MANUAL o AUTOMA 
                     }
+                    if (row["formulario"].ToString() == "adicionals")
+                    {
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();    // capitulo
+                        //if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "talleres") talleres = row["valor"].ToString().Trim(); // tallerres
+                        // resto
+                    }
+
                 }
                 da.Dispose();
                 dt.Dispose();
@@ -2003,6 +2012,119 @@ namespace iOMG
             cmb_det3.SelectedIndex = -1;
             //
             calculos();
+        }        // detalle articulos 
+        private void button2_Click(object sender, EventArgs e)          // detalle adicionales
+        {
+            if (tx_a_nombre.Text == "")
+            {
+                MessageBox.Show("El código no existe en la maestra", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_a_nombre.Focus();
+                return;
+            }
+            if (tx_a_cant.Text == "")
+            {
+                MessageBox.Show("Falta la cantidad", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_a_cant.Focus();
+                return;
+            }
+            if(tx_a_total.Text == "")
+            {
+                MessageBox.Show("Falta el precio", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_a_precio.Focus();
+                return;
+            }
+            if (Tx_modo.Text == "NUEVO")
+            {
+                if (tx_d_id.Text.Trim() != "")
+                {
+                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                    obj.Cells[1].Value = tx_a_codig.Text;
+                    obj.Cells[2].Value = tx_a_cant.Text;
+                    obj.Cells[3].Value = tx_a_nombre.Text;
+                    obj.Cells[4].Value = tx_a_medid.Text;
+                    obj.Cells[5].Value = "";
+                    obj.Cells[6].Value = tx_a_precio.Text;
+                    obj.Cells[7].Value = tx_a_total.Text;
+                    obj.Cells[8].Value = tx_a_cant.Text;
+                    obj.Cells[9].Value = "";
+                    obj.Cells[10].Value = "";
+                    obj.Cells[11].Value = tx_a_comen.Text;
+                    obj.Cells[12].Value = "";
+                    obj.Cells[13].Value = "";
+                    obj.Cells[14].Value = "N";
+                }
+                else
+                {
+                    if (dataGridView1.Rows.Count < vfdmax)
+                    {
+                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
+                             "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Límite de filas por contrato alcanzado", "No se puede insertar mas filas",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+            }
+            if (Tx_modo.Text == "EDITAR")
+            {
+                if (!escambio.Contains(tx_dat_estad.Text))
+                {
+                    MessageBox.Show("El estado actual del contrato no permite modificar el detalle",
+                        "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
+                if (tx_d_id.Text.Trim() != "")
+                {
+                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
+                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                    obj.Cells[1].Value = tx_a_codig.Text;
+                    obj.Cells[2].Value = tx_a_cant.Text;
+                    obj.Cells[3].Value = tx_a_nombre.Text;
+                    obj.Cells[4].Value = tx_a_medid.Text;
+                    obj.Cells[5].Value = "";
+                    obj.Cells[6].Value = tx_a_precio.Text;
+                    obj.Cells[7].Value = tx_a_total.Text;
+                    obj.Cells[8].Value = tx_a_salcan.Text;
+                    obj.Cells[9].Value = "";
+                    obj.Cells[10].Value = "";
+                    obj.Cells[11].Value = tx_a_comen.Text;
+                    obj.Cells[12].Value = "";
+                    obj.Cells[13].Value = "";
+                    obj.Cells[14].Value = "A";  // registro actualizado
+                }
+                else
+                {
+                    DataTable dtg = (DataTable)dataGridView1.DataSource;
+                    DataRow tr = dtg.NewRow();
+                    tr["iddetacon"] = "0";  // dataGridView1.Rows.Count;
+                    tr["item"] = tx_a_codig.Text;
+                    tr["cant"] = tx_a_cant.Text;
+                    tr["nombre"] = tx_a_nombre.Text;
+                    tr["medidas"] = tx_a_medid.Text;
+                    tr["madera"] = "";
+                    tr["precio"] = tx_a_precio.Text;
+                    tr["total"] = tx_a_total.Text;
+                    tr["saldo"] = tx_a_salcan.Text;
+                    tr["pedido"] = "";
+                    tr["codref"] = "";
+                    tr["coment"] = tx_a_comen.Text;
+                    tr["piedra"] = "";
+                    tr["na"] = "N";
+                    dtg.Rows.Add(tr);
+                }
+            }
+            tx_a_id.Text = "";
+            tx_a_cant.Text = "";
+            tx_a_codig.Text = "";
+            tx_a_nombre.Text = "";
+            tx_a_medid.Text = "";
+            tx_a_precio.Text = "";
+            tx_a_total.Text = "";
+            //tx_saldo.Text = "";
+            calculos();
         }
         #endregion boton_form;
 
@@ -2745,50 +2867,65 @@ namespace iOMG
                 {
                     tx_saldo.Enabled = false;
                 }
-                tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
-                tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
-                tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
-                tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
-                tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
-                tx_d_prec.Text = dataGridView1.Rows[e.RowIndex].Cells["precio"].Value.ToString();
-                tx_d_total.Text = dataGridView1.Rows[e.RowIndex].Cells["total"].Value.ToString();
-                tx_d_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();
-                tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
-                tx_d_det2.Text = dataGridView1.Rows[e.RowIndex].Cells["piedra"].Value.ToString();
-                string fam = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0, 1);
-                string mod = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(1, 3);
-                string mad = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(4, 1);
-                string tip = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(5, 2);
-                string de1 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(7, 2);
-                string aca = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(9, 1);
-                string tal = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(10, 2);
-                string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
-                string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
+                if(dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString() == letgru)
+                {
+                    tx_a_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
+                    tx_a_cant.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
+                    tx_a_codig.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
+                    tx_a_nombre.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+                    tx_a_medid.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
+                    tx_a_precio.Text = dataGridView1.Rows[e.RowIndex].Cells["precio"].Value.ToString();
+                    tx_a_total.Text = dataGridView1.Rows[e.RowIndex].Cells["total"].Value.ToString();
+                    tx_a_salcan.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();
+                    tx_a_comen.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
+                }
+                else
+                {
+                    tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+                    tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
+                    tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
+                    tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
+                    tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
+                    tx_d_prec.Text = dataGridView1.Rows[e.RowIndex].Cells["precio"].Value.ToString();
+                    tx_d_total.Text = dataGridView1.Rows[e.RowIndex].Cells["total"].Value.ToString();
+                    tx_d_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();
+                    tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
+                    tx_d_det2.Text = dataGridView1.Rows[e.RowIndex].Cells["piedra"].Value.ToString();
+                    string fam = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0, 1);
+                    string mod = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(1, 3);
+                    string mad = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(4, 1);
+                    string tip = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(5, 2);
+                    string de1 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(7, 2);
+                    string aca = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(9, 1);
+                    string tal = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(10, 2);
+                    string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
+                    string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
 
-                cmb_fam.Tag = fam;
-                cmb_fam.SelectedIndex = cmb_fam.FindString(cmb_fam.Tag.ToString());
-                cmb_mod.Tag = mod;
-                cmb_mod.SelectedIndex = cmb_mod.FindString(cmb_mod.Tag.ToString());
-                cmb_mad.Tag = mad;
-                cmb_mad.SelectedIndex = cmb_mad.FindString(cmb_mad.Tag.ToString());
-                cmb_mad_SelectionChangeCommitted(null, null);
-                cmb_tip.Tag = tip;
-                cmb_tip.SelectedIndex = cmb_tip.FindString(cmb_tip.Tag.ToString());
-                cmb_det1.Tag = de1;
-                cmb_det1.SelectedIndex = cmb_det1.FindString(cmb_det1.Tag.ToString());
-                cmb_det1_SelectionChangeCommitted(null, null);
-                cmb_aca.Tag = aca;
-                cmb_aca.SelectedIndex = cmb_aca.FindString(cmb_aca.Tag.ToString());
-                cmb_aca_SelectionChangeCommitted(null, null);
-                cmb_tal.Tag = tal;
-                cmb_tal.SelectedIndex = 0;  //cmb_tal.FindString(cmb_tal.Tag.ToString());
-                cmb_det2.Tag = de2;
-                cmb_det2.SelectedIndex = cmb_det2.FindString(cmb_det2.Tag.ToString());
-                cmb_det2_SelectionChangeCommitted(null, null);
-                cmb_det3.Tag = de3;
-                cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
-                cmb_det3_SelectionChangeCommitted(null, null);
-                //tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
+                    cmb_fam.Tag = fam;
+                    cmb_fam.SelectedIndex = cmb_fam.FindString(cmb_fam.Tag.ToString());
+                    cmb_mod.Tag = mod;
+                    cmb_mod.SelectedIndex = cmb_mod.FindString(cmb_mod.Tag.ToString());
+                    cmb_mad.Tag = mad;
+                    cmb_mad.SelectedIndex = cmb_mad.FindString(cmb_mad.Tag.ToString());
+                    cmb_mad_SelectionChangeCommitted(null, null);
+                    cmb_tip.Tag = tip;
+                    cmb_tip.SelectedIndex = cmb_tip.FindString(cmb_tip.Tag.ToString());
+                    cmb_det1.Tag = de1;
+                    cmb_det1.SelectedIndex = cmb_det1.FindString(cmb_det1.Tag.ToString());
+                    cmb_det1_SelectionChangeCommitted(null, null);
+                    cmb_aca.Tag = aca;
+                    cmb_aca.SelectedIndex = cmb_aca.FindString(cmb_aca.Tag.ToString());
+                    cmb_aca_SelectionChangeCommitted(null, null);
+                    cmb_tal.Tag = tal;
+                    cmb_tal.SelectedIndex = 0;  //cmb_tal.FindString(cmb_tal.Tag.ToString());
+                    cmb_det2.Tag = de2;
+                    cmb_det2.SelectedIndex = cmb_det2.FindString(cmb_det2.Tag.ToString());
+                    cmb_det2_SelectionChangeCommitted(null, null);
+                    cmb_det3.Tag = de3;
+                    cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
+                    cmb_det3_SelectionChangeCommitted(null, null);
+                    //tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
+                }
             }
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e) // me que de aca ..revisar y probar esto!
@@ -2869,6 +3006,46 @@ namespace iOMG
             bt_prev.Enabled = false;
             bt_exc.Enabled = true;
         }
+
+        private void tx_a_codig_Leave(object sender, EventArgs e)
+        {
+            tx_a_nombre.Text = "";
+            tx_a_medid.Text = "";
+            tx_a_precio.Text = "";
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {   // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio from items_adic
+                string consulta = "select id,codig,nombr,medid,precio from items_adic where codig=@cod";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@cod", tx_a_codig.Text.Trim());
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        tx_a_nombre.Text = dr.GetString(2);
+                        tx_a_medid.Text = dr.GetString(3);
+                        tx_a_precio.Text = dr.GetString(4);
+                        if(tx_a_cant.Text.Trim() != "" && tx_a_cant.Text.Trim() != "0" && tx_a_precio.Text != "")
+                        {
+                            tx_a_total.Text = (double.Parse(tx_a_cant.Text) * double.Parse(tx_a_precio.Text)).ToString();
+                        }
+                    }
+                    dr.Close();
+                }
+            }
+            conn.Close();
+        }
+
+        private void tx_a_precio_Leave(object sender, EventArgs e)
+        {
+            if (tx_a_cant.Text.Trim() != "" && tx_a_cant.Text.Trim() != "0" && tx_a_precio.Text != "")
+            {
+                tx_a_total.Text = (double.Parse(tx_a_cant.Text) * double.Parse(tx_a_precio.Text)).ToString();
+            }
+        }
+
         private void tabuser_Enter(object sender, EventArgs e)
         {
             Bt_anul.Enabled = false;

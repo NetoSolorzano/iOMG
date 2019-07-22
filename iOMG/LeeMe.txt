@@ -1,6 +1,7 @@
 ﻿// Información técnica sobre desarrollo del proyecto
-- me quede en maestra de adicionales ... cmb_tip no esta mostrando datos
+- me quede en Contratos: 21/07/2019
+FALTA PROBAR LA CREACION Y EDICION DE CONTRATOS CON CODIGOS ADICIONALES
+CREAR EN EL FORMATO DE IMPRESION UN ESPACIO O ENUNCIADO PARA LOS ADICIONALES
 
-- me quede en Contratos:
-verificar funcionamiento de EDITAR, VISUALIZAR, ANULAR (DEBE PREGUNTAR SI ANULA O BORRA)
-- 19/07/2019 me quede en formulario adicionals
+- verificar funcionamiento de EDITAR, VISUALIZAR, ANULAR (DEBE PREGUNTAR SI ANULA O BORRA)
+

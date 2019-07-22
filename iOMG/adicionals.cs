@@ -36,6 +36,7 @@ namespace iOMG
         string img_grab = "";
         string img_anul = "";
         string letgru = "";             // letras de capitulo "adicionales"
+        string talleres = "";           // taller habilitados
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -45,7 +46,7 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         DataTable dtg = new DataTable();
-        DataTable dtu = new DataTable();    // dtg primario, original con la carga del form
+        //DataTable dtu = new DataTable();    // dtg primario, original con la carga del form
 
         public adicionals()
         {
@@ -117,39 +118,39 @@ namespace iOMG
             advancedDataGridView1.DataSource = dtg;
             // id 
             advancedDataGridView1.Columns[0].Visible = false;
-            // tipo de documento
+            // codigo del adicional
             advancedDataGridView1.Columns[1].Visible = true;            // columna visible o no
             advancedDataGridView1.Columns[1].HeaderText = "Código";    // titulo de la columna
             advancedDataGridView1.Columns[1].Width = 120;                // ancho
             advancedDataGridView1.Columns[1].ReadOnly = true;           // lectura o no
-            advancedDataGridView1.Columns[1].Tag = "validaNO";
+            advancedDataGridView1.Columns[1].Tag = "validaSI";
             advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // familia
             advancedDataGridView1.Columns[2].Visible = true;
             advancedDataGridView1.Columns[2].HeaderText = "Capitulo";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 50;                // ancho
-            advancedDataGridView1.Columns[2].ReadOnly = false;           // lectura o no
+            advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             advancedDataGridView1.Columns[2].Tag = "validaSI";
             advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // modelo
             advancedDataGridView1.Columns[3].Visible = true;       
             advancedDataGridView1.Columns[3].HeaderText = "Modelo";
             advancedDataGridView1.Columns[3].Width = 50;
-            advancedDataGridView1.Columns[3].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[3].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // madera
             advancedDataGridView1.Columns[4].Visible = true;
             advancedDataGridView1.Columns[4].HeaderText = "Madera";
             advancedDataGridView1.Columns[4].Width = 50;
-            advancedDataGridView1.Columns[4].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[4].Tag = "validaSI";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // tipologia
             advancedDataGridView1.Columns[5].Visible = true;       
-            advancedDataGridView1.Columns[5].HeaderText = "Topología";
+            advancedDataGridView1.Columns[5].HeaderText = "Tipología";
             advancedDataGridView1.Columns[5].Width = 50;
-            advancedDataGridView1.Columns[5].ReadOnly = false;
+            advancedDataGridView1.Columns[5].ReadOnly = true;
             advancedDataGridView1.Columns[5].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // detalle 1
@@ -177,14 +178,14 @@ namespace iOMG
             advancedDataGridView1.Columns[9].Visible = true;
             advancedDataGridView1.Columns[9].HeaderText = "Det.2";
             advancedDataGridView1.Columns[9].Width = 50;
-            advancedDataGridView1.Columns[9].ReadOnly = false;
+            advancedDataGridView1.Columns[9].ReadOnly = true;
             advancedDataGridView1.Columns[9].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // detalle 3
             advancedDataGridView1.Columns[10].Visible = true;
             advancedDataGridView1.Columns[10].HeaderText = "Det.3";
             advancedDataGridView1.Columns[10].Width = 50;
-            advancedDataGridView1.Columns[10].ReadOnly = false;
+            advancedDataGridView1.Columns[10].ReadOnly = true;
             advancedDataGridView1.Columns[10].Tag = "validaSI";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // nombre
@@ -253,7 +254,7 @@ namespace iOMG
                     if (row["formulario"].ToString() == "adicionals")
                     {
                         if(row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();    // capitulo
-                        //if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "modelo") codmod = row["valor"].ToString().Trim();     // modelo
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "talleres") talleres = row["valor"].ToString().Trim(); // tallerres
                         // resto
                     }
                 }
@@ -316,28 +317,10 @@ namespace iOMG
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
-                dag.Fill(dtu);  // original con la carga
+                //dag.Fill(dtu);  // original con la carga
                 dag.Dispose();
             }
             //  datos para el combobox de tipo de documento
-            if (quien == "capit")
-            {
-                cmb_tip.Items.Clear();
-                //tx_dat_tip.Text = "";
-                const string contip = "select b.descrizione,a.tipol from items_adic a " +
-                    "left join desc_tip b on b.idcodice=a.tipol " +
-                    "where a.capit=@des group by a.tipol";
-                MySqlCommand cmdtip = new MySqlCommand(contip, conn);
-                cmdtip.Parameters.AddWithValue("@des", tx_dat_cap.Text.Trim());
-                DataTable dttip = new DataTable();
-                MySqlDataAdapter datip = new MySqlDataAdapter(cmdtip);
-                datip.Fill(dttip);
-                foreach (DataRow row in dttip.Rows)
-                {
-                    cmb_tip.Items.Add(row.ItemArray[1].ToString());
-                    cmb_tip.ValueMember = row.ItemArray[1].ToString();
-                }
-            }
             if (quien == "todos")
             {
                 // seleccion de capitulo
@@ -394,7 +377,6 @@ namespace iOMG
                 {
                     cmb_tip.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
                     cmb_tip.ValueMember = row.ItemArray[1].ToString();
-                    MessageBox.Show("osea voy bien", "hasta aca");
                 }
                 // seleccion de detalle1
                 this.cmb_det1.Items.Clear();
@@ -421,15 +403,16 @@ namespace iOMG
                 daaca.Fill(dtaca);
                 foreach (DataRow row in dtaca.Rows)
                 {
-                    this.cmb_aca.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());   // citem_aca
-                    this.cmb_aca.ValueMember = row.ItemArray[1].ToString(); //citem_aca.Value.ToString();
+                    cmb_aca.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());   // citem_aca
+                    cmb_aca.ValueMember = row.ItemArray[1].ToString(); //citem_aca.Value.ToString();
                 }
                 // seleccion de taller
                 this.cmb_tal.Items.Clear();
                 tx_dat_tal.Text = "";
                 const string contal = "select descrizionerid,codigo from desc_loc " +
-                    "where numero=1";
+                    "where numero=1 and idcodice in (@talleres)";
                 MySqlCommand cmdtal = new MySqlCommand(contal, conn);
+                cmdtal.Parameters.AddWithValue("@talleres", talleres);
                 DataTable dttal = new DataTable();
                 MySqlDataAdapter datal = new MySqlDataAdapter(cmdtal);
                 datal.Fill(dttal);
@@ -654,7 +637,7 @@ namespace iOMG
             }
             if (tx_dat_tip.Text.Trim() == "")
             {
-                MessageBox.Show("Ingrese el tipo de artículo", " Error! ");
+                MessageBox.Show("Ingrese el tipo de adicional", " Error! ");
                 cmb_tip.Focus();
                 return;
             }
@@ -666,7 +649,7 @@ namespace iOMG
             }
             if (tx_dat_aca.Text.Trim() == "")
             {
-                MessageBox.Show("Ingrese la dirección", " Error! ");
+                MessageBox.Show("Ingrese el acabado", " Error! ");
                 cmb_aca.Focus();
                 return;
             }
@@ -705,7 +688,7 @@ namespace iOMG
                         // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles2018
                         string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
                             tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
-                            tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
+                            tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
                         dr[1] = codi;
                         dr[2] = tx_dat_cap.Text.Trim();
                         dr[3] = tx_dat_mod.Text.Trim();
@@ -716,13 +699,12 @@ namespace iOMG
                         dr[8] = tx_dat_tal.Text.Trim();
                         dr[9] = tx_dat_det2.Text.Trim();
                         dr[10] = tx_dat_det3.Text.Trim();
-                        //micon.Parameters.AddWithValue("@jgo", "N000");
                         dr[11] = tx_nombre.Text.Trim();
                         dr[12] = tx_medidas.Text.Trim();
-                        dr[13] = "C.U.";
-                        dr[14] = tx_umed.Text;
+                        dr[13] = tx_precio.Text; //tx_umed.Text;
+                        //dr[14] = tx_precio.Text;
                         dtg.Rows.Add(dr);
-                        dtu.Rows.Add(dr);
+                        //dtu.Rows.Add(dr);
                     }
                     else
                     {
@@ -753,7 +735,6 @@ namespace iOMG
             if (modo == "ANULAR")       // opción para borrar
             { 
                 // 
-
             }
             if (iserror == "no")
             {
@@ -775,7 +756,7 @@ namespace iOMG
                 {
                     string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
                     tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
-                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
+                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
                     string inserta = "insert into items_adic (" +
                         "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio) values (" +
                         "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@nomb,@medi,@prec)";
@@ -821,8 +802,8 @@ namespace iOMG
                 {
                     string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
                     tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
-                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
-                    string actua = "update items set " +
+                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
+                    string actua = "update items_adic set " +
                         "codig=@codi,capit=@capi,model=@mode,mader=@made,tipol=@tipo,deta1=@det1,acaba=@acab,talle=@tall," +
                         "deta2=@det2,deta3=@det3,nombr=@nomb,medid=@medi,precio=@prec " +
                         "where id=@idr";
@@ -1092,40 +1073,49 @@ namespace iOMG
         #region comboboxes
         private void cmb_cap_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_cap.Text = cmb_cap.SelectedItem.ToString().Substring(0, 1);
-            dataload("capit");
+            if (cmb_cap.SelectedItem == null) tx_dat_cap.Text = "";
+            else tx_dat_cap.Text = cmb_cap.SelectedItem.ToString().Substring(0, 1);
+            //dataload("capit");
         }
         private void cmb_mod_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_mod.Text = cmb_mod.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_mod.SelectedItem == null) tx_dat_mod.Text = "";
+            else tx_dat_mod.Text = cmb_mod.SelectedItem.ToString().Substring(0, 3);
         }
         private void cmb_mad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
+            if (cmb_mad.SelectedItem == null) tx_dat_mad.Text = "";
+            else tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_tip.Text = cmb_tip.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_tip.SelectedItem == null) tx_dat_tip.Text = "";
+            else tx_dat_tip.Text = cmb_tip.SelectedItem.ToString().Substring(0, 2);
         }
         private void cmb_det1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_det1.Text = cmb_det1.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_det1.SelectedItem == null) tx_dat_det1.Text = "";
+            else tx_dat_det1.Text = cmb_det1.SelectedItem.ToString().Substring(0, 2);
         }
         private void cmb_aca_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_aca.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
+            if (cmb_aca.SelectedItem == null) tx_dat_aca.Text = "";
+            else tx_dat_aca.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
         }
         private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_tal.SelectedItem == null) tx_dat_tal.Text = "";
+            else tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
         }
         private void cmb_det2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_det2.SelectedItem == null) tx_dat_det2.Text = "";
+            else tx_dat_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
         }
         private void cmb_det3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_det3.Text = cmb_det3.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_det3.SelectedItem == null) tx_dat_det3.Text = "";
+            else tx_dat_det3.Text = cmb_det3.SelectedItem.ToString().Substring(0, 3);
         }
         #endregion comboboxes
 
@@ -1141,7 +1131,7 @@ namespace iOMG
             {
                 if(true == true)    // no hay otros filtros
                 {
-                    advancedDataGridView1.DataSource = dtu;
+                    //advancedDataGridView1.DataSource = dtu;
                 }
             }
         }
@@ -1198,7 +1188,7 @@ namespace iOMG
                             if (lib.validac("desc_gru", "idcodice", e.FormattedValue.ToString()) == true)
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                                //lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                             }
                             else
                             {
@@ -1244,7 +1234,7 @@ namespace iOMG
                             if (lib.validac("desc_tip", "idcodice", e.FormattedValue.ToString()) == true)
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                                //lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                             }
                             else
                             {
@@ -1262,11 +1252,12 @@ namespace iOMG
                             else
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                                //lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                             }
                         }
                         if(e.ColumnIndex == 7)          // valida acabado
                         {
+                            /*
                             if (lib.validac("desc_est", "idcodice", e.FormattedValue.ToString()) == false)
                             {
                                 MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
@@ -1276,11 +1267,12 @@ namespace iOMG
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
                                 lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
+                            }*/
                         }
                         // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles,soles2018
                         if(e.ColumnIndex == 8)          // valida detalle 2
                         {
+                            /*
                             if (lib.validac("desc_dt2", "idcodice", e.FormattedValue.ToString()) == false)
                             {
                                 MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
@@ -1290,10 +1282,11 @@ namespace iOMG
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
                                 lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
+                            }*/
                         }
-                        if(e.ColumnIndex == 9)          // valida detalle 3
-                        {
+                        if (e.ColumnIndex == 9)          // valida detalle 3
+                        { 
+                            /*
                             if (lib.validac("desc_dt3", "idcodice", e.FormattedValue.ToString()) == false)
                             {
                                 MessageBox.Show("El valor no es válido para la columna", "Atención - Corrija");
@@ -1303,7 +1296,7 @@ namespace iOMG
                             {
                                 // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
                                 lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
+                            }*/
                         }
                     }
                     else
