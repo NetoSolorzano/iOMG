@@ -459,6 +459,15 @@
             // tabreg
             // 
             this.tabreg.BackColor = System.Drawing.Color.DimGray;
+            this.tabreg.Controls.Add(this.tx_dat_det3);
+            this.tabreg.Controls.Add(this.tx_dat_det2);
+            this.tabreg.Controls.Add(this.tx_dat_tal);
+            this.tabreg.Controls.Add(this.tx_dat_aca);
+            this.tabreg.Controls.Add(this.tx_dat_det1);
+            this.tabreg.Controls.Add(this.tx_dat_tip);
+            this.tabreg.Controls.Add(this.tx_dat_mad);
+            this.tabreg.Controls.Add(this.tx_dat_mod);
+            this.tabreg.Controls.Add(this.tx_dat_cap);
             this.tabreg.Controls.Add(this.groupBox13);
             this.tabreg.Controls.Add(this.tx_precio);
             this.tabreg.Controls.Add(this.label7);
@@ -472,7 +481,6 @@
             this.tabreg.Controls.Add(this.groupBox1);
             this.tabreg.Controls.Add(this.tx_umed);
             this.tabreg.Controls.Add(this.label3);
-            this.tabreg.Controls.Add(this.tx_dat_det3);
             this.tabreg.Controls.Add(this.label8);
             this.tabreg.Controls.Add(this.cmb_det3);
             this.tabreg.Controls.Add(this.label18);
@@ -484,14 +492,6 @@
             this.tabreg.Controls.Add(this.label11);
             this.tabreg.Controls.Add(this.label10);
             this.tabreg.Controls.Add(this.label6);
-            this.tabreg.Controls.Add(this.tx_dat_det2);
-            this.tabreg.Controls.Add(this.tx_dat_tal);
-            this.tabreg.Controls.Add(this.tx_dat_aca);
-            this.tabreg.Controls.Add(this.tx_dat_det1);
-            this.tabreg.Controls.Add(this.tx_dat_tip);
-            this.tabreg.Controls.Add(this.tx_dat_mad);
-            this.tabreg.Controls.Add(this.tx_dat_mod);
-            this.tabreg.Controls.Add(this.tx_dat_cap);
             this.tabreg.Controls.Add(this.tx_medidas);
             this.tabreg.Controls.Add(this.label2);
             this.tabreg.Controls.Add(this.tx_nombre);

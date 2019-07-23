@@ -681,35 +681,44 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea crear el adicional?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(aa == DialogResult.Yes)
                 {
-                    if(graba() == true)
+                    string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
+                        tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
+                        tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
+                    if (existe(codi) == false)                      // si existe=false no existe el codigo
                     {
-                        // insertamos en el datatable
-                        DataRow dr = dtg.NewRow();
-                        // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles2018
-                        string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
-                            tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
-                            tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
-                        dr[1] = codi;
-                        dr[2] = tx_dat_cap.Text.Trim();
-                        dr[3] = tx_dat_mod.Text.Trim();
-                        dr[4] = tx_dat_mad.Text.Trim();
-                        dr[5] = tx_dat_tip.Text.Trim();
-                        dr[6] = tx_dat_det1.Text.Trim();
-                        dr[7] = tx_dat_aca.Text.Trim();
-                        dr[8] = tx_dat_tal.Text.Trim();
-                        dr[9] = tx_dat_det2.Text.Trim();
-                        dr[10] = tx_dat_det3.Text.Trim();
-                        dr[11] = tx_nombre.Text.Trim();
-                        dr[12] = tx_medidas.Text.Trim();
-                        dr[13] = tx_precio.Text; //tx_umed.Text;
-                        //dr[14] = tx_precio.Text;
-                        dtg.Rows.Add(dr);
-                        //dtu.Rows.Add(dr);
+                        if (graba() == true)
+                        {
+                            // insertamos en el datatable
+                            DataRow dr = dtg.NewRow();
+                            // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles2018
+                            dr[1] = codi;
+                            dr[2] = tx_dat_cap.Text.Trim();
+                            dr[3] = tx_dat_mod.Text.Trim();
+                            dr[4] = tx_dat_mad.Text.Trim();
+                            dr[5] = tx_dat_tip.Text.Trim();
+                            dr[6] = tx_dat_det1.Text.Trim();
+                            dr[7] = tx_dat_aca.Text.Trim();
+                            dr[8] = tx_dat_tal.Text.Trim();
+                            dr[9] = tx_dat_det2.Text.Trim();
+                            dr[10] = tx_dat_det3.Text.Trim();
+                            dr[11] = tx_nombre.Text.Trim();
+                            dr[12] = tx_medidas.Text.Trim();
+                            dr[13] = tx_precio.Text; //tx_umed.Text;
+                                                     //dr[14] = tx_precio.Text;
+                            dtg.Rows.Add(dr);
+                            //dtu.Rows.Add(dr);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se pudo grabar el adicional", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Application.Exit();
+                            return;
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo grabar el adicional", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Application.Exit();
+                        MessageBox.Show("El código ya existe!", "Revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        cmb_cap.Focus();
                         return;
                     }
                 }
@@ -724,7 +733,34 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea modificar el adicional?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    edita();
+                    if (edita() == true)
+                    {
+                        // actualizamos el datatable
+                        for (int i = 0; i < dtg.Rows.Count; i++)
+                        {
+                            DataRow row = dtg.Rows[i];
+                            if (row[0].ToString() == tx_idr.Text)
+                            {
+                                string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
+                                    tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
+                                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
+                                // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio
+                                dtg.Rows[i][1] = codi;
+                                dtg.Rows[i][2] = tx_dat_cap.Text.Trim();
+                                dtg.Rows[i][3] = tx_dat_mod.Text.Trim();
+                                dtg.Rows[i][4] = tx_dat_mad.Text.Trim();
+                                dtg.Rows[i][5] = tx_dat_tip.Text.Trim();
+                                dtg.Rows[i][6] = tx_dat_det1.Text.Trim();
+                                dtg.Rows[i][7] = tx_dat_aca.Text.Trim();
+                                dtg.Rows[i][8] = tx_dat_tal.Text.Trim();
+                                dtg.Rows[i][9] = tx_dat_det2.Text.Trim();
+                                dtg.Rows[i][10] = tx_dat_det3.Text.Trim();
+                                dtg.Rows[i][11] = tx_nombre.Text.Trim();
+                                dtg.Rows[i][12] = tx_medidas.Text.Trim();
+                                dtg.Rows[i][13] = tx_precio.Text;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -792,8 +828,9 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private void edita()
+        private bool edita()
         {
+            bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
@@ -829,14 +866,36 @@ namespace iOMG
                     MessageBox.Show(ex.Message, "Error en conexión");
                     Application.Exit();
                 }
+                retorna = true;
             }
             else
             {
                 MessageBox.Show("No fue posible conectarse al servidor de datos");
                 Application.Exit();
-                return;
             }
             conn.Close();
+            return retorna;
+        }
+        private bool existe(string vcod)       // valida si el codigo ya existe
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string consulta = "select count(codig) from items_adic where codig=@cod";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@cod", vcod);
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.Read())
+                {
+                    if (dr.GetInt16(0) > 0) retorna = true;
+                    else retorna = false;
+                }
+                dr.Close();
+            }
+            conn.Close();
+            return retorna;
         }
         #endregion boton_form;
 
