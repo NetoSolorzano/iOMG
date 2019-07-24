@@ -2574,13 +2574,16 @@ namespace iOMG
                 //tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
             }
             tabControl1.SelectedTab = tabuser;
-            escribe(this);
             Tx_modo.Text = "EDITAR";
+            escribe(this);
             button1.Image = Image.FromFile(img_grab);
             limpiar(this);
             limpiapag(tabuser);
             limpia_otros(tabuser);
             limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            tabControl1.SelectedTab = tabuser;
             //
             pan_cli.Enabled = true;
             chk_cliente.Enabled = true;
@@ -2595,17 +2598,11 @@ namespace iOMG
             tx_telef1.Enabled = false;
             tx_telef2.Enabled = false;
             //
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
-            //escribepag(tabuser);  // me quede aca
-            tx_coment.Enabled = true;
-            tx_coment.ReadOnly = false;
-            tx_dirent.Enabled = true;
-            tx_dirent.ReadOnly = false;
-            dataload("todos");
-            jalaoc("tx_idr");
+            escribepag(tabuser);
+            //dataload("todos");
+            //jalaoc("tx_idr");
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -2875,6 +2872,7 @@ namespace iOMG
                 limpiapag(tabuser);
                 limpia_otros(tabuser);
                 limpia_combos(tabuser);
+                escribepag(tabuser);
                 tx_idr.Text = idr;
                 tx_rind.Text = rind;
                 tx_dat_tiped.Text = tipede;
@@ -3145,10 +3143,6 @@ namespace iOMG
                 pan_cli.Enabled = false;
                 chk_cliente.Checked = false;
             }
-        }
-        private void tabuser_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void chk_cliente_CheckedChanged(object sender, EventArgs e)
