@@ -1,6 +1,6 @@
 ﻿// Información técnica sobre desarrollo del proyecto
 - me quede en Contratos: 22/07/2019
-En EDICION la modif y agregar items al contrato recien hecho no esta dejando
+En EDICION la modif y agregar items al contrato recien hecho no esta dejando...
 CREAR EN EL FORMATO DE IMPRESION UN ESPACIO O ENUNCIADO PARA LOS ADICIONALES
 
 - verificar funcionamiento de EDITAR, VISUALIZAR, ANULAR (DEBE PREGUNTAR SI ANULA O BORRA)

@@ -391,7 +391,8 @@ namespace iOMG
                 tx_idcli.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();      // id del cliente
                 tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString();     // comentario
                 tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();     // direc. de entrega
-                dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
+                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
+                else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
                 tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
                 tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
                 tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
@@ -1492,7 +1493,6 @@ namespace iOMG
                     oControls.Enabled = false;
                 }
             }
-            //
             foreach (Control oControls in tabcodigo.Controls)
             {
                 if (oControls is TextBox)
@@ -1555,6 +1555,8 @@ namespace iOMG
                 if (oControls is TextBox)
                 {
                     oControls.Enabled = true;
+                    TextBox tb = oControls as TextBox;
+                    tb.ReadOnly = false;
                 }
                 if (oControls is ComboBox)
                 {
@@ -1569,6 +1571,96 @@ namespace iOMG
                     oControls.Enabled = true;
                 }
                 if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = true;
+                }
+            }
+        }
+        public void escribepag(TabPage pag)
+        {
+            foreach (Control oControls in pag.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = true;
+                    TextBox tb = oControls as TextBox;
+                    tb.ReadOnly = false;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = true;
+                }
+            }
+            foreach (Control oControls in tabcodigo.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = true;
+                    TextBox tb = oControls as TextBox;
+                    tb.ReadOnly = false;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is GroupBox)
+                {
+                    oControls.Enabled = true;
+                }
+            }
+            foreach (Control oControls in tabadicion.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Enabled = true;
+                    TextBox tb = oControls as TextBox;
+                    tb.ReadOnly = false;
+                }
+                if (oControls is ComboBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is RadioButton)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is DateTimePicker)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is MaskedTextBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is GroupBox)
                 {
                     oControls.Enabled = true;
                 }
@@ -2507,6 +2599,11 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
+            //escribepag(tabuser);  // me quede aca
+            tx_coment.Enabled = true;
+            tx_coment.ReadOnly = false;
+            tx_dirent.Enabled = true;
+            tx_dirent.ReadOnly = false;
             dataload("todos");
             jalaoc("tx_idr");
         }
@@ -2932,7 +3029,8 @@ namespace iOMG
         {
             // si es edicion, si es el usuario autorizado y el contrato es reciente => borra la(s) filas de detalle
             // busca en la base de datos y lo borra, debe actualizar estado del contrato y saldos
-            if (Tx_modo.Text == "EDITAR")    // y el usuario esta autorizado
+            string modos = "EDITAR,NUEVO";
+            if (modos.Contains(Tx_modo.Text) == true)    // y el usuario esta autorizado
             {
                 var aa = MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine + 
                     "se actualizarán los datos", "Confirma?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -2942,57 +3040,47 @@ namespace iOMG
                 }
                 else
                 {
-                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                    conn.Open();
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        string borra = "delete from detacon where iddetacon=@idp";
-                        MySqlCommand mion = new MySqlCommand(borra, conn);
-                        mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString());
-                        mion.ExecuteNonQuery();
-                        // estado del contrato
-                        /*
-                        string pedido = "";
-                        string compa = "select ifnull(sum(cant),0), ifnull(sum(saldo),0) from detaped where pedidoh=@ped";
-                        mion = new MySqlCommand(compa, conn);
-                        mion.Parameters.AddWithValue("@ped", tx_codped.Text);
-                        MySqlDataReader dr = mion.ExecuteReader();
-                        if (dr.Read())
-                        {
-                            if (dr.GetInt16(1) <= 0) pedido = estcomp;   // pedido recibo todo
-                            if (dr.GetInt16(1) > 0 && dr.GetInt16(0) > dr.GetInt16(1)) pedido = estpend;    // "in-parcial";
-                            if (dr.GetInt16(1) == dr.GetInt16(0)) pedido = estenv; // enviado a producción
-                        }
-                        dr.Close();
-                        string actua = "update pedidos set status=@est where tipoes='TPE001' and codped=@ped";
-                        mion = new MySqlCommand(actua, conn);
-                        mion.Parameters.AddWithValue("@ped", tx_codped.Text);
-                        mion.Parameters.AddWithValue("@est", pedido);
-                        mion.ExecuteNonQuery();
-                        conn.Close();
-
-                        // actualizar el estado en el form y en la grilla
-                        tx_dat_estad.Text = pedido;
-                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
-                        for (int i = 0; i < dtg.Rows.Count; i++)
-                        {
-                            DataRow row = dtg.Rows[i];
-                            if (row[0].ToString() == tx_idr.Text)
-                            {
-                                // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
-                                dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 6);    // tx_dat_estad.Text;
-                                dtg.Rows[i][3] = tx_dat_orig.Text;
-                                //dtg.Rows[i][4] = tx_dat_dest.Text;
-                                dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
-                                dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
-                                dtg.Rows[i][7] = tx_coment.Text;
-                            }
-                        }
-                        */
-                    }
+                    if (Tx_modo.Text == "NUEVO") e.Cancel = false;
                     else
-                    {
-                        MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
+                    {   // modo edicion contrato = PENDIE y usuario con permiso
+                        if(Tx_modo.Text == "EDITAR" && tx_dat_estad.Text == tiesta)
+                        {
+                            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                            conn.Open();
+                            if (conn.State == ConnectionState.Open)
+                            {
+                                string borra = "delete from detacon where iddetacon=@idp";
+                                MySqlCommand mion = new MySqlCommand(borra, conn);
+                                mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString());
+                                mion.ExecuteNonQuery();
+                                // estado del contrato
+                                string compa = "act_cont";
+                                mion.CommandType = CommandType.StoredProcedure;
+                                mion.CommandTimeout = 300;
+                                mion = new MySqlCommand(compa, conn);
+                                mion.Parameters.AddWithValue("@con", tx_codped.Text);
+                                MySqlParameter reto = mion.Parameters.Add("estado", MySqlDbType.VarChar);
+                                reto.Direction = ParameterDirection.ReturnValue;
+                                mion.ExecuteNonQuery();
+                                conn.Close();
+                                // actualizar el estado en el form y en la grilla
+                                tx_dat_estad.Text = reto.ToString();
+                                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                                for (int i = 0; i < dtg.Rows.Count; i++)
+                                {
+                                    DataRow row = dtg.Rows[i];
+                                    if (row[0].ToString() == tx_idr.Text)
+                                    {
+                                        dtg.Rows[i][3] = cmb_estado.SelectedItem.ToString().Substring(9, 6);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
+                            }
+                            conn.Close();
+                        }
                     }
                 }
             }
