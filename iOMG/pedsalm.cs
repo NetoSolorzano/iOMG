@@ -300,7 +300,7 @@ namespace iOMG
                 return;
             }
         }
-        public void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
+        private void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
             {   // id,codped,tipoes,origen,destino,fecha,entrega,coment
@@ -483,7 +483,7 @@ namespace iOMG
             dataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[13].Name = "saldo";
         }
-        public void dataload(string quien)                  // jala datos para los combos y la grilla
+        private void dataload(string quien)                  // jala datos para los combos y la grilla
         {
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -1068,7 +1068,7 @@ namespace iOMG
         }
 
         #region limpiadores_modos
-        public void sololee(Form lfrm)
+        private void sololee(Form lfrm)
         {
             foreach (Control oControls in lfrm.Controls)
             {
@@ -1098,7 +1098,7 @@ namespace iOMG
                 }
             }
         }
-        public void sololeepag(TabPage pag)
+        private void sololeepag(TabPage pag)
         {
             foreach (Control oControls in pag.Controls)
             {
@@ -1156,7 +1156,7 @@ namespace iOMG
                 }
             }
         }
-        public void escribe(Form efrm)
+        private void escribe(Form efrm)
         {
             foreach (Control oControls in efrm.Controls)
             {
@@ -1182,7 +1182,7 @@ namespace iOMG
                 }
             }
         }
-        public void escribepag(TabPage pag)
+        private void escribepag(TabPage pag)
         {
             foreach (Control oControls in pag.Controls)
             {
@@ -1240,7 +1240,7 @@ namespace iOMG
                 }
             }
         }
-        public static void limpiar(Form ofrm)
+        private static void limpiar(Form ofrm)
         {
             foreach (Control oControls in ofrm.Controls)
             {
@@ -1250,7 +1250,7 @@ namespace iOMG
                 }
             }
         }
-        public void limpiapag(TabPage pag)
+        private void limpiapag(TabPage pag)
         {
             tabControl1.SelectedTab = pag;
             foreach (Control oControls in pag.Controls)
@@ -1271,16 +1271,16 @@ namespace iOMG
             tx_d_med.Text = "";
             tx_d_nom.Text = "";
         }
-        public void limpia_chk()
+        private void limpia_chk()
         {
             //checkBox1.Checked = false;
         }
-        public void limpia_otros(TabPage pag)
+        private void limpia_otros(TabPage pag)
         {
             tabControl1.SelectedTab = pag;
             //this.checkBox1.Checked = false;
         }
-        public void limpia_combos(TabPage pag)
+        private void limpia_combos(TabPage pag)
         {
             //tabControl1.SelectedTab = pag;
             cmb_taller.SelectedIndex = -1;
@@ -1688,7 +1688,7 @@ namespace iOMG
         #endregion leaves;
 
         #region botones_de_comando_y_permisos  
-        public void toolboton()
+        private void toolboton()
         {
             DataTable mdtb = new DataTable();
             const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";

@@ -126,6 +126,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>conClie.xsd</DependentUpon>
     </Compile>
+    <Compile Include="contratos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="contratos.Designer.cs">
+      <DependentUpon>contratos.cs</DependentUpon>
+    </Compile>
     <Compile Include="defs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,9 @@
     <EmbeddedResource Include="Contrato.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Contrato.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="contratos.resx">
+      <DependentUpon>contratos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="defs.resx">
       <DependentUpon>defs.cs</DependentUpon>

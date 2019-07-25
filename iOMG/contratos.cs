@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
+using System.Configuration;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -8,16 +8,16 @@ using ClosedXML.Excel;
 
 namespace iOMG
 {
-    public partial class contclte : Form
+    public partial class contratos : Form
     {
-        static string nomform = "contclte";      // nombre del formulario
+        static string nomform = "contratos";      // nombre del formulario
         string asd = iOMG.Program.vg_user;      // usuario conectado al sistema
         string colback = iOMG.Program.colbac;   // color de fondo
         string colpage = iOMG.Program.colpag;   // color de los pageframes
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
         static string nomtab = "contrat";
-        public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion
+        public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion sin crystal, con crystal ya no se usan
         public string perAg = "";
         public string perMo = "";
         public string perAn = "";
@@ -38,7 +38,7 @@ namespace iOMG
         string img_ver = "";            // imagen del boton visualizacion (solo ver)
         string tipede = "";             // tipo de pedido por defecto
         string tiesta = "";             // estado inicial por defecto del contrato
-        string escambio = "";           // estados de pedido que admiten modif el pedido
+        string escambio = "";           // estados del contrato que admiten modificacion
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
         string tdc = "";                // tipo de documento para contratos
@@ -47,11 +47,7 @@ namespace iOMG
         string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
         int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
         string tncont = "";             // tipo de numeracion: AUTOMA o MANUAL
-        string letgru = "";            // letra identificado en campo "CAPIT" para ADICIONAL
-        //string cn_adm = "";     // codigo nivel usuario admin
-        //string cn_sup = "";     // codigo nivel usuario superusuario
-        //string cn_est = "";     // codigo nivel usuario estandar
-        //string cn_mir = "";     // codigo nivel usuario solo mira
+        string letgru = "";                 // letra identificado en campo "CAPIT" para ADICIONAL
         string cliente = Program.cliente;    // razon social para los reportes
         libreria lib = new libreria();
         // string de conexion
@@ -65,24 +61,17 @@ namespace iOMG
         DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
         DataTable dttaller = new DataTable();   // combo taller de fabric.
         DataTable dtdest = new DataTable();     // tipos de documentos de clientes
-
         AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
         AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
         AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
 
-        public contclte()
+        public contratos()
         {
             InitializeComponent();
         }
         private void users_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) SendKeys.Send("{TAB}");
-            //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.N) Bt_add.PerformClick();
-            //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.E) Bt_edit.PerformClick();
-            //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.P) Bt_print.PerformClick();
-            //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.A) Bt_anul.PerformClick();
-            //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.O) Bt_ver.PerformClick();
-            //if (Control.ModifierKeys == Keys.Control && e.KeyCode == Keys.S) Bt_close.PerformClick();
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)    // F1
         {
@@ -104,9 +93,6 @@ namespace iOMG
                     {
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
-                            //ayu2.ReturnValue1;
-                            //ayu2.ReturnValue0;
-                            //ayu3.ReturnValue2;
                             cmb_fam.SelectedIndex = cmb_fam.FindString(ayu2.ReturnValue1.Substring(0, 1));
                             cmb_mod.SelectedIndex = cmb_mod.FindString(ayu2.ReturnValue1.Substring(1, 3));
                             cmb_mad.SelectedIndex = cmb_mad.FindString(ayu2.ReturnValue1.Substring(4, 1));
@@ -145,7 +131,7 @@ namespace iOMG
             // Call the base class
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        private void Repspedidos_Load(object sender, EventArgs e)
+        private void contratos_Load(object sender, EventArgs e)
         {
             init();
             toolboton();
@@ -154,15 +140,11 @@ namespace iOMG
             dataload("maestra");
             dataload("todos");
             grilla();
-            //grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;     // borra si no tiene enlaces, anula si ya tiene relacionados
             Bt_print.Enabled = false;
             bt_prev.Enabled = false;
-            //Bt_add_Click(null, null);
-            //tabControl1.SelectedTab = tabgrilla;
-            //advancedDataGridView1.Enabled = false;
             tabControl1.Enabled = false;
             cmb_tipo.Enabled = false;
             tx_d_nom.Enabled = false;
@@ -175,7 +157,7 @@ namespace iOMG
             this.tabuser.BackColor = Color.FromName(iOMG.Program.colgri);
 
             jalainfo();
-            autodptos();
+            //autodptos();                              // porque solo dptos y el resto?
             Bt_add.Image = Image.FromFile(img_btN);
             Bt_edit.Image = Image.FromFile(img_btE);
             Bt_anul.Image = Image.FromFile(img_anul);
@@ -202,93 +184,6 @@ namespace iOMG
             tx_coment.MaxLength = 240;           // nombre
             tx_dirent.MaxLength = 45;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
-        }
-        private void grilla()                   // arma la grilla
-        {
-            // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-            // a.valor,a.acuenta,a.saldo,a.dscto 
-            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            advancedDataGridView1.Font = tiplg;
-            advancedDataGridView1.DefaultCellStyle.Font = tiplg;
-            advancedDataGridView1.RowTemplate.Height = 15;
-            advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            advancedDataGridView1.DataSource = dtg;
-            // id 
-            advancedDataGridView1.Columns[0].Visible = false;
-            advancedDataGridView1.Columns[0].HeaderText = "id";    // titulo de la columna
-            // tipo contrato
-            advancedDataGridView1.Columns[1].Visible = false;
-            // codigo de contrato
-            advancedDataGridView1.Columns[2].Visible = true;            // columna visible o no
-            advancedDataGridView1.Columns[2].HeaderText = "Contrato";    // titulo de la columna
-            advancedDataGridView1.Columns[2].Width = 70;                // ancho
-            advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
-            advancedDataGridView1.Columns[2].Tag = "validaNO";
-            advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // estado del contrato
-            advancedDataGridView1.Columns[3].Visible = true;
-            advancedDataGridView1.Columns[3].HeaderText = "Estado";    // titulo de la columna
-            advancedDataGridView1.Columns[3].Width = 70;                // ancho
-            advancedDataGridView1.Columns[3].ReadOnly = true;           // lectura o no
-            advancedDataGridView1.Columns[3].Tag = "validaNO";
-            advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Local venta
-            advancedDataGridView1.Columns[4].Visible = true;
-            advancedDataGridView1.Columns[4].HeaderText = "Local Vta.";
-            advancedDataGridView1.Columns[4].Width = 80;
-            advancedDataGridView1.Columns[4].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
-            advancedDataGridView1.Columns[4].Tag = "validaSI";          // las celdas de esta columna se SI se validan
-            advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Fecha del contrato
-            advancedDataGridView1.Columns[5].Visible = true;
-            advancedDataGridView1.Columns[5].HeaderText = "Fecha";
-            advancedDataGridView1.Columns[5].Width = 70;
-            advancedDataGridView1.Columns[5].ReadOnly = true;
-            advancedDataGridView1.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // id cliente
-            advancedDataGridView1.Columns[6].Visible = true;
-            advancedDataGridView1.Columns[6].HeaderText = "Cliente";
-            advancedDataGridView1.Columns[6].Width = 80;
-            advancedDataGridView1.Columns[6].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
-            advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna se validan
-            advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // nombre cliente
-            advancedDataGridView1.Columns[7].Visible = true;
-            advancedDataGridView1.Columns[7].HeaderText = "Nombre del cliente";
-            advancedDataGridView1.Columns[7].Width = 200;
-            advancedDataGridView1.Columns[7].ReadOnly = true;
-            advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // comentarios
-            advancedDataGridView1.Columns[8].Visible = true;
-            advancedDataGridView1.Columns[8].HeaderText = "Comentarios";
-            advancedDataGridView1.Columns[8].Width = 250;
-            advancedDataGridView1.Columns[8].ReadOnly = false;
-            advancedDataGridView1.Columns[8].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Fecha de Entrega
-            advancedDataGridView1.Columns[9].Visible = true;
-            advancedDataGridView1.Columns[9].HeaderText = "Fecha Ent";
-            advancedDataGridView1.Columns[9].Width = 70;
-            advancedDataGridView1.Columns[9].ReadOnly = false;
-            advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // dir entrega
-            advancedDataGridView1.Columns[10].Visible = true;
-            advancedDataGridView1.Columns[10].HeaderText = "Dir.Entrega";
-            advancedDataGridView1.Columns[10].Width = 150;
-            advancedDataGridView1.Columns[10].ReadOnly = false;
-            advancedDataGridView1.Columns[10].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // valor
-            advancedDataGridView1.Columns[11].Visible = false;
-            // a cuenta
-            advancedDataGridView1.Columns[12].Visible = false;
-            // saldo
-            advancedDataGridView1.Columns[13].Visible = false;
-            // descuento %
-            advancedDataGridView1.Columns[14].Visible = false;
         }
         private void jalainfo()                 // obtiene datos de imagenes
         {
@@ -328,12 +223,7 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "tipocon" && row["param"].ToString() == "normal") tipede = row["valor"].ToString().Trim();       // tipo de contrato x defecto "normal"
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();       // estado del contrato inicial
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "") estpend = row["valor"].ToString().Trim();    // estado del contrato con llegada parcial
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "recibido") estcomp = row["valor"].ToString().Trim();         // estado del pedido con llegada total
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "enviado") estenv = row["valor"].ToString().Trim();         // estado del pedido enviado a producción
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();        // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") tdc = row["valor"].ToString().Trim();             // tipo de documento para contratos
@@ -346,10 +236,8 @@ namespace iOMG
                     if (row["formulario"].ToString() == "adicionals")
                     {
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();    // capitulo
-                        //if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "talleres") talleres = row["valor"].ToString().Trim(); // tallerres
                         // resto
                     }
-
                 }
                 da.Dispose();
                 dt.Dispose();
@@ -374,259 +262,9 @@ namespace iOMG
             {
                 MessageBox.Show(ex.Message, "Error de conexión");
                 Application.Exit();
+
                 return;
             }
-        }
-        private void jalaoc(string campo)        // jala datos del contrato
-        {
-            if (campo == "tx_idr" && tx_idr.Text != "")
-            {
-                // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-                // a.valor,a.acuenta,a.saldo,a.dscto 
-                tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
-                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
-                tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // local venta
-                dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());
-                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // estado
-                tx_idcli.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();      // id del cliente
-                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString();     // comentario
-                tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();     // direc. de entrega
-                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
-                else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
-                tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
-                tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
-                tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
-                tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
-                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
-                //
-                cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
-                cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
-                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);    // estado
-                jaladet(tx_codped.Text);
-            }
-            if(campo == "tx_codped" && tx_codped.Text != "")
-            {
-                int cta = 0;
-                foreach (DataRow row in dtg.Rows)
-                {
-                    if (row["contrato"].ToString().Trim() == tx_codped.Text.Trim())
-                    {
-                        // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-                        // a.valor,a.acuenta,a.saldo,a.dscto 
-                        tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
-                        tx_idr.Text = row["id"].ToString();                                 // id del registro
-                        tx_rind.Text = cta.ToString();
-                        tx_dat_estad.Text = row["status"].ToString();                       // estado
-                        tx_dat_orig.Text = row["tipoes"].ToString();                        // local venta
-                        dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha 
-                        tx_idcli.Text = row["cliente"].ToString();                          // id del cliente
-                        jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
-                        dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
-                        tx_coment.Text = row["coment"].ToString();                          // comentario
-                        tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
-                        tx_valor.Text = row["valor"].ToString();     // valor del contrato
-                        tx_dscto.Text = row["dscto"].ToString();     // descuento final
-                        tx_acta.Text = row["acuenta"].ToString();     // pago a cuenta
-                        tx_saldo.Text = row["saldo"].ToString();     // saldo actual del contrato
-                        //
-                        cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
-                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
-                        cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-                        jaladet(tx_codped.Text);
-                    }
-                    cta = cta + 1;
-                }
-            }
-        }
-        private void jaladatclt(string id)      // jala datos del cliente
-        {
-            Int32 vi = -1;
-            string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),ifnull(desc_doc.cnt,'') " +
-                "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
-                "where idanagrafica=@idc";
-            //try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@idc", id);
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        tx_dat_tdoc.Text = dr.GetString(6);
-                        tx_dat_tdoc.Tag = dr.GetString(6);                                      // todos los tag sirven para comparar si el text fue cambiado
-                        tx_ndc.Text = dr.GetString(7);
-                        tx_ndc.Tag = dr.GetString(7);                                           // si el tag no coincide con el text se graba en la tabla
-                        tx_nombre.Text = dr.GetString(0);
-                        tx_nombre.Tag = dr.GetString(0);                                        // despues de grabar en la tabla actualiza el tag con el nuevo text
-                        tx_direc.Text = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
-                        tx_direc.Tag = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
-                        tx_dist.Text = dr.GetString(3);
-                        tx_dist.Tag = dr.GetString(3);
-                        tx_prov.Text = dr.GetString(4);
-                        tx_prov.Tag = dr.GetString(4);
-                        tx_dpto.Text = dr.GetString(5);
-                        tx_dpto.Tag = dr.GetString(5);
-                        tx_telef1.Text = dr.GetString(8);
-                        tx_telef1.Tag = dr.GetString(8);
-                        tx_telef2.Text = dr.GetString(9);
-                        tx_telef2.Tag = dr.GetString(9);
-                        tx_mail.Text = dr.GetString(10);
-                        tx_mail.Tag = dr.GetString(10);
-                        if (dr.GetString(11).Trim() != "") vi = Int32.Parse(dr.GetString(11));
-                    }
-                    dr.Close();
-                    cmb_tdoc.SelectedIndex = vi;    //cmb_tdoc.FindString(tx_dat_tdoc.Text);
-                }
-                conn.Close();
-            }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Error en obtener datos del cliente");
-            //    Application.Exit();
-            //    return;
-            //}
-        }
-        private void jaladet(string pedido)     // jala el detalle del contrato
-        {
-            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment," +
-                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na " +
-                "FROM detacon a " +
-                "left join desc_dt2 b on b.idcodice=a.piedra " +
-                "WHERE a.contratoh = @cont ";
-            try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    MySqlCommand micon = new MySqlCommand(jalad, conn);
-                    micon.Parameters.AddWithValue("@cont", pedido);
-                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dataGridView1.DataSource = null;
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Columns.Clear();
-                    dataGridView1.DataSource = dt;
-                    grilladet("edita");     // obtiene contenido de grilla con DT
-                    dt.Dispose();
-                    da.Dispose();
-                }
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener detalle del contrato");
-                Application.Exit();
-                return;
-            }
-        }
-        private void grilladet(string modo)                 // grilla detalle de pedido
-        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na
-            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dataGridView1.Font = tiplg;
-            dataGridView1.DefaultCellStyle.Font = tiplg;
-            dataGridView1.RowTemplate.Height = 15;
-            dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 15;
-            // id 
-            dataGridView1.Columns[0].Visible = true;
-            dataGridView1.Columns[0].Width = 30;                // ancho
-            dataGridView1.Columns[0].HeaderText = "Id";         // titulo de la columna
-            dataGridView1.Columns[0].Name = "iddetacon";
-            // item
-            dataGridView1.Columns[1].Visible = true;            // columna visible o no
-            dataGridView1.Columns[1].HeaderText = "Item";    // titulo de la columna
-            dataGridView1.Columns[1].Width = 100;                // ancho
-            dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[1].Name = "item";
-            // cant
-            dataGridView1.Columns[2].Visible = true;            // columna visible o no
-            dataGridView1.Columns[2].HeaderText = "Cant";    // titulo de la columna
-            dataGridView1.Columns[2].Width = 30;                // ancho
-            dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[2].Name = "cant";
-            // nombre
-            dataGridView1.Columns[3].Visible = true;            // columna visible o no
-            dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
-            dataGridView1.Columns[3].Width = 200;                // ancho
-            dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[3].Name = "nombre";
-            dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // medidas 
-            dataGridView1.Columns[4].Visible = true;            // columna visible o no
-            dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
-            dataGridView1.Columns[4].Width = 100;                // ancho
-            dataGridView1.Columns[4].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[4].Name = "medidas";
-            // madera
-            dataGridView1.Columns[5].Visible = true;            // columna visible o no
-            dataGridView1.Columns[5].HeaderText = "Madera";    // titulo de la columna
-            dataGridView1.Columns[5].Width = 60;                // ancho
-            dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[5].Name = "madera";
-            // precio
-            dataGridView1.Columns[6].Visible = true;            // columna visible o no
-            dataGridView1.Columns[6].HeaderText = "Precio";    // titulo de la columna
-            dataGridView1.Columns[6].Width = 70;                // ancho
-            dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridView1.Columns[6].Name = "precio";
-            // total
-            dataGridView1.Columns[7].Visible = true;            // columna visible o no
-            dataGridView1.Columns[7].HeaderText = "Total";    // titulo de la columna
-            dataGridView1.Columns[7].Width = 70;                // ancho
-            dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridView1.Columns[7].Name = "total";
-            // saldo
-            dataGridView1.Columns[8].Visible = true;            // columna visible o no
-            dataGridView1.Columns[8].HeaderText = "Saldo"; // titulo de la columna
-            dataGridView1.Columns[8].Width = 70;                // ancho
-            dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridView1.Columns[8].Name = "saldo";
-            // pedido
-            dataGridView1.Columns[9].Visible = true;            // columna visible o no
-            dataGridView1.Columns[9].HeaderText = "Pedido";      // titulo de la columna
-            dataGridView1.Columns[9].Width = 60;                 // ancho
-            dataGridView1.Columns[9].ReadOnly = true;            // lectura o no
-            dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[9].Name = "pedido";
-            // codref
-            dataGridView1.Columns[10].Visible = true;
-            dataGridView1.Columns[10].HeaderText = "Codref";      // titulo de la columna
-            dataGridView1.Columns[10].Width = 60;                 // ancho
-            dataGridView1.Columns[10].ReadOnly = true;            // lectura o no
-            dataGridView1.Columns[10].Name = "codref";
-            // coment
-            dataGridView1.Columns[11].Visible = true;
-            dataGridView1.Columns[11].HeaderText = "Comentario";      // titulo de la columna
-            dataGridView1.Columns[11].Width = 160;                 // ancho
-            dataGridView1.Columns[11].ReadOnly = true;            // lectura o no
-            dataGridView1.Columns[11].Name = "coment";
-            // piedra 
-            dataGridView1.Columns[12].Visible = true;
-            dataGridView1.Columns[12].HeaderText = "Piedra";      // titulo de la columna
-            dataGridView1.Columns[12].Width = 60;                 // ancho
-            dataGridView1.Columns[12].ReadOnly = true;            // lectura o no
-            dataGridView1.Columns[12].Name = "Piedra";
-            // codigo piedra
-            dataGridView1.Columns[13].Visible = false;
-            dataGridView1.Columns[13].HeaderText = "CodPie";      // titulo de la columna
-            dataGridView1.Columns[13].Width = 60;                 // ancho
-            dataGridView1.Columns[13].ReadOnly = true;            // lectura o no
-            dataGridView1.Columns[13].Name = "CodPie";
-            // na (nuevo o actualiza)
-            dataGridView1.Columns[14].Visible = false;
         }
         private void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -653,6 +291,7 @@ namespace iOMG
                 dag.Dispose();
             }
             //  datos para el combobox de tipo de documento
+            /*
             if (quien == "capit")
             {
                 cmb_estado.Items.Clear();
@@ -671,6 +310,7 @@ namespace iOMG
                     cmb_estado.ValueMember = row.ItemArray[1].ToString();
                 }
             }
+            */
             if (quien == "todos")
             {
                 // seleccion de tipo de contrato
@@ -852,44 +492,197 @@ namespace iOMG
                     cmb_det3.ValueMember = row.ItemArray[1].ToString();    //citem_dt3.Value.ToString();
                 }
             }
-            //
             conn.Close();
         }
-        string[] equivinter(string titulo)        // equivalencia entre titulo de columna y tabla 
+        private void grilla()                   // arma la grilla
         {
-            string[] retorna = new string[2];
-            switch (titulo)
-            {
-                case "NIVEL":
-                    retorna[0] = "desc_niv";
-                    retorna[1] = "codigo";
-                    break;
-                case "???":
-                    retorna[0] = "";
-                    retorna[1] = "";
-                    break;
-                case "????":
-                    retorna[0] = "";
-                    retorna[1] = "";
-                    break;
-                case "LOCAL":
-                    retorna[0] = "desc_alm";
-                    retorna[1] = "idcodice";
-                    break;
-                case "TIENDA":
-                    retorna[0] = "desc_ven";
-                    retorna[1] = "idcodice";
-                    break;
-                case "SEDE":
-                    retorna[0] = "desc_loc";
-                    retorna[1] = "idcodice";
-                    break;
-                case "RUC":
-                    retorna[0] = "desc_raz";
-                    retorna[1] = "idcodice";
-                    break;
-            }
-            return retorna;
+            // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+            // a.valor,a.acuenta,a.saldo,a.dscto 
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            advancedDataGridView1.Font = tiplg;
+            advancedDataGridView1.DefaultCellStyle.Font = tiplg;
+            advancedDataGridView1.RowTemplate.Height = 15;
+            advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            advancedDataGridView1.DataSource = dtg;
+            // id 
+            advancedDataGridView1.Columns[0].Visible = false;
+            advancedDataGridView1.Columns[0].HeaderText = "id";    // titulo de la columna
+            // tipo contrato
+            advancedDataGridView1.Columns[1].Visible = false;
+            // codigo de contrato
+            advancedDataGridView1.Columns[2].Visible = true;            // columna visible o no
+            advancedDataGridView1.Columns[2].HeaderText = "Contrato";    // titulo de la columna
+            advancedDataGridView1.Columns[2].Width = 70;                // ancho
+            advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
+            advancedDataGridView1.Columns[2].Tag = "validaNO";
+            advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // estado del contrato
+            advancedDataGridView1.Columns[3].Visible = true;
+            advancedDataGridView1.Columns[3].HeaderText = "Estado";    // titulo de la columna
+            advancedDataGridView1.Columns[3].Width = 70;                // ancho
+            advancedDataGridView1.Columns[3].ReadOnly = true;           // lectura o no
+            advancedDataGridView1.Columns[3].Tag = "validaNO";
+            advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Local venta
+            advancedDataGridView1.Columns[4].Visible = true;
+            advancedDataGridView1.Columns[4].HeaderText = "Local Vta.";
+            advancedDataGridView1.Columns[4].Width = 80;
+            advancedDataGridView1.Columns[4].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[4].Tag = "validaSI";          // las celdas de esta columna se SI se validan
+            advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Fecha del contrato
+            advancedDataGridView1.Columns[5].Visible = true;
+            advancedDataGridView1.Columns[5].HeaderText = "Fecha";
+            advancedDataGridView1.Columns[5].Width = 70;
+            advancedDataGridView1.Columns[5].ReadOnly = true;
+            advancedDataGridView1.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // id cliente
+            advancedDataGridView1.Columns[6].Visible = true;
+            advancedDataGridView1.Columns[6].HeaderText = "Cliente";
+            advancedDataGridView1.Columns[6].Width = 80;
+            advancedDataGridView1.Columns[6].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna se validan
+            advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // nombre cliente
+            advancedDataGridView1.Columns[7].Visible = true;
+            advancedDataGridView1.Columns[7].HeaderText = "Nombre del cliente";
+            advancedDataGridView1.Columns[7].Width = 200;
+            advancedDataGridView1.Columns[7].ReadOnly = true;
+            advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // comentarios
+            advancedDataGridView1.Columns[8].Visible = true;
+            advancedDataGridView1.Columns[8].HeaderText = "Comentarios";
+            advancedDataGridView1.Columns[8].Width = 250;
+            advancedDataGridView1.Columns[8].ReadOnly = false;
+            advancedDataGridView1.Columns[8].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // Fecha de Entrega
+            advancedDataGridView1.Columns[9].Visible = true;
+            advancedDataGridView1.Columns[9].HeaderText = "Fecha Ent";
+            advancedDataGridView1.Columns[9].Width = 70;
+            advancedDataGridView1.Columns[9].ReadOnly = false;
+            advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // dir entrega
+            advancedDataGridView1.Columns[10].Visible = true;
+            advancedDataGridView1.Columns[10].HeaderText = "Dir.Entrega";
+            advancedDataGridView1.Columns[10].Width = 150;
+            advancedDataGridView1.Columns[10].ReadOnly = false;
+            advancedDataGridView1.Columns[10].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // valor
+            advancedDataGridView1.Columns[11].Visible = false;
+            // a cuenta
+            advancedDataGridView1.Columns[12].Visible = false;
+            // saldo
+            advancedDataGridView1.Columns[13].Visible = false;
+            // descuento %
+            advancedDataGridView1.Columns[14].Visible = false;
+        }
+        private void grilladet(string modo)                 // grilla detalle de pedido
+        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dataGridView1.Font = tiplg;
+            dataGridView1.DefaultCellStyle.Font = tiplg;
+            dataGridView1.RowTemplate.Height = 15;
+            dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 15;
+            // id 
+            dataGridView1.Columns[0].Visible = true;
+            dataGridView1.Columns[0].Width = 30;                // ancho
+            dataGridView1.Columns[0].HeaderText = "Id";         // titulo de la columna
+            dataGridView1.Columns[0].Name = "iddetacon";
+            // item
+            dataGridView1.Columns[1].Visible = true;            // columna visible o no
+            dataGridView1.Columns[1].HeaderText = "Item";    // titulo de la columna
+            dataGridView1.Columns[1].Width = 100;                // ancho
+            dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[1].Name = "item";
+            // cant
+            dataGridView1.Columns[2].Visible = true;            // columna visible o no
+            dataGridView1.Columns[2].HeaderText = "Cant";    // titulo de la columna
+            dataGridView1.Columns[2].Width = 30;                // ancho
+            dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[2].Name = "cant";
+            // nombre
+            dataGridView1.Columns[3].Visible = true;            // columna visible o no
+            dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
+            dataGridView1.Columns[3].Width = 200;                // ancho
+            dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[3].Name = "nombre";
+            dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // medidas 
+            dataGridView1.Columns[4].Visible = true;            // columna visible o no
+            dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
+            dataGridView1.Columns[4].Width = 100;                // ancho
+            dataGridView1.Columns[4].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[4].Name = "medidas";
+            // madera
+            dataGridView1.Columns[5].Visible = true;            // columna visible o no
+            dataGridView1.Columns[5].HeaderText = "Madera";    // titulo de la columna
+            dataGridView1.Columns[5].Width = 60;                // ancho
+            dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[5].Name = "madera";
+            // precio
+            dataGridView1.Columns[6].Visible = true;            // columna visible o no
+            dataGridView1.Columns[6].HeaderText = "Precio";    // titulo de la columna
+            dataGridView1.Columns[6].Width = 70;                // ancho
+            dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[6].Name = "precio";
+            // total
+            dataGridView1.Columns[7].Visible = true;            // columna visible o no
+            dataGridView1.Columns[7].HeaderText = "Total";    // titulo de la columna
+            dataGridView1.Columns[7].Width = 70;                // ancho
+            dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[7].Name = "total";
+            // saldo
+            dataGridView1.Columns[8].Visible = true;            // columna visible o no
+            dataGridView1.Columns[8].HeaderText = "Saldo"; // titulo de la columna
+            dataGridView1.Columns[8].Width = 70;                // ancho
+            dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[8].Name = "saldo";
+            // pedido
+            dataGridView1.Columns[9].Visible = true;            // columna visible o no
+            dataGridView1.Columns[9].HeaderText = "Pedido";      // titulo de la columna
+            dataGridView1.Columns[9].Width = 60;                 // ancho
+            dataGridView1.Columns[9].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[9].Name = "pedido";
+            // codref
+            dataGridView1.Columns[10].Visible = true;
+            dataGridView1.Columns[10].HeaderText = "Codref";      // titulo de la columna
+            dataGridView1.Columns[10].Width = 60;                 // ancho
+            dataGridView1.Columns[10].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[10].Name = "codref";
+            // coment
+            dataGridView1.Columns[11].Visible = true;
+            dataGridView1.Columns[11].HeaderText = "Comentario";      // titulo de la columna
+            dataGridView1.Columns[11].Width = 160;                 // ancho
+            dataGridView1.Columns[11].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[11].Name = "coment";
+            // piedra 
+            dataGridView1.Columns[12].Visible = true;
+            dataGridView1.Columns[12].HeaderText = "Piedra";      // titulo de la columna
+            dataGridView1.Columns[12].Width = 60;                 // ancho
+            dataGridView1.Columns[12].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[12].Name = "Piedra";
+            // codigo piedra
+            dataGridView1.Columns[13].Visible = false;
+            dataGridView1.Columns[13].HeaderText = "CodPie";      // titulo de la columna
+            dataGridView1.Columns[13].Width = 60;                 // ancho
+            dataGridView1.Columns[13].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[13].Name = "CodPie";
+            // na (nuevo o actualiza)
+            dataGridView1.Columns[14].Visible = false;
         }
         private void armani()                               // arma el codigo y busca en la maestra
         {
@@ -945,7 +738,7 @@ namespace iOMG
                                 {
                                     tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                     tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                    if(Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
+                                    if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                     gol = "1";
                                     break;
                                 }
@@ -955,7 +748,7 @@ namespace iOMG
                                 for (int i = 0; i < dtm.Rows.Count; i++)
                                 {
                                     DataRow fila = dtm.Rows[i];
-                                    if (mad != "X" && 
+                                    if (mad != "X" &&
                                     fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
@@ -964,7 +757,7 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
-                                    if (mad != "X" && 
+                                    if (mad != "X" &&
                                     fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
@@ -973,20 +766,9 @@ namespace iOMG
                                         gol = "1";
                                         break;
                                     }
-                                    /*
-                                    if (fila["mader"].ToString() == "X" && fila["acaba"].ToString() == "X" &&
-                                    fila["deta3"].ToString() == de3)
-                                    {
-                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
-                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
-                                        gol = "1";
-                                        break;
-                                    }
-                                    */
                                 }
                             }
-                            if(gol == "")
+                            if (gol == "")
                             {
                                 MessageBox.Show("No existe en la base de datos1!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                 tx_d_nom.Text = "";
@@ -1010,6 +792,148 @@ namespace iOMG
                     Application.Exit();
                     return;
                 }
+            }
+        }
+        private void jalaoc(string campo)        // jala datos del contrato
+        {
+            if (campo == "tx_idr" && tx_idr.Text != "")
+            {
+                // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                // a.valor,a.acuenta,a.saldo,a.dscto 
+                tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
+                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
+                tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();   // local venta
+                dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());
+                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // estado
+                tx_idcli.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();      // id del cliente
+                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString();     // comentario
+                tx_dirent.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();     // direc. de entrega
+                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
+                else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
+                tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
+                tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
+                tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
+                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
+                //
+                cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
+                cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
+                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);    // estado
+                jaladet(tx_codped.Text);
+            }
+            if (campo == "tx_codped" && tx_codped.Text != "")
+            {
+                int cta = 0;
+                foreach (DataRow row in dtg.Rows)
+                {
+                    if (row["contrato"].ToString().Trim() == tx_codped.Text.Trim())
+                    {
+                        // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                        // a.valor,a.acuenta,a.saldo,a.dscto 
+                        tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
+                        tx_idr.Text = row["id"].ToString();                                 // id del registro
+                        tx_rind.Text = cta.ToString();
+                        tx_dat_estad.Text = row["status"].ToString();                       // estado
+                        tx_dat_orig.Text = row["tipoes"].ToString();                        // local venta
+                        dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha 
+                        tx_idcli.Text = row["cliente"].ToString();                          // id del cliente
+                        jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
+                        dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
+                        tx_coment.Text = row["coment"].ToString();                          // comentario
+                        tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
+                        tx_valor.Text = row["valor"].ToString();     // valor del contrato
+                        tx_dscto.Text = row["dscto"].ToString();     // descuento final
+                        tx_acta.Text = row["acuenta"].ToString();     // pago a cuenta
+                        tx_saldo.Text = row["saldo"].ToString();     // saldo actual del contrato
+                        //
+                        cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
+                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                        cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                        jaladet(tx_codped.Text);
+                    }
+                    cta = cta + 1;
+                }
+            }
+        }
+        private void jaladatclt(string id)      // jala datos del cliente
+        {
+            Int32 vi = -1;
+            string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
+                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),ifnull(desc_doc.cnt,'') " +
+                "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
+                "where idanagrafica=@idc";
+            //try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@idc", id);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_dat_tdoc.Text = dr.GetString(6);
+                        tx_dat_tdoc.Tag = dr.GetString(6);                                      // todos los tag sirven para comparar si el text fue cambiado
+                        tx_ndc.Text = dr.GetString(7);
+                        tx_ndc.Tag = dr.GetString(7);                                           // si el tag no coincide con el text se graba en la tabla
+                        tx_nombre.Text = dr.GetString(0);
+                        tx_nombre.Tag = dr.GetString(0);                                        // despues de grabar en la tabla actualiza el tag con el nuevo text
+                        tx_direc.Text = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
+                        tx_direc.Tag = dr.GetString(1).Trim() + " " + dr.GetString(2).Trim();
+                        tx_dist.Text = dr.GetString(3);
+                        tx_dist.Tag = dr.GetString(3);
+                        tx_prov.Text = dr.GetString(4);
+                        tx_prov.Tag = dr.GetString(4);
+                        tx_dpto.Text = dr.GetString(5);
+                        tx_dpto.Tag = dr.GetString(5);
+                        tx_telef1.Text = dr.GetString(8);
+                        tx_telef1.Tag = dr.GetString(8);
+                        tx_telef2.Text = dr.GetString(9);
+                        tx_telef2.Tag = dr.GetString(9);
+                        tx_mail.Text = dr.GetString(10);
+                        tx_mail.Tag = dr.GetString(10);
+                        if (dr.GetString(11).Trim() != "") vi = Int32.Parse(dr.GetString(11));
+                    }
+                    dr.Close();
+                    cmb_tdoc.SelectedIndex = vi;    //cmb_tdoc.FindString(tx_dat_tdoc.Text);
+                }
+                conn.Close();
+            }
+        }
+        private void jaladet(string pedido)     // jala el detalle del contrato
+        {
+            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment," +
+                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na " +
+                "FROM detacon a " +
+                "left join desc_dt2 b on b.idcodice=a.piedra " +
+                "WHERE a.contratoh = @cont ";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlCommand micon = new MySqlCommand(jalad, conn);
+                    micon.Parameters.AddWithValue("@cont", pedido);
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.DataSource = dt;
+                    grilladet("edita");     // obtiene contenido de grilla con DT
+                    dt.Dispose();
+                    da.Dispose();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener detalle del contrato");
+                Application.Exit();
+                return;
             }
         }
         private bool graba()                                // graba cabecera y detalle
@@ -1059,7 +983,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
                     micon.Parameters.AddWithValue("@come", tx_coment.Text);
                     micon.Parameters.AddWithValue("@idcl", tx_idcli.Text);
-                    micon.Parameters.AddWithValue("@entr", (dtp_entreg.Checked == true)? dtp_entreg.Value.ToString("yyyy-MM-dd"):null);
+                    micon.Parameters.AddWithValue("@entr", (dtp_entreg.Checked == true) ? dtp_entreg.Value.ToString("yyyy-MM-dd") : null);
                     micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                     micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
                     micon.Parameters.AddWithValue("@valo", tx_valor.Text);
@@ -1079,7 +1003,7 @@ namespace iOMG
                     }
                     rlid.Close();
                     // detalle 
-                    for (int i=0; i<dataGridView1.Rows.Count - 1; i++)      // me quede aca
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)      // me quede aca
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string insdet = "insert into detacon (" +
                             "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra) values (" +
@@ -1226,7 +1150,7 @@ namespace iOMG
                 {
                     if (parte == "")
                     {
-                        parte = parte + "direcc1='" + tx_direc.Text.Trim().Substring(0,99) + "',direcc2='" + tx_direc.Text.Trim().Substring(100, tx_direc.Text.Trim().Length - 100) + "'";
+                        parte = parte + "direcc1='" + tx_direc.Text.Trim().Substring(0, 99) + "',direcc2='" + tx_direc.Text.Trim().Substring(100, tx_direc.Text.Trim().Length - 100) + "'";
                     }
                     else parte = parte + ",direcc1='" + tx_direc.Text.Trim() + "',direcc2='" + tx_direc.Text.Trim().Substring(100, tx_direc.Text.Trim().Length - 100) + "'";
                 }
@@ -1285,7 +1209,7 @@ namespace iOMG
         private void calculos()                             // calculos de total, y saldo
         {
             decimal val = 0, dsto = 0, acta = 0, sald = 0;
-            for (int i=0; i < dataGridView1.Rows.Count - 1; i++)
+            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
             }
@@ -1320,78 +1244,48 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-
-        #region crystal
-        private void setParaCrystal()               // genera el set para el reporte de crystal
+        string[] equivinter(string titulo)        // equivalencia entre titulo de columna y tabla 
         {
-            //DataSet1 datos = generareporte();            // conClie = dataset de impresion de contrato   
-            conClie datos = generareporte();            // conClie = dataset de impresion de contrato   
-            //Contrato _contrato = new Contrato();      // Contrato = rpt creado de crystal (modelo del reporte - diseño)
-            //_contrato.SetDataSource(datos);           // <-- asignacion de los datos hacia el modelo del reporte
-            //crystalReportViewer2.ReportSource = _contrato;      // TODA ESTA PARTE NO PORQUE EL CRYSTAL REQUIERE UN FORM INDEPENDIENTE PARA MOSTRAR EL REPORTE
-            frmvizcont visualizador = new frmvizcont(datos);      // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
-            visualizador.Show();
-        }
-        private conClie generareporte()             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
-        {
-            conClie repcontrato = new conClie();                                    // dataset
-
-            conClie.cabeceraRow rowcabeza = repcontrato.cabecera.NewcabeceraRow();  // llenamos la tabla cabecera del dataset
-            rowcabeza.contrato = tx_codped.Text;
-            rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
-            rowcabeza.id = "0";
-            rowcabeza.localVen = cmb_taller.Text;     //.SelectedText.ToString();
-            rowcabeza.nomClie = tx_nombre.Text.Trim();
-            rowcabeza.numDoc = tx_ndc.Text.Trim();
-            if (cmb_tdoc.SelectedIndex == -1) rowcabeza.tipDoc = "";
-            else rowcabeza.tipDoc = cmb_tdoc.SelectedItem.ToString();     //.SelectedText;
-            rowcabeza.tipoCont = cmb_tipo.SelectedText;
-            rowcabeza.direc = tx_direc.Text.Trim();
-            rowcabeza.distrit = tx_dist.Text.Trim();
-            rowcabeza.provin = tx_prov.Text.Trim();
-            rowcabeza.depart = tx_dpto.Text.Trim();
-            rowcabeza.email = tx_mail.Text.Trim();
-            rowcabeza.telef1 = tx_telef1.Text.Trim();
-            rowcabeza.telef2 = tx_telef2.Text.Trim();
-            rowcabeza.valTot = tx_valor.Text;
-            rowcabeza.valDscto = tx_dscto.Text;
-            rowcabeza.valActa = tx_acta.Text;
-            rowcabeza.valSaldo = tx_saldo.Text;
-            rowcabeza.coment = tx_coment.Text.Trim();
-            rowcabeza.dirEntreg = tx_dirent.Text.Trim();
-            rowcabeza.fechEnt = dtp_entreg.Value.ToString("dd/MM/yyyy");
-            rowcabeza.usuario = asd;
-            repcontrato.cabecera.AddcabeceraRow(rowcabeza);
-
-            foreach(DataGridViewRow row in dataGridView1.Rows)  //
+            string[] retorna = new string[2];
+            switch (titulo)
             {
-                if (row.Cells["item"].Value != null)   // !string.IsNullOrEmpty(row.Cells["item"].Value.ToString())
-                {
-                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
-                    rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
-                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
-                    rowdetalle.codigo = row.Cells["item"].Value.ToString();
-                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
-                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
-                    rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
-                    rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
-                    rowdetalle.precio = row.Cells["precio"].Value.ToString();
-                    rowdetalle.total = row.Cells["total"].Value.ToString();
-                    // aca falta el coment del articulo
-                    repcontrato.detalle.AdddetalleRow(rowdetalle);
-                    //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
-                }
+                case "NIVEL":
+                    retorna[0] = "desc_niv";
+                    retorna[1] = "codigo";
+                    break;
+                case "???":
+                    retorna[0] = "";
+                    retorna[1] = "";
+                    break;
+                case "????":
+                    retorna[0] = "";
+                    retorna[1] = "";
+                    break;
+                case "LOCAL":
+                    retorna[0] = "desc_alm";
+                    retorna[1] = "idcodice";
+                    break;
+                case "TIENDA":
+                    retorna[0] = "desc_ven";
+                    retorna[1] = "idcodice";
+                    break;
+                case "SEDE":
+                    retorna[0] = "desc_loc";
+                    retorna[1] = "idcodice";
+                    break;
+                case "RUC":
+                    retorna[0] = "desc_raz";
+                    retorna[1] = "idcodice";
+                    break;
             }
-            return repcontrato;
+            return retorna;
         }
-        #endregion crystal
 
         #region autocompletados
         private void autodptos()
         {
             DataRow[] result = dtadpd.Select("provin='00' AND distri='00'");
-            foreach(DataRow row in result)
+            foreach (DataRow row in result)
             {
                 adptos.Add(row["nombre"].ToString());
             }
@@ -1432,7 +1326,251 @@ namespace iOMG
             tx_dist.AutoCompleteCustomSource = adistr;
         }
         #endregion autocompletados
-
+        #region botones_de_comando_y_permisos  
+        private void toolboton()
+        {
+            Bt_add.Visible = false;
+            Bt_edit.Visible = false;
+            Bt_anul.Visible = false;
+            bt_exc.Visible = false;
+            bt_prev.Visible = false;
+            Bt_print.Visible = false;
+            //
+            DataTable mdtb = new DataTable();
+            const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                try
+                {
+                    MySqlCommand consulb = new MySqlCommand(consbot, conn);
+                    consulb.Parameters.AddWithValue("@nomform", nomform);
+                    consulb.Parameters.AddWithValue("@use", asd);
+                    MySqlDataAdapter mab = new MySqlDataAdapter(consulb);
+                    mab.Fill(mdtb);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, " Error ");
+                    return;
+                }
+                finally { conn.Close(); }
+            }
+            else
+            {
+                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return;
+            }
+            if (mdtb.Rows.Count > 0)
+            {
+                DataRow row = mdtb.Rows[0];
+                if (Convert.ToString(row["btn1"]) == "S")               // nuevo
+                {
+                    this.Bt_add.Visible = true;
+                }
+                else { this.Bt_add.Visible = false; }
+                if (Convert.ToString(row["btn2"]) == "S")               // editar
+                {
+                    this.Bt_edit.Visible = true;
+                }
+                else { this.Bt_edit.Visible = false; }
+                if (Convert.ToString(row["btn3"]) == "S")               // anular
+                {
+                    this.Bt_print.Visible = true;
+                }
+                else { this.Bt_print.Visible = false; }
+                if (Convert.ToString(row["btn4"]) == "S")               // visualizar
+                {
+                    this.Bt_anul.Visible = true;
+                }
+                else { this.Bt_anul.Visible = false; }
+                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
+                {
+                    this.bt_exc.Visible = true;
+                }
+                else { this.bt_exc.Visible = false; }
+                if (Convert.ToString(row["btn6"]) == "S")               // salir del form
+                {
+                    this.Bt_close.Visible = true;
+                }
+                else { this.Bt_close.Visible = false; }
+                if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar
+                {
+                    this.bt_view.Visible = true;
+                }
+                else { this.bt_view.Visible = false; }
+                if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx
+                {
+                    this.bt_exc.Visible = true;
+                }
+                else { this.bt_exc.Visible = false; }
+            }
+        }
+        private void Bt_add_Click(object sender, EventArgs e)
+        {
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = true;
+            tabControl1.SelectedTab = tabuser;
+            escribe(this);
+            Tx_modo.Text = "NUEVO";
+            button1.Image = Image.FromFile(img_grab);
+            dtp_pedido.Value = DateTime.Now;
+            dtp_entreg.Checked = false;
+            limpiar(this);
+            limpiapag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            grilladet("NUEVO");
+            tabControl1.SelectedTab = tabuser;
+            //
+            pan_cli.Enabled = true;
+            cmb_tdoc.Enabled = true;
+            tx_ndc.Enabled = true;
+            tx_nombre.Enabled = false;
+            tx_direc.Enabled = false;
+            tx_dist.Enabled = false;
+            tx_prov.Enabled = false;
+            tx_dpto.Enabled = false;
+            tx_mail.Enabled = false;
+            tx_telef1.Enabled = false;
+            tx_telef2.Enabled = false;
+            tx_valor.ReadOnly = true;
+            //
+            tx_dat_tiped.Text = tipede;
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_estad.Text = tiesta;
+            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
+            else tx_codped.ReadOnly = false;
+            cmb_taller.Focus();
+        }
+        private void Bt_edit_Click(object sender, EventArgs e)
+        {
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = false;
+            //string codu = "";
+            //string idr = "";
+            //if (advancedDataGridView1.CurrentRow.Index > -1)
+            //{
+            //    codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
+            //    idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
+            //    tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
+            //}
+            tabControl1.SelectedTab = tabuser;
+            Tx_modo.Text = "EDITAR";
+            escribe(this);
+            tx_codped.Enabled = true;
+            tx_codped.ReadOnly = false;
+            tx_codped.Focus();
+            tabControl1.SelectedTab = tabuser;
+            /*
+            sololee(this);
+            button1.Image = Image.FromFile(img_grab);
+            limpiar(this);
+            limpiapag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            tabControl1.SelectedTab = tabuser;
+            //
+            pan_cli.Enabled = true;
+            chk_cliente.Enabled = true;
+            cmb_tdoc.Enabled = false;
+            tx_ndc.Enabled = false;
+            tx_nombre.Enabled = false;
+            tx_direc.Enabled = false;
+            tx_dist.Enabled = false;
+            tx_prov.Enabled = false;
+            tx_dpto.Enabled = false;
+            tx_mail.Enabled = false;
+            tx_telef1.Enabled = false;
+            tx_telef2.Enabled = false;
+            //
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_tiped.Text = tipede;
+            //escribepag(tabuser);
+            //dataload("todos");
+            //jalaoc("tx_idr");
+            */
+        }
+        private void Bt_anul_Click(object sender, EventArgs e)
+        {
+            // nada que hacer
+        }
+        private void bt_view_Click(object sender, EventArgs e)
+        {
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = true;
+            string codu = "";
+            string idr = "";
+            if (advancedDataGridView1.CurrentRow.Index > -1)
+            {
+                codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
+                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
+            }
+            tabControl1.SelectedTab = tabgrilla;
+            sololee(this);
+            Tx_modo.Text = "VISUALIZAR";
+            button1.Image = null;    // Image.FromFile(img_grab);
+            limpiar(this);
+            limpiapag(tabuser);
+            sololeepag(tabuser);
+            tx_codped.Enabled = true;
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_tiped.Text = tipede;
+            jalaoc("tx_idr");
+        }
+        private void Bt_print_Click(object sender, EventArgs e)
+        {
+            //setParaCrystal();
+        }
+        private void bt_prev_Click(object sender, EventArgs e)
+        {
+            if (tx_idr.Text != "" && tx_rind.Text != "")
+            {
+                //setParaCrystal();
+                /*
+                Tx_modo.Text = "IMPRIMIR";
+                pageCount = 1;
+                //printDocument1.DefaultPageSettings.Landscape = true;
+                printPreviewDialog1.Document = printDocument1;
+                printPreviewDialog1.ShowDialog();
+                */
+            }
+        }
+        private void bt_exc_Click(object sender, EventArgs e)
+        {
+            string nombre = "";
+            nombre = "Contratos_clientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+            var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (aa == DialogResult.Yes)
+            {
+                var wb = new XLWorkbook();
+                wb.Worksheets.Add(dtg, "Contratos");
+                wb.SaveAs(nombre);
+                MessageBox.Show("Archivo generado con exito!");
+                this.Close();
+            }
+        }
+        private void Bt_close_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        //
+        #endregion botones_de_comando_y_permisos  ;
         #region limpiadores_modos
         private void sololee(Form lfrm)
         {
@@ -1735,14 +1873,86 @@ namespace iOMG
             cmb_det3.SelectedIndex = -1;
         }
         #endregion limpiadores_modos;
+        #region comboboxes
+        private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
+            else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
+            else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmb_tdoc.SelectedIndex == -1) tx_dat_tdoc.Text = "";
+            else
+            {
 
+                foreach (DataRow row in dtdest.Rows)
+                {
+                    if (row["descrizionerid"].ToString() == cmb_tdoc.Text)   // tx_dat_tdoc.Text
+                    {
+                        tx_dat_tdoc.Text = row["idcodice"].ToString();
+                    }
+                }
+            }
+        }
+        private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
+            else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_fam_SelectionChangeCommitted(object sender, EventArgs e)       // capitulo familia
+        {
+            armani();
+        }
+        private void cmb_mod_SelectionChangeCommitted(object sender, EventArgs e)       // modelo
+        {
+            armani();
+        }
+        private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
+        {
+            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+            armani();
+        }
+        private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
+        {
+            armani();
+        }
+        private void cmb_det1_SelectionChangeCommitted(object sender, EventArgs e)      // detalle1
+        {
+            armani();
+        }
+        private void cmb_aca_SelectionChangeCommitted(object sender, EventArgs e)       // acabado
+        {
+            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
+            cmb_aca.Tag = cmb_aca.SelectedItem.ToString().Substring(0, 1);
+            armani();
+        }
+        private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)           // taller
+        {
+            armani();
+        }
+        private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
+        {
+            if (cmb_det2.SelectedIndex == -1) tx_d_det2.Text = "";
+            else tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
+            armani();
+        }
+        private void cmb_det3_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            armani();
+        }
+        #endregion comboboxes
         #region boton_form GRABA EDITA ANULA - agrega detalle
         private void button1_Click(object sender, EventArgs e)
         {
             // validamos que los campos no esten vacíos
             if (tx_dat_tiped.Text == "")
             {
-                MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique",MessageBoxButtons.OK,MessageBoxIcon.Hand);
+                MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_tipo.Focus();
                 return;
             }
@@ -1752,25 +1962,25 @@ namespace iOMG
                 cmb_estado.Focus();
                 return;
             }
-            if(tx_dat_orig.Text == "")
+            if (tx_dat_orig.Text == "")
             {
                 MessageBox.Show("Seleccione el local de ventas", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_taller.Focus();
                 return;
             }
-            if(tx_ndc.Text == "")
+            if (tx_ndc.Text == "")
             {
                 MessageBox.Show("Falta el cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_ndc.Focus();
                 return;
             }
-            if(tx_nombre.Text == "")
+            if (tx_nombre.Text == "")
             {
                 MessageBox.Show("Falta el nombre del cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_nombre.Focus();
                 return;
             }
-            if(dataGridView1.Rows.Count < 2)
+            if (dataGridView1.Rows.Count < 2)
             {
                 MessageBox.Show("Falta el detalle del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_fam.Focus();
@@ -1822,7 +2032,7 @@ namespace iOMG
                         string cid = tx_idr.Text;
                         dr[0] = cid;
                         dr[1] = tx_dat_tiped.Text;
-                        dr[2] = tx_codped.Text; 
+                        dr[2] = tx_codped.Text;
                         dr[3] = cmb_estado.SelectedItem.ToString().Substring(9, 6);
                         dr[4] = tx_dat_orig.Text;
                         dr[5] = dtp_pedido.Value.ToString("yyy-MM-dd");
@@ -1844,7 +2054,7 @@ namespace iOMG
                         return;
                     }
                     // vista previa
-                    setParaCrystal();
+                    //setParaCrystal();
                 }
                 else
                 {
@@ -1911,24 +2121,24 @@ namespace iOMG
         }
         private void bt_det_Click(object sender, EventArgs e)
         {
-            if(tx_d_nom.Text == "")
+            if (tx_d_nom.Text == "")
             {
                 MessageBox.Show("El código no existe en la maestra", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 return;
             }
-            if(tx_d_can.Text == "")
+            if (tx_d_can.Text == "")
             {
                 MessageBox.Show("Falta la cantidad de muebles", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_d_can.Focus();
                 return;
             }
-            if(tx_d_saldo.Text.Trim() == "")
+            if (tx_d_saldo.Text.Trim() == "")
             {
                 MessageBox.Show("Falta el saldo de muebles", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_d_saldo.Focus();
                 return;
             }
-            if(cmb_det3.SelectedIndex == -1)
+            if (cmb_det3.SelectedIndex == -1)
             {
                 MessageBox.Show("Seleccione el detalle 3", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_det3.Focus();
@@ -2023,7 +2233,7 @@ namespace iOMG
                     if (dataGridView1.Rows.Count < vfdmax)
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0,3).Trim(), "N");
+                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N");
                     }
                     else
                     {
@@ -2033,12 +2243,12 @@ namespace iOMG
                     }
                 }
             }
-            if (Tx_modo.Text == "EDITAR")           
+            if (Tx_modo.Text == "EDITAR")
             {
                 if (!escambio.Contains(tx_dat_estad.Text))
                 {
                     MessageBox.Show("El estado actual del contrato no permite modificar el detalle",
-                        "No puede continuar",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                        "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
                 }
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
@@ -2119,7 +2329,7 @@ namespace iOMG
                 tx_a_cant.Focus();
                 return;
             }
-            if(tx_a_total.Text == "")
+            if (tx_a_total.Text == "")
             {
                 MessageBox.Show("Falta el precio", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_a_precio.Focus();
@@ -2215,35 +2425,20 @@ namespace iOMG
             tx_a_medid.Text = "";
             tx_a_precio.Text = "";
             tx_a_total.Text = "";
-            //tx_saldo.Text = "";
             calculos();
         }
         #endregion boton_form;
-
         #region leaves
         private void tx_idr_Leave(object sender, EventArgs e)
         {
             if (Tx_modo.Text != "NUEVO")    //  && tx_idr.Text != ""
             {
-                //string aca = tx_idr.Text;
-                //limpia_chk();
-                //limpia_combos();
-                //limpiar(this);
-                //tx_idr.Text = aca;
                 jalaoc("tx_idr");               // jalamos los datos del registro
             }
         }
-        private void textBox1_Leave(object sender, EventArgs e)
-        {
-
-        }
-        private void tx_rind_Leave(object sender, EventArgs e)
-        {
-
-        }
         private void tx_codped_Leave(object sender, EventArgs e)
         {
-            if(Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text == "")
+            if (Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text == "")
             {
                 jalaoc("tx_codped");
             }
@@ -2291,7 +2486,7 @@ namespace iOMG
                 if (tx_dat_tdoc.Text == "") cmb_tdoc.Focus();
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                if (conn.State == ConnectionState.Open) 
+                if (conn.State == ConnectionState.Open)
                 {
                     string jala = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
                         "ifnull(depart,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),desc_doc.cnt,idanagrafica " +
@@ -2358,7 +2553,7 @@ namespace iOMG
         private void tx_dpto_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             tx_dat_dpto.Text = "";
-            if(tx_dpto.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            if (tx_dpto.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
             {
                 DataRow[] result = dtadpd.Select("provin='00' AND distri='00' AND nombre='" + tx_dpto.Text.Trim() + "'");
                 foreach (DataRow row in result)
@@ -2378,7 +2573,7 @@ namespace iOMG
         private void tx_prov_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             tx_dat_provin.Text = "";
-            if(tx_prov.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            if (tx_prov.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
             {
                 DataRow[] result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND distri='00' AND nombre='" + tx_prov.Text.Trim() + "'");
                 foreach (DataRow row in result)
@@ -2402,7 +2597,7 @@ namespace iOMG
             DataRow[] result;
             if (tx_dist.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
             {
-                if(tx_dat_dpto.Text == "07")
+                if (tx_dat_dpto.Text == "07")
                 {
                     result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND provin='01' AND nombre='" + tx_dist.Text.Trim() + "'");
                 }
@@ -2432,7 +2627,6 @@ namespace iOMG
                 return;
             }
         }
-        //
         private void tx_dscto_Leave(object sender, EventArgs e)
         {
             calculos();
@@ -2442,417 +2636,6 @@ namespace iOMG
             calculos();
         }
         #endregion leaves;
-
-        #region botones_de_comando_y_permisos  
-        private void toolboton()
-        {
-            DataTable mdtb = new DataTable();
-            const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {
-                try
-                {
-                    MySqlCommand consulb = new MySqlCommand(consbot, conn);
-                    consulb.Parameters.AddWithValue("@nomform", "contclte");
-                    consulb.Parameters.AddWithValue("@use", asd);
-                    MySqlDataAdapter mab = new MySqlDataAdapter(consulb);
-                    mab.Fill(mdtb);
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, " Error ");
-                    return;
-                }
-                finally { conn.Close(); }
-            }
-            else
-            {
-                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
-                Application.Exit();
-                return;
-            }
-            if (mdtb.Rows.Count > 0)
-            {
-                DataRow row = mdtb.Rows[0];
-                if (Convert.ToString(row["btn1"]) == "S")               // nuevo
-                {
-                    this.Bt_add.Visible = true;
-                }
-                else { this.Bt_add.Visible = false; }
-                if (Convert.ToString(row["btn2"]) == "S")               // editar
-                {
-                    this.Bt_edit.Visible = true;
-                }
-                else { this.Bt_edit.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // anular
-                {
-                    this.Bt_print.Visible = true;
-                }
-                else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn4"]) == "S")               // visualizar
-                {
-                    this.Bt_anul.Visible = true;
-                }
-                else { this.Bt_anul.Visible = false; }
-                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
-                {
-                    this.bt_exc.Visible = true;
-                }
-                else { this.bt_exc.Visible = false; }
-                if (Convert.ToString(row["btn6"]) == "S")               // salir del form
-                {
-                    this.Bt_close.Visible = true;
-                }
-                else { this.Bt_close.Visible = false; }
-                if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar
-                {
-                    this.bt_view.Visible = true;
-                }
-                else { this.bt_view.Visible = false; }
-                if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx
-                {
-                    this.bt_exc.Visible = true;
-                }
-                else { this.bt_exc.Visible = false; }
-            }
-        }
-        #region botones
-        private void Bt_add_Click(object sender, EventArgs e)   
-        {
-            tabControl1.Enabled = true;
-            advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = true;
-            tabControl1.SelectedTab = tabuser;
-            escribe(this);
-            Tx_modo.Text = "NUEVO";
-            button1.Image = Image.FromFile(img_grab);
-            dtp_pedido.Value = DateTime.Now;
-            dtp_entreg.Checked = false;
-            limpiar(this);
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            grilladet("NUEVO");
-            tabControl1.SelectedTab = tabuser;
-            //
-            pan_cli.Enabled = true;
-            cmb_tdoc.Enabled = true;
-            tx_ndc.Enabled = true;
-            tx_nombre.Enabled = false;
-            tx_direc.Enabled = false;
-            tx_dist.Enabled = false;
-            tx_prov.Enabled = false;
-            tx_dpto.Enabled = false;
-            tx_mail.Enabled = false;
-            tx_telef1.Enabled = false;
-            tx_telef2.Enabled = false;
-            tx_valor.ReadOnly = true;
-            //
-            tx_dat_tiped.Text = tipede;
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            tx_dat_estad.Text = tiesta;
-            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
-            if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
-            else tx_codped.ReadOnly = false;
-            cmb_taller.Focus();
-        }
-        private void Bt_edit_Click(object sender, EventArgs e)
-        {
-            tabControl1.Enabled = true;
-            advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = false;
-            //string codu = "";
-            //string idr = "";
-            //if (advancedDataGridView1.CurrentRow.Index > -1)
-            //{
-            //    codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
-            //    idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-            //    tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
-            //}
-            tabControl1.SelectedTab = tabuser;
-            Tx_modo.Text = "EDITAR";
-            escribe(this);
-            tx_codped.Enabled = true;
-            tx_codped.ReadOnly = false;
-            tx_codped.Focus();
-            tabControl1.SelectedTab = tabuser;
-            /*
-            sololee(this);
-            button1.Image = Image.FromFile(img_grab);
-            limpiar(this);
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            tabControl1.SelectedTab = tabuser;
-            //
-            pan_cli.Enabled = true;
-            chk_cliente.Enabled = true;
-            cmb_tdoc.Enabled = false;
-            tx_ndc.Enabled = false;
-            tx_nombre.Enabled = false;
-            tx_direc.Enabled = false;
-            tx_dist.Enabled = false;
-            tx_prov.Enabled = false;
-            tx_dpto.Enabled = false;
-            tx_mail.Enabled = false;
-            tx_telef1.Enabled = false;
-            tx_telef2.Enabled = false;
-            //
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            tx_dat_tiped.Text = tipede;
-            //escribepag(tabuser);
-            //dataload("todos");
-            //jalaoc("tx_idr");
-            */
-        }
-        private void Bt_anul_Click(object sender, EventArgs e)
-        {
-            // nada que hacer
-        }
-        private void bt_view_Click(object sender, EventArgs e)
-        {
-            tabControl1.Enabled = true;
-            advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = true;
-            string codu = "";
-            string idr = "";
-            if (advancedDataGridView1.CurrentRow.Index > -1)
-            {
-                codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
-                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-            }
-            tabControl1.SelectedTab = tabgrilla;
-            sololee(this);
-            Tx_modo.Text = "VISUALIZAR";
-            button1.Image = null;    // Image.FromFile(img_grab);
-            limpiar(this);
-            limpiapag(tabuser);
-            sololeepag(tabuser);
-            tx_codped.Enabled = true;
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            tx_dat_tiped.Text = tipede;
-            jalaoc("tx_idr");
-        }
-        private void Bt_print_Click(object sender, EventArgs e)
-        {
-            setParaCrystal();
-        }
-        private void bt_prev_Click(object sender, EventArgs e)
-        {
-            if (tx_idr.Text != "" && tx_rind.Text != "")
-            {
-                setParaCrystal();
-                /*
-                Tx_modo.Text = "IMPRIMIR";
-                pageCount = 1;
-                //printDocument1.DefaultPageSettings.Landscape = true;
-                printPreviewDialog1.Document = printDocument1;
-                printPreviewDialog1.ShowDialog();
-                */
-            }
-        }
-        private void bt_exc_Click(object sender, EventArgs e)
-        {
-            string nombre = "";
-            nombre = "Contratos_clientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
-            var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
-                "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (aa == DialogResult.Yes)
-            {
-                var wb = new XLWorkbook();
-                wb.Worksheets.Add(dtg, "Contratos");
-                wb.SaveAs(nombre);
-                MessageBox.Show("Archivo generado con exito!");
-                this.Close();
-            }
-        }
-        private void Bt_close_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-        //
-        private void Bt_first_Click(object sender, EventArgs e)
-        {
-            limpiar(this);
-            limpia_chk();
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            //--
-            //tx_idr.Text = lib.gofirts(nomtab);
-            tx_idr_Leave(null, null);
-        }
-        private void Bt_back_Click(object sender, EventArgs e)
-        {
-            //string aca = tx_idr.Text;
-            limpia_chk();
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            limpiar(this);
-            //--
-            //tx_idr.Text = lib.goback(nomtab, aca);
-            tx_idr_Leave(null, null);
-        }
-        private void Bt_next_Click(object sender, EventArgs e)
-        {
-            //string aca = tx_idr.Text;
-            limpia_chk();
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            limpiar(this);
-            //--
-            //tx_idr.Text = lib.gonext(nomtab, aca);
-            tx_idr_Leave(null, null);
-        }
-        private void Bt_last_Click(object sender, EventArgs e)
-        {
-            limpiar(this);
-            limpia_chk();
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            //--
-            //tx_idr.Text = lib.golast(nomtab);
-            tx_idr_Leave(null, null);
-        }
-        #endregion botones;
-        // permisos para habilitar los botones de comando
-        /*private void permisos()
-        {
-            string consulta = "select formulario,nivel,coment,btn1,btn2,btn3,btn4,btn5,btn6 from setupform";
-            DataTable dt = new DataTable();
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {
-                try
-                {
-                    MySqlDataAdapter da = new MySqlDataAdapter(consulta, conn);
-                    da.Fill(dt);
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "Error de conexión a setupform", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                    return;
-                }
-            }
-            string bot1 = "N";
-            string bot2 = "N";
-            string bot3 = "N";
-            string bot4 = "N";
-            string bot5 = "N";
-            string bot6 = "S";
-            string com = "";
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                DataRow fil = dt.Rows[i];
-                if (fil[1].ToString() == "0")
-                { // usuarios de sistemas, acceso total a todo
-
-                }
-                if (fil[1].ToString() == "1")
-                {   // usuario directivo, acceso de usuario avanzado
-
-                }
-                if (fil[1].ToString() == "2")
-                {   // usuario secretarias, usuario normal
-
-                }
-                com = fil[2].ToString();    // comentario - descripcion del form
-            }
-            conn.Close();
-        }*/
-        // configurador de permisos
-        #endregion botones_de_comando_y_permisos  ;
-
-        #region comboboxes
-        private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
-            else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-        }
-        private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
-            else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-        }
-        private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmb_tdoc.SelectedIndex == -1) tx_dat_tdoc.Text = "";
-            else
-            {
-                //tx_dat_tdoc.Text = cmb_tdoc.Text;
-                foreach (DataRow row in dtdest.Rows)
-                {
-                    if (row["descrizionerid"].ToString() == cmb_tdoc.Text)   // tx_dat_tdoc.Text
-                    {
-                        tx_dat_tdoc.Text = row["idcodice"].ToString();
-                    }
-                }
-            }
-        }
-        private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
-            else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-        }
-        private void cmb_fam_SelectionChangeCommitted(object sender, EventArgs e)       // capitulo familia
-        {
-            armani();
-        }
-        private void cmb_mod_SelectionChangeCommitted(object sender, EventArgs e)       // modelo
-        {
-            armani();
-        }
-        private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
-        {
-            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
-            //tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
-            armani();
-        }
-        private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
-        {
-            armani();
-        }
-        private void cmb_det1_SelectionChangeCommitted(object sender, EventArgs e)      // detalle1
-        {
-            armani();
-        }
-        private void cmb_aca_SelectionChangeCommitted(object sender, EventArgs e)       // acabado
-        {
-            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
-            cmb_aca.Tag = cmb_aca.SelectedItem.ToString().Substring(0, 1);
-            armani();
-        }
-        private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)           // taller
-        {
-            armani();
-        }
-        private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
-        {
-            if (cmb_det2.SelectedIndex == -1) tx_d_det2.Text = "";
-            else tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
-            armani();
-        }
-        private void cmb_det3_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            armani();
-        }
-        #endregion comboboxes
-
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
         {
@@ -2889,7 +2672,7 @@ namespace iOMG
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
         {
             if (e.RowIndex > -1 && e.ColumnIndex > 0
-                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString() 
+                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString()
                 && Tx_modo.Text == "EDITAR")
             {
                 string campo = advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString();
@@ -2955,13 +2738,12 @@ namespace iOMG
             e.Cancel = true;
         }
         #endregion
-
         #region datagridview1 - grilla detalle del contrato
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0 && e.RowIndex > -1)
             {
-                if(Tx_modo.Text == "EDITAR")
+                if (Tx_modo.Text == "EDITAR")
                 {
                     tx_saldo.Enabled = true;
                 }
@@ -2969,7 +2751,7 @@ namespace iOMG
                 {
                     tx_saldo.Enabled = false;
                 }
-                if(dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString() == letgru)
+                if (dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString() == letgru)
                 {
                     tx_a_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
                     tx_a_cant.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
@@ -3037,7 +2819,7 @@ namespace iOMG
             string modos = "EDITAR,NUEVO";
             if (modos.Contains(Tx_modo.Text) == true)    // y el usuario esta autorizado
             {
-                var aa = MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine + 
+                var aa = MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine +
                     "se actualizarán los datos", "Confirma?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.No)
                 {
@@ -3048,7 +2830,7 @@ namespace iOMG
                     if (Tx_modo.Text == "NUEVO") e.Cancel = false;
                     else
                     {   // modo edicion contrato = PENDIE y usuario con permiso
-                        if(Tx_modo.Text == "EDITAR" && tx_dat_estad.Text == tiesta)
+                        if (Tx_modo.Text == "EDITAR" && tx_dat_estad.Text == tiesta)
                         {
                             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                             conn.Open();
@@ -3091,95 +2873,5 @@ namespace iOMG
             }
         }
         #endregion
-
-        private void tabgrilla_Enter(object sender, EventArgs e)
-        {
-            Bt_anul.Enabled = false;
-            Bt_print.Enabled = false;
-            bt_prev.Enabled = false;
-            bt_exc.Enabled = true;
-        }
-
-        private void tx_a_codig_Leave(object sender, EventArgs e)
-        {
-            tx_a_nombre.Text = "";
-            tx_a_medid.Text = "";
-            tx_a_precio.Text = "";
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {   // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio from items_adic
-                string consulta = "select id,codig,nombr,medid,precio from items_adic where codig=@cod";
-                MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@cod", tx_a_codig.Text.Trim());
-                MySqlDataReader dr = micon.ExecuteReader();
-                if (dr.HasRows)
-                {
-                    if (dr.Read())
-                    {
-                        tx_a_nombre.Text = dr.GetString(2);
-                        tx_a_medid.Text = dr.GetString(3);
-                        tx_a_precio.Text = dr.GetString(4);
-                        if(tx_a_cant.Text.Trim() != "" && tx_a_cant.Text.Trim() != "0" && tx_a_precio.Text != "")
-                        {
-                            tx_a_total.Text = (double.Parse(tx_a_cant.Text) * double.Parse(tx_a_precio.Text)).ToString();
-                        }
-                    }
-                    dr.Close();
-                }
-            }
-            conn.Close();
-        }
-
-        private void tx_a_precio_Leave(object sender, EventArgs e)
-        {
-            if (tx_a_cant.Text.Trim() != "" && tx_a_cant.Text.Trim() != "0" && tx_a_precio.Text != "")
-            {
-                tx_a_total.Text = (double.Parse(tx_a_cant.Text) * double.Parse(tx_a_precio.Text)).ToString();
-            }
-        }
-
-        private void tabuser_Enter(object sender, EventArgs e)
-        {
-            Bt_anul.Enabled = false;
-            Bt_print.Enabled = true;
-            bt_prev.Enabled = true;
-            bt_exc.Enabled = false;
-            if (Tx_modo.Text != "NUEVO" && Tx_modo.Text != "EDITAR")
-            {
-                pan_cli.Enabled = false;
-                chk_cliente.Checked = false;
-            }
-        }
-
-        private void chk_cliente_CheckedChanged(object sender, EventArgs e)
-        {
-            if(chk_cliente.Checked == true)
-            {
-                cmb_tdoc.Enabled = true;
-                tx_ndc.Enabled = true;
-                tx_nombre.Enabled = true;
-                tx_direc.Enabled = true;
-                tx_dist.Enabled = true;
-                tx_prov.Enabled = true;
-                tx_dpto.Enabled = true;
-                tx_mail.Enabled = true;
-                tx_telef1.Enabled = true;
-                tx_telef2.Enabled = true;
-            }
-            else
-            {
-                cmb_tdoc.Enabled = false;
-                tx_ndc.Enabled = false;
-                tx_nombre.Enabled = false;
-                tx_direc.Enabled = false;
-                tx_dist.Enabled = false;
-                tx_prov.Enabled = false;
-                tx_dpto.Enabled = false;
-                tx_mail.Enabled = false;
-                tx_telef1.Enabled = false;
-                tx_telef2.Enabled = false;
-            }
-        }
     }
 }

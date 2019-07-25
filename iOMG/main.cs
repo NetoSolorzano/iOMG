@@ -444,7 +444,8 @@ namespace iOMG
         }
         private void vc_registro_Click(object sender, EventArgs e)
         {
-            contclte fvc = new contclte();
+            //contclte fvc = new contclte();
+            contratos fvc = new contratos();
             fvc.TopLevel = false;
             fvc.Parent = this;
             pn_centro.Controls.Add(fvc);

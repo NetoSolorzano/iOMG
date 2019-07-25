@@ -1,6 +1,6 @@
 ﻿namespace iOMG
 {
-    partial class contclte
+    partial class contratos
     {
         /// <summary>
         /// Required designer variable.
@@ -224,7 +224,6 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.crystalReportViewer1 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -258,15 +257,13 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabgrilla);
             this.tabControl1.Controls.Add(this.tabuser);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(981, 465);
-            this.tabControl1.TabIndex = 160;
+            this.tabControl1.Size = new System.Drawing.Size(982, 465);
+            this.tabControl1.TabIndex = 161;
             // 
             // tabgrilla
             // 
@@ -274,11 +271,10 @@
             this.tabgrilla.Location = new System.Drawing.Point(4, 22);
             this.tabgrilla.Name = "tabgrilla";
             this.tabgrilla.Padding = new System.Windows.Forms.Padding(3);
-            this.tabgrilla.Size = new System.Drawing.Size(973, 439);
+            this.tabgrilla.Size = new System.Drawing.Size(974, 439);
             this.tabgrilla.TabIndex = 0;
             this.tabgrilla.Text = "Contratos";
             this.tabgrilla.UseVisualStyleBackColor = true;
-            this.tabgrilla.Enter += new System.EventHandler(this.tabgrilla_Enter);
             // 
             // advancedDataGridView1
             // 
@@ -354,11 +350,10 @@
             this.tabuser.Location = new System.Drawing.Point(4, 22);
             this.tabuser.Name = "tabuser";
             this.tabuser.Padding = new System.Windows.Forms.Padding(3);
-            this.tabuser.Size = new System.Drawing.Size(973, 439);
+            this.tabuser.Size = new System.Drawing.Size(974, 439);
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
-            this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
             // 
             // textBox1
             // 
@@ -747,7 +742,7 @@
             this.cmb_tal.Name = "cmb_tal";
             this.cmb_tal.Size = new System.Drawing.Size(39, 21);
             this.cmb_tal.TabIndex = 6;
-            this.cmb_tal.SelectionChangeCommitted += new System.EventHandler(this.cmb_tal_SelectedIndexChanged);
+            this.cmb_tal.SelectedIndexChanged += new System.EventHandler(this.cmb_tal_SelectedIndexChanged);
             // 
             // tx_d_nom
             // 
@@ -811,7 +806,7 @@
             this.cmb_tip.Name = "cmb_tip";
             this.cmb_tip.Size = new System.Drawing.Size(39, 21);
             this.cmb_tip.TabIndex = 3;
-            this.cmb_tip.SelectionChangeCommitted += new System.EventHandler(this.cmb_tip_SelectedIndexChanged);
+            this.cmb_tip.SelectedIndexChanged += new System.EventHandler(this.cmb_tip_SelectedIndexChanged);
             // 
             // tx_d_det2
             // 
@@ -1038,7 +1033,6 @@
             this.tx_a_codig.TabIndex = 378;
             this.tx_a_codig.Tag = "Id";
             this.tx_a_codig.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_a_codig.Leave += new System.EventHandler(this.tx_a_codig_Leave);
             // 
             // label44
             // 
@@ -1085,7 +1079,6 @@
             this.tx_a_precio.Size = new System.Drawing.Size(59, 20);
             this.tx_a_precio.TabIndex = 386;
             this.tx_a_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tx_a_precio.Leave += new System.EventHandler(this.tx_a_precio_Leave);
             // 
             // pan_cli
             // 
@@ -1254,7 +1247,6 @@
             this.chk_cliente.TabIndex = 361;
             this.chk_cliente.Text = "Modifica datos";
             this.chk_cliente.UseVisualStyleBackColor = true;
-            this.chk_cliente.CheckedChanged += new System.EventHandler(this.chk_cliente_CheckedChanged);
             // 
             // label19
             // 
@@ -1921,6 +1913,7 @@
             this.tx_idr.ReadOnly = true;
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
             this.tx_idr.TabIndex = 274;
+            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
             // 
             // button1
             // 
@@ -2006,10 +1999,10 @@
             this.toolStripSeparator10,
             this.Bt_fin,
             this.toolStripSeparator11});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 468);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 470);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(981, 35);
-            this.toolStrip1.TabIndex = 161;
+            this.toolStrip1.Size = new System.Drawing.Size(986, 35);
+            this.toolStrip1.TabIndex = 162;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // toolStripSeparator2
@@ -2204,7 +2197,6 @@
             this.Bt_ini.Text = "Bt_close";
             this.Bt_ini.ToolTipText = "Ir al inicio";
             this.Bt_ini.Visible = false;
-            this.Bt_ini.Click += new System.EventHandler(this.Bt_first_Click);
             // 
             // toolStripSeparator8
             // 
@@ -2225,7 +2217,6 @@
             this.Bt_sig.Text = "Bt_close";
             this.Bt_sig.ToolTipText = "Siguiente";
             this.Bt_sig.Visible = false;
-            this.Bt_sig.Click += new System.EventHandler(this.Bt_next_Click);
             // 
             // toolStripSeparator9
             // 
@@ -2246,7 +2237,6 @@
             this.Bt_ret.Text = "Bt_close";
             this.Bt_ret.ToolTipText = "Regresar";
             this.Bt_ret.Visible = false;
-            this.Bt_ret.Click += new System.EventHandler(this.Bt_back_Click);
             // 
             // toolStripSeparator10
             // 
@@ -2267,7 +2257,6 @@
             this.Bt_fin.Text = "Bt_close";
             this.Bt_fin.ToolTipText = "Ir al final";
             this.Bt_fin.Visible = false;
-            this.Bt_fin.Click += new System.EventHandler(this.Bt_last_Click);
             // 
             // toolStripSeparator11
             // 
@@ -2276,28 +2265,16 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // crystalReportViewer1
-            // 
-            this.crystalReportViewer1.ActiveViewIndex = -1;
-            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crystalReportViewer1.Location = new System.Drawing.Point(0, 0);
-            this.crystalReportViewer1.Name = "crystalReportViewer1";
-            this.crystalReportViewer1.Size = new System.Drawing.Size(150, 150);
-            this.crystalReportViewer1.TabIndex = 0;
-            // 
-            // contclte
+            // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(981, 503);
+            this.ClientSize = new System.Drawing.Size(986, 505);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tabControl1);
-            this.KeyPreview = true;
-            this.Name = "contclte";
-            this.Text = "Contratos Clientes";
-            this.Load += new System.EventHandler(this.Repspedidos_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.users_KeyDown);
+            this.Name = "contratos";
+            this.Text = "contratos";
+            this.Load += new System.EventHandler(this.contratos_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabgrilla.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
@@ -2342,50 +2319,130 @@
         private System.Windows.Forms.TabPage tabgrilla;
         private ADGV.AdvancedDataGridView advancedDataGridView1;
         private System.Windows.Forms.TabPage tabuser;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton Bt_add;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripButton Bt_close;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripButton Bt_edit;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton Bt_anul;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        public System.Windows.Forms.ToolStripTextBox Tx_modo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton Bt_ini;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
-        private System.Windows.Forms.ToolStripButton Bt_sig;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-        private System.Windows.Forms.ToolStripButton Bt_ret;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
-        private System.Windows.Forms.ToolStripButton Bt_fin;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
-        private System.Windows.Forms.ToolStripButton Bt_print;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabcodigo;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox tx_d_com;
+        private System.Windows.Forms.Label label33;
+        private NumericTextBox tx_d_saldo;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.TextBox tx_d_it;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox tx_d_id;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox tx_d_can;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox tx_d_codi;
+        private System.Windows.Forms.Label label25;
+        private NumericTextBox tx_d_total;
+        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button bt_det;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label22;
+        private NumericTextBox tx_d_prec;
         private System.Windows.Forms.ComboBox cmb_det3;
+        private System.Windows.Forms.Label label37;
         private System.Windows.Forms.ComboBox cmb_det2;
+        private System.Windows.Forms.Label label36;
         private System.Windows.Forms.ComboBox cmb_tal;
+        private System.Windows.Forms.TextBox tx_d_nom;
         private System.Windows.Forms.ComboBox cmb_aca;
+        private System.Windows.Forms.TextBox tx_d_med;
         private System.Windows.Forms.ComboBox cmb_det1;
+        private System.Windows.Forms.TextBox tx_d_mad;
         private System.Windows.Forms.ComboBox cmb_tip;
+        private System.Windows.Forms.TextBox tx_d_det2;
         private System.Windows.Forms.ComboBox cmb_mad;
+        private System.Windows.Forms.TextBox tx_d_est;
         private System.Windows.Forms.ComboBox cmb_mod;
         private System.Windows.Forms.ComboBox cmb_fam;
-        private System.Windows.Forms.TextBox tx_d_com;
-        private System.Windows.Forms.TextBox tx_d_est;
-        private System.Windows.Forms.TextBox tx_d_det2;
-        private System.Windows.Forms.TextBox tx_d_mad;
-        private System.Windows.Forms.TextBox tx_d_med;
-        private System.Windows.Forms.TextBox tx_d_nom;
-        private System.Windows.Forms.TextBox tx_d_codi;
-        private System.Windows.Forms.TextBox tx_d_can;
-        private System.Windows.Forms.TextBox tx_d_id;
-        private System.Windows.Forms.TextBox tx_d_it;
+        private System.Windows.Forms.TabPage tabadicion;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.TextBox tx_a_comen;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.TextBox tx_a_nombre;
+        private System.Windows.Forms.TextBox tx_a_medid;
+        private System.Windows.Forms.TextBox tx_a_it;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.TextBox tx_a_id;
+        private System.Windows.Forms.TextBox tx_a_cant;
+        private System.Windows.Forms.TextBox tx_a_codig;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Label label45;
+        private NumericTextBox tx_a_salcan;
+        private NumericTextBox tx_a_total;
+        private NumericTextBox tx_a_precio;
+        private System.Windows.Forms.Panel pan_cli;
+        private System.Windows.Forms.TextBox tx_dat_distri;
+        private System.Windows.Forms.TextBox tx_dat_provin;
+        private System.Windows.Forms.TextBox tx_dat_dpto;
+        private System.Windows.Forms.GroupBox groupBox37;
+        private System.Windows.Forms.GroupBox groupBox38;
+        private System.Windows.Forms.GroupBox groupBox35;
+        private System.Windows.Forms.GroupBox groupBox36;
+        private System.Windows.Forms.GroupBox groupBox33;
+        private System.Windows.Forms.GroupBox groupBox34;
+        private System.Windows.Forms.GroupBox groupBox31;
+        private System.Windows.Forms.GroupBox groupBox32;
+        private System.Windows.Forms.GroupBox groupBox29;
+        private System.Windows.Forms.GroupBox groupBox30;
+        private System.Windows.Forms.TextBox tx_idcli;
+        private System.Windows.Forms.CheckBox chk_cliente;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private NumericTextBox tx_telef2;
+        private NumericTextBox tx_telef1;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox tx_mail;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tx_dat_tdoc;
+        private System.Windows.Forms.TextBox tx_dpto;
+        private System.Windows.Forms.TextBox tx_prov;
+        private System.Windows.Forms.TextBox tx_direc;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tx_dist;
+        private System.Windows.Forms.TextBox tx_nombre;
+        private System.Windows.Forms.ComboBox cmb_tdoc;
+        private System.Windows.Forms.Label label13;
+        private NumericTextBox tx_ndc;
+        private System.Windows.Forms.GroupBox groupBox27;
+        private System.Windows.Forms.GroupBox groupBox28;
+        private System.Windows.Forms.GroupBox groupBox25;
+        private System.Windows.Forms.GroupBox groupBox26;
+        private System.Windows.Forms.GroupBox groupBox23;
+        private System.Windows.Forms.GroupBox groupBox24;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.GroupBox groupBox21;
+        private System.Windows.Forms.GroupBox groupBox22;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.TextBox tx_dirent;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DateTimePicker dtp_entreg;
+        private System.Windows.Forms.DateTimePicker dtp_pedido;
         private System.Windows.Forms.TextBox tx_dat_estad;
         private System.Windows.Forms.TextBox tx_dat_orig;
         private System.Windows.Forms.TextBox tx_dat_tiped;
@@ -2421,119 +2478,38 @@
         private System.Windows.Forms.TextBox tx_rind;
         private System.Windows.Forms.TextBox tx_idr;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripButton bt_exc;
-        private System.Windows.Forms.DateTimePicker dtp_pedido;
-        private System.Windows.Forms.DateTimePicker dtp_entreg;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
-        private System.Windows.Forms.ToolStripButton bt_view;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-        private System.Windows.Forms.ToolStripButton bt_prev;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.TextBox tx_dirent;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox tx_dat_tdoc;
         private NumericTextBox tx_dscto;
-        private System.Windows.Forms.GroupBox groupBox23;
-        private System.Windows.Forms.GroupBox groupBox24;
-        private System.Windows.Forms.Label label21;
         private NumericTextBox tx_saldo;
-        private System.Windows.Forms.GroupBox groupBox21;
-        private System.Windows.Forms.GroupBox groupBox22;
-        private System.Windows.Forms.Label label20;
         private NumericTextBox tx_acta;
-        private System.Windows.Forms.GroupBox groupBox19;
-        private System.Windows.Forms.GroupBox groupBox20;
-        private System.Windows.Forms.Label label9;
         private NumericTextBox tx_valor;
-        private System.Windows.Forms.GroupBox groupBox11;
-        private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox groupBox27;
-        private System.Windows.Forms.GroupBox groupBox28;
-        private System.Windows.Forms.GroupBox groupBox25;
-        private System.Windows.Forms.GroupBox groupBox26;
-        private System.Windows.Forms.Panel pan_cli;
-        private System.Windows.Forms.GroupBox groupBox37;
-        private System.Windows.Forms.GroupBox groupBox38;
-        private System.Windows.Forms.GroupBox groupBox35;
-        private System.Windows.Forms.GroupBox groupBox36;
-        private System.Windows.Forms.GroupBox groupBox33;
-        private System.Windows.Forms.GroupBox groupBox34;
-        private System.Windows.Forms.GroupBox groupBox31;
-        private System.Windows.Forms.GroupBox groupBox32;
-        private System.Windows.Forms.GroupBox groupBox29;
-        private System.Windows.Forms.GroupBox groupBox30;
-        private System.Windows.Forms.TextBox tx_idcli;
-        private System.Windows.Forms.CheckBox chk_cliente;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label17;
-        private NumericTextBox tx_telef2;
-        private NumericTextBox tx_telef1;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox tx_mail;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox tx_dpto;
-        private System.Windows.Forms.TextBox tx_prov;
-        private System.Windows.Forms.TextBox tx_dist;
-        private System.Windows.Forms.TextBox tx_direc;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox tx_nombre;
-        private System.Windows.Forms.ComboBox cmb_tdoc;
-        private System.Windows.Forms.Label label13;
-        private NumericTextBox tx_ndc;
-        private System.Windows.Forms.TextBox tx_dat_provin;
-        private System.Windows.Forms.TextBox tx_dat_dpto;
-        private System.Windows.Forms.TextBox tx_dat_distri;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label22;
-        private NumericTextBox tx_d_prec;
-        private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.Label label39;
-        private NumericTextBox tx_d_total;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.Label label42;
-        private NumericTextBox tx_d_saldo;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
-        private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tabcodigo;
-        private System.Windows.Forms.TabPage tabadicion;
-        private System.Windows.Forms.Label label50;
-        private System.Windows.Forms.TextBox tx_a_comen;
-        private NumericTextBox tx_a_salcan;
-        private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.Label label48;
-        private NumericTextBox tx_a_total;
-        private System.Windows.Forms.Label label49;
-        private NumericTextBox tx_a_precio;
-        private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.TextBox tx_a_nombre;
-        private System.Windows.Forms.TextBox tx_a_medid;
-        private System.Windows.Forms.TextBox tx_a_it;
-        private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.TextBox tx_a_id;
-        private System.Windows.Forms.TextBox tx_a_cant;
-        private System.Windows.Forms.TextBox tx_a_codig;
-        private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton Bt_add;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton Bt_close;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripButton Bt_edit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+        private System.Windows.Forms.ToolStripButton Bt_anul;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripButton bt_view;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripButton Bt_print;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.ToolStripButton bt_prev;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton bt_exc;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        public System.Windows.Forms.ToolStripTextBox Tx_modo;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton Bt_ini;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripButton Bt_sig;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripButton Bt_ret;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripButton Bt_fin;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
     }
 }
