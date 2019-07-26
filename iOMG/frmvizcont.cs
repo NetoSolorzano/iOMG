@@ -19,7 +19,7 @@ namespace iOMG
 
         private void frmvizcont_Load(object sender, EventArgs e)
         {
-            Contrato _contrato = new Contrato();
+            ContratoG _contrato = new ContratoG();
             _contrato.SetDataSource(_datosReporte);
             crystalReportViewer1.ReportSource = _contrato;
         }

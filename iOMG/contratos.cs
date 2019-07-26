@@ -1271,6 +1271,25 @@ namespace iOMG
             }
             return retorna;
         }
+        private void tabuser_Enter(object sender, EventArgs e)
+        {
+            Bt_anul.Enabled = false;
+            Bt_print.Enabled = true;
+            bt_prev.Enabled = true;
+            bt_exc.Enabled = false;
+            if (Tx_modo.Text != "NUEVO" && Tx_modo.Text != "EDITAR")
+            {
+                pan_cli.Enabled = false;
+                chk_cliente.Checked = false;
+            }
+        }
+        private void tabgrilla_Enter(object sender, EventArgs e)
+        {
+            Bt_anul.Enabled = false;
+            Bt_print.Enabled = false;
+            bt_prev.Enabled = false;
+            bt_exc.Enabled = true;
+        }
 
         #region autocompletados
         private void autodptos()
@@ -1368,21 +1387,21 @@ namespace iOMG
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // anular
+                if (Convert.ToString(row["btn3"]) == "S")               // imprimir
                 {
                     this.Bt_print.Visible = true;
                 }
                 else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn4"]) == "S")               // visualizar
+                if (Convert.ToString(row["btn4"]) == "S")               // anular
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
+                if (Convert.ToString(row["btn5"]) == "S")               // preview
                 {
-                    this.bt_exc.Visible = true;
+                    bt_prev.Visible = true;
                 }
-                else { this.bt_exc.Visible = false; }
+                else { bt_prev.Visible = false; }
                 if (Convert.ToString(row["btn6"]) == "S")               // salir del form
                 {
                     this.Bt_close.Visible = true;
@@ -2932,7 +2951,7 @@ namespace iOMG
 
             foreach (DataGridViewRow row in dataGridView1.Rows)  //
             {
-                if (row.Cells["item"].Value != null)   // !string.IsNullOrEmpty(row.Cells["item"].Value.ToString())
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0,1) != "Z")
                 {
                     conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
                     rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
@@ -2945,6 +2964,62 @@ namespace iOMG
                     rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
                     rowdetalle.precio = row.Cells["precio"].Value.ToString();
                     rowdetalle.total = row.Cells["total"].Value.ToString();
+                    rowdetalle.coment = row.Cells["coment"].Value.ToString();
+                    // aca falta el coment del articulo
+                    repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                }
+            }
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == "Z")
+                {
+                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                    rowdetalle.id = "0";
+                    rowdetalle.cant = "";
+                    rowdetalle.codigo = "";
+                    rowdetalle.nombre = "";
+                    rowdetalle.medidas = "";
+                    rowdetalle.madera = "";
+                    rowdetalle.det2 = "";
+                    rowdetalle.acabado = "";
+                    rowdetalle.precio = "";
+                    rowdetalle.total = "";
+                    rowdetalle.coment = "";
+                    repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    //
+                    rowdetalle = repcontrato.detalle.NewdetalleRow();
+                    rowdetalle.id = "0";
+                    rowdetalle.cant = "";
+                    rowdetalle.codigo = "";
+                    rowdetalle.nombre = "ADICIONALES";
+                    rowdetalle.medidas = "";
+                    rowdetalle.madera = "";
+                    rowdetalle.det2 = "";
+                    rowdetalle.acabado = "";
+                    rowdetalle.precio = "";
+                    rowdetalle.total = "";
+                    rowdetalle.coment = "";
+                    repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    break;
+                }
+            }
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == "Z")
+                {
+                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                    rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
+                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                    rowdetalle.codigo = row.Cells["item"].Value.ToString();
+                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
+                    rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
+                    rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                    rowdetalle.precio = row.Cells["precio"].Value.ToString();
+                    rowdetalle.total = row.Cells["total"].Value.ToString();
+                    rowdetalle.coment = row.Cells["coment"].Value.ToString();
                     // aca falta el coment del articulo
                     repcontrato.detalle.AdddetalleRow(rowdetalle);
                     //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na

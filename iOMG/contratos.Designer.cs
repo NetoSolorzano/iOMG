@@ -274,6 +274,7 @@
             this.tabgrilla.TabIndex = 0;
             this.tabgrilla.Text = "Contratos";
             this.tabgrilla.UseVisualStyleBackColor = true;
+            this.tabgrilla.Enter += new System.EventHandler(this.tabgrilla_Enter);
             // 
             // advancedDataGridView1
             // 
@@ -352,6 +353,7 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
+            this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
             // 
             // tabControl2
             // 
