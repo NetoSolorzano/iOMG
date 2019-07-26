@@ -48,6 +48,12 @@ namespace iOMG
         int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
         string tncont = "";             // tipo de numeracion: AUTOMA o MANUAL
         string letgru = "";                 // letra identificado en campo "CAPIT" para ADICIONAL
+        string talldef = "";                // taller por defecto en los contratos
+        string madedef = "";                // maderas para adicionales
+        string dets1 = "";                  // detalles1 para adicionales
+        string dets2 = "";                  // detalles2 para adicionales
+        string dets3 = "";                  // detalles3 para adicionales
+        string acadef = "";                 // acabados para adicionales
         string cliente = Program.cliente;    // razon social para los reportes
         libreria lib = new libreria();
         // string de conexion
@@ -236,7 +242,12 @@ namespace iOMG
                     if (row["formulario"].ToString() == "adicionals")
                     {
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();    // capitulo
-                        // resto
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "talleres") talldef = row["valor"].ToString().Trim();    // 
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "maderas") madedef = row["valor"].ToString().Trim();    // 
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle1") dets1 = row["valor"].ToString().Trim();    // 
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle2") dets2 = row["valor"].ToString().Trim();    // 
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle3") dets3 = row["valor"].ToString().Trim();    // 
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "acabados") acadef = row["valor"].ToString().Trim();    // 
                     }
                 }
                 da.Dispose();
@@ -291,26 +302,6 @@ namespace iOMG
                 dag.Dispose();
             }
             //  datos para el combobox de tipo de documento
-            /*
-            if (quien == "capit")
-            {
-                cmb_estado.Items.Clear();
-                //tx_dat_tip.Text = "";
-                const string contip = "select b.descrizione,a.tipol from items a " +
-                    "left join desc_tip b on b.idcodice=a.tipol " +
-                    "where a.capit=@des group by a.tipol";
-                MySqlCommand cmdtip = new MySqlCommand(contip, conn);
-                cmdtip.Parameters.AddWithValue("@des", "tx_dat_cap.Text.Trim()");       // revisar
-                DataTable dttip = new DataTable();
-                MySqlDataAdapter datip = new MySqlDataAdapter(cmdtip);
-                datip.Fill(dttip);
-                foreach (DataRow row in dttip.Rows)
-                {
-                    cmb_estado.Items.Add(row.ItemArray[1].ToString());
-                    cmb_estado.ValueMember = row.ItemArray[1].ToString();
-                }
-            }
-            */
             if (quien == "todos")
             {
                 // seleccion de tipo de contrato
@@ -1335,6 +1326,7 @@ namespace iOMG
             bt_exc.Visible = false;
             bt_prev.Visible = false;
             Bt_print.Visible = false;
+            bt_view.Visible = false;
             //
             DataTable mdtb = new DataTable();
             const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";
@@ -1542,20 +1534,13 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
-            //setParaCrystal();
+            setParaCrystal();
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
             if (tx_idr.Text != "" && tx_rind.Text != "")
             {
-                //setParaCrystal();
-                /*
-                Tx_modo.Text = "IMPRIMIR";
-                pageCount = 1;
-                //printDocument1.DefaultPageSettings.Landscape = true;
-                printPreviewDialog1.Document = printDocument1;
-                printPreviewDialog1.ShowDialog();
-                */
+                setParaCrystal();
             }
         }
         private void bt_exc_Click(object sender, EventArgs e)
@@ -2062,7 +2047,7 @@ namespace iOMG
                         return;
                     }
                     // vista previa
-                    //setParaCrystal();
+                    setParaCrystal();
                 }
                 else
                 {
@@ -2907,5 +2892,66 @@ namespace iOMG
             }
         }
         #endregion
+        #region crystal
+        private void setParaCrystal()                   // genera el set para el reporte de crystal
+        {
+            conClie datos = generareporte();                        // conClie = dataset de impresion de contrato   
+            frmvizcont visualizador = new frmvizcont(datos);        // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
+            visualizador.Show();
+        }
+        private conClie generareporte()                 // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
+        {
+            conClie repcontrato = new conClie();                                    // dataset
+
+            conClie.cabeceraRow rowcabeza = repcontrato.cabecera.NewcabeceraRow();  // llenamos la tabla cabecera del dataset
+            rowcabeza.contrato = tx_codped.Text;
+            rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
+            rowcabeza.id = "0";
+            rowcabeza.localVen = cmb_taller.Text;     //.SelectedText.ToString();
+            rowcabeza.nomClie = tx_nombre.Text.Trim();
+            rowcabeza.numDoc = tx_ndc.Text.Trim();
+            if (cmb_tdoc.SelectedIndex == -1) rowcabeza.tipDoc = "";
+            else rowcabeza.tipDoc = cmb_tdoc.SelectedItem.ToString();     //.SelectedText;
+            rowcabeza.tipoCont = cmb_tipo.SelectedText;
+            rowcabeza.direc = tx_direc.Text.Trim();
+            rowcabeza.distrit = tx_dist.Text.Trim();
+            rowcabeza.provin = tx_prov.Text.Trim();
+            rowcabeza.depart = tx_dpto.Text.Trim();
+            rowcabeza.email = tx_mail.Text.Trim();
+            rowcabeza.telef1 = tx_telef1.Text.Trim();
+            rowcabeza.telef2 = tx_telef2.Text.Trim();
+            rowcabeza.valTot = tx_valor.Text;
+            rowcabeza.valDscto = tx_dscto.Text;
+            rowcabeza.valActa = tx_acta.Text;
+            rowcabeza.valSaldo = tx_saldo.Text;
+            rowcabeza.coment = tx_coment.Text.Trim();
+            rowcabeza.dirEntreg = tx_dirent.Text.Trim();
+            rowcabeza.fechEnt = dtp_entreg.Value.ToString("dd/MM/yyyy");
+            rowcabeza.usuario = asd;
+            repcontrato.cabecera.AddcabeceraRow(rowcabeza);
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)  //
+            {
+                if (row.Cells["item"].Value != null)   // !string.IsNullOrEmpty(row.Cells["item"].Value.ToString())
+                {
+                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                    rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
+                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                    rowdetalle.codigo = row.Cells["item"].Value.ToString();
+                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
+                    rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
+                    rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                    rowdetalle.precio = row.Cells["precio"].Value.ToString();
+                    rowdetalle.total = row.Cells["total"].Value.ToString();
+                    // aca falta el coment del articulo
+                    repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                }
+            }
+            return repcontrato;
+        }
+        #endregion crystal
     }
 }
