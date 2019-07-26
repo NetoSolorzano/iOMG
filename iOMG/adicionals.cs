@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
-using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -36,6 +35,11 @@ namespace iOMG
         string img_grab = "";
         string img_anul = "";
         string letgru = "";             // letras de capitulo "adicionales"
+        string letmads = "";            // identificadores de maderas para adicionales
+        string dets1 = "";              // identificadores de detalle1 adicionales
+        string dets2 = "";              // identificadores de detalle2 adicionales
+        string dets3 = "";              // identificadores de detalle3 adicionales
+        string acabas = "";             // identificadores de acabados en adicionales
         string talleres = "";           // taller habilitados
         libreria lib = new libreria();
         // string de conexion
@@ -253,9 +257,13 @@ namespace iOMG
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
-                        if(row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();    // capitulo
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();   // capitulo
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "talleres") talleres = row["valor"].ToString().Trim(); // tallerres
-                        // resto
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "maderas") letmads = row["valor"].ToString().Trim();   // maderas disponibles para adicionales
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle1") dets1 = row["valor"].ToString().Trim();    // detalle1 adicionales
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle2") dets2 = row["valor"].ToString().Trim();    // detalle2 adicionales
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle3") dets3 = row["valor"].ToString().Trim();    // detalle3 adicionales
+                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "acabados") acabas = row["valor"].ToString().Trim();    // detalle3 adicionales
                     }
                 }
                 da.Dispose();
@@ -339,7 +347,7 @@ namespace iOMG
                     this.cmb_cap.ValueMember = row.ItemArray[1].ToString(); //citem_cap.Value.ToString();
                 }
                 // seleccion de modelo
-                const string conmod = "select idcodice,descrizionerid from desc_mda " +
+                const string conmod = "select idcodice,descrizionerid from desc_mod " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdmod = new MySqlCommand(conmod, conn);
                 DataTable dtmod = new DataTable();
@@ -354,8 +362,9 @@ namespace iOMG
                 cmb_mad.Items.Clear();
                 tx_dat_mad.Text = "";
                 const string conmad = "select descrizionerid,idcodice from desc_mad " +
-                    "where numero=1";
+                    "where numero=1 and idcodice in (@mads)";
                 MySqlCommand cmdmad = new MySqlCommand(conmad, conn);
+                cmdmad.Parameters.AddWithValue("@mads", letmads);
                 DataTable dtmad = new DataTable();
                 MySqlDataAdapter damad = new MySqlDataAdapter(cmdmad);
                 damad.Fill(dtmad);
@@ -382,8 +391,9 @@ namespace iOMG
                 this.cmb_det1.Items.Clear();
                 tx_dat_det1.Text = "";
                 const string condt1 = "select descrizionerid,idcodice from desc_dt1 " +
-                    "where numero=1";
+                    "where numero=1 and idcodice in (@dets1)";
                 MySqlCommand cmddt1 = new MySqlCommand(condt1, conn);
+                cmddt1.Parameters.AddWithValue("@dets1",dets1);
                 DataTable dtdt1 = new DataTable();
                 MySqlDataAdapter dadt1 = new MySqlDataAdapter(cmddt1);
                 dadt1.Fill(dtdt1);
@@ -396,8 +406,9 @@ namespace iOMG
                 this.cmb_aca.Items.Clear();
                 tx_dat_aca.Text = "";
                 const string conaca = "select descrizionerid,idcodice from desc_est " +
-                    "where numero=1";
+                    "where numero=1 and idcodice in (@acabs)";
                 MySqlCommand cmdaca = new MySqlCommand(conaca, conn);
+                cmdaca.Parameters.AddWithValue("@acabs", acabas);
                 DataTable dtaca = new DataTable();
                 MySqlDataAdapter daaca = new MySqlDataAdapter(cmdaca);
                 daaca.Fill(dtaca);
@@ -425,8 +436,9 @@ namespace iOMG
                 this.cmb_det2.Items.Clear();
                 tx_dat_det2.Text = "";
                 const string condt2 = "select descrizione,idcodice from desc_dt2 " +
-                    "where numero=1";
+                    "where numero=1 and idcodice in (@dets2)";
                 MySqlCommand cmddt2 = new MySqlCommand(condt2, conn);
+                cmddt2.Parameters.AddWithValue("@dets2", dets2);
                 DataTable dtdt2 = new DataTable();
                 MySqlDataAdapter dadt2 = new MySqlDataAdapter(cmddt2);
                 dadt2.Fill(dtdt2);
@@ -438,8 +450,9 @@ namespace iOMG
                 // seleccion de detalle 3
                 cmb_det3.Items.Clear();
                 tx_dat_det3.Text = "";
-                const string condt3 = "select descrizione,idcodice from desc_dt3 where numero=1";
+                const string condt3 = "select descrizione,idcodice from desc_dt3 where numero=1 and idcodice in (@dets3)";
                 MySqlCommand cmddt3 = new MySqlCommand(condt3, conn);
+                cmddt3.Parameters.AddWithValue("@dets3", dets3);
                 DataTable dtdt3 = new DataTable();
                 MySqlDataAdapter dadt3 = new MySqlDataAdapter(cmddt3);
                 dadt3.Fill(dtdt3);

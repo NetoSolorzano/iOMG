@@ -32,7 +32,6 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabcodigo = new System.Windows.Forms.TabPage();
             this.label35 = new System.Windows.Forms.Label();
@@ -297,7 +296,6 @@
             // 
             // tabuser
             // 
-            this.tabuser.Controls.Add(this.textBox1);
             this.tabuser.Controls.Add(this.tabControl2);
             this.tabuser.Controls.Add(this.pan_cli);
             this.tabuser.Controls.Add(this.groupBox27);
@@ -354,13 +352,6 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(643, 393);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 346;
             // 
             // tabControl2
             // 
@@ -1023,6 +1014,7 @@
             this.tx_a_cant.TabIndex = 377;
             this.tx_a_cant.Tag = "Id";
             this.tx_a_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_a_cant.Leave += new System.EventHandler(this.tx_a_can_Leave);
             // 
             // tx_a_codig
             // 
@@ -1079,6 +1071,7 @@
             this.tx_a_precio.Size = new System.Drawing.Size(59, 20);
             this.tx_a_precio.TabIndex = 386;
             this.tx_a_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_a_precio.Leave += new System.EventHandler(this.tx_a_precio_Leave);
             // 
             // pan_cli
             // 
@@ -1850,7 +1843,7 @@
             // 
             this.tx_coment.Location = new System.Drawing.Point(76, 393);
             this.tx_coment.Name = "tx_coment";
-            this.tx_coment.Size = new System.Drawing.Size(564, 20);
+            this.tx_coment.Size = new System.Drawing.Size(770, 20);
             this.tx_coment.TabIndex = 270;
             // 
             // label1
@@ -2319,7 +2312,6 @@
         private System.Windows.Forms.TabPage tabgrilla;
         private ADGV.AdvancedDataGridView advancedDataGridView1;
         private System.Windows.Forms.TabPage tabuser;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabcodigo;
         private System.Windows.Forms.Label label35;

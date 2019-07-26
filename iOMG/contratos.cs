@@ -79,7 +79,7 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            if (keyData == Keys.F1) //  && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"
             {
                 if (cmb_fam.Focused == true || cmb_mod.Focused == true || cmb_mad.Focused == true || cmb_tip.Focused == true ||
                     cmb_det1.Focused == true || cmb_aca.Focused == true || cmb_tal.Focused == true ||
@@ -223,7 +223,7 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "tipocon" && row["param"].ToString() == "normal") tipede = row["valor"].ToString().Trim();       // tipo de contrato x defecto "normal"
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();       // estado del contrato inicial
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del contrato que admiten modificar el pedido
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
                         if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();        // valor por defecto al no validar det2
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") tdc = row["valor"].ToString().Trim();             // tipo de documento para contratos
@@ -830,7 +830,7 @@ namespace iOMG
                     {
                         // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                         // a.valor,a.acuenta,a.saldo,a.dscto 
-                        tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo contrato
+                        tx_dat_tiped.Text = row["tipocon"].ToString();                      // tipo contrato
                         tx_idr.Text = row["id"].ToString();                                 // id del registro
                         tx_rind.Text = cta.ToString();
                         tx_dat_estad.Text = row["status"].ToString();                       // estado
@@ -841,7 +841,7 @@ namespace iOMG
                         dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
                         tx_coment.Text = row["coment"].ToString();                          // comentario
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
-                        tx_valor.Text = row["valor"].ToString();     // valor del contrato
+                        tx_valor.Text = row["valor"].ToString();                            // valor del contrato
                         tx_dscto.Text = row["dscto"].ToString();     // descuento final
                         tx_acta.Text = row["acuenta"].ToString();     // pago a cuenta
                         tx_saldo.Text = row["saldo"].ToString();     // saldo actual del contrato
@@ -1415,6 +1415,7 @@ namespace iOMG
             advancedDataGridView1.ReadOnly = true;
             tabControl1.SelectedTab = tabuser;
             escribe(this);
+            escribepag(tabuser);
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
             dtp_pedido.Value = DateTime.Now;
@@ -1445,6 +1446,13 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_estad.Text = tiesta;
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            cmb_estado.Enabled = false;
+            tx_idr.ReadOnly = true;
+            tx_rind.ReadOnly = true;
+            tx_valor.ReadOnly = true;
+            tx_saldo.ReadOnly = true;
+            tx_a_salcan.ReadOnly = true;
+            tx_d_saldo.ReadOnly = true;
             if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
             else tx_codped.ReadOnly = false;
             cmb_taller.Focus();
@@ -1464,13 +1472,8 @@ namespace iOMG
             //}
             tabControl1.SelectedTab = tabuser;
             Tx_modo.Text = "EDITAR";
-            escribe(this);
-            tx_codped.Enabled = true;
-            tx_codped.ReadOnly = false;
-            tx_codped.Focus();
-            tabControl1.SelectedTab = tabuser;
-            /*
             sololee(this);
+            sololeepag(tabuser);
             button1.Image = Image.FromFile(img_grab);
             limpiar(this);
             limpiapag(tabuser);
@@ -1478,6 +1481,9 @@ namespace iOMG
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
+            tx_codped.Enabled = true;
+            tx_codped.ReadOnly = false;
+            tx_codped.Focus();
             tabControl1.SelectedTab = tabuser;
             //
             pan_cli.Enabled = true;
@@ -1495,7 +1501,9 @@ namespace iOMG
             //
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
-            //escribepag(tabuser);
+            tx_codped.Enabled = true;
+            tx_codped.Focus();
+            /*
             //dataload("todos");
             //jalaoc("tx_idr");
             */
@@ -2440,7 +2448,11 @@ namespace iOMG
         {
             if (Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text == "")
             {
-                jalaoc("tx_codped");
+                jalaoc("tx_codped");                        // jalamos los datos
+                if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
+                {
+                    escribepag(tabuser);
+                }
             }
         }
         private void tx_d_can_Leave(object sender, EventArgs e)
@@ -2451,6 +2463,14 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
         }
+        private void tx_a_can_Leave(object sender, EventArgs e)
+        {
+            if (tx_a_cant.Text != "" && tx_a_precio.Text != "")
+            {
+                tx_a_total.Text = (Decimal.Parse(tx_a_cant.Text) * Decimal.Parse(tx_a_precio.Text)).ToString("0.00");
+            }
+            if (Tx_modo.Text == "NUEVO") tx_a_salcan.Text = tx_a_cant.Text;
+        }
         private void tx_d_prec_Leave(object sender, EventArgs e)
         {
             if (tx_d_can.Text != "" && tx_d_prec.Text != "")
@@ -2458,6 +2478,15 @@ namespace iOMG
                 tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
+
+        }
+        private void tx_a_precio_Leave(object sender, EventArgs e)
+        {
+            if (tx_a_cant.Text != "" && tx_a_precio.Text != "")
+            {
+                tx_a_total.Text = (Decimal.Parse(tx_a_cant.Text) * Decimal.Parse(tx_a_precio.Text)).ToString("0.00");
+            }
+            if (Tx_modo.Text == "NUEVO") tx_a_salcan.Text = tx_a_cant.Text;
 
         }
         private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
@@ -2662,11 +2691,16 @@ namespace iOMG
                 limpiapag(tabuser);
                 limpia_otros(tabuser);
                 limpia_combos(tabuser);
-                escribepag(tabuser);
+                //escribepag(tabuser);
+                sololeepag(tabuser);
                 tx_idr.Text = idr;
                 tx_rind.Text = rind;
                 tx_dat_tiped.Text = tipede;
                 jalaoc("tx_idr");
+                if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
+                {
+                    escribepag(tabuser);
+                }
             }
         }
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda

@@ -1,7 +1,7 @@
 ﻿// Información técnica sobre desarrollo del proyecto
 - me quede en Contratos: 24/07/2019
 estoy pasando a private los eventos en pedsalm....ok
-- 25/07/2019 creando un nuevo form "contratos" para reemplazar al malogrado "contclte"
+- 25/07/2019 creando un nuevo form "contratos" para reemplazar al malogrado "contclte" .... ok
 
 - verificar funcionamiento de EDITAR, VISUALIZAR, ANULAR (DEBE PREGUNTAR SI ANULA O BORRA)
 
