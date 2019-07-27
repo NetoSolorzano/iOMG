@@ -1066,7 +1066,7 @@ namespace iOMG
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
                         string insdet = "";
-                        if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
+                        if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
                         {
                             insdet = "insert into detacon (" +
                                 "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,coment,piedra) values (" +
@@ -1088,7 +1088,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[12].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
-                        if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "A")
+                        if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "A")
                         {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,space(1) as na
                             insdet = "update detacon set tipo=@tipe,item=@item,cant=@cant," +
                                 "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald,coment=@come,piedra=@pied " +
@@ -1199,7 +1199,7 @@ namespace iOMG
         }
         private void calculos()                             // calculos de total, y saldo
         {
-            decimal val = 0, dsto = 0, acta = 0, sald = 0;
+            decimal val = 0, dsto = 0, acta = 0;  //sald = 0
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
@@ -2265,7 +2265,8 @@ namespace iOMG
                 }
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
-                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
+                    //a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment,
+                    //piedra,codpie,na
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[1].Value = tx_d_codi.Text;
                     obj.Cells[2].Value = tx_d_can.Text;
@@ -2279,7 +2280,8 @@ namespace iOMG
                     obj.Cells[10].Value = "";
                     obj.Cells[11].Value = tx_d_com.Text;
                     obj.Cells[12].Value = tx_d_det2.Text;
-                    obj.Cells[13].Value = "A";  // registro actualizado
+                    obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();
+                    obj.Cells[14].Value = "A";  // registro actualizado
                 }
                 else
                 {
@@ -2298,6 +2300,7 @@ namespace iOMG
                     tr["codref"] = "";
                     tr["coment"] = tx_d_com.Text;
                     tr["piedra"] = tx_d_det2.Text;
+                    tr["codpie"] = cmb_det2.Text.ToString().Substring(0, 3).Trim();
                     tr["na"] = "N";
                     dtg.Rows.Add(tr);
                 }
@@ -2466,6 +2469,7 @@ namespace iOMG
                 tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
+            if (Tx_modo.Text == "EDITAR" && tx_d_id.Text.Trim() == "") tx_d_saldo.Text = tx_d_can.Text;
         }
         private void tx_a_can_Leave(object sender, EventArgs e)
         {
@@ -2474,6 +2478,7 @@ namespace iOMG
                 tx_a_total.Text = (Decimal.Parse(tx_a_cant.Text) * Decimal.Parse(tx_a_precio.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_a_salcan.Text = tx_a_cant.Text;
+            if (Tx_modo.Text == "EDITAR" && tx_d_id.Text.Trim() == "") tx_d_saldo.Text = tx_d_can.Text;
         }
         private void tx_d_prec_Leave(object sender, EventArgs e)
         {
@@ -2482,7 +2487,7 @@ namespace iOMG
                 tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
-
+            if (Tx_modo.Text == "EDITAR" && tx_d_id.Text.Trim() == "") tx_d_saldo.Text = tx_d_can.Text;
         }
         private void tx_a_precio_Leave(object sender, EventArgs e)
         {
@@ -2491,7 +2496,7 @@ namespace iOMG
                 tx_a_total.Text = (Decimal.Parse(tx_a_cant.Text) * Decimal.Parse(tx_a_precio.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_a_salcan.Text = tx_a_cant.Text;
-
+            if (Tx_modo.Text == "EDITAR" && tx_a_id.Text.Trim() == "") tx_a_salcan.Text = tx_a_cant.Text;
         }
         private void tx_ndc_Leave(object sender, EventArgs e)       // en modo nuevo permite jalar la info del ruc o dni o c.extranjeria
         {
@@ -2850,7 +2855,7 @@ namespace iOMG
                 }
             }
         }
-        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e) // me que de aca ..revisar y probar esto!
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e) 
         {
             // si es edicion, si es el usuario autorizado y el contrato es reciente => borra la(s) filas de detalle
             // busca en la base de datos y lo borra, debe actualizar estado del contrato y saldos
@@ -2880,16 +2885,17 @@ namespace iOMG
                                 mion.ExecuteNonQuery();
                                 // estado del contrato
                                 string compa = "act_cont";
+                                mion = new MySqlCommand(compa, conn);
                                 mion.CommandType = CommandType.StoredProcedure;
                                 mion.CommandTimeout = 300;
-                                mion = new MySqlCommand(compa, conn);
-                                mion.Parameters.AddWithValue("@con", tx_codped.Text);
-                                MySqlParameter reto = mion.Parameters.Add("estado", MySqlDbType.VarChar);
-                                reto.Direction = ParameterDirection.ReturnValue;
+                                mion.Parameters.AddWithValue("@cont", tx_codped.Text);
+                                MySqlParameter estad = new MySqlParameter("@estad","");
+                                estad.Direction = ParameterDirection.Output;
+                                mion.Parameters.Add(estad);
                                 mion.ExecuteNonQuery();
+                                string newestad = mion.Parameters["@estad"].Value.ToString();
                                 conn.Close();
-                                // actualizar el estado en el form y en la grilla
-                                tx_dat_estad.Text = reto.ToString();
+                                tx_dat_estad.Text = newestad;
                                 cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                                 for (int i = 0; i < dtg.Rows.Count; i++)
                                 {
@@ -2905,6 +2911,11 @@ namespace iOMG
                                 MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
                             }
                             conn.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("No es posible proceder por estado o modo", "No se grabó la operación");
+                            e.Cancel = true;
                         }
                     }
                 }
