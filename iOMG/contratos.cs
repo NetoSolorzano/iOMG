@@ -17,6 +17,7 @@ namespace iOMG
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
         static string nomtab = "contrat";
+        #region variables 
         public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion sin crystal, con crystal ya no se usan
         public string perAg = "";
         public string perMo = "";
@@ -38,6 +39,7 @@ namespace iOMG
         string img_ver = "";            // imagen del boton visualizacion (solo ver)
         string tipede = "";             // tipo de pedido por defecto
         string tiesta = "";             // estado inicial por defecto del contrato
+        string tiesan = "";             // estado anulado / codigo
         string escambio = "";           // estados del contrato que admiten modificacion
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
@@ -55,6 +57,7 @@ namespace iOMG
         string dets3 = "";                  // detalles3 para adicionales
         string acadef = "";                 // acabados para adicionales
         string cliente = Program.cliente;    // razon social para los reportes
+        #endregion
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -227,17 +230,18 @@ namespace iOMG
                     }
                     if (row["formulario"].ToString() == "contratos")
                     {
-                        if (row["campo"].ToString() == "tipocon" && row["param"].ToString() == "normal") tipede = row["valor"].ToString().Trim();       // tipo de contrato x defecto "normal"
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();       // estado del contrato inicial
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del contrato que admiten modificar el pedido
-                        if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();         // captitulos donde no se valida det2
-                        if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();        // valor por defecto al no validar det2
-                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") tdc = row["valor"].ToString().Trim();             // tipo de documento para contratos
-                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "local") sdc = row["valor"].ToString().Trim();             // local del contrato, vacio todos los locales
-                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();             // tipo de documento para contratos
-                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
-                        if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());         // cantidad de filas de detalle maximo del cont
-                        if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();         // tipo de numeracion de los contratos: MANUAL o AUTOMA 
+                        if (row["campo"].ToString() == "tipocon" && row["param"].ToString() == "normal") tipede = row["valor"].ToString().Trim();               // tipo de contrato x defecto "normal"
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();               // estado del contrato inicial
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();              // estado del contrato que admiten modificar el pedido
+                        if (row["campo"].ToString() == "validac" && row["param"].ToString() == "nodet2") canovald2 = row["valor"].ToString().Trim();            // captitulos donde no se valida det2
+                        if (row["campo"].ToString() == "validac" && row["param"].ToString() == "valdet2") conovald2 = row["valor"].ToString().Trim();           // valor por defecto al no validar det2
+                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") tdc = row["valor"].ToString().Trim();                 // tipo de documento para contratos
+                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "local") sdc = row["valor"].ToString().Trim();                  // local del contrato, vacio todos los locales
+                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();                // tipo de documento para contratos
+                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();             // letra identificadora de Piedra en Detalle2
+                        if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());  // cantidad de filas de detalle maximo del cont
+                        if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();              // tipo de numeracion de los contratos: MANUAL o AUTOMA 
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();              // codigo de estado anulado
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -1128,6 +1132,25 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
+        private bool anula()                                // anula el contrato
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string anu = "update contrat set status=@sta,user=@asd,dia=now() " +
+                    "where id=@idr";
+                MySqlCommand micon = new MySqlCommand(anu, conn);
+                micon.Parameters.AddWithValue("@sta", tiesan);
+                micon.Parameters.AddWithValue("@asd", asd);
+                micon.Parameters.AddWithValue("@idr", tx_idr.Text);
+                micon.ExecuteNonQuery();
+                retorna = true;
+            }
+            conn.Close();
+            return retorna;
+        }
         private void actuacli()                             // actualiza datos del cliente
         {
             string parte = "";
@@ -1473,14 +1496,6 @@ namespace iOMG
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = false;
-            //string codu = "";
-            //string idr = "";
-            //if (advancedDataGridView1.CurrentRow.Index > -1)
-            //{
-            //    codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
-            //    idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-            //    tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
-            //}
             tabControl1.SelectedTab = tabuser;
             Tx_modo.Text = "EDITAR";
             sololee(this);
@@ -1514,14 +1529,33 @@ namespace iOMG
             tx_dat_tiped.Text = tipede;
             tx_codped.Enabled = true;
             tx_codped.Focus();
-            /*
-            //dataload("todos");
-            //jalaoc("tx_idr");
-            */
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
-            // nada que hacer
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = false;
+            tabControl1.SelectedTab = tabuser;
+            Tx_modo.Text = "ANULAR";
+            sololee(this);
+            sololeepag(tabuser);
+            button1.Image = Image.FromFile(img_anul);
+            limpiar(this);
+            limpiapag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            tx_codped.Enabled = true;
+            tx_codped.ReadOnly = false;
+            tx_codped.Focus();
+            tabControl1.SelectedTab = tabuser;
+            //
+            pan_cli.Enabled = false;
+            chk_cliente.Enabled = false;
+            //
+            tx_codped.Enabled = true;
+            tx_codped.Focus();
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -1962,54 +1996,58 @@ namespace iOMG
         private void button1_Click(object sender, EventArgs e)
         {
             // validamos que los campos no esten vacíos
-            if (tx_dat_tiped.Text == "")
+            string modos = "NUEVO,EDITAR";
+            if (modos.Contains(Tx_modo.Text))
             {
-                MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                cmb_tipo.Focus();
-                return;
-            }
-            if (tx_dat_estad.Text == "")
-            {
-                MessageBox.Show("Seleccione el estado del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                cmb_estado.Focus();
-                return;
-            }
-            if (tx_dat_orig.Text == "")
-            {
-                MessageBox.Show("Seleccione el local de ventas", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                cmb_taller.Focus();
-                return;
-            }
-            if (tx_ndc.Text == "")
-            {
-                MessageBox.Show("Falta el cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                tx_ndc.Focus();
-                return;
-            }
-            if (tx_nombre.Text == "")
-            {
-                MessageBox.Show("Falta el nombre del cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                tx_nombre.Focus();
-                return;
-            }
-            if (dataGridView1.Rows.Count < 2)
-            {
-                MessageBox.Show("Falta el detalle del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                cmb_fam.Focus();
-                return;
-            }
-            if (tx_mail.Text.Trim() != "" && lib.email_bien_escrito(tx_mail.Text.Trim()) == false)
-            {
-                MessageBox.Show("Debe arreglar el correo electrónico" + Environment.NewLine +
-                    "porque no cumple con el formato", "Atención verifique", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                tx_mail.Focus();
-                return;
-            }
-            if (tncont == "MANUAL" && tx_codped.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el identificador del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                tx_codped.Focus();
-                return;
+                if (tx_dat_tiped.Text == "")
+                {
+                    MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    cmb_tipo.Focus();
+                    return;
+                }
+                if (tx_dat_estad.Text == "")
+                {
+                    MessageBox.Show("Seleccione el estado del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    cmb_estado.Focus();
+                    return;
+                }
+                if (tx_dat_orig.Text == "")
+                {
+                    MessageBox.Show("Seleccione el local de ventas", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    cmb_taller.Focus();
+                    return;
+                }
+                if (tx_ndc.Text == "")
+                {
+                    MessageBox.Show("Falta el cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_ndc.Focus();
+                    return;
+                }
+                if (tx_nombre.Text == "")
+                {
+                    MessageBox.Show("Falta el nombre del cliente", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_nombre.Focus();
+                    return;
+                }
+                if (dataGridView1.Rows.Count < 2)
+                {
+                    MessageBox.Show("Falta el detalle del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    cmb_fam.Focus();
+                    return;
+                }
+                if (tx_mail.Text.Trim() != "" && lib.email_bien_escrito(tx_mail.Text.Trim()) == false)
+                {
+                    MessageBox.Show("Debe arreglar el correo electrónico" + Environment.NewLine +
+                        "porque no cumple con el formato", "Atención verifique", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    tx_mail.Focus();
+                    return;
+                }
+                if (tncont == "MANUAL" && tx_codped.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese el identificador del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_codped.Focus();
+                    return;
+                }
             }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;
@@ -2115,7 +2153,46 @@ namespace iOMG
             {
                 // si el contrato no tiene movimientos o enlaces se puede borrar
                 // si tiene mov. enlaces, etc. solo se puede anular
-
+                var aa = MessageBox.Show("Confirma que desea ANULAR el contrato?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    if (tiesta == tx_dat_estad.Text)
+                    {
+                        if(anula() != true)
+                        {
+                            MessageBox.Show("No se realizo la operacion de anular", "Error en anular");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var aaa = MessageBox.Show("El estado del contrato no permite anular" + Environment.NewLine +
+                            "Confirma que desea ANULAR de todas formas?", "Atención - Confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if(aaa == DialogResult.Yes)
+                        {
+                            if (anula() != true)
+                            {
+                                MessageBox.Show("No se realizo la operacion de anular", "Error en anular");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    // actualizamos el datatable
+                    for (int i = 0; i < dtg.Rows.Count; i++)
+                    {
+                        DataRow row = dtg.Rows[i];
+                        if (row[0].ToString() == tx_idr.Text)
+                        {
+                            // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
+                            // a.valor,a.acuenta,a.saldo,a.dscto
+                            dtg.Rows[i][3] = tiesan; // cmb_estado.SelectedText.ToString();
+                        }
+                    }
+                }
             }
             if (iserror == "no")
             {

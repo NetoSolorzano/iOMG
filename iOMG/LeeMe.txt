@@ -3,10 +3,10 @@
 estoy pasando a private los eventos en pedsalm....ok
 - 25/07/2019 creando un nuevo form "contratos" para reemplazar al malogrado "contclte" .... ok
 CONTRATOS
-- verificar funcionamiento de EDITAR, VISUALIZAR, ANULAR (DEBE PREGUNTAR SI ANULA O BORRA)
 ** visualizar ................................................... ok
 ** editar solo si es estado inicial ............................. ok
 ** editar si no estado inicial nada ............................. ok
 ** editar se debe poder quitar productos ........................ ok
-** editar se debe poder agregar productos ....................... 
-** anular, solo si el estado es inicial ......................... 
+** editar se debe poder agregar productos ....................... ok
+** anular, solo si el estado es inicial ......................... ok
+
