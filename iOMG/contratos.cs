@@ -807,6 +807,7 @@ namespace iOMG
                 else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
                 tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
                 tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
                 tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
                 tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
@@ -1227,12 +1228,13 @@ namespace iOMG
             {
                 val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
             }
+            tx_bruto.Text = val.ToString("0.00");
             if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
             if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
-            tx_valor.Text = val.ToString("0.00");
-            tx_saldo.Text = (val - dsto - acta).ToString("0.00");
-            if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0";
-            if (tx_acta.Text.Trim() == "") tx_acta.Text = "0";
+            tx_valor.Text = (decimal.Parse(tx_bruto.Text) - dsto).ToString("0.00");
+            tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
+            if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
+            if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
         }
         private bool valexist(String docu)                  // valida existencia de documento
         {
@@ -2520,7 +2522,7 @@ namespace iOMG
             calculos();
         }
         #endregion boton_form;
-        #region leaves
+        #region leaves and enter
         private void tx_idr_Leave(object sender, EventArgs e)
         {
             if (Tx_modo.Text != "NUEVO")    //  && tx_idr.Text != ""
@@ -2750,6 +2752,10 @@ namespace iOMG
         {
             calculos();
         }
+        private void tx_valor_Enter(object sender, EventArgs e)
+        {
+            // por las huev....
+        }
         #endregion leaves;
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
@@ -2871,8 +2877,9 @@ namespace iOMG
                 {
                     tx_saldo.Enabled = false;
                 }
-                if (dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString() == letgru)
+                if (dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0,1) == letgru)
                 {
+                    tabControl2.SelectedTab = tabadicion;
                     tx_a_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
                     tx_a_cant.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
                     tx_a_codig.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
@@ -2885,6 +2892,7 @@ namespace iOMG
                 }
                 else
                 {
+                    tabControl2.SelectedTab = tabcodigo;
                     tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
                     tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
                     tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();

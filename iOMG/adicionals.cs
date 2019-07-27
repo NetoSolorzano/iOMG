@@ -36,7 +36,7 @@ namespace iOMG
         string img_anul = "";
         string letgru = "";             // letras de capitulo "adicionales"
         string letmads = "";            // identificadores de maderas para adicionales
-        string dets1 = "";              // identificadores de detalle1 adicionales
+        //string dets1 = "";              // identificadores de detalle1 adicionales
         string dets2 = "";              // identificadores de detalle2 adicionales
         string dets3 = "";              // identificadores de detalle3 adicionales
         string acabas = "";             // identificadores de acabados en adicionales
@@ -260,7 +260,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "capitulo") letgru = row["valor"].ToString().Trim();   // capitulo
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "talleres") talleres = row["valor"].ToString().Trim(); // tallerres
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "maderas") letmads = row["valor"].ToString().Trim();   // maderas disponibles para adicionales
-                        if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle1") dets1 = row["valor"].ToString().Trim();    // detalle1 adicionales
+                        //if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle1") dets1 = row["valor"].ToString().Trim();    // detalle1 adicionales
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle2") dets2 = row["valor"].ToString().Trim();    // detalle2 adicionales
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle3") dets3 = row["valor"].ToString().Trim();    // detalle3 adicionales
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "acabados") acabas = row["valor"].ToString().Trim();    // detalle3 adicionales
@@ -390,10 +390,10 @@ namespace iOMG
                 // seleccion de detalle1
                 this.cmb_det1.Items.Clear();
                 tx_dat_det1.Text = "";
-                const string condt1 = "select descrizionerid,idcodice from desc_dt1 " +
-                    "where numero=1 and idcodice in (@dets1)";
+                const string condt1 = "select descrizionerid,idcodice from desc_d1a " +
+                    "where numero=1";   // and idcodice in (@dets1)";
                 MySqlCommand cmddt1 = new MySqlCommand(condt1, conn);
-                cmddt1.Parameters.AddWithValue("@dets1",dets1);
+                //cmddt1.Parameters.AddWithValue("@dets1",dets1);
                 DataTable dtdt1 = new DataTable();
                 MySqlDataAdapter dadt1 = new MySqlDataAdapter(cmddt1);
                 dadt1.Fill(dtdt1);

@@ -1,5 +1,4 @@
 ﻿// Información técnica sobre desarrollo del proyecto
-- me quede en Contratos: 24/07/2019
 estoy pasando a private los eventos en pedsalm....ok
 - 25/07/2019 creando un nuevo form "contratos" para reemplazar al malogrado "contclte" .... ok
 CONTRATOS
@@ -9,4 +8,6 @@ CONTRATOS
 ** editar se debe poder quitar productos ........................ ok
 ** editar se debe poder agregar productos ....................... ok
 ** anular, solo si el estado es inicial ......................... ok
+MAESTRA ADICIONALES
+** me quede aqui, nuevos tipos de gloria ........................ ok
 

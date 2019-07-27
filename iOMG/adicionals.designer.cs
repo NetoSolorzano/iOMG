@@ -61,6 +61,15 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabreg = new System.Windows.Forms.TabPage();
+            this.tx_dat_det3 = new System.Windows.Forms.TextBox();
+            this.tx_dat_det2 = new System.Windows.Forms.TextBox();
+            this.tx_dat_tal = new System.Windows.Forms.TextBox();
+            this.tx_dat_aca = new System.Windows.Forms.TextBox();
+            this.tx_dat_det1 = new System.Windows.Forms.TextBox();
+            this.tx_dat_tip = new System.Windows.Forms.TextBox();
+            this.tx_dat_mad = new System.Windows.Forms.TextBox();
+            this.tx_dat_mod = new System.Windows.Forms.TextBox();
+            this.tx_dat_cap = new System.Windows.Forms.TextBox();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.tx_precio = new System.Windows.Forms.TextBox();
@@ -81,7 +90,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tx_umed = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.tx_dat_det3 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.cmb_det3 = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -93,14 +101,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.tx_dat_det2 = new System.Windows.Forms.TextBox();
-            this.tx_dat_tal = new System.Windows.Forms.TextBox();
-            this.tx_dat_aca = new System.Windows.Forms.TextBox();
-            this.tx_dat_det1 = new System.Windows.Forms.TextBox();
-            this.tx_dat_tip = new System.Windows.Forms.TextBox();
-            this.tx_dat_mad = new System.Windows.Forms.TextBox();
-            this.tx_dat_mod = new System.Windows.Forms.TextBox();
-            this.tx_dat_cap = new System.Windows.Forms.TextBox();
             this.tx_medidas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tx_nombre = new System.Windows.Forms.TextBox();
@@ -517,6 +517,87 @@
             this.tabreg.Text = "Registro Individual";
             this.tabreg.Enter += new System.EventHandler(this.tabreg_Enter);
             // 
+            // tx_dat_det3
+            // 
+            this.tx_dat_det3.Location = new System.Drawing.Point(628, 112);
+            this.tx_dat_det3.Name = "tx_dat_det3";
+            this.tx_dat_det3.ReadOnly = true;
+            this.tx_dat_det3.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_det3.TabIndex = 241;
+            this.tx_dat_det3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_det2
+            // 
+            this.tx_dat_det2.Location = new System.Drawing.Point(587, 112);
+            this.tx_dat_det2.Name = "tx_dat_det2";
+            this.tx_dat_det2.ReadOnly = true;
+            this.tx_dat_det2.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_det2.TabIndex = 230;
+            this.tx_dat_det2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_tal
+            // 
+            this.tx_dat_tal.Location = new System.Drawing.Point(546, 112);
+            this.tx_dat_tal.Name = "tx_dat_tal";
+            this.tx_dat_tal.ReadOnly = true;
+            this.tx_dat_tal.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_tal.TabIndex = 229;
+            this.tx_dat_tal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_aca
+            // 
+            this.tx_dat_aca.Location = new System.Drawing.Point(505, 112);
+            this.tx_dat_aca.Name = "tx_dat_aca";
+            this.tx_dat_aca.ReadOnly = true;
+            this.tx_dat_aca.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_aca.TabIndex = 228;
+            this.tx_dat_aca.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_det1
+            // 
+            this.tx_dat_det1.Location = new System.Drawing.Point(464, 112);
+            this.tx_dat_det1.Name = "tx_dat_det1";
+            this.tx_dat_det1.ReadOnly = true;
+            this.tx_dat_det1.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_det1.TabIndex = 227;
+            this.tx_dat_det1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_tip
+            // 
+            this.tx_dat_tip.Location = new System.Drawing.Point(423, 112);
+            this.tx_dat_tip.Name = "tx_dat_tip";
+            this.tx_dat_tip.ReadOnly = true;
+            this.tx_dat_tip.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_tip.TabIndex = 226;
+            this.tx_dat_tip.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_mad
+            // 
+            this.tx_dat_mad.Location = new System.Drawing.Point(382, 112);
+            this.tx_dat_mad.Name = "tx_dat_mad";
+            this.tx_dat_mad.ReadOnly = true;
+            this.tx_dat_mad.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_mad.TabIndex = 225;
+            this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_mod
+            // 
+            this.tx_dat_mod.Location = new System.Drawing.Point(341, 112);
+            this.tx_dat_mod.Name = "tx_dat_mod";
+            this.tx_dat_mod.ReadOnly = true;
+            this.tx_dat_mod.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_mod.TabIndex = 224;
+            this.tx_dat_mod.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_dat_cap
+            // 
+            this.tx_dat_cap.Location = new System.Drawing.Point(300, 112);
+            this.tx_dat_cap.Name = "tx_dat_cap";
+            this.tx_dat_cap.ReadOnly = true;
+            this.tx_dat_cap.Size = new System.Drawing.Size(39, 20);
+            this.tx_dat_cap.TabIndex = 223;
+            this.tx_dat_cap.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // groupBox13
             // 
             this.groupBox13.BackColor = System.Drawing.Color.White;
@@ -694,15 +775,6 @@
             this.label3.TabIndex = 242;
             this.label3.Text = "U.Med.";
             // 
-            // tx_dat_det3
-            // 
-            this.tx_dat_det3.Location = new System.Drawing.Point(628, 112);
-            this.tx_dat_det3.Name = "tx_dat_det3";
-            this.tx_dat_det3.ReadOnly = true;
-            this.tx_dat_det3.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_det3.TabIndex = 241;
-            this.tx_dat_det3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -804,78 +876,6 @@
             this.label6.Size = new System.Drawing.Size(47, 13);
             this.label6.TabIndex = 231;
             this.label6.Text = "Capítulo";
-            // 
-            // tx_dat_det2
-            // 
-            this.tx_dat_det2.Location = new System.Drawing.Point(587, 112);
-            this.tx_dat_det2.Name = "tx_dat_det2";
-            this.tx_dat_det2.ReadOnly = true;
-            this.tx_dat_det2.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_det2.TabIndex = 230;
-            this.tx_dat_det2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_tal
-            // 
-            this.tx_dat_tal.Location = new System.Drawing.Point(546, 112);
-            this.tx_dat_tal.Name = "tx_dat_tal";
-            this.tx_dat_tal.ReadOnly = true;
-            this.tx_dat_tal.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_tal.TabIndex = 229;
-            this.tx_dat_tal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_aca
-            // 
-            this.tx_dat_aca.Location = new System.Drawing.Point(505, 112);
-            this.tx_dat_aca.Name = "tx_dat_aca";
-            this.tx_dat_aca.ReadOnly = true;
-            this.tx_dat_aca.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_aca.TabIndex = 228;
-            this.tx_dat_aca.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_det1
-            // 
-            this.tx_dat_det1.Location = new System.Drawing.Point(464, 112);
-            this.tx_dat_det1.Name = "tx_dat_det1";
-            this.tx_dat_det1.ReadOnly = true;
-            this.tx_dat_det1.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_det1.TabIndex = 227;
-            this.tx_dat_det1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_tip
-            // 
-            this.tx_dat_tip.Location = new System.Drawing.Point(423, 112);
-            this.tx_dat_tip.Name = "tx_dat_tip";
-            this.tx_dat_tip.ReadOnly = true;
-            this.tx_dat_tip.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_tip.TabIndex = 226;
-            this.tx_dat_tip.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_mad
-            // 
-            this.tx_dat_mad.Location = new System.Drawing.Point(382, 112);
-            this.tx_dat_mad.Name = "tx_dat_mad";
-            this.tx_dat_mad.ReadOnly = true;
-            this.tx_dat_mad.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_mad.TabIndex = 225;
-            this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_mod
-            // 
-            this.tx_dat_mod.Location = new System.Drawing.Point(341, 112);
-            this.tx_dat_mod.Name = "tx_dat_mod";
-            this.tx_dat_mod.ReadOnly = true;
-            this.tx_dat_mod.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_mod.TabIndex = 224;
-            this.tx_dat_mod.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_dat_cap
-            // 
-            this.tx_dat_cap.Location = new System.Drawing.Point(300, 112);
-            this.tx_dat_cap.Name = "tx_dat_cap";
-            this.tx_dat_cap.ReadOnly = true;
-            this.tx_dat_cap.Size = new System.Drawing.Size(39, 20);
-            this.tx_dat_cap.TabIndex = 223;
-            this.tx_dat_cap.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_medidas
             // 

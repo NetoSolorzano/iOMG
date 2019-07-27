@@ -397,6 +397,12 @@ namespace iOMG
             string verapp = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
             if (modo == "NUEVO")
             {
+                if (textBox4.Text.Trim() == "")
+                {
+                    MessageBox.Show("Confirme Id Tabla", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    comboBox1.Focus();
+                    return;
+                }
                 // valida que no este repitiendo el idcodice
                 for (int i = 0; i < dtg.Rows.Count; i++)
                 {
