@@ -10,4 +10,9 @@ CONTRATOS
 ** anular, solo si el estado es inicial ......................... ok
 MAESTRA ADICIONALES
 ** me quede aqui, nuevos tipos de gloria ........................ ok
+PEDIDOS DE CLIENTES (pedsclients)
+** desarrollo del form y opciones estandares .................... 
+** adecuaciones del form
+*** descuenta saldo del contrato y actualiza estado .............
+*** desarrollo del formato de impresion .........................
 
