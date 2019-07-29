@@ -145,6 +145,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.tx_idc = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -196,6 +197,7 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_idc);
             this.tabuser.Controls.Add(this.tx_cont);
             this.tabuser.Controls.Add(this.label31);
             this.tabuser.Controls.Add(this.tx_cliente);
@@ -337,7 +339,7 @@
             this.panel1.Controls.Add(this.tx_d_can);
             this.panel1.Controls.Add(this.tx_d_id);
             this.panel1.Controls.Add(this.tx_d_it);
-            this.panel1.Location = new System.Drawing.Point(3, 80);
+            this.panel1.Location = new System.Drawing.Point(3, 81);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 104);
             this.panel1.TabIndex = 298;
@@ -1119,6 +1121,7 @@
             this.Bt_add.Size = new System.Drawing.Size(32, 32);
             this.Bt_add.Text = "Bt_close";
             this.Bt_add.ToolTipText = "Nuevo pedido";
+            this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
             // 
             // toolStripSeparator6
             // 
@@ -1145,6 +1148,7 @@
             this.Bt_close.Name = "Bt_close";
             this.Bt_close.Size = new System.Drawing.Size(32, 32);
             this.Bt_close.ToolTipText = "Salir del formulario";
+            this.Bt_close.Click += new System.EventHandler(this.Bt_close_Click);
             // 
             // toolStripSeparator7
             // 
@@ -1162,6 +1166,7 @@
             this.Bt_edit.Name = "Bt_edit";
             this.Bt_edit.Size = new System.Drawing.Size(32, 32);
             this.Bt_edit.ToolTipText = "Editar pedido";
+            this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
             // 
             // toolStripSeparator15
             // 
@@ -1181,6 +1186,7 @@
             this.Bt_anul.Size = new System.Drawing.Size(32, 32);
             this.Bt_anul.Text = "Bt_close";
             this.Bt_anul.ToolTipText = "Anulación";
+            this.Bt_anul.Click += new System.EventHandler(this.Bt_anul_Click);
             // 
             // toolStripSeparator13
             // 
@@ -1200,6 +1206,7 @@
             this.bt_view.Size = new System.Drawing.Size(32, 32);
             this.bt_view.Text = "Bt_close";
             this.bt_view.ToolTipText = "Solo ver";
+            this.bt_view.Click += new System.EventHandler(this.bt_view_Click);
             // 
             // toolStripSeparator14
             // 
@@ -1217,6 +1224,7 @@
             this.Bt_print.Name = "Bt_print";
             this.Bt_print.Size = new System.Drawing.Size(32, 32);
             this.Bt_print.ToolTipText = "Imprimir";
+            this.Bt_print.Click += new System.EventHandler(this.Bt_print_Click);
             // 
             // toolStripSeparator12
             // 
@@ -1235,6 +1243,7 @@
             this.bt_prev.Name = "bt_prev";
             this.bt_prev.Size = new System.Drawing.Size(32, 32);
             this.bt_prev.ToolTipText = "Pre-visualizar";
+            this.bt_prev.Click += new System.EventHandler(this.bt_prev_Click);
             // 
             // toolStripSeparator1
             // 
@@ -1253,6 +1262,7 @@
             this.bt_exc.Size = new System.Drawing.Size(32, 32);
             this.bt_exc.Text = "Bt_close";
             this.bt_exc.ToolTipText = "Exportar";
+            this.bt_exc.Click += new System.EventHandler(this.bt_exc_Click);
             // 
             // toolStripSeparator4
             // 
@@ -1285,6 +1295,7 @@
             this.Bt_ini.Text = "Bt_close";
             this.Bt_ini.ToolTipText = "Ir al inicio";
             this.Bt_ini.Visible = false;
+            this.Bt_ini.Click += new System.EventHandler(this.Bt_first_Click);
             // 
             // toolStripSeparator8
             // 
@@ -1305,6 +1316,7 @@
             this.Bt_sig.Text = "Bt_close";
             this.Bt_sig.ToolTipText = "Siguiente";
             this.Bt_sig.Visible = false;
+            this.Bt_sig.Click += new System.EventHandler(this.Bt_back_Click);
             // 
             // toolStripSeparator9
             // 
@@ -1325,6 +1337,7 @@
             this.Bt_ret.Text = "Bt_close";
             this.Bt_ret.ToolTipText = "Regresar";
             this.Bt_ret.Visible = false;
+            this.Bt_ret.Click += new System.EventHandler(this.Bt_next_Click);
             // 
             // toolStripSeparator10
             // 
@@ -1345,6 +1358,7 @@
             this.Bt_fin.Text = "Bt_close";
             this.Bt_fin.ToolTipText = "Ir al final";
             this.Bt_fin.Visible = false;
+            this.Bt_fin.Click += new System.EventHandler(this.Bt_last_Click);
             // 
             // toolStripSeparator11
             // 
@@ -1352,6 +1366,14 @@
             this.toolStripSeparator11.ForeColor = System.Drawing.Color.Black;
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
+            // 
+            // tx_idc
+            // 
+            this.tx_idc.Location = new System.Drawing.Point(71, 55);
+            this.tx_idc.Name = "tx_idc";
+            this.tx_idc.ReadOnly = true;
+            this.tx_idc.Size = new System.Drawing.Size(36, 20);
+            this.tx_idc.TabIndex = 305;
             // 
             // pedsclients
             // 
@@ -1364,6 +1386,7 @@
             this.MinimizeBox = false;
             this.Name = "pedsclients";
             this.Text = "Pedidos de clientes";
+            this.Load += new System.EventHandler(this.pedsclients_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pedsclients_KeyDown);
             this.tabControl1.ResumeLayout(false);
             this.tabgrilla.ResumeLayout(false);
@@ -1505,5 +1528,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tx_cont;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox tx_idc;
     }
 }
