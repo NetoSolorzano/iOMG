@@ -999,6 +999,8 @@ namespace iOMG
                     }
                     rlid.Close();
                     // detalle 
+                    //dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                    dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)      // me quede aca
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string insdet = "insert into detacon (" +
@@ -2439,8 +2441,8 @@ namespace iOMG
                     obj.Cells[3].Value = tx_a_nombre.Text;
                     obj.Cells[4].Value = tx_a_medid.Text;
                     obj.Cells[5].Value = "";
-                    obj.Cells[6].Value = tx_a_precio.Text;
-                    obj.Cells[7].Value = tx_a_total.Text;
+                    obj.Cells[6].Value = Math.Round(decimal.Parse(tx_a_precio.Text),2).ToString("0.00");
+                    obj.Cells[7].Value = Math.Round(decimal.Parse(tx_a_total.Text), 2).ToString("0.00");
                     obj.Cells[8].Value = tx_a_cant.Text;
                     obj.Cells[9].Value = "";
                     obj.Cells[10].Value = "";
@@ -3088,7 +3090,7 @@ namespace iOMG
                     rowdetalle.id = "0";
                     rowdetalle.cant = "";
                     rowdetalle.codigo = "";
-                    rowdetalle.nombre = "ADICIONALES";
+                    rowdetalle.nombre = "-- ADICIONALES --";
                     rowdetalle.medidas = "";
                     rowdetalle.madera = "";
                     rowdetalle.det2 = "";
@@ -3116,7 +3118,6 @@ namespace iOMG
                     rowdetalle.precio = row.Cells["precio"].Value.ToString();
                     rowdetalle.total = row.Cells["total"].Value.ToString();
                     rowdetalle.coment = row.Cells["coment"].Value.ToString();
-                    // aca falta el coment del articulo
                     repcontrato.detalle.AdddetalleRow(rowdetalle);
                     //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
                 }

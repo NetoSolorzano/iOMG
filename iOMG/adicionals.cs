@@ -377,7 +377,7 @@ namespace iOMG
                 cmb_tip.Items.Clear();
                 tx_dat_tip.Text = "";
                 const string contip = "select descrizionerid,idcodice from desc_tad " +
-                    "where numero=1";
+                    "where numero=1 order by idcodice";
                 MySqlCommand cmdtip = new MySqlCommand(contip, conn);
                 DataTable dttip = new DataTable();
                 MySqlDataAdapter datip = new MySqlDataAdapter(cmdtip);
@@ -391,7 +391,7 @@ namespace iOMG
                 this.cmb_det1.Items.Clear();
                 tx_dat_det1.Text = "";
                 const string condt1 = "select descrizionerid,idcodice from desc_d1a " +
-                    "where numero=1";   // and idcodice in (@dets1)";
+                    "where numero=1 order by idcodice";   // and idcodice in (@dets1)";
                 MySqlCommand cmddt1 = new MySqlCommand(condt1, conn);
                 //cmddt1.Parameters.AddWithValue("@dets1",dets1);
                 DataTable dtdt1 = new DataTable();

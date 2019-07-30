@@ -243,7 +243,7 @@ namespace iOMG
                     }
                     if (row["formulario"].ToString() == "pedidos")
                     {
-                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
+                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // tipo de pedido de clientes
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "pendiente") estpend = row["valor"].ToString().Trim();         // estado del pedido con llegada parcial
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "recibido") estcomp = row["valor"].ToString().Trim();         // estado del pedido con llegada total
@@ -629,7 +629,7 @@ namespace iOMG
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
                     "from pedidos a left join desc_stp b on b.idcodice=a.status where a.tipoes=@tip";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
-                cdg.Parameters.AddWithValue("@tip", );                // tipo pedidos catalogo clientes
+                cdg.Parameters.AddWithValue("@tip", tipede);                // tipo pedidos catalogo clientes
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);

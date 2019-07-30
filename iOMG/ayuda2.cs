@@ -56,7 +56,7 @@ namespace iOMG
             if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
             {
                 consulta = "select codig,nombr,medid,soles2018 " +
-                    "from items";
+                    "from items order by codig";
                 // Acomodamos la grilla 891
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 4;

@@ -439,7 +439,7 @@ namespace iOMG
             //Image img_v_r = Image.FromFile("");
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Contratos",img_v_c, vc_registro_Click);
-            menuStrip1.Items.Add("Pedidos a diseño",img_v_pc, vpc_registro_Click);
+            menuStrip1.Items.Add("Pedidos",img_v_pc, vpc_registro_Click);
             menuStrip1.Items.Add("Ingresos");
             menuStrip1.Items.Add("Salidas");
             menuStrip1.Items.Add("Reportes");

@@ -8,6 +8,8 @@ CONTRATOS
 ** editar se debe poder quitar productos ........................ ok
 ** editar se debe poder agregar productos ....................... ok
 ** anular, solo si el estado es inicial ......................... ok
+** Correccion en ayuda2 en maestra de items, que salga ordenado y no duplique ..... ok
+** Completar las definiciones y codigos de adicionales ............................ 
 MAESTRA ADICIONALES
 ** me quede aqui, nuevos tipos de gloria ........................ ok
 PEDIDOS DE CLIENTES (pedsclients)
