@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Configuration;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
-
 
 namespace iOMG
 {
@@ -24,7 +18,7 @@ namespace iOMG
         string colstrp = iOMG.Program.colstr;       // color del strip
         static string nomtab = "pedidos";
         libreria lib = new libreria();
-        
+       
         #region variables
         //public string perAg = "";             // permisos agregar
         //public string perMo = "";             // permisos modificar
@@ -105,6 +99,7 @@ namespace iOMG
                             //ayu2.ReturnValue0;    // id del cliente
                             //ayu3.ReturnValue2;    // nombre
                             tx_cliente.Text = ayu2.ReturnValue2;
+                            tx_idc.Text = ayu2.ReturnValue0;
                         }
                     }
                 }
@@ -118,44 +113,40 @@ namespace iOMG
                     {
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
-                            //ayu2.ReturnValue1;    // numero cont
                             //ayu2.ReturnValue0;    // id del contrato
-                            //ayu3.ReturnValue2;    // nombre del cliente
                             tx_cont.Text = ayu2.ReturnValue1;
-                            //tx_cliente.Text = ayu2.ReturnValue2;
+                            tx_cliente.Text = ayu2.ReturnValue2;
                         }
                     }
                 }
-                if (cmb_fam.Focused == true || cmb_mod.Focused == true || cmb_mad.Focused == true || cmb_tip.Focused == true ||
-                    cmb_det1.Focused == true || cmb_aca.Focused == true || cmb_tal.Focused == true ||
-                    cmb_det2.Focused == true || cmb_det3.Focused == true)
+                if (tx_d_can.Focused == true || tx_d_codi.Focused == true)
                 {
-                    para1 = "contratos";
-                    para2 = "detalle";
-                    para3 = "contrato";
+                    if(tx_dat_orig.Text.Trim() == "")
+                    {
+                        MessageBox.Show("Debe seleccionar el taller!", "Faltan datos", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        cmb_taller.Focus();
+                        return false;
+                    }
+                    para1 = "detacon";
+                    para2 = tx_cont.Text;
+                    para3 = "";
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
                     {
-                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))       // ME QUEDE ACA .... CODIGOS ESTANDARES Y ADICIONALES ?? COMO SE MANEJARAN ACA?
+                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             //ayu2.ReturnValue1;    // codigo del articulo
-                            //ayu2.ReturnValue0;    // id del articulo en el contrato
-                            //ayu3.ReturnValue2;    // saldo por pedir
-                            cmb_fam.SelectedIndex = cmb_fam.FindString(ayu2.ReturnValue1.Substring(0, 1));
-                            cmb_mod.SelectedIndex = cmb_mod.FindString(ayu2.ReturnValue1.Substring(1, 3));
-                            cmb_mad.SelectedIndex = cmb_mad.FindString(ayu2.ReturnValue1.Substring(4, 1));
-                            //cmb_mad_SelectionChangeCommitted(null, null);
-                            cmb_tip.SelectedIndex = cmb_tip.FindString(ayu2.ReturnValue1.Substring(5, 2));
-                            cmb_det1.SelectedIndex = cmb_det1.FindString(ayu2.ReturnValue1.Substring(7, 2));
-                            //cmb_det1_SelectionChangeCommitted(null, null);
-                            cmb_aca.SelectedIndex = cmb_aca.FindString(ayu2.ReturnValue1.Substring(9, 1));
-                            //cmb_aca_SelectionChangeCommitted(null, null);
-                            if (tx_dat_orig.Text == "") cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
-                            cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
-                            //cmb_det2_SelectionChangeCommitted(null, null);
-                            cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
-                            //armani();
+                            //ayu2.ReturnValue0;    // id del articulo
+                            //ayu3.ReturnValue2;    // nombre del articulo
+
+                            tx_d_can.Text = ayu2.ReturnValueA[2].ToString();
+                            tx_d_codi.Text = ayu2.ReturnValue1.Substring(0,10) + tx_codta.Text.Trim() + ayu2.ReturnValue1.Substring(12, 6);
+                            tx_d_nom.Text = ayu2.ReturnValueA[3].ToString();
+                            tx_d_med.Text = ayu2.ReturnValueA[4].ToString();
+                            tx_d_mad.Text = ayu2.ReturnValueA[5].ToString();
+                            //tx_d_est.Text = ayu2.ReturnValueA[5].ToString();
+                            tx_d_com.Text = ayu2.ReturnValueA[6].ToString();
                         }
                     }
                 }
@@ -239,9 +230,11 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                        if (row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
+                        if (row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
                         //if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
                     }
-                    if (row["formulario"].ToString() == "pedidos")
+                    if (row["formulario"].ToString() == nomform)
                     {
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // tipo de pedido de clientes
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
@@ -252,8 +245,6 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "manual") estman = row["valor"].ToString().Trim();         // estados que se pueden seleccionar manualmente
-                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
-                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
                     }
                 }
                 da.Dispose();
@@ -349,106 +340,6 @@ namespace iOMG
                 MessageBox.Show(ex.Message, "Error en obtener detalle del pedido");
                 Application.Exit();
                 return;
-            }
-        }
-        private void armani()                               // arma el codigo y busca en la maestra
-        {
-            string fam = "", mod = "", mad = "", tip = "", de1 = "", aca = "", tal = "", de2 = "", de3 = "";
-            if (cmb_fam.SelectedItem != null) fam = cmb_fam.SelectedItem.ToString().Substring(0, 1);    // 1
-            if (cmb_mod.SelectedItem != null) mod = cmb_mod.SelectedItem.ToString().Substring(0, 3);    // 3
-            if (cmb_mad.SelectedItem != null) mad = cmb_mad.SelectedItem.ToString().Substring(0, 1);    // 1
-            if (cmb_tip.SelectedItem != null) tip = cmb_tip.SelectedItem.ToString().Substring(0, 2);    // 2
-            if (cmb_det1.SelectedItem != null) de1 = cmb_det1.SelectedItem.ToString().Substring(0, 2);  // 2
-            if (cmb_aca.SelectedItem != null) aca = cmb_aca.SelectedItem.ToString().Substring(0, 1);    // 1 
-            if (cmb_tal.SelectedItem != null) tal = cmb_tal.SelectedItem.ToString().Substring(0, 2);    // 2
-            if (cmb_det2.SelectedItem != null) de2 = cmb_det2.SelectedItem.ToString().Substring(0, 3);  // 3
-            if (cmb_det3.SelectedItem != null) de3 = cmb_det3.SelectedItem.ToString().Substring(0, 3);  // 3 _____ total 18
-            tx_d_codi.Text = fam + mod + mad + tip + de1 + aca + tal + de2 + de3;
-            if (fam != "" && mod != "" && tip != "" && de1 != "" && aca != "" && de2 != "" && de3 != "")
-            {
-                try
-                {
-                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
-                    {
-                        conn.Open();
-                        if (conn.State == ConnectionState.Open)
-                        {
-                            //string busca = "select id,nombr,medid,umed,soles2018 from items where codig=@cod";
-                            string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3 " +
-                                "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1"; // and deta3=@dt3
-                            MySqlCommand micon = new MySqlCommand(busca, conn);
-                            //micon.Parameters.AddWithValue("@cod", codbs);
-                            micon.Parameters.AddWithValue("@fam", fam);
-                            micon.Parameters.AddWithValue("@mod", mod);
-                            micon.Parameters.AddWithValue("@tip", tip);
-                            micon.Parameters.AddWithValue("@dt1", de1);
-                            //micon.Parameters.AddWithValue("@dt3", de3);
-                            //MySqlDataReader dr = micon.ExecuteReader();
-                            MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                            DataTable dtm = new DataTable();
-                            da.Fill(dtm);
-                            if (dtm.Rows.Count == 0)
-                            {
-                                MessageBox.Show("No existe en la base de datos!0", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                tx_d_nom.Text = "";
-                                tx_d_med.Text = "";
-                                tx_d_mad.Text = "";
-                                tx_d_det2.Text = "";
-                                tx_d_est.Text = "";
-                                return;
-                            }
-                            string gol = "";
-                            for (int i = 0; i < dtm.Rows.Count; i++)
-                            {
-                                DataRow fila = dtm.Rows[i];
-                                if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
-                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
-                                {
-                                    tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
-                                    tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                    gol = "1";
-                                    break;
-                                }
-                            }
-                            if (gol == "")
-                            {
-                                for (int i = 0; i < dtm.Rows.Count; i++)
-                                {
-                                    DataRow fila = dtm.Rows[i]; // fila["mader"].ToString() == "X" && 
-                                    if (fila["acaba"].ToString() == aca &&
-                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
-                                    {
-                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
-                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        gol = "1";
-                                        break;
-                                    }   // (fila["mader"].ToString() == "X" || ... fila["mader"].ToString() == mad && 
-                                }
-                            }
-                            if (gol == "")
-                            {
-                                MessageBox.Show("No existe en la base de datos!1", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                tx_d_nom.Text = "";
-                                tx_d_med.Text = "";
-                                tx_d_mad.Text = "";
-                                tx_d_det2.Text = "";
-                                tx_d_est.Text = "";
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("No se puede conectar a la base de datos", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                            return;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error interno en codigo");
-                    Application.Exit();
-                    return;
-                }
             }
         }
         private void grilla()                               // arma la grilla
@@ -692,143 +583,41 @@ namespace iOMG
                     cmb_estado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_estado.ValueMember = row.ItemArray[1].ToString();
                 }
-                //
-                // seleccion de familia de art
-                cmb_fam.Items.Clear();
-                //tx_dat_fam.Text = "";
-                cmb_fam.Tag = "";
-                const string concap = "select descrizionerid,idcodice from desc_gru " +
-                    "where numero=1";
-                MySqlCommand cmdcap = new MySqlCommand(concap, conn);
-                DataTable dtcap = new DataTable();
-                MySqlDataAdapter dacap = new MySqlDataAdapter(cmdcap);
-                dacap.Fill(dtcap);
-                foreach (DataRow row in dtcap.Rows)
-                {
-                    cmb_fam.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
-                    cmb_fam.ValueMember = row.ItemArray[1].ToString();
-                }
-                // seleccion de modelo
-                const string conmod = "select descrizionerid,idcodice from desc_mod " +
-                                       "where numero=1 order by idcodice";
-                MySqlCommand cmdmod = new MySqlCommand(conmod, conn);
-                DataTable dtmod = new DataTable();
-                MySqlDataAdapter damod = new MySqlDataAdapter(cmdmod);
-                damod.Fill(dtmod);
-                foreach (DataRow row in dtmod.Rows)
-                {
-                    cmb_mod.Items.Add(row.ItemArray[0].ToString());
-                    cmb_mod.ValueMember = row.ItemArray[0].ToString();
-                }
-                // seleccion de madera
-                cmb_mad.Items.Clear();
-                //tx_dat_mad.Text = "";
-                cmb_mad.Tag = "";
-                const string conmad = "select descrizionerid,idcodice from desc_mad " +
-                    "where numero=1";
-                MySqlCommand cmdmad = new MySqlCommand(conmad, conn);
-                DataTable dtmad = new DataTable();
-                MySqlDataAdapter damad = new MySqlDataAdapter(cmdmad);
-                damad.Fill(dtmad);
-                foreach (DataRow row in dtmad.Rows)
-                {
-                    this.cmb_mad.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());   // citem_mad
-                    this.cmb_mad.ValueMember = row.ItemArray[1].ToString(); //citem_mad.Value.ToString();
-                }
-                // seleccion del tipo de mueble
-                cmb_tip.Items.Clear();
-                cmb_tip.Tag = "";
-                const string contip = "select descrizionerid,idcodice from desc_tip " +
-                    "where numero=1";
-                MySqlCommand cmdtip = new MySqlCommand(contip, conn);
-                DataTable dttip = new DataTable();
-                MySqlDataAdapter datip = new MySqlDataAdapter(cmdtip);
-                datip.Fill(dttip);
-                foreach (DataRow row in dttip.Rows)
-                {
-                    this.cmb_tip.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
-                    this.cmb_tip.ValueMember = row.ItemArray[1].ToString();
-                }
-                // seleccion de detalle1
-                cmb_det1.Items.Clear();
-                //tx_dat_det1.Text = "";
-                cmb_det1.Tag = "";
-                const string condt1 = "select descrizionerid,idcodice from desc_dt1 " +
-                    "where numero=1";
-                MySqlCommand cmddt1 = new MySqlCommand(condt1, conn);
-                DataTable dtdt1 = new DataTable();
-                MySqlDataAdapter dadt1 = new MySqlDataAdapter(cmddt1);
-                dadt1.Fill(dtdt1);
-                foreach (DataRow row in dtdt1.Rows)
-                {
-                    this.cmb_det1.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());  // citem_dt1
-                    this.cmb_det1.ValueMember = row.ItemArray[1].ToString();    // citem_dt1.Value.ToString();
-                }
-                // seleccion de acabado (pulido, lacado, etc)
-                cmb_aca.Items.Clear();
-                //tx_dat_aca.Text = "";
-                cmb_aca.Tag = "";
-                const string conaca = "select descrizionerid,idcodice from desc_est " +
-                    "where numero=1";
-                MySqlCommand cmdaca = new MySqlCommand(conaca, conn);
-                DataTable dtaca = new DataTable();
-                MySqlDataAdapter daaca = new MySqlDataAdapter(cmdaca);
-                daaca.Fill(dtaca);
-                foreach (DataRow row in dtaca.Rows)
-                {
-                    cmb_aca.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());   // citem_aca
-                    cmb_aca.ValueMember = row.ItemArray[1].ToString(); //citem_aca.Value.ToString();
-                }
-                // seleccion de taller
-                cmb_tal.Items.Clear();
-                //tx_dat_tal.Text = "";
-                cmb_tal.Tag = "";
-                const string contal = "select descrizionerid,codigo from desc_loc " +
-                    "where numero=1";
-                MySqlCommand cmdtal = new MySqlCommand(contal, conn);
-                DataTable dttal = new DataTable();
-                MySqlDataAdapter datal = new MySqlDataAdapter(cmdtal);
-                datal.Fill(dttal);
-                foreach (DataRow row in dttal.Rows)
-                {
-                    cmb_tal.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());   // citem_tal
-                    cmb_tal.ValueMember = row.ItemArray[1].ToString(); // citem_tal.Value.ToString();
-                }
-                // seleccion de detalle 2 (tallado, marqueteado, etc)
-                cmb_det2.Items.Clear();
-                //tx_dat_det2.Text = "";
-                cmb_det2.Tag = "";
-                const string condt2 = "select descrizione,idcodice from desc_dt2 " +
-                    "where numero=1 order by idcodice";
-                MySqlCommand cmddt2 = new MySqlCommand(condt2, conn);
-                DataTable dtdt2 = new DataTable();
-                MySqlDataAdapter dadt2 = new MySqlDataAdapter(cmddt2);
-                dadt2.Fill(dtdt2);
-                foreach (DataRow row in dtdt2.Rows)
-                {
-                    cmb_det2.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());  // citem_dt2
-                    cmb_det2.ValueMember = row.ItemArray[1].ToString();     //citem_dt2.Value.ToString();
-                }
-                // seleccion de detalle 3
-                cmb_det3.Items.Clear();
-                //tx_dat_det3.Text = "";
-                cmb_det3.Tag = "";
-                const string condt3 = "select descrizione,idcodice from desc_dt3 where numero=1";
-                MySqlCommand cmddt3 = new MySqlCommand(condt3, conn);
-                DataTable dtdt3 = new DataTable();
-                MySqlDataAdapter dadt3 = new MySqlDataAdapter(cmddt3);
-                dadt3.Fill(dtdt3);
-                foreach (DataRow row in dtdt3.Rows)
-                {
-                    cmb_det3.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());  // citem_dt3
-                    cmb_det3.ValueMember = row.ItemArray[1].ToString();    //citem_dt3.Value.ToString();
-                }
             }
-            //
             conn.Close();
         }
         // graba
         // edita
+        private bool buscont(string cont)                   // busqueda de contrato
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return retorna;
+            }
+            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial " +
+                "from contrat a left join anag_cli b on b.idanagrafica=a.cliente where a.contrato=@cont";
+            MySqlCommand micon = new MySqlCommand(consulta, conn);
+            micon.Parameters.AddWithValue("@cont", cont);
+            MySqlDataReader dr = micon.ExecuteReader();
+            if (dr.Read())
+            {
+                if (dr.GetInt16(0) > 0)
+                {
+                    tx_idc.Text = dr.GetString(2);
+                    tx_cliente.Text = dr.GetString(3);
+                    retorna = true;
+                }
+                else retorna = false;
+            }
+            dr.Close();
+            conn.Close();
+            return retorna;
+        }
         string[] equivinter(string titulo)                  // equivalencia entre titulo de columna y tabla 
         {
             string[] retorna = new string[2];
@@ -964,11 +753,15 @@ namespace iOMG
             tabControl1.SelectedTab = tabuser;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
+            cmb_tipo.Enabled = false;
             cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
+            cmb_estado.Enabled = false;
             tx_dat_estad.Text = tiesta;
             cmb_estado.Enabled = false;
             tx_codped.ReadOnly = true;
             dtp_fingreso.Checked = false;
+            dtp_fingreso.Enabled = false;
+            tx_saldo.ReadOnly = true;
             cmb_taller.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1348,15 +1141,6 @@ namespace iOMG
             //tabControl1.SelectedTab = pag;
             cmb_taller.SelectedIndex = -1;
             cmb_estado.SelectedIndex = -1;
-            cmb_fam.SelectedIndex = -1;
-            cmb_mod.SelectedIndex = -1;
-            cmb_mad.SelectedIndex = -1;
-            cmb_tip.SelectedIndex = -1;
-            cmb_det1.SelectedIndex = -1;
-            cmb_aca.SelectedIndex = -1;
-            cmb_tal.SelectedIndex = -1;
-            cmb_det2.SelectedIndex = -1;
-            cmb_det3.SelectedIndex = -1;
         }
         #endregion limpiadores_modos;
         #region comboboxes
@@ -1366,19 +1150,7 @@ namespace iOMG
         }
         private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            // en edicion solo debe permitir CERRAR, ANULAR o (GRABADO PARA PODER EDITAR EL DETALLE)
-            if (!estman.Contains(tx_dat_estad.Text))
-            {
-                MessageBox.Show("No puede realizar este cambio de estado", "Atención - corrija", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                tx_dat_estad.Text = "";
-                cmb_estado.SelectedIndex = indant;
-                cmb_estado.Focus();
-            }
-            else
-            {
-                if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
-                else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-            }
+
         }
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -1392,57 +1164,15 @@ namespace iOMG
                     if (row["idcodice"].ToString().Trim() == tx_dat_orig.Text.Trim())
                     {
                         cod2d = row["codigo"].ToString();
+                        tx_codta.Text = row["codigo"].ToString();
                     }
                 }
-                cmb_tal.Tag = cod2d;
-                cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
             }
         }
         private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
             else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-        }
-        private void cmb_fam_SelectionChangeCommitted(object sender, EventArgs e)       // capitulo familia
-        {
-            armani();
-        }
-        private void cmb_mod_SelectionChangeCommitted(object sender, EventArgs e)       // modelo
-        {
-            armani();
-        }
-        private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
-        {
-            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
-            armani();
-        }
-        private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
-        {
-            armani();
-        }
-        private void cmb_det1_SelectionChangeCommitted(object sender, EventArgs e)      // detalle1
-        {
-            armani();
-        }
-        private void cmb_aca_SelectionChangeCommitted(object sender, EventArgs e)       // acabado
-        {
-            tx_d_est.Text = cmb_aca.SelectedItem.ToString().Substring(5, cmb_aca.SelectedItem.ToString().Length - 5).Trim();
-            cmb_aca.Tag = cmb_aca.SelectedItem.ToString().Substring(0, 1);
-            armani();
-        }
-        private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)           // taller
-        {
-            armani();
-        }
-        private void cmb_det2_SelectionChangeCommitted(object sender, EventArgs e)      // detalle 2
-        {
-            if (cmb_det2.SelectedIndex == -1) tx_d_det2.Text = "";
-            else tx_d_det2.Text = cmb_det2.SelectedItem.ToString().Substring(6, cmb_det2.SelectedItem.ToString().Length - 6).Trim();
-            armani();
-        }
-        private void cmb_det3_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            armani();
         }
         #endregion comboboxes
         #region leaves
@@ -1463,6 +1193,42 @@ namespace iOMG
         private void tx_d_can_Leave(object sender, EventArgs e)
         {
             tx_saldo.Text = tx_d_can.Text;
+            if (tx_d_codi.Text.Trim() != "")
+            {
+                tx_d_codi_Leave(null, null);
+            }
+        }
+        private void tx_d_codi_Leave(object sender, EventArgs e)
+        {
+            if (tx_d_codi.Text.Trim().Length != 18)
+            {
+                MessageBox.Show("La longitud del código no es correcto " +
+                    Environment.NewLine + tx_d_codi.Text.Trim().Length.ToString(), "Error en validación", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                tx_d_codi.Text = "";
+                return;
+            }
+            if (tx_d_codi.Text.Substring(10,2) == "XX")
+            {
+                MessageBox.Show("El taller no es el correcto!", "Error en validación", MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                tx_d_codi.Text = "";
+                return;
+            }
+        }
+        private void tx_cont_Leave(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text == "NUEVO")
+            {
+                if (tx_cont.Text.Trim() != "" && tx_cliente.Text.Trim() == "")
+                {
+                    if (buscont(tx_cont.Text) == false)
+                    {
+                        MessageBox.Show("No existe el contrato", "Error");
+                        tx_cont.Text = "";
+                    }
+                }
+            }
         }
         #endregion leaves;
         #region advancedatagridview
@@ -1638,29 +1404,6 @@ namespace iOMG
                 string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
                 string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
 
-                cmb_fam.Tag = fam;
-                cmb_fam.SelectedIndex = cmb_fam.FindString(cmb_fam.Tag.ToString());
-                cmb_mod.Tag = mod;
-                cmb_mod.SelectedIndex = cmb_mod.FindString(cmb_mod.Tag.ToString());
-                cmb_mad.Tag = mad;
-                cmb_mad.SelectedIndex = cmb_mad.FindString(cmb_mad.Tag.ToString());
-                cmb_mad_SelectionChangeCommitted(null, null);
-                cmb_tip.Tag = tip;
-                cmb_tip.SelectedIndex = cmb_tip.FindString(cmb_tip.Tag.ToString());
-                cmb_det1.Tag = de1;
-                cmb_det1.SelectedIndex = cmb_det1.FindString(cmb_det1.Tag.ToString());
-                cmb_det1_SelectionChangeCommitted(null, null);
-                cmb_aca.Tag = aca;
-                cmb_aca.SelectedIndex = cmb_aca.FindString(cmb_aca.Tag.ToString());
-                cmb_aca_SelectionChangeCommitted(null, null);
-                cmb_tal.Tag = tal;
-                cmb_tal.SelectedIndex = cmb_tal.FindString(cmb_tal.Tag.ToString());
-                cmb_det2.Tag = de2;
-                cmb_det2.SelectedIndex = cmb_det2.FindString(cmb_det2.Tag.ToString());
-                cmb_det2_SelectionChangeCommitted(null, null);
-                cmb_det3.Tag = de3;
-                cmb_det3.SelectedIndex = cmb_det3.FindString(cmb_det3.Tag.ToString());
-                cmb_det3_SelectionChangeCommitted(null, null);
                 if (dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value != null)
                 {
                     if (dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString() != "")         // f. ingreso
@@ -1747,6 +1490,5 @@ namespace iOMG
             }
         }
         #endregion
-
     }
 }

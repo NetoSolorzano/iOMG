@@ -48,6 +48,7 @@ namespace iOMG
         public string ReturnValue1 { get; set; }
         public string ReturnValue0 { get; set; }
         public string ReturnValue2 { get; set; }
+        public string[] ReturnValueA { get; set; }
 
         public void loadgrids()
         {
@@ -72,6 +73,8 @@ namespace iOMG
                 dataGridView1.Columns[3].Name = "PRECIO";
                 dataGridView1.Columns[3].Width = 80;
                 dataGridView1.Columns[3].ReadOnly = true;
+                //
+                this.Width = dataGridView1.Width + 5;
             }
             if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
             {
@@ -92,8 +95,10 @@ namespace iOMG
                 dataGridView1.Columns[3].Name = "PRECIO";
                 dataGridView1.Columns[3].Width = 80;
                 dataGridView1.Columns[3].ReadOnly = true;
+                //
+                this.Width = dataGridView1.Width + 5;
             }
-            if (para1 != "anag_cli" && para2 != "todos" && para3 == "" && para4 == "")   // maestra de clientes
+            if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")   // maestra de clientes
             {
                 consulta = "select idanagrafica,tipdoc,ruc,razonsocial from anag_cli where estado=0";
                 dataGridView1.Rows.Clear();
@@ -105,11 +110,80 @@ namespace iOMG
                 dataGridView1.Columns[1].Width = 60;
                 dataGridView1.Columns[1].ReadOnly = true;
                 dataGridView1.Columns[2].Name = " #DOC";
-                dataGridView1.Columns[2].Width = 70;
+                dataGridView1.Columns[2].Width = 100;
                 dataGridView1.Columns[2].ReadOnly = true;
                 dataGridView1.Columns[3].Name = " NOMBRE";
-                dataGridView1.Columns[3].Width = 180;
+                dataGridView1.Columns[3].Width = 500;
                 dataGridView1.Columns[3].ReadOnly = true;
+                //
+                this.Width = dataGridView1.Width + 5;
+            }
+            if (para1 == "contrat" && para3 == "" && para4 == "")
+            {
+                if (para2 != "")
+                {
+                    consulta = "select a.id,a.cliente,a.contrato,b.razonsocial,a.status from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
+                        "where b.idanagrafica = @para2";
+                }
+                else
+                {
+                    consulta = "select a.id,a.cliente,a.contrato,b.razonsocial,a.status from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
+                        "where a.status not in ('ANULAD', 'ENTREG') order by b.razonsocial";
+                }
+                dataGridView1.Rows.Clear();
+                dataGridView1.ColumnCount = 5;
+                dataGridView1.Columns[0].Name = " ID ";
+                dataGridView1.Columns[0].Width = 35;
+                dataGridView1.Columns[0].ReadOnly = true;
+                dataGridView1.Columns[1].Name = " CLIENTE";
+                dataGridView1.Columns[1].Width = 70;
+                dataGridView1.Columns[1].ReadOnly = true;
+                dataGridView1.Columns[2].Name = " CONTRATO";
+                dataGridView1.Columns[2].Width = 100;
+                dataGridView1.Columns[2].ReadOnly = true;
+                dataGridView1.Columns[3].Name = " NOMBRE";
+                dataGridView1.Columns[3].Width = 400;
+                dataGridView1.Columns[3].ReadOnly = true;
+                dataGridView1.Columns[4].Name = " ESTADO";
+                dataGridView1.Columns[4].Width = 80;
+                dataGridView1.Columns[4].ReadOnly = true;
+                //
+                this.Width = dataGridView1.Width + 5;
+            }
+            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
+            {
+                consulta = "select iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment from detacon where contratoh=@para2";
+                dataGridView1.Rows.Clear();
+                dataGridView1.ColumnCount = 9;
+                dataGridView1.Columns[0].Name = " ID ";
+                dataGridView1.Columns[0].Width = 35;
+                dataGridView1.Columns[0].ReadOnly = true;
+                dataGridView1.Columns[1].Name = " CODIGO";
+                dataGridView1.Columns[1].Width = 100;
+                dataGridView1.Columns[1].ReadOnly = true;
+                dataGridView1.Columns[2].Name = " CANT";
+                dataGridView1.Columns[2].Width = 100;
+                dataGridView1.Columns[2].ReadOnly = true;
+                dataGridView1.Columns[3].Name = " NOMBRE";
+                dataGridView1.Columns[3].Width = 300;
+                dataGridView1.Columns[3].ReadOnly = true;
+                dataGridView1.Columns[4].Name = " MEDIDAS";
+                dataGridView1.Columns[4].Width = 80;
+                dataGridView1.Columns[4].ReadOnly = true;
+                dataGridView1.Columns[5].Name = " MADERA";
+                dataGridView1.Columns[5].Width = 80;
+                dataGridView1.Columns[5].ReadOnly = true;
+                dataGridView1.Columns[6].Name = " ESTADO";
+                dataGridView1.Columns[6].Width = 60;
+                dataGridView1.Columns[6].Visible = false;
+                dataGridView1.Columns[7].Name = " SALDO";
+                dataGridView1.Columns[7].Width = 60;
+                dataGridView1.Columns[7].Visible = false;
+                dataGridView1.Columns[8].Name = " COMENTARIO";
+                dataGridView1.Columns[8].Width = 200;
+                dataGridView1.Columns[8].ReadOnly = true;
+                //
+                ReturnValueA = new string[7] { "", "", "", "", "", "", ""};
             }
             // Se crea un MySqlAdapter para obtener los datos de la base
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -169,8 +243,45 @@ namespace iOMG
                             dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
                                                 row.ItemArray[1].ToString(),
                                                 row.ItemArray[2].ToString(),
+                                                row.ItemArray[3].ToString()
+                                                );
+                        }
+                    }
+                    if (para1 == "contrat" && para3 == "" && para4 == "")
+                    {
+                        MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
+                        if(para2 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@para2", para2);
+                        mdaDatos.Fill(dtDatos);
+                        int li = 0;   // contador de las lineas a llenar el datagrid
+                        for (li = 0; li < dtDatos.Rows.Count; li++) // 
+                        {
+                            DataRow row = dtDatos.Rows[li];
+                            dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
+                                                row.ItemArray[1].ToString(),
+                                                row.ItemArray[2].ToString(),
                                                 row.ItemArray[3].ToString(),
                                                 row.ItemArray[4].ToString()
+                                                );
+                        }
+                    }
+                    if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
+                    {
+                        MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
+                        if (para2 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@para2", para2);
+                        mdaDatos.Fill(dtDatos);
+                        int li = 0;   // contador de las lineas a llenar el datagrid
+                        for (li = 0; li < dtDatos.Rows.Count; li++) // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+                        {
+                            DataRow row = dtDatos.Rows[li];
+                            dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
+                                                row.ItemArray[1].ToString(),
+                                                row.ItemArray[2].ToString(),
+                                                row.ItemArray[3].ToString(),
+                                                row.ItemArray[4].ToString(),
+                                                row.ItemArray[5].ToString(),
+                                                row.ItemArray[6].ToString(),
+                                                row.ItemArray[7].ToString(),
+                                                row.ItemArray[8].ToString()
                                                 );
                         }
                     }
@@ -199,6 +310,16 @@ namespace iOMG
             ReturnValue0 = tx_id.Text;
             ReturnValue1 = tx_codigo.Text;
             ReturnValue2 = tx_nombre.Text;
+            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+            {
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+            }
             this.Close();
         }
 
@@ -219,12 +340,33 @@ namespace iOMG
                 tx_codigo.Text = cellva;
                 tx_id.Text = "";
             }
-            if (para1 != "anag_cli" && para2 != "todos" && para3 == "" && para4 == "")
+            if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            }
+            if (para1 == "contrat" && para3 == "" && para4 == "")
+            {
+                tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();    // nombre del cliente
+                cellva = dataGridView1.CurrentRow.Cells[1].Value.ToString();            // id del cliente
+                tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();    // numero de contrato
+                tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();        // id del contrato
+            }
+            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")        // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+            {
+                tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                tx_codigo.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // codigo
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // cant
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
+                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // medidas
+                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // madera
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();
@@ -234,12 +376,19 @@ namespace iOMG
         {
             if (e.KeyChar == Convert.ToChar(Keys.Enter))
             {
-                //if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
-                //{
-                    ReturnValue1 = tx_codigo.Text;
-                    ReturnValue0 = tx_id.Text;
-                    ReturnValue2 = tx_nombre.Text;
-                //}
+                ReturnValue1 = tx_codigo.Text;
+                ReturnValue0 = tx_id.Text;
+                ReturnValue2 = tx_nombre.Text;
+                if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // item
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // cant
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
+                    ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // medidas
+                    ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // madera
+                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
+                }
                 this.Close();
             }
         }
@@ -253,10 +402,9 @@ namespace iOMG
                 for (li = 0; li < dtDatos.Rows.Count; li++) // 
                 {
                     DataRow row = dtDatos.Rows[li];
-                    string cols4 = "items,anag_cli";         // 4 columnas
-                    string cols5 = "stocks,qqq";        // 5 columnas, 3ra fecha
-                    string colst = "socios";            // 5 columnas sn fecha
-                    if (row.ItemArray[1].ToString().ToLower().Contains(tx_buscar.Text.Trim().ToLower()))    // campo nombre
+                    string cols4 = "items,items_adic";         // busqueda en columna 1
+                    string cols5 = "anag_cli";                 // busqueda en columna 3
+                    string colst = "detacon";                  // 
                     {
                         if (colst.Contains(para1))
                         {
@@ -264,22 +412,32 @@ namespace iOMG
                                                 row.ItemArray[1].ToString(),
                                                 row.ItemArray[2].ToString(),
                                                 row.ItemArray[3].ToString(),
-                                                row.ItemArray[4].ToString());
+                                                row.ItemArray[4].ToString(),
+                                                row.ItemArray[5].ToString(),
+                                                row.ItemArray[6].ToString(),
+                                                row.ItemArray[7].ToString(),
+                                                row.ItemArray[8].ToString()
+                                                );
                         }
                         if (cols4.Contains(para1))
                         {
-                            dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
+                            if (row.ItemArray[1].ToString().ToLower().Contains(tx_buscar.Text.Trim().ToLower()))
+                            {
+                                dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
                                                 row.ItemArray[1].ToString(),
                                                 row.ItemArray[2].ToString(),
                                                 row.ItemArray[3].ToString());
+                            }
                         }
                         if (cols5.Contains(para1))
                         {
-                            dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
+                            if (row.ItemArray[3].ToString().ToLower().Contains(tx_buscar.Text.Trim().ToLower()))
+                            {
+                                dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
                                                 row.ItemArray[1].ToString(),
                                                 row.ItemArray[2].ToString(),
-                                                string.Format("{0:dd/MM/yyyy}", row.ItemArray[3]),
-                                                row.ItemArray[4].ToString());
+                                                row.ItemArray[3].ToString());
+                            }
                         }
                     }
                 }
@@ -304,11 +462,18 @@ namespace iOMG
                 tx_codigo.Text = cellva;
                 tx_id.Text = "";
             }
-            if (para1 != "anag_cli" && para2 != "todos" && para3 == "" && para4 == "")
+            if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            }
+            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
+            {
+                tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                tx_codigo.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             }
             iOMG.Program.retorna1 = cellva;
