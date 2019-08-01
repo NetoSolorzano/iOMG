@@ -79,13 +79,10 @@
             this.tx_d_can = new System.Windows.Forms.TextBox();
             this.tx_d_id = new System.Windows.Forms.TextBox();
             this.tx_d_it = new System.Windows.Forms.TextBox();
-            this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.tx_dat_orig = new System.Windows.Forms.TextBox();
             this.tx_dat_tiped = new System.Windows.Forms.TextBox();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -93,12 +90,10 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_coment = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cmb_estado = new System.Windows.Forms.ComboBox();
             this.cmb_tipo = new System.Windows.Forms.ComboBox();
             this.tx_rind = new System.Windows.Forms.TextBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
@@ -144,7 +139,6 @@
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox15.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -205,22 +199,18 @@
             this.tabuser.Controls.Add(this.tx_cliente);
             this.tabuser.Controls.Add(this.label11);
             this.tabuser.Controls.Add(this.panel1);
-            this.tabuser.Controls.Add(this.tx_dat_estad);
             this.tabuser.Controls.Add(this.tx_dat_orig);
             this.tabuser.Controls.Add(this.tx_dat_tiped);
             this.tabuser.Controls.Add(this.groupBox15);
-            this.tabuser.Controls.Add(this.groupBox7);
             this.tabuser.Controls.Add(this.dataGridView1);
             this.tabuser.Controls.Add(this.label5);
             this.tabuser.Controls.Add(this.label4);
             this.tabuser.Controls.Add(this.groupBox5);
             this.tabuser.Controls.Add(this.groupBox3);
-            this.tabuser.Controls.Add(this.label12);
             this.tabuser.Controls.Add(this.label10);
             this.tabuser.Controls.Add(this.label6);
             this.tabuser.Controls.Add(this.tx_coment);
             this.tabuser.Controls.Add(this.label1);
-            this.tabuser.Controls.Add(this.cmb_estado);
             this.tabuser.Controls.Add(this.cmb_tipo);
             this.tabuser.Controls.Add(this.tx_rind);
             this.tabuser.Controls.Add(this.tx_idr);
@@ -335,7 +325,7 @@
             // 
             this.dtp_pedido.Checked = false;
             this.dtp_pedido.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_pedido.Location = new System.Drawing.Point(460, 32);
+            this.dtp_pedido.Location = new System.Drawing.Point(463, 6);
             this.dtp_pedido.Name = "dtp_pedido";
             this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
             this.dtp_pedido.TabIndex = 4;
@@ -343,7 +333,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(383, 36);
+            this.label2.Location = new System.Drawing.Point(386, 10);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 277;
@@ -696,14 +686,6 @@
             this.tx_d_it.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_d_it.Visible = false;
             // 
-            // tx_dat_estad
-            // 
-            this.tx_dat_estad.Location = new System.Drawing.Point(572, 5);
-            this.tx_dat_estad.Name = "tx_dat_estad";
-            this.tx_dat_estad.Size = new System.Drawing.Size(50, 20);
-            this.tx_dat_estad.TabIndex = 297;
-            this.tx_dat_estad.Visible = false;
-            // 
             // tx_dat_orig
             // 
             this.tx_dat_orig.Location = new System.Drawing.Point(268, 33);
@@ -737,24 +719,6 @@
             this.groupBox16.Size = new System.Drawing.Size(164, 1);
             this.groupBox16.TabIndex = 113;
             this.groupBox16.TabStop = false;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.BackColor = System.Drawing.Color.White;
-            this.groupBox7.Controls.Add(this.groupBox8);
-            this.groupBox7.Location = new System.Drawing.Point(383, 26);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(172, 1);
-            this.groupBox7.TabIndex = 290;
-            this.groupBox7.TabStop = false;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Location = new System.Drawing.Point(0, -26);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(164, 1);
-            this.groupBox8.TabIndex = 113;
-            this.groupBox8.TabStop = false;
             // 
             // dataGridView1
             // 
@@ -804,7 +768,7 @@
             // 
             this.groupBox3.BackColor = System.Drawing.Color.White;
             this.groupBox3.Controls.Add(this.groupBox4);
-            this.groupBox3.Location = new System.Drawing.Point(383, 52);
+            this.groupBox3.Location = new System.Drawing.Point(386, 26);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(171, 1);
             this.groupBox3.TabIndex = 284;
@@ -817,15 +781,6 @@
             this.groupBox4.Size = new System.Drawing.Size(164, 1);
             this.groupBox4.TabIndex = 113;
             this.groupBox4.TabStop = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(383, 9);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(75, 13);
-            this.label12.TabIndex = 281;
-            this.label12.Text = "Estado pedido";
             // 
             // label10
             // 
@@ -861,18 +816,6 @@
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 276;
             this.label1.Text = "Comentarios";
-            // 
-            // cmb_estado
-            // 
-            this.cmb_estado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_estado.DropDownWidth = 100;
-            this.cmb_estado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_estado.FormattingEnabled = true;
-            this.cmb_estado.Location = new System.Drawing.Point(470, 5);
-            this.cmb_estado.Name = "cmb_estado";
-            this.cmb_estado.Size = new System.Drawing.Size(85, 21);
-            this.cmb_estado.TabIndex = 1;
-            this.cmb_estado.SelectionChangeCommitted += new System.EventHandler(this.cmb_estado_SelectionChangeCommitted);
             // 
             // cmb_tipo
             // 
@@ -1250,7 +1193,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox15.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1293,15 +1235,12 @@
         private System.Windows.Forms.TextBox tx_d_can;
         private System.Windows.Forms.TextBox tx_d_id;
         private System.Windows.Forms.TextBox tx_d_it;
-        private System.Windows.Forms.TextBox tx_dat_estad;
         private System.Windows.Forms.TextBox tx_dat_orig;
         private System.Windows.Forms.TextBox tx_dat_tiped;
         private System.Windows.Forms.GroupBox groupBox17;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.GroupBox groupBox15;
         private System.Windows.Forms.GroupBox groupBox16;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.GroupBox groupBox14;
@@ -1316,13 +1255,11 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tx_codped;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tx_coment;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmb_estado;
         private System.Windows.Forms.ComboBox cmb_taller;
         private System.Windows.Forms.ComboBox cmb_tipo;
         private System.Windows.Forms.TextBox tx_rind;

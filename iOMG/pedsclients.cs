@@ -244,14 +244,7 @@ namespace iOMG
                     if (row["formulario"].ToString() == nomform)
                     {
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // tipo de pedido de clientes
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "pendiente") estpend = row["valor"].ToString().Trim();         // estado del pedido con llegada parcial
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "recibido") estcomp = row["valor"].ToString().Trim();         // estado del pedido con llegada total
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cambio") escambio = row["valor"].ToString().Trim();         // estado del pedido que admiten modificar el pedido
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "enviado") estenv = row["valor"].ToString().Trim();         // estado del pedido enviado a producción
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") estanu = row["valor"].ToString().Trim();         // estado del pedido anulado
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "cerrado") estcer = row["valor"].ToString().Trim();         // estado del pedido cerrado asi como esta
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "manual") estman = row["valor"].ToString().Trim();         // estados que se pueden seleccionar manualmente
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
                     }
                 }
                 da.Dispose();
@@ -271,7 +264,6 @@ namespace iOMG
             {   // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nom_estado,a.origen,a.destino,
                 // fecha,entrega,a.coment,a.tipoes,a.status
                 tx_dat_tiped.Text = tipede;
-                tx_dat_estad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();  // estado del pedido
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();   // taller origen
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString());   // fecha pedido
@@ -282,7 +274,6 @@ namespace iOMG
                 tx_cont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                 jaladet(tx_codped.Text);
             }
             if (campo == "tx_codped" && tx_codped.Text != "")
@@ -296,7 +287,6 @@ namespace iOMG
                         tx_dat_tiped.Text = tipede;
                         tx_idr.Text = row["id"].ToString();                                 // id del registro
                         tx_rind.Text = cta.ToString();
-                        tx_dat_estad.Text = row["status"].ToString();                       // estado del pedido
                         tx_dat_orig.Text = row["origen"].ToString();                        // taller origen
                         dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha pedido
                         dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
@@ -305,7 +295,6 @@ namespace iOMG
                         tx_cliente.Text = row["razonsocial"].ToString();                    // nombre cliente
                         tx_cont.Text = row["contrato"].ToString();
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
-                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
                         jaladet(tx_codped.Text);
                     }
@@ -391,8 +380,8 @@ namespace iOMG
             advancedDataGridView1.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // estado (nombre)
-            advancedDataGridView1.Columns[5].Visible = true;
+            // estado (nombre) -- aca no se usa
+            advancedDataGridView1.Columns[5].Visible = false;
             advancedDataGridView1.Columns[5].HeaderText = "Estado";
             advancedDataGridView1.Columns[5].Width = 200;
             advancedDataGridView1.Columns[5].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
@@ -541,10 +530,9 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los pedidos
-                string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,b.descrizionerid,a.origen,a.destino," +
+                string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,space(6) as nomest,a.origen,a.destino," +
                     "date_format(date(a.fecha),'%Y-%m-%d') as fecha,date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
                     "from pedidos a left join anag_cli c on c.idanagrafica=a.cliente " +
-                    "left join desc_stp b on b.idcodice=a.status " +
                     "where a.tipoes=@tip";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", tipede);                // tipo pedidos catalogo clientes
@@ -580,18 +568,6 @@ namespace iOMG
                 {
                     cmb_tipo.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
-                }
-                // seleccion de estado del pedido
-                const string conestado = "select descrizionerid,idcodice from desc_sta " +
-                                       "where numero=1 order by idcodice";
-                MySqlCommand cmdestado = new MySqlCommand(conestado, conn);
-                DataTable dtestado = new DataTable();
-                MySqlDataAdapter daestado = new MySqlDataAdapter(cmdestado);
-                daestado.Fill(dtestado);
-                foreach (DataRow row in dtestado.Rows)
-                {
-                    cmb_estado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
-                    cmb_estado.ValueMember = row.ItemArray[1].ToString();
                 }
             }
             conn.Close();
@@ -764,10 +740,6 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
             cmb_tipo.Enabled = false;
-            cmb_estado.SelectedIndex = cmb_estado.FindString(tiesta);
-            cmb_estado.Enabled = false;
-            tx_dat_estad.Text = tiesta;
-            cmb_estado.Enabled = false;
             tx_codped.ReadOnly = true;
             dtp_fingreso.Checked = false;
             dtp_fingreso.Enabled = false;
@@ -801,7 +773,6 @@ namespace iOMG
             tx_dat_tiped.Text = tipede;
             dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
-            cmb_estado.Enabled = true;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1150,18 +1121,19 @@ namespace iOMG
         {
             //tabControl1.SelectedTab = pag;
             cmb_taller.SelectedIndex = -1;
-            cmb_estado.SelectedIndex = -1;
+        }
+        private void limpia_panel(Panel pan)
+        {
+            foreach (Control oControls in pan.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
         }
         #endregion limpiadores_modos;
         #region comboboxes
-        private void cmb_estado_Click(object sender, EventArgs e)
-        {
-            indant = cmb_estado.SelectedIndex;
-        }
-        private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-
-        }
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
@@ -1476,15 +1448,12 @@ namespace iOMG
                         mion.ExecuteNonQuery();
                         conn.Close();
                         // actualizar el estado en el form y en la grilla
-                        tx_dat_estad.Text = pedido;
-                        cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         for (int i = 0; i < dtg.Rows.Count; i++)
                         {
                             DataRow row = dtg.Rows[i];
                             if (row[0].ToString() == tx_idr.Text)
                             {
                                 // a.id,a.codped,b.descrizionerid,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
-                                dtg.Rows[i][2] = cmb_estado.SelectedItem.ToString().Substring(9, 6);    // tx_dat_estad.Text;
                                 dtg.Rows[i][3] = tx_dat_orig.Text;
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][6] = dtp_entreg.Value.ToString("yyyy-MM-dd");
@@ -1531,6 +1500,9 @@ namespace iOMG
 
                 }
             }
+            dtp_fingreso.Checked = false;
+            dtp_fingreso.Value = DateTime.Now;
+            limpia_panel(panel1);               // limpia panel1
         }
         #endregion
     }
