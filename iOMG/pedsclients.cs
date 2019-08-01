@@ -39,6 +39,7 @@ namespace iOMG
         string img_pre = "";            // imagen del boton vista preliminar
         string img_ver = "";            // imagen del boton visualizacion (solo ver)
         string tipede = "";             // tipo de pedido de clientes por defecto
+        string letiden = "";            // letra inicial identificadora de pedidos de clientes
         string tiesta = "";             // estado inicial por defecto del pedido de clientes
         string escambio = "";           // estados de pedido de clientes que admiten modificar el pedido
         string estpend = "";            // estado de pedido de clientes con articulos pendientes de recibir
@@ -244,7 +245,7 @@ namespace iOMG
                     if (row["formulario"].ToString() == nomform)
                     {
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // tipo de pedido de clientes
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
+                        if (row["campo"].ToString() == "indentif" && row["param"].ToString() == "letra") letiden = row["valor"].ToString().Trim();         // letra identif para codigo de pedido
                     }
                 }
                 da.Dispose();
@@ -428,13 +429,13 @@ namespace iOMG
             advancedDataGridView1.Columns[12].Visible = false;
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
-        {   // id,cant,item,nombre,medidas,nom_madera,nom_det2,nom_acab,comentario,estado,madera,piedra,fingreso,saldo
+        {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 15;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -515,6 +516,9 @@ namespace iOMG
             dataGridView1.Columns[13].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[13].Name = "saldo";
+            // tipo nuevo o modif
+            dataGridView1.Columns[14].Visible = false;
+            dataGridView1.Columns[14].Name = "NE";
         }
         private void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -572,8 +576,160 @@ namespace iOMG
             }
             conn.Close();
         }
-        // graba
-        // edita
+        private bool graba()                                // graba cabecera del pedido de clientes
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return retorna;
+            }
+            string inserta = "insert into pedidos (codped,contrato,cliente,origen,destino,fecha,entrega,coment,tipoes,status) " +
+                "values (@cped,@cont,@clie,@orig,@dest,@fech,@entr,@come,@tipo,@esta)";
+            MySqlCommand micon = new MySqlCommand(inserta, conn);
+            micon.Parameters.AddWithValue("@cped", tx_codped.Text);
+            micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+            micon.Parameters.AddWithValue("@clie", tx_idc.Text);
+            micon.Parameters.AddWithValue("@orig", tx_dat_orig.Text);
+            micon.Parameters.AddWithValue("@dest", "");
+            micon.Parameters.AddWithValue("@fech", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+            micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+            micon.Parameters.AddWithValue("@come", tx_coment.Text.Trim());
+            micon.Parameters.AddWithValue("@tipo", tx_dat_tiped.Text);
+            micon.Parameters.AddWithValue("@esta", "");
+            micon.ExecuteNonQuery();
+            // detalle
+            inserta = "insert into detaped (pedidoh,tipo," +
+                "cant,item,nombre,medidas,madera,estado,saldo,piedra,coment,precio,total) " +
+                "values (@cped,@tipo,@cant,@item,@nomb,@medi,@made,@esta,@sald,@pied,@come,@prec,@tota)";
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
+                if (row.Cells["item"].Value.ToString() != "")
+                {
+                    // alto .. alto ... no hay en detaped, solo hay datos de pedidos de almacen !!
+                    // efectivamente .. en CoopV3 se hace un pedido por cada mueble
+                    // en iOMG se tendrá un detalle por cada pedido
+                    // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
+                    micon = new MySqlCommand(inserta, conn);
+                    micon.Parameters.AddWithValue("@cped", tx_codped.Text);
+                    micon.Parameters.AddWithValue("@tipo", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@cant", row.Cells["cant"].Value.ToString());
+                    micon.Parameters.AddWithValue("@item", row.Cells["item"].Value.ToString());
+                    micon.Parameters.AddWithValue("@nomb", row.Cells["nombre"].Value.ToString());
+                    micon.Parameters.AddWithValue("@medi", row.Cells["medidas"].Value.ToString());
+                    micon.Parameters.AddWithValue("@made", row.Cells["madera"].Value.ToString());
+                    micon.Parameters.AddWithValue("@esta", row.Cells["estado"].Value.ToString());
+                    micon.Parameters.AddWithValue("@sald", row.Cells["saldo"].Value.ToString());
+                    micon.Parameters.AddWithValue("@pied", row.Cells["piedra"].Value.ToString());
+                    micon.Parameters.AddWithValue("@come", row.Cells["coment"].Value.ToString());
+                    micon.Parameters.AddWithValue("@prec", "0");
+                    micon.Parameters.AddWithValue("@tota", "0");
+                    micon.ExecuteNonQuery();
+                    retorna = true;
+                }
+            }
+            conn.Close();
+            return retorna;
+        }
+        private bool edita()                                // modifica pedido de clientes
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                try
+                {
+                    string actua = "update pedidos set " +
+                        "fecha=@fepe,origen=@tall,destino=@dest,coment=@come,user=@asd,dia=now(),status=@esta,entrega=@entr " +
+                        "where id=@idr";
+                    MySqlCommand micon = new MySqlCommand(actua, conn);
+                    micon.Parameters.AddWithValue("@idr", tx_idr.Text);
+                    micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@dest", "");
+                    micon.Parameters.AddWithValue("@come", tx_coment.Text);
+                    micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@esta", "");
+                    micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    micon.ExecuteNonQuery();
+                    // detalle
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                    {
+                        string insdet = "";
+                        if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "N")
+                        {
+                            string tfingreso = "", tfing = "";
+                            if (dtp_fingreso.Checked == true)
+                            {
+                                tfingreso = ",fingreso";
+                                tfing = ",@fing";
+                            }   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
+                            insdet = "insert into detaped (" +
+                                "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo" + tfingreso + ") values (" +
+                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + tfing + ")";
+                            micon = new MySqlCommand(insdet, conn);
+                            micon.Parameters.AddWithValue("@cope", tx_codped.Text);
+                            micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                            micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells["item"].Value.ToString());
+                            micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells["cant"].Value.ToString());
+                            micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells["nombre"].Value.ToString());
+                            micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells["medidas"].Value.ToString());
+                            micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells["madera"].Value.ToString());
+                            micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells["estado"].Value.ToString());
+                            micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells["piedra"].Value.ToString());
+                            micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells["coment"].Value.ToString());
+                            if (dtp_fingreso.Checked == true) micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells["fingreso"].Value.ToString());
+                            micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells["saldo"].Value.ToString());
+                            micon.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            insdet = "update detaped set " +
+                                "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
+                                "where iddetaped=@idr";
+                            micon = new MySqlCommand(insdet, conn);
+                            micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
+                            micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells["item"].Value.ToString());
+                            micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells["cant"].Value.ToString());
+                            micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells["nombre"].Value.ToString());
+                            micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells["medidas"].Value.ToString());
+                            micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells["madera"].Value.ToString());
+                            micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells["estado"].Value.ToString());
+                            micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells["piedra"].Value.ToString());
+                            micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells["coment"].Value.ToString());
+                            if (dataGridView1.Rows[i].Cells[12].Value.ToString() == "")
+                            {
+                                micon.Parameters.AddWithValue("@fing", DBNull.Value);
+                            }
+                            else
+                            {
+                                micon.Parameters.AddWithValue("@fing", Convert.ToDateTime(dataGridView1.Rows[i].Cells["fingreso"].Value.ToString()));
+                            }
+                            micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                            micon.ExecuteNonQuery();
+                        }
+                    }
+                    retorna = true;
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en edicion");
+                    Application.Exit();
+                }
+            }
+            else
+            {
+                MessageBox.Show("No fue posible conectarse al servidor de datos");
+                Application.Exit();
+                return retorna;
+            }
+            conn.Close();
+            return retorna;
+        }
         private bool buscont(string cont)                   // busqueda de contrato
         {
             bool retorna = false;
@@ -602,6 +758,31 @@ namespace iOMG
             }
             dr.Close();
             conn.Close();
+            return retorna;
+        }
+        private string gencodp(string cont)                 // genera codigo de pedido
+        {                                       // letra + #cont + '_' + #correlativo ... Ejemplo: C023055_1
+            string retorna = "";
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return retorna;
+            }
+            string cnsult = "select count(id) from pedidos where contrato=@cont";
+            MySqlCommand micon = new MySqlCommand(cnsult, conn);
+            micon.Parameters.AddWithValue("@cont", cont);
+            MySqlDataReader dr = micon.ExecuteReader();
+            int cant = 0;
+            if (dr.Read())
+            {
+                cant = dr.GetInt16(0) + 1;
+            }
+            dr.Close();
+            conn.Close();
+            retorna = letiden + tx_cont.Text.Trim() + "_" + cant.ToString();
             return retorna;
         }
         string[] equivinter(string titulo)                  // equivalencia entre titulo de columna y tabla 
@@ -1469,7 +1650,6 @@ namespace iOMG
             }
         }
         #endregion
-
         #region botones de grabar y agregar
         private void bt_det_Click(object sender, EventArgs e)
         {
@@ -1493,7 +1673,7 @@ namespace iOMG
                 {
                     dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
                              tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text,"",
-                            "", "", "", tx_saldo.Text);
+                            "", "", "", tx_saldo.Text, "N");
                 }
                 else
                 {       // es modificacion
@@ -1504,6 +1684,128 @@ namespace iOMG
             dtp_fingreso.Value = DateTime.Now;
             limpia_panel(panel1);               // limpia panel1
         }
+        private void button1_Click(object sender, EventArgs e)      // graba pedido cabecera y detalle
+        {
+            if(Tx_modo.Text == "NUEVO")
+            {
+                if (dataGridView1.Rows.Count < 2)
+                {
+                    MessageBox.Show("Debe ingresar los artículos a pedir", "Atención - complete", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_d_can.Focus();
+                    return;
+                }
+                if (tx_dat_orig.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione el taller", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    cmb_taller.Focus();
+                    return;
+                }
+                if (tx_cliente.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione al cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_cliente.Focus();
+                    return;
+                }
+                if (tx_cont.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese el contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_cont.Focus();
+                    return;
+                }
+                tx_codped.Text = gencodp(tx_cont.Text);     // genramos el codigo del pedido
+                if(graba() == true)
+                {
+                    // agregamos el nuevo registro a la grilla
+                    DataRow dr = dtg.NewRow();
+                    // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,space(6) as nomest,a.origen,a.destino,
+                    // fecha,entrega,a.coment,a.tipoes,a.status
+                    string cid = tx_idr.Text;       // sería bueno que fuera el id real  
+                    dr[0] = cid;
+                    dr[1] = tx_codped.Text;
+                    dr[2] = tx_cont.Text;
+                    dr[3] = tx_idc.Text;
+                    dr[4] = tx_cliente.Text.Trim();
+                    dr[5] = "";
+                    dr[6] = tx_dat_orig.Text;
+                    dr[7] = "";
+                    dr[8] = dtp_pedido.Value.ToString("yyy-MM-dd");
+                    dr[9] = dtp_entreg.Value.ToString("yyy-MM-dd");
+                    dr[10] = tx_coment.Text;
+                    dr[11] = tx_dat_tiped.Text;
+                    dr[12] = "";
+                    dtg.Rows.Add(dr);
+                }
+            }
+            if(Tx_modo.Text == "EDITAR")
+            {
+                if (dataGridView1.Rows.Count < 2)
+                {
+                    MessageBox.Show("Debe ingresar los artículos a pedir", "Atención - complete", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_d_can.Focus();
+                    return;
+                }
+                if (tx_dat_orig.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione el taller", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    cmb_taller.Focus();
+                    return;
+                }
+                if (tx_cliente.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione al cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_cliente.Focus();
+                    return;
+                }
+                if (tx_cont.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese el contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_cont.Focus();
+                    return;
+                }
+                var aa = MessageBox.Show("Confirma que desea modificar?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    if (edita() == true)
+                    {
+                        // actualizamos el datatable
+                        for (int i = 0; i < dtg.Rows.Count; i++)
+                        {
+                            DataRow row = dtg.Rows[i];
+                            if (row[0].ToString() == tx_idr.Text)
+                            {
+                                // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,space(6) as nomest,a.origen,a.destino,
+                                // fecha,entrega,a.coment,a.tipoes,a.status
+                                dtg.Rows[i][3] = tx_idc.Text;
+                                dtg.Rows[i][4] = tx_cliente.Text.Trim();
+                                dtg.Rows[i][5] = "";
+                                dtg.Rows[i][6] = tx_dat_orig.Text;
+                                dtg.Rows[i][7] = "";
+                                dtg.Rows[i][8] = dtp_pedido.Value.ToString("yyy-MM-dd");
+                                dtg.Rows[i][9] = dtp_entreg.Value.ToString("yyy-MM-dd");
+                                dtg.Rows[i][10] = tx_coment.Text;
+                                dtg.Rows[i][11] = tx_dat_tiped.Text;
+                                dtg.Rows[i][12] = "";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo actualizar!", "Error");
+                        return;
+                    }
+                }
+            }
+            if (Tx_modo.Text == "")
+            {
+
+            }
+            // limpiamos todo
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            limpia_panel(panel1);
+            limpiapag(tabuser);
+        }
         #endregion
+
     }
 }

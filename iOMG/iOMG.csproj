@@ -189,6 +189,12 @@
     <Compile Include="pedsclients.Designer.cs">
       <DependentUpon>pedsclients.cs</DependentUpon>
     </Compile>
+    <Compile Include="pedsclte.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>pedsclte.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="permisos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -275,6 +281,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="pedsclients.resx">
       <DependentUpon>pedsclients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pedsclte.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>pedsclte.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="permisos.resx">
       <DependentUpon>permisos.cs</DependentUpon>
