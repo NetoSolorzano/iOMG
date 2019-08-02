@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="pedsclts" targetNamespace="http://tempuri.org/pedsclts.xsd" xmlns:mstns="http://tempuri.org/pedsclts.xsd" xmlns="http://tempuri.org/pedsclts.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="pedsclts" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="pedsclts" msprop:Generator_UserDSName="pedsclts">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="cabeza_pedclt" msprop:Generator_TableClassName="cabeza_pedcltDataTable" msprop:Generator_TableVarName="tablecabeza_pedclt" msprop:Generator_TablePropName="cabeza_pedclt" msprop:Generator_RowDeletingName="cabeza_pedcltRowDeleting" msprop:Generator_RowChangingName="cabeza_pedcltRowChanging" msprop:Generator_RowEvHandlerName="cabeza_pedcltRowChangeEventHandler" msprop:Generator_RowDeletedName="cabeza_pedcltRowDeleted" msprop:Generator_UserTableName="cabeza_pedclt" msprop:Generator_RowChangedName="cabeza_pedcltRowChanged" msprop:Generator_RowEvArgName="cabeza_pedcltRowChangeEvent" msprop:Generator_RowClassName="cabeza_pedcltRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="codped" msprop:Generator_ColumnVarNameInTable="columncodped" msprop:Generator_ColumnPropNameInRow="codped" msprop:Generator_ColumnPropNameInTable="codpedColumn" msprop:Generator_UserColumnName="codped" type="xs:string" minOccurs="0" />
+              <xs:element name="contrato" msprop:Generator_ColumnVarNameInTable="columncontrato" msprop:Generator_ColumnPropNameInRow="contrato" msprop:Generator_ColumnPropNameInTable="contratoColumn" msprop:Generator_UserColumnName="contrato" type="xs:string" minOccurs="0" />
+              <xs:element name="cliente" msprop:Generator_ColumnVarNameInTable="columncliente" msprop:Generator_ColumnPropNameInRow="cliente" msprop:Generator_ColumnPropNameInTable="clienteColumn" msprop:Generator_UserColumnName="cliente" type="xs:string" minOccurs="0" />
+              <xs:element name="razonsocial" msprop:Generator_ColumnVarNameInTable="columnrazonsocial" msprop:Generator_ColumnPropNameInRow="razonsocial" msprop:Generator_ColumnPropNameInTable="razonsocialColumn" msprop:Generator_UserColumnName="razonsocial" type="xs:string" minOccurs="0" />
+              <xs:element name="origen" msprop:Generator_ColumnVarNameInTable="columnorigen" msprop:Generator_ColumnPropNameInRow="origen" msprop:Generator_ColumnPropNameInTable="origenColumn" msprop:Generator_UserColumnName="origen" type="xs:string" minOccurs="0" />
+              <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="entrega" msprop:Generator_ColumnVarNameInTable="columnentrega" msprop:Generator_ColumnPropNameInRow="entrega" msprop:Generator_ColumnPropNameInTable="entregaColumn" msprop:Generator_UserColumnName="entrega" type="xs:string" minOccurs="0" />
+              <xs:element name="coment" msprop:Generator_ColumnVarNameInTable="columncoment" msprop:Generator_ColumnPropNameInRow="coment" msprop:Generator_ColumnPropNameInTable="comentColumn" msprop:Generator_UserColumnName="coment" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="deta_pedclt" msprop:Generator_TableClassName="deta_pedcltDataTable" msprop:Generator_TableVarName="tabledeta_pedclt" msprop:Generator_TablePropName="deta_pedclt" msprop:Generator_RowDeletingName="deta_pedcltRowDeleting" msprop:Generator_RowChangingName="deta_pedcltRowChanging" msprop:Generator_RowEvHandlerName="deta_pedcltRowChangeEventHandler" msprop:Generator_RowDeletedName="deta_pedcltRowDeleted" msprop:Generator_UserTableName="deta_pedclt" msprop:Generator_RowChangedName="deta_pedcltRowChanged" msprop:Generator_RowEvArgName="deta_pedcltRowChangeEvent" msprop:Generator_RowClassName="deta_pedcltRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="cant" msprop:Generator_ColumnVarNameInTable="columncant" msprop:Generator_ColumnPropNameInRow="cant" msprop:Generator_ColumnPropNameInTable="cantColumn" msprop:Generator_UserColumnName="cant" type="xs:string" minOccurs="0" />
+              <xs:element name="item" msprop:Generator_ColumnVarNameInTable="columnitem" msprop:Generator_ColumnPropNameInRow="item" msprop:Generator_ColumnPropNameInTable="itemColumn" msprop:Generator_UserColumnName="item" type="xs:string" minOccurs="0" />
+              <xs:element name="nombre" msprop:Generator_ColumnVarNameInTable="columnnombre" msprop:Generator_ColumnPropNameInRow="nombre" msprop:Generator_ColumnPropNameInTable="nombreColumn" msprop:Generator_UserColumnName="nombre" type="xs:string" minOccurs="0" />
+              <xs:element name="medidas" msprop:Generator_ColumnVarNameInTable="columnmedidas" msprop:Generator_ColumnPropNameInRow="medidas" msprop:Generator_ColumnPropNameInTable="medidasColumn" msprop:Generator_UserColumnName="medidas" type="xs:string" minOccurs="0" />
+              <xs:element name="detalle2" msprop:Generator_ColumnVarNameInTable="columndetalle2" msprop:Generator_ColumnPropNameInRow="detalle2" msprop:Generator_ColumnPropNameInTable="detalle2Column" msprop:Generator_UserColumnName="detalle2" type="xs:string" minOccurs="0" />
+              <xs:element name="acabado" msprop:Generator_ColumnVarNameInTable="columnacabado" msprop:Generator_ColumnPropNameInRow="acabado" msprop:Generator_ColumnPropNameInTable="acabadoColumn" msprop:Generator_UserColumnName="acabado" type="xs:string" minOccurs="0" />
+              <xs:element name="coment" msprop:Generator_ColumnVarNameInTable="columncoment" msprop:Generator_ColumnPropNameInRow="coment" msprop:Generator_ColumnPropNameInTable="comentColumn" msprop:Generator_UserColumnName="coment" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

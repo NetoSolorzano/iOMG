@@ -162,6 +162,12 @@
     <Compile Include="frmvizcont.Designer.cs">
       <DependentUpon>frmvizcont.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmvizcpeds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmvizcpeds.Designer.cs">
+      <DependentUpon>frmvizcpeds.cs</DependentUpon>
+    </Compile>
     <Compile Include="items.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -194,6 +200,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>pedsclte.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="pedsclts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>pedsclts.xsd</DependentUpon>
     </Compile>
     <Compile Include="permisos.cs">
       <SubType>Form</SubType>
@@ -270,6 +281,9 @@
     <EmbeddedResource Include="frmvizcont.resx">
       <DependentUpon>frmvizcont.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmvizcpeds.resx">
+      <DependentUpon>frmvizcpeds.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="items.resx">
       <DependentUpon>items.cs</DependentUpon>
     </EmbeddedResource>
@@ -318,6 +332,17 @@
       <DependentUpon>conClie.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="pedsclts.xsc">
+      <DependentUpon>pedsclts.xsd</DependentUpon>
+    </None>
+    <None Include="pedsclts.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>pedsclts.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="pedsclts.xss">
+      <DependentUpon>pedsclts.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -1806,6 +1806,47 @@ namespace iOMG
             limpiapag(tabuser);
         }
         #endregion
-
+        #region crystal
+        private void setParaCrystal()               // genera el set para el reporte de crystal
+        {
+            pedsclts datos = generareporte();            // pedsclts = dataset de impresion del pedido
+            frmvizcpeds visualizador = new frmvizcpeds(datos);      // POR ESO SE CREO ESTE FORM frmvizpeds PARA MOSTRAR AHI. ES MEJOR ASI.  
+            visualizador.Show();
+        }
+        private pedsclts generareporte()             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
+        {
+            pedsclts reppedido = new pedsclts();                                    // dataset
+            pedsclts.cabeza_pedcltRow rowcabeza = reppedido.cabeza_pedclt.Newcabeza_pedcltRow();
+            rowcabeza.codped = tx_codped.Text;
+            rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
+            rowcabeza.id = "0";
+            rowcabeza.origen = cmb_taller.Text;
+            rowcabeza.razonsocial = tx_cliente.Text;
+            rowcabeza.cliente = tx_idc.Text;
+            rowcabeza.coment = tx_coment.Text;
+            rowcabeza.contrato = tx_cont.Text;
+            rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
+            reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
+            //
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["item"].Value != null)
+                {
+                    pedsclts.deta_pedcltRow rowdetalle = reppedido.deta_pedclt.Newdeta_pedcltRow();
+                    rowdetalle.id = "0";
+                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                    rowdetalle.item = row.Cells["item"].Value.ToString();
+                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdetalle.acabado = row.Cells["??"].Value.ToString();
+                    rowdetalle.coment = row.Cells["??"].Value.ToString();
+                    rowdetalle.detalle2 = row.Cells["??"].Value.ToString();
+                    //repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
+                }
+            }
+            return reppedido;
+        }
+        #endregion crystal
     }
 }
