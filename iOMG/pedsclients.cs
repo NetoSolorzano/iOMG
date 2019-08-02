@@ -117,6 +117,7 @@ namespace iOMG
                             //ayu2.ReturnValue0;    // id del contrato
                             tx_cont.Text = ayu2.ReturnValue1;
                             tx_cliente.Text = ayu2.ReturnValue2;
+                            tx_ciudades.Text = ayu2.ReturnValueA[5];
                         }
                     }
                 }
@@ -141,7 +142,7 @@ namespace iOMG
                             //ayu2.ReturnValue0;    // id del articulo
                             //ayu3.ReturnValue2;    // nombre del articulo
                             tx_d_can.Text = ayu2.ReturnValueA[2].ToString();
-                            if(tx_d_codi.Text.Trim().Length != 18)          // si el codigo no tiene taller
+                            if(ayu2.ReturnValue1.Trim().Length != 18)          // si el codigo no tiene taller
                             {
                                 tx_d_codi.Text = ayu2.ReturnValue1.Substring(0, 10) + tx_codta.Text.Trim() + ayu2.ReturnValue1.Substring(10, 6);
                             }
@@ -154,6 +155,7 @@ namespace iOMG
                             tx_d_mad.Text = ayu2.ReturnValueA[5].ToString();
                             //tx_d_est.Text = ayu2.ReturnValueA[5].ToString();
                             tx_d_com.Text = ayu2.ReturnValueA[6].ToString();
+                            tx_d_precio.Text = ayu2.ReturnValueA[7].ToString();
                         }
                     }
                 }
@@ -429,13 +431,13 @@ namespace iOMG
             advancedDataGridView1.Columns[12].Visible = false;
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
-        {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
+        {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 15;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 16;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -516,11 +518,14 @@ namespace iOMG
             dataGridView1.Columns[13].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[13].Name = "saldo";
-            // tipo nuevo o modif
+            // total
             dataGridView1.Columns[14].Visible = false;
-            dataGridView1.Columns[14].Name = "NE";
+            dataGridView1.Columns[14].Name = "total";
+            // tipo nuevo o modif
+            dataGridView1.Columns[15].Visible = false;
+            dataGridView1.Columns[15].Name = "NE";
         }
-        private void dataload(string quien)                  // jala datos para los combos y la grilla
+        private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -587,8 +592,8 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            string inserta = "insert into pedidos (codped,contrato,cliente,origen,destino,fecha,entrega,coment,tipoes,status) " +
-                "values (@cped,@cont,@clie,@orig,@dest,@fech,@entr,@come,@tipo,@esta)";
+            string inserta = "insert into pedidos (codped,contrato,cliente,origen,destino,fecha,entrega,coment,tipoes,status,user,dia) " +
+                "values (@cped,@cont,@clie,@orig,@dest,@fech,@entr,@come,@tipo,@esta,@asd,now())";
             MySqlCommand micon = new MySqlCommand(inserta, conn);
             micon.Parameters.AddWithValue("@cped", tx_codped.Text);
             micon.Parameters.AddWithValue("@cont", tx_cont.Text);
@@ -600,6 +605,7 @@ namespace iOMG
             micon.Parameters.AddWithValue("@come", tx_coment.Text.Trim());
             micon.Parameters.AddWithValue("@tipo", tx_dat_tiped.Text);
             micon.Parameters.AddWithValue("@esta", "");
+            micon.Parameters.AddWithValue("@asd", asd);
             micon.ExecuteNonQuery();
             // detalle
             inserta = "insert into detaped (pedidoh,tipo," +
@@ -621,7 +627,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@nomb", row.Cells["nombre"].Value.ToString());
                     micon.Parameters.AddWithValue("@medi", row.Cells["medidas"].Value.ToString());
                     micon.Parameters.AddWithValue("@made", row.Cells["madera"].Value.ToString());
-                    micon.Parameters.AddWithValue("@esta", row.Cells["estado"].Value.ToString());
+                    micon.Parameters.AddWithValue("@esta", row.Cells["estado"].Value.ToString());   // aca me quede error
                     micon.Parameters.AddWithValue("@sald", row.Cells["saldo"].Value.ToString());
                     micon.Parameters.AddWithValue("@pied", row.Cells["piedra"].Value.ToString());
                     micon.Parameters.AddWithValue("@come", row.Cells["coment"].Value.ToString());
@@ -741,8 +747,11 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial " +
-                "from contrat a left join anag_cli b on b.idanagrafica=a.cliente where a.contrato=@cont";
+            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial,c.descrizionerid " +
+                "from contrat a " +
+                "left join anag_cli b on b.idanagrafica=a.cliente " +
+                "left join desc_alm c on c.idcodice=a.tipoes " +
+                "where a.contrato=@cont";
             MySqlCommand micon = new MySqlCommand(consulta, conn);
             micon.Parameters.AddWithValue("@cont", cont);
             MySqlDataReader dr = micon.ExecuteReader();
@@ -752,6 +761,7 @@ namespace iOMG
                 {
                     tx_idc.Text = dr.GetString(2);
                     tx_cliente.Text = dr.GetString(3);
+                    tx_ciudades.Text = dr.GetString(4);
                     retorna = true;
                 }
                 else retorna = false;
@@ -990,29 +1000,18 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
-            /*
-            PrintDialog printDlg = new PrintDialog();
-            printDlg.Document = printDocument1;
-            printDlg.AllowSomePages = true;
-            printDlg.AllowSelection = true;
-            //
-            pageCount = 1;
-            printDocument1.DefaultPageSettings.Landscape = true;
-            //
-            if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
-            */
+            if (tx_codped.Text != "")
+            {
+                //Tx_modo.Text = "IMPRIMIR";
+                setParaCrystal();
+            }
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
-            if (tx_idr.Text != "" && tx_rind.Text != "")
+            if (tx_codped.Text != "")
             {
                 Tx_modo.Text = "IMPRIMIR";
-                /*
-                pageCount = 1;
-                printDocument1.DefaultPageSettings.Landscape = true;
-                printPreviewDialog1.Document = printDocument1;
-                printPreviewDialog1.ShowDialog();
-                */
+                setParaCrystal();
             }
         }
         private void bt_exc_Click(object sender, EventArgs e)
@@ -1734,6 +1733,8 @@ namespace iOMG
                     dr[11] = tx_dat_tiped.Text;
                     dr[12] = "";
                     dtg.Rows.Add(dr);
+                    // vista previa
+                    setParaCrystal();
                 }
             }
             if(Tx_modo.Text == "EDITAR")
@@ -1826,6 +1827,7 @@ namespace iOMG
             rowcabeza.coment = tx_coment.Text;
             rowcabeza.contrato = tx_cont.Text;
             rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
+            rowcabeza.ciudad_des = tx_ciudades.Text;
             reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
             //
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -1841,7 +1843,7 @@ namespace iOMG
                     rowdetalle.acabado = row.Cells["??"].Value.ToString();
                     rowdetalle.coment = row.Cells["??"].Value.ToString();
                     rowdetalle.detalle2 = row.Cells["??"].Value.ToString();
-                    //repcontrato.detalle.AdddetalleRow(rowdetalle);
+                    rowdetalle.precio = row.Cells["total"].Value.ToString();   //tx_d_precio.Text;
                     reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
                 }
             }

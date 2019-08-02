@@ -128,6 +128,12 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tx_ciudades = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tx_d_precio = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -143,6 +149,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -181,6 +188,9 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.groupBox7);
+            this.tabuser.Controls.Add(this.label12);
+            this.tabuser.Controls.Add(this.tx_ciudades);
             this.tabuser.Controls.Add(this.tx_codta);
             this.tabuser.Controls.Add(this.groupBox11);
             this.tabuser.Controls.Add(this.label7);
@@ -235,7 +245,7 @@
             // 
             this.groupBox11.BackColor = System.Drawing.Color.White;
             this.groupBox11.Controls.Add(this.groupBox12);
-            this.groupBox11.Location = new System.Drawing.Point(682, 78);
+            this.groupBox11.Location = new System.Drawing.Point(386, 52);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(154, 1);
             this.groupBox11.TabIndex = 307;
@@ -261,7 +271,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(682, 63);
+            this.label31.Location = new System.Drawing.Point(386, 37);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(47, 13);
             this.label31.TabIndex = 304;
@@ -328,7 +338,7 @@
             this.dtp_pedido.Location = new System.Drawing.Point(463, 6);
             this.dtp_pedido.Name = "dtp_pedido";
             this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
-            this.dtp_pedido.TabIndex = 4;
+            this.dtp_pedido.TabIndex = 1;
             // 
             // label2
             // 
@@ -398,10 +408,10 @@
             // 
             // tx_cont
             // 
-            this.tx_cont.Location = new System.Drawing.Point(756, 59);
+            this.tx_cont.Location = new System.Drawing.Point(463, 33);
             this.tx_cont.Name = "tx_cont";
             this.tx_cont.Size = new System.Drawing.Size(80, 20);
-            this.tx_cont.TabIndex = 7;
+            this.tx_cont.TabIndex = 4;
             this.tx_cont.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_cont.Leave += new System.EventHandler(this.tx_cont_Leave);
             // 
@@ -427,6 +437,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label22);
+            this.panel1.Controls.Add(this.tx_d_precio);
             this.panel1.Controls.Add(this.label21);
             this.panel1.Controls.Add(this.label20);
             this.panel1.Controls.Add(this.label19);
@@ -454,7 +466,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 83);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 85);
-            this.panel1.TabIndex = 298;
+            this.panel1.TabIndex = 8;
             // 
             // label21
             // 
@@ -469,7 +481,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(787, 46);
+            this.label20.Location = new System.Drawing.Point(761, 46);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(37, 13);
             this.label20.TabIndex = 312;
@@ -607,7 +619,7 @@
             // 
             // tx_d_det2
             // 
-            this.tx_d_det2.Location = new System.Drawing.Point(783, 60);
+            this.tx_d_det2.Location = new System.Drawing.Point(755, 60);
             this.tx_d_det2.Name = "tx_d_det2";
             this.tx_d_det2.ReadOnly = true;
             this.tx_d_det2.Size = new System.Drawing.Size(56, 20);
@@ -1168,6 +1180,63 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // groupBox7
+            // 
+            this.groupBox7.BackColor = System.Drawing.Color.White;
+            this.groupBox7.Controls.Add(this.groupBox8);
+            this.groupBox7.Location = new System.Drawing.Point(682, 78);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(155, 1);
+            this.groupBox7.TabIndex = 311;
+            this.groupBox7.TabStop = false;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Location = new System.Drawing.Point(0, -26);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(164, 1);
+            this.groupBox8.TabIndex = 113;
+            this.groupBox8.TabStop = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(682, 62);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(43, 13);
+            this.label12.TabIndex = 310;
+            this.label12.Text = "Destino";
+            // 
+            // tx_ciudades
+            // 
+            this.tx_ciudades.Location = new System.Drawing.Point(756, 58);
+            this.tx_ciudades.Name = "tx_ciudades";
+            this.tx_ciudades.Size = new System.Drawing.Size(81, 20);
+            this.tx_ciudades.TabIndex = 7;
+            this.tx_ciudades.Text = "LIMA";
+            this.tx_ciudades.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(822, 46);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(37, 13);
+            this.label22.TabIndex = 315;
+            this.label22.Text = "Precio";
+            this.label22.Visible = false;
+            // 
+            // tx_d_precio
+            // 
+            this.tx_d_precio.Location = new System.Drawing.Point(816, 60);
+            this.tx_d_precio.Name = "tx_d_precio";
+            this.tx_d_precio.ReadOnly = true;
+            this.tx_d_precio.Size = new System.Drawing.Size(56, 20);
+            this.tx_d_precio.TabIndex = 314;
+            this.tx_d_precio.Tag = "Id";
+            this.tx_d_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_precio.Visible = false;
+            // 
             // pedsclients
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1199,6 +1268,7 @@
             this.groupBox3.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1305,5 +1375,11 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.TextBox tx_codta;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tx_ciudades;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox tx_d_precio;
     }
 }

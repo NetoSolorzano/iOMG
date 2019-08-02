@@ -24,6 +24,7 @@
               <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
               <xs:element name="entrega" msprop:Generator_ColumnVarNameInTable="columnentrega" msprop:Generator_ColumnPropNameInRow="entrega" msprop:Generator_ColumnPropNameInTable="entregaColumn" msprop:Generator_UserColumnName="entrega" type="xs:string" minOccurs="0" />
               <xs:element name="coment" msprop:Generator_ColumnVarNameInTable="columncoment" msprop:Generator_ColumnPropNameInRow="coment" msprop:Generator_ColumnPropNameInTable="comentColumn" msprop:Generator_UserColumnName="coment" type="xs:string" minOccurs="0" />
+              <xs:element name="ciudad_des" msprop:Generator_ColumnVarNameInTable="columnciudad_des" msprop:Generator_ColumnPropNameInRow="ciudad_des" msprop:Generator_ColumnPropNameInTable="ciudad_desColumn" msprop:Generator_UserColumnName="ciudad_des" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -38,6 +39,7 @@
               <xs:element name="detalle2" msprop:Generator_ColumnVarNameInTable="columndetalle2" msprop:Generator_ColumnPropNameInRow="detalle2" msprop:Generator_ColumnPropNameInTable="detalle2Column" msprop:Generator_UserColumnName="detalle2" type="xs:string" minOccurs="0" />
               <xs:element name="acabado" msprop:Generator_ColumnVarNameInTable="columnacabado" msprop:Generator_ColumnPropNameInRow="acabado" msprop:Generator_ColumnPropNameInTable="acabadoColumn" msprop:Generator_UserColumnName="acabado" type="xs:string" minOccurs="0" />
               <xs:element name="coment" msprop:Generator_ColumnVarNameInTable="columncoment" msprop:Generator_ColumnPropNameInRow="coment" msprop:Generator_ColumnPropNameInTable="comentColumn" msprop:Generator_UserColumnName="coment" type="xs:string" minOccurs="0" />
+              <xs:element name="precio" msprop:Generator_ColumnVarNameInTable="columnprecio" msprop:Generator_ColumnPropNameInRow="precio" msprop:Generator_ColumnPropNameInTable="precioColumn" msprop:Generator_UserColumnName="precio" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
