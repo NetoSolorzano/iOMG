@@ -118,6 +118,7 @@ namespace iOMG
                             tx_cont.Text = ayu2.ReturnValue1;
                             tx_cliente.Text = ayu2.ReturnValue2;
                             tx_ciudades.Text = ayu2.ReturnValueA[5];
+                            tx_dat_dest.Text = ayu2.ReturnValueA[4];
                         }
                     }
                 }
@@ -500,6 +501,7 @@ namespace iOMG
             dataGridView1.Columns[8].Name = "coment";
             // codigo de estado
             dataGridView1.Columns[9].Visible = false;            // columna visible o no
+            dataGridView1.Columns[9].Name = "estado";
             // codigo madera
             dataGridView1.Columns[10].Visible = false;
             // codigo detalle 2 (piedra)
@@ -599,7 +601,7 @@ namespace iOMG
             micon.Parameters.AddWithValue("@cont", tx_cont.Text);
             micon.Parameters.AddWithValue("@clie", tx_idc.Text);
             micon.Parameters.AddWithValue("@orig", tx_dat_orig.Text);
-            micon.Parameters.AddWithValue("@dest", "");
+            micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
             micon.Parameters.AddWithValue("@fech", dtp_pedido.Value.ToString("yyyy-MM-dd"));
             micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
             micon.Parameters.AddWithValue("@come", tx_coment.Text.Trim());
@@ -607,13 +609,21 @@ namespace iOMG
             micon.Parameters.AddWithValue("@esta", "");
             micon.Parameters.AddWithValue("@asd", asd);
             micon.ExecuteNonQuery();
+            string lee = "select last_insert_id()";
+            micon = new MySqlCommand(inserta, conn);
+            MySqlDataReader dr = micon.ExecuteReader();
+            if (dr.Read())
+            {
+                tx_idr.Text = dr.GetString(0);
+            }
+            dr.Close();
             // detalle
             inserta = "insert into detaped (pedidoh,tipo," +
                 "cant,item,nombre,medidas,madera,estado,saldo,piedra,coment,precio,total) " +
                 "values (@cped,@tipo,@cant,@item,@nomb,@medi,@made,@esta,@sald,@pied,@come,@prec,@tota)";
             foreach(DataGridViewRow row in dataGridView1.Rows)
             {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
-                if (row.Cells["item"].Value.ToString() != "")
+                if (row.Cells["item"].Value != null)
                 {
                     // alto .. alto ... no hay en detaped, solo hay datos de pedidos de almacen !!
                     // efectivamente .. en CoopV3 se hace un pedido por cada mueble
@@ -627,7 +637,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@nomb", row.Cells["nombre"].Value.ToString());
                     micon.Parameters.AddWithValue("@medi", row.Cells["medidas"].Value.ToString());
                     micon.Parameters.AddWithValue("@made", row.Cells["madera"].Value.ToString());
-                    micon.Parameters.AddWithValue("@esta", row.Cells["estado"].Value.ToString());   // aca me quede error
+                    micon.Parameters.AddWithValue("@esta", row.Cells["estado"].Value.ToString());
                     micon.Parameters.AddWithValue("@sald", row.Cells["saldo"].Value.ToString());
                     micon.Parameters.AddWithValue("@pied", row.Cells["piedra"].Value.ToString());
                     micon.Parameters.AddWithValue("@come", row.Cells["coment"].Value.ToString());
@@ -747,7 +757,7 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial,c.descrizionerid " +
+            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial,c.descrizionerid,a.tipoes " +
                 "from contrat a " +
                 "left join anag_cli b on b.idanagrafica=a.cliente " +
                 "left join desc_alm c on c.idcodice=a.tipoes " +
@@ -762,6 +772,7 @@ namespace iOMG
                     tx_idc.Text = dr.GetString(2);
                     tx_cliente.Text = dr.GetString(3);
                     tx_ciudades.Text = dr.GetString(4);
+                    tx_dat_dest.Text = dr.GetString(5);
                     retorna = true;
                 }
                 else retorna = false;

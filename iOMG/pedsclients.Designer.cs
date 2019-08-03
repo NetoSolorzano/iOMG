@@ -32,6 +32,10 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tx_ciudades = new System.Windows.Forms.TextBox();
             this.tx_codta = new System.Windows.Forms.TextBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
@@ -55,6 +59,8 @@
             this.tx_cliente = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tx_d_precio = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -128,16 +134,12 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.tx_ciudades = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.tx_d_precio = new System.Windows.Forms.TextBox();
+            this.tx_dat_dest = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -149,7 +151,6 @@
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -188,6 +189,7 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.tx_dat_dest);
             this.tabuser.Controls.Add(this.groupBox7);
             this.tabuser.Controls.Add(this.label12);
             this.tabuser.Controls.Add(this.tx_ciudades);
@@ -232,6 +234,42 @@
             this.tabuser.Size = new System.Drawing.Size(969, 397);
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.BackColor = System.Drawing.Color.White;
+            this.groupBox7.Controls.Add(this.groupBox8);
+            this.groupBox7.Location = new System.Drawing.Point(682, 78);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(155, 1);
+            this.groupBox7.TabIndex = 311;
+            this.groupBox7.TabStop = false;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Location = new System.Drawing.Point(0, -26);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(164, 1);
+            this.groupBox8.TabIndex = 113;
+            this.groupBox8.TabStop = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(682, 62);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(43, 13);
+            this.label12.TabIndex = 310;
+            this.label12.Text = "Destino";
+            // 
+            // tx_ciudades
+            // 
+            this.tx_ciudades.Location = new System.Drawing.Point(756, 58);
+            this.tx_ciudades.Name = "tx_ciudades";
+            this.tx_ciudades.Size = new System.Drawing.Size(81, 20);
+            this.tx_ciudades.TabIndex = 7;
+            this.tx_ciudades.Text = "LIMA";
+            this.tx_ciudades.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_codta
             // 
@@ -467,6 +505,27 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 85);
             this.panel1.TabIndex = 8;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(822, 46);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(37, 13);
+            this.label22.TabIndex = 315;
+            this.label22.Text = "Precio";
+            this.label22.Visible = false;
+            // 
+            // tx_d_precio
+            // 
+            this.tx_d_precio.Location = new System.Drawing.Point(816, 60);
+            this.tx_d_precio.Name = "tx_d_precio";
+            this.tx_d_precio.ReadOnly = true;
+            this.tx_d_precio.Size = new System.Drawing.Size(56, 20);
+            this.tx_d_precio.TabIndex = 314;
+            this.tx_d_precio.Tag = "Id";
+            this.tx_d_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_precio.Visible = false;
             // 
             // label21
             // 
@@ -1180,62 +1239,13 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // groupBox7
+            // tx_dat_dest
             // 
-            this.groupBox7.BackColor = System.Drawing.Color.White;
-            this.groupBox7.Controls.Add(this.groupBox8);
-            this.groupBox7.Location = new System.Drawing.Point(682, 78);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(155, 1);
-            this.groupBox7.TabIndex = 311;
-            this.groupBox7.TabStop = false;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Location = new System.Drawing.Point(0, -26);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(164, 1);
-            this.groupBox8.TabIndex = 113;
-            this.groupBox8.TabStop = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(682, 62);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(43, 13);
-            this.label12.TabIndex = 310;
-            this.label12.Text = "Destino";
-            // 
-            // tx_ciudades
-            // 
-            this.tx_ciudades.Location = new System.Drawing.Point(756, 58);
-            this.tx_ciudades.Name = "tx_ciudades";
-            this.tx_ciudades.Size = new System.Drawing.Size(81, 20);
-            this.tx_ciudades.TabIndex = 7;
-            this.tx_ciudades.Text = "LIMA";
-            this.tx_ciudades.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(822, 46);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(37, 13);
-            this.label22.TabIndex = 315;
-            this.label22.Text = "Precio";
-            this.label22.Visible = false;
-            // 
-            // tx_d_precio
-            // 
-            this.tx_d_precio.Location = new System.Drawing.Point(816, 60);
-            this.tx_d_precio.Name = "tx_d_precio";
-            this.tx_d_precio.ReadOnly = true;
-            this.tx_d_precio.Size = new System.Drawing.Size(56, 20);
-            this.tx_d_precio.TabIndex = 314;
-            this.tx_d_precio.Tag = "Id";
-            this.tx_d_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_precio.Visible = false;
+            this.tx_dat_dest.Location = new System.Drawing.Point(843, 57);
+            this.tx_dat_dest.Name = "tx_dat_dest";
+            this.tx_dat_dest.Size = new System.Drawing.Size(46, 20);
+            this.tx_dat_dest.TabIndex = 312;
+            this.tx_dat_dest.Visible = false;
             // 
             // pedsclients
             // 
@@ -1255,6 +1265,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -1268,7 +1279,6 @@
             this.groupBox3.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1381,5 +1391,6 @@
         private System.Windows.Forms.TextBox tx_ciudades;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.TextBox tx_d_precio;
+        private System.Windows.Forms.TextBox tx_dat_dest;
     }
 }
