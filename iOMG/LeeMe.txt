@@ -20,5 +20,5 @@ PEDIDOS DE CLIENTES (pedsclients)
 - el codigo de pedido de clientes comienza con "C" .............. ok ... OJO , EL CAMPO CODPED DE PEDIDOS AMPLIAR A 10 EN pedidos y detaped
 *** descuenta saldo del contrato y actualiza estado ............. 
 *** desarrollo del formato de impresion ......................... 
-ME QUEDE EN EDICION DE PEDIDOS CLIENTES, NO DEJA ESCRIBIR EN CODPED
+
 

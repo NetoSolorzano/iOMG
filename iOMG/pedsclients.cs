@@ -84,7 +84,7 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            if (keyData == Keys.F1 && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
             {
                 if (tx_cliente.Focused == true)
                 {
@@ -266,7 +266,7 @@ namespace iOMG
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
             {   // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nom_estado,a.origen,a.destino,
-                // fecha,entrega,a.coment,a.tipoes,a.status
+                // fecha,entrega,a.coment,a.tipoes,a.status,coddes,destino
                 tx_dat_tiped.Text = tipede;
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();   // taller origen
@@ -278,6 +278,8 @@ namespace iOMG
                 tx_cont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // cod destino
+                tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // destino
                 jaladet(tx_codped.Text);
             }
             if (campo == "tx_codped" && tx_codped.Text != "")
@@ -300,6 +302,8 @@ namespace iOMG
                         tx_cont.Text = row["contrato"].ToString();
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                        tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // cod destino
+                        tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // destino
                         jaladet(tx_codped.Text);
                     }
                     cta = cta + 1;
@@ -430,6 +434,10 @@ namespace iOMG
             advancedDataGridView1.Columns[11].Visible = false;
             // codigo estado
             advancedDataGridView1.Columns[12].Visible = false;
+            // codigo destino
+            advancedDataGridView1.Columns[13].Visible = false;
+            // nombre destino
+            advancedDataGridView1.Columns[14].Visible = false;
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
         {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total
@@ -542,8 +550,12 @@ namespace iOMG
             {
                 // datos de los pedidos
                 string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,space(6) as nomest,a.origen,a.destino," +
-                    "date_format(date(a.fecha),'%Y-%m-%d') as fecha,date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
-                    "from pedidos a left join anag_cli c on c.idanagrafica=a.cliente " +
+                    "date_format(date(a.fecha),'%Y-%m-%d') as fecha,date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment," +
+                    "a.tipoes,a.status,ifnull(b.tipoes,'') as coddes,ifnull(d.descrizionerid,'') as destino " +
+                    "from pedidos a " +
+                    "left join anag_cli c on c.idanagrafica=a.cliente " +
+                    "left join contrat b on b.contrato=a.contrato " +
+                    "left join desc_alm d on d.idcodice=b.tipoes " +
                     "where a.tipoes=@tip";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", tipede);                // tipo pedidos catalogo clientes
@@ -846,6 +858,13 @@ namespace iOMG
         #region botones_de_comando_y_permisos  
         private void toolboton()
         {
+            Bt_add.Visible = false;
+            Bt_edit.Visible = false;
+            Bt_anul.Visible = false;
+            bt_view.Visible = false;
+            Bt_print.Visible = false;
+            bt_prev.Visible = false;
+            bt_exc.Visible = false;
             DataTable mdtb = new DataTable();
             const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -855,7 +874,7 @@ namespace iOMG
                 try
                 {
                     MySqlCommand consulb = new MySqlCommand(consbot, conn);
-                    consulb.Parameters.AddWithValue("@nomform", "pedsalm");
+                    consulb.Parameters.AddWithValue("@nomform", nomform);
                     consulb.Parameters.AddWithValue("@use", asd);
                     MySqlDataAdapter mab = new MySqlDataAdapter(consulb);
                     mab.Fill(mdtb);
@@ -975,6 +994,8 @@ namespace iOMG
             tx_dat_tiped.Text = tipede;
             dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
+            tx_codped.ReadOnly = false;
+
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {

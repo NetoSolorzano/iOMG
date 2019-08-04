@@ -929,6 +929,7 @@
             this.tx_idr.ReadOnly = true;
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
             this.tx_idr.TabIndex = 274;
+            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
             // 
             // button1
             // 
@@ -947,6 +948,7 @@
             this.tx_codped.Size = new System.Drawing.Size(81, 20);
             this.tx_codped.TabIndex = 2;
             this.tx_codped.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_codped.Leave += new System.EventHandler(this.tx_codped_Leave);
             // 
             // toolStrip1
             // 
