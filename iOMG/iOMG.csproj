@@ -201,6 +201,9 @@
       <DependentUpon>pedsclte.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="pedsclts.cs">
+      <DependentUpon>pedsclts.xsd</DependentUpon>
+    </Compile>
     <Compile Include="pedsclts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

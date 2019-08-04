@@ -173,6 +173,7 @@
             this.tabgrilla.TabIndex = 0;
             this.tabgrilla.Text = "Pedidos";
             this.tabgrilla.UseVisualStyleBackColor = true;
+            this.tabgrilla.Enter += new System.EventHandler(this.tabgrilla_Enter);
             // 
             // advancedDataGridView1
             // 
@@ -240,6 +241,7 @@
             this.tabuser.Size = new System.Drawing.Size(969, 397);
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
+            this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
             // 
             // tx_dat_dest
             // 

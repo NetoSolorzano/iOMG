@@ -5,7 +5,7 @@ namespace iOMG
 {
     public partial class frmvizcpeds : Form
     {
-        pedsclts _datosReporte;
+        pedsclts _datosReporte;             // dataset
 
         public frmvizcpeds()
         {
@@ -17,11 +17,17 @@ namespace iOMG
             _datosReporte = datos;
         }
 
-        private void crystalReportViewer1_Load(object sender, EventArgs e)
+        private void crystalReportViewer_Load(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void frmvizcpeds_Load(object sender, EventArgs e)
         {
             pedsclte _pedidoc = new pedsclte();
             _pedidoc.SetDataSource(_datosReporte);
             crystalReportViewer1.ReportSource = _pedidoc;
+            //MessageBox.Show("aca estuve");
         }
     }
 }

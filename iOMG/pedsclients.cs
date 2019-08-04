@@ -895,46 +895,46 @@ namespace iOMG
             if (mdtb.Rows.Count > 0)
             {
                 DataRow row = mdtb.Rows[0];
-                if (Convert.ToString(row["btn1"]) == "S")               // nuevo
+                if (Convert.ToString(row["btn1"]) == "S")               // nuevo ... ok
                 {
                     this.Bt_add.Visible = true;
                 }
                 else { this.Bt_add.Visible = false; }
-                if (Convert.ToString(row["btn2"]) == "S")               // editar
+                if (Convert.ToString(row["btn2"]) == "S")               // editar ... ok
                 {
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // anular
-                {
-                    this.Bt_print.Visible = true;
-                }
-                else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn4"]) == "S")               // visualizar
+                if (Convert.ToString(row["btn3"]) == "S")               // anular ... ok
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
-                {
-                    this.bt_exc.Visible = true;
-                }
-                else { this.bt_exc.Visible = false; }
-                if (Convert.ToString(row["btn6"]) == "S")               // salir del form
-                {
-                    this.Bt_close.Visible = true;
-                }
-                else { this.Bt_close.Visible = false; }
-                if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar
+                if (Convert.ToString(row["btn4"]) == "S")               // visualizar ... ok
                 {
                     this.bt_view.Visible = true;
                 }
                 else { this.bt_view.Visible = false; }
-                if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx
+                if (Convert.ToString(row["btn5"]) == "S")               // imprimir ... ok
+                {
+                    this.Bt_print.Visible = true;
+                }
+                else { this.Bt_print.Visible = false; }
+                if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar ... ok
+                {
+                    this.bt_prev.Visible = true;
+                }
+                else { this.bt_prev.Visible = false; }
+                if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx  .. ok
                 {
                     this.bt_exc.Visible = true;
                 }
                 else { this.bt_exc.Visible = false; }
+                if (Convert.ToString(row["btn6"]) == "S")               // salir del form ... ok
+                {
+                    this.Bt_close.Visible = true;
+                }
+                else { this.Bt_close.Visible = false; }
             }
         }
         #region botones
@@ -1042,7 +1042,7 @@ namespace iOMG
         {
             if (tx_codped.Text != "")
             {
-                Tx_modo.Text = "IMPRIMIR";
+                //Tx_modo.Text = "IMPRIMIR";
                 setParaCrystal();
             }
         }
@@ -1834,9 +1834,9 @@ namespace iOMG
                     rowdetalle.item = row.Cells["item"].Value.ToString();
                     rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
                     rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdetalle.acabado = row.Cells["??"].Value.ToString();
-                    rowdetalle.coment = row.Cells["??"].Value.ToString();
-                    rowdetalle.detalle2 = row.Cells["??"].Value.ToString();
+                    rowdetalle.acabado = "";    // row.Cells["??"].Value.ToString();
+                    rowdetalle.coment = row.Cells["coment"].Value.ToString();
+                    rowdetalle.detalle2 = "";   // row.Cells["??"].Value.ToString();
                     rowdetalle.precio = row.Cells["total"].Value.ToString();   //tx_d_precio.Text;
                     reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
                 }
@@ -1844,5 +1844,16 @@ namespace iOMG
             return reppedido;
         }
         #endregion crystal
+
+        private void tabgrilla_Enter(object sender, EventArgs e)
+        {
+            bt_prev.Enabled = false;
+            Bt_print.Enabled = false;
+        }
+        private void tabuser_Enter(object sender, EventArgs e)
+        {
+            bt_prev.Enabled = true;
+            Bt_print.Enabled = true;
+        }
     }
 }

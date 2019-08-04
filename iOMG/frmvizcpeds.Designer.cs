@@ -41,7 +41,7 @@
             this.crystalReportViewer1.Name = "crystalReportViewer1";
             this.crystalReportViewer1.Size = new System.Drawing.Size(800, 450);
             this.crystalReportViewer1.TabIndex = 0;
-            this.crystalReportViewer1.Load += new System.EventHandler(this.crystalReportViewer1_Load);
+            this.crystalReportViewer1.Load += new System.EventHandler(this.crystalReportViewer_Load);
             // 
             // frmvizcpeds
             // 
@@ -51,6 +51,7 @@
             this.Controls.Add(this.crystalReportViewer1);
             this.Name = "frmvizcpeds";
             this.Text = "frmvizcpeds";
+            this.Load += new System.EventHandler(this.frmvizcpeds_Load);
             this.ResumeLayout(false);
 
         }
