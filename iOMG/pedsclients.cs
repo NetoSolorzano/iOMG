@@ -67,7 +67,7 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         DataTable dtg = new DataTable();
-        DataTable dtu = new DataTable();    // dtg primario, original con la carga del 
+        DataTable dtu = new DataTable();        // dtg primario, original con la carga del 
         DataTable dttaller = new DataTable();   // combo taller de fabric.
 
         public pedsclients()
@@ -308,15 +308,15 @@ namespace iOMG
         }
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
-            // id,cant,item,nombre,medidas,nom_madera,nom_det2,nom_acab,comentario,estado,madera,piedra,fingreso,saldo
+            // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total
             string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
-                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo " +
+                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo,a.total,space(1) as ne " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
                 "left join desc_dt2 d on d.idcodice=a.piedra " +
                 "where a.pedidoh=@pedi";
-            try
+            //try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -337,12 +337,12 @@ namespace iOMG
                 }
                 conn.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener detalle del pedido");
-                Application.Exit();
-                return;
-            }
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Error en obtener detalle del pedido");
+            //    Application.Exit();
+            //    return;
+            //}
         }
         private void grilla()                               // arma la grilla
         {
@@ -395,28 +395,28 @@ namespace iOMG
             advancedDataGridView1.Columns[6].Visible = true;
             advancedDataGridView1.Columns[6].HeaderText = "Taller";
             advancedDataGridView1.Columns[6].Width = 80;
-            advancedDataGridView1.Columns[6].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[6].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[6].Tag = "validaSI";          // las celdas de esta columna se SI se validan
             advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Destino
             advancedDataGridView1.Columns[7].Visible = true;
             advancedDataGridView1.Columns[7].HeaderText = "Destino";
             advancedDataGridView1.Columns[7].Width = 80;
-            advancedDataGridView1.Columns[7].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[7].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[7].Tag = "validaSI";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Fecha del pedido
             advancedDataGridView1.Columns[8].Visible = true;
             advancedDataGridView1.Columns[8].HeaderText = "Fecha Ped.";
             advancedDataGridView1.Columns[8].Width = 100;
-            advancedDataGridView1.Columns[8].ReadOnly = false;
+            advancedDataGridView1.Columns[8].ReadOnly = true;
             advancedDataGridView1.Columns[8].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Fecha de Entrega
             advancedDataGridView1.Columns[9].Visible = true;
             advancedDataGridView1.Columns[9].HeaderText = "Fecha Ent.";
             advancedDataGridView1.Columns[9].Width = 100;
-            advancedDataGridView1.Columns[9].ReadOnly = false;
+            advancedDataGridView1.Columns[9].ReadOnly = true;
             advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
             advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // comentarios
@@ -1452,47 +1452,9 @@ namespace iOMG
                 {
                     if (advancedDataGridView1.Columns[e.ColumnIndex].Tag.ToString() == "validaSI")   // la columna se valida?
                     {
-                        // id,codped,status,origen,destino,fecha,entrega,coment,tipoes
+                        // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nom_estado,a.origen,a.destino,fecha,entrega,a.coment,a.tipoes,a.status
+                        // nada se edita directamente en la grilla, solo comentarios
                         // valida si el dato ingresado es valido en la columna
-                        if (e.ColumnIndex == 2)                         // valida estado del pedido
-                        {
-                            if (lib.validac("desc_stp", "idcodice", e.FormattedValue.ToString()) == true)
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            else
-                            {
-                                MessageBox.Show("El valor no es válido para el estado", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
-                        if (e.ColumnIndex == 3)                         // valida taller de origen
-                        {
-                            if (lib.validac("desc_loc", "idcodice", e.FormattedValue.ToString().Trim()) == false)
-                            {
-                                MessageBox.Show("El valor no es valido para el taller", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                            else
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                        }
-                        if (e.ColumnIndex == 4)                         // valida almacen destino
-                        {
-                            if (lib.validac("desc_alm", "idcodice", e.FormattedValue.ToString()) == true)
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            else
-                            {
-                                MessageBox.Show("El valor no es válido para almacen", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
                         if (e.ColumnIndex == 5)           // fecha pedido
                         {
                             // no se valida

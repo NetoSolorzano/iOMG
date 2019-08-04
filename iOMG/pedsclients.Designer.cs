@@ -32,6 +32,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.tx_dat_dest = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -134,7 +135,6 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.tx_dat_dest = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -185,6 +185,12 @@
             this.advancedDataGridView1.Size = new System.Drawing.Size(967, 413);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.TimeFilter = false;
+            this.advancedDataGridView1.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.advancedDataGridView1.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
+            this.advancedDataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellDoubleClick);
+            this.advancedDataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEnter_1);
+            this.advancedDataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.advancedDataGridView1_CellValidating);
+            this.advancedDataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.advancedDataGridView1_UserDeletingRow);
             // 
             // tabuser
             // 
@@ -234,6 +240,14 @@
             this.tabuser.Size = new System.Drawing.Size(969, 397);
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
+            // 
+            // tx_dat_dest
+            // 
+            this.tx_dat_dest.Location = new System.Drawing.Point(843, 57);
+            this.tx_dat_dest.Name = "tx_dat_dest";
+            this.tx_dat_dest.Size = new System.Drawing.Size(46, 20);
+            this.tx_dat_dest.TabIndex = 312;
+            this.tx_dat_dest.Visible = false;
             // 
             // groupBox7
             // 
@@ -1238,14 +1252,6 @@
             this.toolStripSeparator11.ForeColor = System.Drawing.Color.Black;
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
-            // 
-            // tx_dat_dest
-            // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(843, 57);
-            this.tx_dat_dest.Name = "tx_dat_dest";
-            this.tx_dat_dest.Size = new System.Drawing.Size(46, 20);
-            this.tx_dat_dest.TabIndex = 312;
-            this.tx_dat_dest.Visible = false;
             // 
             // pedsclients
             // 
