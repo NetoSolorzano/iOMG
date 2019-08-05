@@ -13,12 +13,14 @@ CONTRATOS
 MAESTRA ADICIONALES
 ** me quede aqui, nuevos tipos de gloria ........................ ok
 PEDIDOS DE CLIENTES (pedsclients)
-** desarrollo del form y opciones estandares .................... 
+** desarrollo del form y opciones estandares .................... ok. CONSULTAR ANULACIONES EN CONTRATOS Y PEDIDOS CLIENTES (atencion a saldos y estado de contrato)
 ** adecuaciones del form
 - falta tipo de pedido .......................................... ok
 - debe borrar al agregar articulo ............................... ok
 - el codigo de pedido de clientes comienza con "C" .............. ok ... OJO , EL CAMPO CODPED DE PEDIDOS AMPLIAR A 10 EN pedidos y detaped
-*** descuenta saldo del contrato y actualiza estado ............. 
-*** desarrollo del formato de impresion ......................... 
+*** descuenta saldo del contrato al grabar pedidos .............. 
+*** actualiza estado del contrato al grabar pedidos clientes .... 
+*** desarrollo del formato de impresion ......................... ok
+
 
 

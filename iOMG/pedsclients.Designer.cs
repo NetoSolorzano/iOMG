@@ -136,6 +136,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.tx_d_iddc = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -197,6 +198,7 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.groupBox3);
             this.tabuser.Controls.Add(this.tx_dat_dest);
             this.tabuser.Controls.Add(this.groupBox7);
             this.tabuser.Controls.Add(this.label12);
@@ -226,7 +228,6 @@
             this.tabuser.Controls.Add(this.label5);
             this.tabuser.Controls.Add(this.label4);
             this.tabuser.Controls.Add(this.groupBox5);
-            this.tabuser.Controls.Add(this.groupBox3);
             this.tabuser.Controls.Add(this.label10);
             this.tabuser.Controls.Add(this.label6);
             this.tabuser.Controls.Add(this.tx_coment);
@@ -281,7 +282,7 @@
             // 
             // tx_ciudades
             // 
-            this.tx_ciudades.Location = new System.Drawing.Point(756, 58);
+            this.tx_ciudades.Location = new System.Drawing.Point(756, 59);
             this.tx_ciudades.Name = "tx_ciudades";
             this.tx_ciudades.Size = new System.Drawing.Size(81, 20);
             this.tx_ciudades.TabIndex = 7;
@@ -302,7 +303,7 @@
             this.groupBox11.Controls.Add(this.groupBox12);
             this.groupBox11.Location = new System.Drawing.Point(386, 52);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(154, 1);
+            this.groupBox11.Size = new System.Drawing.Size(157, 1);
             this.groupBox11.TabIndex = 307;
             this.groupBox11.TabStop = false;
             // 
@@ -381,7 +382,7 @@
             // 
             this.dtp_entreg.Checked = false;
             this.dtp_entreg.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_entreg.Location = new System.Drawing.Point(756, 32);
+            this.dtp_entreg.Location = new System.Drawing.Point(756, 33);
             this.dtp_entreg.Name = "dtp_entreg";
             this.dtp_entreg.Size = new System.Drawing.Size(95, 20);
             this.dtp_entreg.TabIndex = 5;
@@ -390,7 +391,7 @@
             // 
             this.dtp_pedido.Checked = false;
             this.dtp_pedido.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_pedido.Location = new System.Drawing.Point(463, 6);
+            this.dtp_pedido.Location = new System.Drawing.Point(463, 7);
             this.dtp_pedido.Name = "dtp_pedido";
             this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
             this.dtp_pedido.TabIndex = 1;
@@ -492,6 +493,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_d_iddc);
             this.panel1.Controls.Add(this.tx_dat_mad);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.tx_d_precio);
@@ -533,6 +535,7 @@
             this.tx_dat_mad.TabIndex = 316;
             this.tx_dat_mad.Tag = "Id";
             this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_mad.Visible = false;
             // 
             // label22
             // 
@@ -656,6 +659,7 @@
             this.tx_saldo.TabIndex = 21;
             this.tx_saldo.Tag = "Id";
             this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_saldo.Visible = false;
             // 
             // label9
             // 
@@ -665,6 +669,7 @@
             this.label9.Size = new System.Drawing.Size(34, 13);
             this.label9.TabIndex = 303;
             this.label9.Text = "Saldo";
+            this.label9.Visible = false;
             // 
             // label8
             // 
@@ -677,7 +682,7 @@
             // 
             // bt_det
             // 
-            this.bt_det.Location = new System.Drawing.Point(873, 24);
+            this.bt_det.Location = new System.Drawing.Point(869, 24);
             this.bt_det.Name = "bt_det";
             this.bt_det.Size = new System.Drawing.Size(70, 37);
             this.bt_det.TabIndex = 22;
@@ -871,7 +876,7 @@
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Location = new System.Drawing.Point(386, 26);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(171, 1);
+            this.groupBox3.Size = new System.Drawing.Size(172, 1);
             this.groupBox3.TabIndex = 284;
             this.groupBox3.TabStop = false;
             // 
@@ -906,7 +911,7 @@
             this.tx_coment.Location = new System.Drawing.Point(71, 362);
             this.tx_coment.Multiline = true;
             this.tx_coment.Name = "tx_coment";
-            this.tx_coment.Size = new System.Drawing.Size(895, 30);
+            this.tx_coment.Size = new System.Drawing.Size(895, 31);
             this.tx_coment.TabIndex = 270;
             // 
             // label1
@@ -959,7 +964,7 @@
             // 
             // tx_codped
             // 
-            this.tx_codped.Location = new System.Drawing.Point(756, 5);
+            this.tx_codped.Location = new System.Drawing.Point(756, 6);
             this.tx_codped.Name = "tx_codped";
             this.tx_codped.Size = new System.Drawing.Size(81, 20);
             this.tx_codped.TabIndex = 2;
@@ -1271,6 +1276,17 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // tx_d_iddc
+            // 
+            this.tx_d_iddc.Location = new System.Drawing.Point(878, 62);
+            this.tx_d_iddc.Name = "tx_d_iddc";
+            this.tx_d_iddc.ReadOnly = true;
+            this.tx_d_iddc.Size = new System.Drawing.Size(40, 20);
+            this.tx_d_iddc.TabIndex = 317;
+            this.tx_d_iddc.Tag = "Id";
+            this.tx_d_iddc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_iddc.Visible = false;
+            // 
             // pedsclients
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1417,5 +1433,6 @@
         private System.Windows.Forms.TextBox tx_d_precio;
         private System.Windows.Forms.TextBox tx_dat_dest;
         private System.Windows.Forms.TextBox tx_dat_mad;
+        private System.Windows.Forms.TextBox tx_d_iddc;
     }
 }

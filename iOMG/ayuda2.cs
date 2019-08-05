@@ -164,7 +164,8 @@ namespace iOMG
             }
             if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
             {
-                consulta = "select iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total from detacon where contratoh=@para2";
+                consulta = "select iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total " +
+                    "from detacon where contratoh=@para2 and saldo>0";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 10;
                 dataGridView1.Columns[0].Name = " ID ";
