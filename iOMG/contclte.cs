@@ -1079,7 +1079,7 @@ namespace iOMG
                     }
                     rlid.Close();
                     // detalle 
-                    for (int i=0; i<dataGridView1.Rows.Count - 1; i++)      // me quede aca
+                    for (int i=0; i<dataGridView1.Rows.Count - 1; i++)
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string insdet = "insert into detacon (" +
                             "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra) values (" +
@@ -1091,8 +1091,8 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[2].Value.ToString());
                         micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                         micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());   // 
-                        micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());
+                        micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());
                         micon.Parameters.AddWithValue("@tota", dataGridView1.Rows[i].Cells[7].Value.ToString());
                         //micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[].Value.ToString()); // acabado debe ser
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());

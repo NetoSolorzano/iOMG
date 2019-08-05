@@ -60,6 +60,7 @@
             this.tx_cliente = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tx_d_precio = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -491,6 +492,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_dat_mad);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.tx_d_precio);
             this.panel1.Controls.Add(this.label21);
@@ -521,6 +523,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 85);
             this.panel1.TabIndex = 8;
+            // 
+            // tx_dat_mad
+            // 
+            this.tx_dat_mad.Location = new System.Drawing.Point(873, 3);
+            this.tx_dat_mad.Name = "tx_dat_mad";
+            this.tx_dat_mad.ReadOnly = true;
+            this.tx_dat_mad.Size = new System.Drawing.Size(56, 20);
+            this.tx_dat_mad.TabIndex = 316;
+            this.tx_dat_mad.Tag = "Id";
+            this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label22
             // 
@@ -814,6 +826,8 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(963, 187);
             this.dataGridView1.TabIndex = 273;
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
             // label5
             // 
@@ -1402,5 +1416,6 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.TextBox tx_d_precio;
         private System.Windows.Forms.TextBox tx_dat_dest;
+        private System.Windows.Forms.TextBox tx_dat_mad;
     }
 }

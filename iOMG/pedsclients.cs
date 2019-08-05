@@ -313,13 +313,13 @@ namespace iOMG
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
             // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total
-            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
+            string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,a.madera,d.descrizionerid," +
                 "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo,a.total,space(1) as ne " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
                 "left join desc_dt2 d on d.idcodice=a.piedra " +
-                "where a.pedidoh=@pedi";
+                "where a.pedidoh=@pedi";    // c.descrizionerid
             //try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1529,13 +1529,14 @@ namespace iOMG
                     dtp_fingreso.Enabled = false;
                     tx_saldo.Enabled = false;
                 }
-                tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
-                tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
-                tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
-                tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetaped"].Value.ToString();
-                tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
-                tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();
-
+                tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();    //
+                tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();   //
+                tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();      //
+                tx_d_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetaped"].Value.ToString();  //
+                tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();     //
+                tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();    //
+                tx_d_mad.Text = dataGridView1.Rows[e.RowIndex].Cells["madera"].Value.ToString();    //
+                /*
                 string fam = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0, 1);
                 string mod = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(1, 3);
                 string mad = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(4, 1);
@@ -1559,7 +1560,8 @@ namespace iOMG
                 }
                 string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
                 string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
-
+                */
+                /*
                 if (dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value != null)
                 {
                     if (dataGridView1.Rows[e.RowIndex].Cells["fingreso"].Value.ToString() != "")         // f. ingreso
@@ -1576,6 +1578,7 @@ namespace iOMG
                     }
                     else dtp_fingreso.Checked = false;  // tx_fingreso.Text = ""
                 }
+                */
                 tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
             }
         }
@@ -1593,7 +1596,6 @@ namespace iOMG
                 }
                 else
                 {
-                    //MessageBox.Show(dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString(),"los perros ladran");
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                     conn.Open();
                     if (conn.State == ConnectionState.Open)
@@ -1602,26 +1604,11 @@ namespace iOMG
                         MySqlCommand mion = new MySqlCommand(borra, conn);
                         mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString());
                         mion.ExecuteNonQuery();
-                        // estado del pedido
-                        string pedido = "";
-                        string compa = "select ifnull(sum(cant),0), ifnull(sum(saldo),0) from detaped where pedidoh=@ped";
-                        mion = new MySqlCommand(compa, conn);
-                        mion.Parameters.AddWithValue("@ped", tx_codped.Text);
-                        MySqlDataReader dr = mion.ExecuteReader();
-                        if (dr.Read())
-                        {
-                            if (dr.GetInt16(1) <= 0) pedido = estcomp;   // pedido recibo todo
-                            if (dr.GetInt16(1) > 0 && dr.GetInt16(0) > dr.GetInt16(1)) pedido = estpend;    // "in-parcial";
-                            if (dr.GetInt16(1) == dr.GetInt16(0)) pedido = estenv; // enviado a producción
-                        }
-                        dr.Close();
-                        string actua = "update pedidos set status=@est where tipoes='TPE001' and codped=@ped";
-                        mion = new MySqlCommand(actua, conn);
-                        mion.Parameters.AddWithValue("@ped", tx_codped.Text);
-                        mion.Parameters.AddWithValue("@est", pedido);
-                        mion.ExecuteNonQuery();
+                        // estado del CONTRATO
+                        // ..... aca hay que ver el asunto del estado del contrato
                         conn.Close();
                         // actualizar el estado en el form y en la grilla
+                        /*
                         for (int i = 0; i < dtg.Rows.Count; i++)
                         {
                             DataRow row = dtg.Rows[i];
@@ -1634,6 +1621,7 @@ namespace iOMG
                                 dtg.Rows[i][7] = tx_coment.Text;
                             }
                         }
+                        */
                     }
                     else
                     {
@@ -1666,10 +1654,31 @@ namespace iOMG
                 {
                     dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
                              tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text,"",
-                            "", "", "", tx_saldo.Text, "N");
+                            tx_dat_mad.Text, "", "", tx_saldo.Text, "N");
                 }
                 else
                 {       // es modificacion
+
+                }
+            }
+            if (Tx_modo.Text == "EDITAR")
+            {
+                if (tx_d_id.Text.Trim() != "")  // modificacion
+                {
+                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                    obj.Cells[1].Value = ;
+                    obj.Cells[2].Value = ;
+                    obj.Cells[3].Value = ;
+                    obj.Cells[4].Value = ;
+                    obj.Cells[5].Value = ;
+                    obj.Cells[9].Value = "";
+                    obj.Cells[10].Value = "";
+                    obj.Cells[11].Value = ;
+                    obj.Cells[12].Value = ;
+                    obj.Cells[14].Value = "A";  // registro actualizado
+                }
+                else
+                {       // es nuevo
 
                 }
             }
@@ -1838,6 +1847,7 @@ namespace iOMG
                     rowdetalle.coment = row.Cells["coment"].Value.ToString();
                     rowdetalle.detalle2 = "";   // row.Cells["??"].Value.ToString();
                     rowdetalle.precio = row.Cells["total"].Value.ToString();   //tx_d_precio.Text;
+                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
                     reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
                 }
             }

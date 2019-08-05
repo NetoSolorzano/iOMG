@@ -705,6 +705,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnprecio;
             
+            private global::System.Data.DataColumn columnmadera;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public deta_pedcltDataTable() {
@@ -812,6 +814,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn maderaColumn {
+                get {
+                    return this.columnmadera;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -847,7 +857,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public deta_pedcltRow Adddeta_pedcltRow(string id, string cant, string item, string nombre, string medidas, string detalle2, string acabado, string coment, string precio) {
+            public deta_pedcltRow Adddeta_pedcltRow(string id, string cant, string item, string nombre, string medidas, string detalle2, string acabado, string coment, string precio, string madera) {
                 deta_pedcltRow rowdeta_pedcltRow = ((deta_pedcltRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -858,7 +868,8 @@ namespace iOMG {
                         detalle2,
                         acabado,
                         coment,
-                        precio};
+                        precio,
+                        madera};
                 rowdeta_pedcltRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdeta_pedcltRow);
                 return rowdeta_pedcltRow;
@@ -890,6 +901,7 @@ namespace iOMG {
                 this.columnacabado = base.Columns["acabado"];
                 this.columncoment = base.Columns["coment"];
                 this.columnprecio = base.Columns["precio"];
+                this.columnmadera = base.Columns["madera"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -913,6 +925,8 @@ namespace iOMG {
                 base.Columns.Add(this.columncoment);
                 this.columnprecio = new global::System.Data.DataColumn("precio", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnprecio);
+                this.columnmadera = new global::System.Data.DataColumn("madera", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmadera);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1494,6 +1508,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string madera {
+                get {
+                    try {
+                        return ((string)(this[this.tabledeta_pedclt.maderaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'madera\' de la tabla \'deta_pedclt\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledeta_pedclt.maderaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledeta_pedclt.idColumn);
             }
@@ -1598,6 +1628,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetprecioNull() {
                 this[this.tabledeta_pedclt.precioColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsmaderaNull() {
+                return this.IsNull(this.tabledeta_pedclt.maderaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetmaderaNull() {
+                this[this.tabledeta_pedclt.maderaColumn] = global::System.Convert.DBNull;
             }
         }
         
