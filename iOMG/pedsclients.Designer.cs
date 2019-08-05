@@ -32,6 +32,8 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tx_dat_dest = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
@@ -60,6 +62,7 @@
             this.tx_cliente = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_d_iddc = new System.Windows.Forms.TextBox();
             this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tx_d_precio = new System.Windows.Forms.TextBox();
@@ -96,8 +99,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_coment = new System.Windows.Forms.TextBox();
@@ -136,11 +137,12 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.tx_d_iddc = new System.Windows.Forms.TextBox();
+            this.tx_status = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -151,7 +153,6 @@
             this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox5.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -198,6 +199,7 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.tx_status);
             this.tabuser.Controls.Add(this.groupBox3);
             this.tabuser.Controls.Add(this.tx_dat_dest);
             this.tabuser.Controls.Add(this.groupBox7);
@@ -244,6 +246,24 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackColor = System.Drawing.Color.White;
+            this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.Location = new System.Drawing.Point(386, 26);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(172, 1);
+            this.groupBox3.TabIndex = 284;
+            this.groupBox3.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Location = new System.Drawing.Point(0, -26);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(164, 1);
+            this.groupBox4.TabIndex = 113;
+            this.groupBox4.TabStop = false;
             // 
             // tx_dat_dest
             // 
@@ -525,6 +545,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 85);
             this.panel1.TabIndex = 8;
+            // 
+            // tx_d_iddc
+            // 
+            this.tx_d_iddc.Location = new System.Drawing.Point(878, 62);
+            this.tx_d_iddc.Name = "tx_d_iddc";
+            this.tx_d_iddc.ReadOnly = true;
+            this.tx_d_iddc.Size = new System.Drawing.Size(40, 20);
+            this.tx_d_iddc.TabIndex = 317;
+            this.tx_d_iddc.Tag = "Id";
+            this.tx_d_iddc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_iddc.Visible = false;
             // 
             // tx_dat_mad
             // 
@@ -869,24 +900,6 @@
             this.groupBox6.Size = new System.Drawing.Size(164, 1);
             this.groupBox6.TabIndex = 113;
             this.groupBox6.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.BackColor = System.Drawing.Color.White;
-            this.groupBox3.Controls.Add(this.groupBox4);
-            this.groupBox3.Location = new System.Drawing.Point(386, 26);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(172, 1);
-            this.groupBox3.TabIndex = 284;
-            this.groupBox3.TabStop = false;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Location = new System.Drawing.Point(0, -26);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(164, 1);
-            this.groupBox4.TabIndex = 113;
-            this.groupBox4.TabStop = false;
             // 
             // label10
             // 
@@ -1276,16 +1289,14 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // tx_d_iddc
+            // tx_status
             // 
-            this.tx_d_iddc.Location = new System.Drawing.Point(878, 62);
-            this.tx_d_iddc.Name = "tx_d_iddc";
-            this.tx_d_iddc.ReadOnly = true;
-            this.tx_d_iddc.Size = new System.Drawing.Size(40, 20);
-            this.tx_d_iddc.TabIndex = 317;
-            this.tx_d_iddc.Tag = "Id";
-            this.tx_d_iddc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_iddc.Visible = false;
+            this.tx_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_status.Location = new System.Drawing.Point(583, 7);
+            this.tx_status.Name = "tx_status";
+            this.tx_status.Size = new System.Drawing.Size(80, 20);
+            this.tx_status.TabIndex = 313;
+            this.tx_status.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pedsclients
             // 
@@ -1305,6 +1316,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
@@ -1316,7 +1328,6 @@
             this.groupBox15.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox5.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1434,5 +1445,6 @@
         private System.Windows.Forms.TextBox tx_dat_dest;
         private System.Windows.Forms.TextBox tx_dat_mad;
         private System.Windows.Forms.TextBox tx_d_iddc;
+        private System.Windows.Forms.TextBox tx_status;
     }
 }

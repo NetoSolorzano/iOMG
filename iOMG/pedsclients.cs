@@ -178,7 +178,6 @@ namespace iOMG
             grilladet("NUEVO");
             this.KeyPreview = true;
             Bt_add.Enabled = true;
-            Bt_anul.Enabled = false;
             Bt_print.Enabled = false;
             bt_prev.Enabled = false;
             tabControl1.Enabled = false;
@@ -250,6 +249,7 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // tipo de pedido de clientes
                         if (row["campo"].ToString() == "indentif" && row["param"].ToString() == "letra") letiden = row["valor"].ToString().Trim();         // letra identif para codigo de pedido
+                        if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "codAnu") estanu = row["valor"].ToString().Trim();         // codigo estado anulado
                     }
                 }
                 da.Dispose();
@@ -273,14 +273,15 @@ namespace iOMG
                 tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString();   // taller origen
                 dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString());   // fecha pedido
                 dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
-                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();     // comentario
-                tx_idc.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();     // id cliente
-                tx_cliente.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();     // nombre cliente
-                tx_cont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
+                tx_coment.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();    // comentario
+                tx_idc.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();        // id cliente
+                tx_cliente.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();    // nombre cliente
+                tx_cont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();       // contrato
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // cod destino
-                tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // destino
+                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();   // cod destino
+                tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();   // destino
+                tx_status.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();     // estado
                 jaladet(tx_codped.Text);
             }
             if (campo == "tx_codped" && tx_codped.Text != "")
@@ -755,7 +756,56 @@ namespace iOMG
         private bool anula()                                // anula pedido, regresa saldos y actualiza estado del pedido
         {
             bool retorna = false;
-
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if(conn.State == ConnectionState.Open)
+            {
+                // nombre del estado anulado
+                string consulta = "select ifnull(descrizionerid,'') from desc_sta where idcodice=@ca";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@ca", estanu);
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.Read())
+                {
+                    tx_status.Text = dr.GetString(0);
+                }
+                dr.Close();
+                // anular el pedido
+                consulta = "update pedidos set status=@sta where id=@idp";
+                micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@sta", estanu);
+                micon.Parameters.AddWithValue("@idp", tx_idr.Text);
+                micon.ExecuteNonQuery();
+                // sumar y actualizar saldos de detalle en detacon
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    string insdet = "";
+                    if (dataGridView1.Rows[i].Cells[1].Value != null && dataGridView1.Rows[i].Cells[1].Value.ToString().Trim() != "")
+                    {
+                        insdet = "update detacon set saldo=saldo+@can where iddetacon=@idd";
+                        micon = new MySqlCommand(insdet, conn);
+                        micon.Parameters.AddWithValue("@idd", dataGridView1.Rows[i].Cells["iddetc"].Value.ToString());
+                        micon.Parameters.AddWithValue("@can", dataGridView1.Rows[i].Cells["cant"].Value.ToString());
+                        micon.ExecuteNonQuery();
+                    }
+                }
+                // cambiar el estado del contrato
+                string compa = "act_cont";
+                MySqlCommand misp = new MySqlCommand(compa, conn);
+                misp.CommandType = CommandType.StoredProcedure;
+                misp.CommandTimeout = 300;
+                misp.Parameters.AddWithValue("@cont", tx_cont.Text.Trim());
+                MySqlParameter reto = micon.Parameters.Add("@estad", MySqlDbType.VarChar);
+                reto.Direction = ParameterDirection.Output;    // .ReturnValue
+                micon.ExecuteNonQuery();
+                MessageBox.Show("Valor reto: " + reto, "Miralo");
+                retorna = true;
+            }
+            else
+            {
+                MessageBox.Show("Se perdió conexión al servidor", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            conn.Close();
             return retorna;
         }
         private bool buscont(string cont)                   // busqueda de contrato
@@ -1006,7 +1056,33 @@ namespace iOMG
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
-            // nada que hacer
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = false;
+            string codu = "";
+            string idr = "";
+            if (advancedDataGridView1.CurrentRow.Index > -1)
+            {
+                codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
+                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
+                //tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
+            }
+            tabControl1.SelectedTab = tabuser;
+            sololeepag(tabuser);
+            Tx_modo.Text = "ANULAR";
+            button1.Image = Image.FromFile(img_anul);
+            limpiar(this);
+            limpiapag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            tx_dat_tiped.Text = tipede;
+            dtp_fingreso.Checked = false;
+            jalaoc("tx_idr");
+            tx_codped.ReadOnly = false;
+            tx_codped.Enabled = true;
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -1543,7 +1619,7 @@ namespace iOMG
                 tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();     //
                 tx_d_com.Text = dataGridView1.Rows[e.RowIndex].Cells["coment"].Value.ToString();    //
                 tx_d_mad.Text = dataGridView1.Rows[e.RowIndex].Cells["madera"].Value.ToString();    //
-                tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
+                tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();     // saldo
             }
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -1620,7 +1696,7 @@ namespace iOMG
         }
         private void button1_Click(object sender, EventArgs e)      // graba pedido cabecera y detalle
         {
-            if(Tx_modo.Text == "NUEVO")
+            if (Tx_modo.Text == "NUEVO")
             {
                 if (dataGridView1.Rows.Count < 2)
                 {
@@ -1672,7 +1748,7 @@ namespace iOMG
                     setParaCrystal();
                 }
             }
-            if(Tx_modo.Text == "EDITAR")
+            if (Tx_modo.Text == "EDITAR")
             {
                 if (dataGridView1.Rows.Count < 2)
                 {
@@ -1728,6 +1804,29 @@ namespace iOMG
                     {
                         MessageBox.Show("No se pudo actualizar!", "Error");
                         return;
+                    }
+                }
+            }
+            if (Tx_modo.Text == "ANULAR")
+            {
+                var xx = MessageBox.Show("Confirma que desea ANULAR el presente pedido?", "Atención - Confirme",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (xx == DialogResult.Yes)
+                {
+                    if(anula() == true)
+                    {
+                        // actualizamos el datatable
+                        for (int i = 0; i < dtg.Rows.Count; i++)
+                        {
+                            DataRow row = dtg.Rows[i];
+                            if (row[0].ToString() == tx_idr.Text)
+                            {
+                                // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nomest,a.origen,a.destino,
+                                // fecha,entrega,a.coment,a.tipoes,a.status
+                                dtg.Rows[i][5] = tx_status.Text;
+                                dtg.Rows[i][12] = estanu;
+                            }
+                        }
                     }
                 }
             }
