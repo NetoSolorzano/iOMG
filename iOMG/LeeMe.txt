@@ -18,9 +18,11 @@ PEDIDOS DE CLIENTES (pedsclients)
 - falta tipo de pedido .......................................... ok
 - debe borrar al agregar articulo ............................... ok
 - el codigo de pedido de clientes comienza con "C" .............. ok ... OJO , EL CAMPO CODPED DE PEDIDOS AMPLIAR A 10 EN pedidos y detaped
-*** descuenta saldo del contrato al grabar pedidos .............. 
+*** descuenta saldo del contrato al grabar pedidos .............. ok
 *** actualiza estado del contrato al grabar pedidos clientes .... 
 *** desarrollo del formato de impresion ......................... ok
+*** al anular pedidos clientes suma saldo ....................... ok
+*** actualiza estado de contrato al anular peds. cliente ........ 
 
 
 

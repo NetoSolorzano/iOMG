@@ -46,6 +46,7 @@ namespace iOMG
         string estcomp = "";            // estado de pedido de clientes con articulos recibidos en su totalidad
         string estenv = "";             // estado de pedido de clientes enviado a producción
         string estanu = "";             // estado de pedido de clientes anulado
+        string nomanu = "";             // nombre estado anulado
         string estcer = "";             // estado de pedido de clientes cerrado tal como esta, ya no se atiende
         //string canovald2 = "";          // captitulos donde no se valida det2
         //string conovald2 = "";          // valor por defecto al no validar det2
@@ -250,6 +251,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // tipo de pedido de clientes
                         if (row["campo"].ToString() == "indentif" && row["param"].ToString() == "letra") letiden = row["valor"].ToString().Trim();         // letra identif para codigo de pedido
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "codAnu") estanu = row["valor"].ToString().Trim();         // codigo estado anulado
+                        if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "Anulado") nomanu = row["valor"].ToString().Trim();         // nombre estado anulado
                     }
                 }
                 da.Dispose();
@@ -390,8 +392,8 @@ namespace iOMG
             advancedDataGridView1.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // estado (nombre) -- aca no se usa
-            advancedDataGridView1.Columns[5].Visible = false;
+            // estado (nombre)
+            advancedDataGridView1.Columns[5].Visible = true;
             advancedDataGridView1.Columns[5].HeaderText = "Estado";
             advancedDataGridView1.Columns[5].Width = 200;
             advancedDataGridView1.Columns[5].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
@@ -554,13 +556,14 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los pedidos
-                string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,space(6) as nomest,a.origen,a.destino," +
+                string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,e.descrizionerid as nomest,a.origen,a.destino," +
                     "date_format(date(a.fecha),'%Y-%m-%d') as fecha,date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment," +
                     "a.tipoes,a.status,ifnull(b.tipoes,'') as coddes,ifnull(d.descrizionerid,'') as destino " +
                     "from pedidos a " +
                     "left join anag_cli c on c.idanagrafica=a.cliente " +
                     "left join contrat b on b.contrato=a.contrato " +
                     "left join desc_alm d on d.idcodice=b.tipoes " +
+                    "left join desc_sta e on e.idcodice=a.status " +
                     "where a.tipoes=@tip";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", tipede);                // tipo pedidos catalogo clientes
@@ -780,12 +783,25 @@ namespace iOMG
                 for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                 {
                     string insdet = "";
+                    int vsal=0;
                     if (dataGridView1.Rows[i].Cells[1].Value != null && dataGridView1.Rows[i].Cells[1].Value.ToString().Trim() != "")
                     {
-                        insdet = "update detacon set saldo=saldo+@can where iddetacon=@idd";
+                        string lectura = "select saldo from detacon where iddetacon=@idd";
+                        micon = new MySqlCommand(lectura, conn);
+                        micon.Parameters.AddWithValue("@idd", dataGridView1.Rows[i].Cells["iddetc"].Value.ToString());
+                        dr = micon.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            vsal = dr.GetInt16(0) + int.Parse(dataGridView1.Rows[i].Cells["cant"].Value.ToString());
+                        }
+                        dr.Close();
+                        //insdet = "update detacon a left join detacon b on b.iddetacon=a.iddetacon " +
+                        //    "set a.saldo=b.saldo+@can " +
+                        //    "where a.iddetacon=@idd";    //saldo+
+                        insdet = "update detacon set saldo=@vsal where iddetacon=@idd";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@idd", dataGridView1.Rows[i].Cells["iddetc"].Value.ToString());
-                        micon.Parameters.AddWithValue("@can", dataGridView1.Rows[i].Cells["cant"].Value.ToString());
+                        micon.Parameters.AddWithValue("@vsal", vsal);
                         micon.ExecuteNonQuery();
                     }
                 }
@@ -798,7 +814,7 @@ namespace iOMG
                 MySqlParameter reto = micon.Parameters.Add("@estad", MySqlDbType.VarChar);
                 reto.Direction = ParameterDirection.Output;    // .ReturnValue
                 micon.ExecuteNonQuery();
-                MessageBox.Show("Valor reto: " + reto, "Miralo");
+                //MessageBox.Show("Valor reto: " + reto, "Miralo");
                 retorna = true;
             }
             else
@@ -1809,30 +1825,34 @@ namespace iOMG
             }
             if (Tx_modo.Text == "ANULAR")
             {
-                var xx = MessageBox.Show("Confirma que desea ANULAR el presente pedido?", "Atención - Confirme",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (xx == DialogResult.Yes)
+                if(tx_status.Text != nomanu)
                 {
-                    if(anula() == true)
+                    var xx = MessageBox.Show("Confirma que desea ANULAR el presente pedido?", "Atención - Confirme",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (xx == DialogResult.Yes)
                     {
-                        // actualizamos el datatable
-                        for (int i = 0; i < dtg.Rows.Count; i++)
+                        if (anula() == true)
                         {
-                            DataRow row = dtg.Rows[i];
-                            if (row[0].ToString() == tx_idr.Text)
+                            // actualizamos el datatable
+                            for (int i = 0; i < dtg.Rows.Count; i++)
                             {
-                                // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nomest,a.origen,a.destino,
-                                // fecha,entrega,a.coment,a.tipoes,a.status
-                                dtg.Rows[i][5] = tx_status.Text;
-                                dtg.Rows[i][12] = estanu;
+                                DataRow row = dtg.Rows[i];
+                                if (row[0].ToString() == tx_idr.Text)
+                                {
+                                    // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nomest,a.origen,a.destino,
+                                    // fecha,entrega,a.coment,a.tipoes,a.status
+                                    dtg.Rows[i][5] = tx_status.Text;
+                                    dtg.Rows[i][12] = estanu;
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (Tx_modo.Text == "")
-            {
-
+                else
+                {
+                    MessageBox.Show("Ya se encuentra anulado", "Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
             }
             // limpiamos todo
             dataGridView1.DataSource = null;
@@ -1862,6 +1882,7 @@ namespace iOMG
             rowcabeza.contrato = tx_cont.Text;
             rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
             rowcabeza.ciudad_des = tx_ciudades.Text;
+            rowcabeza.status = (tx_status.Text == nomanu)? tx_status.Text:"";
             reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
             //
             foreach (DataGridViewRow row in dataGridView1.Rows)

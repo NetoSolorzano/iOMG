@@ -1,3 +1,7 @@
 ﻿namespace iOMG
 {
 }
+
+namespace iOMG
+{
+}
