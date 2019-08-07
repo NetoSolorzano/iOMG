@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
@@ -284,6 +285,8 @@ namespace iOMG
                 tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();   // cod destino
                 tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();   // destino
                 tx_status.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();     // estado
+                tx_adjun1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString();     // adjunto 1
+                tx_adjun2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString();     // adjunto 2
                 jaladet(tx_codped.Text);
             }
             if (campo == "tx_codped" && tx_codped.Text != "")
@@ -308,6 +311,8 @@ namespace iOMG
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
                         tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // cod destino
                         tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // destino
+                        tx_adjun1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString();     // adjunto 1
+                        tx_adjun2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString();     // adjunto 2
                         jaladet(tx_codped.Text);
                     }
                     cta = cta + 1;
@@ -355,7 +360,7 @@ namespace iOMG
         private void grilla()                               // arma la grilla
         {
             // a.id,a.codped,a.contrato,a.cliente,c.razonsocial,nom_estado,a.origen,a.destino,
-            // fecha,entrega,a.coment,a.tipoes,a.status
+            // fecha,entrega,a.coment,a.tipoes,a.status,coddes,destino,a.nomimg1,a.nomimg2
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -442,6 +447,20 @@ namespace iOMG
             advancedDataGridView1.Columns[13].Visible = false;
             // nombre destino
             advancedDataGridView1.Columns[14].Visible = false;
+            // adjunto 1
+            advancedDataGridView1.Columns[15].Visible = false;
+            advancedDataGridView1.Columns[15].HeaderText = "Ajunto1";
+            advancedDataGridView1.Columns[15].Width = 100;
+            advancedDataGridView1.Columns[15].ReadOnly = true;
+            advancedDataGridView1.Columns[15].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[15].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // adjunto 2
+            advancedDataGridView1.Columns[16].Visible = false;
+            advancedDataGridView1.Columns[16].HeaderText = "Ajunto2";
+            advancedDataGridView1.Columns[16].Width = 100;
+            advancedDataGridView1.Columns[16].ReadOnly = true;
+            advancedDataGridView1.Columns[16].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            advancedDataGridView1.Columns[16].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
         {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
@@ -558,7 +577,7 @@ namespace iOMG
                 // datos de los pedidos
                 string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,e.descrizionerid as nomest,a.origen,a.destino," +
                     "date_format(date(a.fecha),'%Y-%m-%d') as fecha,date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment," +
-                    "a.tipoes,a.status,ifnull(b.tipoes,'') as coddes,ifnull(d.descrizionerid,'') as destino " +
+                    "a.tipoes,a.status,ifnull(b.tipoes,'') as coddes,ifnull(d.descrizionerid,'') as destino,a.nomimg1,a.nomimg2 " +
                     "from pedidos a " +
                     "left join anag_cli c on c.idanagrafica=a.cliente " +
                     "left join contrat b on b.contrato=a.contrato " +
@@ -614,8 +633,30 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            string inserta = "insert into pedidos (codped,contrato,cliente,origen,destino,fecha,entrega,coment,tipoes,status,user,dia) " +
-                "values (@cped,@cont,@clie,@orig,@dest,@fech,@entr,@come,@tipo,@esta,@asd,now())";
+            string adjunC = "";
+            string adjunV = "";
+            if (tx_adjun1.Text.Trim() != "")
+            {
+                if(tx_adjun1.Text.Trim().Length > 245)
+                {
+                    MessageBox.Show("La longitud de la ruta es muy larga", "Error validando Adjunto 1");
+                    return retorna;
+                }
+                adjunC = adjunC + ",nomimg1,imagen1";
+                adjunV = adjunV + ",@noma1,@imag1";
+            }
+            if (tx_adjun2.Text.Trim() != "")
+            {
+                if (tx_adjun2.Text.Trim().Length > 245)
+                {
+                    MessageBox.Show("La longitud de la ruta es muy larga", "Error validando Adjunto 2");
+                    return retorna;
+                }
+                adjunC = adjunC + ",nomimg2,imagen2";
+                adjunV = adjunV + ",@noma2,@imag2";
+            }
+            string inserta = "insert into pedidos (codped,contrato,cliente,origen,destino,fecha,entrega,coment,tipoes,status,user,dia" + adjunC + ") " +
+                "values (@cped,@cont,@clie,@orig,@dest,@fech,@entr,@come,@tipo,@esta,@asd,now()" + adjunV + ")";
             MySqlCommand micon = new MySqlCommand(inserta, conn);
             micon.Parameters.AddWithValue("@cped", tx_codped.Text);
             micon.Parameters.AddWithValue("@cont", tx_cont.Text);
@@ -628,6 +669,32 @@ namespace iOMG
             micon.Parameters.AddWithValue("@tipo", tx_dat_tiped.Text);
             micon.Parameters.AddWithValue("@esta", "");
             micon.Parameters.AddWithValue("@asd", asd);
+            if (tx_adjun1.Text.Trim() != "")
+            {
+                using (var stream = new FileStream(tx_adjun1.Text.Trim(), FileMode.Open, FileAccess.Read))
+                {
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        byte[] file;
+                        file = reader.ReadBytes((int)stream.Length);
+                        micon.Parameters.AddWithValue("@noma1", tx_adjun1.Text);
+                        micon.Parameters.Add("@imag1", MySqlDbType.VarBinary, file.Length).Value = file;
+                    }
+                }
+            }
+            if (tx_adjun2.Text.Trim() != "")
+            {
+                using (var stream = new FileStream(tx_adjun2.Text.Trim(), FileMode.Open, FileAccess.Read))
+                {
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        byte[] file;
+                        file = reader.ReadBytes((int)stream.Length);
+                        micon.Parameters.AddWithValue("@noma2", tx_adjun2.Text);
+                        micon.Parameters.Add("@imag2", MySqlDbType.VarBinary, file.Length).Value = file;
+                    }
+                }
+            }
             micon.ExecuteNonQuery();
             string lee = "select last_insert_id()";
             micon = new MySqlCommand(lee, conn);
@@ -1846,6 +1913,78 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             limpia_panel(panel1);
             limpiapag(tabuser);
+        }
+        private void button2_Click(object sender, EventArgs e)      // documentos adjuntos
+        {
+            if(Tx_modo.Text == "NUEVO")
+            {
+                if (tx_adjun1.Text.Trim() != "" && tx_adjun2.Text.Trim() != "")
+                {
+                    MessageBox.Show("Debe borrar espacio para djuntos", "Borre un adjunto", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    return;
+                }
+                else
+                {
+                    OpenFileDialog ofd1 = new OpenFileDialog();
+                    ofd1.Title = "Seleccione el documento a Adjuntar";
+                    ofd1.Multiselect = false;
+                    ofd1.ShowDialog();
+                    if (tx_adjun1.Text.Trim() == "") tx_adjun1.Text = ofd1.SafeFileName; // ofd1.FileName
+                    else tx_adjun2.Text = ofd1.SafeFileName;
+                }
+            }
+            if(Tx_modo.Text == "EDITAR")
+            {
+                if (tx_adjun1.Text.Trim() != "" || tx_adjun2.Text.Trim() != "")
+                {
+                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    {
+                        conn.Open();
+                        using (var sqlQuery = new MySqlCommand(@"SELECT imagen1,imagen2 FROM pedidos WHERE id = @IDR", conn))
+                        {
+                            sqlQuery.Parameters.AddWithValue("@IDR", tx_idr.Text);
+                            using (var sqlQueryResult = sqlQuery.ExecuteReader())
+                                if (sqlQueryResult != null)
+                                {
+                                    sqlQueryResult.Read();
+                                    var blob = new Byte[(sqlQueryResult.GetBytes(0, 0, null, 0, int.MaxValue))];
+                                    sqlQueryResult.GetBytes(0, 0, blob, 0, blob.Length);
+                                    if (tx_adjun2.Text.Trim() != "")
+                                    {
+                                        var b2ob = new Byte[(sqlQueryResult.GetBytes(1, 0, null, 0, int.MaxValue))];
+                                        sqlQueryResult.GetBytes(1, 0, b2ob, 0, b2ob.Length);
+                                    }
+                                    FolderBrowserDialog ruta = new FolderBrowserDialog();
+                                    var aa = ruta.ShowDialog();
+                                    if(aa != DialogResult.Cancel)
+                                    {
+                                        if (tx_adjun1.Text.Trim() != "")
+                                        {
+                                            string chivo = ruta.SelectedPath.ToString() + "\\" + tx_adjun1.Text.Trim();
+                                            using (var fs = new FileStream(chivo, FileMode.Create, FileAccess.Write))
+                                                fs.Write(blob, 0, blob.Length);
+                                        }
+                                        if(tx_adjun2.Text.Trim() != "")
+                                        {
+                                            string chivo = ruta.SelectedPath.ToString() + "\\" + tx_adjun2.Text.Trim();
+                                            using (var fs = new FileStream(chivo, FileMode.Create, FileAccess.Write))
+                                                fs.Write(blob, 0, blob.Length);
+                                        }
+                                        MessageBox.Show("Archivo(s) grabado con éxito", "Confirmación de escritura", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
+        }
+        private void button3_Click(object sender, EventArgs e)      // borra adjunto 1
+        {
+            tx_adjun1.Text = "";
+        }
+        private void button3_Click_1(object sender, EventArgs e)    // borra adjunto 2
+        {
+            tx_adjun2.Text = "";
         }
         #endregion
         #region crystal

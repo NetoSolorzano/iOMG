@@ -32,6 +32,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.tx_status = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tx_dat_dest = new System.Windows.Forms.TextBox();
@@ -137,7 +138,13 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.tx_status = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button2 = new System.Windows.Forms.Button();
+            this.tx_adjun1 = new System.Windows.Forms.TextBox();
+            this.tx_adjun2 = new System.Windows.Forms.TextBox();
+            this.bt_borrAd1 = new System.Windows.Forms.Button();
+            this.bt_borrAd2 = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -199,6 +206,11 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.bt_borrAd2);
+            this.tabuser.Controls.Add(this.bt_borrAd1);
+            this.tabuser.Controls.Add(this.tx_adjun2);
+            this.tabuser.Controls.Add(this.tx_adjun1);
+            this.tabuser.Controls.Add(this.button2);
             this.tabuser.Controls.Add(this.tx_status);
             this.tabuser.Controls.Add(this.groupBox3);
             this.tabuser.Controls.Add(this.tx_dat_dest);
@@ -246,6 +258,15 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // tx_status
+            // 
+            this.tx_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_status.Location = new System.Drawing.Point(583, 7);
+            this.tx_status.Name = "tx_status";
+            this.tx_status.Size = new System.Drawing.Size(80, 20);
+            this.tx_status.TabIndex = 313;
+            this.tx_status.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // groupBox3
             // 
@@ -924,7 +945,7 @@
             this.tx_coment.Location = new System.Drawing.Point(71, 362);
             this.tx_coment.Multiline = true;
             this.tx_coment.Name = "tx_coment";
-            this.tx_coment.Size = new System.Drawing.Size(895, 31);
+            this.tx_coment.Size = new System.Drawing.Size(517, 31);
             this.tx_coment.TabIndex = 270;
             // 
             // label1
@@ -1289,14 +1310,59 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // tx_status
+            // openFileDialog1
             // 
-            this.tx_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_status.Location = new System.Drawing.Point(583, 7);
-            this.tx_status.Name = "tx_status";
-            this.tx_status.Size = new System.Drawing.Size(80, 20);
-            this.tx_status.TabIndex = 313;
-            this.tx_status.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(605, 366);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(110, 23);
+            this.button2.TabIndex = 314;
+            this.button2.Text = "Documento Adjunto";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // tx_adjun1
+            // 
+            this.tx_adjun1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tx_adjun1.Location = new System.Drawing.Point(717, 363);
+            this.tx_adjun1.Name = "tx_adjun1";
+            this.tx_adjun1.ReadOnly = true;
+            this.tx_adjun1.Size = new System.Drawing.Size(229, 13);
+            this.tx_adjun1.TabIndex = 315;
+            // 
+            // tx_adjun2
+            // 
+            this.tx_adjun2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tx_adjun2.Location = new System.Drawing.Point(717, 380);
+            this.tx_adjun2.Name = "tx_adjun2";
+            this.tx_adjun2.ReadOnly = true;
+            this.tx_adjun2.Size = new System.Drawing.Size(229, 13);
+            this.tx_adjun2.TabIndex = 316;
+            // 
+            // bt_borrAd1
+            // 
+            this.bt_borrAd1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bt_borrAd1.Image = global::iOMG.Properties.Resources.menos16_png;
+            this.bt_borrAd1.Location = new System.Drawing.Point(948, 361);
+            this.bt_borrAd1.Name = "bt_borrAd1";
+            this.bt_borrAd1.Size = new System.Drawing.Size(19, 17);
+            this.bt_borrAd1.TabIndex = 317;
+            this.bt_borrAd1.UseVisualStyleBackColor = true;
+            this.bt_borrAd1.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // bt_borrAd2
+            // 
+            this.bt_borrAd2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bt_borrAd2.Image = global::iOMG.Properties.Resources.menos16_png;
+            this.bt_borrAd2.Location = new System.Drawing.Point(948, 378);
+            this.bt_borrAd2.Name = "bt_borrAd2";
+            this.bt_borrAd2.Size = new System.Drawing.Size(19, 17);
+            this.bt_borrAd2.TabIndex = 318;
+            this.bt_borrAd2.UseVisualStyleBackColor = true;
+            this.bt_borrAd2.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // pedsclients
             // 
@@ -1446,5 +1512,12 @@
         private System.Windows.Forms.TextBox tx_dat_mad;
         private System.Windows.Forms.TextBox tx_d_iddc;
         private System.Windows.Forms.TextBox tx_status;
+        private System.Windows.Forms.TextBox tx_adjun2;
+        private System.Windows.Forms.TextBox tx_adjun1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button bt_borrAd1;
+        private System.Windows.Forms.Button bt_borrAd2;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
