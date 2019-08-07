@@ -22,7 +22,10 @@ PEDIDOS DE CLIENTES (pedsclients)
 *** actualiza estado del contrato al grabar pedidos clientes .... 
 *** desarrollo del formato de impresion ......................... ok
 *** al anular pedidos clientes suma saldo ....................... ok
-*** actualiza estado de contrato al anular peds. cliente ........ 
+*** actualiza estado de contrato al anular peds. cliente ........ ok
+** Estado que falta en desc_sta (PEDPAR) ........................ ok
+PROBLEMA, detaped campo "iddetc" solo tiene dato con la version actual, para los pedidos anteriores ???
+==> los pedidos anteriores del CoopV3 me matan ahi, o se vuelven a ingresar en iOMG ... 07/08/2019
 
 
 

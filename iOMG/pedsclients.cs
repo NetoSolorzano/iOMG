@@ -646,9 +646,7 @@ namespace iOMG
             {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
                 if (row.Cells["item"].Value != null)
                 {
-                    // alto .. alto ... no hay en detaped, solo hay datos de pedidos de almacen !!
-                    // efectivamente .. en CoopV3 se hace un pedido por cada mueble
-                    // en iOMG se tendrá un detalle por cada pedido
+                    // en iOMG se tendrá un detalle por cada pedido, los pedidos de CoopV3 se matan ahi.
                     // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo
                     micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@cped", tx_codped.Text);
@@ -675,15 +673,11 @@ namespace iOMG
                     retorna = true;
                 }
             }
-            // actualizacion del estado del contrato
-            string compa = "act_cont";
-            micon = new MySqlCommand(compa, conn);
-            micon.CommandType = CommandType.StoredProcedure;
-            micon.CommandTimeout = 300;
-            micon.Parameters.AddWithValue("cont", tx_cont.Text.Trim());
-            MySqlParameter reto = micon.Parameters.Add("estad", MySqlDbType.VarChar);
-            reto.Direction = ParameterDirection.ReturnValue;
-            micon.ExecuteNonQuery();
+            // cambiar el estado del contrato
+            string reto = lib.estcont(tx_cont.Text.Trim());
+            MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
+                reto, "CONTRATO CON NUEVO ESTADO");
+            retorna = true;
             //
             conn.Close();
             return retorna;
@@ -795,9 +789,6 @@ namespace iOMG
                             vsal = dr.GetInt16(0) + int.Parse(dataGridView1.Rows[i].Cells["cant"].Value.ToString());
                         }
                         dr.Close();
-                        //insdet = "update detacon a left join detacon b on b.iddetacon=a.iddetacon " +
-                        //    "set a.saldo=b.saldo+@can " +
-                        //    "where a.iddetacon=@idd";    //saldo+
                         insdet = "update detacon set saldo=@vsal where iddetacon=@idd";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@idd", dataGridView1.Rows[i].Cells["iddetc"].Value.ToString());
@@ -806,15 +797,9 @@ namespace iOMG
                     }
                 }
                 // cambiar el estado del contrato
-                string compa = "act_cont";
-                MySqlCommand misp = new MySqlCommand(compa, conn);
-                misp.CommandType = CommandType.StoredProcedure;
-                misp.CommandTimeout = 300;
-                misp.Parameters.AddWithValue("@cont", tx_cont.Text.Trim());
-                MySqlParameter reto = micon.Parameters.Add("@estad", MySqlDbType.VarChar);
-                reto.Direction = ParameterDirection.Output;    // .ReturnValue
-                micon.ExecuteNonQuery();
-                //MessageBox.Show("Valor reto: " + reto, "Miralo");
+                string reto = lib.estcont(tx_cont.Text.Trim());
+                MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
+                    reto, "CONTRATO CON NUEVO ESTADO");
                 retorna = true;
             }
             else
@@ -875,13 +860,15 @@ namespace iOMG
             micon.Parameters.AddWithValue("@cont", cont);
             MySqlDataReader dr = micon.ExecuteReader();
             int cant = 0;
+            string let = "";
             if (dr.Read())
             {
                 cant = dr.GetInt16(0) + 1;
+                let = lib.funlet(cant);
             }
             dr.Close();
             conn.Close();
-            retorna = letiden + tx_cont.Text.Trim() + "_" + cant.ToString();
+            retorna = letiden + tx_cont.Text.Trim() + let;  // "_" + cant.ToString();
             return retorna;
         }
         string[] equivinter(string titulo)                  // equivalencia entre titulo de columna y tabla 

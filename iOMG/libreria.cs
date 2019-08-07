@@ -2768,6 +2768,37 @@ namespace iOMG
             }
             return retorna;
         }
+        public string estcont(string cont)                                  // recalcula, actualiza y retorna el estado del contrato
+        {
+            string retorna = "";
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string compa = "act_cont";
+                MySqlCommand misp = new MySqlCommand(compa, conn);
+                misp.CommandType = CommandType.StoredProcedure;
+                misp.CommandTimeout = 300;
+                misp.Parameters.AddWithValue("@cont", cont);
+                MySqlParameter reto = misp.Parameters.Add("@estad", MySqlDbType.VarChar);
+                reto.Direction = ParameterDirection.Output;
+                misp.ExecuteNonQuery();
+                retorna = reto.Value.ToString();
+            }
+            else
+            {
+                MessageBox.Show("No se pudo conectar al servidor", "Error de red");
+                Application.Exit();
+            }
+            return retorna;
+        }
+        public string funlet(int num)                                       // devuelve la letra del alfabeto acorde al numero
+        {
+            string retorna = "";
+            string[] tabla = new string[] { "_", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "W", "X", "Y", "Z" };
+            retorna = tabla[num];
+            return retorna;
+        }
     }
 
     public class ComboItem
