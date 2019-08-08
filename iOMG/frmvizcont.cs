@@ -19,9 +19,19 @@ namespace iOMG
 
         private void frmvizcont_Load(object sender, EventArgs e)
         {
-            ContratoG _contrato = new ContratoG();
-            _contrato.SetDataSource(_datosReporte);
-            crystalReportViewer1.ReportSource = _contrato;
+            //MessageBox.Show(_datosReporte.cabecera.Rows[0]["tipoCont"].ToString(),"que dice aca");
+            if (_datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "1")
+            {
+                ContratoG _contrato = new ContratoG();
+                _contrato.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _contrato;
+            }
+            if (_datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "2")
+            {
+                ContratoE _contrato = new ContratoE();
+                _contrato.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _contrato;
+            }
         }
     }
 }

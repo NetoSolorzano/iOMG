@@ -32,6 +32,10 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.groupBox39 = new System.Windows.Forms.GroupBox();
+            this.groupBox40 = new System.Windows.Forms.GroupBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.tx_bruto = new iOMG.NumericTextBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabcodigo = new System.Windows.Forms.TabPage();
             this.label35 = new System.Windows.Forms.Label();
@@ -223,14 +227,11 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.groupBox39 = new System.Windows.Forms.GroupBox();
-            this.groupBox40 = new System.Windows.Forms.GroupBox();
-            this.label52 = new System.Windows.Forms.Label();
-            this.tx_bruto = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
+            this.groupBox39.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabcodigo.SuspendLayout();
             this.tabadicion.SuspendLayout();
@@ -256,7 +257,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.groupBox39.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -362,6 +362,43 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // groupBox39
+            // 
+            this.groupBox39.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox39.Controls.Add(this.groupBox40);
+            this.groupBox39.Location = new System.Drawing.Point(6, 389);
+            this.groupBox39.Name = "groupBox39";
+            this.groupBox39.Size = new System.Drawing.Size(145, 1);
+            this.groupBox39.TabIndex = 347;
+            this.groupBox39.TabStop = false;
+            // 
+            // groupBox40
+            // 
+            this.groupBox40.Location = new System.Drawing.Point(0, -26);
+            this.groupBox40.Name = "groupBox40";
+            this.groupBox40.Size = new System.Drawing.Size(164, 1);
+            this.groupBox40.TabIndex = 113;
+            this.groupBox40.TabStop = false;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(8, 374);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(65, 13);
+            this.label52.TabIndex = 346;
+            this.label52.Text = "Val Bruto S/";
+            // 
+            // tx_bruto
+            // 
+            this.tx_bruto.AllowSpace = false;
+            this.tx_bruto.Location = new System.Drawing.Point(78, 370);
+            this.tx_bruto.Name = "tx_bruto";
+            this.tx_bruto.ReadOnly = true;
+            this.tx_bruto.Size = new System.Drawing.Size(73, 20);
+            this.tx_bruto.TabIndex = 348;
+            this.tx_bruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tabControl2
             // 
@@ -1628,7 +1665,7 @@
             // 
             this.tx_dat_tiped.Location = new System.Drawing.Point(181, 6);
             this.tx_dat_tiped.Name = "tx_dat_tiped";
-            this.tx_dat_tiped.Size = new System.Drawing.Size(18, 20);
+            this.tx_dat_tiped.Size = new System.Drawing.Size(34, 20);
             this.tx_dat_tiped.TabIndex = 294;
             this.tx_dat_tiped.Visible = false;
             // 
@@ -2270,43 +2307,6 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // groupBox39
-            // 
-            this.groupBox39.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox39.Controls.Add(this.groupBox40);
-            this.groupBox39.Location = new System.Drawing.Point(6, 389);
-            this.groupBox39.Name = "groupBox39";
-            this.groupBox39.Size = new System.Drawing.Size(145, 1);
-            this.groupBox39.TabIndex = 347;
-            this.groupBox39.TabStop = false;
-            // 
-            // groupBox40
-            // 
-            this.groupBox40.Location = new System.Drawing.Point(0, -26);
-            this.groupBox40.Name = "groupBox40";
-            this.groupBox40.Size = new System.Drawing.Size(164, 1);
-            this.groupBox40.TabIndex = 113;
-            this.groupBox40.TabStop = false;
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(8, 374);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(65, 13);
-            this.label52.TabIndex = 346;
-            this.label52.Text = "Val Bruto S/";
-            // 
-            // tx_bruto
-            // 
-            this.tx_bruto.AllowSpace = false;
-            this.tx_bruto.Location = new System.Drawing.Point(78, 370);
-            this.tx_bruto.Name = "tx_bruto";
-            this.tx_bruto.ReadOnly = true;
-            this.tx_bruto.Size = new System.Drawing.Size(73, 20);
-            this.tx_bruto.TabIndex = 348;
-            this.tx_bruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2322,6 +2322,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
+            this.groupBox39.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabcodigo.ResumeLayout(false);
             this.tabcodigo.PerformLayout();
@@ -2351,7 +2352,6 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.groupBox39.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

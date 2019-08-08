@@ -155,7 +155,7 @@ namespace iOMG
             Bt_print.Enabled = false;
             bt_prev.Enabled = false;
             tabControl1.Enabled = false;
-            cmb_tipo.Enabled = false;
+            //cmb_tipo.Enabled = false;
             tx_d_nom.Enabled = false;
         }
         private void init()
@@ -239,7 +239,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "local") sdc = row["valor"].ToString().Trim();                  // local del contrato, vacio todos los locales
                         if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "rsocial") raz = row["valor"].ToString().Trim();                // tipo de documento para contratos
                         if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();             // letra identificadora de Piedra en Detalle2
-                        if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());  // cantidad de filas de detalle maximo del cont
+                        if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());  // cantidad de filas de detalle maximo del cont estandar
                         if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();              // tipo de numeracion de los contratos: MANUAL o AUTOMA 
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();              // codigo de estado anulado
                     }
@@ -1092,7 +1092,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                             //micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
-                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[13].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                         if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "A")
@@ -1114,7 +1114,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                             //micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
-                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[13].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -1949,10 +1949,10 @@ namespace iOMG
                 }
             }
         }
-        private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)       // tipo contrato 1=normal o 2=especial
         {
-            if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
-            else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString().Substring(0,1);
+            else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 1).Trim();
         }
         private void cmb_fam_SelectionChangeCommitted(object sender, EventArgs e)       // capitulo familia
         {
@@ -2323,7 +2323,7 @@ namespace iOMG
                 }
                 else
                 {
-                    if (dataGridView1.Rows.Count < vfdmax)
+                    if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
                              tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N");
@@ -2453,7 +2453,7 @@ namespace iOMG
                 }
                 else
                 {
-                    if (dataGridView1.Rows.Count < vfdmax)
+                    if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
                              "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N");
@@ -3029,7 +3029,7 @@ namespace iOMG
             rowcabeza.numDoc = tx_ndc.Text.Trim();
             if (cmb_tdoc.SelectedIndex == -1) rowcabeza.tipDoc = "";
             else rowcabeza.tipDoc = cmb_tdoc.SelectedItem.ToString();     //.SelectedText;
-            rowcabeza.tipoCont = cmb_tipo.SelectedText;
+            rowcabeza.tipoCont = tx_dat_tiped.Text; // cmb_tipo.SelectedText;
             rowcabeza.direc = tx_direc.Text.Trim();
             rowcabeza.distrit = tx_dist.Text.Trim();
             rowcabeza.provin = tx_prov.Text.Trim();
@@ -3049,7 +3049,7 @@ namespace iOMG
 
             foreach (DataGridViewRow row in dataGridView1.Rows)  //
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0,1) != "Z")
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0,1) != "Z")
                 {
                     conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
                     rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
@@ -3070,7 +3070,7 @@ namespace iOMG
             }
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == "Z")
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0, 1) == "Z")
                 {
                     conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
                     rowdetalle.id = "0";

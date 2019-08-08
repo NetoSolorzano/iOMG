@@ -120,6 +120,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>conClie.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ContratoE.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContratoE.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ContratoG.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,6 +261,10 @@
     <EmbeddedResource Include="Contrato.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Contrato.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContratoE.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ContratoE.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ContratoG.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
