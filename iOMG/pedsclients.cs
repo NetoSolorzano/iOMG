@@ -183,7 +183,6 @@ namespace iOMG
             Bt_print.Enabled = false;
             bt_prev.Enabled = false;
             tabControl1.Enabled = false;
-            cmb_tipo.Enabled = false;
             tx_d_nom.Enabled = false;
         }
         private void init()
@@ -677,7 +676,7 @@ namespace iOMG
                     {
                         byte[] file;
                         file = reader.ReadBytes((int)stream.Length);
-                        micon.Parameters.AddWithValue("@noma1", tx_adjun1.Text);
+                        micon.Parameters.AddWithValue("@noma1", tx_dat_adj1.Text);
                         micon.Parameters.Add("@imag1", MySqlDbType.VarBinary, file.Length).Value = file;
                     }
                 }
@@ -690,7 +689,7 @@ namespace iOMG
                     {
                         byte[] file;
                         file = reader.ReadBytes((int)stream.Length);
-                        micon.Parameters.AddWithValue("@noma2", tx_adjun2.Text);
+                        micon.Parameters.AddWithValue("@noma2", tx_dat_adj2.Text);
                         micon.Parameters.Add("@imag2", MySqlDbType.VarBinary, file.Length).Value = file;
                     }
                 }
@@ -759,20 +758,65 @@ namespace iOMG
                 try
                 {
                     string cab1 = "";
-                    string val1 = "";
-                    if(tx_adjun1.Text.Trim() != advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomimg1"].Value.ToString().Trim())
+                    string cab2 = "";
+                    if (tx_adjun1.Text.Trim() != advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomimg1"].Value.ToString().Trim())
                     {
-                        cab1 = cab1 + ",nomimg1=@nom1";
+                        cab1 = cab1 + ",nomimg1=@nom1,imagen1=@imag1";
+                    }
+                    if (tx_adjun2.Text.Trim() != advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomimg2"].Value.ToString().Trim())
+                    {
+                        cab2 = cab2 + ",nomimg2=@nom2,imagen2=@imag2";
                     }
                     string actua = "update pedidos set " +
-                        "coment=@come,entrega=@entr,user=@asd,dia=now()" + cab1 + " " +
+                        "coment=@come,entrega=@entr,user=@asd,dia=now()" + cab1 + cab2 + " " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                     micon.Parameters.AddWithValue("@come", tx_coment.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
-                    if (cab1 != "") micon.Parameters.AddWithValue("@nom1", tx_adjun1.Text.Trim());
                     micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
+                    if (cab1 != "")
+                    {
+                        if(tx_adjun1.Text.Trim() != "")
+                        {
+                            using (var stream = new FileStream(tx_adjun1.Text.Trim(), FileMode.Open, FileAccess.Read))
+                            {
+                                using (var reader = new BinaryReader(stream))
+                                {
+                                    byte[] file;
+                                    file = reader.ReadBytes((int)stream.Length);
+                                    micon.Parameters.AddWithValue("@nom1", tx_dat_adj1.Text.Trim());
+                                    micon.Parameters.Add("@imag1", MySqlDbType.VarBinary, file.Length).Value = file;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            micon.Parameters.AddWithValue("@nom1", "");
+                            micon.Parameters.AddWithValue("@imag1", DBNull.Value);
+                        }
+                    }
+                    if (cab2 != "")
+                    {
+                        if(tx_adjun2.Text.Trim() != "")
+                        {
+                            using (var stream = new FileStream(tx_adjun2.Text.Trim(), FileMode.Open, FileAccess.Read))
+                            {
+                                using (var reader = new BinaryReader(stream))
+                                {
+                                    byte[] file;
+                                    file = reader.ReadBytes((int)stream.Length);
+                                    micon.Parameters.AddWithValue("@nom2", tx_dat_adj2.Text.Trim());
+                                    micon.Parameters.Add("@imag2", MySqlDbType.VarBinary, file.Length).Value = file;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            micon.Parameters.AddWithValue("@nom2", "");
+                            micon.Parameters.AddWithValue("@imag2", DBNull.Value);
+                        }
+                    }
                     micon.ExecuteNonQuery();
                     // detalle .... SOLO MODIFICA COMENTARIOS 05/08/2019 
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1931,7 +1975,8 @@ namespace iOMG
                     var aa = ofd1.ShowDialog();
                     if(aa != DialogResult.Cancel)
                     {
-                        tx_adjun1.Text = ofd1.SafeFileName;
+                        tx_adjun1.Text = ofd1.FileName;
+                        tx_dat_adj1.Text = ofd1.SafeFileName;
                     }
                 }
             }
@@ -1972,7 +2017,8 @@ namespace iOMG
                     var aa = ofd1.ShowDialog();
                     if (aa != DialogResult.Cancel)
                     {
-                        tx_adjun1.Text = ofd1.SafeFileName;
+                        tx_adjun1.Text = ofd1.FileName;
+                        tx_dat_adj1.Text = ofd1.SafeFileName;
                     }
                 }
             }
@@ -1994,7 +2040,8 @@ namespace iOMG
                     var aa =ofd2.ShowDialog();
                     if(aa != DialogResult.Cancel)
                     {
-                        tx_adjun2.Text = ofd2.SafeFileName;
+                        tx_adjun2.Text = ofd2.FileName;
+                        tx_dat_adj2.Text = ofd2.SafeFileName;
                     }
                 }
             }
@@ -2015,6 +2062,7 @@ namespace iOMG
                                     var b2ob = new Byte[(sqlQueryResult.GetBytes(0, 0, null, 0, int.MaxValue))];
                                     sqlQueryResult.GetBytes(0, 0, b2ob, 0, b2ob.Length);
                                     FolderBrowserDialog ruta = new FolderBrowserDialog();
+                                    ruta.Description = "Lugar donde se grabará el archivo";
                                     var aa = ruta.ShowDialog();
                                     if (aa != DialogResult.Cancel)
                                     {
@@ -2035,18 +2083,19 @@ namespace iOMG
                     var aa = ofd2.ShowDialog();
                     if (aa != DialogResult.Cancel)
                     {
-                        tx_adjun2.Text = ofd2.SafeFileName;
+                        tx_adjun2.Text = ofd2.FileName;
+                        tx_dat_adj2.Text = ofd2.SafeFileName;
                     }
                 }
             }
         }
         private void button3_Click(object sender, EventArgs e)      // borra adjunto 1
         {
-            tx_adjun1.Text = "";
+            if (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR") tx_adjun1.Text = "";
         }
         private void button3_Click_1(object sender, EventArgs e)    // borra adjunto 2
         {
-            tx_adjun2.Text = "";
+            if (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR") tx_adjun2.Text = "";
         }
         #endregion
         #region crystal

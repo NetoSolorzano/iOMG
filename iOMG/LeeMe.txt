@@ -18,15 +18,16 @@ PEDIDOS DE CLIENTES (pedsclients)
 - falta tipo de pedido .......................................... ok
 - debe borrar al agregar articulo ............................... ok
 - el codigo de pedido de clientes comienza con "C" .............. ok ... OJO , EL CAMPO CODPED DE PEDIDOS AMPLIAR A 10 EN pedidos y detaped
-OJO2, ampliar a 245 los campos nomimg1 y nomimg2 
+																		 OJO2, ampliar a 245 los campos nomimg1 y nomimg2 
 *** descuenta saldo del contrato al grabar pedidos .............. ok
-*** actualiza estado del contrato al grabar pedidos clientes .... 
+*** actualiza estado del contrato al grabar pedidos clientes .... ok
 *** desarrollo del formato de impresion ......................... ok
 *** al anular pedidos clientes suma saldo ....................... ok
 *** actualiza estado de contrato al anular peds. cliente ........ ok
 ** Estado que falta en desc_sta (PEDPAR) ........................ ok
 PROBLEMA, detaped campo "iddetc" solo tiene dato con la version actual, para los pedidos anteriores ???
 ==> los pedidos anteriores del CoopV3 me matan ahi, o se vuelven a ingresar en iOMG ... 07/08/2019
+CONTRATOS ESPECIALES
 
 
 

@@ -146,6 +146,8 @@
             this.bt_borrAd1 = new System.Windows.Forms.Button();
             this.bt_adj1 = new System.Windows.Forms.Button();
             this.bt_adj2 = new System.Windows.Forms.Button();
+            this.tx_dat_adj1 = new System.Windows.Forms.TextBox();
+            this.tx_dat_adj2 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -207,6 +209,8 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.tx_dat_adj2);
+            this.tabuser.Controls.Add(this.tx_dat_adj1);
             this.tabuser.Controls.Add(this.bt_adj2);
             this.tabuser.Controls.Add(this.bt_borrAd2);
             this.tabuser.Controls.Add(this.bt_borrAd1);
@@ -1384,6 +1388,26 @@
             this.bt_adj2.UseVisualStyleBackColor = true;
             this.bt_adj2.Click += new System.EventHandler(this.bt_adj2_Click);
             // 
+            // tx_dat_adj1
+            // 
+            this.tx_dat_adj1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tx_dat_adj1.Location = new System.Drawing.Point(600, 363);
+            this.tx_dat_adj1.Name = "tx_dat_adj1";
+            this.tx_dat_adj1.ReadOnly = true;
+            this.tx_dat_adj1.Size = new System.Drawing.Size(46, 13);
+            this.tx_dat_adj1.TabIndex = 320;
+            this.tx_dat_adj1.Visible = false;
+            // 
+            // tx_dat_adj2
+            // 
+            this.tx_dat_adj2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tx_dat_adj2.Location = new System.Drawing.Point(600, 380);
+            this.tx_dat_adj2.Name = "tx_dat_adj2";
+            this.tx_dat_adj2.ReadOnly = true;
+            this.tx_dat_adj2.Size = new System.Drawing.Size(46, 13);
+            this.tx_dat_adj2.TabIndex = 321;
+            this.tx_dat_adj2.Visible = false;
+            // 
             // pedsclients
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1540,5 +1564,7 @@
         private System.Windows.Forms.Button bt_borrAd2;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button bt_adj2;
+        private System.Windows.Forms.TextBox tx_dat_adj2;
+        private System.Windows.Forms.TextBox tx_dat_adj1;
     }
 }
