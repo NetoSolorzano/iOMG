@@ -387,6 +387,7 @@
     <None Include="bin\Debug\recursos\cancel16.png" />
     <Content Include="LeeMe.txt" />
     <None Include="Resources\menos16.png.png" />
+    <None Include="Resources\permiso_16.png" />
     <Content Include="solorsoft.ico" />
   </ItemGroup>
   <ItemGroup>

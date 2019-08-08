@@ -758,20 +758,20 @@ namespace iOMG
             {
                 try
                 {
-                    //string actua = "update pedidos set " +
-                    //    "fecha=@fepe,origen=@tall,destino=@dest,coment=@come,user=@asd,dia=now(),status=@esta,entrega=@entr " +
-                    //    "where id=@idr";
+                    string cab1 = "";
+                    string val1 = "";
+                    if(tx_adjun1.Text.Trim() != advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomimg1"].Value.ToString().Trim())
+                    {
+                        cab1 = cab1 + ",nomimg1=@nom1";
+                    }
                     string actua = "update pedidos set " +
-                        "coment=@come,entrega=@entr,user=@asd,dia=now() " +
+                        "coment=@come,entrega=@entr,user=@asd,dia=now()" + cab1 + " " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
-                    //micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
-                    //micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
-                    //micon.Parameters.AddWithValue("@dest", "");
                     micon.Parameters.AddWithValue("@come", tx_coment.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
-                    //micon.Parameters.AddWithValue("@esta", "");
+                    if (cab1 != "") micon.Parameters.AddWithValue("@nom1", tx_adjun1.Text.Trim());
                     micon.Parameters.AddWithValue("@entr", dtp_entreg.Value.ToString("yyyy-MM-dd"));
                     micon.ExecuteNonQuery();
                     // detalle .... SOLO MODIFICA COMENTARIOS 05/08/2019 
@@ -1914,11 +1914,11 @@ namespace iOMG
             limpia_panel(panel1);
             limpiapag(tabuser);
         }
-        private void button2_Click(object sender, EventArgs e)      // documentos adjuntos
+        private void button2_Click(object sender, EventArgs e)      // documentos adjuntos 1
         {
             if(Tx_modo.Text == "NUEVO")
             {
-                if (tx_adjun1.Text.Trim() != "" && tx_adjun2.Text.Trim() != "")
+                if (tx_adjun1.Text.Trim() != "")
                 {
                     MessageBox.Show("Debe borrar espacio para djuntos", "Borre un adjunto", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     return;
@@ -1928,19 +1928,21 @@ namespace iOMG
                     OpenFileDialog ofd1 = new OpenFileDialog();
                     ofd1.Title = "Seleccione el documento a Adjuntar";
                     ofd1.Multiselect = false;
-                    ofd1.ShowDialog();
-                    if (tx_adjun1.Text.Trim() == "") tx_adjun1.Text = ofd1.SafeFileName; // ofd1.FileName
-                    else tx_adjun2.Text = ofd1.SafeFileName;
+                    var aa = ofd1.ShowDialog();
+                    if(aa != DialogResult.Cancel)
+                    {
+                        tx_adjun1.Text = ofd1.SafeFileName;
+                    }
                 }
             }
             if(Tx_modo.Text == "EDITAR")
             {
-                if (tx_adjun1.Text.Trim() != "" || tx_adjun2.Text.Trim() != "")
+                if (tx_adjun1.Text.Trim() != "")
                 {
                     using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                     {
                         conn.Open();
-                        using (var sqlQuery = new MySqlCommand(@"SELECT imagen1,imagen2 FROM pedidos WHERE id = @IDR", conn))
+                        using (var sqlQuery = new MySqlCommand(@"SELECT imagen1 FROM pedidos WHERE id = @IDR", conn))
                         {
                             sqlQuery.Parameters.AddWithValue("@IDR", tx_idr.Text);
                             using (var sqlQueryResult = sqlQuery.ExecuteReader())
@@ -1949,31 +1951,91 @@ namespace iOMG
                                     sqlQueryResult.Read();
                                     var blob = new Byte[(sqlQueryResult.GetBytes(0, 0, null, 0, int.MaxValue))];
                                     sqlQueryResult.GetBytes(0, 0, blob, 0, blob.Length);
-                                    if (tx_adjun2.Text.Trim() != "")
-                                    {
-                                        var b2ob = new Byte[(sqlQueryResult.GetBytes(1, 0, null, 0, int.MaxValue))];
-                                        sqlQueryResult.GetBytes(1, 0, b2ob, 0, b2ob.Length);
-                                    }
                                     FolderBrowserDialog ruta = new FolderBrowserDialog();
                                     var aa = ruta.ShowDialog();
                                     if(aa != DialogResult.Cancel)
                                     {
-                                        if (tx_adjun1.Text.Trim() != "")
-                                        {
-                                            string chivo = ruta.SelectedPath.ToString() + "\\" + tx_adjun1.Text.Trim();
-                                            using (var fs = new FileStream(chivo, FileMode.Create, FileAccess.Write))
-                                                fs.Write(blob, 0, blob.Length);
-                                        }
-                                        if(tx_adjun2.Text.Trim() != "")
-                                        {
-                                            string chivo = ruta.SelectedPath.ToString() + "\\" + tx_adjun2.Text.Trim();
-                                            using (var fs = new FileStream(chivo, FileMode.Create, FileAccess.Write))
-                                                fs.Write(blob, 0, blob.Length);
-                                        }
-                                        MessageBox.Show("Archivo(s) grabado con éxito", "Confirmación de escritura", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        string chivo = ruta.SelectedPath.ToString() + "\\" + tx_adjun1.Text.Trim();
+                                        using (var fs = new FileStream(chivo, FileMode.Create, FileAccess.Write))
+                                            fs.Write(blob, 0, blob.Length);
+                                        MessageBox.Show("Archivo grabado con éxito", "Confirmación de escritura", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
                                 }
                         }
+                    }
+                }
+                else
+                {
+                    OpenFileDialog ofd1 = new OpenFileDialog();
+                    ofd1.Title = "Seleccione el documento a Adjuntar";
+                    ofd1.Multiselect = false;
+                    var aa = ofd1.ShowDialog();
+                    if (aa != DialogResult.Cancel)
+                    {
+                        tx_adjun1.Text = ofd1.SafeFileName;
+                    }
+                }
+            }
+        }
+        private void bt_adj2_Click(object sender, EventArgs e)      // documentos adjuntos 2
+        {
+            if (Tx_modo.Text == "NUEVO")
+            {
+                if (tx_adjun2.Text.Trim() != "")
+                {
+                    MessageBox.Show("Debe borrar espacio para djuntos", "Borre un adjunto", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    return;
+                }
+                else
+                {
+                    OpenFileDialog ofd2 = new OpenFileDialog();
+                    ofd2.Title = "Seleccione el documento a Adjuntar";
+                    ofd2.Multiselect = false;
+                    var aa =ofd2.ShowDialog();
+                    if(aa != DialogResult.Cancel)
+                    {
+                        tx_adjun2.Text = ofd2.SafeFileName;
+                    }
+                }
+            }
+            if (Tx_modo.Text == "EDITAR")
+            {
+                if (tx_adjun2.Text.Trim() != "")
+                {
+                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    {
+                        conn.Open();
+                        using (var sqlQuery = new MySqlCommand(@"SELECT imagen2 FROM pedidos WHERE id = @IDR", conn))
+                        {
+                            sqlQuery.Parameters.AddWithValue("@IDR", tx_idr.Text);
+                            using (var sqlQueryResult = sqlQuery.ExecuteReader())
+                                if (sqlQueryResult != null)
+                                {
+                                    sqlQueryResult.Read();
+                                    var b2ob = new Byte[(sqlQueryResult.GetBytes(0, 0, null, 0, int.MaxValue))];
+                                    sqlQueryResult.GetBytes(0, 0, b2ob, 0, b2ob.Length);
+                                    FolderBrowserDialog ruta = new FolderBrowserDialog();
+                                    var aa = ruta.ShowDialog();
+                                    if (aa != DialogResult.Cancel)
+                                    {
+                                        string chivo = ruta.SelectedPath.ToString() + "\\" + tx_adjun2.Text.Trim();
+                                        using (var fs = new FileStream(chivo, FileMode.Create, FileAccess.Write))
+                                            fs.Write(b2ob, 0, b2ob.Length);
+                                        MessageBox.Show("Archivo grabado con éxito", "Confirmación de escritura", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                }
+                        }
+                    }
+                }
+                else
+                {
+                    OpenFileDialog ofd2 = new OpenFileDialog();
+                    ofd2.Title = "Seleccione el documento a Adjuntar";
+                    ofd2.Multiselect = false;
+                    var aa = ofd2.ShowDialog();
+                    if (aa != DialogResult.Cancel)
+                    {
+                        tx_adjun2.Text = ofd2.SafeFileName;
                     }
                 }
             }
