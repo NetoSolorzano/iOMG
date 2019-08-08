@@ -109,12 +109,6 @@
     <Compile Include="clients.designer.cs">
       <DependentUpon>clients.cs</DependentUpon>
     </Compile>
-    <Compile Include="contclte.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="contclte.designer.cs">
-      <DependentUpon>contclte.cs</DependentUpon>
-    </Compile>
     <Compile Include="Contrato.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -257,9 +251,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="clients.resx">
       <DependentUpon>clients.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="contclte.resx">
-      <DependentUpon>contclte.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Contrato.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
