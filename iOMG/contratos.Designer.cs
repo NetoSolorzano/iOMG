@@ -227,6 +227,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -417,6 +418,7 @@
             // tabcodigo
             // 
             this.tabcodigo.BackColor = System.Drawing.Color.Gray;
+            this.tabcodigo.Controls.Add(this.tx_dat_mad);
             this.tabcodigo.Controls.Add(this.label35);
             this.tabcodigo.Controls.Add(this.label42);
             this.tabcodigo.Controls.Add(this.label34);
@@ -2307,6 +2309,17 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // tx_dat_mad
+            // 
+            this.tx_dat_mad.Location = new System.Drawing.Point(738, 37);
+            this.tx_dat_mad.Name = "tx_dat_mad";
+            this.tx_dat_mad.ReadOnly = true;
+            this.tx_dat_mad.Size = new System.Drawing.Size(47, 20);
+            this.tx_dat_mad.TabIndex = 377;
+            this.tx_dat_mad.Tag = "Id";
+            this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_mad.Visible = false;
+            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2557,5 +2570,6 @@
         private System.Windows.Forms.GroupBox groupBox40;
         private System.Windows.Forms.Label label52;
         private NumericTextBox tx_bruto;
+        private System.Windows.Forms.TextBox tx_dat_mad;
     }
 }

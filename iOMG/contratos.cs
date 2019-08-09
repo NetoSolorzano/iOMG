@@ -652,8 +652,8 @@ namespace iOMG
             dataGridView1.Columns[9].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[9].Name = "pedido";
-            // codref
-            dataGridView1.Columns[10].Visible = true;
+            // codref = codigo de madera
+            dataGridView1.Columns[10].Visible = false;
             dataGridView1.Columns[10].HeaderText = "Codref";      // titulo de la columna
             dataGridView1.Columns[10].Width = 60;                 // ancho
             dataGridView1.Columns[10].ReadOnly = true;            // lectura o no
@@ -899,10 +899,11 @@ namespace iOMG
         }
         private void jaladet(string pedido)     // jala el detalle del contrato
         {
-            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment," +
+            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
                 "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na " +
                 "FROM detacon a " +
                 "left join desc_dt2 b on b.idcodice=a.piedra " +
+                "left join desc_mad c on c.idcodice=a.madera " +
                 "WHERE a.contratoh = @cont ";
             try
             {
@@ -1964,7 +1965,8 @@ namespace iOMG
         }
         private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
         {
-            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0,1);
+            tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
             armani();
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
@@ -2298,6 +2300,27 @@ namespace iOMG
                 cmb_aca.Focus();
                 return;
             }
+            if (tx_d_prec.Text.Trim() == "")
+            {
+                MessageBox.Show("Ingrese el precio", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_d_prec.Focus();
+                return;
+            }
+            else
+            {
+                if(decimal.Parse(tx_d_prec.Text) < 1)
+                {
+                    MessageBox.Show("Ingrese un precio mayor a cero", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_d_prec.Focus();
+                    return;
+                }
+            }
+            if (tx_d_total.Text.Trim() == "")
+            {
+                MessageBox.Show("Falta calcular el total", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_d_can.Focus();
+                return;
+            }
             // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {
@@ -2310,12 +2333,12 @@ namespace iOMG
                     obj.Cells[2].Value = tx_d_can.Text;
                     obj.Cells[3].Value = tx_d_nom.Text;
                     obj.Cells[4].Value = tx_d_med.Text;
-                    obj.Cells[5].Value = tx_d_mad.Text;
+                    obj.Cells[5].Value = tx_d_mad.Text;     //codigo madera
                     obj.Cells[6].Value = tx_d_prec.Text;
                     obj.Cells[7].Value = tx_d_total.Text;
                     obj.Cells[8].Value = tx_d_can.Text;
                     obj.Cells[9].Value = "";
-                    obj.Cells[10].Value = "";
+                    obj.Cells[10].Value = tx_dat_mad.Text;     // nombre madera
                     obj.Cells[11].Value = tx_d_com.Text;
                     obj.Cells[12].Value = tx_d_det2.Text;
                     obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();     // sera?
@@ -2326,7 +2349,7 @@ namespace iOMG
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", "", tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N");
+                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N");
                     }
                     else
                     {
@@ -2358,7 +2381,7 @@ namespace iOMG
                     obj.Cells[7].Value = tx_d_total.Text;
                     obj.Cells[8].Value = tx_d_saldo.Text;
                     obj.Cells[9].Value = "";
-                    obj.Cells[10].Value = "";
+                    obj.Cells[10].Value = tx_dat_mad.Text;
                     obj.Cells[11].Value = tx_d_com.Text;
                     obj.Cells[12].Value = tx_d_det2.Text;
                     obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();
@@ -2378,7 +2401,7 @@ namespace iOMG
                     tr["total"] = tx_d_total.Text;
                     tr["saldo"] = tx_d_saldo.Text;
                     tr["pedido"] = "";
-                    tr["codref"] = "";
+                    tr["codref"] = tx_dat_mad.Text;
                     tr["coment"] = tx_d_com.Text;
                     tr["piedra"] = tx_d_det2.Text;
                     tr["codpie"] = cmb_det2.Text.ToString().Substring(0, 3).Trim();
@@ -3057,7 +3080,7 @@ namespace iOMG
                     rowdetalle.codigo = row.Cells["item"].Value.ToString();
                     rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
                     rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
+                    rowdetalle.madera = row.Cells["codref"].Value.ToString();     // madera
                     rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
                     rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
                     rowdetalle.precio = row.Cells["precio"].Value.ToString();
