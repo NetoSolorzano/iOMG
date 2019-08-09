@@ -206,8 +206,10 @@ namespace iOMG
             Bt_sig.Image = Image.FromFile(img_bts);
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
+            //
+            tx_status.Visible = false;                  // solo sera visible si tiene estado
             // longitudes maximas de campos
-            tx_coment.MaxLength = 90;           // nombre
+            tx_coment.MaxLength = 250;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
         }
         private void jalainfo()                             // obtiene datos de imagenes
@@ -1166,6 +1168,8 @@ namespace iOMG
             tx_d_can.ReadOnly = true;
             tx_d_nom.ReadOnly = true;
             tx_d_med.ReadOnly = true;
+            tx_coment.Enabled = true;
+            tx_coment.ReadOnly = false;
             //
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -2153,6 +2157,11 @@ namespace iOMG
         {
             bt_prev.Enabled = true;
             Bt_print.Enabled = true;
+        }
+        private void tx_status_TextChanged(object sender, EventArgs e)      // se pone visible si tiene dato
+        {
+            if (e.ToString().Trim() == "") tx_status.Visible = false;
+            else tx_status.Visible = true;
         }
     }
 }

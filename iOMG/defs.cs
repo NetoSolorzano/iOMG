@@ -471,7 +471,7 @@ namespace iOMG
             {
                 string consulta = "update descrittive set " +
                         "codigo=@cod,descrizione=@des,descrizionerid=@der,numero=@num " +
-                        "where idcodice=@idc";
+                        "where id=@idc";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
