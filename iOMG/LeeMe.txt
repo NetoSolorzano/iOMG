@@ -35,6 +35,11 @@ PEDIDOS CLIENTES
 ** formato impresion pedidos clientes
 *** comentario general va junto al comentario del mueble ........ ok
 *** codigo del mueble va en el recuadro, no en detalle .......... ok
+REPORTES
+- RESUMEN DE CONTRATO
+** crear las opciones en el form main ........................... ok
+** crear el form de resumen de contrato ......................... 
+** desarrollar el proc.almacenado del resumen ................... 
 
 
 

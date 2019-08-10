@@ -76,6 +76,7 @@ namespace iOMG
         string imgvc1 = "";                                             // imagen 1 ventas - contratos
         string imgvpc1 = "";                                            // imagen 1 ventas contratos pedidos cliente
         string imgvp1 = "";                                             // imagen 1 ventas - pedidos
+        string imgvre1 = "";                                            // imagen 1 ventas - reportes
         // botones de accion
         string img_btN = "";                                            // imagen del boton de accion NUEVO
         string img_btE = "";                                            // imagen del boton de accion EDITAR
@@ -245,6 +246,7 @@ namespace iOMG
                         if (row["param"].ToString() == "imgpe2") imgpe2 = row["valor"].ToString().Trim();         // imagen1 de pedidos - reportes
                         if (row["param"].ToString() == "imgvc1") imgvc1 = row["valor"].ToString().Trim();         // imagen1 de ventas contratos
                         if (row["param"].ToString() == "imgvpc1") imgvpc1 = row["valor"].ToString().Trim();         // imagen1 de ventas contratos pedidos clientes
+                        if (row["param"].ToString() == "imgvre1") imgvre1 = row["valor"].ToString().Trim();         // imagen1 de ventas clientes reportes
                         // .. resto de imagenes de ventas
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
@@ -436,13 +438,13 @@ namespace iOMG
             //Image img_v_p = Image.FromFile("");
             //Image img_v_i = Image.FromFile("");
             //Image img_v_s = Image.FromFile("");
-            //Image img_v_r = Image.FromFile("");
+            Image img_v_r = Image.FromFile(imgvre1);
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Contratos",img_v_c, vc_registro_Click);
             menuStrip1.Items.Add("Pedidos",img_v_pc, vpc_registro_Click);
             menuStrip1.Items.Add("Ingresos");
             menuStrip1.Items.Add("Salidas");
-            menuStrip1.Items.Add("Reportes");
+            menuStrip1.Items.Add("Reportes",img_v_r, vc_reportes_Click);
             menuStrip1.Visible = true;
         }
         private void vc_registro_Click(object sender, EventArgs e)      // contratos clientes
@@ -467,7 +469,18 @@ namespace iOMG
             fpc.Anchor = AnchorStyles.None;
             fpc.Show();
             fpc.BringToFront();
-        }   // pedidos de catalogo de clientes
+        }   // pedidos de clientes
+        private void vc_reportes_Click(object sender, EventArgs e)      // reportes ventas clientes
+        {
+            repsventas frv = new repsventas();
+            frv.TopLevel = false;
+            frv.Parent = this;
+            pn_centro.Controls.Add(frv);
+            //frv.Location = new Point((pn_centro.Width - frv.Width) / 2, (pn_centro.Height - frv.Height) / 2);
+            //frv.Anchor = AnchorStyles.None;
+            frv.Show();
+            frv.BringToFront();
+        }
         //
         private void bt_pedidos_Click(object sender, EventArgs e)       // pedidos de fabricación
         {
