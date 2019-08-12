@@ -105,15 +105,25 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabres = new System.Windows.Forms.TabPage();
+            this.tx_estad = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tx_tiend = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tx_valor = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tx_fecha = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tx_cliente = new System.Windows.Forms.TextBox();
+            this.tx_docu = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tx_codped = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.button2 = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
@@ -918,10 +928,20 @@
             // 
             // tabres
             // 
+            this.tabres.Controls.Add(this.tx_estad);
+            this.tabres.Controls.Add(this.label16);
+            this.tabres.Controls.Add(this.tx_tiend);
+            this.tabres.Controls.Add(this.label15);
+            this.tabres.Controls.Add(this.tx_valor);
+            this.tabres.Controls.Add(this.label14);
+            this.tabres.Controls.Add(this.tx_fecha);
+            this.tabres.Controls.Add(this.label13);
+            this.tabres.Controls.Add(this.tx_cliente);
+            this.tabres.Controls.Add(this.tx_docu);
+            this.tabres.Controls.Add(this.label9);
             this.tabres.Controls.Add(this.tx_codped);
             this.tabres.Controls.Add(this.label8);
             this.tabres.Controls.Add(this.button2);
-            this.tabres.Controls.Add(this.button3);
             this.tabres.Controls.Add(this.dgv_resumen);
             this.tabres.Controls.Add(this.bt_resumen);
             this.tabres.Location = new System.Drawing.Point(4, 22);
@@ -930,6 +950,103 @@
             this.tabres.TabIndex = 3;
             this.tabres.Text = "Resumen de contrato";
             this.tabres.UseVisualStyleBackColor = true;
+            // 
+            // tx_estad
+            // 
+            this.tx_estad.Location = new System.Drawing.Point(704, 76);
+            this.tx_estad.Name = "tx_estad";
+            this.tx_estad.ReadOnly = true;
+            this.tx_estad.Size = new System.Drawing.Size(86, 20);
+            this.tx_estad.TabIndex = 371;
+            this.tx_estad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(648, 80);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(57, 13);
+            this.label16.TabIndex = 370;
+            this.label16.Text = " ESTADO ";
+            // 
+            // tx_tiend
+            // 
+            this.tx_tiend.Location = new System.Drawing.Point(496, 76);
+            this.tx_tiend.Name = "tx_tiend";
+            this.tx_tiend.ReadOnly = true;
+            this.tx_tiend.Size = new System.Drawing.Size(88, 20);
+            this.tx_tiend.TabIndex = 369;
+            this.tx_tiend.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(445, 80);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(56, 13);
+            this.label15.TabIndex = 368;
+            this.label15.Text = " TIENDA  ";
+            // 
+            // tx_valor
+            // 
+            this.tx_valor.Location = new System.Drawing.Point(279, 76);
+            this.tx_valor.Name = "tx_valor";
+            this.tx_valor.ReadOnly = true;
+            this.tx_valor.Size = new System.Drawing.Size(83, 20);
+            this.tx_valor.TabIndex = 367;
+            this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(218, 80);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(67, 13);
+            this.label14.TabIndex = 366;
+            this.label14.Text = " VALOR S/  ";
+            // 
+            // tx_fecha
+            // 
+            this.tx_fecha.Location = new System.Drawing.Point(52, 76);
+            this.tx_fecha.Name = "tx_fecha";
+            this.tx_fecha.ReadOnly = true;
+            this.tx_fecha.Size = new System.Drawing.Size(88, 20);
+            this.tx_fecha.TabIndex = 365;
+            this.tx_fecha.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(2, 80);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(51, 13);
+            this.label13.TabIndex = 364;
+            this.label13.Text = " FECHA  ";
+            // 
+            // tx_cliente
+            // 
+            this.tx_cliente.Location = new System.Drawing.Point(155, 54);
+            this.tx_cliente.Name = "tx_cliente";
+            this.tx_cliente.ReadOnly = true;
+            this.tx_cliente.Size = new System.Drawing.Size(357, 20);
+            this.tx_cliente.TabIndex = 363;
+            // 
+            // tx_docu
+            // 
+            this.tx_docu.Location = new System.Drawing.Point(63, 54);
+            this.tx_docu.Name = "tx_docu";
+            this.tx_docu.ReadOnly = true;
+            this.tx_docu.Size = new System.Drawing.Size(88, 20);
+            this.tx_docu.TabIndex = 362;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 58);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(52, 13);
+            this.label9.TabIndex = 361;
+            this.label9.Text = "CLIENTE";
             // 
             // tx_codped
             // 
@@ -949,30 +1066,12 @@
             this.label8.TabIndex = 360;
             this.label8.Text = "Contrato";
             // 
-            // button2
-            // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(654, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(61, 44);
-            this.button2.TabIndex = 358;
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button3.Location = new System.Drawing.Point(724, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(61, 44);
-            this.button3.TabIndex = 357;
-            this.button3.UseVisualStyleBackColor = true;
-            // 
             // dgv_resumen
             // 
             this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_resumen.Location = new System.Drawing.Point(3, 49);
+            this.dgv_resumen.Location = new System.Drawing.Point(3, 98);
             this.dgv_resumen.Name = "dgv_resumen";
-            this.dgv_resumen.Size = new System.Drawing.Size(789, 250);
+            this.dgv_resumen.Size = new System.Drawing.Size(789, 200);
             this.dgv_resumen.TabIndex = 347;
             // 
             // bt_resumen
@@ -1003,6 +1102,17 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
+            // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.Image = global::iOMG.Properties.Resources.print_preview_24;
+            this.button2.Location = new System.Drawing.Point(530, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(50, 41);
+            this.button2.TabIndex = 358;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // repsventas
             // 
@@ -1119,11 +1229,21 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabres;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridView dgv_resumen;
         private System.Windows.Forms.Button bt_resumen;
         private System.Windows.Forms.TextBox tx_codped;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox chk_resu;
+        private System.Windows.Forms.TextBox tx_estad;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox tx_tiend;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tx_valor;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tx_fecha;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tx_cliente;
+        private System.Windows.Forms.TextBox tx_docu;
+        private System.Windows.Forms.Label label9;
     }
 }

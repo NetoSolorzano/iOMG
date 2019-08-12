@@ -19,18 +19,23 @@ namespace iOMG
 
         private void frmvizcont_Load(object sender, EventArgs e)
         {
-            //MessageBox.Show(_datosReporte.cabecera.Rows[0]["tipoCont"].ToString(),"que dice aca");
-            if (_datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "1")
+            if (_datosReporte.cabecera.Rows.Count > 0 && _datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "1")
             {
                 ContratoG _contrato = new ContratoG();
                 _contrato.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _contrato;
             }
-            if (_datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "2")
+            if (_datosReporte.cabecera.Rows.Count > 0 && _datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "2")
             {
                 ContratoE _contrato = new ContratoE();
                 _contrato.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _contrato;
+            }
+            if (_datosReporte.rescont_cab.Rows.Count > 0)
+            {
+                res_cont1 _resumen = new res_cont1();
+                _resumen.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _resumen;
             }
         }
     }

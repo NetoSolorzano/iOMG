@@ -109,6 +109,9 @@
     <Compile Include="clients.designer.cs">
       <DependentUpon>clients.cs</DependentUpon>
     </Compile>
+    <Compile Include="conClie.cs">
+      <DependentUpon>conClie.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Contrato.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -240,6 +243,12 @@
     <Compile Include="repsventas.designer.cs">
       <DependentUpon>repsventas.cs</DependentUpon>
     </Compile>
+    <Compile Include="res_cont1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>res_cont1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="sernum.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -327,6 +336,10 @@
     <EmbeddedResource Include="repsventas.resx">
       <DependentUpon>repsventas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="res_cont1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>res_cont1.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="sernum.resx">
       <DependentUpon>sernum.cs</DependentUpon>
     </EmbeddedResource>
@@ -395,6 +408,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\recursos\cancel16.png" />
+    <None Include="bin\Debug\recursos\print_preview_24.png" />
     <Content Include="LeeMe.txt" />
     <None Include="Resources\menos16.png.png" />
     <None Include="Resources\permiso_16.png" />
