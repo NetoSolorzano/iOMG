@@ -1502,20 +1502,20 @@ namespace iOMG
                     rowdetalle.madera = row.Cells["madera"].Value.ToString();
                     rowdetalle.cantC = row.Cells["CanC"].Value.ToString();
                     rowdetalle.sep_id = row.Cells["sep_id"].Value.ToString();
-                    rowdetalle.sep_fecha = row.Cells["sep_fecha"].Value.ToString();
+                    rowdetalle.sep_fecha = row.Cells["sep_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.sep_almac = row.Cells["sep_almac"].Value.ToString();
                     rowdetalle.sep_cant = row.Cells["canS"].Value.ToString();
                     rowdetalle.ent_id = row.Cells["ent_id"].Value.ToString();
-                    rowdetalle.ent_fecha = row.Cells["ent_fecha"].Value.ToString();
+                    rowdetalle.ent_fecha = row.Cells["ent_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.ent_cant = row.Cells["canE"].Value.ToString();
                     rowdetalle.ped_pedido = row.Cells["codped"].Value.ToString();
-                    rowdetalle.ped_fecha = row.Cells["ped_fecha"].Value.ToString();
+                    rowdetalle.ped_fecha = row.Cells["ped_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.ped_cant = row.Cells["canP"].Value.ToString();
                     rowdetalle.ing_id = row.Cells["ing_id"].Value.ToString();
-                    rowdetalle.ing_fecha = row.Cells["ing_fecha"].Value.ToString();
+                    rowdetalle.ing_fecha = row.Cells["ing_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.ing_cant = row.Cells["canI"].Value.ToString();
                     rowdetalle.sal_id = row.Cells["sal_id"].Value.ToString();
-                    rowdetalle.sal_fecha = row.Cells["sal_fecha"].Value.ToString();
+                    rowdetalle.sal_fecha = row.Cells["sal_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.sal_cant = row.Cells["canA"].Value.ToString();
                     rescont.rescont_det.Addrescont_detRow(rowdetalle);
                 }

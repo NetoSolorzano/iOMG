@@ -40,7 +40,8 @@ REPORTES
 ** crear las opciones en el form main ........................... ok
 ** crear el form de resumen de contrato ......................... ok
 ** desarrollar el proc.almacenado del resumen ................... ok
-** desarrollar el crystal del resumen ........................... 
+** desarrollar el crystal del resumen ........................... ok
+
 
 
 
