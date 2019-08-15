@@ -231,6 +231,12 @@
     <Compile Include="pedsalm.Designer.cs">
       <DependentUpon>pedsalm.cs</DependentUpon>
     </Compile>
+    <Compile Include="regpagos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="regpagos.Designer.cs">
+      <DependentUpon>regpagos.cs</DependentUpon>
+    </Compile>
     <Compile Include="repspedalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,6 +336,9 @@
     <EmbeddedResource Include="pedsalm.resx">
       <DependentUpon>pedsalm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="regpagos.resx">
+      <DependentUpon>regpagos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="repspedalm.resx">
       <DependentUpon>repspedalm.cs</DependentUpon>
     </EmbeddedResource>
@@ -412,6 +421,7 @@
     <Content Include="LeeMe.txt" />
     <None Include="Resources\menos16.png.png" />
     <None Include="Resources\permiso_16.png" />
+    <None Include="Resources\floppy_red.png" />
     <Content Include="solorsoft.ico" />
   </ItemGroup>
   <ItemGroup>

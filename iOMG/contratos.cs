@@ -135,6 +135,11 @@ namespace iOMG
                         }
                     }
                 }
+                if (tx_acta.Focused == true)
+                {
+                    // llamada al form de registro de pagos
+                    // ...
+                }
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class
