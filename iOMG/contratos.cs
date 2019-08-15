@@ -137,8 +137,17 @@ namespace iOMG
                 }
                 if (tx_acta.Focused == true)
                 {
-                    // llamada al form de registro de pagos
-                    // ...
+                    para1 = "PAGCON";
+                    para2 = tx_codped.Text.Trim();
+                    regpagos pagos = new regpagos(para1, para2, para3, para4);
+                    var result = pagos.ShowDialog();
+                    if(result == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(pagos.ReturnValue0))
+                        {
+                            tx_acta.Text = pagos.ReturnValue0;
+                        }
+                    }
                 }
                 return true;    // indicate that you handled this keystroke
             }
@@ -3150,6 +3159,38 @@ namespace iOMG
                     //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
                 }
             }
+            // pagos del contrato
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero from pagamenti where contrato=@cont";
+                MySqlCommand micon = new MySqlCommand(cpag, conn);
+                micon.Parameters.AddWithValue("@cont", tx_codped.Text.Trim());
+                MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                foreach(DataRow row in dt.Rows)
+                {
+                    conClie.pagoscontRow pagoscont = repcontrato.pagoscont.NewpagoscontRow();
+                    pagoscont.id = row.ItemArray[0].ToString();
+                    pagoscont.fecha = row.ItemArray[1].ToString();
+                    pagoscont.moneda = row.ItemArray[2].ToString();
+                    pagoscont.montosol = row.ItemArray[3].ToString();
+                    pagoscont.dv = row.ItemArray[4].ToString();
+                    pagoscont.serie = row.ItemArray[5].ToString();
+                    pagoscont.numero = row.ItemArray[6].ToString();
+                    repcontrato.pagoscont.AddpagoscontRow(pagoscont);
+                }
+                da.Dispose();
+                dt.Dispose();
+            }
+            else
+            {
+                MessageBox.Show("Se perdió conexión con el servidor", "Error de conectividad");
+            }
+            conn.Close();
+            //
             return repcontrato;
         }
         #endregion crystal

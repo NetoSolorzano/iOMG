@@ -12,6 +12,14 @@ namespace iOMG
         public string para2 = "";
         public string para3 = "";
         public string para4 = "";
+        static string nomform = "regpagos";    // nombre del formulario
+        string asd = iOMG.Program.vg_user;      // usuario conectado al sistema
+        string colback = iOMG.Program.colbac;   // color de fondo
+        string colpage = iOMG.Program.colpag;   // color de los pageframes
+        string colgrid = iOMG.Program.colgri;   // color de las grillas
+        string colstrp = iOMG.Program.colstr;   // color del strip
+        //static string nomtab = "pagamenti";       // 
+        string timodef = "";                        // codigo moneda por defecto
         libreria lnp = new libreria();
         // Se crea un DataTable que almacenará los datos desde donde se cargaran los datos al DataGridView
         DataTable dtDatos = new DataTable();
@@ -25,16 +33,21 @@ namespace iOMG
 
         public regpagos(string param1, string param2, string param3, string param4)
         {
-            para1 = param1;              // 
-            para2 = param2;              //
-            para3 = param3;              //
+            para1 = param1;              // pago contrato = PAGCON
+            para2 = param2;              // contrato
+            para3 = param3;              // imp.total contrato
             para4 = param4;              // 
             InitializeComponent();
         }
 
         private void regpagos_Load(object sender, EventArgs e)
         {
-            loadgrids();    // datos del grid
+            tx_cont.Text = para2;
+            jalainfo();
+            loadgrids();                // datos del grid
+            loadcombos();
+            tx_dat_mone.Text = timodef;
+            cmb_mone.SelectedIndex = cmb_mone.FindString(tx_dat_mone.Text);
         }
 
         private void regpagos_KeyDown(object sender, KeyEventArgs e)
@@ -49,38 +62,142 @@ namespace iOMG
         public string ReturnValue0 { get; set; }
         public string ReturnValue2 { get; set; }
 
+        private void jalainfo()                                     // obtiene parametros del form
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped)";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@nofo", "main");
+                micon.Parameters.AddWithValue("@ped", nomform);
+                MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                for (int t = 0; t < dt.Rows.Count; t++)
+                {
+                    DataRow row = dt.Rows[t];
+                    if (row["campo"].ToString() == "imagenes" && row["formulario"].ToString() == "main")
+                    {
+                        // no van botones en este form
+                    }
+                    if (row["formulario"].ToString() == nomform)
+                    {
+                        if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "default") timodef = row["valor"].ToString().Trim();         // moneda por defecto
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // 
+                        //if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();       // 
+                    }
+                }
+                da.Dispose();
+                dt.Dispose();
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error de conexión");
+                Application.Exit();
+                return;
+            }
+        }
+        private void loadcombos()
+        {
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return;
+            }
+            // seleccion de forma de pago
+            const string confpago = "select descrizionerid,idcodice from desc_mpa " +
+                                   "where numero=1";
+            MySqlCommand cmd = new MySqlCommand(confpago, conn);
+            MySqlDataAdapter dat = new MySqlDataAdapter(cmd);
+            DataTable dtta = new DataTable();
+            dat.Fill(dtta);
+            foreach (DataRow row in dtta.Rows)
+            {
+                cmb_fpago.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                cmb_fpago.ValueMember = row.ItemArray[1].ToString();
+            }
+            // seleccion del tipo de documento
+            const string contdv = "select descrizionerid,idcodice from desc_tdv " +
+                                   "where numero=1";
+            MySqlCommand cmdtdv = new MySqlCommand(contdv, conn);
+            DataTable dttdv = new DataTable();
+            MySqlDataAdapter datdv = new MySqlDataAdapter(cmdtdv);
+            datdv.Fill(dttdv);
+            foreach (DataRow row in dttdv.Rows)
+            {
+                cmb_td.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                cmb_td.ValueMember = row.ItemArray[1].ToString();
+            }
+            // seleccion de moneda
+            const string conmon = "select descrizionerid,idcodice from desc_mon " +
+                                   "where numero=1";
+            MySqlCommand cmdmon = new MySqlCommand(conmon, conn);
+            DataTable dtmon = new DataTable();
+            MySqlDataAdapter damon = new MySqlDataAdapter(cmdmon);
+            damon.Fill(dtmon);
+            foreach (DataRow row in dtmon.Rows)
+            {
+                cmb_mone.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                cmb_mone.ValueMember = row.ItemArray[1].ToString();
+            }
+        }
         private void loadgrids()
         {
-            string consulta = "select idpagamenti,fecha,montosol,via,detalle,dv,serie,numero,space(1) as marca " +
-                    "from pagamenti where contrato=@cont";
-            // 
+            string consulta = "select idpagamenti,fecha,montosol,via,detalle,dv,serie,numero," +
+                "valor,acuenta,saldo,moneda,monto,space(1) as marca " +
+                "from pagamenti where contrato=@cont";
             dataGridView1.Rows.Clear();
-            dataGridView1.ColumnCount = 9;
+            dataGridView1.ColumnCount = 14;
             dataGridView1.Columns[0].HeaderText = "ID";
+            dataGridView1.Columns[0].Name = "idpagamenti";
             dataGridView1.Columns[0].Width = 30;
             dataGridView1.Columns[0].ReadOnly = true;
             dataGridView1.Columns[1].HeaderText = "FECHA";
+            dataGridView1.Columns[1].Name = "fecha";
             dataGridView1.Columns[1].Width = 70;
             dataGridView1.Columns[1].ReadOnly = true;
             dataGridView1.Columns[2].HeaderText = "MONTO";
+            dataGridView1.Columns[2].Name = "montosol";
             dataGridView1.Columns[2].Width = 70;
             dataGridView1.Columns[2].ReadOnly = true;
             dataGridView1.Columns[3].HeaderText = "MEDIO";
+            dataGridView1.Columns[3].Name = "via";
             dataGridView1.Columns[3].Width = 90;
             dataGridView1.Columns[3].ReadOnly = true;
             dataGridView1.Columns[4].HeaderText = "COMENT";
+            dataGridView1.Columns[4].Name = "detalle";
             dataGridView1.Columns[4].Width = 170;
             dataGridView1.Columns[4].ReadOnly = true;
             dataGridView1.Columns[5].HeaderText = "DOCVTA";
+            dataGridView1.Columns[5].Name = "dv";
             dataGridView1.Columns[5].Width = 70;
             dataGridView1.Columns[5].ReadOnly = true;
             dataGridView1.Columns[6].HeaderText = "SERIE";
+            dataGridView1.Columns[6].Name = "serie";
             dataGridView1.Columns[6].Width = 50;
             dataGridView1.Columns[6].ReadOnly = true;
             dataGridView1.Columns[7].HeaderText = "NUMERO";
+            dataGridView1.Columns[7].Name = "numero";
             dataGridView1.Columns[7].Width = 70;
             dataGridView1.Columns[7].ReadOnly = true;
-            dataGridView1.Columns[8].Visible = false;       // marca N=nuevo A=actualizado
+            dataGridView1.Columns[8].Name = "valor";
+            dataGridView1.Columns[8].Visible = false;
+            dataGridView1.Columns[9].Name = "acuenta";
+            dataGridView1.Columns[9].Visible = false;
+            dataGridView1.Columns[10].Name = "saldo";
+            dataGridView1.Columns[10].Visible = false;
+            dataGridView1.Columns[11].Name = "moneda";
+            dataGridView1.Columns[11].Visible = false;
+            dataGridView1.Columns[12].Name = "monto";
+            dataGridView1.Columns[12].Visible = false;
+            dataGridView1.Columns[13].Visible = false;       // marca N=nuevo A=actualizado
+            dataGridView1.Columns[13].Name = "marca";
             //
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -89,7 +206,8 @@ namespace iOMG
                 MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
                 mdaDatos.SelectCommand.Parameters.AddWithValue("@cont", para2);
                 mdaDatos.Fill(dtDatos);
-                int li = 0;   // contador de las lineas a llenar el datagrid
+                int li = 0;   // idpagamenti,fecha,montosol,via,detalle,dv,serie,numero,
+                              // valor,acuenta,saldo,moneda,monto,space(1) as marca
                 for (li = 0; li < dtDatos.Rows.Count; li++) // 
                 {
                     DataRow row = dtDatos.Rows[li];
@@ -101,48 +219,93 @@ namespace iOMG
                                         row.ItemArray[4].ToString(),
                                         row.ItemArray[5].ToString(),
                                         row.ItemArray[6].ToString(),
-                                        row.ItemArray[7].ToString()
+                                        row.ItemArray[7].ToString(),
+                                        row.ItemArray[8].ToString(),
+                                        row.ItemArray[9].ToString(),
+                                        row.ItemArray[10].ToString(),
+                                        row.ItemArray[11].ToString(),
+                                        row.ItemArray[12].ToString(),
+                                        row.ItemArray[13].ToString()
                                         );
                 }
             }
             calcula();
+            conn.Close();
         }
         private void calcula()
         {
             decimal toti = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                toti = toti + decimal.Parse(row.Cells["montosol"].Value.ToString());
+                if(row.Cells[0].Value != null)
+                {
+                    toti = toti + decimal.Parse(row.Cells["montosol"].Value.ToString());
+                }
             }
             tx_total.Text = toti.ToString();
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            var aa = MessageBox.Show("Confirma que desea GRABAR?", "Atención confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (aa == DialogResult.Yes)
+            if(tx_total.Text.Trim() != "")
             {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
+                var aa = MessageBox.Show("Confirma que desea GRABAR?", "Atención confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
                 {
-                    if (row.Cells["marca"].Value.ToString() == "A")
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
                     {
-                        row.Cells["idpagamenti"].Value;
-                        row.Cells["fecha"].Value = dtp_pago.Value;
-                        row.Cells["montosol"].Value = tx_importe.Text;
-                        row.Cells["via"].Value = tx_dat_fpago.Text;
-                        row.Cells["detalle"].Value = tx_comen.Text.Trim();
-                        row.Cells["dv"].Value = tx_dat_td.Text;
-                        row.Cells["serie"].Value = tx_serie.Text;
-                        row.Cells["numero"].Value = tx_corre.Text;
-                        
+                        string conactin = "";
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            if (row.Cells["marca"].Value.ToString() == "A")
+                            {
+                                conactin = "update pagamenti set contrato=@cont,fecha=@fec,montosol=@mont,via=@via,detalle=@com,dv=@tdv,serie=@ser,numero=@corr," +
+                                    "valor=@val,acuenta=@act,saldo=@sal,moneda=@sol,monto=@mont,usuario=@asd,dia=now() " +
+                                    "where idpagamenti=@idp";
+                            }
+                            if (row.Cells["marca"].Value.ToString() == "N")
+                            {
+                                conactin = "insert into pagamenti (contrato,fecha,montosol,via,detalle,dv,serie,numero,valor,acuenta,saldo,moneda,monto,usuario,dia) " +
+                                    "values (@cont,@fec,@mont,@via,@com,@tdv,@ser,@corr,@val,@act,@sal,@sol,@mont,@asd,now())";
+                            }
+                            MySqlCommand micon = new MySqlCommand(conactin, conn);
+                            if (row.Cells["marca"].Value.ToString() == "A") micon.Parameters.AddWithValue("@idp", row.Cells["idpagamenti"].Value.ToString());
+                            micon.Parameters.AddWithValue("@cont", para2);
+                            micon.Parameters.AddWithValue("@fec", row.Cells["fecha"].Value.ToString());
+                            micon.Parameters.AddWithValue("@mont", row.Cells["montosol"].Value.ToString());
+                            micon.Parameters.AddWithValue("@via", row.Cells["via"].Value.ToString());
+                            micon.Parameters.AddWithValue("@com", row.Cells["detalle"].Value.ToString());
+                            micon.Parameters.AddWithValue("@tdv", row.Cells["dv"].Value.ToString());
+                            micon.Parameters.AddWithValue("@ser", row.Cells["serie"].Value.ToString());
+                            micon.Parameters.AddWithValue("@corr", row.Cells["numero"].Value.ToString());
+                            micon.Parameters.AddWithValue("@val", para3);            // row.Cells[""].Value.ToString()
+                            micon.Parameters.AddWithValue("@act", tx_total.Text);    // row.Cells[""].Value.ToString()
+                            micon.Parameters.AddWithValue("@sal", (decimal.Parse(para3) - decimal.Parse(tx_total.Text)).ToString());    // row.Cells[""].Value.ToString()
+                            micon.Parameters.AddWithValue("@sol", row.Cells["moneda"].Value.ToString());
+                            micon.Parameters.AddWithValue("@asd", asd);
+                            micon.ExecuteNonQuery();
+                        }
+                        ReturnValue0 = tx_total.Text;       // total pagado
+                        ReturnValue1 = "";
+                        ReturnValue2 = "";
+                        this.Close();
+                        conn.Close();
                     }
+                    else
+                    {
+                        MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
+                        Application.Exit();
+                        return;
+                    }
+                    //conn.Close();
+                }
+                else
+                {
+                    return;
                 }
             }
-            else
-            {
-                return;
-            }
         }
-
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             // idpagamenti,fecha,montosol,via,detalle,dv,serie,numero
@@ -157,7 +320,6 @@ namespace iOMG
             tx_corre.Text = dataGridView1.CurrentRow.Cells["numero"].Value.ToString();
             tx_comen.Text = dataGridView1.CurrentRow.Cells["detalle"].Value.ToString();
         }
-
         private void bt_det_Click(object sender, EventArgs e)
         {
             if (tx_idr.Text.Trim() == "")

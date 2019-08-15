@@ -73,6 +73,8 @@
             this.tx_comen = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.tx_dat_td = new System.Windows.Forms.TextBox();
+            this.cmb_mone = new System.Windows.Forms.ComboBox();
+            this.tx_dat_mone = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -330,7 +332,7 @@
             // 
             this.cmb_fpago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_fpago.FormattingEnabled = true;
-            this.cmb_fpago.Location = new System.Drawing.Point(628, 7);
+            this.cmb_fpago.Location = new System.Drawing.Point(628, 6);
             this.cmb_fpago.Name = "cmb_fpago";
             this.cmb_fpago.Size = new System.Drawing.Size(90, 21);
             this.cmb_fpago.TabIndex = 3;
@@ -344,6 +346,7 @@
             this.tx_dat_fpago.TabIndex = 354;
             this.tx_dat_fpago.Tag = "Id";
             this.tx_dat_fpago.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_fpago.Visible = false;
             // 
             // cmb_td
             // 
@@ -496,12 +499,34 @@
             this.tx_dat_td.TabIndex = 367;
             this.tx_dat_td.Tag = "Id";
             this.tx_dat_td.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_td.Visible = false;
+            // 
+            // cmb_mone
+            // 
+            this.cmb_mone.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_mone.FormattingEnabled = true;
+            this.cmb_mone.Location = new System.Drawing.Point(25, 265);
+            this.cmb_mone.Name = "cmb_mone";
+            this.cmb_mone.Size = new System.Drawing.Size(42, 21);
+            this.cmb_mone.TabIndex = 368;
+            // 
+            // tx_dat_mone
+            // 
+            this.tx_dat_mone.Location = new System.Drawing.Point(75, 266);
+            this.tx_dat_mone.Name = "tx_dat_mone";
+            this.tx_dat_mone.ReadOnly = true;
+            this.tx_dat_mone.Size = new System.Drawing.Size(55, 20);
+            this.tx_dat_mone.TabIndex = 369;
+            this.tx_dat_mone.Tag = "Id";
+            this.tx_dat_mone.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // regpagos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 315);
+            this.Controls.Add(this.tx_dat_mone);
+            this.Controls.Add(this.cmb_mone);
             this.Controls.Add(this.tx_dat_td);
             this.Controls.Add(this.groupBox19);
             this.Controls.Add(this.tx_comen);
@@ -607,5 +632,7 @@
         private System.Windows.Forms.TextBox tx_comen;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tx_dat_td;
+        private System.Windows.Forms.ComboBox cmb_mone;
+        private System.Windows.Forms.TextBox tx_dat_mone;
     }
 }
