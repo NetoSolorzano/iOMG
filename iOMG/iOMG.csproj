@@ -261,6 +261,12 @@
       <DependentUpon>res_cont1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="salpedclts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="salpedclts.designer.cs">
+      <DependentUpon>salpedclts.cs</DependentUpon>
+    </Compile>
     <Compile Include="sernum.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -357,6 +363,9 @@
     <EmbeddedResource Include="res_cont1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>res_cont1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="salpedclts.resx">
+      <DependentUpon>salpedclts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="sernum.resx">
       <DependentUpon>sernum.cs</DependentUpon>
