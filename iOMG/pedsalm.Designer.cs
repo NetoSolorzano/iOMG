@@ -55,7 +55,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.dtp_fingreso = new System.Windows.Forms.DateTimePicker();
-            this.tx_saldo = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.bt_det = new System.Windows.Forms.Button();
@@ -149,6 +148,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.tx_saldo = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -277,6 +277,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_saldo);
             this.panel1.Controls.Add(this.label30);
             this.panel1.Controls.Add(this.label29);
             this.panel1.Controls.Add(this.label28);
@@ -296,7 +297,6 @@
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.dtp_fingreso);
-            this.panel1.Controls.Add(this.tx_saldo);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.bt_det);
@@ -494,15 +494,6 @@
             this.dtp_fingreso.ShowCheckBox = true;
             this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
             this.dtp_fingreso.TabIndex = 304;
-            // 
-            // tx_saldo
-            // 
-            this.tx_saldo.Location = new System.Drawing.Point(644, 80);
-            this.tx_saldo.Name = "tx_saldo";
-            this.tx_saldo.Size = new System.Drawing.Size(37, 20);
-            this.tx_saldo.TabIndex = 21;
-            this.tx_saldo.Tag = "Id";
-            this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label9
             // 
@@ -1424,6 +1415,14 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // tx_saldo
+            // 
+            this.tx_saldo.AllowSpace = false;
+            this.tx_saldo.Location = new System.Drawing.Point(645, 80);
+            this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.Size = new System.Drawing.Size(35, 20);
+            this.tx_saldo.TabIndex = 323;
+            // 
             // Pedsalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1552,7 +1551,6 @@
         private System.Windows.Forms.DateTimePicker dtp_entreg;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
-        private System.Windows.Forms.TextBox tx_saldo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DateTimePicker dtp_fingreso;
@@ -1578,5 +1576,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
+        private NumericTextBox tx_saldo;
     }
 }

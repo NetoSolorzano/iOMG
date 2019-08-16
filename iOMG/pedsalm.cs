@@ -1559,6 +1559,27 @@ namespace iOMG
             // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {
+                if(tx_saldo.Text.Trim() == "")
+                {
+                    MessageBox.Show("El saldo debe ser mayor a cero!", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_saldo.Focus();
+                    return;
+                }
+                else
+                {
+                    if (tx_saldo.Text.Trim() != tx_d_can.Text.Trim())
+                    {
+                        MessageBox.Show("El saldo debe ser igual a la cantidad", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        tx_saldo.Focus();
+                        return;
+                    }
+                    if (decimal.Parse(tx_saldo.Text.Trim()) <= 0)
+                    {
+                        MessageBox.Show("El saldo debe ser mayor a cero!", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        tx_saldo.Focus();
+                        return;
+                    }
+                }
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
                     //a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid,
