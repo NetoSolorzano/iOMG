@@ -277,7 +277,7 @@ namespace iOMG
             dgv_resumen.RowTemplate.Height = 15;
             dgv_resumen.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_resumen.AllowUserToAddRows = false;
-            if (dgv_resumen.DataSource == null) dgv_resumen.ColumnCount = 21;
+            if (dgv_resumen.DataSource == null) dgv_resumen.ColumnCount = 22;
             // id,codigo,nombre,madera,CanC,sep_id,sep_fecha,sep_almac,canS,ent_id,ent_fecha,canE,
             // codped,ped_fecha,canP,ing_id,ing_fecha,canI,sal_id,sal_fecha,canA
             // id
