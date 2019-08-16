@@ -171,6 +171,12 @@
     <Compile Include="frmvizcpeds.Designer.cs">
       <DependentUpon>frmvizcpeds.cs</DependentUpon>
     </Compile>
+    <Compile Include="ingpedclts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ingpedclts.designer.cs">
+      <DependentUpon>ingpedclts.cs</DependentUpon>
+    </Compile>
     <Compile Include="items.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -308,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmvizcpeds.resx">
       <DependentUpon>frmvizcpeds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ingpedclts.resx">
+      <DependentUpon>ingpedclts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="items.resx">
       <DependentUpon>items.cs</DependentUpon>

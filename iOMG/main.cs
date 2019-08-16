@@ -75,7 +75,8 @@ namespace iOMG
         string imgpe2 = "";                                             // imagen 2 pedidos - reportes
         string imgvc1 = "";                                             // imagen 1 ventas - contratos
         string imgvpc1 = "";                                            // imagen 1 ventas contratos pedidos cliente
-        string imgvp1 = "";                                             // imagen 1 ventas - pedidos
+        string imgvic1 = "";                                             // imagen 1 ventas - ingresos de pedidos
+        // imagen 1 ventas - salidas de pedidos (entregas a cliente)
         string imgvre1 = "";                                            // imagen 1 ventas - reportes
         // botones de accion
         string img_btN = "";                                            // imagen del boton de accion NUEVO
@@ -246,6 +247,7 @@ namespace iOMG
                         if (row["param"].ToString() == "imgpe2") imgpe2 = row["valor"].ToString().Trim();         // imagen1 de pedidos - reportes
                         if (row["param"].ToString() == "imgvc1") imgvc1 = row["valor"].ToString().Trim();         // imagen1 de ventas contratos
                         if (row["param"].ToString() == "imgvpc1") imgvpc1 = row["valor"].ToString().Trim();         // imagen1 de ventas contratos pedidos clientes
+                        if (row["param"].ToString() == "imgvic1") imgvic1 = row["valor"].ToString().Trim();         // imagen1 de ventas ingreso pedidos clientes
                         if (row["param"].ToString() == "imgvre1") imgvre1 = row["valor"].ToString().Trim();         // imagen1 de ventas clientes reportes
                         // .. resto de imagenes de ventas
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
@@ -431,23 +433,22 @@ namespace iOMG
             MessageBox.Show("Form de reportes de facturas");
         }
         //
-        private void bt_ventas_Click(object sender, EventArgs e)
+        private void bt_ventas_Click(object sender, EventArgs e)        // ventas clientes con contrato
         {
             Image img_v_c = Image.FromFile(imgvc1);
             Image img_v_pc = Image.FromFile(imgvpc1);
-            //Image img_v_p = Image.FromFile("");
-            //Image img_v_i = Image.FromFile("");
+            Image img_v_i = Image.FromFile(imgvic1);
             //Image img_v_s = Image.FromFile("");
             Image img_v_r = Image.FromFile(imgvre1);
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Contratos",img_v_c, vc_registro_Click);
             menuStrip1.Items.Add("Pedidos",img_v_pc, vpc_registro_Click);
-            menuStrip1.Items.Add("Ingresos");
+            menuStrip1.Items.Add("Ingresos",img_v_i, vic_registro_Click);
             menuStrip1.Items.Add("Salidas");
             menuStrip1.Items.Add("Reportes",img_v_r, vc_reportes_Click);
             menuStrip1.Visible = true;
         }
-        private void vc_registro_Click(object sender, EventArgs e)      // contratos clientes
+        private void vc_registro_Click(object sender, EventArgs e)          // contratos clientes
         {
             //contclte fvc = new contclte();
             contratos fvc = new contratos();
@@ -459,7 +460,7 @@ namespace iOMG
             fvc.Show();
             fvc.BringToFront();
         }       
-        private void vpc_registro_Click(object sender, EventArgs e)
+        private void vpc_registro_Click(object sender, EventArgs e)         // pedidos de clientes
         {
             pedsclients fpc = new pedsclients();
             fpc.TopLevel = false;
@@ -469,7 +470,18 @@ namespace iOMG
             fpc.Anchor = AnchorStyles.None;
             fpc.Show();
             fpc.BringToFront();
-        }   // pedidos de clientes
+        }      
+        private void vic_registro_Click(object sender, EventArgs e)         // ingresos de pedidos clientes
+        {
+            ingpedclts fip = new ingpedclts();
+            fip.TopLevel = false;
+            fip.Parent = this;
+            pn_centro.Controls.Add(fip);
+            //fip.Location = new Point((pn_centro.Width - fip.Width) / 2, (pn_centro.Height - fip.Height) / 2);
+            fip.Anchor = AnchorStyles.None;
+            fip.Show();
+            fip.BringToFront();
+        }
         private void vc_reportes_Click(object sender, EventArgs e)      // reportes ventas clientes
         {
             repsventas frv = new repsventas();
