@@ -69,6 +69,7 @@
               <xs:element name="valor" msprop:Generator_ColumnVarNameInTable="columnvalor" msprop:Generator_ColumnPropNameInRow="valor" msprop:Generator_ColumnPropNameInTable="valorColumn" msprop:Generator_UserColumnName="valor" type="xs:string" minOccurs="0" />
               <xs:element name="estado" msprop:Generator_ColumnVarNameInTable="columnestado" msprop:Generator_ColumnPropNameInRow="estado" msprop:Generator_ColumnPropNameInTable="estadoColumn" msprop:Generator_UserColumnName="estado" type="xs:string" minOccurs="0" />
               <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="fent" msprop:Generator_ColumnVarNameInTable="columnfent" msprop:Generator_ColumnPropNameInRow="fent" msprop:Generator_ColumnPropNameInTable="fentColumn" msprop:Generator_UserColumnName="fent" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -96,6 +97,7 @@
               <xs:element name="sal_id" msprop:Generator_ColumnVarNameInTable="columnsal_id" msprop:Generator_ColumnPropNameInRow="sal_id" msprop:Generator_ColumnPropNameInTable="sal_idColumn" msprop:Generator_UserColumnName="sal_id" type="xs:string" minOccurs="0" />
               <xs:element name="sal_fecha" msprop:Generator_ColumnVarNameInTable="columnsal_fecha" msprop:Generator_ColumnPropNameInRow="sal_fecha" msprop:Generator_ColumnPropNameInTable="sal_fechaColumn" msprop:Generator_UserColumnName="sal_fecha" type="xs:string" minOccurs="0" />
               <xs:element name="sal_cant" msprop:Generator_ColumnVarNameInTable="columnsal_cant" msprop:Generator_ColumnPropNameInRow="sal_cant" msprop:Generator_ColumnPropNameInTable="sal_cantColumn" msprop:Generator_UserColumnName="sal_cant" type="xs:string" minOccurs="0" />
+              <xs:element name="tallerped" msprop:Generator_ColumnVarNameInTable="columntallerped" msprop:Generator_ColumnPropNameInRow="tallerped" msprop:Generator_ColumnPropNameInTable="tallerpedColumn" msprop:Generator_UserColumnName="tallerped" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

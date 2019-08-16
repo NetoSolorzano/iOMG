@@ -3174,7 +3174,7 @@ namespace iOMG
                 {
                     conClie.pagoscontRow pagoscont = repcontrato.pagoscont.NewpagoscontRow();
                     pagoscont.id = row.ItemArray[0].ToString();
-                    pagoscont.fecha = row.ItemArray[1].ToString();
+                    pagoscont.fecha = row.ItemArray[1].ToString().Substring(0,10);
                     pagoscont.moneda = row.ItemArray[2].ToString();
                     pagoscont.montosol = row.ItemArray[3].ToString();
                     pagoscont.dv = row.ItemArray[4].ToString();

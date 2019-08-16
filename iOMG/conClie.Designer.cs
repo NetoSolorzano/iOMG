@@ -1400,6 +1400,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnid;
             
+            private global::System.Data.DataColumn columnfent;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public rescont_cabDataTable() {
@@ -1499,6 +1501,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn fentColumn {
+                get {
+                    return this.columnfent;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1534,7 +1544,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public rescont_cabRow Addrescont_cabRow(string contrato, string doccli, string nomcli, string fecha, string tienda, string valor, string estado, string id) {
+            public rescont_cabRow Addrescont_cabRow(string contrato, string doccli, string nomcli, string fecha, string tienda, string valor, string estado, string id, string fent) {
                 rescont_cabRow rowrescont_cabRow = ((rescont_cabRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         contrato,
@@ -1544,7 +1554,8 @@ namespace iOMG {
                         tienda,
                         valor,
                         estado,
-                        id};
+                        id,
+                        fent};
                 rowrescont_cabRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowrescont_cabRow);
                 return rowrescont_cabRow;
@@ -1575,6 +1586,7 @@ namespace iOMG {
                 this.columnvalor = base.Columns["valor"];
                 this.columnestado = base.Columns["estado"];
                 this.columnid = base.Columns["id"];
+                this.columnfent = base.Columns["fent"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1596,6 +1608,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnestado);
                 this.columnid = new global::System.Data.DataColumn("id", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnid);
+                this.columnfent = new global::System.Data.DataColumn("fent", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnfent);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1770,6 +1784,8 @@ namespace iOMG {
             private global::System.Data.DataColumn columnsal_fecha;
             
             private global::System.Data.DataColumn columnsal_cant;
+            
+            private global::System.Data.DataColumn columntallerped;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -1974,6 +1990,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn tallerpedColumn {
+                get {
+                    return this.columntallerped;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2030,7 +2054,8 @@ namespace iOMG {
                         string ing_cant, 
                         string sal_id, 
                         string sal_fecha, 
-                        string sal_cant) {
+                        string sal_cant, 
+                        string tallerped) {
                 rescont_detRow rowrescont_detRow = ((rescont_detRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -2053,7 +2078,8 @@ namespace iOMG {
                         ing_cant,
                         sal_id,
                         sal_fecha,
-                        sal_cant};
+                        sal_cant,
+                        tallerped};
                 rowrescont_detRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowrescont_detRow);
                 return rowrescont_detRow;
@@ -2097,6 +2123,7 @@ namespace iOMG {
                 this.columnsal_id = base.Columns["sal_id"];
                 this.columnsal_fecha = base.Columns["sal_fecha"];
                 this.columnsal_cant = base.Columns["sal_cant"];
+                this.columntallerped = base.Columns["tallerped"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2144,6 +2171,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnsal_fecha);
                 this.columnsal_cant = new global::System.Data.DataColumn("sal_cant", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsal_cant);
+                this.columntallerped = new global::System.Data.DataColumn("tallerped", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntallerped);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3741,6 +3770,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string fent {
+                get {
+                    try {
+                        return ((string)(this[this.tablerescont_cab.fentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'fent\' de la tabla \'rescont_cab\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablerescont_cab.fentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IscontratoNull() {
                 return this.IsNull(this.tablerescont_cab.contratoColumn);
             }
@@ -3833,6 +3878,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetidNull() {
                 this[this.tablerescont_cab.idColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsfentNull() {
+                return this.IsNull(this.tablerescont_cab.fentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetfentNull() {
+                this[this.tablerescont_cab.fentColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -4188,6 +4245,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string tallerped {
+                get {
+                    try {
+                        return ((string)(this[this.tablerescont_det.tallerpedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'tallerped\' de la tabla \'rescont_det\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablerescont_det.tallerpedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablerescont_det.idColumn);
             }
@@ -4436,6 +4509,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void Setsal_cantNull() {
                 this[this.tablerescont_det.sal_cantColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstallerpedNull() {
+                return this.IsNull(this.tablerescont_det.tallerpedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettallerpedNull() {
+                this[this.tablerescont_det.tallerpedColumn] = global::System.Convert.DBNull;
             }
         }
         

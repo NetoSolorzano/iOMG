@@ -415,6 +415,13 @@ namespace iOMG
             dgv_resumen.Columns[20].Width = 50;
             dgv_resumen.Columns[20].ReadOnly = true;
             dgv_resumen.Columns[20].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            // PEDIDOS - taller
+            dgv_resumen.Columns[21].Visible = true;
+            dgv_resumen.Columns[21].HeaderText = "Taller";
+            dgv_resumen.Columns[21].Width = 50;
+            dgv_resumen.Columns[21].ReadOnly = true;
+            dgv_resumen.Columns[21].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[21].DisplayIndex = 12;
         }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - 
         {
@@ -566,7 +573,7 @@ namespace iOMG
                     conn.Open();
                     if (conn.State == ConnectionState.Open)
                     {
-                        string consu = "select a.id,a.fecha,a.tipoes,a.cliente,a.valor,a.status,b.ruc,b.razonsocial " +
+                        string consu = "select a.id,a.fecha,a.tipoes,a.cliente,a.valor,a.status,b.ruc,b.razonsocial,a.entrega " +
                             "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                             "where a.contrato=@ped";
                         MySqlCommand micon = new MySqlCommand(consu, conn);
@@ -584,6 +591,7 @@ namespace iOMG
                                 tx_valor.Text = "";
                                 tx_tiend.Text = "";
                                 tx_estad.Text = "";
+                                tx_fent.Text = "";
                                 tx_codped.Focus();
                                 dr.Close();
                                 conn.Close();
@@ -597,6 +605,7 @@ namespace iOMG
                                 tx_valor.Text = dr.GetString(4);
                                 tx_tiend.Text = dr.GetString(2);
                                 tx_estad.Text = dr.GetString(5);
+                                tx_fent.Text = dr.GetString(8).Substring(0,10);
                                 dr.Close();
                             }
                         }
@@ -1489,6 +1498,7 @@ namespace iOMG
             rowcabeza.fecha = tx_fecha.Text;
             rowcabeza.tienda = tx_tiend.Text;
             rowcabeza.valor = tx_valor.Text;
+            rowcabeza.fent = tx_fent.Text;
             rescont.rescont_cab.Addrescont_cabRow(rowcabeza);
             // detalle
             foreach(DataGridViewRow row in dgv_resumen.Rows)
@@ -1508,6 +1518,7 @@ namespace iOMG
                     rowdetalle.ent_id = row.Cells["ent_id"].Value.ToString();
                     rowdetalle.ent_fecha = row.Cells["ent_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.ent_cant = row.Cells["canE"].Value.ToString();
+                    rowdetalle.tallerped = row.Cells["tallerped"].Value.ToString();
                     rowdetalle.ped_pedido = row.Cells["codped"].Value.ToString();
                     rowdetalle.ped_fecha = row.Cells["ped_fecha"].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.ped_cant = row.Cells["canP"].Value.ToString();

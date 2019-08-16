@@ -118,12 +118,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tx_codped = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.button2 = new System.Windows.Forms.Button();
+            this.tx_fent = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
@@ -928,6 +930,8 @@
             // 
             // tabres
             // 
+            this.tabres.Controls.Add(this.tx_fent);
+            this.tabres.Controls.Add(this.label17);
             this.tabres.Controls.Add(this.tx_estad);
             this.tabres.Controls.Add(this.label16);
             this.tabres.Controls.Add(this.tx_tiend);
@@ -971,7 +975,7 @@
             // 
             // tx_tiend
             // 
-            this.tx_tiend.Location = new System.Drawing.Point(496, 76);
+            this.tx_tiend.Location = new System.Drawing.Point(551, 76);
             this.tx_tiend.Name = "tx_tiend";
             this.tx_tiend.ReadOnly = true;
             this.tx_tiend.Size = new System.Drawing.Size(88, 20);
@@ -981,7 +985,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(445, 80);
+            this.label15.Location = new System.Drawing.Point(500, 80);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(56, 13);
             this.label15.TabIndex = 368;
@@ -989,7 +993,7 @@
             // 
             // tx_valor
             // 
-            this.tx_valor.Location = new System.Drawing.Point(279, 76);
+            this.tx_valor.Location = new System.Drawing.Point(410, 76);
             this.tx_valor.Name = "tx_valor";
             this.tx_valor.ReadOnly = true;
             this.tx_valor.Size = new System.Drawing.Size(83, 20);
@@ -999,7 +1003,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(218, 80);
+            this.label14.Location = new System.Drawing.Point(349, 80);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(67, 13);
             this.label14.TabIndex = 366;
@@ -1007,25 +1011,25 @@
             // 
             // tx_fecha
             // 
-            this.tx_fecha.Location = new System.Drawing.Point(52, 76);
+            this.tx_fecha.Location = new System.Drawing.Point(90, 76);
             this.tx_fecha.Name = "tx_fecha";
             this.tx_fecha.ReadOnly = true;
-            this.tx_fecha.Size = new System.Drawing.Size(88, 20);
+            this.tx_fecha.Size = new System.Drawing.Size(79, 20);
             this.tx_fecha.TabIndex = 365;
             this.tx_fecha.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(2, 80);
+            this.label13.Location = new System.Drawing.Point(7, 80);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(51, 13);
+            this.label13.Size = new System.Drawing.Size(81, 13);
             this.label13.TabIndex = 364;
-            this.label13.Text = " FECHA  ";
+            this.label13.Text = "FECHA  CONT.";
             // 
             // tx_cliente
             // 
-            this.tx_cliente.Location = new System.Drawing.Point(155, 54);
+            this.tx_cliente.Location = new System.Drawing.Point(172, 54);
             this.tx_cliente.Name = "tx_cliente";
             this.tx_cliente.ReadOnly = true;
             this.tx_cliente.Size = new System.Drawing.Size(357, 20);
@@ -1033,10 +1037,10 @@
             // 
             // tx_docu
             // 
-            this.tx_docu.Location = new System.Drawing.Point(63, 54);
+            this.tx_docu.Location = new System.Drawing.Point(90, 54);
             this.tx_docu.Name = "tx_docu";
             this.tx_docu.ReadOnly = true;
-            this.tx_docu.Size = new System.Drawing.Size(88, 20);
+            this.tx_docu.Size = new System.Drawing.Size(79, 20);
             this.tx_docu.TabIndex = 362;
             // 
             // label9
@@ -1065,6 +1069,17 @@
             this.label8.Size = new System.Drawing.Size(47, 13);
             this.label8.TabIndex = 360;
             this.label8.Text = "Contrato";
+            // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.Image = global::iOMG.Properties.Resources.print_preview_24;
+            this.button2.Location = new System.Drawing.Point(530, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(50, 41);
+            this.button2.TabIndex = 358;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // dgv_resumen
             // 
@@ -1103,16 +1118,23 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // button2
+            // tx_fent
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Image = global::iOMG.Properties.Resources.print_preview_24;
-            this.button2.Location = new System.Drawing.Point(530, 6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(50, 41);
-            this.button2.TabIndex = 358;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.tx_fent.Location = new System.Drawing.Point(262, 76);
+            this.tx_fent.Name = "tx_fent";
+            this.tx_fent.ReadOnly = true;
+            this.tx_fent.Size = new System.Drawing.Size(79, 20);
+            this.tx_fent.TabIndex = 373;
+            this.tx_fent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(179, 80);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(81, 13);
+            this.label17.TabIndex = 372;
+            this.label17.Text = "FECHA  ENTR.";
             // 
             // repsventas
             // 
@@ -1245,5 +1267,7 @@
         private System.Windows.Forms.TextBox tx_cliente;
         private System.Windows.Forms.TextBox tx_docu;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox tx_fent;
+        private System.Windows.Forms.Label label17;
     }
 }

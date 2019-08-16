@@ -42,9 +42,11 @@ REPORTES
 ** desarrollar el proc.almacenado del resumen ................... ok
 ** desarrollar el crystal del resumen ........................... ok
 - FORMULARIO DE INGRESO DE PAGOS DE CONTRATO  (15/08/2019)
-** desarrollo del formulario de pagos ........................... 
-** formato crystal del contrato con pagos ....................... 
-** formulario contratos, llamda a pagos ......................... 
+** desarrollo del formulario de pagos ........................... falta probar con chaleco
+** formato crystal del contrato con pagos ....................... ok
+** formulario contratos, llamda a pagos ......................... ok
+
+Me quede en probar las adecuaciones del resumen de contrato
 
 
 
