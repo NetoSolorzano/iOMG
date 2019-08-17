@@ -347,7 +347,7 @@ namespace iOMG
             advancedDataGridView1.Columns[19].Width = 60;
             advancedDataGridView1.Columns[19].ReadOnly = true;
         }
-        private void jalaoc(string campo)                   // jala datos del pedido
+        private void jalaoc(string campo)                   // jala datos
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
             {
@@ -367,8 +367,12 @@ namespace iOMG
                 tx_nombre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nombre"].Value.ToString();
                 tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["med1"].Value.ToString();
                 tx_dat_mad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["madera"].Value.ToString();
-                // me quede aca!
-                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
+                tx_nomad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomad"].Value.ToString();
+                tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
+                tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
+                tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
+                tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["precio"].Value.ToString();
+                tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
             }
@@ -379,43 +383,34 @@ namespace iOMG
                 {
                     if (row["pedido"].ToString().Trim() == tx_pedido.Text.Trim())
                     {
-                        // 
-                        tx_dat_tiped.Text = row["tipoing"].ToString();                      // tipo ingreso
-                        tx_idr.Text = row["id"].ToString();                                 // id del registro
                         tx_rind.Text = cta.ToString();
-                        dtp_ingreso.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha 
-                        jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
+                        tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["idmovim"].Value.ToString();                      // 
+                        dtp_ingreso.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fechain"].Value.ToString());
+                        tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["tipoes"].Value.ToString();                   // tipo ingreso
+                        tx_cliente.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cliente"].Value.ToString();                    // nombre del cliente
+                        tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["origen"].Value.ToString();                    // codigo taller
+                        tx_origen.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomorig"].Value.ToString();
+                        tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["destino"].Value.ToString();
+                        tx_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomdestin"].Value.ToString();
+                        tx_comen.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["coment"].Value.ToString();
+                        tx_item.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["articulo"].Value.ToString();
+                        tx_nombre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nombre"].Value.ToString();
+                        tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["med1"].Value.ToString();
+                        tx_dat_mad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["madera"].Value.ToString();
+                        tx_nomad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomad"].Value.ToString();
+                        tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
+                        tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
+                        tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
+                        tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["precio"].Value.ToString();
+                        tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
+                        //
+                        cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                     }
                     cta = cta + 1;
                 }
             }
         }
-        private void jaladatclt(string id)                  // jala datos del cliente
-        {
-            Int32 vi = -1;
-            string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),ifnull(desc_doc.cnt,'') " +
-                "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
-                "where idanagrafica=@idc";
-            //try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@idc", id);
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        tx_cliente.Text = dr.GetString(0);
-                    }
-                    dr.Close();
-                }
-                conn.Close();
-            }
-        }
-        private bool graba()                                // graba cabecera y detalle
+        private bool graba()                                // graba cabecera
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -424,10 +419,23 @@ namespace iOMG
             {
                 try
                 {
-                    string inserta = "insert into movim (???,USER,dia) values (???,@asd,now())";
+                    string inserta = "insert into movim (fechain,tipoes,origen,destino,pedido,coment," +
+                    "cant,articulo,med1,precio,total,madera,estado,USER,dia) " +
+                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@cant,@arti,@med1,@prec,@tota,@made,@esta,@asd,now())";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@orig", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
+                    micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
+                    micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
+                    micon.Parameters.AddWithValue("@cant", tx_cant.Text);
+                    micon.Parameters.AddWithValue("@arti", tx_item.Text);
+                    micon.Parameters.AddWithValue("@med1", tx_medidas.Text);
+                    micon.Parameters.AddWithValue("@prec", tx_precio.Text);
+                    micon.Parameters.AddWithValue("@tota", tx_total.Text);
+                    micon.Parameters.AddWithValue("@made", tx_dat_mad.Text);
+                    micon.Parameters.AddWithValue("@esta", tx_dat_aca.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
@@ -455,7 +463,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private bool edita()                                // actualiza cabecera y detalle
+        private bool edita()                                // actualiza solo comentario y tipo
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -466,11 +474,13 @@ namespace iOMG
                 {
                     // 
                     string actua = "update movim set " +
-                        "????=@??? " +
-                        "where id=@idr";
+                        "tipoes=@tipe,coment=@come,USER=@asd,dia=now() " +
+                        "where idmovim=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
-                    micon.Parameters.AddWithValue("@tco", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
+                    micon.Parameters.AddWithValue("@asd", asd);
                     micon.ExecuteNonQuery();
                     retorna = true;
                 }
@@ -496,18 +506,20 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
+                /*      // ACA COORDINAR CON GLORIA SI SE BORRA, ANULA O NO SE HACE NADA
                 string anu = "update movim set user=@asd,dia=now() " +
                     "where id=@idr";
                 MySqlCommand micon = new MySqlCommand(anu, conn);
                 micon.Parameters.AddWithValue("@asd", asd);
                 micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                 micon.ExecuteNonQuery();
+                */
                 retorna = true;
             }
             conn.Close();
             return retorna;
         }
-        private bool valexist(String docu)                  // valida existencia del pedido
+        private bool valexist(string docu)                  // valida existencia del pedido
         {
             bool retorna = true;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -530,6 +542,44 @@ namespace iOMG
             }
             conn.Close();
             return retorna;
+        }
+        private void jalaped(string pedi)                   // jala y muestra datos del pedido
+        {
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)     // me quede aca seleccionando los campos de las tablas
+            {
+                string consulta = "select ????? " +
+                    "from pedidos a left join detaped b on b.pedidoh=a.codped " +
+                    "where a.codped=@doc and a.tipoes=@tip";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@doc", pedi);
+                micon.Parameters.AddWithValue("@tip", tipedc);
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        tx_cliente.Text = dr.GetString(0);
+                        tx_origen.Text = dr.GetString(0);
+                        tx_dat_orig.Text = dr.GetString(0);
+                        tx_dest.Text = dr.GetString(0);
+                        tx_dat_dest.Text = dr.GetString(0);
+                        tx_item.Text = dr.GetString(0);
+                        tx_nombre.Text = dr.GetString(0);
+                        tx_medidas.Text = dr.GetString(0);
+                        tx_nomad.Text = dr.GetString(0);
+                        tx_dat_mad.Text = dr.GetString(0);
+                        tx_acabad.Text = dr.GetString(0);
+                        tx_dat_aca.Text = dr.GetString(0);
+                        tx_cant.Text = dr.GetString(0);
+                        tx_precio.Text = dr.GetString(0);
+                        tx_total.Text = dr.GetString(0);
+                    }
+                    dr.Close();
+                }
+            }
+            conn.Close();
         }
         string[] equivinter(string titulo)                  // equivalencia entre titulo de columna y tabla 
         {
@@ -669,7 +719,7 @@ namespace iOMG
         {
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
-            escribe(this);
+            sololee(this);
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
             dtp_ingreso.Value = DateTime.Now;
@@ -677,8 +727,11 @@ namespace iOMG
             //
             tx_dat_tiped.Text = tipede;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            tx_idr.ReadOnly = true;
-            tx_rind.ReadOnly = true;
+            tx_pedido.Enabled = true;
+            dtp_ingreso.Enabled = true;
+            cmb_tipo.Enabled = true;
+            tx_comen.Enabled = true;
+            tx_pedido.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -690,6 +743,9 @@ namespace iOMG
             limpiar(this);
             tx_pedido.Enabled = true;
             tx_pedido.ReadOnly = false;
+            tx_comen.ReadOnly = false;
+            tx_comen.Enabled = true;
+            cmb_tipo.Enabled = true;
             tx_pedido.Focus();
             //
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
@@ -904,7 +960,11 @@ namespace iOMG
         }
         #endregion limpiadores_modos;
         #region comboboxes
-        // veremos que va aca
+        private void cmb_tipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
+            else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         #endregion comboboxes
         #region boton_form GRABA EDITA ANULA - agrega detalle
         private void button1_Click(object sender, EventArgs e)
@@ -915,7 +975,7 @@ namespace iOMG
             {
                 if (tx_dat_tiped.Text == "")
                 {
-                    MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    MessageBox.Show("Seleccione el tipo de ingreso", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     cmb_tipo.Focus();
                     return;
                 }
@@ -933,18 +993,36 @@ namespace iOMG
                 {
                     if (graba() == true)
                     {
-                        // insertamos en el datatable
+                        // a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,a.cliente,a.coment,
+                        // a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total,
+                        // a.madera,a.estado,nomorig,nomdestin,nombre
                         DataRow dr = dtg.NewRow();
-                        // 
                         string cid = tx_idr.Text;
                         dr[0] = cid;
-                        dr[1] = tx_dat_tiped.Text;
-                        // aca van el resto ....
+                        dr[1] = dtp_ingreso.Value.ToString("dd/MM/yyyy");
+                        dr[2] = tx_dat_tiped.Text;
+                        dr[3] = tx_dat_orig.Text;
+                        dr[4] = tx_dat_dest.Text;
+                        dr[5] = tx_pedido.Text;
+                        dr[6] = tx_cliente.Text.Trim();
+                        dr[7] = tx_comen.Text.Trim();
+                        dr[8] = tx_cant.Text;
+                        dr[9] = tx_item.Text;
+                        dr[10] = tx_medidas.Text;
+                        dr[11] = tx_nomad.Text;
+                        dr[12] = tx_acabad.Text;
+                        dr[13] = tx_precio.Text;
+                        dr[14] = tx_total.Text;
+                        dr[15] = tx_dat_mad.Text;
+                        dr[16] = tx_dat_aca.Text;
+                        dr[17] = tx_origen.Text;
+                        dr[18] = tx_dest.Text;
+                        dr[19] = tx_nombre.Text;
                         dtg.Rows.Add(dr);
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo grabar el contrato", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No se pudo grabar el ingreso", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Application.Exit();
                         return;
                     }
@@ -970,9 +1048,9 @@ namespace iOMG
                             DataRow row = dtg.Rows[i];
                             if (row[0].ToString() == tx_idr.Text)
                             {
-                                // 
-                                //dtg.Rows[i][8] = tx_coment.Text;
-                                dtg.Rows[i][9] = dtp_ingreso.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][1] = dtp_ingreso.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][2] = tx_dat_tiped.Text;
+                                dtg.Rows[i][7] = tx_comen.Text.Trim();
                             }
                         }
                     }
@@ -1025,6 +1103,21 @@ namespace iOMG
         }
         private void tx_pedido_Leave(object sender, EventArgs e)
         {
+            if (Tx_modo.Text == "NUEVO" && tx_pedido.Text != "")
+            {
+                if (valexist(tx_pedido.Text) == true)
+                {
+                    // jalamos los datos del pedido y mostramos
+                    jalaped(tx_pedido.Text);
+                }
+                else
+                {
+                    MessageBox.Show("No existe el pedido ingresado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_pedido.Text = "";
+                    tx_pedido.Focus();
+                    return;
+                }
+            }
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")
             {
                 jalaoc("tx_codped");                        // jalamos los datos
@@ -1044,6 +1137,7 @@ namespace iOMG
         {
             advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
         }
+
         private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 2 && Tx_modo.Text != "NUEVO")

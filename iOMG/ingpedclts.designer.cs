@@ -475,6 +475,7 @@
             this.tx_pedido.Name = "tx_pedido";
             this.tx_pedido.Size = new System.Drawing.Size(100, 20);
             this.tx_pedido.TabIndex = 0;
+            this.tx_pedido.Leave += new System.EventHandler(this.tx_pedido_Leave);
             // 
             // label1
             // 
@@ -530,6 +531,7 @@
             this.cmb_tipo.Name = "cmb_tipo";
             this.cmb_tipo.Size = new System.Drawing.Size(87, 21);
             this.cmb_tipo.TabIndex = 2;
+            this.cmb_tipo.SelectedIndexChanged += new System.EventHandler(this.cmb_tipo_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -675,6 +677,7 @@
             this.tx_idr.Size = new System.Drawing.Size(40, 20);
             this.tx_idr.TabIndex = 313;
             this.tx_idr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
             // 
             // groupBox9
             // 
@@ -710,6 +713,7 @@
             this.button1.Size = new System.Drawing.Size(70, 52);
             this.button1.TabIndex = 4;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox11
             // 

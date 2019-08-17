@@ -45,8 +45,9 @@ REPORTES
 ** desarrollo del formulario de pagos ........................... falta probar con chaleco
 ** formato crystal del contrato con pagos ....................... ok
 ** formulario contratos, llamda a pagos ......................... ok
+- INGRESOS DE PEDIDOS CLIENTES
+** Desarrollo del formulario ingpedclts ......................... 
 
-Me quede en probar las adecuaciones del resumen de contrato
 
 
 
