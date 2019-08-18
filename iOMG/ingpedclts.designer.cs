@@ -524,7 +524,7 @@
             // cmb_tipo
             // 
             this.cmb_tipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_tipo.DropDownWidth = 100;
+            this.cmb_tipo.DropDownWidth = 150;
             this.cmb_tipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_tipo.FormattingEnabled = true;
             this.cmb_tipo.Location = new System.Drawing.Point(652, 6);

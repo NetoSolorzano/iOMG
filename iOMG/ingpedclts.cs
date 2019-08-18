@@ -69,8 +69,8 @@ namespace iOMG
             {
                 if (tx_pedido.Focused == true)     // pedidos de clientes
                 {
-                    para1 = "";
-                    para2 = "";
+                    para1 = "pedidos";
+                    para2 = "pend"; // que no esten aun recibidos
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -187,7 +187,7 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
-                string datgri = "select a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
+                string datgri = "select a.idmovim,date(a.fechain) as fechain,a.tipoes,a.origen,a.destino,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total," +
                     "a.madera,a.estado,d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.nombre " +
                     "from movim a left join desc_mad b on b.idcodice=a.madera " +
@@ -963,7 +963,7 @@ namespace iOMG
         private void cmb_tipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
-            else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            else tx_dat_tiped.Text = tipede; //cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
         #endregion comboboxes
         #region boton_form GRABA EDITA ANULA - agrega detalle
@@ -1137,10 +1137,9 @@ namespace iOMG
         {
             advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
         }
-
         private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2 && Tx_modo.Text != "NUEVO")
+            if (e.ColumnIndex == 1 && Tx_modo.Text != "NUEVO")
             {
                 //string codu = "";
                 string idr, rind = "";
@@ -1156,7 +1155,7 @@ namespace iOMG
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
         {
             if (e.RowIndex > -1 && e.ColumnIndex > 0
-                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString()
+                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString() != e.FormattedValue.ToString()
                 && Tx_modo.Text == "EDITAR")
             {
                 string campo = advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString();

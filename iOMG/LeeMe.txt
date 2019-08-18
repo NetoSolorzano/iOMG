@@ -47,6 +47,7 @@ REPORTES
 ** formulario contratos, llamda a pagos ......................... ok
 - INGRESOS DE PEDIDOS CLIENTES
 ** Desarrollo del formulario ingpedclts ......................... 
+** me quede en ayuda2 de ingresos pedidos
 
 
 
