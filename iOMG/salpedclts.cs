@@ -16,9 +16,8 @@ namespace iOMG
         string colpage = iOMG.Program.colpag;   // color de los pageframes
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
-        static string nomtab = "contrat";
+        static string nomtab = "detam";
         #region variables 
-        public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion sin crystal, con crystal ya no se usan
         public string perAg = "";
         public string perMo = "";
         public string perAn = "";
@@ -37,10 +36,8 @@ namespace iOMG
         string img_anul = "";
         string img_pre = "";            // imagen del boton vista preliminar
         string img_ver = "";            // imagen del boton visualizacion (solo ver)
-        string tipede = "";             // tipo de ingreso
-        //string tiesta = "";             // estado inicial por defecto del contrato
-        //string tiesan = "";             // estado anulado / codigo
-        //string escambio = "";           // estados del contrato que admiten modificacion
+        string tipede = "";             // tipo de movimiento
+        string tipedc = "";             // tipo de pedido de cliente
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
         libreria lib = new libreria();
@@ -52,9 +49,6 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         DataTable dtg = new DataTable();
-        //AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
-        //AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
-        //AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
 
         public salpedclts()
         {
@@ -72,10 +66,11 @@ namespace iOMG
             string para4 = "";
             if (keyData == Keys.F1) //  && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"
             {
-                if (tx_pedido.Focused == true)     // pedidos de clientes
+                if (tx_pedido.Focused == true)     // pedidos de clientes que ya ingreso, busqueda en movim
                 {
-                    para1 = "";
-                    para2 = "";
+                    para1 = "movim";
+                    para2 = "pend";                                         // que no esten aun entregados
+                    para3 = "";                                         // 
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -83,9 +78,23 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             // ayu2.ReturnValue0;
-                            //tx_a_codig.Text = ayu2.ReturnValue1;
-                            //tx_a_nombre.Text = ayu2.ReturnValue2;
+                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15
+                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin
                             // llenado de campos
+                            tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
+                            tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
+                            tx_cliente.Text = ayu2.ReturnValueA[3].ToString();
+                            tx_dat_orig.Text = ayu2.ReturnValueA[1].ToString();
+                            tx_origen.Text = ayu2.ReturnValueA[].ToString();
+                            tx_dat_dest.Text = ayu2.ReturnValueA[2].ToString();
+                            tx_dest.Text = ayu2.ReturnValueA[].ToString();
+                            tx_item.Text = ayu2.ReturnValueA[].ToString();
+                            tx_nombre.Text = ayu2.ReturnValueA[].ToString();
+                            tx_medidas.Text = ayu2.ReturnValueA[].ToString();
+                            tx_dat_mad.Text = ayu2.ReturnValueA[].ToString();
+                            tx_nomad.Text = ayu2.ReturnValueA[].ToString();
+                            tx_dat_aca.Text = ayu2.ReturnValueA[].ToString();
+                            tx_acabad.Text = ayu2.ReturnValueA[].ToString();
                         }
                     }
                 }
@@ -126,7 +135,8 @@ namespace iOMG
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
-            // aca van las longitudes de campos y demas
+            tx_comen.MaxLength = 50;
+            //cmb_tipo.Enabled = false;                       // no se debe mover el tipo de ingreso
         }
         private void jalainfo()                             // obtiene datos de imagenes
         {
@@ -163,7 +173,8 @@ namespace iOMG
                     }
                     if (row["formulario"].ToString() == nomform)
                     {
-                        if (row["campo"].ToString() == "tipocon" && row["param"].ToString() == "normal") tipede = row["valor"].ToString().Trim();               // tipo de ingreso
+                        if (row["campo"].ToString() == "tipoing" && row["param"].ToString() == "cliente") tipede = row["valor"].ToString().Trim();   // tipo de movimiento venta
+                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "cliente") tipedc = row["valor"].ToString().Trim();   // tipo ped cliente
                     }
                 }
                 da.Dispose();
@@ -191,10 +202,21 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
-                string datgri = "select a.* " +
-                    "from movim a ";   //  where a.tipocon=@tip
+                string datgri = "select a.iddetam,date(a.fecha) as fecha,a.tipo,a.uantes,a.uactual,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
+                    "dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,b.descrizionerid as nomad,c.descrizionerid as acabado," +
+                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin " +
+                    "from detam a " +
+                    "left join detaped dp on dp.pedidoh=a.pedido " +
+                    "left join desc_mad b on b.idcodice=dp.madera " +
+                    "left join desc_est c on c.idcodice=dp.estado " +
+                    "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@tpe " +
+                    "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
+                    "left join desc_alm d on d.idcodice=a.uantes " +
+                    "left join desc_alm e on e.idcodice=a.uactual " +
+                    "order by iddetam";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
-                //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
+                cdg.Parameters.AddWithValue("@tpe", tipedc);                    // codigo pedido cliente
+                //cdg.Parameters.AddWithValue("@tip", tipede);                  // "TPE001"
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
@@ -204,7 +226,7 @@ namespace iOMG
             if (quien == "todos")
             {
                 // seleccion de tipo de contrato
-                const string conpedido = "select descrizionerid,idcodice from desc_tmo " +
+                const string conpedido = "select descrizionerid,idcodice from desc_tms " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdpedido = new MySqlCommand(conpedido, conn);
                 DataTable dtpedido = new DataTable();
@@ -220,7 +242,8 @@ namespace iOMG
         }
         private void grilla()                               // arma la grilla
         {
-            // 
+            // iddetam,fecha,tipo,uantes,uactual,pedido,cliente,coment,
+            // item,nombre,medidas,madera,estado,nomad,acabado,nomorig,nomdestin
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -230,88 +253,139 @@ namespace iOMG
             // id 
             advancedDataGridView1.Columns[0].Visible = false;
             advancedDataGridView1.Columns[0].HeaderText = "id";    // titulo de la columna
-            // tipo contrato
-            advancedDataGridView1.Columns[1].Visible = false;
-            // codigo de contrato
+            // fecha de ingreso
+            advancedDataGridView1.Columns[1].Visible = true;
+            advancedDataGridView1.Columns[1].HeaderText = "F.Ingreso";    // titulo de la columna
+            advancedDataGridView1.Columns[1].Width = 70;                // ancho
+            advancedDataGridView1.Columns[1].ReadOnly = true;           // lectura o no
+            advancedDataGridView1.Columns[1].Tag = "validaNO";
+            advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // tipo movimiento
             advancedDataGridView1.Columns[2].Visible = true;            // columna visible o no
-            advancedDataGridView1.Columns[2].HeaderText = "Contrato";    // titulo de la columna
-            advancedDataGridView1.Columns[2].Width = 70;                // ancho
+            advancedDataGridView1.Columns[2].HeaderText = "Tipo";    // titulo de la columna
+            advancedDataGridView1.Columns[2].Width = 60;                // ancho
             advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             advancedDataGridView1.Columns[2].Tag = "validaNO";
             advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // estado del contrato
+            // taller origen
             advancedDataGridView1.Columns[3].Visible = true;
-            advancedDataGridView1.Columns[3].HeaderText = "Estado";    // titulo de la columna
+            advancedDataGridView1.Columns[3].HeaderText = "Taller";    // titulo de la columna
             advancedDataGridView1.Columns[3].Width = 70;                // ancho
             advancedDataGridView1.Columns[3].ReadOnly = true;           // lectura o no
             advancedDataGridView1.Columns[3].Tag = "validaNO";
             advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Local venta
+            // almacen destino
             advancedDataGridView1.Columns[4].Visible = true;
-            advancedDataGridView1.Columns[4].HeaderText = "Local Vta.";
+            advancedDataGridView1.Columns[4].HeaderText = "Destino";
             advancedDataGridView1.Columns[4].Width = 80;
             advancedDataGridView1.Columns[4].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[4].Tag = "validaSI";          // las celdas de esta columna se SI se validan
             advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Fecha del contrato
+            // pedido de cliente
             advancedDataGridView1.Columns[5].Visible = true;
-            advancedDataGridView1.Columns[5].HeaderText = "Fecha";
+            advancedDataGridView1.Columns[5].HeaderText = "Pedido";
             advancedDataGridView1.Columns[5].Width = 70;
             advancedDataGridView1.Columns[5].ReadOnly = true;
             advancedDataGridView1.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // id cliente
+            // nombre cliente
             advancedDataGridView1.Columns[6].Visible = true;
-            advancedDataGridView1.Columns[6].HeaderText = "Cliente";
-            advancedDataGridView1.Columns[6].Width = 80;
+            advancedDataGridView1.Columns[6].HeaderText = "Nombre del cliente";
+            advancedDataGridView1.Columns[6].Width = 150;
             advancedDataGridView1.Columns[6].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // nombre cliente
+            // comentarios
             advancedDataGridView1.Columns[7].Visible = true;
-            advancedDataGridView1.Columns[7].HeaderText = "Nombre del cliente";
+            advancedDataGridView1.Columns[7].HeaderText = "Comentarios";
             advancedDataGridView1.Columns[7].Width = 200;
             advancedDataGridView1.Columns[7].ReadOnly = true;
             advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // comentarios
-            advancedDataGridView1.Columns[8].Visible = true;
-            advancedDataGridView1.Columns[8].HeaderText = "Comentarios";
-            advancedDataGridView1.Columns[8].Width = 250;
-            advancedDataGridView1.Columns[8].ReadOnly = false;
-            advancedDataGridView1.Columns[8].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Fecha de Entrega
-            advancedDataGridView1.Columns[9].Visible = true;
-            advancedDataGridView1.Columns[9].HeaderText = "Fecha Ent";
+            // a.madera,a.estado    ==> 17 columnas
+            advancedDataGridView1.Columns[8].Visible = false;
+            advancedDataGridView1.Columns[8].HeaderText = "Cant";
+            advancedDataGridView1.Columns[8].Width = 40;
+            advancedDataGridView1.Columns[8].ReadOnly = true;
+            // codigo art
+            advancedDataGridView1.Columns[9].Visible = false;
+            advancedDataGridView1.Columns[9].HeaderText = "Articulo";
             advancedDataGridView1.Columns[9].Width = 70;
-            advancedDataGridView1.Columns[9].ReadOnly = false;
-            advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // dir entrega
-            advancedDataGridView1.Columns[10].Visible = true;
-            advancedDataGridView1.Columns[10].HeaderText = "Dir.Entrega";
+            advancedDataGridView1.Columns[9].ReadOnly = true;
+            // medidas
+            advancedDataGridView1.Columns[10].Visible = false;
+            advancedDataGridView1.Columns[10].HeaderText = "Medidas";
             advancedDataGridView1.Columns[10].Width = 150;
-            advancedDataGridView1.Columns[10].ReadOnly = false;
-            advancedDataGridView1.Columns[10].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // valor
+            advancedDataGridView1.Columns[10].ReadOnly = true;
+            // nombre madera
             advancedDataGridView1.Columns[11].Visible = false;
-            // a cuenta
+            advancedDataGridView1.Columns[11].HeaderText = "Nom.Mad";
+            advancedDataGridView1.Columns[11].Width = 60;
+            advancedDataGridView1.Columns[11].ReadOnly = true;
+            // nombre acabado
             advancedDataGridView1.Columns[12].Visible = false;
-            // saldo
+            advancedDataGridView1.Columns[12].HeaderText = "Nom.Acab.";
+            advancedDataGridView1.Columns[12].Width = 60;
+            advancedDataGridView1.Columns[12].ReadOnly = true;
+            // precio
             advancedDataGridView1.Columns[13].Visible = false;
-            // descuento %
+            advancedDataGridView1.Columns[13].HeaderText = "Precio";
+            advancedDataGridView1.Columns[13].Width = 60;
+            advancedDataGridView1.Columns[13].ReadOnly = true;
+            // total
             advancedDataGridView1.Columns[14].Visible = false;
+            advancedDataGridView1.Columns[14].HeaderText = "Total";
+            advancedDataGridView1.Columns[14].Width = 60;
+            advancedDataGridView1.Columns[14].ReadOnly = true;
+            // madera
+            advancedDataGridView1.Columns[15].Visible = false;
+            advancedDataGridView1.Columns[15].HeaderText = "Madera";
+            advancedDataGridView1.Columns[15].Width = 60;
+            advancedDataGridView1.Columns[15].ReadOnly = true;
+            // acabado
+            advancedDataGridView1.Columns[16].Visible = false;
+            advancedDataGridView1.Columns[16].HeaderText = "Acabado";
+            advancedDataGridView1.Columns[16].Width = 60;
+            advancedDataGridView1.Columns[16].ReadOnly = true;
+            // nomorig
+            advancedDataGridView1.Columns[17].Visible = false;
+            advancedDataGridView1.Columns[17].HeaderText = "nomorig";
+            advancedDataGridView1.Columns[17].Width = 60;
+            advancedDataGridView1.Columns[17].ReadOnly = true;
+            // nomdestin
+            advancedDataGridView1.Columns[18].Visible = false;
+            advancedDataGridView1.Columns[18].HeaderText = "nomdestin";
+            advancedDataGridView1.Columns[18].Width = 60;
+            advancedDataGridView1.Columns[18].ReadOnly = true;
+            // nombre del articulo 
+            advancedDataGridView1.Columns[19].Visible = false;
+            advancedDataGridView1.Columns[19].HeaderText = "nombre";
+            advancedDataGridView1.Columns[19].Width = 60;
+            advancedDataGridView1.Columns[19].ReadOnly = true;
         }
-        private void jalaoc(string campo)                   // jala datos del pedido
+        private void jalaoc(string campo)                   // jala datos
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
             {
-                // 
-                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // tipo ingreso
-                dtp_ingreso.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());
-                jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
+                // a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,a.cliente,a.coment,
+                // a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total,
+                // a.madera,a.estado,nomorig,nomdestin,nombre    ==> 20 columnas
+                tx_pedido.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["pedido"].Value.ToString();                      // 
+                dtp_ingreso.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fechain"].Value.ToString());
+                tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["tipoes"].Value.ToString();                   // tipo ingreso
+                tx_cliente.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cliente"].Value.ToString();                    // nombre del cliente
+                tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["origen"].Value.ToString();                    // codigo taller
+                tx_origen.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomorig"].Value.ToString();
+                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["destino"].Value.ToString();
+                tx_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomdestin"].Value.ToString();
+                tx_comen.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["coment"].Value.ToString();
+                tx_item.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["articulo"].Value.ToString();
+                tx_nombre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nombre"].Value.ToString();
+                tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["med1"].Value.ToString();
+                tx_dat_mad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["madera"].Value.ToString();
+                tx_nomad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomad"].Value.ToString();
+                tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
+                tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
             }
@@ -322,43 +396,31 @@ namespace iOMG
                 {
                     if (row["pedido"].ToString().Trim() == tx_pedido.Text.Trim())
                     {
-                        // 
-                        tx_dat_tiped.Text = row["tipoing"].ToString();                      // tipo ingreso
-                        tx_idr.Text = row["id"].ToString();                                 // id del registro
                         tx_rind.Text = cta.ToString();
-                        dtp_ingreso.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha 
-                        jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
+                        tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["idmovim"].Value.ToString();                      // 
+                        dtp_ingreso.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fechain"].Value.ToString());
+                        tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["tipoes"].Value.ToString();                   // tipo ingreso
+                        tx_cliente.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cliente"].Value.ToString();                    // nombre del cliente
+                        tx_dat_orig.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["origen"].Value.ToString();                    // codigo taller
+                        tx_origen.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomorig"].Value.ToString();
+                        tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["destino"].Value.ToString();
+                        tx_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomdestin"].Value.ToString();
+                        tx_comen.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["coment"].Value.ToString();
+                        tx_item.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["articulo"].Value.ToString();
+                        tx_nombre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nombre"].Value.ToString();
+                        tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["med1"].Value.ToString();
+                        tx_dat_mad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["madera"].Value.ToString();
+                        tx_nomad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomad"].Value.ToString();
+                        tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
+                        tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
+                        //
+                        cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                     }
                     cta = cta + 1;
                 }
             }
         }
-        private void jaladatclt(string id)                  // jala datos del cliente
-        {
-            Int32 vi = -1;
-            string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),ifnull(desc_doc.cnt,'') " +
-                "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
-                "where idanagrafica=@idc";
-            //try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@idc", id);
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        tx_cliente.Text = dr.GetString(0);
-                    }
-                    dr.Close();
-                }
-                conn.Close();
-            }
-        }
-        private bool graba()                                // graba cabecera y detalle
+        private bool graba()                                // graba cabecera
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -367,10 +429,20 @@ namespace iOMG
             {
                 try
                 {
-                    string inserta = "insert into movim (???,USER,dia) values (???,@asd,now())";
+                    string inserta = "insert into movim (fechain,tipoes,origen,destino,pedido,coment," +
+                    "cant,articulo,med1,precio,total,madera,estado,USER,dia) " +
+                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@cant,@arti,@med1,@prec,@tota,@made,@esta,@asd,now())";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@orig", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@dest", tx_dat_dest.Text);
+                    micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
+                    micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
+                    micon.Parameters.AddWithValue("@arti", tx_item.Text);
+                    micon.Parameters.AddWithValue("@med1", tx_medidas.Text);
+                    micon.Parameters.AddWithValue("@made", tx_dat_mad.Text);
+                    micon.Parameters.AddWithValue("@esta", tx_dat_aca.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
@@ -398,7 +470,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private bool edita()                                // actualiza cabecera y detalle
+        private bool edita()                                // actualiza solo comentario y tipo
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -409,11 +481,14 @@ namespace iOMG
                 {
                     // 
                     string actua = "update movim set " +
-                        "????=@??? " +
-                        "where id=@idr";
+                        "tipoes=@tipe,fechain=@fein,coment=@come,USER=@asd,dia=now() " +
+                        "where idmovim=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
-                    micon.Parameters.AddWithValue("@tco", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@fein", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
+                    micon.Parameters.AddWithValue("@asd", asd);
                     micon.ExecuteNonQuery();
                     retorna = true;
                 }
@@ -439,40 +514,93 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
+                /*      // ACA COORDINAR CON GLORIA SI SE BORRA, ANULA O NO SE HACE NADA
                 string anu = "update movim set user=@asd,dia=now() " +
                     "where id=@idr";
                 MySqlCommand micon = new MySqlCommand(anu, conn);
                 micon.Parameters.AddWithValue("@asd", asd);
                 micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                 micon.ExecuteNonQuery();
+                */
                 retorna = true;
             }
             conn.Close();
             return retorna;
         }
-        private bool valexist(String docu)                  // valida existencia del pedido
+        private bool valexist(string docu)                  // valida existencia del pedido
         {
             bool retorna = true;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                string consulta = "select count(*) from pedidos where codped=@doc";
+                string consulta = "select count(*) from pedidos where trim(codped)=@doc";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@doc", docu);
+                micon.Parameters.AddWithValue("@doc", docu.Trim());
                 MySqlDataReader dr = micon.ExecuteReader();
                 if (dr.HasRows)
                 {
                     if (dr.Read())
                     {
                         if (dr.GetInt16(0) > 0) retorna = true;
-                        else retorna = false;
+                        else
+                        {
+                            MessageBox.Show("No existe el pedido ingresado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            tx_pedido.Text = "";
+                            tx_dat_ped.Text = "";
+                            retorna = false;
+                        }
                     }
                     dr.Close();
                 }
             }
             conn.Close();
             return retorna;
+        }
+        private void jalaped(string pedi)                   // jala y muestra datos del pedido
+        {
+
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
+                    "b.cant,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
+                    "m.descrizionerid as nomad,e.descrizionerid as acabado," +
+                    "o.descrizionerid as nomorig,d.descrizionerid as nomdestin " +
+                    "from pedidos a left join detaped b on b.pedidoh=a.codped " +
+                    "left join desc_mad m on m.idcodice=b.madera " +
+                    "left join desc_est e on e.idcodice=b.estado " +
+                    "left join desc_loc o on o.idcodice=a.origen " +
+                    "left join desc_alm d on d.idcodice=a.destino " +
+                    "left join anag_cli cl on cl.idanagrafica=a.cliente " +
+                    "where a.codped=@doc and a.tipoes=@tip";
+                MySqlCommand micon = new MySqlCommand(consulta, conn);
+                micon.Parameters.AddWithValue("@doc", pedi);
+                micon.Parameters.AddWithValue("@tip", tipedc);
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        tx_dat_ped.Text = dr.GetString(0);              // para las validaciones con F1
+                        tx_cliente.Text = dr.GetString(3);
+                        tx_origen.Text = dr.GetString(14);
+                        tx_dat_orig.Text = dr.GetString(1);
+                        tx_dest.Text = dr.GetString(15);
+                        tx_dat_dest.Text = dr.GetString(2);
+                        tx_item.Text = dr.GetString(5);
+                        tx_nombre.Text = dr.GetString(6);
+                        tx_medidas.Text = dr.GetString(7);
+                        tx_nomad.Text = dr.GetString(12);
+                        tx_dat_mad.Text = dr.GetString(8);
+                        tx_acabad.Text = dr.GetString(13);
+                        tx_dat_aca.Text = dr.GetString(9);
+                    }
+                    dr.Close();
+                }
+            }
+            conn.Close();
         }
         string[] equivinter(string titulo)                  // equivalencia entre titulo de columna y tabla 
         {
@@ -612,7 +740,7 @@ namespace iOMG
         {
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
-            escribe(this);
+            sololee(this);
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
             dtp_ingreso.Value = DateTime.Now;
@@ -620,8 +748,11 @@ namespace iOMG
             //
             tx_dat_tiped.Text = tipede;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            tx_idr.ReadOnly = true;
-            tx_rind.ReadOnly = true;
+            tx_pedido.Enabled = true;
+            dtp_ingreso.Enabled = true;
+            //cmb_tipo.Enabled = true;
+            tx_comen.Enabled = true;
+            tx_pedido.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -633,6 +764,10 @@ namespace iOMG
             limpiar(this);
             tx_pedido.Enabled = true;
             tx_pedido.ReadOnly = false;
+            tx_comen.ReadOnly = false;
+            tx_comen.Enabled = true;
+            dtp_ingreso.Enabled = true;
+            //cmb_tipo.Enabled = true;
             tx_pedido.Focus();
             //
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
@@ -847,7 +982,11 @@ namespace iOMG
         }
         #endregion limpiadores_modos;
         #region comboboxes
-        // veremos que va aca
+        private void cmb_tipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
+            else tx_dat_tiped.Text = tipede; //cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         #endregion comboboxes
         #region boton_form GRABA EDITA ANULA - agrega detalle
         private void button1_Click(object sender, EventArgs e)
@@ -858,7 +997,7 @@ namespace iOMG
             {
                 if (tx_dat_tiped.Text == "")
                 {
-                    MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    MessageBox.Show("Seleccione el tipo de ingreso", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     cmb_tipo.Focus();
                     return;
                 }
@@ -876,18 +1015,33 @@ namespace iOMG
                 {
                     if (graba() == true)
                     {
-                        // insertamos en el datatable
+                        // a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,a.cliente,a.coment,
+                        // a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total,
+                        // a.madera,a.estado,nomorig,nomdestin,nombre
                         DataRow dr = dtg.NewRow();
-                        // 
                         string cid = tx_idr.Text;
                         dr[0] = cid;
-                        dr[1] = tx_dat_tiped.Text;
-                        // aca van el resto ....
+                        dr[1] = dtp_ingreso.Value.ToString("dd/MM/yyyy");
+                        dr[2] = tx_dat_tiped.Text;
+                        dr[3] = tx_dat_orig.Text;
+                        dr[4] = tx_dat_dest.Text;
+                        dr[5] = tx_pedido.Text;
+                        dr[6] = tx_cliente.Text.Trim();
+                        dr[7] = tx_comen.Text.Trim();
+                        dr[9] = tx_item.Text;
+                        dr[10] = tx_medidas.Text;
+                        dr[11] = tx_nomad.Text;
+                        dr[12] = tx_acabad.Text;
+                        dr[15] = tx_dat_mad.Text;
+                        dr[16] = tx_dat_aca.Text;
+                        dr[17] = tx_origen.Text;
+                        dr[18] = tx_dest.Text;
+                        dr[19] = tx_nombre.Text;
                         dtg.Rows.Add(dr);
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo grabar el contrato", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No se pudo grabar el ingreso", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Application.Exit();
                         return;
                     }
@@ -913,9 +1067,9 @@ namespace iOMG
                             DataRow row = dtg.Rows[i];
                             if (row[0].ToString() == tx_idr.Text)
                             {
-                                // 
-                                //dtg.Rows[i][8] = tx_coment.Text;
-                                dtg.Rows[i][9] = dtp_ingreso.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][1] = dtp_ingreso.Value.ToString("yyyy-MM-dd");
+                                dtg.Rows[i][2] = tx_dat_tiped.Text;
+                                dtg.Rows[i][7] = tx_comen.Text.Trim();
                             }
                         }
                     }
@@ -968,6 +1122,14 @@ namespace iOMG
         }
         private void tx_pedido_Leave(object sender, EventArgs e)
         {
+            if (Tx_modo.Text == "NUEVO" && tx_pedido.Text != "")
+            {
+                if (valexist(tx_pedido.Text) == true && tx_dat_ped.Text.Trim() != tx_pedido.Text.Trim())
+                {
+                    // jalamos los datos del pedido y mostramos
+                    jalaped(tx_pedido.Text);
+                }
+            }
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")
             {
                 jalaoc("tx_codped");                        // jalamos los datos
@@ -989,7 +1151,7 @@ namespace iOMG
         }
         private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2 && Tx_modo.Text != "NUEVO")
+            if (e.ColumnIndex == 1 && Tx_modo.Text != "NUEVO")
             {
                 //string codu = "";
                 string idr, rind = "";
@@ -1005,7 +1167,7 @@ namespace iOMG
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
         {
             if (e.RowIndex > -1 && e.ColumnIndex > 0
-                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString()
+                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString() != e.FormattedValue.ToString()
                 && Tx_modo.Text == "EDITAR")
             {
                 string campo = advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString();
