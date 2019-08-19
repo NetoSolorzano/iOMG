@@ -91,7 +91,6 @@
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tx_dest = new System.Windows.Forms.TextBox();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -745,17 +744,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(349, 62);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(66, 13);
+            this.label9.Size = new System.Drawing.Size(43, 13);
             this.label9.TabIndex = 322;
-            this.label9.Text = "Alm. Destino";
-            // 
-            // tx_dest
-            // 
-            this.tx_dest.Location = new System.Drawing.Point(421, 58);
-            this.tx_dest.Name = "tx_dest";
-            this.tx_dest.ReadOnly = true;
-            this.tx_dest.Size = new System.Drawing.Size(100, 20);
-            this.tx_dest.TabIndex = 321;
+            this.label9.Text = "Destino";
             // 
             // groupBox19
             // 
@@ -1011,7 +1002,6 @@
             this.Controls.Add(this.tx_dat_dest);
             this.Controls.Add(this.groupBox17);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.tx_dest);
             this.Controls.Add(this.tx_dat_orig);
             this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.label8);
@@ -1130,7 +1120,6 @@
         private System.Windows.Forms.GroupBox groupBox17;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tx_dest;
         private System.Windows.Forms.GroupBox groupBox19;
         private System.Windows.Forms.GroupBox groupBox20;
         private System.Windows.Forms.Label label10;
