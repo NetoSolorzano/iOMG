@@ -72,15 +72,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dtp_ingreso = new System.Windows.Forms.DateTimePicker();
             this.tx_cliente = new System.Windows.Forms.TextBox();
-            this.tx_cant = new iOMG.NumericTextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.tx_rind = new iOMG.NumericTextBox();
-            this.tx_idr = new iOMG.NumericTextBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -124,11 +121,15 @@
             this.groupBox29 = new System.Windows.Forms.GroupBox();
             this.groupBox30 = new System.Windows.Forms.GroupBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.tx_precio = new iOMG.NumericTextBox();
             this.groupBox31 = new System.Windows.Forms.GroupBox();
             this.groupBox32 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.tx_dat_ped = new System.Windows.Forms.TextBox();
             this.tx_total = new iOMG.NumericTextBox();
+            this.tx_precio = new iOMG.NumericTextBox();
+            this.tx_idr = new iOMG.NumericTextBox();
+            this.tx_rind = new iOMG.NumericTextBox();
+            this.tx_cant = new iOMG.NumericTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -595,15 +596,6 @@
             this.tx_cliente.Size = new System.Drawing.Size(483, 20);
             this.tx_cliente.TabIndex = 304;
             // 
-            // tx_cant
-            // 
-            this.tx_cant.AllowSpace = false;
-            this.tx_cant.Location = new System.Drawing.Point(165, 157);
-            this.tx_cant.Name = "tx_cant";
-            this.tx_cant.ReadOnly = true;
-            this.tx_cant.Size = new System.Drawing.Size(40, 20);
-            this.tx_cant.TabIndex = 305;
-            // 
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.Color.DimGray;
@@ -657,27 +649,6 @@
             this.label4.Size = new System.Drawing.Size(27, 13);
             this.label4.TabIndex = 308;
             this.label4.Text = "Item";
-            // 
-            // tx_rind
-            // 
-            this.tx_rind.AllowSpace = false;
-            this.tx_rind.Location = new System.Drawing.Point(48, 42);
-            this.tx_rind.Name = "tx_rind";
-            this.tx_rind.ReadOnly = true;
-            this.tx_rind.Size = new System.Drawing.Size(40, 20);
-            this.tx_rind.TabIndex = 310;
-            this.tx_rind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_idr
-            // 
-            this.tx_idr.AllowSpace = false;
-            this.tx_idr.Location = new System.Drawing.Point(48, 64);
-            this.tx_idr.Name = "tx_idr";
-            this.tx_idr.ReadOnly = true;
-            this.tx_idr.Size = new System.Drawing.Size(40, 20);
-            this.tx_idr.TabIndex = 313;
-            this.tx_idr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
             // 
             // groupBox9
             // 
@@ -1053,15 +1024,6 @@
             this.label15.TabIndex = 344;
             this.label15.Text = "Precio";
             // 
-            // tx_precio
-            // 
-            this.tx_precio.AllowSpace = false;
-            this.tx_precio.Location = new System.Drawing.Point(355, 157);
-            this.tx_precio.Name = "tx_precio";
-            this.tx_precio.ReadOnly = true;
-            this.tx_precio.Size = new System.Drawing.Size(100, 20);
-            this.tx_precio.TabIndex = 343;
-            // 
             // groupBox31
             // 
             this.groupBox31.BackColor = System.Drawing.Color.DimGray;
@@ -1089,6 +1051,14 @@
             this.label16.TabIndex = 347;
             this.label16.Text = "Total S/";
             // 
+            // tx_dat_ped
+            // 
+            this.tx_dat_ped.Location = new System.Drawing.Point(165, 8);
+            this.tx_dat_ped.Name = "tx_dat_ped";
+            this.tx_dat_ped.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_ped.TabIndex = 349;
+            this.tx_dat_ped.Visible = false;
+            // 
             // tx_total
             // 
             this.tx_total.AllowSpace = false;
@@ -1098,11 +1068,51 @@
             this.tx_total.Size = new System.Drawing.Size(100, 20);
             this.tx_total.TabIndex = 346;
             // 
+            // tx_precio
+            // 
+            this.tx_precio.AllowSpace = false;
+            this.tx_precio.Location = new System.Drawing.Point(355, 157);
+            this.tx_precio.Name = "tx_precio";
+            this.tx_precio.ReadOnly = true;
+            this.tx_precio.Size = new System.Drawing.Size(100, 20);
+            this.tx_precio.TabIndex = 343;
+            // 
+            // tx_idr
+            // 
+            this.tx_idr.AllowSpace = false;
+            this.tx_idr.Location = new System.Drawing.Point(48, 64);
+            this.tx_idr.Name = "tx_idr";
+            this.tx_idr.ReadOnly = true;
+            this.tx_idr.Size = new System.Drawing.Size(40, 20);
+            this.tx_idr.TabIndex = 313;
+            this.tx_idr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
+            // 
+            // tx_rind
+            // 
+            this.tx_rind.AllowSpace = false;
+            this.tx_rind.Location = new System.Drawing.Point(48, 42);
+            this.tx_rind.Name = "tx_rind";
+            this.tx_rind.ReadOnly = true;
+            this.tx_rind.Size = new System.Drawing.Size(40, 20);
+            this.tx_rind.TabIndex = 310;
+            this.tx_rind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_cant
+            // 
+            this.tx_cant.AllowSpace = false;
+            this.tx_cant.Location = new System.Drawing.Point(165, 157);
+            this.tx_cant.Name = "tx_cant";
+            this.tx_cant.ReadOnly = true;
+            this.tx_cant.Size = new System.Drawing.Size(40, 20);
+            this.tx_cant.TabIndex = 305;
+            // 
             // ingpedclts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 505);
+            this.Controls.Add(this.tx_dat_ped);
             this.Controls.Add(this.groupBox31);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.tx_total);
@@ -1291,5 +1301,6 @@
         private System.Windows.Forms.GroupBox groupBox32;
         private System.Windows.Forms.Label label16;
         private NumericTextBox tx_total;
+        private System.Windows.Forms.TextBox tx_dat_ped;
     }
 }

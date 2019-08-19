@@ -70,7 +70,8 @@ namespace iOMG
                 if (tx_pedido.Focused == true)     // pedidos de clientes
                 {
                     para1 = "pedidos";
-                    para2 = "pend"; // que no esten aun recibidos
+                    para2 = "pend";                                         // que no esten aun recibidos
+                    para3 = tipedc;                                         // pedidos de clientes
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -78,9 +79,26 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             // ayu2.ReturnValue0;
-                            //tx_a_codig.Text = ayu2.ReturnValue1;
-                            //tx_a_nombre.Text = ayu2.ReturnValue2;
+                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15
+                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin
                             // llenado de campos
+                            tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
+                            tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
+                            tx_cliente.Text = ayu2.ReturnValueA[3].ToString();
+                            tx_dat_orig.Text = ayu2.ReturnValueA[1].ToString();
+                            tx_origen.Text = ayu2.ReturnValueA[14].ToString();
+                            tx_dat_dest.Text = ayu2.ReturnValueA[2].ToString();
+                            tx_dest.Text = ayu2.ReturnValueA[15].ToString();
+                            tx_item.Text = ayu2.ReturnValueA[5].ToString();
+                            tx_nombre.Text = ayu2.ReturnValueA[6].ToString();
+                            tx_medidas.Text = ayu2.ReturnValueA[7].ToString();
+                            tx_dat_mad.Text = ayu2.ReturnValueA[8].ToString();
+                            tx_nomad.Text = ayu2.ReturnValueA[12].ToString();
+                            tx_dat_aca.Text = ayu2.ReturnValueA[9].ToString();
+                            tx_acabad.Text = ayu2.ReturnValueA[13].ToString();
+                            tx_cant.Text = ayu2.ReturnValueA[4].ToString();
+                            tx_precio.Text = ayu2.ReturnValueA[10].ToString();
+                            tx_total.Text = ayu2.ReturnValueA[11].ToString();
                         }
                     }
                 }
@@ -122,6 +140,7 @@ namespace iOMG
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
             tx_comen.MaxLength = 50;
+            cmb_tipo.Enabled = false;                       // no se debe mover el tipo de ingreso
         }
         private void jalainfo()                             // obtiene datos de imagenes
         {
@@ -196,7 +215,8 @@ namespace iOMG
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_loc d on d.idcodice=a.origen " +
                     "left join desc_alm e on e.idcodice=a.destino " +
-                    "left join detaped dp on dp.pedidoh=pe.codped";
+                    "left join detaped dp on dp.pedidoh=a.pedido " +
+                    "order by idmovim";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tpe", tipedc);                    // codigo pedido cliente
                 //cdg.Parameters.AddWithValue("@tip", tipede);                  // "TPE001"
@@ -474,11 +494,12 @@ namespace iOMG
                 {
                     // 
                     string actua = "update movim set " +
-                        "tipoes=@tipe,coment=@come,USER=@asd,dia=now() " +
+                        "tipoes=@tipe,fechain=@fein,coment=@come,USER=@asd,dia=now() " +
                         "where idmovim=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@fein", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.ExecuteNonQuery();
@@ -526,16 +547,22 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                string consulta = "select count(*) from pedidos where codped=@doc";
+                string consulta = "select count(*) from pedidos where trim(codped)=@doc";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@doc", docu);
+                micon.Parameters.AddWithValue("@doc", docu.Trim());
                 MySqlDataReader dr = micon.ExecuteReader();
                 if (dr.HasRows)
                 {
                     if (dr.Read())
                     {
                         if (dr.GetInt16(0) > 0) retorna = true;
-                        else retorna = false;
+                        else
+                        {
+                            MessageBox.Show("No existe el pedido ingresado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            tx_pedido.Text = "";
+                            tx_dat_ped.Text = "";
+                            retorna = false;
+                        }
                     }
                     dr.Close();
                 }
@@ -545,12 +572,21 @@ namespace iOMG
         }
         private void jalaped(string pedi)                   // jala y muestra datos del pedido
         {
+
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
-            if (conn.State == ConnectionState.Open)     // me quede aca seleccionando los campos de las tablas
+            if (conn.State == ConnectionState.Open)
             {
-                string consulta = "select ????? " +
+                string consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
+                    "b.cant,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
+                    "m.descrizionerid as nomad,e.descrizionerid as acabado," +
+                    "o.descrizionerid as nomorig,d.descrizionerid as nomdestin " +
                     "from pedidos a left join detaped b on b.pedidoh=a.codped " +
+                    "left join desc_mad m on m.idcodice=b.madera " +
+                    "left join desc_est e on e.idcodice=b.estado " +
+                    "left join desc_loc o on o.idcodice=a.origen " +
+                    "left join desc_alm d on d.idcodice=a.destino " +
+                    "left join anag_cli cl on cl.idanagrafica=a.cliente " +
                     "where a.codped=@doc and a.tipoes=@tip";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@doc", pedi);
@@ -560,21 +596,22 @@ namespace iOMG
                 {
                     if (dr.Read())
                     {
-                        tx_cliente.Text = dr.GetString(0);
-                        tx_origen.Text = dr.GetString(0);
-                        tx_dat_orig.Text = dr.GetString(0);
-                        tx_dest.Text = dr.GetString(0);
-                        tx_dat_dest.Text = dr.GetString(0);
-                        tx_item.Text = dr.GetString(0);
-                        tx_nombre.Text = dr.GetString(0);
-                        tx_medidas.Text = dr.GetString(0);
-                        tx_nomad.Text = dr.GetString(0);
-                        tx_dat_mad.Text = dr.GetString(0);
-                        tx_acabad.Text = dr.GetString(0);
-                        tx_dat_aca.Text = dr.GetString(0);
-                        tx_cant.Text = dr.GetString(0);
-                        tx_precio.Text = dr.GetString(0);
-                        tx_total.Text = dr.GetString(0);
+                        tx_dat_ped.Text = dr.GetString(0);              // para las validaciones con F1
+                        tx_cliente.Text = dr.GetString(3);
+                        tx_origen.Text = dr.GetString(14);
+                        tx_dat_orig.Text = dr.GetString(1);
+                        tx_dest.Text = dr.GetString(15);
+                        tx_dat_dest.Text = dr.GetString(2);
+                        tx_item.Text = dr.GetString(5);
+                        tx_nombre.Text = dr.GetString(6);
+                        tx_medidas.Text = dr.GetString(7);
+                        tx_nomad.Text = dr.GetString(12);
+                        tx_dat_mad.Text = dr.GetString(8);
+                        tx_acabad.Text = dr.GetString(13);
+                        tx_dat_aca.Text = dr.GetString(9);
+                        tx_cant.Text = dr.GetString(4);
+                        tx_precio.Text = dr.GetString(10);
+                        tx_total.Text = dr.GetString(11);
                     }
                     dr.Close();
                 }
@@ -729,7 +766,7 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_pedido.Enabled = true;
             dtp_ingreso.Enabled = true;
-            cmb_tipo.Enabled = true;
+            //cmb_tipo.Enabled = true;
             tx_comen.Enabled = true;
             tx_pedido.Focus();
         }
@@ -745,7 +782,8 @@ namespace iOMG
             tx_pedido.ReadOnly = false;
             tx_comen.ReadOnly = false;
             tx_comen.Enabled = true;
-            cmb_tipo.Enabled = true;
+            dtp_ingreso.Enabled = true;
+            //cmb_tipo.Enabled = true;
             tx_pedido.Focus();
             //
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
@@ -1105,17 +1143,10 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO" && tx_pedido.Text != "")
             {
-                if (valexist(tx_pedido.Text) == true)
+                if (valexist(tx_pedido.Text) == true && tx_dat_ped.Text.Trim() != tx_pedido.Text.Trim())
                 {
                     // jalamos los datos del pedido y mostramos
                     jalaped(tx_pedido.Text);
-                }
-                else
-                {
-                    MessageBox.Show("No existe el pedido ingresado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                    tx_pedido.Text = "";
-                    tx_pedido.Focus();
-                    return;
                 }
             }
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")

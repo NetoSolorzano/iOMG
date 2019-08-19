@@ -202,7 +202,7 @@ namespace iOMG
                 //
                 ReturnValueA = new string[8] { "", "", "", "", "", "", "", ""};
             }
-            if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
+            if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
             {
                 consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
                     "b.cant,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
@@ -215,7 +215,7 @@ namespace iOMG
                     "left join desc_loc o on o.idcodice=a.origen " +
                     "left join desc_alm d on d.idcodice=a.destino " +
                     "left join anag_cli cl on cl.idanagrafica=a.cliente " +
-                    "where c.pedido is null";
+                    "where c.pedido is null and a.tipoes=@para3";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 16;
                 dataGridView1.Columns[0].Name = " CODIGO";
@@ -379,10 +379,10 @@ namespace iOMG
                                                 );
                         }
                     }
-                    if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
+                    if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
                     {
                         MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
-                        //if (para2 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@para2", para2);
+                        mdaDatos.SelectCommand.Parameters.AddWithValue("@para3", para3);
                         mdaDatos.Fill(dtDatos);
                         int li = 0;   // contador de las lineas a llenar el datagrid
                         for (li = 0; li < dtDatos.Rows.Count; li++) // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
@@ -406,6 +406,7 @@ namespace iOMG
                                                 row.ItemArray[15].ToString()
                                                 );
                         }
+                        dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
                     }
                 }
                 catch (MySqlException ex)
@@ -461,16 +462,16 @@ namespace iOMG
                 ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
                 ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
-                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();
+                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
+                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
+                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
+                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();
             }
             this.Close();
         }
@@ -530,7 +531,7 @@ namespace iOMG
                 ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // madera
                 ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
             }
-            if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
+            if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -542,16 +543,16 @@ namespace iOMG
                 ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // 
                 ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // 
                 ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // 
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
-                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
-                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
-                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // 
-                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // 
-                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // 
-                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // 
+                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();   // 
+                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
+                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // 
+                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // 
+                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
+                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();   // 
+                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // 
+                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // 
+                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();   // 
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();
@@ -584,7 +585,7 @@ namespace iOMG
                     ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // madera
                     ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
                 }
-                if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
+                if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
                 {
                     tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                     //cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -596,16 +597,16 @@ namespace iOMG
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // 
                     ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // 
                     ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // 
-                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                    ReturnValueA[7] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
-                    ReturnValueA[8] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
-                    ReturnValueA[9] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
-                    ReturnValueA[10] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // 
-                    ReturnValueA[11] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // 
-                    ReturnValueA[12] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // 
-                    ReturnValueA[13] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                    ReturnValueA[14] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                    ReturnValueA[15] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
+                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // 
+                    ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();   // 
+                    ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
+                    ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // 
+                    ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // 
+                    ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
+                    ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();   // 
+                    ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // 
+                    ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // 
+                    ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();   // 
                 }
                 this.Close();
             }
@@ -739,28 +740,28 @@ namespace iOMG
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             }
-            if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
+            if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 //cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
-                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
-                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
-                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // 
-                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // 
-                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // 
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
-                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
-                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
-                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // 
-                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // 
-                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // 
-                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
-                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // codped
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // origen
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // destino
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // cliente
+                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // cant
+                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // item
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // nombre
+                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();   // medidas
+                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // madera
+                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // estado
+                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // precio
+                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // total
+                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();   // nomad
+                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // acabado
+                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // nomorig
+                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();   // nomdestin
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();

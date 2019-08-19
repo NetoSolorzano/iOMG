@@ -45,9 +45,12 @@ REPORTES
 ** desarrollo del formulario de pagos ........................... falta probar con chaleco
 ** formato crystal del contrato con pagos ....................... ok
 ** formulario contratos, llamda a pagos ......................... ok
-- INGRESOS DE PEDIDOS CLIENTES
-** Desarrollo del formulario ingpedclts ......................... 
-** me quede en ayuda2 de ingresos pedidos
+- INGRESOS DE PEDIDOS CLIENTES 17/08/2019
+** Desarrollo del formulario ingpedclts ......................... ok ... OJO, EL CAMPO PEDIDO EN LA TABLA MOVIM AMPLIAR A 10
+** Desarrollo en ayuda2 de ingresos pedidos ..................... ok
+- SALIDAS DE PEDIDOS CLIENTES 19/08/2019
+** Desarrollo del formulario salpedclts .........................
+** Desarrollo en ayuda2 de salidas pedidos ...................... 
 
 
 
