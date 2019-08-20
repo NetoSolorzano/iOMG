@@ -70,7 +70,7 @@ namespace iOMG
                 {
                     para1 = "movim";
                     para2 = "pend";                                         // que no esten aun entregados
-                    para3 = "";                                         // 
+                    para3 = tipedc;                                         // 
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -78,22 +78,20 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             // ayu2.ReturnValue0;
-                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15
-                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin
-                            // llenado de campos
+                            // a.pedido,cliente,a.destino,nomact,a.articulo,dp.nombre,a.med1,a.madera,nomad,a.estado,acabado
                             tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
                             tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_cliente.Text = ayu2.ReturnValueA[3].ToString();
-                            tx_dat_orig.Text = ayu2.ReturnValueA[1].ToString();
-                            tx_origen.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_dat_dest.Text = ayu2.ReturnValueA[2].ToString();
-                            tx_item.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_nombre.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_medidas.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_dat_mad.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_nomad.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_dat_aca.Text = ayu2.ReturnValueA[0].ToString();
-                            tx_acabad.Text = ayu2.ReturnValueA[0].ToString();
+                            tx_cliente.Text = ayu2.ReturnValueA[1].ToString();
+                            tx_dat_orig.Text = ayu2.ReturnValueA[2].ToString();
+                            tx_origen.Text = ayu2.ReturnValueA[3].ToString();
+                            //tx_dat_dest.Text = ayu2.ReturnValueA[].ToString();
+                            tx_item.Text = ayu2.ReturnValueA[4].ToString();
+                            tx_nombre.Text = ayu2.ReturnValueA[5].ToString();
+                            tx_medidas.Text = ayu2.ReturnValueA[6].ToString();
+                            tx_dat_mad.Text = ayu2.ReturnValueA[7].ToString();
+                            tx_nomad.Text = ayu2.ReturnValueA[8].ToString();
+                            tx_dat_aca.Text = ayu2.ReturnValueA[9].ToString();
+                            tx_acabad.Text = ayu2.ReturnValueA[10].ToString();
                         }
                     }
                 }
@@ -428,6 +426,15 @@ namespace iOMG
                     {
                         tx_idr.Text = rlid.GetString(0);
                     }
+                    string actua = "";
+                    if (tx_dat_tiped.Text == tipede)
+                    {
+                        actua = "update movim set fventa=@fepe where pedido=@pedi";                         // un articulo por cada pedido
+                        micon = new MySqlCommand(actua, conn);
+                        micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
+                        micon.ExecuteNonQuery();
+                    }
                     rlid.Close();
                     retorna = true;
                 }
@@ -455,9 +462,8 @@ namespace iOMG
             {
                 try
                 {
-                    // 
-                    string actua = "update detam set " +
-                        "tipo=@tipe,fecha=@fein,coment=@come,USER=@asd,dia=now() " +
+                    string actua = "update detam a inner join movim b on b.pedido=a.pedido set " +
+                        "a.tipo=@tipe,a.fecha=@fein,a.coment=@come,a.USER=@asd,a.dia=now(),b.fventa=@fein " +
                         "where iddetam=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
