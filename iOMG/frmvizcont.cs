@@ -37,6 +37,12 @@ namespace iOMG
                 _resumen.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _resumen;
             }
+            if (_datosReporte.liscont_cab.Rows.Count > 0)
+            {
+                liscontratos _listado = new liscontratos();
+                _listado.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _listado;
+            }
         }
     }
 }

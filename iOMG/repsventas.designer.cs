@@ -55,6 +55,19 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabcont = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.dtp_confina = new System.Windows.Forms.DateTimePicker();
+            this.label18 = new System.Windows.Forms.Label();
+            this.dtp_confini = new System.Windows.Forms.DateTimePicker();
+            this.bt_confiltra = new System.Windows.Forms.Button();
+            this.tx_dat_conestado = new System.Windows.Forms.TextBox();
+            this.cmb_conestado = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.dgv_contratos = new System.Windows.Forms.DataGridView();
             this.tabpds = new System.Windows.Forms.TabPage();
             this.dgv_pedidos = new System.Windows.Forms.DataGridView();
             this.bt_pedidos = new System.Windows.Forms.Button();
@@ -139,21 +152,11 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.tabcont = new System.Windows.Forms.TabPage();
-            this.dgv_contratos = new System.Windows.Forms.DataGridView();
-            this.button3 = new System.Windows.Forms.Button();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.dtp_confina = new System.Windows.Forms.DateTimePicker();
-            this.label18 = new System.Windows.Forms.Label();
-            this.dtp_confini = new System.Windows.Forms.DateTimePicker();
-            this.bt_confiltra = new System.Windows.Forms.Button();
-            this.tx_dat_conestado = new System.Windows.Forms.TextBox();
-            this.cmb_conestado = new System.Windows.Forms.ComboBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabcont.SuspendLayout();
+            this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_contratos)).BeginInit();
             this.tabpds.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
             this.groupBox15.SuspendLayout();
@@ -169,9 +172,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
-            this.tabcont.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_contratos)).BeginInit();
-            this.groupBox13.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -440,6 +440,142 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(803, 328);
             this.tabControl1.TabIndex = 4;
+            // 
+            // tabcont
+            // 
+            this.tabcont.Controls.Add(this.button3);
+            this.tabcont.Controls.Add(this.groupBox13);
+            this.tabcont.Controls.Add(this.dtp_confina);
+            this.tabcont.Controls.Add(this.label18);
+            this.tabcont.Controls.Add(this.dtp_confini);
+            this.tabcont.Controls.Add(this.bt_confiltra);
+            this.tabcont.Controls.Add(this.tx_dat_conestado);
+            this.tabcont.Controls.Add(this.cmb_conestado);
+            this.tabcont.Controls.Add(this.label19);
+            this.tabcont.Controls.Add(this.label23);
+            this.tabcont.Controls.Add(this.dgv_contratos);
+            this.tabcont.Location = new System.Drawing.Point(4, 22);
+            this.tabcont.Name = "tabcont";
+            this.tabcont.Size = new System.Drawing.Size(795, 302);
+            this.tabcont.TabIndex = 5;
+            this.tabcont.Text = "Contratos";
+            this.tabcont.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button3.Image = global::iOMG.Properties.Resources.print_preview_24;
+            this.button3.Location = new System.Drawing.Point(653, 6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(50, 41);
+            this.button3.TabIndex = 349;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox13.Controls.Add(this.groupBox14);
+            this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox13.Location = new System.Drawing.Point(29, 23);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(137, 1);
+            this.groupBox13.TabIndex = 348;
+            this.groupBox13.TabStop = false;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Location = new System.Drawing.Point(0, -26);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(164, 1);
+            this.groupBox14.TabIndex = 113;
+            this.groupBox14.TabStop = false;
+            // 
+            // dtp_confina
+            // 
+            this.dtp_confina.Checked = false;
+            this.dtp_confina.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_confina.Location = new System.Drawing.Point(442, 26);
+            this.dtp_confina.Name = "dtp_confina";
+            this.dtp_confina.Size = new System.Drawing.Size(95, 20);
+            this.dtp_confina.TabIndex = 342;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(33, 8);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(40, 13);
+            this.label18.TabIndex = 345;
+            this.label18.Text = "Estado";
+            // 
+            // dtp_confini
+            // 
+            this.dtp_confini.Checked = false;
+            this.dtp_confini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_confini.Location = new System.Drawing.Point(442, 4);
+            this.dtp_confini.Name = "dtp_confini";
+            this.dtp_confini.Size = new System.Drawing.Size(95, 20);
+            this.dtp_confini.TabIndex = 341;
+            // 
+            // bt_confiltra
+            // 
+            this.bt_confiltra.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_confiltra.Location = new System.Drawing.Point(543, 10);
+            this.bt_confiltra.Name = "bt_confiltra";
+            this.bt_confiltra.Size = new System.Drawing.Size(59, 29);
+            this.bt_confiltra.TabIndex = 343;
+            this.bt_confiltra.Text = "Filtra";
+            this.bt_confiltra.UseVisualStyleBackColor = true;
+            this.bt_confiltra.Click += new System.EventHandler(this.bt_confiltra_Click);
+            // 
+            // tx_dat_conestado
+            // 
+            this.tx_dat_conestado.Location = new System.Drawing.Point(187, 4);
+            this.tx_dat_conestado.Name = "tx_dat_conestado";
+            this.tx_dat_conestado.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_conestado.TabIndex = 347;
+            this.tx_dat_conestado.Visible = false;
+            // 
+            // cmb_conestado
+            // 
+            this.cmb_conestado.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_conestado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_conestado.DropDownWidth = 100;
+            this.cmb_conestado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_conestado.FormattingEnabled = true;
+            this.cmb_conestado.Location = new System.Drawing.Point(99, 3);
+            this.cmb_conestado.Name = "cmb_conestado";
+            this.cmb_conestado.Size = new System.Drawing.Size(85, 21);
+            this.cmb_conestado.TabIndex = 340;
+            this.cmb_conestado.SelectionChangeCommitted += new System.EventHandler(this.cmb_conestado_SelectionChangeCommitted);
+            this.cmb_conestado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_conestado_KeyDown);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(386, 31);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 13);
+            this.label19.TabIndex = 346;
+            this.label19.Text = "Fech final";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(378, 8);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(61, 13);
+            this.label23.TabIndex = 344;
+            this.label23.Text = "Fech Inicial";
+            // 
+            // dgv_contratos
+            // 
+            this.dgv_contratos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_contratos.Location = new System.Drawing.Point(3, 50);
+            this.dgv_contratos.Name = "dgv_contratos";
+            this.dgv_contratos.Size = new System.Drawing.Size(789, 250);
+            this.dgv_contratos.TabIndex = 339;
             // 
             // tabpds
             // 
@@ -1306,140 +1442,6 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // tabcont
-            // 
-            this.tabcont.Controls.Add(this.button3);
-            this.tabcont.Controls.Add(this.groupBox13);
-            this.tabcont.Controls.Add(this.dtp_confina);
-            this.tabcont.Controls.Add(this.label18);
-            this.tabcont.Controls.Add(this.dtp_confini);
-            this.tabcont.Controls.Add(this.bt_confiltra);
-            this.tabcont.Controls.Add(this.tx_dat_conestado);
-            this.tabcont.Controls.Add(this.cmb_conestado);
-            this.tabcont.Controls.Add(this.label19);
-            this.tabcont.Controls.Add(this.label23);
-            this.tabcont.Controls.Add(this.dgv_contratos);
-            this.tabcont.Location = new System.Drawing.Point(4, 22);
-            this.tabcont.Name = "tabcont";
-            this.tabcont.Size = new System.Drawing.Size(795, 302);
-            this.tabcont.TabIndex = 5;
-            this.tabcont.Text = "Contratos";
-            this.tabcont.UseVisualStyleBackColor = true;
-            // 
-            // dgv_contratos
-            // 
-            this.dgv_contratos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_contratos.Location = new System.Drawing.Point(3, 50);
-            this.dgv_contratos.Name = "dgv_contratos";
-            this.dgv_contratos.Size = new System.Drawing.Size(789, 250);
-            this.dgv_contratos.TabIndex = 339;
-            // 
-            // button3
-            // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button3.Image = global::iOMG.Properties.Resources.print_preview_24;
-            this.button3.Location = new System.Drawing.Point(653, 6);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(50, 41);
-            this.button3.TabIndex = 349;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // groupBox13
-            // 
-            this.groupBox13.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox13.Controls.Add(this.groupBox14);
-            this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox13.Location = new System.Drawing.Point(29, 23);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(137, 1);
-            this.groupBox13.TabIndex = 348;
-            this.groupBox13.TabStop = false;
-            // 
-            // groupBox14
-            // 
-            this.groupBox14.Location = new System.Drawing.Point(0, -26);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(164, 1);
-            this.groupBox14.TabIndex = 113;
-            this.groupBox14.TabStop = false;
-            // 
-            // dtp_confina
-            // 
-            this.dtp_confina.Checked = false;
-            this.dtp_confina.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_confina.Location = new System.Drawing.Point(442, 26);
-            this.dtp_confina.Name = "dtp_confina";
-            this.dtp_confina.Size = new System.Drawing.Size(95, 20);
-            this.dtp_confina.TabIndex = 342;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(33, 8);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(40, 13);
-            this.label18.TabIndex = 345;
-            this.label18.Text = "Estado";
-            // 
-            // dtp_confini
-            // 
-            this.dtp_confini.Checked = false;
-            this.dtp_confini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_confini.Location = new System.Drawing.Point(442, 4);
-            this.dtp_confini.Name = "dtp_confini";
-            this.dtp_confini.Size = new System.Drawing.Size(95, 20);
-            this.dtp_confini.TabIndex = 341;
-            // 
-            // bt_confiltra
-            // 
-            this.bt_confiltra.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_confiltra.Location = new System.Drawing.Point(543, 10);
-            this.bt_confiltra.Name = "bt_confiltra";
-            this.bt_confiltra.Size = new System.Drawing.Size(59, 29);
-            this.bt_confiltra.TabIndex = 343;
-            this.bt_confiltra.Text = "Filtra";
-            this.bt_confiltra.UseVisualStyleBackColor = true;
-            this.bt_confiltra.Click += new System.EventHandler(this.bt_confiltra_Click);
-            // 
-            // tx_dat_conestado
-            // 
-            this.tx_dat_conestado.Location = new System.Drawing.Point(187, 4);
-            this.tx_dat_conestado.Name = "tx_dat_conestado";
-            this.tx_dat_conestado.Size = new System.Drawing.Size(27, 20);
-            this.tx_dat_conestado.TabIndex = 347;
-            this.tx_dat_conestado.Visible = false;
-            // 
-            // cmb_conestado
-            // 
-            this.cmb_conestado.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_conestado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_conestado.DropDownWidth = 100;
-            this.cmb_conestado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_conestado.FormattingEnabled = true;
-            this.cmb_conestado.Location = new System.Drawing.Point(99, 3);
-            this.cmb_conestado.Name = "cmb_conestado";
-            this.cmb_conestado.Size = new System.Drawing.Size(85, 21);
-            this.cmb_conestado.TabIndex = 340;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(386, 31);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(53, 13);
-            this.label19.TabIndex = 346;
-            this.label19.Text = "Fech final";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(378, 8);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(61, 13);
-            this.label23.TabIndex = 344;
-            this.label23.Text = "Fech Inicial";
-            // 
             // repsventas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1455,6 +1457,10 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabcont.ResumeLayout(false);
+            this.tabcont.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_contratos)).EndInit();
             this.tabpds.ResumeLayout(false);
             this.tabpds.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).EndInit();
@@ -1474,10 +1480,6 @@
             this.tabres.ResumeLayout(false);
             this.tabres.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
-            this.tabcont.ResumeLayout(false);
-            this.tabcont.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_contratos)).EndInit();
-            this.groupBox13.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

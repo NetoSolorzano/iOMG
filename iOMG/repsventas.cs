@@ -807,6 +807,11 @@ namespace iOMG
             if (cmb_pedtaller.SelectedValue != null) tx_dat_pedtaller.Text = cmb_pedtaller.SelectedValue.ToString();
             else tx_dat_pedtaller.Text = cmb_pedtaller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
+        private void cmb_conestado_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_conestado.SelectedValue != null) tx_dat_conestado.Text = cmb_conestado.SelectedValue.ToString();
+            else tx_dat_conestado.Text = cmb_conestado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         // 
         private void cmb_estado_KeyDown(object sender, KeyEventArgs e)
         {
@@ -862,6 +867,14 @@ namespace iOMG
             {
                 cmb_pedtaller.SelectedIndex = -1;
                 tx_dat_pedtaller.Text = "";
+            }
+        }
+        private void cmb_conestado_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_conestado.SelectedIndex = -1;
+                tx_dat_conestado.Text = "";
             }
         }
         #endregion
@@ -1613,7 +1626,7 @@ namespace iOMG
         {
             setParaCrystal("contratos");
         }
-        private void setParaCrystal(string repo)                   // genera el set para el reporte de crystal
+        private void setParaCrystal(string repo)                    // genera el set para el reporte de crystal
         {
             if (repo== "resumen")
             {
@@ -1630,11 +1643,11 @@ namespace iOMG
             if (repo == "contratos")
             {
                 conClie datos = generaliscont();
-                frmvizcont visualizador = new frmvizcont(datos);        // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
+                frmvizcont visualizador = new frmvizcont(datos);
                 visualizador.Show();
             }
         }
-        private conClie generareporte()                 // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
+        private conClie generareporte()                             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
         {
             conClie rescont = new conClie();                                    // dataset
             conClie.rescont_cabRow rowcabeza = rescont.rescont_cab.Newrescont_cabRow();
@@ -1717,7 +1730,7 @@ namespace iOMG
             }
             return pedset;
         }
-        private conClie generaliscont()                 // procedimiento para generar los datos del listado de contratos en el dataset
+        private conClie generaliscont()                             // procedimiento para generar los datos del listado de contratos en el dataset
         {
             conClie liscont = new conClie();
             conClie.liscont_cabRow rowcabeza = liscont.liscont_cab.Newliscont_cabRow();
@@ -1734,13 +1747,13 @@ namespace iOMG
                     conClie.liscont_detRow rowdetalle = liscont.liscont_det.Newliscont_detRow();
                     rowdetalle.id = "0";
                     rowdetalle.fecha = row.Cells[0].Value.ToString();
-                    rowdetalle.tienda = row.Cells[0].Value.ToString();
-                    rowdetalle.contrato = row.Cells[0].Value.ToString();
-                    rowdetalle.cliente = row.Cells[0].Value.ToString();
-                    rowdetalle.coment = row.Cells[0].Value.ToString();
-                    rowdetalle.fentrega = row.Cells[0].Value.ToString();
-                    rowdetalle.fenreal = row.Cells[0].Value.ToString();
-                    rowdetalle.estado = row.Cells[0].Value.ToString();
+                    rowdetalle.tienda = row.Cells[1].Value.ToString();
+                    rowdetalle.contrato = row.Cells[2].Value.ToString();
+                    rowdetalle.cliente = row.Cells[3].Value.ToString();
+                    rowdetalle.coment = row.Cells[4].Value.ToString();
+                    rowdetalle.fentrega = row.Cells[5].Value.ToString();
+                    rowdetalle.fenreal = row.Cells[6].Value.ToString();
+                    rowdetalle.estado = row.Cells[7].Value.ToString();
                     liscont.liscont_det.Addliscont_detRow(rowdetalle);
                 }
             }
