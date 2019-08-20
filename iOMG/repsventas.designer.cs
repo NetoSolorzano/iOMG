@@ -71,7 +71,7 @@
             this.cmb_destino = new System.Windows.Forms.ComboBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.dgv_pedidos = new System.Windows.Forms.DataGridView();
+            this.dgv_ingresos = new System.Windows.Forms.DataGridView();
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
@@ -95,7 +95,7 @@
             this.cmb_dest_ing = new System.Windows.Forms.ComboBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.dgv_ingresos = new System.Windows.Forms.DataGridView();
+            this.dgv_salidas = new System.Windows.Forms.DataGridView();
             this.dtp_final_ing = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.dtp_fini_ing = new System.Windows.Forms.DateTimePicker();
@@ -105,6 +105,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabres = new System.Windows.Forms.TabPage();
+            this.tx_fent = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.tx_estad = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.tx_tiend = new System.Windows.Forms.TextBox();
@@ -124,22 +126,36 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.tx_fent = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
+            this.tabpds = new System.Windows.Forms.TabPage();
+            this.bt_pedidos = new System.Windows.Forms.Button();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.dtp_pedfina = new System.Windows.Forms.DateTimePicker();
+            this.label20 = new System.Windows.Forms.Label();
+            this.dtp_pedfini = new System.Windows.Forms.DateTimePicker();
+            this.button5 = new System.Windows.Forms.Button();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.dgv_pedidos = new System.Windows.Forms.DataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
             this.tabIng.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
+            this.tabpds.SuspendLayout();
+            this.groupBox15.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -397,6 +413,7 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.tabpds);
             this.tabControl1.Controls.Add(this.tabPed);
             this.tabControl1.Controls.Add(this.tabIng);
             this.tabControl1.Controls.Add(this.tabres);
@@ -421,7 +438,7 @@
             this.tabPed.Controls.Add(this.label11);
             this.tabPed.Controls.Add(this.cmb_destino);
             this.tabPed.Controls.Add(this.groupBox11);
-            this.tabPed.Controls.Add(this.dgv_pedidos);
+            this.tabPed.Controls.Add(this.dgv_ingresos);
             this.tabPed.Controls.Add(this.dtp_entreg);
             this.tabPed.Controls.Add(this.label10);
             this.tabPed.Controls.Add(this.dtp_pedido);
@@ -587,13 +604,13 @@
             this.groupBox12.TabIndex = 113;
             this.groupBox12.TabStop = false;
             // 
-            // dgv_pedidos
+            // dgv_ingresos
             // 
-            this.dgv_pedidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_pedidos.Location = new System.Drawing.Point(3, 49);
-            this.dgv_pedidos.Name = "dgv_pedidos";
-            this.dgv_pedidos.Size = new System.Drawing.Size(789, 250);
-            this.dgv_pedidos.TabIndex = 307;
+            this.dgv_ingresos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ingresos.Location = new System.Drawing.Point(3, 49);
+            this.dgv_ingresos.Name = "dgv_ingresos";
+            this.dgv_ingresos.Size = new System.Drawing.Size(789, 250);
+            this.dgv_ingresos.TabIndex = 307;
             // 
             // dtp_entreg
             // 
@@ -686,7 +703,7 @@
             this.tabIng.Controls.Add(this.label3);
             this.tabIng.Controls.Add(this.cmb_dest_ing);
             this.tabIng.Controls.Add(this.groupBox9);
-            this.tabIng.Controls.Add(this.dgv_ingresos);
+            this.tabIng.Controls.Add(this.dgv_salidas);
             this.tabIng.Controls.Add(this.dtp_final_ing);
             this.tabIng.Controls.Add(this.label4);
             this.tabIng.Controls.Add(this.dtp_fini_ing);
@@ -842,13 +859,13 @@
             this.groupBox10.TabIndex = 113;
             this.groupBox10.TabStop = false;
             // 
-            // dgv_ingresos
+            // dgv_salidas
             // 
-            this.dgv_ingresos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_ingresos.Location = new System.Drawing.Point(3, 49);
-            this.dgv_ingresos.Name = "dgv_ingresos";
-            this.dgv_ingresos.Size = new System.Drawing.Size(789, 250);
-            this.dgv_ingresos.TabIndex = 327;
+            this.dgv_salidas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_salidas.Location = new System.Drawing.Point(3, 49);
+            this.dgv_salidas.Name = "dgv_salidas";
+            this.dgv_salidas.Size = new System.Drawing.Size(789, 250);
+            this.dgv_salidas.TabIndex = 327;
             // 
             // dtp_final_ing
             // 
@@ -954,6 +971,24 @@
             this.tabres.TabIndex = 3;
             this.tabres.Text = "Resumen de contrato";
             this.tabres.UseVisualStyleBackColor = true;
+            // 
+            // tx_fent
+            // 
+            this.tx_fent.Location = new System.Drawing.Point(262, 76);
+            this.tx_fent.Name = "tx_fent";
+            this.tx_fent.ReadOnly = true;
+            this.tx_fent.Size = new System.Drawing.Size(79, 20);
+            this.tx_fent.TabIndex = 373;
+            this.tx_fent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(179, 80);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(81, 13);
+            this.label17.TabIndex = 372;
+            this.label17.Text = "FECHA  ENTR.";
             // 
             // tx_estad
             // 
@@ -1118,23 +1153,138 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // tx_fent
+            // tabpds
             // 
-            this.tx_fent.Location = new System.Drawing.Point(262, 76);
-            this.tx_fent.Name = "tx_fent";
-            this.tx_fent.ReadOnly = true;
-            this.tx_fent.Size = new System.Drawing.Size(79, 20);
-            this.tx_fent.TabIndex = 373;
-            this.tx_fent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tabpds.Controls.Add(this.dgv_pedidos);
+            this.tabpds.Controls.Add(this.bt_pedidos);
+            this.tabpds.Controls.Add(this.groupBox15);
+            this.tabpds.Controls.Add(this.dtp_pedfina);
+            this.tabpds.Controls.Add(this.label20);
+            this.tabpds.Controls.Add(this.dtp_pedfini);
+            this.tabpds.Controls.Add(this.button5);
+            this.tabpds.Controls.Add(this.textBox3);
+            this.tabpds.Controls.Add(this.comboBox3);
+            this.tabpds.Controls.Add(this.label21);
+            this.tabpds.Controls.Add(this.label22);
+            this.tabpds.Location = new System.Drawing.Point(4, 22);
+            this.tabpds.Name = "tabpds";
+            this.tabpds.Size = new System.Drawing.Size(795, 302);
+            this.tabpds.TabIndex = 4;
+            this.tabpds.Text = "Pedidos";
+            this.tabpds.UseVisualStyleBackColor = true;
             // 
-            // label17
+            // bt_pedidos
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(179, 80);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(81, 13);
-            this.label17.TabIndex = 372;
-            this.label17.Text = "FECHA  ENTR.";
+            this.bt_pedidos.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_pedidos.Location = new System.Drawing.Point(638, 3);
+            this.bt_pedidos.Name = "bt_pedidos";
+            this.bt_pedidos.Size = new System.Drawing.Size(61, 44);
+            this.bt_pedidos.TabIndex = 337;
+            this.bt_pedidos.UseVisualStyleBackColor = true;
+            this.bt_pedidos.Click += new System.EventHandler(this.bt_pedidos_Click);
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox15.Controls.Add(this.groupBox16);
+            this.groupBox15.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox15.Location = new System.Drawing.Point(14, 23);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(137, 1);
+            this.groupBox15.TabIndex = 328;
+            this.groupBox15.TabStop = false;
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Location = new System.Drawing.Point(0, -26);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(164, 1);
+            this.groupBox16.TabIndex = 113;
+            this.groupBox16.TabStop = false;
+            // 
+            // dtp_pedfina
+            // 
+            this.dtp_pedfina.Checked = false;
+            this.dtp_pedfina.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_pedfina.Location = new System.Drawing.Point(427, 26);
+            this.dtp_pedfina.Name = "dtp_pedfina";
+            this.dtp_pedfina.Size = new System.Drawing.Size(95, 20);
+            this.dtp_pedfina.TabIndex = 322;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(16, 8);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(61, 13);
+            this.label20.TabIndex = 325;
+            this.label20.Text = "Taller Prod.";
+            // 
+            // dtp_pedfini
+            // 
+            this.dtp_pedfini.Checked = false;
+            this.dtp_pedfini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_pedfini.Location = new System.Drawing.Point(427, 4);
+            this.dtp_pedfini.Name = "dtp_pedfini";
+            this.dtp_pedfini.Size = new System.Drawing.Size(95, 20);
+            this.dtp_pedfini.TabIndex = 321;
+            // 
+            // button5
+            // 
+            this.button5.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button5.Location = new System.Drawing.Point(528, 10);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(59, 29);
+            this.button5.TabIndex = 323;
+            this.button5.Text = "Filtra";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(172, 4);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(27, 20);
+            this.textBox3.TabIndex = 327;
+            this.textBox3.Visible = false;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.DropDownWidth = 100;
+            this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(84, 3);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(85, 21);
+            this.comboBox3.TabIndex = 320;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(371, 31);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(53, 13);
+            this.label21.TabIndex = 326;
+            this.label21.Text = "Fech final";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(363, 8);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(61, 13);
+            this.label22.TabIndex = 324;
+            this.label22.Text = "Fech Inicial";
+            // 
+            // dgv_pedidos
+            // 
+            this.dgv_pedidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_pedidos.Location = new System.Drawing.Point(3, 50);
+            this.dgv_pedidos.Name = "dgv_pedidos";
+            this.dgv_pedidos.Size = new System.Drawing.Size(789, 250);
+            this.dgv_pedidos.TabIndex = 338;
             // 
             // repsventas
             // 
@@ -1156,16 +1306,20 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
             this.tabIng.ResumeLayout(false);
             this.tabIng.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.tabres.ResumeLayout(false);
             this.tabres.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
+            this.tabpds.ResumeLayout(false);
+            this.tabpds.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1208,7 +1362,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmb_taller;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dgv_pedidos;
+        private System.Windows.Forms.DataGridView dgv_ingresos;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.GroupBox groupBox12;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1240,7 +1394,7 @@
         private System.Windows.Forms.ComboBox cmb_dest_ing;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.DataGridView dgv_ingresos;
+        private System.Windows.Forms.DataGridView dgv_salidas;
         private System.Windows.Forms.DateTimePicker dtp_final_ing;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dtp_fini_ing;
@@ -1269,5 +1423,18 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tx_fent;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TabPage tabpds;
+        private System.Windows.Forms.DataGridView dgv_pedidos;
+        private System.Windows.Forms.Button bt_pedidos;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.DateTimePicker dtp_pedfina;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.DateTimePicker dtp_pedfini;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
     }
 }

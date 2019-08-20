@@ -186,6 +186,12 @@
     <Compile Include="libreria.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="lispedclts.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>lispedclts.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,6 +332,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="items.resx">
       <DependentUpon>items.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lispedclts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>lispedclts.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.cs</DependentUpon>

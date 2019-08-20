@@ -200,74 +200,85 @@ namespace iOMG
         {
 
         }
+        private void grillapeds()                                   // arma grilla de pedidos
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_pedidos.Font = tiplg;
+            dgv_pedidos.DefaultCellStyle.Font = tiplg;
+            dgv_pedidos.RowTemplate.Height = 15;
+            dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_pedidos.AllowUserToAddRows = false;
+            if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 16;
+
+        }
         private void grilla_ing()                                   // arma la grilla ingresos
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_ingresos.Font = tiplg;
-            dgv_ingresos.DefaultCellStyle.Font = tiplg;
-            dgv_ingresos.RowTemplate.Height = 15;
-            dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_ingresos.AllowUserToAddRows = false;
-            if (dgv_ingresos.DataSource == null) dgv_ingresos.ColumnCount = 8;
+            dgv_salidas.Font = tiplg;
+            dgv_salidas.DefaultCellStyle.Font = tiplg;
+            dgv_salidas.RowTemplate.Height = 15;
+            dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_salidas.AllowUserToAddRows = false;
+            if (dgv_salidas.DataSource == null) dgv_salidas.ColumnCount = 8;
             // Fecha ingreso real
-            dgv_ingresos.Columns[0].Visible = true;
-            dgv_ingresos.Columns[0].HeaderText = "Fecha";    // titulo de la columna
-            dgv_ingresos.Columns[0].Width = 70;                // ancho
-            dgv_ingresos.Columns[0].ReadOnly = false;           // lectura o no
-            dgv_ingresos.Columns[0].Tag = "validaNO";
+            dgv_salidas.Columns[0].Visible = true;
+            dgv_salidas.Columns[0].HeaderText = "Fecha";    // titulo de la columna
+            dgv_salidas.Columns[0].Width = 70;                // ancho
+            dgv_salidas.Columns[0].ReadOnly = false;           // lectura o no
+            dgv_salidas.Columns[0].Tag = "validaNO";
             //dgv_pedidos.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // almacen ingresado
-            dgv_ingresos.Columns[1].Visible = true;            // columna visible o no
-            dgv_ingresos.Columns[1].HeaderText = "Almacén";    // titulo de la columna
-            dgv_ingresos.Columns[1].Width = 60;                // ancho
-            dgv_ingresos.Columns[1].ReadOnly = true;           // lectura o no
-            dgv_ingresos.Columns[1].Tag = "validaSI";
+            dgv_salidas.Columns[1].Visible = true;            // columna visible o no
+            dgv_salidas.Columns[1].HeaderText = "Almacén";    // titulo de la columna
+            dgv_salidas.Columns[1].Width = 60;                // ancho
+            dgv_salidas.Columns[1].ReadOnly = true;           // lectura o no
+            dgv_salidas.Columns[1].Tag = "validaSI";
             //dgv_pedidos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // codigo pedido
-            dgv_ingresos.Columns[2].Visible = true;
-            dgv_ingresos.Columns[2].HeaderText = "Pedido";    // titulo de la columna
-            dgv_ingresos.Columns[2].Width = 80;                // ancho
-            dgv_ingresos.Columns[2].ReadOnly = true;           // lectura o no
-            dgv_ingresos.Columns[2].Tag = "validaNO";
+            dgv_salidas.Columns[2].Visible = true;
+            dgv_salidas.Columns[2].HeaderText = "Pedido";    // titulo de la columna
+            dgv_salidas.Columns[2].Width = 80;                // ancho
+            dgv_salidas.Columns[2].ReadOnly = true;           // lectura o no
+            dgv_salidas.Columns[2].Tag = "validaNO";
             //dgv_pedidos.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // codigo articulo
-            dgv_ingresos.Columns[3].Visible = true;
-            dgv_ingresos.Columns[3].HeaderText = "Artículo";
-            dgv_ingresos.Columns[3].Width = 150;
-            dgv_ingresos.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
-            dgv_ingresos.Columns[3].Tag = "validaNO";          // las celdas de esta columna se SI se validan
+            dgv_salidas.Columns[3].Visible = true;
+            dgv_salidas.Columns[3].HeaderText = "Artículo";
+            dgv_salidas.Columns[3].Width = 150;
+            dgv_salidas.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            dgv_salidas.Columns[3].Tag = "validaNO";          // las celdas de esta columna se SI se validan
             //dgv_pedidos.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Nombre
-            dgv_ingresos.Columns[4].Visible = true;
-            dgv_ingresos.Columns[4].HeaderText = "Nombre";
-            dgv_ingresos.Columns[4].Width = 200;
-            dgv_ingresos.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
-            dgv_ingresos.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
+            dgv_salidas.Columns[4].Visible = true;
+            dgv_salidas.Columns[4].HeaderText = "Nombre";
+            dgv_salidas.Columns[4].Width = 200;
+            dgv_salidas.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
+            dgv_salidas.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
             //dgv_pedidos.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Cant
-            dgv_ingresos.Columns[5].Visible = true;
-            dgv_ingresos.Columns[5].HeaderText = "Cant";
-            dgv_ingresos.Columns[5].Width = 50;
-            dgv_ingresos.Columns[5].ReadOnly = true;
-            dgv_ingresos.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            dgv_salidas.Columns[5].Visible = true;
+            dgv_salidas.Columns[5].HeaderText = "Cant";
+            dgv_salidas.Columns[5].Width = 50;
+            dgv_salidas.Columns[5].ReadOnly = true;
+            dgv_salidas.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             //dgv_pedidos.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // madera
-            dgv_ingresos.Columns[6].Visible = true;
-            dgv_ingresos.Columns[6].HeaderText = "Madera";
-            dgv_ingresos.Columns[6].Width = 70;
-            dgv_ingresos.Columns[6].ReadOnly = true;
-            dgv_ingresos.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_salidas.Columns[6].Visible = true;
+            dgv_salidas.Columns[6].HeaderText = "Madera";
+            dgv_salidas.Columns[6].Width = 70;
+            dgv_salidas.Columns[6].ReadOnly = true;
+            dgv_salidas.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
             //dgv_pedidos.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // comentario
-            dgv_ingresos.Columns[7].Visible = true;
-            dgv_ingresos.Columns[7].HeaderText = "Comentario";
-            dgv_ingresos.Columns[7].Width = 200;
-            dgv_ingresos.Columns[7].ReadOnly = true;
-            dgv_ingresos.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_salidas.Columns[7].Visible = true;
+            dgv_salidas.Columns[7].HeaderText = "Comentario";
+            dgv_salidas.Columns[7].Width = 200;
+            dgv_salidas.Columns[7].ReadOnly = true;
+            dgv_salidas.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
             //dgv_pedidos.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // resto
-            dgv_ingresos.Columns[8].Visible = false;
-            dgv_ingresos.Columns[9].Visible = false;
+            dgv_salidas.Columns[8].Visible = false;
+            dgv_salidas.Columns[9].Visible = false;
         }
         private void grillares()                                    // arma la grilla del resumen de contrato
         {
@@ -562,6 +573,43 @@ namespace iOMG
                 return;
             }
             */
+        }
+        private void button5_Click(object sender, EventArgs e)      // filtra y muestra pedidos de clientes
+        {
+                string consulta = "lispedclt";
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        dgv_pedidos.DataSource = null;
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.CommandType = CommandType.StoredProcedure;
+                        micon.Parameters.AddWithValue("@fecini", dtp_pedfini.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@fecfin", dtp_pedfina.Value.ToString("yyyy-MM-dd"));
+                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_pedidos.DataSource = dt;
+                        dt.Dispose();
+                        da.Dispose();
+                        grillapeds();
+                    }
+                    else
+                    {
+                        conn.Close();
+                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en obtener datos");
+                    Application.Exit();
+                    return;
+                }
         }
         private void tx_codped_Leave(object sender, EventArgs e)    // valida existencia de contrato
         {
@@ -867,7 +915,7 @@ namespace iOMG
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
-                    DataTable dt = (DataTable)dgv_pedidos.DataSource;
+                    DataTable dt = (DataTable)dgv_ingresos.DataSource;
                     wb.Worksheets.Add(dt, "Resumen_Contrato");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
@@ -882,7 +930,7 @@ namespace iOMG
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
-                    DataTable dt = (DataTable)dgv_ingresos.DataSource;
+                    DataTable dt = (DataTable)dgv_salidas.DataSource;
                     wb.Worksheets.Add(dt, "Reporte_Ingresos");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
@@ -978,7 +1026,7 @@ namespace iOMG
             sf.FormatFlags = StringFormatFlags.NoWrap;
             // leemos las columnas del data table
             //string quiebre = "";
-            for (int fila = cuenta; fila < dgv_pedidos.Rows.Count; fila++)
+            for (int fila = cuenta; fila < dgv_ingresos.Rows.Count; fila++)
             {
                 /*
                 if (dgv_pedidos.Rows[fila].Cells[15].Value.ToString() != quiebre)
@@ -990,16 +1038,16 @@ namespace iOMG
                 }
                 */
                 string data0 = (fila + 1).ToString("###");
-                string dataI = dgv_pedidos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);    // Fecha
-                string data1 = dgv_pedidos.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);    // Llegada
-                string data2 = dgv_pedidos.Rows[fila].Cells[1].Value.ToString();    // Pedido
-                string data3 = dgv_pedidos.Rows[fila].Cells[2].Value.ToString();    // Estado
-                string data4 = dgv_pedidos.Rows[fila].Cells[3].Value.ToString();    // taller
-                string data5 = dgv_pedidos.Rows[fila].Cells[4].Value.ToString();    // destino
-                string data6 = dgv_pedidos.Rows[fila].Cells[11].Value.ToString();   // cant
-                string data7 = dgv_pedidos.Rows[fila].Cells[12].Value.ToString();    // saldo
-                string data8 = dgv_pedidos.Rows[fila].Cells[19].Value.ToString().PadRight(10).Substring(0, 10);    // ult fecha ingresa
-                string data9 = dgv_pedidos.Rows[fila].Cells[20].Value.ToString();    // comentarios
+                string dataI = dgv_ingresos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);    // Fecha
+                string data1 = dgv_ingresos.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);    // Llegada
+                string data2 = dgv_ingresos.Rows[fila].Cells[1].Value.ToString();    // Pedido
+                string data3 = dgv_ingresos.Rows[fila].Cells[2].Value.ToString();    // Estado
+                string data4 = dgv_ingresos.Rows[fila].Cells[3].Value.ToString();    // taller
+                string data5 = dgv_ingresos.Rows[fila].Cells[4].Value.ToString();    // destino
+                string data6 = dgv_ingresos.Rows[fila].Cells[11].Value.ToString();   // cant
+                string data7 = dgv_ingresos.Rows[fila].Cells[12].Value.ToString();    // saldo
+                string data8 = dgv_ingresos.Rows[fila].Cells[19].Value.ToString().PadRight(10).Substring(0, 10);    // ult fecha ingresa
+                string data9 = dgv_ingresos.Rows[fila].Cells[20].Value.ToString();    // comentarios
 
                 /*
                 string data6 = dgv_pedidos.Rows[fila].Cells[8].Value.ToString();    // Madera
@@ -1091,30 +1139,30 @@ namespace iOMG
             sf.FormatFlags = StringFormatFlags.NoWrap;
             // leemos las columnas del data table
             string quiebre = "";
-            for (int fila = cuenta; fila < dgv_pedidos.Rows.Count; fila++)
+            for (int fila = cuenta; fila < dgv_ingresos.Rows.Count; fila++)
             {
-                if(dgv_pedidos.Rows[fila].Cells[15].Value.ToString() != quiebre)
+                if(dgv_ingresos.Rows[fila].Cells[15].Value.ToString() != quiebre)
                 {
-                    quiebre = dgv_pedidos.Rows[fila].Cells[15].Value.ToString();
+                    quiebre = dgv_ingresos.Rows[fila].Cells[15].Value.ToString();
                     ptoimp = new PointF(col0, posi);
-                    e.Graphics.DrawString(quiebre + " - " + dgv_pedidos.Rows[fila].Cells[3].Value.ToString(), lt_quie, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                    e.Graphics.DrawString(quiebre + " - " + dgv_ingresos.Rows[fila].Cells[3].Value.ToString(), lt_quie, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                     posi = posi + alfi + 5;             // avance de fila
                 }
                 string data0 = (fila + 1).ToString("###");                          
-                string dataI = dgv_pedidos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);    // Fecha
-                string data1 = dgv_pedidos.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);    // Llegada
-                string data2 = dgv_pedidos.Rows[fila].Cells[1].Value.ToString();    // Pedido
-                string data3 = dgv_pedidos.Rows[fila].Cells[2].Value.ToString();    // Estado
-                string data4 = dgv_pedidos.Rows[fila].Cells[6].Value.ToString();    // Articulo
-                string data5 = dgv_pedidos.Rows[fila].Cells[7].Value.ToString();    // Nombre
-                string data6 = dgv_pedidos.Rows[fila].Cells[8].Value.ToString();    // Madera
+                string dataI = dgv_ingresos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);    // Fecha
+                string data1 = dgv_ingresos.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);    // Llegada
+                string data2 = dgv_ingresos.Rows[fila].Cells[1].Value.ToString();    // Pedido
+                string data3 = dgv_ingresos.Rows[fila].Cells[2].Value.ToString();    // Estado
+                string data4 = dgv_ingresos.Rows[fila].Cells[6].Value.ToString();    // Articulo
+                string data5 = dgv_ingresos.Rows[fila].Cells[7].Value.ToString();    // Nombre
+                string data6 = dgv_ingresos.Rows[fila].Cells[8].Value.ToString();    // Madera
                 string data7 = "";
-                if (data4.Substring(12,1) == letpied) data7 = dgv_pedidos.Rows[fila].Cells[9].Value.ToString();    // Detalle 2
-                string data8 = dgv_pedidos.Rows[fila].Cells[13].Value.ToString();    // acabado
-                string data9 = dgv_pedidos.Rows[fila].Cells[10].Value.ToString();    // medidas
-                string data10 = dgv_pedidos.Rows[fila].Cells[11].Value.ToString();   // cant
-                string data11 = dgv_pedidos.Rows[fila].Cells[12].Value.ToString();    // saldo
-                string data12 = dgv_pedidos.Rows[fila].Cells[19].Value.ToString().PadRight(10).Substring(0, 10);    // fecha de ingreso
+                if (data4.Substring(12,1) == letpied) data7 = dgv_ingresos.Rows[fila].Cells[9].Value.ToString();    // Detalle 2
+                string data8 = dgv_ingresos.Rows[fila].Cells[13].Value.ToString();    // acabado
+                string data9 = dgv_ingresos.Rows[fila].Cells[10].Value.ToString();    // medidas
+                string data10 = dgv_ingresos.Rows[fila].Cells[11].Value.ToString();   // cant
+                string data11 = dgv_ingresos.Rows[fila].Cells[12].Value.ToString();    // saldo
+                string data12 = dgv_ingresos.Rows[fila].Cells[19].Value.ToString().PadRight(10).Substring(0, 10);    // fecha de ingreso
                 //
                 ptoimp = new PointF(col0, posi);
                 e.Graphics.DrawString(dataI, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
@@ -1354,17 +1402,17 @@ namespace iOMG
             sf.Alignment = StringAlignment.Near;
             sf.FormatFlags = StringFormatFlags.NoWrap;
             // leemos las columnas del data table
-            for (int fila = cuenta; fila < dgv_ingresos.Rows.Count; fila++)
+            for (int fila = cuenta; fila < dgv_salidas.Rows.Count; fila++)
             {
                 string data0 = (fila + 1).ToString("###");                                             // contador
-                string dataI = dgv_ingresos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);     // Fecha
-                string data1 = dgv_ingresos.Rows[fila].Cells[1].Value.ToString().Substring(0, 10);     // almacen
-                string data2 = dgv_ingresos.Rows[fila].Cells[2].Value.ToString();                      // Pedido
-                string data3 = dgv_ingresos.Rows[fila].Cells[3].Value.ToString();                      // articulo
-                string data4 = dgv_ingresos.Rows[fila].Cells[4].Value.ToString();                      // nombre
-                string data5 = dgv_ingresos.Rows[fila].Cells[5].Value.ToString();                      // cant
-                string data6 = dgv_ingresos.Rows[fila].Cells[6].Value.ToString();                      // madera
-                string data7 = dgv_ingresos.Rows[fila].Cells[7].Value.ToString();                      // coment
+                string dataI = dgv_salidas.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);     // Fecha
+                string data1 = dgv_salidas.Rows[fila].Cells[1].Value.ToString().Substring(0, 10);     // almacen
+                string data2 = dgv_salidas.Rows[fila].Cells[2].Value.ToString();                      // Pedido
+                string data3 = dgv_salidas.Rows[fila].Cells[3].Value.ToString();                      // articulo
+                string data4 = dgv_salidas.Rows[fila].Cells[4].Value.ToString();                      // nombre
+                string data5 = dgv_salidas.Rows[fila].Cells[5].Value.ToString();                      // cant
+                string data6 = dgv_salidas.Rows[fila].Cells[6].Value.ToString();                      // madera
+                string data7 = dgv_salidas.Rows[fila].Cells[7].Value.ToString();                      // coment
                 // a.fecha,c.descrizionerid,a.docum,a.item,'nombreArt',a.cant,madera,a.coment,a.almad,b.status
                 ptoimp = new PointF(col0, posi);
                 e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
@@ -1475,16 +1523,30 @@ namespace iOMG
         }
         // salidas
         #endregion
+
         #region crystal
+        private void bt_pedidos_Click(object sender, EventArgs e)
+        {
+            setParaCrystal("pedidos");
+        }
         private void button2_Click(object sender, EventArgs e)      // resumen de contrato
         {
-            setParaCrystal();
+            setParaCrystal("resumen");
         }
-        private void setParaCrystal()                   // genera el set para el reporte de crystal
+        private void setParaCrystal(string repo)                   // genera el set para el reporte de crystal
         {
-            conClie datos = generareporte();                        // conClie = dataset de impresion de contrato   
-            frmvizcont visualizador = new frmvizcont(datos);        // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
-            visualizador.Show();
+            if (repo== "resumen")
+            {
+                conClie datos = generareporte();                        // conClie = dataset de impresion de contrato   
+                frmvizcont visualizador = new frmvizcont(datos);        // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
+                visualizador.Show();
+            }
+            if (repo == "pedidos")
+            {
+                pedsclts datos = generarepedidos();
+                frmvizcpeds visualizador = new frmvizcpeds(datos);
+                visualizador.Show();
+            }
         }
         private conClie generareporte()                 // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
         {
@@ -1532,6 +1594,39 @@ namespace iOMG
                 }
             }
             return rescont;
+        }
+        private pedsclts generarepedidos()
+        {
+            pedsclts pedset = new pedsclts();
+            pedsclts.cab_lispedidosRow rowcab = pedset.cab_lispedidos.Newcab_lispedidosRow();
+            rowcab.fecfin = dtp_pedfini.Value.ToString("dd/MM/yyyy");
+            rowcab.fecini = dtp_pedfina.Value.ToString("dd/MM/yyyy");
+            pedset.cab_lispedidos.Addcab_lispedidosRow(rowcab);
+            // 
+            foreach (DataGridViewRow row in dgv_pedidos.Rows)
+            {
+                if (row.Cells["codped"].Value != null && row.Cells["codped"].Value.ToString().Trim() != "")
+                {
+                    pedsclts.det_lispedidosRow rowdet = pedset.det_lispedidos.Newdet_lispedidosRow();
+                    rowdet.lugar = row.Cells["destino"].Value.ToString();
+                    rowdet.pedido = row.Cells["codped"].Value.ToString();
+                    rowdet.cliente = row.Cells["cliente"].Value.ToString();
+                    rowdet.codigo = row.Cells["item"].Value.ToString();
+                    rowdet.nombre = row.Cells["nombre"].Value.ToString();
+                    rowdet.coment = row.Cells["coment"].Value.ToString();
+                    rowdet.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdet.madera = row.Cells["madera"].Value.ToString();
+                    rowdet.cant = row.Cells["cant"].Value.ToString();
+                    rowdet.taller = row.Cells["taller"].Value.ToString();
+                    rowdet.estado = row.Cells["estado"].Value.ToString();
+                    rowdet.fecped = row.Cells["fecped"].Value.ToString().Substring(0,10);
+                    rowdet.fecing = row.Cells["fecing"].Value.ToString().PadRight(10).Substring(0, 10);
+                    rowdet.fecsal = row.Cells["fecent"].Value.ToString().PadRight(10).Substring(0, 10);
+                    rowdet.fececon = row.Cells["feencon"].Value.ToString().PadRight(10).Substring(0, 10);
+                    pedset.det_lispedidos.Adddet_lispedidosRow(rowdet);
+                }
+            }
+            return pedset;
         }
         #endregion
     }
