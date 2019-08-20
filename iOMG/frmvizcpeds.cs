@@ -30,8 +30,11 @@ namespace iOMG
                 _pedidoc.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _pedidoc;
             }
-            if (_datosReporte.cab_lispedidos.Rows.Count > 0)
+            if (_datosReporte.det_lispedidos.Rows.Count > 0)
             {
+                /*
+                 * replispedclts _lisped = new replispedclts();
+                */
                 lispedclts _lisped = new lispedclts();
                 _lisped.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _lisped;

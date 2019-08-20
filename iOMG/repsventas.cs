@@ -1612,8 +1612,8 @@ namespace iOMG
                     rowdet.pedido = row.Cells["codped"].Value.ToString();
                     rowdet.cliente = row.Cells["cliente"].Value.ToString();
                     rowdet.codigo = row.Cells["item"].Value.ToString();
-                    rowdet.nombre = row.Cells["nombre"].Value.ToString();
-                    rowdet.coment = row.Cells["coment"].Value.ToString();
+                    rowdet.nombre = row.Cells["nombre"].Value.ToString().Trim() + " - " + row.Cells["coment"].Value.ToString().Trim();
+                    rowdet.coment = "";
                     rowdet.medidas = row.Cells["medidas"].Value.ToString();
                     rowdet.madera = row.Cells["madera"].Value.ToString();
                     rowdet.cant = row.Cells["cant"].Value.ToString();
