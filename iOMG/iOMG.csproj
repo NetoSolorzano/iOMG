@@ -186,6 +186,12 @@
     <Compile Include="libreria.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="liscontratos.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>liscontratos.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="lispedclts.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -332,6 +338,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="items.resx">
       <DependentUpon>items.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="liscontratos.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>liscontratos.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="lispedclts.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

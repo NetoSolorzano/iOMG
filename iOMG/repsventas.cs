@@ -161,6 +161,9 @@ namespace iOMG
                     //
                     cmb_tall_ing.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
                     cmb_tall_ing.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_pedtaller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
+                    cmb_pedtaller.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen de destino ... 
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -192,6 +195,18 @@ namespace iOMG
                     cmb_estad_ing.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_estad_ing.ValueMember = row.ItemArray[1].ToString();
                 }
+                // seleccion del estado del contrato
+                const string conestcont = "select descrizionerid,idcodice from desc_sta " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmdestcont = new MySqlCommand(conestcont, conn);
+                DataTable dtestcont = new DataTable();
+                MySqlDataAdapter daestcont = new MySqlDataAdapter(cmdestcont);
+                daestcont.Fill(dtestcont);
+                foreach (DataRow row in dtestcont.Rows)
+                {
+                    cmb_conestado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_conestado.ValueMember = row.ItemArray[1].ToString();
+                }
             }
             //
             conn.Close();
@@ -199,6 +214,16 @@ namespace iOMG
         private void grilla()                                       // arma la grilla salidas
         {
 
+        }
+        private void grillacont()                                   // arma grilla contratos
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_contratos.Font = tiplg;
+            dgv_contratos.DefaultCellStyle.Font = tiplg;
+            dgv_contratos.RowTemplate.Height = 15;
+            dgv_contratos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_contratos.AllowUserToAddRows = false;
+            if (dgv_contratos.DataSource == null) dgv_contratos.ColumnCount = 8;
         }
         private void grillapeds()                                   // arma grilla de pedidos
         {
@@ -209,7 +234,6 @@ namespace iOMG
             dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_pedidos.AllowUserToAddRows = false;
             if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 16;
-
         }
         private void grilla_ing()                                   // arma la grilla ingresos
         {
@@ -574,42 +598,81 @@ namespace iOMG
             }
             */
         }
-        private void button5_Click(object sender, EventArgs e)      // filtra y muestra pedidos de clientes
+        private void bt_confiltra_Click(object sender, EventArgs e) // flltra y muestra contratos
         {
-                string consulta = "lispedclt";
-                try
+            string consulta = "repliscont";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                    conn.Open();
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        dgv_pedidos.DataSource = null;
-                        MySqlCommand micon = new MySqlCommand(consulta, conn);
-                        micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@fecini", dtp_pedfini.Value.ToString("yyyy-MM-dd"));
-                        micon.Parameters.AddWithValue("@fecfin", dtp_pedfina.Value.ToString("yyyy-MM-dd"));
-                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        dgv_pedidos.DataSource = dt;
-                        dt.Dispose();
-                        da.Dispose();
-                        grillapeds();
-                    }
-                    else
-                    {
-                        conn.Close();
-                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    conn.Close();
+                    dgv_contratos.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@fini", dtp_confini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fina", dtp_confina.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@estado", tx_dat_conestado.Text.Trim());
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_contratos.DataSource = dt;
+                    dt.Dispose();
+                    da.Dispose();
+                    grillacont();
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error en obtener datos");
-                    Application.Exit();
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos de contratos");
+                Application.Exit();
+                return;
+            }
+        }
+        private void button5_Click(object sender, EventArgs e)      // filtra y muestra pedidos de clientes
+        {
+            string consulta = "lispedclt";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    dgv_pedidos.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@fecini", dtp_pedfini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fecfin", dtp_pedfina.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@taller", tx_dat_pedtaller.Text.Trim());
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_pedidos.DataSource = dt;
+                    dt.Dispose();
+                    da.Dispose();
+                    grillapeds();
+                }
+                else
+                {
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos");
+                Application.Exit();
+                return;
+            }
         }
         private void tx_codped_Leave(object sender, EventArgs e)    // valida existencia de contrato
         {
@@ -739,6 +802,11 @@ namespace iOMG
             if (cmb_dest_ing.SelectedValue != null) tx_dat_desing.Text = cmb_dest_ing.SelectedValue.ToString();
             else tx_dat_desing.Text = cmb_dest_ing.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
+        private void cmb_pedtaller_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_pedtaller.SelectedValue != null) tx_dat_pedtaller.Text = cmb_pedtaller.SelectedValue.ToString();
+            else tx_dat_pedtaller.Text = cmb_pedtaller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         // 
         private void cmb_estado_KeyDown(object sender, KeyEventArgs e)
         {
@@ -786,6 +854,14 @@ namespace iOMG
             {
                 cmb_dest_ing.SelectedIndex = -1;
                 tx_dat_desing.Text = "";
+            }
+        }
+        private void cmb_pedtaller_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_pedtaller.SelectedIndex = -1;
+                tx_dat_pedtaller.Text = "";
             }
         }
         #endregion
@@ -1533,6 +1609,10 @@ namespace iOMG
         {
             setParaCrystal("resumen");
         }
+        private void button3_Click(object sender, EventArgs e)      // listado de contratos
+        {
+            setParaCrystal("contratos");
+        }
         private void setParaCrystal(string repo)                   // genera el set para el reporte de crystal
         {
             if (repo== "resumen")
@@ -1545,6 +1625,12 @@ namespace iOMG
             {
                 pedsclts datos = generarepedidos();
                 frmvizcpeds visualizador = new frmvizcpeds(datos);
+                visualizador.Show();
+            }
+            if (repo == "contratos")
+            {
+                conClie datos = generaliscont();
+                frmvizcont visualizador = new frmvizcont(datos);        // POR ESO SE CREO ESTE FORM frmvizcont PARA MOSTRAR AHI. ES MEJOR ASI.  
                 visualizador.Show();
             }
         }
@@ -1599,8 +1685,10 @@ namespace iOMG
         {
             pedsclts pedset = new pedsclts();
             pedsclts.cab_lispedidosRow rowcab = pedset.cab_lispedidos.Newcab_lispedidosRow();
+            rowcab.id = "0";
             rowcab.fecfin = dtp_pedfini.Value.ToString("dd/MM/yyyy");
             rowcab.fecini = dtp_pedfina.Value.ToString("dd/MM/yyyy");
+            rowcab.taller = cmb_pedtaller.Text.Trim();
             pedset.cab_lispedidos.Addcab_lispedidosRow(rowcab);
             // 
             foreach (DataGridViewRow row in dgv_pedidos.Rows)
@@ -1608,6 +1696,7 @@ namespace iOMG
                 if (row.Cells["codped"].Value != null && row.Cells["codped"].Value.ToString().Trim() != "")
                 {
                     pedsclts.det_lispedidosRow rowdet = pedset.det_lispedidos.Newdet_lispedidosRow();
+                    rowdet.id = "0";
                     rowdet.lugar = row.Cells["destino"].Value.ToString();
                     rowdet.pedido = row.Cells["codped"].Value.ToString();
                     rowdet.cliente = row.Cells["cliente"].Value.ToString();
@@ -1627,6 +1716,35 @@ namespace iOMG
                 }
             }
             return pedset;
+        }
+        private conClie generaliscont()                 // procedimiento para generar los datos del listado de contratos en el dataset
+        {
+            conClie liscont = new conClie();
+            conClie.liscont_cabRow rowcabeza = liscont.liscont_cab.Newliscont_cabRow();
+            rowcabeza.id = "0";
+            rowcabeza.fechini = dtp_confini.Value.ToString("yyyy-MM-dd");
+            rowcabeza.fechfin = dtp_confina.Value.ToString("yyyy-MM-dd");
+            rowcabeza.estado = tx_dat_conestado.Text.Trim();
+            liscont.liscont_cab.Addliscont_cabRow(rowcabeza);
+            //
+            foreach(DataGridViewRow row in dgv_contratos.Rows)
+            {
+                if (row.Cells["fecha"].Value != null && row.Cells["fecha"].Value.ToString().Trim() != "")
+                {
+                    conClie.liscont_detRow rowdetalle = liscont.liscont_det.Newliscont_detRow();
+                    rowdetalle.id = "0";
+                    rowdetalle.fecha = row.Cells[0].Value.ToString();
+                    rowdetalle.tienda = row.Cells[0].Value.ToString();
+                    rowdetalle.contrato = row.Cells[0].Value.ToString();
+                    rowdetalle.cliente = row.Cells[0].Value.ToString();
+                    rowdetalle.coment = row.Cells[0].Value.ToString();
+                    rowdetalle.fentrega = row.Cells[0].Value.ToString();
+                    rowdetalle.fenreal = row.Cells[0].Value.ToString();
+                    rowdetalle.estado = row.Cells[0].Value.ToString();
+                    liscont.liscont_det.Addliscont_detRow(rowdetalle);
+                }
+            }
+            return liscont;
         }
         #endregion
     }

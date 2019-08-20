@@ -12,7 +12,7 @@
   <xs:element name="pedsclts" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="pedsclts" msprop:Generator_UserDSName="pedsclts">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="cabeza_pedclt" msprop:Generator_TableClassName="cabeza_pedcltDataTable" msprop:Generator_TableVarName="tablecabeza_pedclt" msprop:Generator_TablePropName="cabeza_pedclt" msprop:Generator_RowDeletingName="cabeza_pedcltRowDeleting" msprop:Generator_RowChangingName="cabeza_pedcltRowChanging" msprop:Generator_RowEvHandlerName="cabeza_pedcltRowChangeEventHandler" msprop:Generator_RowDeletedName="cabeza_pedcltRowDeleted" msprop:Generator_UserTableName="cabeza_pedclt" msprop:Generator_RowChangedName="cabeza_pedcltRowChanged" msprop:Generator_RowEvArgName="cabeza_pedcltRowChangeEvent" msprop:Generator_RowClassName="cabeza_pedcltRow">
+        <xs:element name="cabeza_pedclt" msprop:Generator_TableClassName="cabeza_pedcltDataTable" msprop:Generator_TableVarName="tablecabeza_pedclt" msprop:Generator_RowChangedName="cabeza_pedcltRowChanged" msprop:Generator_TablePropName="cabeza_pedclt" msprop:Generator_RowDeletingName="cabeza_pedcltRowDeleting" msprop:Generator_RowChangingName="cabeza_pedcltRowChanging" msprop:Generator_RowEvHandlerName="cabeza_pedcltRowChangeEventHandler" msprop:Generator_RowDeletedName="cabeza_pedcltRowDeleted" msprop:Generator_RowClassName="cabeza_pedcltRow" msprop:Generator_UserTableName="cabeza_pedclt" msprop:Generator_RowEvArgName="cabeza_pedcltRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
@@ -29,7 +29,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="deta_pedclt" msprop:Generator_TableClassName="deta_pedcltDataTable" msprop:Generator_TableVarName="tabledeta_pedclt" msprop:Generator_TablePropName="deta_pedclt" msprop:Generator_RowDeletingName="deta_pedcltRowDeleting" msprop:Generator_RowChangingName="deta_pedcltRowChanging" msprop:Generator_RowEvHandlerName="deta_pedcltRowChangeEventHandler" msprop:Generator_RowDeletedName="deta_pedcltRowDeleted" msprop:Generator_UserTableName="deta_pedclt" msprop:Generator_RowChangedName="deta_pedcltRowChanged" msprop:Generator_RowEvArgName="deta_pedcltRowChangeEvent" msprop:Generator_RowClassName="deta_pedcltRow">
+        <xs:element name="deta_pedclt" msprop:Generator_TableClassName="deta_pedcltDataTable" msprop:Generator_TableVarName="tabledeta_pedclt" msprop:Generator_RowChangedName="deta_pedcltRowChanged" msprop:Generator_TablePropName="deta_pedclt" msprop:Generator_RowDeletingName="deta_pedcltRowDeleting" msprop:Generator_RowChangingName="deta_pedcltRowChanging" msprop:Generator_RowEvHandlerName="deta_pedcltRowChangeEventHandler" msprop:Generator_RowDeletedName="deta_pedcltRowDeleted" msprop:Generator_RowClassName="deta_pedcltRow" msprop:Generator_UserTableName="deta_pedclt" msprop:Generator_RowEvArgName="deta_pedcltRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
@@ -45,7 +45,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="det_lispedidos" msprop:Generator_TableClassName="det_lispedidosDataTable" msprop:Generator_TableVarName="tabledet_lispedidos" msprop:Generator_RowChangedName="det_lispedidosRowChanged" msprop:Generator_TablePropName="det_lispedidos" msprop:Generator_RowDeletingName="det_lispedidosRowDeleting" msprop:Generator_RowChangingName="det_lispedidosRowChanging" msprop:Generator_RowEvHandlerName="det_lispedidosRowChangeEventHandler" msprop:Generator_RowDeletedName="det_lispedidosRowDeleted" msprop:Generator_RowClassName="det_lispedidosRow" msprop:Generator_UserTableName="det_lispedidos" msprop:Generator_RowEvArgName="det_lispedidosRowChangeEvent">
+        <xs:element name="det_lispedidos" msprop:Generator_TableClassName="det_lispedidosDataTable" msprop:Generator_TableVarName="tabledet_lispedidos" msprop:Generator_TablePropName="det_lispedidos" msprop:Generator_RowDeletingName="det_lispedidosRowDeleting" msprop:Generator_RowChangingName="det_lispedidosRowChanging" msprop:Generator_RowEvHandlerName="det_lispedidosRowChangeEventHandler" msprop:Generator_RowDeletedName="det_lispedidosRowDeleted" msprop:Generator_UserTableName="det_lispedidos" msprop:Generator_RowChangedName="det_lispedidosRowChanged" msprop:Generator_RowEvArgName="det_lispedidosRowChangeEvent" msprop:Generator_RowClassName="det_lispedidosRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
@@ -67,12 +67,13 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="cab_lispedidos" msprop:Generator_TableClassName="cab_lispedidosDataTable" msprop:Generator_TableVarName="tablecab_lispedidos" msprop:Generator_TablePropName="cab_lispedidos" msprop:Generator_RowDeletingName="cab_lispedidosRowDeleting" msprop:Generator_RowChangingName="cab_lispedidosRowChanging" msprop:Generator_RowEvHandlerName="cab_lispedidosRowChangeEventHandler" msprop:Generator_RowDeletedName="cab_lispedidosRowDeleted" msprop:Generator_UserTableName="cab_lispedidos" msprop:Generator_RowChangedName="cab_lispedidosRowChanged" msprop:Generator_RowEvArgName="cab_lispedidosRowChangeEvent" msprop:Generator_RowClassName="cab_lispedidosRow">
+        <xs:element name="cab_lispedidos" msprop:Generator_TableClassName="cab_lispedidosDataTable" msprop:Generator_TableVarName="tablecab_lispedidos" msprop:Generator_RowChangedName="cab_lispedidosRowChanged" msprop:Generator_TablePropName="cab_lispedidos" msprop:Generator_RowDeletingName="cab_lispedidosRowDeleting" msprop:Generator_RowChangingName="cab_lispedidosRowChanging" msprop:Generator_RowEvHandlerName="cab_lispedidosRowChangeEventHandler" msprop:Generator_RowDeletedName="cab_lispedidosRowDeleted" msprop:Generator_RowClassName="cab_lispedidosRow" msprop:Generator_UserTableName="cab_lispedidos" msprop:Generator_RowEvArgName="cab_lispedidosRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
               <xs:element name="fecini" msprop:Generator_ColumnVarNameInTable="columnfecini" msprop:Generator_ColumnPropNameInRow="fecini" msprop:Generator_ColumnPropNameInTable="feciniColumn" msprop:Generator_UserColumnName="fecini" type="xs:string" minOccurs="0" />
               <xs:element name="fecfin" msprop:Generator_ColumnVarNameInTable="columnfecfin" msprop:Generator_ColumnPropNameInRow="fecfin" msprop:Generator_ColumnPropNameInTable="fecfinColumn" msprop:Generator_UserColumnName="fecfin" type="xs:string" minOccurs="0" />
+              <xs:element name="taller" msprop:Generator_ColumnVarNameInTable="columntaller" msprop:Generator_ColumnPropNameInRow="taller" msprop:Generator_ColumnPropNameInTable="tallerColumn" msprop:Generator_UserColumnName="taller" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

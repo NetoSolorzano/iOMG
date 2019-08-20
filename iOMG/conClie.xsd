@@ -115,6 +115,31 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="liscont_cab" msprop:Generator_TableClassName="liscont_cabDataTable" msprop:Generator_TableVarName="tableliscont_cab" msprop:Generator_RowChangedName="liscont_cabRowChanged" msprop:Generator_TablePropName="liscont_cab" msprop:Generator_RowDeletingName="liscont_cabRowDeleting" msprop:Generator_RowChangingName="liscont_cabRowChanging" msprop:Generator_RowEvHandlerName="liscont_cabRowChangeEventHandler" msprop:Generator_RowDeletedName="liscont_cabRowDeleted" msprop:Generator_RowClassName="liscont_cabRow" msprop:Generator_UserTableName="liscont_cab" msprop:Generator_RowEvArgName="liscont_cabRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="fechini" msprop:Generator_ColumnVarNameInTable="columnfechini" msprop:Generator_ColumnPropNameInRow="fechini" msprop:Generator_ColumnPropNameInTable="fechiniColumn" msprop:Generator_UserColumnName="fechini" type="xs:string" minOccurs="0" />
+              <xs:element name="fechfin" msprop:Generator_ColumnVarNameInTable="columnfechfin" msprop:Generator_ColumnPropNameInRow="fechfin" msprop:Generator_ColumnPropNameInTable="fechfinColumn" msprop:Generator_UserColumnName="fechfin" type="xs:string" minOccurs="0" />
+              <xs:element name="estado" msprop:Generator_ColumnVarNameInTable="columnestado" msprop:Generator_ColumnPropNameInRow="estado" msprop:Generator_ColumnPropNameInTable="estadoColumn" msprop:Generator_UserColumnName="estado" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="liscont_det" msprop:Generator_TableClassName="liscont_detDataTable" msprop:Generator_TableVarName="tableliscont_det" msprop:Generator_RowChangedName="liscont_detRowChanged" msprop:Generator_TablePropName="liscont_det" msprop:Generator_RowDeletingName="liscont_detRowDeleting" msprop:Generator_RowChangingName="liscont_detRowChanging" msprop:Generator_RowEvHandlerName="liscont_detRowChangeEventHandler" msprop:Generator_RowDeletedName="liscont_detRowDeleted" msprop:Generator_RowClassName="liscont_detRow" msprop:Generator_UserTableName="liscont_det" msprop:Generator_RowEvArgName="liscont_detRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="tienda" msprop:Generator_ColumnVarNameInTable="columntienda" msprop:Generator_ColumnPropNameInRow="tienda" msprop:Generator_ColumnPropNameInTable="tiendaColumn" msprop:Generator_UserColumnName="tienda" type="xs:string" minOccurs="0" />
+              <xs:element name="contrato" msprop:Generator_ColumnVarNameInTable="columncontrato" msprop:Generator_ColumnPropNameInRow="contrato" msprop:Generator_ColumnPropNameInTable="contratoColumn" msprop:Generator_UserColumnName="contrato" type="xs:string" minOccurs="0" />
+              <xs:element name="cliente" msprop:Generator_ColumnVarNameInTable="columncliente" msprop:Generator_ColumnPropNameInRow="cliente" msprop:Generator_ColumnPropNameInTable="clienteColumn" msprop:Generator_UserColumnName="cliente" type="xs:string" minOccurs="0" />
+              <xs:element name="coment" msprop:Generator_ColumnVarNameInTable="columncoment" msprop:Generator_ColumnPropNameInRow="coment" msprop:Generator_ColumnPropNameInTable="comentColumn" msprop:Generator_UserColumnName="coment" type="xs:string" minOccurs="0" />
+              <xs:element name="fentrega" msprop:Generator_ColumnVarNameInTable="columnfentrega" msprop:Generator_ColumnPropNameInRow="fentrega" msprop:Generator_ColumnPropNameInTable="fentregaColumn" msprop:Generator_UserColumnName="fentrega" type="xs:string" minOccurs="0" />
+              <xs:element name="estado" msprop:Generator_ColumnVarNameInTable="columnestado" msprop:Generator_ColumnPropNameInRow="estado" msprop:Generator_ColumnPropNameInTable="estadoColumn" msprop:Generator_UserColumnName="estado" type="xs:string" minOccurs="0" />
+              <xs:element name="fenreal" msprop:Generator_ColumnVarNameInTable="columnfenreal" msprop:Generator_ColumnPropNameInRow="fenreal" msprop:Generator_ColumnPropNameInTable="fenrealColumn" msprop:Generator_UserColumnName="fenreal" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>
