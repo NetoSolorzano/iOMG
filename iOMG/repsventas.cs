@@ -34,8 +34,8 @@ namespace iOMG
         string img_anul = "";
         string img_imprime = "", img_preview = "";        // imagen del boton preview e imprimir reporte
         string letpied = "";            // letra indentificadora de piedra en detalle 2
-        int pageCount = 0, cuenta = 0;
         string cliente = Program.cliente;    // razon social para los reportes
+        int pageCount = 1, cuenta = 0;
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -48,6 +48,35 @@ namespace iOMG
         public repsventas()
         {
             InitializeComponent();
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)    // F1
+        {
+            string para1 = "";
+            string para2 = "";
+            string para3 = "";
+            string para4 = "";
+            if (keyData == Keys.F1)
+            {
+                if (tx_nomclie.Focused == true && rb_listado.Checked == true) 
+                {
+                    para1 = "anag_cli";
+                    para2 = "todos";
+                    ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
+                    var result = ayu2.ShowDialog();
+                    if (result == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
+                        {
+                            tx_doclie.Text = ayu2.ReturnValue1;
+                            tx_idclie.Text = ayu2.ReturnValue0;      // id del cliente
+                            tx_nomclie.Text = ayu2.ReturnValue2;
+                        }
+                    }
+                }
+                return true;    // indicate that you handled this keystroke
+            }
+            // Call the base class
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         private void repsventas_Load(object sender, EventArgs e)
         {
@@ -698,42 +727,84 @@ namespace iOMG
         }
         private void bt_vtasfiltra_Click(object sender, EventArgs e)    // filtra y muestra ventas
         {
-            string consulta = "repventas";   // CALL repventas('2019-08-01','2019-08-30','resumen');
-            try
+            string consulta = "";
+
+            if (rb_listado.Checked == true && tx_nomclie.Text.Trim() != "")         // reporte de ventas por cliente
             {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
+                consulta = "repvtasxclt";
+                try
                 {
-                    dgv_vtas.DataSource = null;
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.CommandType = CommandType.StoredProcedure;
-                    micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@tienda", tx_dat_vtasloc.Text.Trim());
-                    if (rb_listado.Checked == true) micon.Parameters.AddWithValue("@modo", "listado");
-                    if (rb_resumen.Checked == true) micon.Parameters.AddWithValue("@modo", "resumen");
-                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgv_vtas.DataSource = dt;
-                    dt.Dispose();
-                    da.Dispose();
-                    grillavtas();
-                }
-                else
-                {
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        dgv_vtas.DataSource = null;
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.CommandType = CommandType.StoredProcedure;
+                        micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
+                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_vtas.DataSource = dt;
+                        dt.Dispose();
+                        da.Dispose();
+                        grillavtas();
+                    }
+                    else
+                    {
+                        conn.Close();
+                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     conn.Close();
-                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en obtener datos");
+                    Application.Exit();
                     return;
                 }
-                conn.Close();
             }
-            catch (MySqlException ex)
+            else
             {
-                MessageBox.Show(ex.Message, "Error en obtener datos");
-                Application.Exit();
-                return;
+                consulta = "repventas";                          // CALL repventas('2019-07-01','2019-08-30','listado','');
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        dgv_vtas.DataSource = null;
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.CommandType = CommandType.StoredProcedure;
+                        micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@tienda", tx_dat_vtasloc.Text.Trim());
+                        if (rb_listado.Checked == true) micon.Parameters.AddWithValue("@modo", "listado");
+                        if (rb_resumen.Checked == true) micon.Parameters.AddWithValue("@modo", "resumen");
+                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_vtas.DataSource = dt;
+                        dt.Dispose();
+                        da.Dispose();
+                        grillavtas();
+                    }
+                    else
+                    {
+                        conn.Close();
+                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en obtener datos");
+                    Application.Exit();
+                    return;
+                }
             }
         }
         private void tx_codped_Leave(object sender, EventArgs e)    // valida existencia de contrato
@@ -1057,12 +1128,6 @@ namespace iOMG
             tabControl1.Enabled = true;
             cmb_tall_ing.Enabled = false;
             cmb_estad_ing.Enabled = false;
-            /*
-            pageCount = 1;
-            printDocument1.DefaultPageSettings.Landscape = true;
-            printPreviewDialog1.Document = printDocument1;
-            printPreviewDialog1.ShowDialog();
-            */
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1070,6 +1135,7 @@ namespace iOMG
         }
         private void bt_exc_Click(object sender, EventArgs e)
         {
+            // segun la pestanha activa debe exportar
             string nombre = "";
             if (tabControl1.SelectedTab == tabres)
             {
@@ -1732,7 +1798,7 @@ namespace iOMG
                 visualizador.Show();
             }
         }
-        private conClie generarepvtas()                             // 
+        private conClie generarepvtas()
         {
             conClie repvtas = new conClie();                        // xsd
             conClie.repvtas_cabRow cabrow = repvtas.repvtas_cab.Newrepvtas_cabRow();
@@ -1740,22 +1806,49 @@ namespace iOMG
             cabrow.fecini = dtp_vtasfini.Value.ToString("dd/MM/yyyy");
             cabrow.fecfin = dtp_vtasfina.Value.ToString("dd/MM/yyyy");
             cabrow.tienda = tx_dat_vtasloc.Text.Trim();
+            if (rb_listado.Checked == true) cabrow.modo = "listado";
+            if (rb_resumen.Checked == true) cabrow.modo = "resumen";
             repvtas.repvtas_cab.Addrepvtas_cabRow(cabrow);
             // detalle
             foreach(DataGridViewRow row in dgv_vtas.Rows)
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
+                if (rb_resumen.Checked == true)
                 {
-                    conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
-                    detrow.id = "0";
-                    detrow.tienda = row.Cells["tipoes"].Value.ToString();
-                    detrow.codigo = row.Cells["item"].Value.ToString();
-                    detrow.nombre = row.Cells["nombre"].Value.ToString().Trim();
-                    detrow.cant = row.Cells["cant"].Value.ToString().Trim();
-                    detrow.madera = row.Cells["madera"].Value.ToString().Trim();
-                    detrow.medidas = row.Cells["medidas"].Value.ToString().Trim();
-                    detrow.total = double.Parse(row.Cells["total"].Value.ToString());
-                    repvtas.repvtas_det.Addrepvtas_detRow(detrow);
+                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
+                    {
+                        conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
+                        detrow.id = "0";
+                        detrow.tienda = row.Cells["tienda"].Value.ToString();
+                        detrow.codigo = row.Cells["item"].Value.ToString();
+                        detrow.nombre = row.Cells["nombre"].Value.ToString().Trim();
+                        detrow.cant = row.Cells["cant"].Value.ToString().Trim();
+                        detrow.madera = row.Cells["madera"].Value.ToString().Trim();
+                        detrow.medidas = row.Cells["medidas"].Value.ToString().Trim();
+                        detrow.total = double.Parse(row.Cells["total"].Value.ToString());
+                        repvtas.repvtas_det.Addrepvtas_detRow(detrow);
+                    }
+                }
+                if (rb_listado.Checked == true)                      // tienda,b.fecha,a.contratoh,cliente,a.cant,a.item,a.nombre,a.medidas,a.madera,a.precio,a.total,PEDIDO,STOCK
+                {
+                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
+                    {
+                        conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
+                        detrow.id = "0";
+                        detrow.tienda = row.Cells["tienda"].Value.ToString();
+                        detrow.fecha = row.Cells["fecha"].Value.ToString();
+                        detrow.contrato = row.Cells["contratoh"].Value.ToString();
+                        detrow.cliente = row.Cells["cliente"].Value.ToString();
+                        detrow.cant = row.Cells["cant"].Value.ToString().Trim();
+                        detrow.codigo = row.Cells["item"].Value.ToString();
+                        detrow.nombre = row.Cells["nombre"].Value.ToString().Trim();
+                        detrow.medidas = row.Cells["medidas"].Value.ToString().Trim();
+                        detrow.madera = row.Cells["madera"].Value.ToString().Trim();
+                        detrow.precio = row.Cells["precio"].Value.ToString().Trim();
+                        detrow.total = double.Parse(row.Cells["total"].Value.ToString());
+                        detrow.pedido = row.Cells["PEDIDO"].Value.ToString().Trim();
+                        detrow.stock = row.Cells["STOCK"].Value.ToString().Trim();
+                        repvtas.repvtas_det.Addrepvtas_detRow(detrow);
+                    }
                 }
             }
             return repvtas;

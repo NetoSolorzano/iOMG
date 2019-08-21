@@ -100,7 +100,7 @@ namespace iOMG
             }
             if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")   // maestra de clientes
             {
-                consulta = "select idanagrafica,tipdoc,ruc,razonsocial from anag_cli where estado=0";
+                consulta = "select idanagrafica,tipdoc,ruc,razonsocial,space(1),space(1),space(1) from anag_cli where estado=0";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 7;
                 dataGridView1.Columns[0].Name = " ID ";

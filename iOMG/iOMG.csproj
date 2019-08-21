@@ -267,6 +267,12 @@
     <Compile Include="repsventas.designer.cs">
       <DependentUpon>repsventas.cs</DependentUpon>
     </Compile>
+    <Compile Include="repvtas_listado.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>repvtas_listado.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="repvtas_resumen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -385,6 +391,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="repsventas.resx">
       <DependentUpon>repsventas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="repvtas_listado.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>repvtas_listado.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="repvtas_resumen.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

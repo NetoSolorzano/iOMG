@@ -150,6 +150,11 @@
             this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.tabvtas = new System.Windows.Forms.TabPage();
+            this.tx_idclie = new System.Windows.Forms.TextBox();
+            this.tx_nomclie = new System.Windows.Forms.TextBox();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
@@ -168,6 +173,7 @@
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.tx_doclie = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabcont.SuspendLayout();
@@ -189,6 +195,7 @@
             this.tabres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
             this.tabvtas.SuspendLayout();
+            this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
@@ -449,6 +456,9 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabcont);
             this.tabControl1.Controls.Add(this.tabpds);
             this.tabControl1.Controls.Add(this.tabPed);
@@ -592,6 +602,9 @@
             // 
             // dgv_contratos
             // 
+            this.dgv_contratos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv_contratos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_contratos.Location = new System.Drawing.Point(3, 50);
             this.dgv_contratos.Name = "dgv_contratos";
@@ -620,6 +633,9 @@
             // 
             // dgv_pedidos
             // 
+            this.dgv_pedidos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv_pedidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_pedidos.Location = new System.Drawing.Point(3, 50);
             this.dgv_pedidos.Name = "dgv_pedidos";
@@ -916,6 +932,9 @@
             // 
             // dgv_ingresos
             // 
+            this.dgv_ingresos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv_ingresos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_ingresos.Location = new System.Drawing.Point(3, 49);
             this.dgv_ingresos.Name = "dgv_ingresos";
@@ -1171,6 +1190,9 @@
             // 
             // dgv_salidas
             // 
+            this.dgv_salidas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv_salidas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_salidas.Location = new System.Drawing.Point(3, 49);
             this.dgv_salidas.Name = "dgv_salidas";
@@ -1428,6 +1450,9 @@
             // 
             // dgv_resumen
             // 
+            this.dgv_resumen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_resumen.Location = new System.Drawing.Point(3, 98);
             this.dgv_resumen.Name = "dgv_resumen";
@@ -1447,6 +1472,11 @@
             // 
             // tabvtas
             // 
+            this.tabvtas.Controls.Add(this.tx_doclie);
+            this.tabvtas.Controls.Add(this.tx_idclie);
+            this.tabvtas.Controls.Add(this.tx_nomclie);
+            this.tabvtas.Controls.Add(this.groupBox19);
+            this.tabvtas.Controls.Add(this.label27);
             this.tabvtas.Controls.Add(this.groupBox17);
             this.tabvtas.Controls.Add(this.label26);
             this.tabvtas.Controls.Add(this.tx_dat_vtasloc);
@@ -1465,6 +1495,51 @@
             this.tabvtas.TabIndex = 6;
             this.tabvtas.Text = "Ventas";
             this.tabvtas.UseVisualStyleBackColor = true;
+            // 
+            // tx_idclie
+            // 
+            this.tx_idclie.Location = new System.Drawing.Point(322, 4);
+            this.tx_idclie.Name = "tx_idclie";
+            this.tx_idclie.Size = new System.Drawing.Size(27, 20);
+            this.tx_idclie.TabIndex = 365;
+            this.tx_idclie.Visible = false;
+            // 
+            // tx_nomclie
+            // 
+            this.tx_nomclie.Location = new System.Drawing.Point(181, 26);
+            this.tx_nomclie.Name = "tx_nomclie";
+            this.tx_nomclie.ReadOnly = true;
+            this.tx_nomclie.Size = new System.Drawing.Size(232, 20);
+            this.tx_nomclie.TabIndex = 364;
+            this.tx_nomclie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // groupBox19
+            // 
+            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox19.Controls.Add(this.groupBox20);
+            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox19.Location = new System.Drawing.Point(134, 45);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Size = new System.Drawing.Size(279, 1);
+            this.groupBox19.TabIndex = 363;
+            this.groupBox19.TabStop = false;
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Location = new System.Drawing.Point(0, -26);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(164, 1);
+            this.groupBox20.TabIndex = 113;
+            this.groupBox20.TabStop = false;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(136, 30);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(39, 13);
+            this.label27.TabIndex = 362;
+            this.label27.Text = "Cliente";
             // 
             // groupBox17
             // 
@@ -1549,6 +1624,9 @@
             // 
             // dgv_vtas
             // 
+            this.dgv_vtas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_vtas.Location = new System.Drawing.Point(3, 50);
             this.dgv_vtas.Name = "dgv_vtas";
@@ -1559,7 +1637,7 @@
             // 
             this.button4.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button4.Image = global::iOMG.Properties.Resources.print_preview_24;
-            this.button4.Location = new System.Drawing.Point(641, 5);
+            this.button4.Location = new System.Drawing.Point(714, 5);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(50, 41);
             this.button4.TabIndex = 355;
@@ -1570,7 +1648,7 @@
             // 
             this.dtp_vtasfina.Checked = false;
             this.dtp_vtasfina.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_vtasfina.Location = new System.Drawing.Point(430, 26);
+            this.dtp_vtasfina.Location = new System.Drawing.Point(503, 26);
             this.dtp_vtasfina.Name = "dtp_vtasfina";
             this.dtp_vtasfina.Size = new System.Drawing.Size(95, 20);
             this.dtp_vtasfina.TabIndex = 351;
@@ -1579,7 +1657,7 @@
             // 
             this.dtp_vtasfini.Checked = false;
             this.dtp_vtasfini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_vtasfini.Location = new System.Drawing.Point(430, 4);
+            this.dtp_vtasfini.Location = new System.Drawing.Point(503, 4);
             this.dtp_vtasfini.Name = "dtp_vtasfini";
             this.dtp_vtasfini.Size = new System.Drawing.Size(95, 20);
             this.dtp_vtasfini.TabIndex = 350;
@@ -1587,7 +1665,7 @@
             // bt_vtasfiltra
             // 
             this.bt_vtasfiltra.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_vtasfiltra.Location = new System.Drawing.Point(552, 10);
+            this.bt_vtasfiltra.Location = new System.Drawing.Point(625, 10);
             this.bt_vtasfiltra.Name = "bt_vtasfiltra";
             this.bt_vtasfiltra.Size = new System.Drawing.Size(59, 29);
             this.bt_vtasfiltra.TabIndex = 352;
@@ -1598,7 +1676,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(374, 31);
+            this.label24.Location = new System.Drawing.Point(447, 31);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(53, 13);
             this.label24.TabIndex = 354;
@@ -1607,7 +1685,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(366, 8);
+            this.label25.Location = new System.Drawing.Point(439, 8);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(61, 13);
             this.label25.TabIndex = 353;
@@ -1630,6 +1708,14 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
+            // 
+            // tx_doclie
+            // 
+            this.tx_doclie.Location = new System.Drawing.Point(353, 4);
+            this.tx_doclie.Name = "tx_doclie";
+            this.tx_doclie.Size = new System.Drawing.Size(47, 20);
+            this.tx_doclie.TabIndex = 366;
+            this.tx_doclie.Visible = false;
             // 
             // repsventas
             // 
@@ -1671,6 +1757,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
             this.tabvtas.ResumeLayout(false);
             this.tabvtas.PerformLayout();
+            this.groupBox19.ResumeLayout(false);
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1820,5 +1907,11 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox tx_dat_vtasloc;
         private System.Windows.Forms.ComboBox cmb_vtasloc;
+        private System.Windows.Forms.TextBox tx_idclie;
+        private System.Windows.Forms.TextBox tx_nomclie;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox tx_doclie;
     }
 }
