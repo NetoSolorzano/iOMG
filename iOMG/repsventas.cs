@@ -207,6 +207,18 @@ namespace iOMG
                     cmb_conestado.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_conestado.ValueMember = row.ItemArray[1].ToString();
                 }
+                // seleccion del local de ventas
+                const string conlocven = "select descrizionerid,idcodice from desc_ven " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmdlocven = new MySqlCommand(conlocven, conn);
+                DataTable dtlocven = new DataTable();
+                MySqlDataAdapter dalocven = new MySqlDataAdapter(cmdlocven);
+                dalocven.Fill(dtlocven);
+                foreach (DataRow row in dtlocven.Rows)
+                {
+                    cmb_vtasloc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_vtasloc.ValueMember = row.ItemArray[1].ToString();
+                }
             }
             //
             conn.Close();
@@ -698,6 +710,7 @@ namespace iOMG
                     micon.CommandType = CommandType.StoredProcedure;
                     micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tienda", tx_dat_vtasloc.Text.Trim());
                     if (rb_listado.Checked == true) micon.Parameters.AddWithValue("@modo", "listado");
                     if (rb_resumen.Checked == true) micon.Parameters.AddWithValue("@modo", "resumen");
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -861,6 +874,11 @@ namespace iOMG
             if (cmb_conestado.SelectedValue != null) tx_dat_conestado.Text = cmb_conestado.SelectedValue.ToString();
             else tx_dat_conestado.Text = cmb_conestado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
+        private void cmb_vtasloc_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_vtasloc.SelectedValue != null) tx_dat_vtasloc.Text = cmb_vtasloc.SelectedValue.ToString();
+            else tx_dat_vtasloc.Text = cmb_vtasloc.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         // 
         private void cmb_estado_KeyDown(object sender, KeyEventArgs e)
         {
@@ -924,6 +942,14 @@ namespace iOMG
             {
                 cmb_conestado.SelectedIndex = -1;
                 tx_dat_conestado.Text = "";
+            }
+        }
+        private void cmb_vtasloc_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_vtasloc.SelectedIndex = -1;
+                tx_dat_vtasloc.Text = "";
             }
         }
         #endregion
@@ -1708,9 +1734,30 @@ namespace iOMG
         }
         private conClie generarepvtas()                             // 
         {
-            conClie repvtas = new conClie();
-
-
+            conClie repvtas = new conClie();                        // xsd
+            conClie.repvtas_cabRow cabrow = repvtas.repvtas_cab.Newrepvtas_cabRow();
+            cabrow.id = "0";
+            cabrow.fecini = dtp_vtasfini.Value.ToString("dd/MM/yyyy");
+            cabrow.fecfin = dtp_vtasfina.Value.ToString("dd/MM/yyyy");
+            cabrow.tienda = tx_dat_vtasloc.Text.Trim();
+            repvtas.repvtas_cab.Addrepvtas_cabRow(cabrow);
+            // detalle
+            foreach(DataGridViewRow row in dgv_vtas.Rows)
+            {
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
+                {
+                    conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
+                    detrow.id = "0";
+                    detrow.tienda = row.Cells["tipoes"].Value.ToString();
+                    detrow.codigo = row.Cells["item"].Value.ToString();
+                    detrow.nombre = row.Cells["nombre"].Value.ToString().Trim();
+                    detrow.cant = row.Cells["cant"].Value.ToString().Trim();
+                    detrow.madera = row.Cells["madera"].Value.ToString().Trim();
+                    detrow.medidas = row.Cells["medidas"].Value.ToString().Trim();
+                    detrow.total = double.Parse(row.Cells["total"].Value.ToString());
+                    repvtas.repvtas_det.Addrepvtas_detRow(detrow);
+                }
+            }
             return repvtas;
         }
         private conClie generareporte()                             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal

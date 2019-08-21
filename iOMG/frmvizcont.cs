@@ -43,6 +43,12 @@ namespace iOMG
                 _listado.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _listado;
             }
+            if (_datosReporte.repvtas_cab.Rows.Count > 0)
+            {
+                repvtas_resumen _ventas = new repvtas_resumen();
+                _ventas.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _ventas;
+            }
         }
     }
 }
