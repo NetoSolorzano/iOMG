@@ -458,7 +458,17 @@ namespace iOMG
             dgv_resumen.Columns[21].Tag = "validaNO";          // las celdas de esta columna SI se validan
             dgv_resumen.Columns[21].DisplayIndex = 12;
         }
-        private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - 
+        private void grillavtas()                                   // arma grilla de ventas
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_vtas.Font = tiplg;
+            dgv_vtas.DefaultCellStyle.Font = tiplg;
+            dgv_vtas.RowTemplate.Height = 15;
+            dgv_vtas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_vtas.AllowUserToAddRows = false;
+            if (dgv_vtas.DataSource == null) dgv_vtas.ColumnCount = 7;
+        }
+        private void button1_Click(object sender, EventArgs e)          // filtra y muestra la info - 
         {
             /*
             string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
@@ -538,7 +548,7 @@ namespace iOMG
             }
             */
         }
-        private void bt_filtra_ing_Click(object sender, EventArgs e)// filtra y muestra info - 
+        private void bt_filtra_ing_Click(object sender, EventArgs e)    // filtra y muestra info - 
         {
             /*
             string parte = "where a.tipmov = 'INGRES' and a.fecha between @fec1 and @fec2";
@@ -598,7 +608,7 @@ namespace iOMG
             }
             */
         }
-        private void bt_confiltra_Click(object sender, EventArgs e) // flltra y muestra contratos
+        private void bt_confiltra_Click(object sender, EventArgs e)     // flltra y muestra contratos
         {
             string consulta = "repliscont";
             try
@@ -636,7 +646,7 @@ namespace iOMG
                 return;
             }
         }
-        private void button5_Click(object sender, EventArgs e)      // filtra y muestra pedidos de clientes
+        private void button5_Click(object sender, EventArgs e)          // filtra y muestra pedidos de clientes
         {
             string consulta = "lispedclt";
             try
@@ -658,6 +668,45 @@ namespace iOMG
                     dt.Dispose();
                     da.Dispose();
                     grillapeds();
+                }
+                else
+                {
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos");
+                Application.Exit();
+                return;
+            }
+        }
+        private void bt_vtasfiltra_Click(object sender, EventArgs e)    // filtra y muestra ventas
+        {
+            string consulta = "repventas";   // CALL repventas('2019-08-01','2019-08-30','resumen');
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    dgv_vtas.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
+                    if (rb_listado.Checked == true) micon.Parameters.AddWithValue("@modo", "listado");
+                    if (rb_resumen.Checked == true) micon.Parameters.AddWithValue("@modo", "resumen");
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_vtas.DataSource = dt;
+                    dt.Dispose();
+                    da.Dispose();
+                    grillavtas();
                 }
                 else
                 {
@@ -1626,6 +1675,10 @@ namespace iOMG
         {
             setParaCrystal("contratos");
         }
+        private void button4_Click(object sender, EventArgs e)      // reporte de ventas
+        {
+            setParaCrystal("ventas");
+        }
         private void setParaCrystal(string repo)                    // genera el set para el reporte de crystal
         {
             if (repo== "resumen")
@@ -1646,6 +1699,19 @@ namespace iOMG
                 frmvizcont visualizador = new frmvizcont(datos);
                 visualizador.Show();
             }
+            if (repo == "ventas")
+            {
+                conClie datos = generarepvtas();
+                frmvizcont visualizador = new frmvizcont(datos);
+                visualizador.Show();
+            }
+        }
+        private conClie generarepvtas()                             // 
+        {
+            conClie repvtas = new conClie();
+
+
+            return repvtas;
         }
         private conClie generareporte()                             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
         {
