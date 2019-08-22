@@ -53,9 +53,15 @@ namespace iOMG
                     _ventas.SetDataSource(_datosReporte);
                     crystalReportViewer1.ReportSource = _ventas;
                 }
-                if (row["modo"].ToString() == "listado")
+                if (row["modo"].ToString() == "listado" && row["nudoclte"].ToString() == "")
                 {
                     repvtas_listado _ventas = new repvtas_listado();
+                    _ventas.SetDataSource(_datosReporte);
+                    crystalReportViewer1.ReportSource = _ventas;
+                }
+                if (row["modo"].ToString() == "listado" && row["nudoclte"].ToString() != "")
+                {
+                    repvtas_xclte _ventas = new repvtas_xclte();
                     _ventas.SetDataSource(_datosReporte);
                     crystalReportViewer1.ReportSource = _ventas;
                 }
