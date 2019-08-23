@@ -283,71 +283,28 @@ namespace iOMG
         private void grilla_ing()                                   // arma la grilla ingresos
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_salidas.Font = tiplg;
-            dgv_salidas.DefaultCellStyle.Font = tiplg;
-            dgv_salidas.RowTemplate.Height = 15;
-            dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_salidas.AllowUserToAddRows = false;
-            if (dgv_salidas.DataSource == null) dgv_salidas.ColumnCount = 8;
+            dgv_ingresos.Font = tiplg;
+            dgv_ingresos.DefaultCellStyle.Font = tiplg;
+            dgv_ingresos.RowTemplate.Height = 15;
+            dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_ingresos.AllowUserToAddRows = false;
+            /*
+            if (dgv_ingresos.DataSource == null) dgv_ingresos.ColumnCount = 8;
             // Fecha ingreso real
-            dgv_salidas.Columns[0].Visible = true;
-            dgv_salidas.Columns[0].HeaderText = "Fecha";    // titulo de la columna
-            dgv_salidas.Columns[0].Width = 70;                // ancho
-            dgv_salidas.Columns[0].ReadOnly = false;           // lectura o no
-            dgv_salidas.Columns[0].Tag = "validaNO";
+            dgv_ingresos.Columns[0].Visible = true;
+            dgv_ingresos.Columns[0].HeaderText = "Fecha";    // titulo de la columna
+            dgv_ingresos.Columns[0].Width = 70;                // ancho
+            dgv_ingresos.Columns[0].ReadOnly = false;           // lectura o no
+            dgv_ingresos.Columns[0].Tag = "validaNO";
             //dgv_pedidos.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // almacen ingresado
-            dgv_salidas.Columns[1].Visible = true;            // columna visible o no
-            dgv_salidas.Columns[1].HeaderText = "Almacén";    // titulo de la columna
-            dgv_salidas.Columns[1].Width = 60;                // ancho
-            dgv_salidas.Columns[1].ReadOnly = true;           // lectura o no
-            dgv_salidas.Columns[1].Tag = "validaSI";
+            dgv_ingresos.Columns[1].Visible = true;            // columna visible o no
+            dgv_ingresos.Columns[1].HeaderText = "Almacén";    // titulo de la columna
+            dgv_ingresos.Columns[1].Width = 60;                // ancho
+            dgv_ingresos.Columns[1].ReadOnly = true;           // lectura o no
+            dgv_ingresos.Columns[1].Tag = "validaSI";
             //dgv_pedidos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // codigo pedido
-            dgv_salidas.Columns[2].Visible = true;
-            dgv_salidas.Columns[2].HeaderText = "Pedido";    // titulo de la columna
-            dgv_salidas.Columns[2].Width = 80;                // ancho
-            dgv_salidas.Columns[2].ReadOnly = true;           // lectura o no
-            dgv_salidas.Columns[2].Tag = "validaNO";
-            //dgv_pedidos.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // codigo articulo
-            dgv_salidas.Columns[3].Visible = true;
-            dgv_salidas.Columns[3].HeaderText = "Artículo";
-            dgv_salidas.Columns[3].Width = 150;
-            dgv_salidas.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
-            dgv_salidas.Columns[3].Tag = "validaNO";          // las celdas de esta columna se SI se validan
-            //dgv_pedidos.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Nombre
-            dgv_salidas.Columns[4].Visible = true;
-            dgv_salidas.Columns[4].HeaderText = "Nombre";
-            dgv_salidas.Columns[4].Width = 200;
-            dgv_salidas.Columns[4].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
-            dgv_salidas.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
-            //dgv_pedidos.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Cant
-            dgv_salidas.Columns[5].Visible = true;
-            dgv_salidas.Columns[5].HeaderText = "Cant";
-            dgv_salidas.Columns[5].Width = 50;
-            dgv_salidas.Columns[5].ReadOnly = true;
-            dgv_salidas.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            //dgv_pedidos.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // madera
-            dgv_salidas.Columns[6].Visible = true;
-            dgv_salidas.Columns[6].HeaderText = "Madera";
-            dgv_salidas.Columns[6].Width = 70;
-            dgv_salidas.Columns[6].ReadOnly = true;
-            dgv_salidas.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            //dgv_pedidos.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // comentario
-            dgv_salidas.Columns[7].Visible = true;
-            dgv_salidas.Columns[7].HeaderText = "Comentario";
-            dgv_salidas.Columns[7].Width = 200;
-            dgv_salidas.Columns[7].ReadOnly = true;
-            dgv_salidas.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            //dgv_pedidos.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // resto
-            dgv_salidas.Columns[8].Visible = false;
-            dgv_salidas.Columns[9].Visible = false;
+            */
         }
         private void grillares()                                    // arma la grilla del resumen de contrato
         {
@@ -513,127 +470,27 @@ namespace iOMG
             dgv_vtas.AllowUserToAddRows = false;
             if (dgv_vtas.DataSource == null) dgv_vtas.ColumnCount = 7;
         }
-        private void button1_Click(object sender, EventArgs e)          // filtra y muestra la info - 
+        //
+        private void button1_Click(object sender, EventArgs e)          // filtra y muestra los ingresos de pedidos de clientes
         {
-            /*
-            string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
-            string parte0 = "", parte1 = "", parte2 = "";
-            if (tx_dat_orig.Text != "")          // taller
-            {
-                parte0 = " and a.origen=@tal";
-            }
-            if (tx_dat_dest.Text != "")
-            {
-                parte1 = " and a.destino=@des";
-            }
-            if (tx_dat_estad.Text != "")
-            {
-                parte2 = " and a.status=@sta";
-            }
-            string consulta = "";
-            if (chk_resu.Checked == true)
-            {
-                consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-                    "space(1) as item,space(1) as nombre,space(1) as madera, '' as piedra,'' as medidas,sum(d.cant) as cant,sum(d.saldo) as saldo," +
-                    "space(1) as acabado,a.status,trim(a.origen),'' as estado,'' as cmadera,'' as cpiedra,d.fingreso,a.coment " +
-                    "from pedidos a left join detaped d on d.pedidoh=a.codped " +
-                    "left join desc_stp b on b.idcodice=a.status " +
-                    "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
-                    "left join desc_est e on e.idcodice=d.estado " +
-                    parte + parte0 + parte1 + parte2 + " group by a.codped order by a.fecha,a.origen,a.codped";
-            }
-            else
-            {
-                consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-                    "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
-                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso,'' as coment " +
-                    "from pedidos a left join detaped d on d.pedidoh=a.codped " +
-                    "left join desc_stp b on b.idcodice=a.status " +
-                    "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
-                    "left join desc_est e on e.idcodice=d.estado " +
-                    "left join desc_mad f on f.idcodice=d.madera " +
-                    "left join desc_dt2 g on g.idcodice=d.piedra " +
-                    parte + parte0 + parte1 + parte2 + " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
-            }
+            // falta su dataset y crystal
+            string consulta = "ingpedclte";                                 // todos los ingresos de pedidos
             try
             {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    dgv_pedidos.DataSource = null;
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@tip", tipede);
-                    micon.Parameters.AddWithValue("@fec1", dtp_pedido.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@fec2", dtp_entreg.Value.ToString("yyyy-MM-dd"));
-                    if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_orig.Text);
-                    if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_dest.Text);
-                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_estad.Text);
-                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgv_pedidos.DataSource = dt;
-                    dt.Dispose();
-                    da.Dispose();
-                    grilla();
-                }
-                else
-                {
-                    conn.Close();
-                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                conn.Close();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener datos");
-                Application.Exit();
-                return;
-            }
-            */
-        }
-        private void bt_filtra_ing_Click(object sender, EventArgs e)    // filtra y muestra info - 
-        {
-            /*
-            string parte = "where a.tipmov = 'INGRES' and a.fecha between @fec1 and @fec2";
-            string parte0 = "", parte1 = "", parte2 = "";
-            if (tx_dat_taling.Text != "")
-            {
-                parte0 = " and a.origen=@tal";
-            }
-            if (tx_dat_desing.Text != "")
-            {
-                parte1 = " and a.almad=@des";
-            }
-            if (tx_dat_esting.Text != "")
-            {
-                parte2 = " and b.status=@sta";
-            }
-            string consulta = "SELECT a.fecha,b.descrizionerid,a.docum,a.item,i.nombr,a.cant,a.madera,a.coment,a.almad,'' " +
-                "FROM movalm a " +
-                "LEFT JOIN items i ON concat(i.capit, left(i.model, 3), i.mader, i.tipol, left(i.deta1, 2), i.acaba, i.talle, i.deta2) = " +
-                "concat(SUBSTRING(a.item, 1, 1), SUBSTRING(a.item, 2, 3), 'X', SUBSTRING(a.item, 6, 2), SUBSTRING(a.item, 8, 2), SUBSTRING(a.item, 10, 1), 'XX', SUBSTRING(a.item, 13, 3)) " +
-                "LEFT JOIN desc_alm b ON b.IDCodice = a.almad " +
-                parte + parte0 + parte1 + parte2 + " order by a.fecha,a.docum";
-            try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);    // solo estado anulado si se selecciona directamente
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
                     dgv_ingresos.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@fec1", dtp_fini_ing.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@fec2", dtp_final_ing.Value.ToString("yyyy-MM-dd"));
-                    if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_taling.Text);
-                    if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_desing.Text);
-                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_esting.Text);
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@fini", dtp_ingfini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fina", dtp_ingfinal.Value.ToString("yyyy-MM-dd"));
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                    DataTable dti = new DataTable();
-                    da.Fill(dti);
-                    dgv_ingresos.DataSource = dti;
-                    dti.Dispose();
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_ingresos.DataSource = dt;
+                    dt.Dispose();
                     da.Dispose();
                     grilla_ing();
                 }
@@ -647,11 +504,10 @@ namespace iOMG
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show(ex.Message, "Error en obtener datos");
+                MessageBox.Show(ex.Message, "Error en obtener datos de contratos");
                 Application.Exit();
                 return;
             }
-            */
         }
         private void bt_confiltra_Click(object sender, EventArgs e)     // flltra y muestra contratos
         {

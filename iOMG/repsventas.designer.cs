@@ -85,7 +85,7 @@
             this.dgv_ingresos = new System.Windows.Forms.DataGridView();
             this.dtp_ingfinal = new System.Windows.Forms.DateTimePicker();
             this.dtp_ingfini = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bt_filtra_ing = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabIng = new System.Windows.Forms.TabPage();
@@ -93,7 +93,7 @@
             this.dgv_salidas = new System.Windows.Forms.DataGridView();
             this.dtp_final_ing = new System.Windows.Forms.DateTimePicker();
             this.dtp_fini_ing = new System.Windows.Forms.DateTimePicker();
-            this.bt_filtra_ing = new System.Windows.Forms.Button();
+            this.bt_filtra_sal = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabres = new System.Windows.Forms.TabPage();
@@ -713,7 +713,7 @@
             this.tabPed.Controls.Add(this.dgv_ingresos);
             this.tabPed.Controls.Add(this.dtp_ingfinal);
             this.tabPed.Controls.Add(this.dtp_ingfini);
-            this.tabPed.Controls.Add(this.button1);
+            this.tabPed.Controls.Add(this.bt_filtra_ing);
             this.tabPed.Controls.Add(this.label7);
             this.tabPed.Controls.Add(this.label2);
             this.tabPed.Location = new System.Drawing.Point(4, 22);
@@ -727,9 +727,10 @@
             // bt_preview
             // 
             this.bt_preview.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_preview.Location = new System.Drawing.Point(654, 3);
+            this.bt_preview.Image = global::iOMG.Properties.Resources.print_preview_24;
+            this.bt_preview.Location = new System.Drawing.Point(654, 4);
             this.bt_preview.Name = "bt_preview";
-            this.bt_preview.Size = new System.Drawing.Size(61, 44);
+            this.bt_preview.Size = new System.Drawing.Size(50, 41);
             this.bt_preview.TabIndex = 318;
             this.bt_preview.UseVisualStyleBackColor = true;
             this.bt_preview.Click += new System.EventHandler(this.bt_preview_Click);
@@ -763,16 +764,16 @@
             this.dtp_ingfini.Size = new System.Drawing.Size(95, 20);
             this.dtp_ingfini.TabIndex = 1;
             // 
-            // button1
+            // bt_filtra_ing
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(544, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(59, 29);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Filtra";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bt_filtra_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_filtra_ing.Location = new System.Drawing.Point(566, 10);
+            this.bt_filtra_ing.Name = "bt_filtra_ing";
+            this.bt_filtra_ing.Size = new System.Drawing.Size(59, 29);
+            this.bt_filtra_ing.TabIndex = 3;
+            this.bt_filtra_ing.Text = "Filtra";
+            this.bt_filtra_ing.UseVisualStyleBackColor = true;
+            this.bt_filtra_ing.Click += new System.EventHandler(this.button1_Click);
             // 
             // label7
             // 
@@ -798,7 +799,7 @@
             this.tabIng.Controls.Add(this.dgv_salidas);
             this.tabIng.Controls.Add(this.dtp_final_ing);
             this.tabIng.Controls.Add(this.dtp_fini_ing);
-            this.tabIng.Controls.Add(this.bt_filtra_ing);
+            this.tabIng.Controls.Add(this.bt_filtra_sal);
             this.tabIng.Controls.Add(this.label5);
             this.tabIng.Controls.Add(this.label6);
             this.tabIng.Location = new System.Drawing.Point(4, 22);
@@ -848,16 +849,15 @@
             this.dtp_fini_ing.Size = new System.Drawing.Size(95, 20);
             this.dtp_fini_ing.TabIndex = 320;
             // 
-            // bt_filtra_ing
+            // bt_filtra_sal
             // 
-            this.bt_filtra_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_filtra_ing.Location = new System.Drawing.Point(544, 8);
-            this.bt_filtra_ing.Name = "bt_filtra_ing";
-            this.bt_filtra_ing.Size = new System.Drawing.Size(59, 29);
-            this.bt_filtra_ing.TabIndex = 322;
-            this.bt_filtra_ing.Text = "Filtra";
-            this.bt_filtra_ing.UseVisualStyleBackColor = true;
-            this.bt_filtra_ing.Click += new System.EventHandler(this.bt_filtra_ing_Click);
+            this.bt_filtra_sal.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_filtra_sal.Location = new System.Drawing.Point(565, 8);
+            this.bt_filtra_sal.Name = "bt_filtra_sal";
+            this.bt_filtra_sal.Size = new System.Drawing.Size(59, 29);
+            this.bt_filtra_sal.TabIndex = 322;
+            this.bt_filtra_sal.Text = "Filtra";
+            this.bt_filtra_sal.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -1375,14 +1375,14 @@
         private System.Windows.Forms.DateTimePicker dtp_ingfini;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bt_filtra_ing;
         private System.Windows.Forms.DataGridView dgv_ingresos;
         private System.Windows.Forms.Button bt_preview;
         private System.Windows.Forms.Button bt_preview_ing;
         private System.Windows.Forms.DataGridView dgv_salidas;
         private System.Windows.Forms.DateTimePicker dtp_final_ing;
         private System.Windows.Forms.DateTimePicker dtp_fini_ing;
-        private System.Windows.Forms.Button bt_filtra_ing;
+        private System.Windows.Forms.Button bt_filtra_sal;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabres;
