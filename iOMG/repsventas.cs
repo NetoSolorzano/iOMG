@@ -744,7 +744,7 @@ namespace iOMG
                         dgv_vtas.DataSource = null;
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@idclte", tx_idclie.Text.Trim());    // me quede aca, falta probar
+                        micon.Parameters.AddWithValue("@idclte", tx_idclie.Text.Trim());
                         micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
                         micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -1254,20 +1254,22 @@ namespace iOMG
                     if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
                     {
                         conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
-                        detrow.id = "0";
+                        detrow.id = "0";    //String.Format("{0:dd/MM/yyyy}",row.Cells["fecha"].Value.ToString()); //.ToString("dd/MM/yyyy"); ... ninguno de estos funciono
                         detrow.tienda = row.Cells["tienda"].Value.ToString();
-                        detrow.fecha = row.Cells["fecha"].Value.ToString();
+                        detrow.fecha = row.Cells["fecha"].Value.ToString().Substring(0,2) + "/" + row.Cells["fecha"].Value.ToString().Substring(3, 2) + "/" + row.Cells["fecha"].Value.ToString().Substring(6, 4); 
                         detrow.contrato = row.Cells["contratoh"].Value.ToString();
                         detrow.cant = row.Cells["cant"].Value.ToString().Trim();
                         detrow.codigo = row.Cells["item"].Value.ToString();
                         detrow.nombre = row.Cells["nombre"].Value.ToString().Trim();
                         detrow.medidas = row.Cells["medidas"].Value.ToString().Trim();
-                        detrow.madera = row.Cells["madera"].Value.ToString().Trim();
+                        detrow.madera =  row.Cells["madera"].Value.ToString().Trim();
                         detrow.precio = row.Cells["precio"].Value.ToString().Trim();
                         detrow.total = double.Parse(row.Cells["total"].Value.ToString());
                         detrow.estcont = row.Cells["status"].Value.ToString().Trim();
-                        detrow.pedido = row.Cells["fesal"].Value.ToString().Trim();
-                        detrow.stock = row.Cells["fecent"].Value.ToString().Trim();
+                        if (row.Cells["fesal"].Value.ToString().Trim() == "") detrow.fecsal = row.Cells["fesal"].Value.ToString().Trim(); // salida de almacen con reserva
+                        else detrow.fecsal = row.Cells["fesal"].Value.ToString().Substring(8, 2) + "/" + row.Cells["fesal"].Value.ToString().Substring(5, 2) + "/" + row.Cells["fesal"].Value.ToString().Substring(0, 4);
+                        if (row.Cells["fecent"].Value.ToString().Trim() == "") detrow.fecent = row.Cells["fecent"].Value.ToString().Trim(); // fecha del pedido
+                        else detrow.fecent = row.Cells["fecent"].Value.ToString().Substring(0,10);  //.Substring(8, 2) + "/" + row.Cells["fecent"].Value.ToString().Substring(5, 2) + "/" + row.Cells["fecent"].Value.ToString().Substring(0, 4);
                         repvtas.repvtas_det.Addrepvtas_detRow(detrow);
                     }
                 }
@@ -1417,8 +1419,8 @@ namespace iOMG
             conClie liscont = new conClie();
             conClie.liscont_cabRow rowcabeza = liscont.liscont_cab.Newliscont_cabRow();
             rowcabeza.id = "0";
-            rowcabeza.fechini = dtp_confini.Value.ToString("yyyy-MM-dd");
-            rowcabeza.fechfin = dtp_confina.Value.ToString("yyyy-MM-dd");
+            rowcabeza.fechini = dtp_confini.Value.ToString("dd/MM/yyyy");   // yyyy-MM-dd
+            rowcabeza.fechfin = dtp_confina.Value.ToString("dd/MM/yyyy");   // 
             rowcabeza.estado = tx_dat_conestado.Text.Trim();
             liscont.liscont_cab.Addliscont_cabRow(rowcabeza);
             //
@@ -1428,13 +1430,13 @@ namespace iOMG
                 {
                     conClie.liscont_detRow rowdetalle = liscont.liscont_det.Newliscont_detRow();
                     rowdetalle.id = "0";
-                    rowdetalle.fecha = row.Cells[0].Value.ToString();
+                    rowdetalle.fecha = row.Cells[0].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.tienda = row.Cells[1].Value.ToString();
                     rowdetalle.contrato = row.Cells[2].Value.ToString();
                     rowdetalle.cliente = row.Cells[3].Value.ToString();
                     rowdetalle.coment = row.Cells[4].Value.ToString();
-                    rowdetalle.fentrega = row.Cells[5].Value.ToString();
-                    rowdetalle.fenreal = row.Cells[6].Value.ToString();
+                    rowdetalle.fentrega = row.Cells[5].Value.ToString().PadRight(10).Substring(0,10);
+                    rowdetalle.fenreal = row.Cells[6].Value.ToString().PadRight(10).Substring(0,10);
                     rowdetalle.estado = row.Cells[7].Value.ToString();
                     liscont.liscont_det.Addliscont_detRow(rowdetalle);
                 }

@@ -535,9 +535,9 @@ namespace iOMG
             dataGridView1.Columns[9].Visible = false;            // columna visible o no
             dataGridView1.Columns[9].Name = "estado";
             // codigo madera
-            dataGridView1.Columns[10].Visible = false;
+            dataGridView1.Columns[10].Visible = false;           // 
             // codigo detalle 2 (piedra)
-            dataGridView1.Columns[11].Visible = true;   // false
+            dataGridView1.Columns[11].Visible = true;
             // fecha de ingreso del articulo
             dataGridView1.Columns[12].Visible = true;            // columna visible o no
             dataGridView1.Columns[12].HeaderText = "F.Ingreso"; // titulo de la columna
@@ -2140,7 +2140,7 @@ namespace iOMG
                     rowdetalle.coment = row.Cells["coment"].Value.ToString();
                     rowdetalle.detalle2 = "";   // row.Cells["??"].Value.ToString();
                     rowdetalle.precio = row.Cells["total"].Value.ToString();   //tx_d_precio.Text;
-                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
+                    rowdetalle.madera = lib.descorta(row.Cells["madera"].Value.ToString(),"mad");
                     reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
                 }
             }

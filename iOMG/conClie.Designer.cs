@@ -2462,6 +2462,10 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnnumero;
             
+            private global::System.Data.DataColumn columntipoPago;
+            
+            private global::System.Data.DataColumn columnsaldo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public pagoscontDataTable() {
@@ -2561,6 +2565,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn tipoPagoColumn {
+                get {
+                    return this.columntipoPago;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn saldoColumn {
+                get {
+                    return this.columnsaldo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2596,7 +2616,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public pagoscontRow AddpagoscontRow(string id, string contrato, string fecha, string moneda, string montosol, string dv, string serie, string numero) {
+            public pagoscontRow AddpagoscontRow(string id, string contrato, string fecha, string moneda, string montosol, string dv, string serie, string numero, string tipoPago, string saldo) {
                 pagoscontRow rowpagoscontRow = ((pagoscontRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -2606,7 +2626,9 @@ namespace iOMG {
                         montosol,
                         dv,
                         serie,
-                        numero};
+                        numero,
+                        tipoPago,
+                        saldo};
                 rowpagoscontRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowpagoscontRow);
                 return rowpagoscontRow;
@@ -2637,6 +2659,8 @@ namespace iOMG {
                 this.columndv = base.Columns["dv"];
                 this.columnserie = base.Columns["serie"];
                 this.columnnumero = base.Columns["numero"];
+                this.columntipoPago = base.Columns["tipoPago"];
+                this.columnsaldo = base.Columns["saldo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2658,6 +2682,10 @@ namespace iOMG {
                 base.Columns.Add(this.columnserie);
                 this.columnnumero = new global::System.Data.DataColumn("numero", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnnumero);
+                this.columntipoPago = new global::System.Data.DataColumn("tipoPago", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntipoPago);
+                this.columnsaldo = new global::System.Data.DataColumn("saldo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnsaldo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6275,6 +6303,38 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string tipoPago {
+                get {
+                    try {
+                        return ((string)(this[this.tablepagoscont.tipoPagoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'tipoPago\' de la tabla \'pagoscont\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablepagoscont.tipoPagoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string saldo {
+                get {
+                    try {
+                        return ((string)(this[this.tablepagoscont.saldoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'saldo\' de la tabla \'pagoscont\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablepagoscont.saldoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablepagoscont.idColumn);
             }
@@ -6367,6 +6427,30 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetnumeroNull() {
                 this[this.tablepagoscont.numeroColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstipoPagoNull() {
+                return this.IsNull(this.tablepagoscont.tipoPagoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettipoPagoNull() {
+                this[this.tablepagoscont.tipoPagoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IssaldoNull() {
+                return this.IsNull(this.tablepagoscont.saldoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetsaldoNull() {
+                this[this.tablepagoscont.saldoColumn] = global::System.Convert.DBNull;
             }
         }
         
