@@ -723,7 +723,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@item", row.Cells["item"].Value.ToString());
                     micon.Parameters.AddWithValue("@nomb", row.Cells["nombre"].Value.ToString());
                     micon.Parameters.AddWithValue("@medi", row.Cells["medidas"].Value.ToString());
-                    micon.Parameters.AddWithValue("@made", row.Cells[10].Value.ToString());
+                    micon.Parameters.AddWithValue("@made", row.Cells[5].Value.ToString());              // codigo madera
                     micon.Parameters.AddWithValue("@esta", row.Cells[9].Value.ToString());
                     micon.Parameters.AddWithValue("@sald", row.Cells["saldo"].Value.ToString());
                     micon.Parameters.AddWithValue("@pied", row.Cells["piedra"].Value.ToString());

@@ -1313,7 +1313,7 @@ namespace iOMG
                         conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
                         detrow.id = "0";
                         detrow.tienda = row.Cells["tienda"].Value.ToString();
-                        detrow.fecha = row.Cells["fecha"].Value.ToString();
+                        detrow.fecha = row.Cells["fecha"].Value.ToString().Substring(0,10);
                         detrow.contrato = row.Cells["contratoh"].Value.ToString();
                         detrow.cliente = row.Cells["cliente"].Value.ToString();
                         detrow.cant = row.Cells["cant"].Value.ToString().Trim();
