@@ -655,10 +655,10 @@ namespace iOMG
         }
         private void bt_confiltra_Click(object sender, EventArgs e)     // flltra y muestra contratos
         {
-            string consulta = "repliscont";
+            string consulta = "repliscont";                                 // todos los estados menos los anulados
             try
             {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);    // solo estado anulado si se selecciona directamente
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
@@ -872,6 +872,7 @@ namespace iOMG
         {
             if(tx_codped.Text != "")
             {
+                tx_codped_Leave(null, null);
                 string consulta = "res_cont";
                 try
                 {

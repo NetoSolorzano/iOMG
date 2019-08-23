@@ -30,7 +30,6 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.bt_det = new System.Windows.Forms.Button();
-            this.tx_total = new iOMG.NumericTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -44,7 +43,6 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dtp_pago = new System.Windows.Forms.DateTimePicker();
-            this.tx_importe = new iOMG.NumericTextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,11 +61,9 @@
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.tx_serie = new iOMG.NumericTextBox();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tx_corre = new iOMG.NumericTextBox();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
             this.tx_comen = new System.Windows.Forms.TextBox();
@@ -75,6 +71,10 @@
             this.tx_dat_td = new System.Windows.Forms.TextBox();
             this.cmb_mone = new System.Windows.Forms.ComboBox();
             this.tx_dat_mone = new System.Windows.Forms.TextBox();
+            this.tx_corre = new iOMG.NumericTextBox();
+            this.tx_serie = new iOMG.NumericTextBox();
+            this.tx_importe = new iOMG.NumericTextBox();
+            this.tx_total = new iOMG.NumericTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -106,17 +106,6 @@
             this.bt_det.Text = "Agrega  Actualiza";
             this.bt_det.UseVisualStyleBackColor = true;
             this.bt_det.Click += new System.EventHandler(this.bt_det_Click);
-            // 
-            // tx_total
-            // 
-            this.tx_total.AllowSpace = false;
-            this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_total.Location = new System.Drawing.Point(631, 269);
-            this.tx_total.Name = "tx_total";
-            this.tx_total.ReadOnly = true;
-            this.tx_total.Size = new System.Drawing.Size(78, 20);
-            this.tx_total.TabIndex = 10;
-            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // button1
             // 
@@ -238,14 +227,6 @@
             this.dtp_pago.Size = new System.Drawing.Size(95, 20);
             this.dtp_pago.TabIndex = 1;
             // 
-            // tx_importe
-            // 
-            this.tx_importe.AllowSpace = false;
-            this.tx_importe.Location = new System.Drawing.Point(466, 8);
-            this.tx_importe.Name = "tx_importe";
-            this.tx_importe.Size = new System.Drawing.Size(87, 20);
-            this.tx_importe.TabIndex = 2;
-            // 
             // groupBox7
             // 
             this.groupBox7.BackColor = System.Drawing.Color.DimGray;
@@ -336,13 +317,14 @@
             this.cmb_fpago.Name = "cmb_fpago";
             this.cmb_fpago.Size = new System.Drawing.Size(90, 21);
             this.cmb_fpago.TabIndex = 3;
+            this.cmb_fpago.SelectedIndexChanged += new System.EventHandler(this.cmb_fpago_SelectedIndexChanged);
             // 
             // tx_dat_fpago
             // 
-            this.tx_dat_fpago.Location = new System.Drawing.Point(604, 0);
+            this.tx_dat_fpago.Location = new System.Drawing.Point(593, 0);
             this.tx_dat_fpago.Name = "tx_dat_fpago";
             this.tx_dat_fpago.ReadOnly = true;
-            this.tx_dat_fpago.Size = new System.Drawing.Size(18, 20);
+            this.tx_dat_fpago.Size = new System.Drawing.Size(37, 20);
             this.tx_dat_fpago.TabIndex = 354;
             this.tx_dat_fpago.Tag = "Id";
             this.tx_dat_fpago.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -356,6 +338,7 @@
             this.cmb_td.Name = "cmb_td";
             this.cmb_td.Size = new System.Drawing.Size(42, 21);
             this.cmb_td.TabIndex = 4;
+            this.cmb_td.SelectedIndexChanged += new System.EventHandler(this.cmb_td_SelectedIndexChanged);
             // 
             // groupBox13
             // 
@@ -411,14 +394,6 @@
             this.label8.TabIndex = 359;
             this.label8.Text = "Serie";
             // 
-            // tx_serie
-            // 
-            this.tx_serie.AllowSpace = false;
-            this.tx_serie.Location = new System.Drawing.Point(122, 36);
-            this.tx_serie.Name = "tx_serie";
-            this.tx_serie.Size = new System.Drawing.Size(37, 20);
-            this.tx_serie.TabIndex = 5;
-            // 
             // groupBox17
             // 
             this.groupBox17.BackColor = System.Drawing.Color.DimGray;
@@ -445,14 +420,6 @@
             this.label9.Size = new System.Drawing.Size(27, 13);
             this.label9.TabIndex = 362;
             this.label9.Text = "Nro.";
-            // 
-            // tx_corre
-            // 
-            this.tx_corre.AllowSpace = false;
-            this.tx_corre.Location = new System.Drawing.Point(198, 36);
-            this.tx_corre.Name = "tx_corre";
-            this.tx_corre.Size = new System.Drawing.Size(73, 20);
-            this.tx_corre.TabIndex = 6;
             // 
             // groupBox19
             // 
@@ -495,7 +462,7 @@
             this.tx_dat_td.Location = new System.Drawing.Point(85, 29);
             this.tx_dat_td.Name = "tx_dat_td";
             this.tx_dat_td.ReadOnly = true;
-            this.tx_dat_td.Size = new System.Drawing.Size(18, 20);
+            this.tx_dat_td.Size = new System.Drawing.Size(29, 20);
             this.tx_dat_td.TabIndex = 367;
             this.tx_dat_td.Tag = "Id";
             this.tx_dat_td.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -519,6 +486,42 @@
             this.tx_dat_mone.TabIndex = 369;
             this.tx_dat_mone.Tag = "Id";
             this.tx_dat_mone.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_mone.Visible = false;
+            // 
+            // tx_corre
+            // 
+            this.tx_corre.AllowSpace = false;
+            this.tx_corre.Location = new System.Drawing.Point(198, 36);
+            this.tx_corre.Name = "tx_corre";
+            this.tx_corre.Size = new System.Drawing.Size(73, 20);
+            this.tx_corre.TabIndex = 6;
+            // 
+            // tx_serie
+            // 
+            this.tx_serie.AllowSpace = false;
+            this.tx_serie.Location = new System.Drawing.Point(122, 36);
+            this.tx_serie.Name = "tx_serie";
+            this.tx_serie.Size = new System.Drawing.Size(37, 20);
+            this.tx_serie.TabIndex = 5;
+            // 
+            // tx_importe
+            // 
+            this.tx_importe.AllowSpace = false;
+            this.tx_importe.Location = new System.Drawing.Point(466, 8);
+            this.tx_importe.Name = "tx_importe";
+            this.tx_importe.Size = new System.Drawing.Size(87, 20);
+            this.tx_importe.TabIndex = 2;
+            // 
+            // tx_total
+            // 
+            this.tx_total.AllowSpace = false;
+            this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_total.Location = new System.Drawing.Point(631, 269);
+            this.tx_total.Name = "tx_total";
+            this.tx_total.ReadOnly = true;
+            this.tx_total.Size = new System.Drawing.Size(78, 20);
+            this.tx_total.TabIndex = 10;
+            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // regpagos
             // 

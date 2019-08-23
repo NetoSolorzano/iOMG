@@ -579,8 +579,8 @@ namespace iOMG
             {
                 string consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
                     "b.cant,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
-                    "m.descrizionerid as nomad,e.descrizionerid as acabado," +
-                    "o.descrizionerid as nomorig,d.descrizionerid as nomdestin " +
+                    "ifnull(m.descrizionerid,'') as nomad,ifnull(e.descrizionerid,'') as acabado," +
+                    "ifnull(o.descrizionerid,'') as nomorig,ifnull(d.descrizionerid,'') as nomdestin " +
                     "from pedidos a left join detaped b on b.pedidoh=a.codped " +
                     "left join desc_mad m on m.idcodice=b.madera " +
                     "left join desc_est e on e.idcodice=b.estado " +

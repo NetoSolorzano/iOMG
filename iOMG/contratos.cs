@@ -135,10 +135,11 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_acta.Focused == true)
+                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text))
                 {
                     para1 = "PAGCON";
                     para2 = tx_codped.Text.Trim();
+                    para3 = tx_saldo.Text.Trim();
                     regpagos pagos = new regpagos(para1, para2, para3, para4);
                     var result = pagos.ShowDialog();
                     if(result == DialogResult.Cancel)
@@ -1526,8 +1527,6 @@ namespace iOMG
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            tx_codped.Enabled = true;
-            tx_codped.ReadOnly = false;
             tx_codped.Focus();
             tabControl1.SelectedTab = tabuser;
             //
@@ -1547,6 +1546,9 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
             tx_codped.Enabled = true;
+            tx_codped.ReadOnly = false;
+            tx_acta.Enabled = true;
+            tx_coment.Enabled = true;
             tx_codped.Focus();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -2823,14 +2825,14 @@ namespace iOMG
                 limpia_otros(tabuser);
                 limpia_combos(tabuser);
                 //escribepag(tabuser);
-                sololeepag(tabuser);
+                //sololeepag(tabuser);
                 tx_idr.Text = idr;
                 tx_rind.Text = rind;
                 tx_dat_tiped.Text = tipede;
                 jalaoc("tx_idr");
                 if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
                 {
-                    escribepag(tabuser);
+                    // escribepag(tabuser);     // no se esto ... quien controla los permisos son los botones de comando
                 }
             }
         }
@@ -3164,7 +3166,7 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero from pagamenti where contrato=@cont";
+                string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero,via,saldo from pagamenti where contrato=@cont";
                 MySqlCommand micon = new MySqlCommand(cpag, conn);
                 micon.Parameters.AddWithValue("@cont", tx_codped.Text.Trim());
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -3180,6 +3182,8 @@ namespace iOMG
                     pagoscont.dv = row.ItemArray[4].ToString();
                     pagoscont.serie = row.ItemArray[5].ToString();
                     pagoscont.numero = row.ItemArray[6].ToString();
+                    pagoscont.tipoPago = row.ItemArray[7].ToString();
+                    pagoscont.saldo = row.ItemArray[8].ToString();
                     repcontrato.pagoscont.AddpagoscontRow(pagoscont);
                 }
                 da.Dispose();

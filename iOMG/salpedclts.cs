@@ -426,6 +426,7 @@ namespace iOMG
                     {
                         tx_idr.Text = rlid.GetString(0);
                     }
+                    rlid.Close();
                     string actua = "";
                     if (tx_dat_tiped.Text == tipede)
                     {
@@ -435,7 +436,6 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
                         micon.ExecuteNonQuery();
                     }
-                    rlid.Close();
                     retorna = true;
                 }
                 catch (MySqlException ex)

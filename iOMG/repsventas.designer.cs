@@ -998,7 +998,6 @@
             // 
             this.tx_cliente.Location = new System.Drawing.Point(172, 54);
             this.tx_cliente.Name = "tx_cliente";
-            this.tx_cliente.ReadOnly = true;
             this.tx_cliente.Size = new System.Drawing.Size(357, 20);
             this.tx_cliente.TabIndex = 363;
             // 
