@@ -255,6 +255,12 @@
     <Compile Include="regpagos.Designer.cs">
       <DependentUpon>regpagos.cs</DependentUpon>
     </Compile>
+    <Compile Include="repingresos.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>repingresos.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="repspedalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -391,6 +397,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="regpagos.resx">
       <DependentUpon>regpagos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="repingresos.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>repingresos.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="repspedalm.resx">
       <DependentUpon>repspedalm.cs</DependentUpon>

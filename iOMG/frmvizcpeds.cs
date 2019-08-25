@@ -32,12 +32,15 @@ namespace iOMG
             }
             if (_datosReporte.det_lispedidos.Rows.Count > 0)
             {
-                /*
-                 * replispedclts _lisped = new replispedclts();
-                */
                 lispedclts _lisped = new lispedclts();
                 _lisped.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _lisped;
+            }
+            if (_datosReporte.cab_reping.Rows.Count > 0)
+            {
+                repingresos _ingre = new repingresos();
+                _ingre.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _ingre;
             }
             //MessageBox.Show("aca estuve");
         }

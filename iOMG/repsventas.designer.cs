@@ -80,15 +80,15 @@
             this.cmb_pedtaller = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.tabPed = new System.Windows.Forms.TabPage();
-            this.bt_preview = new System.Windows.Forms.Button();
+            this.tabIng = new System.Windows.Forms.TabPage();
+            this.bt_ingresos = new System.Windows.Forms.Button();
             this.dgv_ingresos = new System.Windows.Forms.DataGridView();
             this.dtp_ingfinal = new System.Windows.Forms.DateTimePicker();
             this.dtp_ingfini = new System.Windows.Forms.DateTimePicker();
             this.bt_filtra_ing = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tabIng = new System.Windows.Forms.TabPage();
+            this.tabSal = new System.Windows.Forms.TabPage();
             this.bt_preview_ing = new System.Windows.Forms.Button();
             this.dgv_salidas = new System.Windows.Forms.DataGridView();
             this.dtp_final_ing = new System.Windows.Forms.DateTimePicker();
@@ -145,9 +145,9 @@
             this.tabpds.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
             this.groupBox15.SuspendLayout();
-            this.tabPed.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
             this.tabIng.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
+            this.tabSal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
@@ -418,8 +418,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabcont);
             this.tabControl1.Controls.Add(this.tabpds);
-            this.tabControl1.Controls.Add(this.tabPed);
             this.tabControl1.Controls.Add(this.tabIng);
+            this.tabControl1.Controls.Add(this.tabSal);
             this.tabControl1.Controls.Add(this.tabres);
             this.tabControl1.Controls.Add(this.tabvtas);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
@@ -707,33 +707,33 @@
             this.label22.TabIndex = 324;
             this.label22.Text = "Fech Inicial";
             // 
-            // tabPed
+            // tabIng
             // 
-            this.tabPed.Controls.Add(this.bt_preview);
-            this.tabPed.Controls.Add(this.dgv_ingresos);
-            this.tabPed.Controls.Add(this.dtp_ingfinal);
-            this.tabPed.Controls.Add(this.dtp_ingfini);
-            this.tabPed.Controls.Add(this.bt_filtra_ing);
-            this.tabPed.Controls.Add(this.label7);
-            this.tabPed.Controls.Add(this.label2);
-            this.tabPed.Location = new System.Drawing.Point(4, 22);
-            this.tabPed.Name = "tabPed";
-            this.tabPed.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPed.Size = new System.Drawing.Size(795, 302);
-            this.tabPed.TabIndex = 0;
-            this.tabPed.Text = "Ingresos";
-            this.tabPed.UseVisualStyleBackColor = true;
+            this.tabIng.Controls.Add(this.bt_ingresos);
+            this.tabIng.Controls.Add(this.dgv_ingresos);
+            this.tabIng.Controls.Add(this.dtp_ingfinal);
+            this.tabIng.Controls.Add(this.dtp_ingfini);
+            this.tabIng.Controls.Add(this.bt_filtra_ing);
+            this.tabIng.Controls.Add(this.label7);
+            this.tabIng.Controls.Add(this.label2);
+            this.tabIng.Location = new System.Drawing.Point(4, 22);
+            this.tabIng.Name = "tabIng";
+            this.tabIng.Padding = new System.Windows.Forms.Padding(3);
+            this.tabIng.Size = new System.Drawing.Size(795, 302);
+            this.tabIng.TabIndex = 0;
+            this.tabIng.Text = "Ingresos";
+            this.tabIng.UseVisualStyleBackColor = true;
             // 
-            // bt_preview
+            // bt_ingresos
             // 
-            this.bt_preview.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_preview.Image = global::iOMG.Properties.Resources.print_preview_24;
-            this.bt_preview.Location = new System.Drawing.Point(654, 4);
-            this.bt_preview.Name = "bt_preview";
-            this.bt_preview.Size = new System.Drawing.Size(50, 41);
-            this.bt_preview.TabIndex = 318;
-            this.bt_preview.UseVisualStyleBackColor = true;
-            this.bt_preview.Click += new System.EventHandler(this.bt_preview_Click);
+            this.bt_ingresos.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_ingresos.Image = global::iOMG.Properties.Resources.print_preview_24;
+            this.bt_ingresos.Location = new System.Drawing.Point(654, 4);
+            this.bt_ingresos.Name = "bt_ingresos";
+            this.bt_ingresos.Size = new System.Drawing.Size(50, 41);
+            this.bt_ingresos.TabIndex = 318;
+            this.bt_ingresos.UseVisualStyleBackColor = true;
+            this.bt_ingresos.Click += new System.EventHandler(this.bt_ingresos_Click);
             // 
             // dgv_ingresos
             // 
@@ -793,22 +793,22 @@
             this.label2.TabIndex = 303;
             this.label2.Text = "Fech Inicial";
             // 
-            // tabIng
+            // tabSal
             // 
-            this.tabIng.Controls.Add(this.bt_preview_ing);
-            this.tabIng.Controls.Add(this.dgv_salidas);
-            this.tabIng.Controls.Add(this.dtp_final_ing);
-            this.tabIng.Controls.Add(this.dtp_fini_ing);
-            this.tabIng.Controls.Add(this.bt_filtra_sal);
-            this.tabIng.Controls.Add(this.label5);
-            this.tabIng.Controls.Add(this.label6);
-            this.tabIng.Location = new System.Drawing.Point(4, 22);
-            this.tabIng.Name = "tabIng";
-            this.tabIng.Padding = new System.Windows.Forms.Padding(3);
-            this.tabIng.Size = new System.Drawing.Size(795, 302);
-            this.tabIng.TabIndex = 1;
-            this.tabIng.Text = "Salidas";
-            this.tabIng.UseVisualStyleBackColor = true;
+            this.tabSal.Controls.Add(this.bt_preview_ing);
+            this.tabSal.Controls.Add(this.dgv_salidas);
+            this.tabSal.Controls.Add(this.dtp_final_ing);
+            this.tabSal.Controls.Add(this.dtp_fini_ing);
+            this.tabSal.Controls.Add(this.bt_filtra_sal);
+            this.tabSal.Controls.Add(this.label5);
+            this.tabSal.Controls.Add(this.label6);
+            this.tabSal.Location = new System.Drawing.Point(4, 22);
+            this.tabSal.Name = "tabSal";
+            this.tabSal.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSal.Size = new System.Drawing.Size(795, 302);
+            this.tabSal.TabIndex = 1;
+            this.tabSal.Text = "Salidas";
+            this.tabSal.UseVisualStyleBackColor = true;
             // 
             // bt_preview_ing
             // 
@@ -818,7 +818,6 @@
             this.bt_preview_ing.Size = new System.Drawing.Size(61, 44);
             this.bt_preview_ing.TabIndex = 338;
             this.bt_preview_ing.UseVisualStyleBackColor = true;
-            this.bt_preview_ing.Click += new System.EventHandler(this.bt_preview_ing_Click);
             // 
             // dgv_salidas
             // 
@@ -1321,11 +1320,11 @@
             this.tabpds.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).EndInit();
             this.groupBox15.ResumeLayout(false);
-            this.tabPed.ResumeLayout(false);
-            this.tabPed.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
             this.tabIng.ResumeLayout(false);
             this.tabIng.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
+            this.tabSal.ResumeLayout(false);
+            this.tabSal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.tabres.ResumeLayout(false);
             this.tabres.PerformLayout();
@@ -1369,15 +1368,15 @@
         private System.Windows.Forms.ToolStripButton Bt_fin;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPed;
         private System.Windows.Forms.TabPage tabIng;
+        private System.Windows.Forms.TabPage tabSal;
         private System.Windows.Forms.DateTimePicker dtp_ingfinal;
         private System.Windows.Forms.DateTimePicker dtp_ingfini;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button bt_filtra_ing;
         private System.Windows.Forms.DataGridView dgv_ingresos;
-        private System.Windows.Forms.Button bt_preview;
+        private System.Windows.Forms.Button bt_ingresos;
         private System.Windows.Forms.Button bt_preview_ing;
         private System.Windows.Forms.DataGridView dgv_salidas;
         private System.Windows.Forms.DateTimePicker dtp_final_ing;

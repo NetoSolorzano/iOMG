@@ -111,7 +111,7 @@ namespace iOMG
             Bt_anul.Image = Image.FromFile(img_btA);
             bt_exc.Image = Image.FromFile(img_btexc);
             Bt_close.Image = Image.FromFile(img_btq);
-            bt_preview.Image = Image.FromFile(img_preview);
+            bt_ingresos.Image = Image.FromFile(img_preview);
             bt_preview_ing.Image = Image.FromFile(img_preview);
         }
         private void jalainfo()                                     // obtiene datos de imagenes
@@ -281,7 +281,7 @@ namespace iOMG
             if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 16;
         }
         private void grilla_ing()                                   // arma la grilla ingresos
-        {
+        {   // a.idmovim,a.fechain,tipo,a.pedido,a.origen,a.destino,a.cant,a.articulo,nomad,med1,tipoes,madera,cliente,nomitem
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_ingresos.Font = tiplg;
             dgv_ingresos.DefaultCellStyle.Font = tiplg;
@@ -1013,7 +1013,7 @@ namespace iOMG
                     this.Close();
                 }
             }
-            if(tabControl1.SelectedTab == tabIng)
+            if(tabControl1.SelectedTab == tabSal)
             {
                 nombre = "Reporte_Ingresos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
@@ -1030,15 +1030,6 @@ namespace iOMG
             }
         }
         #endregion
-
-        //
-        private void bt_preview_Click(object sender, EventArgs e)
-        {
-        }
-        // 
-        private void bt_preview_ing_Click(object sender, EventArgs e)
-        {
-        }
 
         #region crystal
         private void bt_pedidos_Click(object sender, EventArgs e)
@@ -1058,6 +1049,11 @@ namespace iOMG
             if (tx_idclie.Text.Trim() == "") setParaCrystal("ventas");
             if (tx_idclie.Text.Trim() != "" && tx_nomclie.Text.Trim() != "" && rb_listado.Checked == true) setParaCrystal("vtasxclte");
         }
+        private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de ingresos de pedidos
+        {
+            setParaCrystal("ingresos");
+        }
+
         private void setParaCrystal(string repo)                    // genera el set para el reporte de crystal
         {
             if (repo== "resumen")
@@ -1088,6 +1084,12 @@ namespace iOMG
             {
                 conClie datos = generarepvtasxclte();
                 frmvizcont visualizador = new frmvizcont(datos);
+                visualizador.Show();
+            }
+            if (repo == "ingresos")
+            {
+                pedsclts datos = generarepingresos();
+                frmvizcpeds visualizador = new frmvizcpeds(datos);
                 visualizador.Show();
             }
         }
@@ -1267,6 +1269,39 @@ namespace iOMG
                     rowdet.fecsal = row.Cells["fecent"].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdet.fececon = row.Cells["feencon"].Value.ToString().PadRight(10).Substring(0, 10);
                     pedset.det_lispedidos.Adddet_lispedidosRow(rowdet);
+                }
+            }
+            return pedset;
+        }
+        private pedsclts generarepingresos()
+        {   // a.idmovim,a.fechain,tipo,a.pedido,a.origen,a.destino,a.cant,a.articulo,nomad,med1,tipoes,madera,cliente,nomitem
+            pedsclts pedset = new pedsclts();
+            pedsclts.cab_repingRow rowcab = pedset.cab_reping.Newcab_repingRow();
+            rowcab.id = "0";
+            rowcab.fini = dtp_fini_ing.Value.ToString().Substring(0, 10);
+            rowcab.fina = dtp_final_ing.Value.ToString().Substring(0, 10);
+            pedset.cab_reping.Addcab_repingRow(rowcab);
+            //
+            foreach(DataGridViewRow row in dgv_ingresos.Rows)
+            {
+                if (row.Cells["pedido"].Value != null && row.Cells["pedido"].Value.ToString().Trim() != "")
+                {
+                    pedsclts.det_repingRow rowdet = pedset.det_reping.Newdet_repingRow();
+                    rowdet.id = "0";
+                    rowdet.fecha = row.Cells["fechain"].Value.ToString().Substring(0, 10);
+                    rowdet.tipo = row.Cells["tipo"].Value.ToString();
+                    rowdet.pedido = row.Cells["pedido"].Value.ToString();
+                    rowdet.origen = row.Cells["origen"].Value.ToString();
+                    rowdet.destino = row.Cells["destino"].Value.ToString();
+                    rowdet.cant = row.Cells["cant"].Value.ToString();
+                    rowdet.articulo = row.Cells["articulo"].Value.ToString();
+                    rowdet.nonmad = row.Cells["nomad"].Value.ToString();
+                    rowdet.medidas = row.Cells["med1"].Value.ToString();
+                    rowdet.tipoes = row.Cells["tipoes"].Value.ToString();
+                    rowdet.madera = row.Cells["madera"].Value.ToString();
+                    rowdet.cliente = row.Cells["cliente"].Value.ToString();
+                    rowdet.nomitem = row.Cells["nomitem"].Value.ToString();
+                    pedset.det_reping.Adddet_repingRow(rowdet);
                 }
             }
             return pedset;

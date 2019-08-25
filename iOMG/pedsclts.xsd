@@ -77,6 +77,35 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="cab_reping" msprop:Generator_TableClassName="cab_repingDataTable" msprop:Generator_TableVarName="tablecab_reping" msprop:Generator_RowChangedName="cab_repingRowChanged" msprop:Generator_TablePropName="cab_reping" msprop:Generator_RowDeletingName="cab_repingRowDeleting" msprop:Generator_RowChangingName="cab_repingRowChanging" msprop:Generator_RowEvHandlerName="cab_repingRowChangeEventHandler" msprop:Generator_RowDeletedName="cab_repingRowDeleted" msprop:Generator_RowClassName="cab_repingRow" msprop:Generator_UserTableName="cab_reping" msprop:Generator_RowEvArgName="cab_repingRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="fini" msprop:Generator_ColumnVarNameInTable="columnfini" msprop:Generator_ColumnPropNameInRow="fini" msprop:Generator_ColumnPropNameInTable="finiColumn" msprop:Generator_UserColumnName="fini" type="xs:string" minOccurs="0" />
+              <xs:element name="fina" msprop:Generator_ColumnVarNameInTable="columnfina" msprop:Generator_ColumnPropNameInRow="fina" msprop:Generator_ColumnPropNameInTable="finaColumn" msprop:Generator_UserColumnName="fina" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="det_reping" msprop:Generator_TableClassName="det_repingDataTable" msprop:Generator_TableVarName="tabledet_reping" msprop:Generator_RowChangedName="det_repingRowChanged" msprop:Generator_TablePropName="det_reping" msprop:Generator_RowDeletingName="det_repingRowDeleting" msprop:Generator_RowChangingName="det_repingRowChanging" msprop:Generator_RowEvHandlerName="det_repingRowChangeEventHandler" msprop:Generator_RowDeletedName="det_repingRowDeleted" msprop:Generator_RowClassName="det_repingRow" msprop:Generator_UserTableName="det_reping" msprop:Generator_RowEvArgName="det_repingRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+              <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="tipo" msprop:Generator_ColumnVarNameInTable="columntipo" msprop:Generator_ColumnPropNameInRow="tipo" msprop:Generator_ColumnPropNameInTable="tipoColumn" msprop:Generator_UserColumnName="tipo" type="xs:string" minOccurs="0" />
+              <xs:element name="pedido" msprop:Generator_ColumnVarNameInTable="columnpedido" msprop:Generator_ColumnPropNameInRow="pedido" msprop:Generator_ColumnPropNameInTable="pedidoColumn" msprop:Generator_UserColumnName="pedido" type="xs:string" minOccurs="0" />
+              <xs:element name="origen" msprop:Generator_ColumnVarNameInTable="columnorigen" msprop:Generator_ColumnPropNameInRow="origen" msprop:Generator_ColumnPropNameInTable="origenColumn" msprop:Generator_UserColumnName="origen" type="xs:string" minOccurs="0" />
+              <xs:element name="destino" msprop:Generator_ColumnVarNameInTable="columndestino" msprop:Generator_ColumnPropNameInRow="destino" msprop:Generator_ColumnPropNameInTable="destinoColumn" msprop:Generator_UserColumnName="destino" type="xs:string" minOccurs="0" />
+              <xs:element name="cant" msprop:Generator_ColumnVarNameInTable="columncant" msprop:Generator_ColumnPropNameInRow="cant" msprop:Generator_ColumnPropNameInTable="cantColumn" msprop:Generator_UserColumnName="cant" type="xs:string" minOccurs="0" />
+              <xs:element name="articulo" msprop:Generator_ColumnVarNameInTable="columnarticulo" msprop:Generator_ColumnPropNameInRow="articulo" msprop:Generator_ColumnPropNameInTable="articuloColumn" msprop:Generator_UserColumnName="articulo" type="xs:string" minOccurs="0" />
+              <xs:element name="nonmad" msprop:Generator_ColumnVarNameInTable="columnnonmad" msprop:Generator_ColumnPropNameInRow="nonmad" msprop:Generator_ColumnPropNameInTable="nonmadColumn" msprop:Generator_UserColumnName="nonmad" type="xs:string" minOccurs="0" />
+              <xs:element name="medidas" msprop:Generator_ColumnVarNameInTable="columnmedidas" msprop:Generator_ColumnPropNameInRow="medidas" msprop:Generator_ColumnPropNameInTable="medidasColumn" msprop:Generator_UserColumnName="medidas" type="xs:string" minOccurs="0" />
+              <xs:element name="tipoes" msprop:Generator_ColumnVarNameInTable="columntipoes" msprop:Generator_ColumnPropNameInRow="tipoes" msprop:Generator_ColumnPropNameInTable="tipoesColumn" msprop:Generator_UserColumnName="tipoes" type="xs:string" minOccurs="0" />
+              <xs:element name="madera" msprop:Generator_ColumnVarNameInTable="columnmadera" msprop:Generator_ColumnPropNameInRow="madera" msprop:Generator_ColumnPropNameInTable="maderaColumn" msprop:Generator_UserColumnName="madera" type="xs:string" minOccurs="0" />
+              <xs:element name="cliente" msprop:Generator_ColumnVarNameInTable="columncliente" msprop:Generator_ColumnPropNameInRow="cliente" msprop:Generator_ColumnPropNameInTable="clienteColumn" msprop:Generator_UserColumnName="cliente" type="xs:string" minOccurs="0" />
+              <xs:element name="nomitem" msprop:Generator_ColumnVarNameInTable="columnnomitem" msprop:Generator_ColumnPropNameInRow="nomitem" msprop:Generator_ColumnPropNameInTable="nomitemColumn" msprop:Generator_UserColumnName="nomitem" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>
