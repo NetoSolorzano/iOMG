@@ -89,10 +89,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabSal = new System.Windows.Forms.TabPage();
-            this.bt_preview_ing = new System.Windows.Forms.Button();
+            this.bt_salidas = new System.Windows.Forms.Button();
             this.dgv_salidas = new System.Windows.Forms.DataGridView();
-            this.dtp_final_ing = new System.Windows.Forms.DateTimePicker();
-            this.dtp_fini_ing = new System.Windows.Forms.DateTimePicker();
+            this.dtp_final_sal = new System.Windows.Forms.DateTimePicker();
+            this.dtp_fini_sal = new System.Windows.Forms.DateTimePicker();
             this.bt_filtra_sal = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -795,10 +795,10 @@
             // 
             // tabSal
             // 
-            this.tabSal.Controls.Add(this.bt_preview_ing);
+            this.tabSal.Controls.Add(this.bt_salidas);
             this.tabSal.Controls.Add(this.dgv_salidas);
-            this.tabSal.Controls.Add(this.dtp_final_ing);
-            this.tabSal.Controls.Add(this.dtp_fini_ing);
+            this.tabSal.Controls.Add(this.dtp_final_sal);
+            this.tabSal.Controls.Add(this.dtp_fini_sal);
             this.tabSal.Controls.Add(this.bt_filtra_sal);
             this.tabSal.Controls.Add(this.label5);
             this.tabSal.Controls.Add(this.label6);
@@ -810,14 +810,15 @@
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
             // 
-            // bt_preview_ing
+            // bt_salidas
             // 
-            this.bt_preview_ing.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_preview_ing.Location = new System.Drawing.Point(654, 3);
-            this.bt_preview_ing.Name = "bt_preview_ing";
-            this.bt_preview_ing.Size = new System.Drawing.Size(61, 44);
-            this.bt_preview_ing.TabIndex = 338;
-            this.bt_preview_ing.UseVisualStyleBackColor = true;
+            this.bt_salidas.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_salidas.Location = new System.Drawing.Point(654, 3);
+            this.bt_salidas.Name = "bt_salidas";
+            this.bt_salidas.Size = new System.Drawing.Size(61, 44);
+            this.bt_salidas.TabIndex = 338;
+            this.bt_salidas.UseVisualStyleBackColor = true;
+            this.bt_salidas.Click += new System.EventHandler(this.bt_salidas_Click);
             // 
             // dgv_salidas
             // 
@@ -830,23 +831,23 @@
             this.dgv_salidas.Size = new System.Drawing.Size(789, 250);
             this.dgv_salidas.TabIndex = 327;
             // 
-            // dtp_final_ing
+            // dtp_final_sal
             // 
-            this.dtp_final_ing.Checked = false;
-            this.dtp_final_ing.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_final_ing.Location = new System.Drawing.Point(443, 26);
-            this.dtp_final_ing.Name = "dtp_final_ing";
-            this.dtp_final_ing.Size = new System.Drawing.Size(95, 20);
-            this.dtp_final_ing.TabIndex = 321;
+            this.dtp_final_sal.Checked = false;
+            this.dtp_final_sal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_final_sal.Location = new System.Drawing.Point(443, 26);
+            this.dtp_final_sal.Name = "dtp_final_sal";
+            this.dtp_final_sal.Size = new System.Drawing.Size(95, 20);
+            this.dtp_final_sal.TabIndex = 321;
             // 
-            // dtp_fini_ing
+            // dtp_fini_sal
             // 
-            this.dtp_fini_ing.Checked = false;
-            this.dtp_fini_ing.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fini_ing.Location = new System.Drawing.Point(443, 4);
-            this.dtp_fini_ing.Name = "dtp_fini_ing";
-            this.dtp_fini_ing.Size = new System.Drawing.Size(95, 20);
-            this.dtp_fini_ing.TabIndex = 320;
+            this.dtp_fini_sal.Checked = false;
+            this.dtp_fini_sal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_fini_sal.Location = new System.Drawing.Point(443, 4);
+            this.dtp_fini_sal.Name = "dtp_fini_sal";
+            this.dtp_fini_sal.Size = new System.Drawing.Size(95, 20);
+            this.dtp_fini_sal.TabIndex = 320;
             // 
             // bt_filtra_sal
             // 
@@ -857,6 +858,7 @@
             this.bt_filtra_sal.TabIndex = 322;
             this.bt_filtra_sal.Text = "Filtra";
             this.bt_filtra_sal.UseVisualStyleBackColor = true;
+            this.bt_filtra_sal.Click += new System.EventHandler(this.bt_filtra_sal_Click);
             // 
             // label5
             // 
@@ -1377,10 +1379,10 @@
         private System.Windows.Forms.Button bt_filtra_ing;
         private System.Windows.Forms.DataGridView dgv_ingresos;
         private System.Windows.Forms.Button bt_ingresos;
-        private System.Windows.Forms.Button bt_preview_ing;
+        private System.Windows.Forms.Button bt_salidas;
         private System.Windows.Forms.DataGridView dgv_salidas;
-        private System.Windows.Forms.DateTimePicker dtp_final_ing;
-        private System.Windows.Forms.DateTimePicker dtp_fini_ing;
+        private System.Windows.Forms.DateTimePicker dtp_final_sal;
+        private System.Windows.Forms.DateTimePicker dtp_fini_sal;
         private System.Windows.Forms.Button bt_filtra_sal;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;

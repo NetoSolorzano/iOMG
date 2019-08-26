@@ -42,6 +42,12 @@ namespace iOMG
                 _ingre.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _ingre;
             }
+            if (_datosReporte.cab_repsal.Rows.Count > 0)
+            {
+                repsalidas _salidas = new repsalidas();
+                _salidas.SetDataSource(_datosReporte);
+                crystalReportViewer1.ReportSource = _salidas;
+            }
             //MessageBox.Show("aca estuve");
         }
     }

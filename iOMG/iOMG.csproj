@@ -261,6 +261,12 @@
       <DependentUpon>repingresos.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="repsalidas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>repsalidas.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="repspedalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -401,6 +407,10 @@
     <EmbeddedResource Include="repingresos.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>repingresos.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="repsalidas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>repsalidas.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="repspedalm.resx">
       <DependentUpon>repspedalm.cs</DependentUpon>

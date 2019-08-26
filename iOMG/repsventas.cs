@@ -112,7 +112,7 @@ namespace iOMG
             bt_exc.Image = Image.FromFile(img_btexc);
             Bt_close.Image = Image.FromFile(img_btq);
             bt_ingresos.Image = Image.FromFile(img_preview);
-            bt_preview_ing.Image = Image.FromFile(img_preview);
+            bt_salidas.Image = Image.FromFile(img_preview);
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -306,6 +306,15 @@ namespace iOMG
             //dgv_pedidos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             */
         }
+        private void grilla_sal()
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_salidas.Font = tiplg;
+            dgv_salidas.DefaultCellStyle.Font = tiplg;
+            dgv_salidas.RowTemplate.Height = 15;
+            dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_salidas.AllowUserToAddRows = false;
+        }
         private void grillares()                                    // arma la grilla del resumen de contrato
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
@@ -473,7 +482,6 @@ namespace iOMG
         //
         private void button1_Click(object sender, EventArgs e)          // filtra y muestra los ingresos de pedidos de clientes
         {
-            // falta su dataset y crystal
             string consulta = "ingpedclte";                                 // todos los ingresos de pedidos
             try
             {
@@ -508,6 +516,44 @@ namespace iOMG
                 Application.Exit();
                 return;
             }
+        }
+        private void bt_filtra_sal_Click(object sender, EventArgs e)    // filtra y muestra las salidas (entregas)
+        {
+            string consulta = "salpedclte";                                 // todos los ingresos de pedidos
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);    // solo estado anulado si se selecciona directamente
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    dgv_salidas.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@fini", dtp_fini_sal.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fina", dtp_final_sal.Value.ToString("yyyy-MM-dd"));
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_salidas.DataSource = dt;
+                    dt.Dispose();
+                    da.Dispose();
+                    grilla_sal();
+                }
+                else
+                {
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos de contratos");
+                Application.Exit();
+                return;
+            }
+
         }
         private void bt_confiltra_Click(object sender, EventArgs e)     // flltra y muestra contratos
         {
@@ -998,31 +1044,92 @@ namespace iOMG
         {
             // segun la pestanha activa debe exportar
             string nombre = "";
-            if (tabControl1.SelectedTab == tabres)
+            if (tabControl1.Enabled == false) return;
+            if (tabControl1.SelectedTab == tabcont && dgv_contratos.Rows.Count > 0)
             {
-                nombre = "Resumen_Contrato_" + tx_codped.Text.Trim() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                nombre = "Listado_Contratos_" + tx_codped.Text.Trim() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_contratos.DataSource;
+                    wb.Worksheets.Add(dt, "Contratos");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+            if (tabControl1.SelectedTab == tabpds && dgv_pedidos.Rows.Count > 0)
+            {
+                nombre = "Listado_pedidos_clientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_pedidos.DataSource;
+                    wb.Worksheets.Add(dt, "Pedidos_Clientes");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+            if (tabControl1.SelectedTab == tabIng && dgv_ingresos.Rows.Count > 0)
+            {
+                nombre = "Listado_ingresos_pedidosclientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                     "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
                     DataTable dt = (DataTable)dgv_ingresos.DataSource;
-                    wb.Worksheets.Add(dt, "Resumen_Contrato");
+                    wb.Worksheets.Add(dt, "Ingresos_pedidos");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
                     this.Close();
                 }
             }
-            if(tabControl1.SelectedTab == tabSal)
+            if (tabControl1.SelectedTab == tabSal && dgv_salidas.Rows.Count > 0)
             {
-                nombre = "Reporte_Ingresos_almacen_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                nombre = "Listado_salidas_pedidosclientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                     "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
                     DataTable dt = (DataTable)dgv_salidas.DataSource;
-                    wb.Worksheets.Add(dt, "Reporte_Ingresos");
+                    wb.Worksheets.Add(dt, "Salidas_pedidos");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+            if (tabControl1.SelectedTab == tabres && dgv_resumen.Rows.Count > 0)
+            {
+                nombre = "resumen_contrato_" + tx_codped.Text.Trim() +"_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_resumen.DataSource;
+                    wb.Worksheets.Add(dt, "Resumen");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+            if (tabControl1.SelectedTab == tabvtas && dgv_vtas.Rows.Count > 0)
+            {
+                nombre = "Reportes_ventas_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_vtas.DataSource;
+                    wb.Worksheets.Add(dt, "Ventas");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
                     this.Close();
@@ -1052,6 +1159,10 @@ namespace iOMG
         private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de ingresos de pedidos
         {
             setParaCrystal("ingresos");
+        }
+        private void bt_salidas_Click(object sender, EventArgs e)
+        {
+            setParaCrystal("salidas");
         }
 
         private void setParaCrystal(string repo)                    // genera el set para el reporte de crystal
@@ -1089,6 +1200,12 @@ namespace iOMG
             if (repo == "ingresos")
             {
                 pedsclts datos = generarepingresos();
+                frmvizcpeds visualizador = new frmvizcpeds(datos);
+                visualizador.Show();
+            }
+            if (repo == "salidas")
+            {
+                pedsclts datos = generarepsalidas();
                 frmvizcpeds visualizador = new frmvizcpeds(datos);
                 visualizador.Show();
             }
@@ -1278,8 +1395,8 @@ namespace iOMG
             pedsclts pedset = new pedsclts();
             pedsclts.cab_repingRow rowcab = pedset.cab_reping.Newcab_repingRow();
             rowcab.id = "0";
-            rowcab.fini = dtp_fini_ing.Value.ToString().Substring(0, 10);
-            rowcab.fina = dtp_final_ing.Value.ToString().Substring(0, 10);
+            rowcab.fini = dtp_fini_sal.Value.ToString().Substring(0, 10);
+            rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
             pedset.cab_reping.Addcab_repingRow(rowcab);
             //
             foreach(DataGridViewRow row in dgv_ingresos.Rows)
@@ -1302,6 +1419,38 @@ namespace iOMG
                     rowdet.cliente = row.Cells["cliente"].Value.ToString();
                     rowdet.nomitem = row.Cells["nomitem"].Value.ToString();
                     pedset.det_reping.Adddet_repingRow(rowdet);
+                }
+            }
+            return pedset;
+        }
+        private pedsclts generarepsalidas()                         // salidas de pedidos de clientes (entregas)
+        {
+            //a.fecha,a.tipo,a.pedido,cliente,a.uantes,a.uactual,a.coment,b.item,b.cant,b.medidas,b.madera
+            pedsclts pedset = new pedsclts();
+            pedsclts.cab_repsalRow rowcab = pedset.cab_repsal.Newcab_repsalRow();
+            rowcab.id = "0";
+            rowcab.fini = dtp_fini_sal.Value.ToString().Substring(0, 10);
+            rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
+            pedset.cab_repsal.Addcab_repsalRow(rowcab);
+            //
+            foreach(DataGridViewRow row in dgv_salidas.Rows)
+            {
+                if (row.Cells["tipo"].Value != null && row.Cells["tipo"].Value.ToString().Trim() != "")
+                {
+                    pedsclts.det_repsalRow rowdet = pedset.det_repsal.Newdet_repsalRow();
+                    rowdet.id = "0";
+                    rowdet.fecha = row.Cells["fecha"].Value.ToString().Substring(0, 10);
+                    rowdet.tipo = row.Cells["tipo"].Value.ToString();
+                    rowdet.pedido = row.Cells["pedido"].Value.ToString();
+                    rowdet.cliente = row.Cells["cliente"].Value.ToString();
+                    rowdet.uantes = row.Cells["uantes"].Value.ToString();
+                    rowdet.uactual = row.Cells["uactual"].Value.ToString();
+                    rowdet.coment = row.Cells["coment"].Value.ToString();
+                    rowdet.item = row.Cells["item"].Value.ToString();
+                    rowdet.cant = row.Cells["cant"].Value.ToString();
+                    rowdet.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdet.madera = row.Cells["madera"].Value.ToString();
+                    pedset.det_repsal.Adddet_repsalRow(rowdet);
                 }
             }
             return pedset;
