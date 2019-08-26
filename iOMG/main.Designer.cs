@@ -231,6 +231,7 @@
             this.bt_almacen.Text = "Almacén";
             this.bt_almacen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.bt_almacen.UseVisualStyleBackColor = true;
+            this.bt_almacen.Click += new System.EventHandler(this.bt_almacen_Click);
             // 
             // bt_pcontrol
             // 

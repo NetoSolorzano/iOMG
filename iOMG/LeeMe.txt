@@ -57,7 +57,9 @@ REPORTES
 ** ventas de muebles ............................................ ok
 - REPORTES DE INGRESOS .......................................... ok
 - Reporte de SALIDAS ............................................ ok
-
+** ALMACEN - formulario gestion
+- pan_inicio desarrollo .........................................	... ojo, hardcodeado el compo "soles2018", procedimiento cellsum() BASE, LUEGO SE BORRA
+- desarrollo de form almgestion que toma componentes de pan_inicio ............ 
 
 
 

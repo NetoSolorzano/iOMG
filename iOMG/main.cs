@@ -78,6 +78,9 @@ namespace iOMG
         string imgvic1 = "";                                            // imagen 1 ventas - ingresos de pedidos
         string imgvsc1 = "";                                            // imagen 1 ventas - salidas de pedidos (entregas a cliente)
         string imgvre1 = "";                                            // imagen 1 ventas - reportes
+        string imgalm1 = "";                                            // imagen 1 almacen - gestion
+        string imgalm2 = "";                                            // imagen 2 almacen - movimientos fiscos
+        string imgalm3 = "";                                            // imagen 3 almacen - historico de ventas
         // botones de accion
         string img_btN = "";                                            // imagen del boton de accion NUEVO
         string img_btE = "";                                            // imagen del boton de accion EDITAR
@@ -250,6 +253,9 @@ namespace iOMG
                         if (row["param"].ToString() == "imgvic1") imgvic1 = row["valor"].ToString().Trim();         // imagen1 de ventas ingreso pedidos clientes
                         if (row["param"].ToString() == "imgvsc1") imgvsc1 = row["valor"].ToString().Trim();         // imagen1 de ventas salidas pedidos clientes
                         if (row["param"].ToString() == "imgvre1") imgvre1 = row["valor"].ToString().Trim();         // imagen1 de ventas clientes reportes
+                        if (row["param"].ToString() == "imgalm1") imgalm1 = row["valor"].ToString().Trim();         // imagen1 de almace - gestion
+                        if (row["param"].ToString() == "imgalm2") imgalm2 = row["valor"].ToString().Trim();         // imagen2 de almace - movimientos fisicos
+                        if (row["param"].ToString() == "imgalm3") imgalm3 = row["valor"].ToString().Trim();         // imagen3 de almace - historico de ventas
                         // .. resto de imagenes de ventas
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
@@ -655,6 +661,38 @@ namespace iOMG
             fper.Anchor = AnchorStyles.None;
             fper.Show();
             fper.BringToFront();
+        }
+        //
+        private void bt_almacen_Click(object sender, EventArgs e)
+        {
+            Image img_alm1 = Image.FromFile(imgalm1);
+            Image img_alm2 = Image.FromFile(imgalm2);
+            Image img_alm3 = Image.FromFile(imgalm3);
+            menuStrip1.Items.Clear();
+            menuStrip1.Items.Add("Gestión", img_alm1, alm_gestion_Click);                      // gestion de almacen
+            menuStrip1.Items.Add("Mov.Físicos", img_alm2, alm_movfisicos_Click);               // movimientos fisicos
+            menuStrip1.Items.Add("Históricos", img_alm3, alm_historicos_Click);                // historico de ventas
+            menuStrip1.Visible = true;
+        }
+        private void alm_gestion_Click(object sender, EventArgs e)
+        {
+            almgestion fenl = new almgestion();
+            //pan_inicio fenl = new pan_inicio();
+            fenl.TopLevel = false;
+            fenl.Parent = this;
+            pn_centro.Controls.Add(fenl);
+            fenl.Location = new Point((pn_centro.Width - fenl.Width) / 2, (pn_centro.Height - fenl.Height) / 2);
+            fenl.Anchor = AnchorStyles.None;
+            fenl.Show();
+            fenl.BringToFront();
+        }
+        private void alm_movfisicos_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void alm_historicos_Click(object sender, EventArgs e)
+        {
+
         }
         //
         private void pictureBox1_Click(object sender, EventArgs e)
