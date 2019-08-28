@@ -676,7 +676,6 @@ namespace iOMG
                 filtros(frase);
             }
         }
-        //
         private void advancedDataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             if (advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
@@ -1061,6 +1060,7 @@ namespace iOMG
                 dataGridView1.HorizontalScrollingOffset = e.NewValue;
             }
         }
+        //
         private bool quitareserv(string idr,string ida,string contra)
         {                       //id reserva,id almacen,contrato
             bool retorna = false;

@@ -177,6 +177,12 @@
     <Compile Include="frmvizcpeds.Designer.cs">
       <DependentUpon>frmvizcpeds.cs</DependentUpon>
     </Compile>
+    <Compile Include="impresor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="impresor.designer.cs">
+      <DependentUpon>impresor.cs</DependentUpon>
+    </Compile>
     <Compile Include="ingpedclts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +221,12 @@
     </Compile>
     <Compile Include="main.Designer.cs">
       <DependentUpon>main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="movimas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="movimas.designer.cs">
+      <DependentUpon>movimas.cs</DependentUpon>
     </Compile>
     <Compile Include="pan_inicio.cs">
       <SubType>UserControl</SubType>
@@ -378,6 +390,9 @@
     <EmbeddedResource Include="frmvizcpeds.resx">
       <DependentUpon>frmvizcpeds.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="impresor.resx">
+      <DependentUpon>impresor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ingpedclts.resx">
       <DependentUpon>ingpedclts.cs</DependentUpon>
     </EmbeddedResource>
@@ -397,6 +412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="movimas.resx">
+      <DependentUpon>movimas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="pan_inicio.resx">
       <DependentUpon>pan_inicio.cs</DependentUpon>
@@ -524,10 +542,13 @@
   <ItemGroup>
     <None Include="bin\Debug\recursos\cancel16.png" />
     <None Include="bin\Debug\recursos\print_preview_24.png" />
+    <None Include="bin\Debug\recursos\ticket32.png" />
+    <None Include="bin\Debug\recursos\close_square.png" />
     <Content Include="LeeMe.txt" />
     <None Include="Resources\menos16.png.png" />
     <None Include="Resources\permiso_16.png" />
     <None Include="Resources\floppy_red.png" />
+    <Content Include="leeme2.txt" />
     <Content Include="solorsoft.ico" />
   </ItemGroup>
   <ItemGroup>

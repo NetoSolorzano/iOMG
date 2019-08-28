@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_add = new System.Windows.Forms.ToolStripButton();
@@ -58,10 +59,7 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.pan_ico = new System.Windows.Forms.Panel();
-            this.bt_etiq = new System.Windows.Forms.Button();
             this.bt_bmf = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.bt_expex = new System.Windows.Forms.Button();
             this.tx_totprec = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.bt_salida = new System.Windows.Forms.Button();
@@ -77,6 +75,9 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.tx_tarti = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.bt_etiq = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -87,7 +88,7 @@
             // toolStrip1
             // 
             this.toolStrip1.AutoSize = false;
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.HighlightText;
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -282,6 +283,7 @@
             this.bt_exc.Size = new System.Drawing.Size(32, 32);
             this.bt_exc.Text = "Bt_close";
             this.bt_exc.ToolTipText = "Exportar";
+            this.bt_exc.Click += new System.EventHandler(this.bt_exc_Click);
             // 
             // toolStripSeparator4
             // 
@@ -384,20 +386,11 @@
             // 
             // pan_ico
             // 
-            this.pan_ico.Location = new System.Drawing.Point(896, 34);
+            this.pan_ico.Location = new System.Drawing.Point(679, 1);
             this.pan_ico.Name = "pan_ico";
-            this.pan_ico.Size = new System.Drawing.Size(53, 47);
+            this.pan_ico.Size = new System.Drawing.Size(37, 31);
             this.pan_ico.TabIndex = 180;
             this.pan_ico.Visible = false;
-            // 
-            // bt_etiq
-            // 
-            this.bt_etiq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bt_etiq.Location = new System.Drawing.Point(814, 491);
-            this.bt_etiq.Name = "bt_etiq";
-            this.bt_etiq.Size = new System.Drawing.Size(32, 31);
-            this.bt_etiq.TabIndex = 179;
-            this.bt_etiq.UseVisualStyleBackColor = true;
             // 
             // bt_bmf
             // 
@@ -408,24 +401,7 @@
             this.bt_bmf.TabIndex = 178;
             this.bt_bmf.Text = "Borra marcas de fila";
             this.bt_bmf.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(51, 491);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(32, 31);
-            this.button1.TabIndex = 177;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // bt_expex
-            // 
-            this.bt_expex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bt_expex.Location = new System.Drawing.Point(13, 491);
-            this.bt_expex.Name = "bt_expex";
-            this.bt_expex.Size = new System.Drawing.Size(32, 31);
-            this.bt_expex.TabIndex = 176;
-            this.bt_expex.UseVisualStyleBackColor = true;
+            this.bt_bmf.Click += new System.EventHandler(this.bt_bmf_Click);
             // 
             // tx_totprec
             // 
@@ -457,6 +433,7 @@
             this.bt_salida.TabIndex = 173;
             this.bt_salida.Text = "Salida masiva";
             this.bt_salida.UseVisualStyleBackColor = true;
+            this.bt_salida.Click += new System.EventHandler(this.bt_salida_Click);
             // 
             // bt_reserva
             // 
@@ -467,17 +444,20 @@
             this.bt_reserva.TabIndex = 172;
             this.bt_reserva.Text = "Reserva masiva";
             this.bt_reserva.UseVisualStyleBackColor = true;
+            this.bt_reserva.Click += new System.EventHandler(this.bt_reserva_Click);
             // 
             // dataGridView1
             // 
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(4, 33);
+            this.dataGridView1.Location = new System.Drawing.Point(2, 33);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(852, 24);
+            this.dataGridView1.Size = new System.Drawing.Size(969, 24);
             this.dataGridView1.TabIndex = 171;
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             // 
             // advancedDataGridView1
             // 
@@ -487,11 +467,19 @@
             this.advancedDataGridView1.AutoGenerateContextFilters = true;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.DateWithTime = false;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(4, 83);
+            this.advancedDataGridView1.Location = new System.Drawing.Point(2, 83);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.Size = new System.Drawing.Size(969, 407);
             this.advancedDataGridView1.TabIndex = 170;
             this.advancedDataGridView1.TimeFilter = false;
+            this.advancedDataGridView1.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.advancedDataGridView1.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
+            this.advancedDataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.advancedDataGridView1_CellBeginEdit);
+            this.advancedDataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEndEdit);
+            this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
+            this.advancedDataGridView1.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.advancedDataGridView1_ColumnWidthChanged);
+            this.advancedDataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.advancedDataGridView1_CurrentCellDirtyStateChanged);
+            this.advancedDataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.advancedDataGridView1_Scroll);
             // 
             // panel1
             // 
@@ -500,7 +488,7 @@
             this.panel1.Controls.Add(this.rb_redu);
             this.panel1.Controls.Add(this.rb_estan);
             this.panel1.Controls.Add(this.lb_col);
-            this.panel1.Location = new System.Drawing.Point(4, 8);
+            this.panel1.Location = new System.Drawing.Point(2, 8);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(364, 25);
             this.panel1.TabIndex = 169;
@@ -515,6 +503,7 @@
             this.rb_todos.TabStop = true;
             this.rb_todos.Text = "Todos";
             this.rb_todos.UseVisualStyleBackColor = true;
+            this.rb_todos.CheckedChanged += new System.EventHandler(this.rb_todos_CheckedChanged);
             // 
             // rb_redu
             // 
@@ -526,6 +515,7 @@
             this.rb_redu.TabStop = true;
             this.rb_redu.Text = "Reducido";
             this.rb_redu.UseVisualStyleBackColor = true;
+            this.rb_redu.CheckedChanged += new System.EventHandler(this.rb_redu_CheckedChanged);
             // 
             // rb_estan
             // 
@@ -537,6 +527,7 @@
             this.rb_estan.TabStop = true;
             this.rb_estan.Text = "Estandar";
             this.rb_estan.UseVisualStyleBackColor = true;
+            this.rb_estan.CheckedChanged += new System.EventHandler(this.rb_estan_CheckedChanged);
             // 
             // lb_col
             // 
@@ -557,17 +548,19 @@
             this.bt_borra.TabIndex = 168;
             this.bt_borra.Text = "REINICIA TODO";
             this.bt_borra.UseVisualStyleBackColor = true;
+            this.bt_borra.Click += new System.EventHandler(this.bt_borra_Click);
             // 
             // dataGridView2
             // 
             this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(4, 57);
+            this.dataGridView2.Location = new System.Drawing.Point(2, 57);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(852, 26);
+            this.dataGridView2.Size = new System.Drawing.Size(969, 26);
             this.dataGridView2.TabIndex = 167;
+            this.dataGridView2.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellLeave);
             // 
             // tx_tarti
             // 
@@ -590,16 +583,27 @@
             this.label2.TabIndex = 165;
             this.label2.Text = "Total artículos";
             // 
+            // bt_etiq
+            // 
+            this.bt_etiq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bt_etiq.Image = global::iOMG.Properties.Resources.ticket32;
+            this.bt_etiq.Location = new System.Drawing.Point(814, 491);
+            this.bt_etiq.Name = "bt_etiq";
+            this.bt_etiq.Size = new System.Drawing.Size(32, 31);
+            this.bt_etiq.TabIndex = 179;
+            this.toolTip1.SetToolTip(this.bt_etiq, "Imprime etiqueta del artículo");
+            this.bt_etiq.UseVisualStyleBackColor = true;
+            this.bt_etiq.Click += new System.EventHandler(this.bt_etiq_Click);
+            // 
             // almgestion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(973, 558);
             this.Controls.Add(this.pan_ico);
             this.Controls.Add(this.bt_etiq);
             this.Controls.Add(this.bt_bmf);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.bt_expex);
             this.Controls.Add(this.tx_totprec);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.bt_salida);
@@ -612,11 +616,13 @@
             this.Controls.Add(this.tx_tarti);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.toolStrip1);
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "almgestion";
             this.Text = "Gestión de Almacén";
             this.Load += new System.EventHandler(this.almgestion_Load);
+            this.Enter += new System.EventHandler(this.pan_inicio_Enter);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -663,8 +669,6 @@
         private System.Windows.Forms.Panel pan_ico;
         private System.Windows.Forms.Button bt_etiq;
         private System.Windows.Forms.Button bt_bmf;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button bt_expex;
         private System.Windows.Forms.TextBox tx_totprec;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button bt_salida;
@@ -680,5 +684,7 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.TextBox tx_tarti;
         private System.Windows.Forms.Label label2;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

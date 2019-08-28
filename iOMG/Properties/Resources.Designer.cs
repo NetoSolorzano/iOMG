@@ -83,6 +83,16 @@ namespace iOMG.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap close_square {
+            get {
+                object obj = ResourceManager.GetObject("close_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap exit48 {
             get {
                 object obj = ResourceManager.GetObject("exit48", resourceCulture);
@@ -206,6 +216,16 @@ namespace iOMG.Properties {
         internal static System.Drawing.Bitmap print_preview_24 {
             get {
                 object obj = ResourceManager.GetObject("print_preview_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ticket32 {
+            get {
+                object obj = ResourceManager.GetObject("ticket32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
