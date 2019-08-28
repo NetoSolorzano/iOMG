@@ -91,11 +91,23 @@
     <Compile Include="adicionals.designer.cs">
       <DependentUpon>adicionals.cs</DependentUpon>
     </Compile>
+    <Compile Include="almovfis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="almovfis.Designer.cs">
+      <DependentUpon>almovfis.cs</DependentUpon>
+    </Compile>
     <Compile Include="articulos.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="articulos.designer.cs">
       <DependentUpon>articulos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ayuda1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ayuda1.designer.cs">
+      <DependentUpon>ayuda1.cs</DependentUpon>
     </Compile>
     <Compile Include="ayuda2.cs">
       <SubType>Form</SubType>
@@ -222,17 +234,17 @@
     <Compile Include="main.Designer.cs">
       <DependentUpon>main.cs</DependentUpon>
     </Compile>
+    <Compile Include="movenmas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="movenmas.designer.cs">
+      <DependentUpon>movenmas.cs</DependentUpon>
+    </Compile>
     <Compile Include="movimas.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="movimas.designer.cs">
       <DependentUpon>movimas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="pan_inicio.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="pan_inicio.Designer.cs">
-      <DependentUpon>pan_inicio.cs</DependentUpon>
     </Compile>
     <Compile Include="pedsclients.cs">
       <SubType>Form</SubType>
@@ -348,8 +360,14 @@
     <EmbeddedResource Include="adicionals.resx">
       <DependentUpon>adicionals.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="almovfis.resx">
+      <DependentUpon>almovfis.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="articulos.resx">
       <DependentUpon>articulos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ayuda1.resx">
+      <DependentUpon>ayuda1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ayuda2.resx">
       <DependentUpon>ayuda2.cs</DependentUpon>
@@ -413,11 +431,11 @@
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="movenmas.resx">
+      <DependentUpon>movenmas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="movimas.resx">
       <DependentUpon>movimas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="pan_inicio.resx">
-      <DependentUpon>pan_inicio.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="pedsclients.resx">
       <DependentUpon>pedsclients.cs</DependentUpon>

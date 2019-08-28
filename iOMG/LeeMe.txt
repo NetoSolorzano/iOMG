@@ -62,8 +62,8 @@ REPORTES
 - desarrollo almgestion que toma componentes de pan_inicio ...... ok
 - implementacion de form "movimas" .............................. ok ... Ojo, hardcodeado los estados de contratos
 ** ALMACEN - formulario movimientos fisicos
-- 
-
+- desarrollo del form almovfis .................................. ok
+- implementacion de "movemas" ................................... ok
 
 
 

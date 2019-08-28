@@ -1,3 +1,3 @@
 ﻿1.- "detaped" va en pedidos clientes o por compatibilidad no se usara en pedidos clientes
 2.- quien sera el administrador del sistema. ejemplo, crear usuarios, otorgar permisos, etc.
-3.- 
+3.- definir con Nestor y Gloria si la opcion historicos pasa al integrador como esta o se vuelten "reportes"

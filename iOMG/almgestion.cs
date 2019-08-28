@@ -79,6 +79,7 @@ namespace iOMG
             cellsum(0);
             cvc();
             rb_estan.Checked = true;
+            toolboton();
         }
         private void pan_inicio_KeyDown(object sender, KeyEventArgs e)
         {

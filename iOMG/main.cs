@@ -688,7 +688,14 @@ namespace iOMG
         }
         private void alm_movfisicos_Click(object sender, EventArgs e)
         {
-
+            almovfis fmf = new almovfis();
+            fmf.TopLevel = false;
+            fmf.Parent = this;
+            pn_centro.Controls.Add(fmf);
+            fmf.Location = new Point((pn_centro.Width - fmf.Width) / 2, (pn_centro.Height - fmf.Height) / 2);
+            fmf.Anchor = AnchorStyles.None;
+            fmf.Show();
+            fmf.BringToFront();
         }
         private void alm_historicos_Click(object sender, EventArgs e)
         {
