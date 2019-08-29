@@ -1015,24 +1015,24 @@ namespace iOMG
                     }
                     rlid.Close();
                     // detalle 
-                    //dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
                     dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
-                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)      // me quede aca
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
+                        string acabado = dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(9, 1);
                         string insdet = "insert into detacon (" +
-                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra) values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2)";
+                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado) values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2,@esta)";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
-                        micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                        micon.Parameters.AddWithValue("@tipe", tx_dat_orig.Text);       // tx_dat_tiped.Text
                         micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[1].Value.ToString());
                         micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[2].Value.ToString());
                         micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                         micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());   // 
-                        micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());   // 
+                        micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());
+                        micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[6].Value.ToString());
                         micon.Parameters.AddWithValue("@tota", dataGridView1.Rows[i].Cells[7].Value.ToString());
-                        //micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[].Value.ToString()); // acabado debe ser
+                        micon.Parameters.AddWithValue("@esta", acabado); // dataGridView1.Rows[i].Cells[].Value.ToString()
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());

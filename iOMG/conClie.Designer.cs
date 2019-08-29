@@ -2827,6 +2827,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnestado;
             
+            private global::System.Data.DataColumn columnran;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public liscont_cabDataTable() {
@@ -2894,6 +2896,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ranColumn {
+                get {
+                    return this.columnran;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2929,13 +2939,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public liscont_cabRow Addliscont_cabRow(string id, string fechini, string fechfin, string estado) {
+            public liscont_cabRow Addliscont_cabRow(string id, string fechini, string fechfin, string estado, string ran) {
                 liscont_cabRow rowliscont_cabRow = ((liscont_cabRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
                         fechini,
                         fechfin,
-                        estado};
+                        estado,
+                        ran};
                 rowliscont_cabRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowliscont_cabRow);
                 return rowliscont_cabRow;
@@ -2962,6 +2973,7 @@ namespace iOMG {
                 this.columnfechini = base.Columns["fechini"];
                 this.columnfechfin = base.Columns["fechfin"];
                 this.columnestado = base.Columns["estado"];
+                this.columnran = base.Columns["ran"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2975,6 +2987,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnfechfin);
                 this.columnestado = new global::System.Data.DataColumn("estado", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnestado);
+                this.columnran = new global::System.Data.DataColumn("ran", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnran);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6534,6 +6548,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ran {
+                get {
+                    try {
+                        return ((string)(this[this.tableliscont_cab.ranColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'ran\' de la tabla \'liscont_cab\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableliscont_cab.ranColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tableliscont_cab.idColumn);
             }
@@ -6578,6 +6608,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetestadoNull() {
                 this[this.tableliscont_cab.estadoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsranNull() {
+                return this.IsNull(this.tableliscont_cab.ranColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetranNull() {
+                this[this.tableliscont_cab.ranColumn] = global::System.Convert.DBNull;
             }
         }
         

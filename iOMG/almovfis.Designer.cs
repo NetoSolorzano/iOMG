@@ -384,9 +384,10 @@
             // bt_etiq
             // 
             this.bt_etiq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bt_etiq.Location = new System.Drawing.Point(713, 462);
+            this.bt_etiq.Image = global::iOMG.Properties.Resources.ticket32;
+            this.bt_etiq.Location = new System.Drawing.Point(713, 461);
             this.bt_etiq.Name = "bt_etiq";
-            this.bt_etiq.Size = new System.Drawing.Size(32, 28);
+            this.bt_etiq.Size = new System.Drawing.Size(32, 33);
             this.bt_etiq.TabIndex = 180;
             this.bt_etiq.UseVisualStyleBackColor = true;
             this.bt_etiq.Click += new System.EventHandler(this.bt_etiq_Click);

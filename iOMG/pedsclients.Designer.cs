@@ -90,7 +90,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.bt_det = new System.Windows.Forms.Button();
             this.tx_d_com = new System.Windows.Forms.TextBox();
-            this.tx_d_est = new System.Windows.Forms.TextBox();
+            this.tx_acab = new System.Windows.Forms.TextBox();
             this.tx_d_det2 = new System.Windows.Forms.TextBox();
             this.tx_d_mad = new System.Windows.Forms.TextBox();
             this.tx_d_med = new System.Windows.Forms.TextBox();
@@ -148,6 +148,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.tx_d_est = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -629,6 +630,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_d_est);
             this.panel1.Controls.Add(this.tx_d_iddc);
             this.panel1.Controls.Add(this.tx_dat_mad);
             this.panel1.Controls.Add(this.label22);
@@ -648,7 +650,7 @@
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.bt_det);
             this.panel1.Controls.Add(this.tx_d_com);
-            this.panel1.Controls.Add(this.tx_d_est);
+            this.panel1.Controls.Add(this.tx_acab);
             this.panel1.Controls.Add(this.tx_d_det2);
             this.panel1.Controls.Add(this.tx_d_mad);
             this.panel1.Controls.Add(this.tx_d_med);
@@ -675,10 +677,10 @@
             // 
             // tx_dat_mad
             // 
-            this.tx_dat_mad.Location = new System.Drawing.Point(873, 3);
+            this.tx_dat_mad.Location = new System.Drawing.Point(863, 3);
             this.tx_dat_mad.Name = "tx_dat_mad";
             this.tx_dat_mad.ReadOnly = true;
-            this.tx_dat_mad.Size = new System.Drawing.Size(56, 20);
+            this.tx_dat_mad.Size = new System.Drawing.Size(45, 20);
             this.tx_dat_mad.TabIndex = 316;
             this.tx_dat_mad.Tag = "Id";
             this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -713,7 +715,6 @@
             this.label21.Size = new System.Drawing.Size(50, 13);
             this.label21.TabIndex = 313;
             this.label21.Text = "Acabado";
-            this.label21.Visible = false;
             // 
             // label20
             // 
@@ -845,16 +846,15 @@
             this.tx_d_com.TabIndex = 19;
             this.tx_d_com.Tag = "Id";
             // 
-            // tx_d_est
+            // tx_acab
             // 
-            this.tx_d_est.Location = new System.Drawing.Point(797, 19);
-            this.tx_d_est.Name = "tx_d_est";
-            this.tx_d_est.ReadOnly = true;
-            this.tx_d_est.Size = new System.Drawing.Size(61, 20);
-            this.tx_d_est.TabIndex = 14;
-            this.tx_d_est.Tag = "Id";
-            this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_est.Visible = false;
+            this.tx_acab.Location = new System.Drawing.Point(797, 19);
+            this.tx_acab.Name = "tx_acab";
+            this.tx_acab.ReadOnly = true;
+            this.tx_acab.Size = new System.Drawing.Size(61, 20);
+            this.tx_acab.TabIndex = 14;
+            this.tx_acab.Tag = "Id";
+            this.tx_acab.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_det2
             // 
@@ -1409,6 +1409,17 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // tx_d_est
+            // 
+            this.tx_d_est.Location = new System.Drawing.Point(908, 3);
+            this.tx_d_est.Name = "tx_d_est";
+            this.tx_d_est.ReadOnly = true;
+            this.tx_d_est.Size = new System.Drawing.Size(45, 20);
+            this.tx_d_est.TabIndex = 318;
+            this.tx_d_est.Tag = "Id";
+            this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_est.Visible = false;
+            // 
             // pedsclients
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1469,7 +1480,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button bt_det;
         private System.Windows.Forms.TextBox tx_d_com;
-        private System.Windows.Forms.TextBox tx_d_est;
+        private System.Windows.Forms.TextBox tx_acab;
         private System.Windows.Forms.TextBox tx_d_det2;
         private System.Windows.Forms.TextBox tx_d_mad;
         private System.Windows.Forms.TextBox tx_d_med;
@@ -1567,5 +1578,6 @@
         private System.Windows.Forms.Button bt_adj2;
         private System.Windows.Forms.TextBox tx_dat_adj2;
         private System.Windows.Forms.TextBox tx_dat_adj1;
+        private System.Windows.Forms.TextBox tx_d_est;
     }
 }

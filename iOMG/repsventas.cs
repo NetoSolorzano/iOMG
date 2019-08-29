@@ -557,12 +557,15 @@ namespace iOMG
         }
         private void bt_confiltra_Click(object sender, EventArgs e)     // flltra y muestra contratos
         {
+            string ran = "";
+            if (rb_fcont.Checked == true) ran = "C";
+            if (rb_fentrega.Checked == true) ran = "E";
             string consulta = "repliscont";                                 // todos los estados menos los anulados
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);    // solo estado anulado si se selecciona directamente
                 conn.Open();
-                if (conn.State == ConnectionState.Open)
+                if (conn.State == ConnectionState.Open)         // CALL repliscont('2019-08-01','2019-08-30','','E');
                 {
                     dgv_contratos.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
@@ -570,6 +573,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@fini", dtp_confini.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fina", dtp_confina.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@estado", tx_dat_conestado.Text.Trim());
+                    micon.Parameters.AddWithValue("@rango", ran);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -1463,6 +1467,7 @@ namespace iOMG
             rowcabeza.fechini = dtp_confini.Value.ToString("dd/MM/yyyy");   // yyyy-MM-dd
             rowcabeza.fechfin = dtp_confina.Value.ToString("dd/MM/yyyy");   // 
             rowcabeza.estado = tx_dat_conestado.Text.Trim();
+            rowcabeza.ran = (rb_fcont.Checked == true) ? "C" : "E";
             liscont.liscont_cab.Addliscont_cabRow(rowcabeza);
             //
             foreach(DataGridViewRow row in dgv_contratos.Rows)

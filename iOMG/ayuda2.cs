@@ -164,10 +164,11 @@ namespace iOMG
             }
             if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
             {
-                consulta = "select iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total " +
-                    "from detacon where contratoh=@para2 and saldo>0";
+                consulta = "select a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.estado,a.saldo,a.coment,a.total,b.descrizionerid as acabado " +
+                    "from detacon a left join desc_est b on b.idcodice=a.estado " +
+                    "where a.contratoh=@para2 and a.saldo>0";
                 dataGridView1.Rows.Clear();
-                dataGridView1.ColumnCount = 10;
+                dataGridView1.ColumnCount = 11;
                 dataGridView1.Columns[0].Name = " ID ";
                 dataGridView1.Columns[0].Width = 35;
                 dataGridView1.Columns[0].ReadOnly = true;
@@ -199,8 +200,12 @@ namespace iOMG
                 dataGridView1.Columns[9].Width = 60;
                 dataGridView1.Columns[9].ReadOnly = true;
                 dataGridView1.Columns[9].Visible = false;
+                dataGridView1.Columns[10].Name = " ACABADO";
+                dataGridView1.Columns[10].Width = 60;
+                dataGridView1.Columns[10].ReadOnly = true;
+                dataGridView1.Columns[10].Visible = false;
                 //
-                ReturnValueA = new string[8] { "", "", "", "", "", "", "", ""};
+                ReturnValueA = new string[11] { "", "", "", "", "", "", "", "", "", "", ""};
             }
             if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
             {
@@ -416,7 +421,7 @@ namespace iOMG
                         if (para2 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@para2", para2);
                         mdaDatos.Fill(dtDatos);
                         int li = 0;   // contador de las lineas a llenar el datagrid
-                        for (li = 0; li < dtDatos.Rows.Count; li++) // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+                        for (li = 0; li < dtDatos.Rows.Count; li++) // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
                         {
                             DataRow row = dtDatos.Rows[li];
                             dataGridView1.Rows.Add(row.ItemArray[0].ToString(),
@@ -428,7 +433,8 @@ namespace iOMG
                                                 row.ItemArray[6].ToString(),
                                                 row.ItemArray[7].ToString(),
                                                 row.ItemArray[8].ToString(),
-                                                row.ItemArray[9].ToString()
+                                                row.ItemArray[9].ToString(),
+                                                row.ItemArray[10].ToString()
                                                 );
                         }
                     }
@@ -520,7 +526,7 @@ namespace iOMG
                 ReturnValueA[5] = (dataGridView1.CurrentRow.Cells[5].Value == null) ? "" : dataGridView1.CurrentRow.Cells[5].Value.ToString();
                 ReturnValueA[6] = (dataGridView1.CurrentRow.Cells[6].Value == null) ? "" : dataGridView1.CurrentRow.Cells[6].Value.ToString();
             }
-            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total
+            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
             {
                 ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
@@ -528,8 +534,11 @@ namespace iOMG
                 ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
                 ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
             }
             if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
             {
@@ -608,7 +617,7 @@ namespace iOMG
                 if (dataGridView1.CurrentRow.Cells[6].Value == null) ReturnValueA[6] = "";
                 else ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // cod destino
             }
-            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")        // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")        // // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -620,7 +629,11 @@ namespace iOMG
                 ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
                 ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // medidas
                 ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // madera
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
+                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // estado codigo
+                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();   // saldo
+                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
+                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // total
+                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // acabado
             }
             if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
             {
@@ -684,7 +697,7 @@ namespace iOMG
                     ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
                     ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
                 }
-                if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment
+                if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
                     ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // item
@@ -692,7 +705,11 @@ namespace iOMG
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
                     ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();   // medidas
                     ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // madera
-                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // coment
+                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // estado
+                    ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();    // saldo
+                    ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();    // coment
+                    ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();    // total
+                    ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // acabado
                 }
                 if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
                 {
@@ -764,7 +781,9 @@ namespace iOMG
                                                 row.ItemArray[5].ToString(),
                                                 row.ItemArray[6].ToString(),
                                                 row.ItemArray[7].ToString(),
-                                                row.ItemArray[8].ToString()
+                                                row.ItemArray[8].ToString(),
+                                                row.ItemArray[9].ToString(),
+                                                row.ItemArray[10].ToString()
                                                 );
                         }
                         if (cols4.Contains(para1))

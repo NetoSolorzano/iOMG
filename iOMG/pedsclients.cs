@@ -153,13 +153,14 @@ namespace iOMG
                             {                                               // el codigo tiene taller
                                 tx_d_codi.Text = ayu2.ReturnValue1.Substring(0, 10) + tx_codta.Text.Trim() + ayu2.ReturnValue1.Substring(12, 6);
                             }
-                            tx_d_iddc.Text = ayu2.ReturnValue0;                 // id del item detalle contrato
+                            tx_d_iddc.Text = ayu2.ReturnValue0;                 // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
                             tx_d_nom.Text = ayu2.ReturnValueA[3].ToString();
                             tx_d_med.Text = ayu2.ReturnValueA[4].ToString();
                             tx_d_mad.Text = ayu2.ReturnValueA[5].ToString();
-                            //tx_d_est.Text = ayu2.ReturnValueA[5].ToString();
-                            tx_d_com.Text = ayu2.ReturnValueA[6].ToString();
-                            tx_d_precio.Text = ayu2.ReturnValueA[7].ToString();
+                            tx_d_est.Text = ayu2.ReturnValueA[6].ToString();         // codigo de acabado
+                            tx_acab.Text = ayu2.ReturnValueA[10].ToString();          // nombre del acabado
+                            tx_d_com.Text = ayu2.ReturnValueA[8].ToString();
+                            tx_d_precio.Text = ayu2.ReturnValueA[9].ToString();
                         }
                     }
                 }
@@ -1514,6 +1515,7 @@ namespace iOMG
             tx_d_codi.Text = "";
             tx_d_com.Text = "";
             tx_d_det2.Text = "";
+            tx_acab.Text = "";
             tx_d_est.Text = "";
             tx_d_id.Text = "";
             tx_d_it.Text = "";
@@ -1771,7 +1773,7 @@ namespace iOMG
                 if (tx_d_id.Text.Trim() == "")   // es nuevo
                 {
                     dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text,"",
+                             tx_d_mad.Text, tx_d_det2.Text, tx_acab.Text, tx_d_com.Text,tx_d_est.Text,
                             tx_dat_mad.Text, "", "", tx_saldo.Text, tx_d_precio.Text, "N", tx_d_iddc.Text);
                 }
             }
@@ -1782,30 +1784,10 @@ namespace iOMG
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[8].Value = tx_d_com.Text;
                     obj.Cells[15].Value = "A";  // registro actualizado
-                    /*
-                    obj.Cells[1].Value = tx_d_can.Text;
-                    obj.Cells[2].Value = tx_d_codi.Text;
-                    obj.Cells[3].Value = tx_d_nom.Text;
-                    obj.Cells[4].Value = tx_d_med.Text;
-                    obj.Cells[5].Value = tx_d_mad.Text;
-                    obj.Cells[6].Value = tx_d_det2.Text;
-                    obj.Cells[7].Value = "";
-                    obj.Cells[8].Value = tx_d_com.Text;
-                    obj.Cells[9].Value = "";
-                    obj.Cells[10].Value = tx_dat_mad.Text;
-                    obj.Cells[11].Value = "";
-                    obj.Cells[12].Value = dtp_fingreso.Value.ToString("yyyy-MM-dd"); // fecha de ingreso
-                    obj.Cells[13].Value = (tx_saldo.Text.Trim() == "")? "0":tx_saldo.Text;
-                    obj.Cells[14].Value = (tx_d_precio.Text.Trim() == "")? "0":tx_d_precio.Text;
-                    obj.Cells[15].Value = "A";  // registro actualizado
-                    obj.Cells[16].Value = tx_d_iddc.Text;
-                    */
                 }
                 else
-                {       // es nuevo ... NO PUEDE HABER NUEVOS ACA.... 05/08/2019
-                    //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                    //         tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, "",
-                    //        tx_dat_mad.Text, "", "", tx_saldo.Text, tx_d_precio.Text, "N", tx_d_iddc.Text);
+                {
+                    // es nuevo ... NO PUEDE HABER NUEVOS ACA.... 05/08/2019
                 }
             }
             dtp_fingreso.Checked = false;
@@ -2136,7 +2118,7 @@ namespace iOMG
                     rowdetalle.item = row.Cells["item"].Value.ToString();
                     rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
                     rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdetalle.acabado = "";    // row.Cells["??"].Value.ToString();
+                    rowdetalle.acabado = row.Cells[7].Value.ToString();
                     rowdetalle.coment = row.Cells["coment"].Value.ToString();
                     rowdetalle.detalle2 = "";   // row.Cells["??"].Value.ToString();
                     rowdetalle.precio = row.Cells["total"].Value.ToString();   //tx_d_precio.Text;
