@@ -1316,6 +1316,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnfececon;
             
+            private global::System.Data.DataColumn columnorigen;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public det_lispedidosDataTable() {
@@ -1479,6 +1481,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn origenColumn {
+                get {
+                    return this.columnorigen;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1530,7 +1540,8 @@ namespace iOMG {
                         string fecped, 
                         string fecing, 
                         string fecsal, 
-                        string fececon) {
+                        string fececon, 
+                        string origen) {
                 det_lispedidosRow rowdet_lispedidosRow = ((det_lispedidosRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -1548,7 +1559,8 @@ namespace iOMG {
                         fecped,
                         fecing,
                         fecsal,
-                        fececon};
+                        fececon,
+                        origen};
                 rowdet_lispedidosRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_lispedidosRow);
                 return rowdet_lispedidosRow;
@@ -1587,6 +1599,7 @@ namespace iOMG {
                 this.columnfecing = base.Columns["fecing"];
                 this.columnfecsal = base.Columns["fecsal"];
                 this.columnfececon = base.Columns["fececon"];
+                this.columnorigen = base.Columns["origen"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1624,6 +1637,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnfecsal);
                 this.columnfececon = new global::System.Data.DataColumn("fececon", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfececon);
+                this.columnorigen = new global::System.Data.DataColumn("origen", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnorigen);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1765,6 +1780,10 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columntaller;
             
+            private global::System.Data.DataColumn columnsituacion;
+            
+            private global::System.Data.DataColumn columntipofechas;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public cab_lispedidosDataTable() {
@@ -1832,6 +1851,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn situacionColumn {
+                get {
+                    return this.columnsituacion;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn tipofechasColumn {
+                get {
+                    return this.columntipofechas;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1867,13 +1902,15 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public cab_lispedidosRow Addcab_lispedidosRow(string id, string fecini, string fecfin, string taller) {
+            public cab_lispedidosRow Addcab_lispedidosRow(string id, string fecini, string fecfin, string taller, string situacion, string tipofechas) {
                 cab_lispedidosRow rowcab_lispedidosRow = ((cab_lispedidosRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
                         fecini,
                         fecfin,
-                        taller};
+                        taller,
+                        situacion,
+                        tipofechas};
                 rowcab_lispedidosRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcab_lispedidosRow);
                 return rowcab_lispedidosRow;
@@ -1900,6 +1937,8 @@ namespace iOMG {
                 this.columnfecini = base.Columns["fecini"];
                 this.columnfecfin = base.Columns["fecfin"];
                 this.columntaller = base.Columns["taller"];
+                this.columnsituacion = base.Columns["situacion"];
+                this.columntipofechas = base.Columns["tipofechas"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1913,6 +1952,10 @@ namespace iOMG {
                 base.Columns.Add(this.columnfecfin);
                 this.columntaller = new global::System.Data.DataColumn("taller", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntaller);
+                this.columnsituacion = new global::System.Data.DataColumn("situacion", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnsituacion);
+                this.columntipofechas = new global::System.Data.DataColumn("tipofechas", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntipofechas);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4309,6 +4352,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string origen {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_lispedidos.origenColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'origen\' de la tabla \'det_lispedidos\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_lispedidos.origenColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledet_lispedidos.idColumn);
             }
@@ -4498,6 +4557,18 @@ namespace iOMG {
             public void SetfececonNull() {
                 this[this.tabledet_lispedidos.fececonColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsorigenNull() {
+                return this.IsNull(this.tabledet_lispedidos.origenColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetorigenNull() {
+                this[this.tabledet_lispedidos.origenColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -4580,6 +4651,38 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string situacion {
+                get {
+                    try {
+                        return ((string)(this[this.tablecab_lispedidos.situacionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'situacion\' de la tabla \'cab_lispedidos\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecab_lispedidos.situacionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string tipofechas {
+                get {
+                    try {
+                        return ((string)(this[this.tablecab_lispedidos.tipofechasColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'tipofechas\' de la tabla \'cab_lispedidos\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecab_lispedidos.tipofechasColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecab_lispedidos.idColumn);
             }
@@ -4624,6 +4727,30 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SettallerNull() {
                 this[this.tablecab_lispedidos.tallerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IssituacionNull() {
+                return this.IsNull(this.tablecab_lispedidos.situacionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetsituacionNull() {
+                this[this.tablecab_lispedidos.situacionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstipofechasNull() {
+                return this.IsNull(this.tablecab_lispedidos.tipofechasColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettipofechasNull() {
+                this[this.tablecab_lispedidos.tipofechasColumn] = global::System.Convert.DBNull;
             }
         }
         

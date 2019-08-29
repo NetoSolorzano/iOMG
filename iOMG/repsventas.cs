@@ -183,13 +183,8 @@ namespace iOMG
                 dataller.Fill(dttaller);
                 foreach (DataRow row in dttaller.Rows)
                 {
-                    /*
-                    cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
-                    cmb_taller.ValueMember = row.ItemArray[1].ToString();
-                    //
-                    cmb_tall_ing.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
-                    cmb_tall_ing.ValueMember = row.ItemArray[1].ToString();
-                    */
+                    cmb_pedtaller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
+                    cmb_pedtaller.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen de destino ... 
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -248,9 +243,6 @@ namespace iOMG
                 {
                     cmb_vtasloc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_vtasloc.ValueMember = row.ItemArray[1].ToString();
-                    //
-                    cmb_pedtaller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
-                    cmb_pedtaller.ValueMember = row.ItemArray[1].ToString();
                 }
             }
             //
@@ -599,6 +591,22 @@ namespace iOMG
         }
         private void button5_Click(object sender, EventArgs e)          // filtra y muestra pedidos de clientes
         {
+            if (rb_ped_todos.Checked == false && rb_ped_xllegar.Checked == false && rb_ped_ingresados.Checked == false)
+            {
+                MessageBox.Show("Seleccione el estado del pedido", "Por favor - revise");
+                return;
+            }
+            if (rb_ped_fped.Checked == false && rb_ped_fentrega.Checked == false)
+            {
+                MessageBox.Show("Seleccione el rango de fechas", "Por favor - revise");
+                return;
+            }
+            int situa = 1;                      // situacion del pedido, default todos=1
+            if (rb_ped_xllegar.Checked == true) situa = 2;
+            if (rb_ped_xllegar.Checked == true) situa = 3;
+            string ran = "";
+            if (rb_ped_fped.Checked == true) ran = "P";
+            if (rb_ped_fentrega.Checked == true) ran = "E";
             string consulta = "lispedclt";
             try
             {
@@ -609,9 +617,11 @@ namespace iOMG
                     dgv_pedidos.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@tipofe", ran);        // fecha de pedido o fecha de entrega
                     micon.Parameters.AddWithValue("@fecini", dtp_pedfini.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fecfin", dtp_pedfina.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@taller", tx_dat_pedtaller.Text.Trim());
+                    micon.Parameters.AddWithValue("@sitped", situa);        // situacion del pedido 1,2 o 3 (todos,xllegar,ingresados)
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -1366,6 +1376,8 @@ namespace iOMG
             rowcab.fecfin = dtp_pedfini.Value.ToString("dd/MM/yyyy");
             rowcab.fecini = dtp_pedfina.Value.ToString("dd/MM/yyyy");
             rowcab.taller = cmb_pedtaller.Text.Trim();
+            rowcab.situacion = (rb_ped_todos.Checked == true)? "TODOS":(rb_ped_xllegar.Checked == true)? "X LLEGAR":"INGRESADOS";
+            rowcab.tipofechas = (rb_ped_fped.Checked == true)? rb_ped_fped.Text:rb_ped_fentrega.Text;
             pedset.cab_lispedidos.Addcab_lispedidosRow(rowcab);
             // 
             foreach (DataGridViewRow row in dgv_pedidos.Rows)
@@ -1389,6 +1401,7 @@ namespace iOMG
                     rowdet.fecing = row.Cells["fecing"].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdet.fecsal = row.Cells["fecent"].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdet.fececon = row.Cells["feencon"].Value.ToString().PadRight(10).Substring(0, 10);
+                    rowdet.origen = row.Cells["origen"].Value.ToString();
                     pedset.det_lispedidos.Adddet_lispedidosRow(rowdet);
                 }
             }

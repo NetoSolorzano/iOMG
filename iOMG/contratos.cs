@@ -56,6 +56,7 @@ namespace iOMG
         string dets2 = "";                  // detalles2 para adicionales
         string dets3 = "";                  // detalles3 para adicionales
         string acadef = "";                 // acabados para adicionales
+        string vpaisdef = "";               // pais por defecto para los clientes y proveedores
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
         libreria lib = new libreria();
@@ -198,7 +199,7 @@ namespace iOMG
             // longitudes maximas de campos
             tx_ndc.MaxLength = 11;
             tx_nombre.MaxLength = 100;
-            tx_direc.MaxLength = 150;
+            tx_direc.MaxLength = 100;
             tx_dpto.MaxLength = 45;
             tx_prov.MaxLength = 20;
             tx_dist.MaxLength = 20;
@@ -209,7 +210,7 @@ namespace iOMG
             tx_dirent.MaxLength = 45;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
         }
-        private void jalainfo()                 // obtiene datos de imagenes
+        private void jalainfo()                                                 // obtiene datos de imagenes
         {
             try
             {
@@ -226,22 +227,23 @@ namespace iOMG
                 for (int t = 0; t < dt.Rows.Count; t++)
                 {
                     DataRow row = dt.Rows[t];
-                    if (row["campo"].ToString() == "imagenes" && row["formulario"].ToString() == "main")
+                    if (row["formulario"].ToString() == "main")
                     {
-                        if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
-                        if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
-                        if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
-                        if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
-                        if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
-                        if (row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
-                        if (row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
-                        if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
-                        if (row["param"].ToString() == "img_bti") img_bti = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL INICIO
-                        if (row["param"].ToString() == "img_bts") img_bts = row["valor"].ToString().Trim();         // imagen del boton de accion SIGUIENTE
-                        if (row["param"].ToString() == "img_btr") img_btr = row["valor"].ToString().Trim();         // imagen del boton de accion RETROCEDE
-                        if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
-                        if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
-                        if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_bti") img_bti = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL INICIO
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_bts") img_bts = row["valor"].ToString().Trim();         // imagen del boton de accion SIGUIENTE
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btr") img_btr = row["valor"].ToString().Trim();         // imagen del boton de accion RETROCEDE
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
+                        if (row["campo"].ToString() == "imagenes" && row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                        if (row["campo"].ToString() == "pais" && row["param"].ToString() == "default") vpaisdef = row["valor"].ToString().Trim();             // pais por defecto para los clientes
                     }
                     if (row["formulario"].ToString() == "contratos")
                     {
@@ -296,7 +298,7 @@ namespace iOMG
                 return;
             }
         }
-        private void dataload(string quien)                  // jala datos para los combos y la grilla
+        private void dataload(string quien)                                     // jala datos para los combos y la grilla
         {
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -504,7 +506,7 @@ namespace iOMG
             }
             conn.Close();
         }
-        private void grilla()                   // arma la grilla
+        private void grilla()                                                   // arma la grilla
         {
             // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
             // a.valor,a.acuenta,a.saldo,a.dscto 
@@ -591,7 +593,7 @@ namespace iOMG
             // descuento %
             advancedDataGridView1.Columns[14].Visible = false;
         }
-        private void grilladet(string modo)                 // grilla detalle de pedido
+        private void grilladet(string modo)                                     // grilla detalle de pedido
         {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
@@ -694,7 +696,7 @@ namespace iOMG
             // na (nuevo o actualiza)
             dataGridView1.Columns[14].Visible = false;
         }
-        private void armani()                               // arma el codigo y busca en la maestra
+        private void armani()                                                   // arma el codigo y busca en la maestra
         {
             string fam = "", mod = "", mad = "", tip = "", de1 = "", aca = "", tal = "", de2 = "", de3 = "";
             if (cmb_fam.SelectedItem != null) fam = cmb_fam.SelectedItem.ToString().Substring(0, 1);    // 1
@@ -804,7 +806,7 @@ namespace iOMG
                 }
             }
         }
-        private void jalaoc(string campo)        // jala datos del contrato
+        private void jalaoc(string campo)                                       // jala datos del contrato
         {
             if (campo == "tx_idr" && tx_idr.Text != "")
             {
@@ -866,7 +868,7 @@ namespace iOMG
                 }
             }
         }
-        private void jaladatclt(string id)      // jala datos del cliente
+        private void jaladatclt(string id)                                      // jala datos del cliente
         {
             Int32 vi = -1;
             string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
@@ -912,7 +914,7 @@ namespace iOMG
                 conn.Close();
             }
         }
-        private void jaladet(string pedido)     // jala el detalle del contrato
+        private void jaladet(string pedido)                                     // jala el detalle del contrato
         {
             string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
                 "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na " +
@@ -948,7 +950,7 @@ namespace iOMG
                 return;
             }
         }
-        private bool graba()                                // graba cabecera y detalle
+        private bool graba()                                                    // graba cabecera y detalle
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1056,7 +1058,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private bool edita()                                // actualiza cabecera y detalle
+        private bool edita()                                                    // actualiza cabecera y detalle
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1151,7 +1153,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private bool anula()                                // anula el contrato
+        private bool anula()                                                    // anula el contrato
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1170,7 +1172,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private void actuacli()                             // actualiza datos del cliente
+        private void actuacli()                                                 // actualiza datos del cliente
         {
             string parte = "";
             if (tx_nombre.Text != tx_nombre.Tag.ToString())
@@ -1219,7 +1221,28 @@ namespace iOMG
                 if (parte == "") parte = parte + "ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
                 else parte = parte + ",ubigeo='" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'";
             }
-            string actua = "update anagrafiche set " + parte + " where idanagrafica=@idc";
+            string actua = "";
+            if (tx_idcli.Text.Trim() != "")
+            {
+                actua = "update anagrafiche set " + parte + " where idanagrafica=@idc";
+            }
+            else
+            {
+                actua = "insert into anagrafiche (razonsocial,direcc1,localidad,provincia,depart,email,numerotel1,numerotel2,ubigeo,pais,tipdoc,ruc,idcategoria) values (" +
+                    "'" + tx_nombre.Text.Trim() + "'," + 
+                    "'" + tx_direc.Text.Trim() + "'," +
+                    "'" + tx_dist.Text.Trim() + "'," +
+                    "'" + tx_prov.Text.Trim() + "'," +
+                    "'" + tx_dpto.Text.Trim() + "'," +
+                    "'" + tx_mail.Text.Trim() + "'," +
+                    "'" + tx_telef1.Text.Trim() + "'," +
+                    "'" + tx_telef2.Text.Trim() + "'," +
+                    "'" + tx_dat_dpto.Text.Trim() + tx_dat_provin.Text.Trim() + tx_dat_distri.Text.Trim() + "'," +
+                    "'" + vpaisdef + "'," +
+                    "'" + tx_dat_tdoc.Text.Trim() + "'," +
+                    "'" + tx_ndc.Text.Trim() + "'," +
+                    "'CLI')";
+            }
             if (parte != "")
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1239,7 +1262,7 @@ namespace iOMG
                 conn.Close();
             }
         }
-        private void calculos()                             // calculos de total, y saldo
+        private void calculos()                                                 // calculos de total, y saldo
         {
             decimal val = 0, dsto = 0, acta = 0;  //sald = 0
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1254,7 +1277,7 @@ namespace iOMG
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
         }
-        private bool valexist(String docu)                  // valida existencia de documento
+        private bool valexist(String docu)                                      // valida existencia de documento
         {
             bool retorna = true;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1278,7 +1301,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        string[] equivinter(string titulo)        // equivalencia entre titulo de columna y tabla 
+        string[] equivinter(string titulo)                                      // equivalencia entre titulo de columna y tabla 
         {
             string[] retorna = new string[2];
             switch (titulo)
@@ -2636,6 +2659,7 @@ namespace iOMG
                     }
                 }
             }
+            if (Tx_modo.Text == "NUEVO") cmb_fam.Focus();
         }
         private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -2678,18 +2702,8 @@ namespace iOMG
                             "desea crealo?", "Atención verifique", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (aaa == DialogResult.Yes)
                         {
-                            chk_cliente.Checked = true;
+                            chk_cliente.Checked = true;         // 
                             tx_nombre.Focus();
-                            /*
-                            tx_nombre.ReadOnly = false;
-                            tx_direc.ReadOnly = false;
-                            tx_dist.ReadOnly = false;
-                            tx_prov.ReadOnly = false;
-                            tx_dpto.ReadOnly = false;
-                            tx_mail.ReadOnly = false;
-                            tx_telef1.ReadOnly = false;
-                            tx_telef2.ReadOnly = false;
-                            */
                         }
                         else
                         {
@@ -2797,6 +2811,44 @@ namespace iOMG
         {
             // por las huev....
         }
+        private void chk_cliente_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            {
+                if (chk_cliente.Checked == true)
+                {
+                    tx_nombre.Enabled = true;
+                    tx_direc.Enabled = true;
+                    tx_dist.Enabled = true;
+                    tx_prov.Enabled = true;
+                    tx_dpto.Enabled = true;
+                    tx_mail.Enabled = true;
+                    tx_telef1.Enabled = true;
+                    tx_telef2.Enabled = true;
+                    //
+                    tx_nombre.ReadOnly = false;
+                    tx_direc.ReadOnly = false;
+                    tx_dist.ReadOnly = false;
+                    tx_prov.ReadOnly = false;
+                    tx_dpto.ReadOnly = false;
+                    tx_mail.ReadOnly = false;
+                    tx_telef1.ReadOnly = false;
+                    tx_telef2.ReadOnly = false;
+                }
+                else
+                {
+                    tx_nombre.ReadOnly = true;
+                    tx_direc.ReadOnly = true;
+                    tx_dist.ReadOnly = true;
+                    tx_prov.ReadOnly = true;
+                    tx_dpto.ReadOnly = true;
+                    tx_mail.ReadOnly = true;
+                    tx_telef1.ReadOnly = true;
+                    tx_telef2.ReadOnly = true;
+                }
+            }
+        }
+
         #endregion leaves;
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas

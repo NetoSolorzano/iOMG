@@ -64,6 +64,7 @@
               <xs:element name="fecing" msprop:Generator_ColumnVarNameInTable="columnfecing" msprop:Generator_ColumnPropNameInRow="fecing" msprop:Generator_ColumnPropNameInTable="fecingColumn" msprop:Generator_UserColumnName="fecing" type="xs:string" minOccurs="0" />
               <xs:element name="fecsal" msprop:Generator_ColumnVarNameInTable="columnfecsal" msprop:Generator_ColumnPropNameInRow="fecsal" msprop:Generator_ColumnPropNameInTable="fecsalColumn" msprop:Generator_UserColumnName="fecsal" type="xs:string" minOccurs="0" />
               <xs:element name="fececon" msprop:Generator_ColumnVarNameInTable="columnfececon" msprop:Generator_ColumnPropNameInRow="fececon" msprop:Generator_ColumnPropNameInTable="fececonColumn" msprop:Generator_UserColumnName="fececon" type="xs:string" minOccurs="0" />
+              <xs:element name="origen" msprop:Generator_ColumnVarNameInTable="columnorigen" msprop:Generator_ColumnPropNameInRow="origen" msprop:Generator_ColumnPropNameInTable="origenColumn" msprop:Generator_UserColumnName="origen" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -74,6 +75,8 @@
               <xs:element name="fecini" msprop:Generator_ColumnVarNameInTable="columnfecini" msprop:Generator_ColumnPropNameInRow="fecini" msprop:Generator_ColumnPropNameInTable="feciniColumn" msprop:Generator_UserColumnName="fecini" type="xs:string" minOccurs="0" />
               <xs:element name="fecfin" msprop:Generator_ColumnVarNameInTable="columnfecfin" msprop:Generator_ColumnPropNameInRow="fecfin" msprop:Generator_ColumnPropNameInTable="fecfinColumn" msprop:Generator_UserColumnName="fecfin" type="xs:string" minOccurs="0" />
               <xs:element name="taller" msprop:Generator_ColumnVarNameInTable="columntaller" msprop:Generator_ColumnPropNameInRow="taller" msprop:Generator_ColumnPropNameInTable="tallerColumn" msprop:Generator_UserColumnName="taller" type="xs:string" minOccurs="0" />
+              <xs:element name="situacion" msprop:Generator_ColumnVarNameInTable="columnsituacion" msprop:Generator_ColumnPropNameInRow="situacion" msprop:Generator_ColumnPropNameInTable="situacionColumn" msprop:Generator_UserColumnName="situacion" type="xs:string" minOccurs="0" />
+              <xs:element name="tipofechas" msprop:Generator_ColumnVarNameInTable="columntipofechas" msprop:Generator_ColumnPropNameInRow="tipofechas" msprop:Generator_ColumnPropNameInTable="tipofechasColumn" msprop:Generator_UserColumnName="tipofechas" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

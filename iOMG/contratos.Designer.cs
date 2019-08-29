@@ -38,6 +38,7 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabcodigo = new System.Windows.Forms.TabPage();
+            this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.label35 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
@@ -227,7 +228,6 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -469,6 +469,17 @@
             this.tabcodigo.Size = new System.Drawing.Size(925, 79);
             this.tabcodigo.TabIndex = 0;
             this.tabcodigo.Text = "CODIGO";
+            // 
+            // tx_dat_mad
+            // 
+            this.tx_dat_mad.Location = new System.Drawing.Point(738, 37);
+            this.tx_dat_mad.Name = "tx_dat_mad";
+            this.tx_dat_mad.ReadOnly = true;
+            this.tx_dat_mad.Size = new System.Drawing.Size(47, 20);
+            this.tx_dat_mad.TabIndex = 377;
+            this.tx_dat_mad.Tag = "Id";
+            this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_mad.Visible = false;
             // 
             // label35
             // 
@@ -1289,6 +1300,7 @@
             this.chk_cliente.TabIndex = 361;
             this.chk_cliente.Text = "Modifica datos";
             this.chk_cliente.UseVisualStyleBackColor = true;
+            this.chk_cliente.CheckStateChanged += new System.EventHandler(this.chk_cliente_CheckStateChanged);
             // 
             // label19
             // 
@@ -2308,17 +2320,6 @@
             this.toolStripSeparator11.ForeColor = System.Drawing.Color.Black;
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
-            // 
-            // tx_dat_mad
-            // 
-            this.tx_dat_mad.Location = new System.Drawing.Point(738, 37);
-            this.tx_dat_mad.Name = "tx_dat_mad";
-            this.tx_dat_mad.ReadOnly = true;
-            this.tx_dat_mad.Size = new System.Drawing.Size(47, 20);
-            this.tx_dat_mad.TabIndex = 377;
-            this.tx_dat_mad.Tag = "Id";
-            this.tx_dat_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_dat_mad.Visible = false;
             // 
             // contratos
             // 
