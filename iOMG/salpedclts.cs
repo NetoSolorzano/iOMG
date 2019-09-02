@@ -547,7 +547,7 @@ namespace iOMG
             if (conn.State == ConnectionState.Open)
             {
                 // a.pedido,cliente,a.destino,nomact,a.articulo,dp.nombre,a.med1,a.madera,nomad,a.estado,acabado
-                string consulta = "select a.pedido,cl.razonsocial as cliente,a.destino,ifnull(b.descrizionerid,'') as nomact," + 
+                string consulta = "select a.pedido,ifnull(cl.razonsocial,'') as cliente,a.destino,ifnull(b.descrizionerid,'') as nomact," + 
                     "a.articulo,dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado " +
                     "from movim a " +
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@tpe " +
@@ -555,7 +555,8 @@ namespace iOMG
                     "left join desc_alm b on b.idcodice=a.destino " +
                     "left join detaped dp on dp.pedidoh=a.pedido " +
                     "left join desc_mad c on c.idcodice=a.madera " +
-                    "left join desc_est d on d.idcodice=a.estado";
+                    "left join desc_est d on d.idcodice=a.estado " +
+                    "where pe.codped=@doc";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@doc", pedi);
                 micon.Parameters.AddWithValue("@tpe", tipedc);
@@ -992,7 +993,7 @@ namespace iOMG
             //
             if (modo == "NUEVO")
             {
-                var aa = MessageBox.Show("Confirma que desea crear el ingreso?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var aa = MessageBox.Show("Confirma que desea crear la salida?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     if (graba() == true)

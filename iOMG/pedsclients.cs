@@ -109,7 +109,7 @@ namespace iOMG
                 if (tx_cont.Focused == true)
                 {
                     para1 = "contrat";
-                    para2 = tx_idc.Text;
+                    para2 = "";    // tx_idc.Text
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -117,10 +117,12 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             //ayu2.ReturnValue0;    // id del contrato
+                            tx_idc.Text = ayu2.ReturnValue0;
                             tx_cont.Text = ayu2.ReturnValue1;
                             tx_cliente.Text = ayu2.ReturnValue2;
-                            tx_ciudades.Text = ayu2.ReturnValueA[5];
-                            tx_dat_dest.Text = ayu2.ReturnValueA[4];
+                            //tx_ciudades.Text = ayu2.ReturnValueA[5];
+                            cmb_destino.SelectedIndex = cmb_destino.FindString(ayu2.ReturnValueA[6]);
+                            tx_dat_dest.Text = ayu2.ReturnValueA[6];
                         }
                     }
                 }
@@ -161,6 +163,7 @@ namespace iOMG
                             tx_acab.Text = ayu2.ReturnValueA[10].ToString();          // nombre del acabado
                             tx_d_com.Text = ayu2.ReturnValueA[8].ToString();
                             tx_d_precio.Text = ayu2.ReturnValueA[9].ToString();
+                            tx_acab.Text = ayu2.ReturnValueA[10].ToString();
                         }
                     }
                 }
@@ -284,8 +287,9 @@ namespace iOMG
                 tx_cont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();       // contrato
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
-                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();   // cod destino
-                tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();   // destino
+                tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();   // cod destino
+                //tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();   // destino
+                cmb_destino.SelectedIndex = cmb_destino.FindString(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString());
                 tx_status.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();     // estado
                 tx_adjun1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString();     // adjunto 1
                 tx_adjun2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString();     // adjunto 2
@@ -312,7 +316,8 @@ namespace iOMG
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
                         tx_dat_dest.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // cod destino
-                        tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // destino
+                        //tx_ciudades.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // destino
+                        cmb_destino.SelectedIndex = cmb_destino.FindString(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString());
                         tx_adjun1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString();     // adjunto 1
                         tx_adjun2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString();     // adjunto 2
                         jaladet(tx_codped.Text);
@@ -621,6 +626,18 @@ namespace iOMG
                     cmb_tipo.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
+                // seleccion del almacen de destino ... ok
+                const string condest = "select descrizionerid,idcodice from desc_alm " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmddest = new MySqlCommand(condest, conn);
+                DataTable dtdest = new DataTable();
+                MySqlDataAdapter dadest = new MySqlDataAdapter(cmddest);
+                dadest.Fill(dtdest);
+                foreach (DataRow row in dtdest.Rows)
+                {
+                    cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_destino.ValueMember = row.ItemArray[1].ToString();
+                }
             }
             conn.Close();
         }
@@ -729,8 +746,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@sald", row.Cells["saldo"].Value.ToString());
                     micon.Parameters.AddWithValue("@pied", row.Cells["piedra"].Value.ToString());
                     micon.Parameters.AddWithValue("@come", row.Cells["coment"].Value.ToString());
-                    micon.Parameters.AddWithValue("@prec", "0");
-                    micon.Parameters.AddWithValue("@tota", "0");
+                    micon.Parameters.AddWithValue("@prec", row.Cells["total"].Value.ToString());
+                    micon.Parameters.AddWithValue("@tota", row.Cells["total"].Value.ToString());
                     micon.Parameters.AddWithValue("@iddc", row.Cells["iddetc"].Value.ToString());
                     micon.ExecuteNonQuery();
                     // actualizacion de saldos en el contrato
@@ -948,8 +965,9 @@ namespace iOMG
                 {
                     tx_idc.Text = dr.GetString(2);
                     tx_cliente.Text = dr.GetString(3);
-                    tx_ciudades.Text = dr.GetString(4);
+                    //tx_ciudades.Text = dr.GetString(4); //cmb_destino.Text.PadRight(15).Substring(9,15); me quede aca
                     tx_dat_dest.Text = dr.GetString(5);
+                    cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
                     retorna = true;
                 }
                 else retorna = false;
@@ -1571,6 +1589,11 @@ namespace iOMG
             if (cmb_tipo.SelectedValue != null) tx_dat_tiped.Text = cmb_tipo.SelectedValue.ToString();
             else tx_dat_tiped.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
+        private void cmb_destino_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_destino.SelectedValue != null) tx_dat_dest.Text = cmb_destino.SelectedValue.ToString();
+            else tx_dat_dest.Text = cmb_destino.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         #endregion comboboxes
         #region leaves
         private void tx_idr_Leave(object sender, EventArgs e)
@@ -2104,7 +2127,7 @@ namespace iOMG
             rowcabeza.coment = tx_coment.Text;
             rowcabeza.contrato = tx_cont.Text;
             rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
-            rowcabeza.ciudad_des = tx_ciudades.Text;
+            rowcabeza.ciudad_des = cmb_destino.Text.PadRight(15).Substring(9,15); //tx_ciudades.Text;
             rowcabeza.status = (tx_status.Text == nomanu)? tx_status.Text:"";
             reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
             //

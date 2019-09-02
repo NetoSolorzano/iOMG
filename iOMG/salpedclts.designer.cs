@@ -730,6 +730,7 @@
             this.groupBox17.Size = new System.Drawing.Size(175, 1);
             this.groupBox17.TabIndex = 323;
             this.groupBox17.TabStop = false;
+            this.groupBox17.Visible = false;
             // 
             // groupBox18
             // 
@@ -747,6 +748,7 @@
             this.label9.Size = new System.Drawing.Size(43, 13);
             this.label9.TabIndex = 322;
             this.label9.Text = "Destino";
+            this.label9.Visible = false;
             // 
             // groupBox19
             // 

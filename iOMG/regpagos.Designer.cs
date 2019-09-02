@@ -93,13 +93,14 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(1, 65);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(797, 179);
+            this.dataGridView1.Size = new System.Drawing.Size(680, 179);
             this.dataGridView1.TabIndex = 9;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
             // bt_det
             // 
-            this.bt_det.Location = new System.Drawing.Point(731, 11);
+            this.bt_det.Location = new System.Drawing.Point(605, 11);
             this.bt_det.Name = "bt_det";
             this.bt_det.Size = new System.Drawing.Size(58, 41);
             this.bt_det.TabIndex = 8;
@@ -111,7 +112,7 @@
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Image = global::iOMG.Properties.Resources.floppy_red;
-            this.button1.Location = new System.Drawing.Point(726, 254);
+            this.button1.Location = new System.Drawing.Point(601, 254);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 50);
             this.button1.TabIndex = 11;
@@ -258,7 +259,7 @@
             // 
             this.groupBox9.BackColor = System.Drawing.Color.DimGray;
             this.groupBox9.Controls.Add(this.groupBox10);
-            this.groupBox9.Location = new System.Drawing.Point(558, 288);
+            this.groupBox9.Location = new System.Drawing.Point(421, 288);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(151, 1);
             this.groupBox9.TabIndex = 350;
@@ -276,7 +277,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(560, 273);
+            this.label4.Location = new System.Drawing.Point(423, 273);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 349;
@@ -286,7 +287,7 @@
             // 
             this.groupBox11.BackColor = System.Drawing.Color.DimGray;
             this.groupBox11.Controls.Add(this.groupBox12);
-            this.groupBox11.Location = new System.Drawing.Point(557, 26);
+            this.groupBox11.Location = new System.Drawing.Point(288, 55);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(161, 1);
             this.groupBox11.TabIndex = 352;
@@ -303,7 +304,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(560, 12);
+            this.label6.Location = new System.Drawing.Point(291, 41);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 351;
@@ -313,7 +314,7 @@
             // 
             this.cmb_fpago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_fpago.FormattingEnabled = true;
-            this.cmb_fpago.Location = new System.Drawing.Point(628, 6);
+            this.cmb_fpago.Location = new System.Drawing.Point(359, 35);
             this.cmb_fpago.Name = "cmb_fpago";
             this.cmb_fpago.Size = new System.Drawing.Size(90, 21);
             this.cmb_fpago.TabIndex = 3;
@@ -321,7 +322,7 @@
             // 
             // tx_dat_fpago
             // 
-            this.tx_dat_fpago.Location = new System.Drawing.Point(593, 0);
+            this.tx_dat_fpago.Location = new System.Drawing.Point(324, 29);
             this.tx_dat_fpago.Name = "tx_dat_fpago";
             this.tx_dat_fpago.ReadOnly = true;
             this.tx_dat_fpago.Size = new System.Drawing.Size(37, 20);
@@ -425,11 +426,12 @@
             // 
             this.groupBox19.BackColor = System.Drawing.Color.DimGray;
             this.groupBox19.Controls.Add(this.groupBox20);
-            this.groupBox19.Location = new System.Drawing.Point(277, 55);
+            this.groupBox19.Location = new System.Drawing.Point(466, 55);
             this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Size = new System.Drawing.Size(441, 1);
+            this.groupBox19.Size = new System.Drawing.Size(127, 1);
             this.groupBox19.TabIndex = 366;
             this.groupBox19.TabStop = false;
+            this.groupBox19.Visible = false;
             // 
             // groupBox20
             // 
@@ -441,9 +443,9 @@
             // 
             // tx_comen
             // 
-            this.tx_comen.Location = new System.Drawing.Point(342, 36);
+            this.tx_comen.Location = new System.Drawing.Point(531, 36);
             this.tx_comen.Name = "tx_comen";
-            this.tx_comen.Size = new System.Drawing.Size(376, 20);
+            this.tx_comen.Size = new System.Drawing.Size(62, 20);
             this.tx_comen.TabIndex = 7;
             this.tx_comen.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_comen.Visible = false;
@@ -451,11 +453,12 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(278, 40);
+            this.label10.Location = new System.Drawing.Point(468, 40);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(60, 13);
             this.label10.TabIndex = 365;
             this.label10.Text = "Comentario";
+            this.label10.Visible = false;
             // 
             // tx_dat_td
             // 
@@ -511,12 +514,13 @@
             this.tx_importe.Name = "tx_importe";
             this.tx_importe.Size = new System.Drawing.Size(87, 20);
             this.tx_importe.TabIndex = 2;
+            this.tx_importe.Enter += new System.EventHandler(this.tx_importe_Enter);
             // 
             // tx_total
             // 
             this.tx_total.AllowSpace = false;
             this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_total.Location = new System.Drawing.Point(631, 269);
+            this.tx_total.Location = new System.Drawing.Point(494, 269);
             this.tx_total.Name = "tx_total";
             this.tx_total.ReadOnly = true;
             this.tx_total.Size = new System.Drawing.Size(78, 20);
@@ -527,7 +531,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 315);
+            this.ClientSize = new System.Drawing.Size(682, 315);
             this.Controls.Add(this.tx_dat_mone);
             this.Controls.Add(this.cmb_mone);
             this.Controls.Add(this.tx_dat_td);

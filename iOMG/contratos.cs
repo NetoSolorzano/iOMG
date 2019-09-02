@@ -2663,7 +2663,7 @@ namespace iOMG
         }
         private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (Tx_modo.Text == "NUEVO" && tx_ndc.Text != "")
+            if ((Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR") && tx_ndc.Text != "")
             {
                 if (tx_dat_tdoc.Text == "") cmb_tdoc.Focus();
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -2817,6 +2817,8 @@ namespace iOMG
             {
                 if (chk_cliente.Checked == true)
                 {
+                    cmb_tdoc.Enabled = true;
+                    tx_ndc.Enabled = true;
                     tx_nombre.Enabled = true;
                     tx_direc.Enabled = true;
                     tx_dist.Enabled = true;
@@ -2826,6 +2828,7 @@ namespace iOMG
                     tx_telef1.Enabled = true;
                     tx_telef2.Enabled = true;
                     //
+                    tx_ndc.ReadOnly = false;
                     tx_nombre.ReadOnly = false;
                     tx_direc.ReadOnly = false;
                     tx_dist.ReadOnly = false;

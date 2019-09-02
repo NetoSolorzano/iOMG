@@ -164,8 +164,8 @@ namespace iOMG
             }
             if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
             {
-                consulta = "select a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.estado,a.saldo,a.coment,a.total,b.descrizionerid as acabado " +
-                    "from detacon a left join desc_est b on b.idcodice=a.estado " +
+                consulta = "select a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,if(trim(a.estado)='',substring(a.item,10,1),trim(a.estado)) as estado,a.saldo,a.coment,a.total,b.descrizionerid as acabado " +
+                    "from detacon a left join desc_est b on b.idcodice=if(trim(a.estado)='',substring(a.item,10,1),trim(a.estado)) " +
                     "where a.contratoh=@para2 and a.saldo>0";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 11;
@@ -513,65 +513,85 @@ namespace iOMG
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ReturnValue0 = tx_id.Text;
-            ReturnValue1 = tx_codigo.Text;
-            ReturnValue2 = tx_nombre.Text;
-            if (para1 == "contrat" && para3 == "" && para4 == "")
+            if (tx_codigo.Text.Trim() != "")
             {
-                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                ReturnValueA[4] = (dataGridView1.CurrentRow.Cells[4].Value == null) ? "" : dataGridView1.CurrentRow.Cells[4].Value.ToString();
-                ReturnValueA[5] = (dataGridView1.CurrentRow.Cells[5].Value == null) ? "" : dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[6] = (dataGridView1.CurrentRow.Cells[6].Value == null) ? "" : dataGridView1.CurrentRow.Cells[6].Value.ToString();
-            }
-            if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
-            {
-                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
-                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
-                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
-            }
-            if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
-            {
-                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
-                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
-                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
-                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();
-                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
-                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
-                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
-                ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();
-            }
-            if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
-            {
-                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
-                ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
-                ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-                ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                ReturnValue0 = tx_id.Text;
+                ReturnValue1 = tx_codigo.Text;
+                ReturnValue2 = tx_nombre.Text;
+                if (para1 == "contrat" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                    ReturnValueA[4] = (dataGridView1.CurrentRow.Cells[4].Value == null) ? "" : dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                    ReturnValueA[5] = (dataGridView1.CurrentRow.Cells[5].Value == null) ? "" : dataGridView1.CurrentRow.Cells[5].Value.ToString();
+                    ReturnValueA[6] = (dataGridView1.CurrentRow.Cells[6].Value == null) ? "" : dataGridView1.CurrentRow.Cells[6].Value.ToString();
+                }
+                if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
+                {
+                    if (dataGridView1.Rows.Count > 0)
+                    {
+                        ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                        ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                        ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                        ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                        ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                        ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+                        ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+                        ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                        ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                        ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                        ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                    }
+                    else
+                    {
+                        ReturnValueA[0] = "";
+                        ReturnValueA[1] = "";
+                        ReturnValueA[2] = "";
+                        ReturnValueA[3] = "";
+                        ReturnValueA[4] = "";
+                        ReturnValueA[5] = "";
+                        ReturnValueA[6] = "";
+                        ReturnValueA[7] = "";
+                        ReturnValueA[8] = "";
+                        ReturnValueA[9] = "";
+                        ReturnValueA[10] = "";
+                    }
+                }
+                if (para1 == "pedidos" && para2 == "pend" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                    ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                    ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+                    ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                    ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                    ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                    ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                    ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();
+                    ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
+                    ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
+                    ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
+                    ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();
+                }
+                if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                    ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                    ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+                    ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+                    ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                    ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                    ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+                    ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                }
             }
             this.Close();
         }

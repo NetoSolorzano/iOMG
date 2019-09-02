@@ -171,35 +171,42 @@ namespace iOMG
             dataGridView1.ColumnCount = 14;
             dataGridView1.Columns[0].HeaderText = "ID";
             dataGridView1.Columns[0].Name = "idpagamenti";
-            dataGridView1.Columns[0].Width = 30;
+            dataGridView1.Columns[0].Width = 60;
             dataGridView1.Columns[0].ReadOnly = true;
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView1.Columns[1].HeaderText = "FECHA";
             dataGridView1.Columns[1].Name = "fecha";
-            dataGridView1.Columns[1].Width = 70;
+            dataGridView1.Columns[1].Width = 100;
             dataGridView1.Columns[1].ReadOnly = true;
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView1.Columns[2].HeaderText = "MONTO";
             dataGridView1.Columns[2].Name = "montosol";
-            dataGridView1.Columns[2].Width = 70;
+            dataGridView1.Columns[2].Width = 100;
             dataGridView1.Columns[2].ReadOnly = true;
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
             dataGridView1.Columns[3].HeaderText = "MEDIO";
             dataGridView1.Columns[3].Name = "via";
-            dataGridView1.Columns[3].Width = 90;
+            dataGridView1.Columns[3].Width = 100;
             dataGridView1.Columns[3].ReadOnly = true;
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.Columns[4].Visible = false;
             dataGridView1.Columns[4].HeaderText = "COMENT";
             dataGridView1.Columns[4].Name = "detalle";
             dataGridView1.Columns[4].Width = 170;
             dataGridView1.Columns[4].ReadOnly = true;
             dataGridView1.Columns[5].HeaderText = "DOCVTA";
             dataGridView1.Columns[5].Name = "dv";
-            dataGridView1.Columns[5].Width = 70;
+            dataGridView1.Columns[5].Width = 100;
             dataGridView1.Columns[5].ReadOnly = true;
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView1.Columns[6].HeaderText = "SERIE";
             dataGridView1.Columns[6].Name = "serie";
-            dataGridView1.Columns[6].Width = 50;
+            dataGridView1.Columns[6].Width = 80;
             dataGridView1.Columns[6].ReadOnly = true;
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView1.Columns[7].HeaderText = "NUMERO";
             dataGridView1.Columns[7].Name = "numero";
-            dataGridView1.Columns[7].Width = 70;
+            dataGridView1.Columns[7].Width = 100;
             dataGridView1.Columns[7].ReadOnly = true;
             dataGridView1.Columns[8].Name = "valor";
             dataGridView1.Columns[8].Visible = false;
@@ -211,7 +218,7 @@ namespace iOMG
             dataGridView1.Columns[11].Visible = false;
             dataGridView1.Columns[12].Name = "monto";
             dataGridView1.Columns[12].Visible = false;
-            dataGridView1.Columns[13].Visible = true;       // marca N=nuevo A=actualizado
+            dataGridView1.Columns[13].Visible = false;       // marca N=nuevo A=actualizado
             dataGridView1.Columns[13].Name = "marca";
             //
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -427,6 +434,50 @@ namespace iOMG
             tx_serie.Text = "";
             tx_corre.Text = "";
             tx_comen.Text = "";
+        }
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            var aa = MessageBox.Show("Confirma que desea borrar el pago?" + Environment.NewLine +
+                dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString(), "Pago borrado!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (aa == DialogResult.Yes)
+            {
+                if (dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "" &&
+                    dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "0")
+                {
+                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        string borrame = "delete from pagamenti where idpagamenti=@idp";
+                        MySqlCommand micon = new MySqlCommand(borrame, conn);
+                        micon.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString());
+                        micon.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No es posible conectarse al servidor" + Environment.NewLine +
+                            "No es posible borrar la fila", "Error de conectividad");
+                        e.Cancel = true;
+                        return;
+                    }
+                    conn.Close();
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void tx_importe_Enter(object sender, EventArgs e)
+        {
+            decimal x = 0;
+            for (int i=0; i<dataGridView1.Rows.Count -1; i++)
+            {
+                x = x + decimal.Parse(dataGridView1.Rows[i].Cells["montosol"].Value.ToString());
+            }
+            tx_total.Text = x.ToString();
+            //calcula();
         }
     }
 }

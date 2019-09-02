@@ -769,7 +769,8 @@ namespace iOMG
                                 tx_valor.Text = dr.GetString(4);
                                 tx_tiend.Text = dr.GetString(2);
                                 tx_estad.Text = dr.GetString(5);
-                                tx_fent.Text = dr.GetString(8).Substring(0,10);
+                                if (dr[8] != null && dr[8] != DBNull.Value && dr.GetString(8).Trim() != "") tx_fent.Text = dr.GetString(8).Substring(0, 10);
+                                else tx_fent.Text = "";
                                 dr.Close();
                             }
                         }

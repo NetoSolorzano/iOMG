@@ -32,6 +32,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.cmb_destino = new System.Windows.Forms.ComboBox();
             this.tx_dat_adj2 = new System.Windows.Forms.TextBox();
             this.tx_dat_adj1 = new System.Windows.Forms.TextBox();
             this.bt_adj2 = new System.Windows.Forms.Button();
@@ -47,7 +48,6 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.tx_ciudades = new System.Windows.Forms.TextBox();
             this.tx_codta = new System.Windows.Forms.TextBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
@@ -71,6 +71,7 @@
             this.tx_cliente = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_d_est = new System.Windows.Forms.TextBox();
             this.tx_d_iddc = new System.Windows.Forms.TextBox();
             this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
@@ -148,7 +149,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.tx_d_est = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -210,6 +210,7 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.cmb_destino);
             this.tabuser.Controls.Add(this.tx_dat_adj2);
             this.tabuser.Controls.Add(this.tx_dat_adj1);
             this.tabuser.Controls.Add(this.bt_adj2);
@@ -223,7 +224,6 @@
             this.tabuser.Controls.Add(this.tx_dat_dest);
             this.tabuser.Controls.Add(this.groupBox7);
             this.tabuser.Controls.Add(this.label12);
-            this.tabuser.Controls.Add(this.tx_ciudades);
             this.tabuser.Controls.Add(this.tx_codta);
             this.tabuser.Controls.Add(this.groupBox11);
             this.tabuser.Controls.Add(this.label7);
@@ -265,6 +265,18 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // cmb_destino
+            // 
+            this.cmb_destino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_destino.DropDownWidth = 150;
+            this.cmb_destino.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_destino.FormattingEnabled = true;
+            this.cmb_destino.Location = new System.Drawing.Point(756, 57);
+            this.cmb_destino.Name = "cmb_destino";
+            this.cmb_destino.Size = new System.Drawing.Size(81, 21);
+            this.cmb_destino.TabIndex = 322;
+            this.cmb_destino.SelectionChangeCommitted += new System.EventHandler(this.cmb_destino_SelectionChangeCommitted);
             // 
             // tx_dat_adj2
             // 
@@ -384,7 +396,7 @@
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(843, 57);
+            this.tx_dat_dest.Location = new System.Drawing.Point(843, 58);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(46, 20);
             this.tx_dat_dest.TabIndex = 312;
@@ -396,7 +408,7 @@
             this.groupBox7.Controls.Add(this.groupBox8);
             this.groupBox7.Location = new System.Drawing.Point(682, 78);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(155, 1);
+            this.groupBox7.Size = new System.Drawing.Size(156, 1);
             this.groupBox7.TabIndex = 311;
             this.groupBox7.TabStop = false;
             // 
@@ -416,15 +428,6 @@
             this.label12.Size = new System.Drawing.Size(43, 13);
             this.label12.TabIndex = 310;
             this.label12.Text = "Destino";
-            // 
-            // tx_ciudades
-            // 
-            this.tx_ciudades.Location = new System.Drawing.Point(756, 59);
-            this.tx_ciudades.Name = "tx_ciudades";
-            this.tx_ciudades.Size = new System.Drawing.Size(81, 20);
-            this.tx_ciudades.TabIndex = 7;
-            this.tx_ciudades.Text = "LIMA";
-            this.tx_ciudades.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_codta
             // 
@@ -664,9 +667,20 @@
             this.panel1.Size = new System.Drawing.Size(963, 85);
             this.panel1.TabIndex = 8;
             // 
+            // tx_d_est
+            // 
+            this.tx_d_est.Location = new System.Drawing.Point(444, 39);
+            this.tx_d_est.Name = "tx_d_est";
+            this.tx_d_est.ReadOnly = true;
+            this.tx_d_est.Size = new System.Drawing.Size(45, 20);
+            this.tx_d_est.TabIndex = 318;
+            this.tx_d_est.Tag = "Id";
+            this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_est.Visible = false;
+            // 
             // tx_d_iddc
             // 
-            this.tx_d_iddc.Location = new System.Drawing.Point(878, 62);
+            this.tx_d_iddc.Location = new System.Drawing.Point(489, 39);
             this.tx_d_iddc.Name = "tx_d_iddc";
             this.tx_d_iddc.ReadOnly = true;
             this.tx_d_iddc.Size = new System.Drawing.Size(40, 20);
@@ -677,7 +691,7 @@
             // 
             // tx_dat_mad
             // 
-            this.tx_dat_mad.Location = new System.Drawing.Point(863, 3);
+            this.tx_dat_mad.Location = new System.Drawing.Point(399, 39);
             this.tx_dat_mad.Name = "tx_dat_mad";
             this.tx_dat_mad.ReadOnly = true;
             this.tx_dat_mad.Size = new System.Drawing.Size(45, 20);
@@ -689,23 +703,21 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(822, 46);
+            this.label22.Location = new System.Drawing.Point(869, 5);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(37, 13);
             this.label22.TabIndex = 315;
             this.label22.Text = "Precio";
-            this.label22.Visible = false;
             // 
             // tx_d_precio
             // 
-            this.tx_d_precio.Location = new System.Drawing.Point(816, 60);
+            this.tx_d_precio.Location = new System.Drawing.Point(858, 19);
             this.tx_d_precio.Name = "tx_d_precio";
             this.tx_d_precio.ReadOnly = true;
             this.tx_d_precio.Size = new System.Drawing.Size(56, 20);
             this.tx_d_precio.TabIndex = 314;
             this.tx_d_precio.Tag = "Id";
             this.tx_d_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_precio.Visible = false;
             // 
             // label21
             // 
@@ -830,7 +842,7 @@
             // 
             // bt_det
             // 
-            this.bt_det.Location = new System.Drawing.Point(869, 24);
+            this.bt_det.Location = new System.Drawing.Point(880, 42);
             this.bt_det.Name = "bt_det";
             this.bt_det.Size = new System.Drawing.Size(70, 37);
             this.bt_det.TabIndex = 22;
@@ -1409,17 +1421,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // tx_d_est
-            // 
-            this.tx_d_est.Location = new System.Drawing.Point(908, 3);
-            this.tx_d_est.Name = "tx_d_est";
-            this.tx_d_est.ReadOnly = true;
-            this.tx_d_est.Size = new System.Drawing.Size(45, 20);
-            this.tx_d_est.TabIndex = 318;
-            this.tx_d_est.Tag = "Id";
-            this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_est.Visible = false;
-            // 
             // pedsclients
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1561,7 +1562,6 @@
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox tx_ciudades;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.TextBox tx_d_precio;
         private System.Windows.Forms.TextBox tx_dat_dest;
@@ -1579,5 +1579,6 @@
         private System.Windows.Forms.TextBox tx_dat_adj2;
         private System.Windows.Forms.TextBox tx_dat_adj1;
         private System.Windows.Forms.TextBox tx_d_est;
+        private System.Windows.Forms.ComboBox cmb_destino;
     }
 }

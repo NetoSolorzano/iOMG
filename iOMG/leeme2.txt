@@ -1,4 +1,8 @@
 ﻿1.- "detaped" va en pedidos clientes o por compatibilidad no se usara en pedidos clientes
 2.- quien sera el administrador del sistema. ejemplo, crear usuarios, otorgar permisos, etc.
 3.- definir con Nestor y Gloria si la opcion historicos pasa al integrador como esta o se vuelten "reportes"
-4.- base de datos de clientes, es necesario poner el dni o ruc a los clientes que no tienen o bloquearlos  ... quien lo hará
+4.- base de datos de clientes, es necesario poner el dni o ruc a los clientes que no tienen o bloquearlos  ... quien lo hará?
+5.- tener en consideracion que los pagos de los contratos son un form distinto, se graba o borra y no afecta al contrato si éste no se graba.
+6.- los contratos y pedidos cuya codificacion de articulos es anterior al actual esquema daran error
+7.- todo el mecanismo de pedidos de clientes se quedó con un pedido un artículo
+8.- en iOMG se tendrá un detalle por cada pedido, los pedidos de CoopV3 se matan ahi
