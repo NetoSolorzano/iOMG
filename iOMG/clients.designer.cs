@@ -56,6 +56,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabreg = new System.Windows.Forms.TabPage();
+            this.tx_mld = new System.Windows.Forms.TextBox();
             this.groupBox23 = new System.Windows.Forms.GroupBox();
             this.groupBox24 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -110,7 +111,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.tx_mld = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
@@ -450,6 +450,16 @@
             this.tabreg.TabIndex = 1;
             this.tabreg.Text = "Registro Individual";
             // 
+            // tx_mld
+            // 
+            this.tx_mld.BackColor = System.Drawing.SystemColors.Window;
+            this.tx_mld.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_mld.Location = new System.Drawing.Point(659, 53);
+            this.tx_mld.Name = "tx_mld";
+            this.tx_mld.Size = new System.Drawing.Size(26, 18);
+            this.tx_mld.TabIndex = 231;
+            this.tx_mld.Visible = false;
+            // 
             // groupBox23
             // 
             this.groupBox23.BackColor = System.Drawing.Color.White;
@@ -768,6 +778,7 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(101, 18);
             this.textBox5.TabIndex = 1;
+            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // groupBox7
             // 
@@ -851,6 +862,7 @@
             this.comboBox1.Size = new System.Drawing.Size(78, 21);
             this.comboBox1.TabIndex = 3;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.Leave += new System.EventHandler(this.comboBox1_Leave);
             // 
             // tx_rind
             // 
@@ -972,16 +984,6 @@
             this.button1.TabIndex = 15;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // tx_mld
-            // 
-            this.tx_mld.BackColor = System.Drawing.SystemColors.Window;
-            this.tx_mld.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_mld.Location = new System.Drawing.Point(659, 53);
-            this.tx_mld.Name = "tx_mld";
-            this.tx_mld.Size = new System.Drawing.Size(26, 18);
-            this.tx_mld.TabIndex = 231;
-            this.tx_mld.Visible = false;
             // 
             // clients
             // 

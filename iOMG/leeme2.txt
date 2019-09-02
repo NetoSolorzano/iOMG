@@ -1,3 +1,4 @@
 ﻿1.- "detaped" va en pedidos clientes o por compatibilidad no se usara en pedidos clientes
 2.- quien sera el administrador del sistema. ejemplo, crear usuarios, otorgar permisos, etc.
 3.- definir con Nestor y Gloria si la opcion historicos pasa al integrador como esta o se vuelten "reportes"
+4.- base de datos de clientes, es necesario poner el dni o ruc a los clientes que no tienen o bloquearlos  ... quien lo hará

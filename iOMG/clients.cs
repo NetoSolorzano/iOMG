@@ -32,6 +32,7 @@ namespace iOMG
         string img_btq = "";
         string img_grab = "";
         string img_anul = "";
+        string vapadef = "";            // variable pais por defecto para los clientes
         libreria lib = new libreria();
         AutoCompleteStringCollection paises = new AutoCompleteStringCollection();       // autocompletado paises
         AutoCompleteStringCollection departamentos = new AutoCompleteStringCollection();// autocompletado departamentos
@@ -117,6 +118,8 @@ namespace iOMG
             textBox9.AutoCompleteSource = AutoCompleteSource.CustomSource;  // distritos
             textBox9.AutoCompleteCustomSource = distritos;                  // distritos
             // longitudes maximas de campos
+            textBox5.MaxLength = 3;           // pais
+            textBox5.CharacterCasing = CharacterCasing.Upper;
             textBox4.MaxLength = 100;           // nombre
             textBox6.MaxLength = 100;           // direccion
             textBox13.MaxLength = 6;            // ubigeo
@@ -126,7 +129,8 @@ namespace iOMG
         }
         private void grilla()                   // arma la grilla
         {
-            // 
+            // IDAnagrafica,tipdoc,RUC,RazonSocial,concat(trim(Direcc1),' ',trim(Direcc2)),depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo,estado
+            //            0,     1,  2,          3,                                      4,     5,        6,        7,         8,         9,   10,  11,    12,    13
             Font tiplg = new Font("Arial",7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -212,6 +216,10 @@ namespace iOMG
             advancedDataGridView1.Columns[11].ReadOnly = false;
             advancedDataGridView1.Columns[11].Tag = "validaSI";          // las celdas de esta columna se SI se validan
             advancedDataGridView1.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // ubigeo
+            advancedDataGridView1.Columns[12].Visible = false;
+            // estado, bloqueado o no
+            advancedDataGridView1.Columns[13].Visible = false;
         }
         private void jalainfo()                 // obtiene datos de imagenes
         {
@@ -243,6 +251,7 @@ namespace iOMG
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
                     }
+                    if (row["campo"].ToString() == "pais" && row["param"].ToString() == "default") vapadef = row["valor"].ToString().Trim();         // pais por defecto
                 }
                 da.Dispose();
                 dt.Dispose();
@@ -257,9 +266,11 @@ namespace iOMG
         }
         public void jalaoc(string campo)        // jala datos id o ????
         {
-            if (campo == "tx_idr")  //  && tx_idr.Text != ""
+            // IDAnagrafica,tipdoc,RUC,RazonSocial,concat(trim(Direcc1),' ',trim(Direcc2)),depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo,estado
+            //            0,     1,  2,          3,                                      4,     5,        6,        7,         8,         9,   10,  11,    12,    13
+            if (campo == "tx_idr" && tx_idr.Text.Trim() != "")
             {
-                textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();   // codigo
+                textBox1.Text = "";   // codigo
                 textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();   // tipo de documento
                 textBox3.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();   // # documento
                 textBox4.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();   // nombre
@@ -272,6 +283,7 @@ namespace iOMG
                 textBox11.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();   // teléfono 2
                 textBox12.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[10].Value.ToString();   // correo electrónico
                 textBox13.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();   // ubigeo
+                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString() == "1") checkBox1.Checked = true;
                 comboBox1.SelectedValue = textBox2.Text;
             }
         }
@@ -288,7 +300,7 @@ namespace iOMG
             tabControl1.SelectedTab = tabreg;
             // datos de los clients
             string datgri = "select IDAnagrafica,tipdoc,RUC,RazonSocial,concat(trim(Direcc1),' ',trim(Direcc2))," +
-                "depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo from anag_cli";
+                "depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo,estado from anag_cli";
             MySqlCommand cdg = new MySqlCommand(datgri, conn);
             MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
             dtg.Clear();
@@ -345,6 +357,7 @@ namespace iOMG
             }
             return retorna;
         }
+
         #region autocompletados
         private void autopais()
         {
@@ -414,71 +427,77 @@ namespace iOMG
         }
         private void autoprov()                 // se jala despues de ingresado el departamento
         {
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
+            if (textBox13.Text.Trim() != "")
             {
-                string consulta = "select nombre from ubigeos where depart=@dep and provin<>'00' and distri='00'";
-                MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@dep", textBox13.Text.Substring(0,2));
-                try
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.HasRows == true)
+                    string consulta = "select nombre from ubigeos where depart=@dep and provin<>'00' and distri='00'";
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@dep", textBox13.Text.Substring(0, 2));
+                    try
                     {
-                        while (dr.Read())
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.HasRows == true)
                         {
-                            provincias.Add(dr["nombre"].ToString());
+                            while (dr.Read())
+                            {
+                                provincias.Add(dr["nombre"].ToString());
+                            }
                         }
+                        dr.Close();
                     }
-                    dr.Close();
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error en obtener relación de provincias", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Application.Exit();
+                        return;
+                    }
+                    conn.Close();
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error en obtener relación de provincias", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                    return;
+                    MessageBox.Show("No se puede conectar al servidor!", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
-                conn.Close();
-            }
-            else
-            {
-                MessageBox.Show("No se puede conectar al servidor!", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         private void autodist()                 // se jala despues de ingresado la provincia
         {
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
+            if (textBox13.Text.Trim() != "" && textBox8.Text.Trim() != "")
             {
-                string consulta = "select nombre from ubigeos where depart=@dep and provin=@prov and distri<>'00'";
-                MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@dep", textBox13.Text.Substring(0,2));
-                micon.Parameters.AddWithValue("@prov", textBox13.Text.Substring(2, 2));
-                try
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.HasRows == true)
+                    string consulta = "select nombre from ubigeos where depart=@dep and provin=@prov and distri<>'00'";
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@dep", textBox13.Text.Substring(0, 2));
+                    micon.Parameters.AddWithValue("@prov", textBox13.Text.Substring(2, 2));
+                    try
                     {
-                        while (dr.Read())
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.HasRows == true)
                         {
-                            distritos.Add(dr["nombre"].ToString());
+                            while (dr.Read())
+                            {
+                                distritos.Add(dr["nombre"].ToString());
+                            }
                         }
+                        dr.Close();
                     }
-                    dr.Close();
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error en obtener relación de distritos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Application.Exit();
+                        return;
+                    }
+                    conn.Close();
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error en obtener relación de distritos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                    return;
+                    MessageBox.Show("No se puede conectar al servidor!", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
-                conn.Close();
-            }
-            else
-            {
-                MessageBox.Show("No se puede conectar al servidor!", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         #endregion autocompletados
@@ -586,12 +605,12 @@ namespace iOMG
         private void button1_Click(object sender, EventArgs e)
         {
             // validamos que los campos no esten vacíos
-            if (textBox1.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el código", " Error! ");
-                textBox1.Focus();
-                return;
-            }
+            //if (textBox1.Text.Trim() == "")
+            //{
+            //    MessageBox.Show("Ingrese el código", " Error! ");
+            //    textBox1.Focus();
+            //    return;
+            //}
             if (textBox2.Text.Trim() == "")
             {
                 MessageBox.Show("Seleccione el tipo de documento", " Error! ");
@@ -635,14 +654,41 @@ namespace iOMG
             string verapp = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
             if (modo == "NUEVO")
             {
-                var aa = MessageBox.Show("Confirma que desea crear al cliente?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(aa == DialogResult.Yes)
+                if (tx_idr.Text.Trim() == "")
                 {
-                    graba();
+                    var aa = MessageBox.Show("Confirma que desea crear al cliente?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (aa == DialogResult.Yes)
+                    {
+                        if (graba() == true)
+                        {
+                            DataRow dtr = dtg.NewRow();
+                            // IDAnagrafica,tipdoc,RUC,RazonSocial,concat(trim(Direcc1),' ',trim(Direcc2)),depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo,estado
+                            dtr["IDAnagrafica"] = textBox1.Text;
+                            dtr["tipdoc"] = textBox2.Text;
+                            dtr["RUC"] = textBox3.Text;
+                            dtr["RazonSocial"] = textBox4.Text.Trim();
+                            dtr[4] = textBox6.Text.Trim();
+                            dtr["depart"] = textBox7.Text;
+                            dtr["Provincia"] = textBox8.Text;
+                            dtr["Localidad"] = textBox9.Text;
+                            dtr["NumeroTel1"] = textBox10.Text;
+                            dtr["NumeroTel2"] = textBox11.Text;
+                            dtr["EMail"] = textBox12.Text;
+                            dtr["pais"] = textBox5.Text;
+                            dtr["ubigeo"] = textBox13.Text;
+                            dtr["estado"] = (checkBox1.Checked == true) ? 1 : 0;
+                            dtg.Rows.Add(dtr);
+                        }
+                    }
+                    else
+                    {
+                        textBox1.Focus();
+                        return;
+                    }
                 }
                 else
                 {
-                    textBox1.Focus();
+                    MessageBox.Show("Los datos no son nuevos", "Verifique duplicidad", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     return;
                 }
             }
@@ -651,7 +697,28 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea modificar el cliente?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
+                    if (textBox5.Text.Trim() == "") textBox5.Text = vapadef;
                     edita();
+                    //
+                    foreach(DataRow row in dtg.Rows)
+                    {
+                        if (row["idanagrafica"].ToString().Trim() == tx_idr.Text.Trim())
+                        {
+                            row["tipdoc"] = textBox2.Text;
+                            row["RUC"] = textBox3.Text;
+                            row["RazonSocial"] = textBox4.Text.Trim();
+                            row[4] = textBox6.Text.Trim();
+                            row["depart"] = textBox7.Text;
+                            row["Provincia"] = textBox8.Text;
+                            row["Localidad"] = textBox9.Text;
+                            row["NumeroTel1"] = textBox10.Text;
+                            row["NumeroTel2"] = textBox11.Text;
+                            row["EMail"] = textBox12.Text;
+                            row["pais"] = textBox5.Text;
+                            row["ubigeo"] = textBox13.Text;
+                            row["estado"] = (checkBox1.Checked == true) ? 1 : 0;
+                        }
+                    }
                 }
                 else
                 {
@@ -674,8 +741,9 @@ namespace iOMG
                 //dataload();
             }
         }
-        private void graba()
+        private bool graba()
         {
+            bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if(conn.State == ConnectionState.Open)
@@ -683,8 +751,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into anagrafiche (" +
-                        "tipdoc,RUC,RazonSocial,Direcc1,Direcc2,depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo,codigo,idcategoria) " +
-                        "values (@tidoc,@nudoc,@raso,@dir1,@dir2,@depa,@prov,@dist,@tel1,@tel2,@mail,@pais,@ubig,@codi,@cate)";
+                        "tipdoc,RUC,RazonSocial,Direcc1,Direcc2,depart,Provincia,Localidad,NumeroTel1,NumeroTel2,EMail,pais,ubigeo,codigo,estado,idcategoria) " +
+                        "values (@tidoc,@nudoc,@raso,@dir1,@dir2,@depa,@prov,@dist,@tel1,@tel2,@mail,@pais,@ubig,@codi,@bloq,@cate)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@tidoc", textBox2.Text);
                     micon.Parameters.AddWithValue("@nudoc", textBox3.Text);
@@ -700,23 +768,35 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@pais", textBox5.Text);
                     micon.Parameters.AddWithValue("@ubig", textBox13.Text);
                     micon.Parameters.AddWithValue("@codi", textBox1.Text);
-                    micon.Parameters.AddWithValue("@cate", "CLI");
-                    micon.ExecuteNonQuery();
+                    micon.Parameters.AddWithValue("@bloq", (checkBox1.Checked == true) ? "1" : "0");
+                    micon.Parameters.AddWithValue("@cate", "CLI");                  // en la base de datos hay un trigger que actualiza el campo "codigo" con
+                    micon.ExecuteNonQuery();                                        // la letra "C" + id del registro, C=cliente
+                    //
+                    string lectura = "select last_insert_id()";
+                    micon = new MySqlCommand(lectura, conn);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        textBox1.Text = dr.GetString(0);
+                        retorna = true;
+                    }
+                    dr.Close();
                 }
                 catch(MySqlException ex)
                 {
                     MessageBox.Show(ex.Message, "Error en insertar cliente");
                     Application.Exit();
-                    return;
+                    return retorna;
                 }
             }
             else
             {
                 MessageBox.Show("No fue posible conectarse al servidor de datos");
                 Application.Exit();
-                return;
+                return retorna;
             }
             conn.Close();
+            return retorna;
         }
         private void edita()
         {
@@ -728,7 +808,7 @@ namespace iOMG
                 {
                     string inserta = "update anagrafiche set tipdoc=@tidoc,RUC=@nudoc,RazonSocial=@raso,Direcc1=@dir1," +
                         "Direcc2=@dir2,depart=@depa,Provincia=@prov,Localidad=@dist,NumeroTel1=@tel1,NumeroTel2=@tel2," +
-                        "EMail=@mail,pais=@pais,ubigeo=@ubig,codigo=@codi where idanagrafica=@idan";
+                        "EMail=@mail,pais=@pais,ubigeo=@ubig,estado=@bloq where idanagrafica=@idan";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@tidoc", textBox2.Text);
                     micon.Parameters.AddWithValue("@nudoc", textBox3.Text);
@@ -743,7 +823,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@mail", textBox12.Text);
                     micon.Parameters.AddWithValue("@pais", textBox5.Text);
                     micon.Parameters.AddWithValue("@ubig", textBox13.Text);
-                    micon.Parameters.AddWithValue("@codi", textBox1.Text);
+                    //micon.Parameters.AddWithValue("@codi", textBox1.Text);
+                    micon.Parameters.AddWithValue("@bloq", (checkBox1.Checked == true)? "1":"0");
                     micon.Parameters.AddWithValue("@idan", tx_idr.Text);
                     micon.ExecuteNonQuery();
                 }
@@ -824,7 +905,7 @@ namespace iOMG
         }
         private void textBox8_Leave(object sender, EventArgs e)         // provincia de un departamento, jala distrito
         {
-            if(textBox8.Text != "")
+            if(textBox8.Text != "" && textBox7.Text.Trim() != "")
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -864,7 +945,7 @@ namespace iOMG
         }
         private void textBox9_Leave(object sender, EventArgs e)
         {
-            if(textBox9.Text != "" && textBox8.Text != "" && textBox7.Text != "")
+            if(textBox9.Text.Trim() != "" && textBox8.Text.Trim() != "" && textBox7.Text.Trim() != "")
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -959,7 +1040,7 @@ namespace iOMG
         }
         private void textBox3_Leave(object sender, EventArgs e)         // número de documento
         {
-            if(textBox3.Text.Trim() != "" && tx_mld.Text.Trim() != "")
+            if (textBox3.Text.Trim() != "" && tx_mld.Text.Trim() != "")
             {
                 if (textBox3.Text.Trim().Length != Int16.Parse(tx_mld.Text))
                 {
@@ -968,7 +1049,27 @@ namespace iOMG
                     textBox3.Focus();
                     return;
                 }
+                if (Tx_modo.Text == "NUEVO")    //  || Tx_modo.Text == "EDITAR"
+                {
+                    foreach (DataRow row in dtg.Rows)   // && row["tipdoc"].ToString() == textBox2.Text.Trim()  && Tx_modo.Text == "NUEVO"
+                    {
+                        if (row["RUC"].ToString().Trim() == textBox3.Text.Trim())
+                        {
+                            MessageBox.Show("Ya existe el cliente!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            textBox3.Focus();
+                            return;
+                        }
+                    }
+                }
             }
+            if (textBox3.Text.Trim() != "" && tx_mld.Text.Trim() == "")
+            {
+                comboBox1.Focus();
+            }
+        }
+        private void comboBox1_Leave(object sender, EventArgs e)
+        {
+            textBox3.Focus();
         }
         #endregion leaves;
 
@@ -1047,8 +1148,12 @@ namespace iOMG
             button1.Image = Image.FromFile(img_grab);
             textBox1.Focus();
             limpiar(this);
+            limpiapag(tabreg);
             limpia_otros();
             limpia_combos();
+            textBox1.ReadOnly = true;
+            textBox5.Text = vapadef;
+            textBox5.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1066,6 +1171,7 @@ namespace iOMG
             Tx_modo.Text = "EDITAR";
             button1.Image = Image.FromFile(img_grab);
             limpiar(this);
+            limpiapag(tabreg);
             limpia_otros();
             limpia_combos();
             jalaoc("tx_idr");
