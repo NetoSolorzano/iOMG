@@ -671,7 +671,7 @@ namespace iOMG
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Gestión", img_alm1, alm_gestion_Click);                      // gestion de almacen
             menuStrip1.Items.Add("Mov.Físicos", img_alm2, alm_movfisicos_Click);               // movimientos fisicos
-            menuStrip1.Items.Add("Históricos", img_alm3, alm_historicos_Click);                // historico de ventas
+            menuStrip1.Items.Add("Reportes", img_alm3, alm_historicos_Click);                // historico de ventas
             menuStrip1.Visible = true;
         }
         private void alm_gestion_Click(object sender, EventArgs e)
@@ -699,7 +699,14 @@ namespace iOMG
         }
         private void alm_historicos_Click(object sender, EventArgs e)
         {
-
+            repsalmac fra = new repsalmac();
+            fra.TopLevel = false;
+            fra.Parent = this;
+            pn_centro.Controls.Add(fra);
+            //fra.Location = new Point((pn_centro.Width - fra.Width) / 2, (pn_centro.Height - fra.Height) / 2);
+            fra.Anchor = AnchorStyles.None;
+            fra.Show();
+            fra.BringToFront();
         }
         //
         private void pictureBox1_Click(object sender, EventArgs e)

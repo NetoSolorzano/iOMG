@@ -1,8 +1,22 @@
-﻿1.- "detaped" va en pedidos clientes o por compatibilidad no se usara en pedidos clientes
-2.- quien sera el administrador del sistema. ejemplo, crear usuarios, otorgar permisos, etc.
-3.- definir con Nestor y Gloria si la opcion historicos pasa al integrador como esta o se vuelten "reportes"
-4.- base de datos de clientes, es necesario poner el dni o ruc a los clientes que no tienen o bloquearlos  ... quien lo hará?
-5.- tener en consideracion que los pagos de los contratos son un form distinto, se graba o borra y no afecta al contrato si éste no se graba.
-6.- los contratos y pedidos cuya codificacion de articulos es anterior al actual esquema daran error
-7.- todo el mecanismo de pedidos de clientes se quedó con un pedido un artículo
-8.- en iOMG se tendrá un detalle por cada pedido, los pedidos de CoopV3 se matan ahi
+﻿DEFINICIONES:
+1.- quien sera el administrador del sistema. ejemplo, crear usuarios, otorgar permisos, etc.
+2.- definir con Nestor y Gloria si la opcion historicos pasa al integrador como esta o se vuelten "reportes" ... se volveran reportes
+3.- base de datos de clientes, es necesario poner el dni o ruc a los clientes que no tienen o bloquearlos  ... quien lo hará?
+
+
+.- "detaped" va en pedidos clientes o por compatibilidad no se usara en pedidos clientes?
+.- todo el mecanismo de pedidos de clientes se quedó con un pedido un artículo
+.- en iOMG se tendrá un detalle por cada pedido, los pedidos de CoopV3 se matan ahi
+.- tener en consideracion que los pagos de los contratos son un form distinto, se graba o borra y no afecta al contrato si éste no se graba.
+.- los contratos y pedidos cuya codificacion de articulos es anterior al actual esquema daran error -> se debe dejarlos en una B.D. separada 
+.- en iOMG los campos del codigo de pedido se ampliaron, esto podría ocasionar errores en coopV3 -> se tendría que separar las bases
+.- en iOMG se tienen mas datos y usos de ellos en los formulario y reportes, cuando se listen o emitan reportes con datos anteriores el reporte no se mostrara bien, ejemplo detaped campo "iddetc"
+
+PROPUESTA
+01.- Crear una base de datos nueva y limpia para el iOMG
+02.- Pasar el listado depurado de clientes
+03.- Pasar los contratos pendientes sin entregar completamente
+04.- Pasar los pedidos, ingresos y salidas de los contratos no entregados en su totalidad
+05.- Pasar las maestras actualizadas
+06.- Pasar el inventario y movimientos fisicos de almacen con los datos de contratos y pedidos pendientes
+

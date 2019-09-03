@@ -177,6 +177,12 @@
     <Compile Include="almgestion.Designer.cs">
       <DependentUpon>almgestion.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmvizalm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmvizalm.Designer.cs">
+      <DependentUpon>frmvizalm.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmvizcont.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -303,6 +309,17 @@
       <DependentUpon>repsalidas.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="repsalmac.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="repsalmac.designer.cs">
+      <DependentUpon>repsalmac.cs</DependentUpon>
+    </Compile>
+    <Compile Include="repsalmacen.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>repsalmacen.xsd</DependentUpon>
+    </Compile>
     <Compile Include="repspedalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -331,6 +348,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>repvtas_xclte.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rep_stock.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rep_stock.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="res_cont1.cs">
@@ -402,6 +425,9 @@
     <EmbeddedResource Include="almgestion.resx">
       <DependentUpon>almgestion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmvizalm.resx">
+      <DependentUpon>frmvizalm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmvizcont.resx">
       <DependentUpon>frmvizcont.cs</DependentUpon>
     </EmbeddedResource>
@@ -466,6 +492,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>repsalidas.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="repsalmac.resx">
+      <DependentUpon>repsalmac.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="repspedalm.resx">
       <DependentUpon>repspedalm.cs</DependentUpon>
     </EmbeddedResource>
@@ -483,6 +512,10 @@
     <EmbeddedResource Include="repvtas_xclte.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>repvtas_xclte.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rep_stock.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rep_stock.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="res_cont1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -534,6 +567,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="repsalmacen.xsc">
+      <DependentUpon>repsalmacen.xsd</DependentUpon>
+    </None>
+    <None Include="repsalmacen.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>repsalmacen.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="repsalmacen.xss">
+      <DependentUpon>repsalmacen.xsd</DependentUpon>
+    </None>
     <None Include="Resources\exit48.png" />
   </ItemGroup>
   <ItemGroup>
