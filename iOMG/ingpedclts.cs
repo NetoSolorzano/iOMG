@@ -265,7 +265,7 @@ namespace iOMG
             advancedDataGridView1.Columns[1].Tag = "validaNO";
             advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // tipo movimiento
-            advancedDataGridView1.Columns[2].Visible = true;            // columna visible o no
+            advancedDataGridView1.Columns[2].Visible = false;            // columna visible o no
             advancedDataGridView1.Columns[2].HeaderText = "Tipo";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 60;                // ancho
             advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
