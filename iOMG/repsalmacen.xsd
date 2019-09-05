@@ -12,7 +12,7 @@
   <xs:element name="repsalmacen" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="repsalmacen" msprop:Generator_UserDSName="repsalmacen">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="cab_stock" msprop:Generator_TableClassName="cab_stockDataTable" msprop:Generator_TableVarName="tablecab_stock" msprop:Generator_TablePropName="cab_stock" msprop:Generator_RowDeletingName="cab_stockRowDeleting" msprop:Generator_RowChangingName="cab_stockRowChanging" msprop:Generator_RowEvHandlerName="cab_stockRowChangeEventHandler" msprop:Generator_RowDeletedName="cab_stockRowDeleted" msprop:Generator_UserTableName="cab_stock" msprop:Generator_RowChangedName="cab_stockRowChanged" msprop:Generator_RowEvArgName="cab_stockRowChangeEvent" msprop:Generator_RowClassName="cab_stockRow">
+        <xs:element name="cab_stock" msprop:Generator_TableClassName="cab_stockDataTable" msprop:Generator_TableVarName="tablecab_stock" msprop:Generator_RowChangedName="cab_stockRowChanged" msprop:Generator_TablePropName="cab_stock" msprop:Generator_RowDeletingName="cab_stockRowDeleting" msprop:Generator_RowChangingName="cab_stockRowChanging" msprop:Generator_RowEvHandlerName="cab_stockRowChangeEventHandler" msprop:Generator_RowDeletedName="cab_stockRowDeleted" msprop:Generator_RowClassName="cab_stockRow" msprop:Generator_UserTableName="cab_stock" msprop:Generator_RowEvArgName="cab_stockRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
@@ -24,7 +24,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="det_stock" msprop:Generator_TableClassName="det_stockDataTable" msprop:Generator_TableVarName="tabledet_stock" msprop:Generator_TablePropName="det_stock" msprop:Generator_RowDeletingName="det_stockRowDeleting" msprop:Generator_RowChangingName="det_stockRowChanging" msprop:Generator_RowEvHandlerName="det_stockRowChangeEventHandler" msprop:Generator_RowDeletedName="det_stockRowDeleted" msprop:Generator_UserTableName="det_stock" msprop:Generator_RowChangedName="det_stockRowChanged" msprop:Generator_RowEvArgName="det_stockRowChangeEvent" msprop:Generator_RowClassName="det_stockRow">
+        <xs:element name="det_stock" msprop:Generator_TableClassName="det_stockDataTable" msprop:Generator_TableVarName="tabledet_stock" msprop:Generator_RowChangedName="det_stockRowChanged" msprop:Generator_TablePropName="det_stock" msprop:Generator_RowDeletingName="det_stockRowDeleting" msprop:Generator_RowChangingName="det_stockRowChanging" msprop:Generator_RowEvHandlerName="det_stockRowChangeEventHandler" msprop:Generator_RowDeletedName="det_stockRowDeleted" msprop:Generator_RowClassName="det_stockRow" msprop:Generator_UserTableName="det_stock" msprop:Generator_RowEvArgName="det_stockRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="idc" msprop:Generator_ColumnVarNameInTable="columnidc" msprop:Generator_ColumnPropNameInRow="idc" msprop:Generator_ColumnPropNameInTable="idcColumn" msprop:Generator_UserColumnName="idc" type="xs:string" minOccurs="0" />
@@ -37,6 +37,7 @@
               <xs:element name="medidas" msprop:Generator_ColumnVarNameInTable="columnmedidas" msprop:Generator_ColumnPropNameInRow="medidas" msprop:Generator_ColumnPropNameInTable="medidasColumn" msprop:Generator_UserColumnName="medidas" type="xs:string" minOccurs="0" />
               <xs:element name="precio" msprop:Generator_ColumnVarNameInTable="columnprecio" msprop:Generator_ColumnPropNameInRow="precio" msprop:Generator_ColumnPropNameInTable="precioColumn" msprop:Generator_UserColumnName="precio" type="xs:string" minOccurs="0" />
               <xs:element name="almacen" msprop:Generator_ColumnVarNameInTable="columnalmacen" msprop:Generator_ColumnPropNameInRow="almacen" msprop:Generator_ColumnPropNameInTable="almacenColumn" msprop:Generator_UserColumnName="almacen" type="xs:string" minOccurs="0" />
+              <xs:element name="cant" msprop:Generator_ColumnVarNameInTable="columncant" msprop:Generator_ColumnPropNameInRow="cant" msprop:Generator_ColumnPropNameInTable="cantColumn" msprop:Generator_UserColumnName="cant" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

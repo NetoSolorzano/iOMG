@@ -37,6 +37,7 @@ namespace iOMG
         string cliente = Program.cliente;    // razon social para los reportes
         int pageCount = 1, cuenta = 0;
         libreria lib = new libreria();
+        DataTable dtg = new DataTable();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
         static string port = ConfigurationManager.AppSettings["port"].ToString();
@@ -419,16 +420,16 @@ namespace iOMG
                     conn.Open();
                     if (conn.State == ConnectionState.Open)
                     {
+                        dtg.Clear();
                         dgv_resumen.DataSource = null;
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
                         micon.Parameters.AddWithValue("@calm", tx_dat_dest.Text);
                         micon.Parameters.AddWithValue("@ccap", cmb_fam.Text.Trim());
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        dgv_resumen.DataSource = dt;
-                        dt.Dispose();
+                        da.Fill(dtg);
+                        dgv_resumen.DataSource = dtg;
+                        //dt.Dispose();
                         da.Dispose();
                         grillares();
                     }
@@ -448,6 +449,37 @@ namespace iOMG
                 }
             }
         }
+
+        #region advancedatagridview
+        private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
+        {
+            //DataTable dtg = (DataTable)dgv_resumen.DataSource;
+            dtg.DefaultView.RowFilter = dgv_resumen.FilterString;
+        }
+        private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)
+        {
+            dtg.DefaultView.Sort = dgv_resumen.SortString;
+        }
+        private void advancedDataGridView1_CellEnter_1(object sender, DataGridViewCellEventArgs e)
+        {
+            dgv_resumen.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = dgv_resumen.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+        }
+        private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 1 && Tx_modo.Text != "NUEVO")
+            {
+                // aca
+            }
+        }
+        private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
+        {
+            // aca tampoco 
+        }
+        private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
+        #endregion
 
         #region combos
         private void cmb_vtasloc_SelectionChangeCommitted(object sender, EventArgs e)
@@ -782,6 +814,7 @@ namespace iOMG
                     rowdetalle.acabado = row.Cells["acaba"].Value.ToString();
                     rowdetalle.deta2 = row.Cells["deta2"].Value.ToString();
                     rowdetalle.madera = row.Cells["mader"].Value.ToString();
+                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
                     rescont.det_stock.Adddet_stockRow(rowdetalle);
                 }
             }

@@ -71,8 +71,16 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabres = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmb_fam = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tx_dat_dest = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cmb_destino = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.tabvtas = new System.Windows.Forms.TabPage();
             this.tx_doclie = new System.Windows.Forms.TextBox();
@@ -96,15 +104,7 @@
             this.bt_vtasfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.tx_dat_dest = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.cmb_destino = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cmb_fam = new System.Windows.Forms.ComboBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.dgv_resumen = new ADGV.AdvancedDataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabIng.SuspendLayout();
@@ -112,14 +112,14 @@
             this.tabSal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabres.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabvtas.SuspendLayout();
             this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -564,6 +564,7 @@
             // 
             // tabres
             // 
+            this.tabres.Controls.Add(this.dgv_resumen);
             this.tabres.Controls.Add(this.groupBox3);
             this.tabres.Controls.Add(this.label1);
             this.tabres.Controls.Add(this.cmb_fam);
@@ -572,7 +573,6 @@
             this.tabres.Controls.Add(this.label11);
             this.tabres.Controls.Add(this.cmb_destino);
             this.tabres.Controls.Add(this.button2);
-            this.tabres.Controls.Add(this.dgv_resumen);
             this.tabres.Controls.Add(this.bt_resumen);
             this.tabres.Location = new System.Drawing.Point(4, 22);
             this.tabres.Name = "tabres";
@@ -580,6 +580,98 @@
             this.tabres.TabIndex = 3;
             this.tabres.Text = "Stock";
             this.tabres.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox3.Location = new System.Drawing.Point(321, 47);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(121, 1);
+            this.groupBox3.TabIndex = 365;
+            this.groupBox3.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Location = new System.Drawing.Point(0, -26);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(164, 1);
+            this.groupBox4.TabIndex = 113;
+            this.groupBox4.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(325, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.TabIndex = 364;
+            this.label1.Text = "Capitulo";
+            // 
+            // cmb_fam
+            // 
+            this.cmb_fam.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_fam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_fam.DropDownWidth = 100;
+            this.cmb_fam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_fam.FormattingEnabled = true;
+            this.cmb_fam.Location = new System.Drawing.Point(415, 27);
+            this.cmb_fam.Name = "cmb_fam";
+            this.cmb_fam.Size = new System.Drawing.Size(45, 21);
+            this.cmb_fam.TabIndex = 363;
+            this.cmb_fam.SelectionChangeCommitted += new System.EventHandler(this.cmb_fam_SelectionChangeCommitted);
+            this.cmb_fam.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_fam_KeyDown);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox1.Location = new System.Drawing.Point(321, 24);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(121, 1);
+            this.groupBox1.TabIndex = 362;
+            this.groupBox1.TabStop = false;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Location = new System.Drawing.Point(0, -26);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(164, 1);
+            this.groupBox2.TabIndex = 113;
+            this.groupBox2.TabStop = false;
+            // 
+            // tx_dat_dest
+            // 
+            this.tx_dat_dest.Location = new System.Drawing.Point(463, 5);
+            this.tx_dat_dest.Name = "tx_dat_dest";
+            this.tx_dat_dest.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_dest.TabIndex = 361;
+            this.tx_dat_dest.Visible = false;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(325, 9);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(48, 13);
+            this.label11.TabIndex = 360;
+            this.label11.Text = "Almacén";
+            // 
+            // cmb_destino
+            // 
+            this.cmb_destino.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_destino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_destino.DropDownWidth = 150;
+            this.cmb_destino.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_destino.FormattingEnabled = true;
+            this.cmb_destino.Location = new System.Drawing.Point(375, 4);
+            this.cmb_destino.Name = "cmb_destino";
+            this.cmb_destino.Size = new System.Drawing.Size(85, 21);
+            this.cmb_destino.TabIndex = 359;
+            this.cmb_destino.SelectionChangeCommitted += new System.EventHandler(this.cmb_destino_SelectionChangeCommitted);
+            this.cmb_destino.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_destino_KeyDown);
             // 
             // button2
             // 
@@ -591,17 +683,6 @@
             this.button2.TabIndex = 358;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // dgv_resumen
-            // 
-            this.dgv_resumen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_resumen.Location = new System.Drawing.Point(3, 52);
-            this.dgv_resumen.Name = "dgv_resumen";
-            this.dgv_resumen.Size = new System.Drawing.Size(1025, 324);
-            this.dgv_resumen.TabIndex = 347;
             // 
             // bt_resumen
             // 
@@ -843,97 +924,23 @@
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
             // 
-            // tx_dat_dest
+            // dgv_resumen
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(463, 5);
-            this.tx_dat_dest.Name = "tx_dat_dest";
-            this.tx_dat_dest.Size = new System.Drawing.Size(27, 20);
-            this.tx_dat_dest.TabIndex = 361;
-            this.tx_dat_dest.Visible = false;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(325, 9);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(48, 13);
-            this.label11.TabIndex = 360;
-            this.label11.Text = "Almacén";
-            // 
-            // cmb_destino
-            // 
-            this.cmb_destino.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_destino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_destino.DropDownWidth = 150;
-            this.cmb_destino.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_destino.FormattingEnabled = true;
-            this.cmb_destino.Location = new System.Drawing.Point(375, 4);
-            this.cmb_destino.Name = "cmb_destino";
-            this.cmb_destino.Size = new System.Drawing.Size(85, 21);
-            this.cmb_destino.TabIndex = 359;
-            this.cmb_destino.SelectionChangeCommitted += new System.EventHandler(this.cmb_destino_SelectionChangeCommitted);
-            this.cmb_destino.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_destino_KeyDown);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox1.Location = new System.Drawing.Point(321, 24);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(121, 1);
-            this.groupBox1.TabIndex = 362;
-            this.groupBox1.TabStop = false;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Location = new System.Drawing.Point(0, -26);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(164, 1);
-            this.groupBox2.TabIndex = 113;
-            this.groupBox2.TabStop = false;
-            // 
-            // cmb_fam
-            // 
-            this.cmb_fam.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_fam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_fam.DropDownWidth = 100;
-            this.cmb_fam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_fam.FormattingEnabled = true;
-            this.cmb_fam.Location = new System.Drawing.Point(415, 27);
-            this.cmb_fam.Name = "cmb_fam";
-            this.cmb_fam.Size = new System.Drawing.Size(45, 21);
-            this.cmb_fam.TabIndex = 363;
-            this.cmb_fam.SelectionChangeCommitted += new System.EventHandler(this.cmb_fam_SelectionChangeCommitted);
-            this.cmb_fam.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_fam_KeyDown);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox3.Controls.Add(this.groupBox4);
-            this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox3.Location = new System.Drawing.Point(321, 47);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(121, 1);
-            this.groupBox3.TabIndex = 365;
-            this.groupBox3.TabStop = false;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Location = new System.Drawing.Point(0, -26);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(164, 1);
-            this.groupBox4.TabIndex = 113;
-            this.groupBox4.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(325, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
-            this.label1.TabIndex = 364;
-            this.label1.Text = "Capitulo";
+            this.dgv_resumen.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.dgv_resumen.AutoGenerateContextFilters = true;
+            this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_resumen.DateWithTime = false;
+            this.dgv_resumen.Location = new System.Drawing.Point(3, 52);
+            this.dgv_resumen.Name = "dgv_resumen";
+            this.dgv_resumen.Size = new System.Drawing.Size(1023, 322);
+            this.dgv_resumen.TabIndex = 366;
+            this.dgv_resumen.TimeFilter = false;
+            this.dgv_resumen.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.dgv_resumen.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
+            this.dgv_resumen.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellDoubleClick);
+            this.dgv_resumen.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEnter_1);
+            this.dgv_resumen.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.advancedDataGridView1_CellValidating);
+            this.dgv_resumen.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.advancedDataGridView1_UserDeletingRow);
             // 
             // repsalmac
             // 
@@ -958,7 +965,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.tabres.ResumeLayout(false);
             this.tabres.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.tabvtas.ResumeLayout(false);
             this.tabvtas.PerformLayout();
             this.groupBox19.ResumeLayout(false);
@@ -966,8 +974,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1018,7 +1025,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabres;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.DataGridView dgv_resumen;
         private System.Windows.Forms.Button bt_resumen;
         private System.Windows.Forms.TabPage tabvtas;
         private System.Windows.Forms.Panel panel1;
@@ -1051,5 +1057,6 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmb_fam;
+        private ADGV.AdvancedDataGridView dgv_resumen;
     }
 }

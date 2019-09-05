@@ -651,6 +651,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnalmacen;
             
+            private global::System.Data.DataColumn columncant;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public det_stockDataTable() {
@@ -766,6 +768,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn cantColumn {
+                get {
+                    return this.columncant;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -801,7 +811,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public det_stockRow Adddet_stockRow(string idc, string id, string item, string nombre, string madera, string acabado, string deta2, string medidas, string precio, string almacen) {
+            public det_stockRow Adddet_stockRow(string idc, string id, string item, string nombre, string madera, string acabado, string deta2, string medidas, string precio, string almacen, string cant) {
                 det_stockRow rowdet_stockRow = ((det_stockRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         idc,
@@ -813,7 +823,8 @@ namespace iOMG {
                         deta2,
                         medidas,
                         precio,
-                        almacen};
+                        almacen,
+                        cant};
                 rowdet_stockRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_stockRow);
                 return rowdet_stockRow;
@@ -846,6 +857,7 @@ namespace iOMG {
                 this.columnmedidas = base.Columns["medidas"];
                 this.columnprecio = base.Columns["precio"];
                 this.columnalmacen = base.Columns["almacen"];
+                this.columncant = base.Columns["cant"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -871,6 +883,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnprecio);
                 this.columnalmacen = new global::System.Data.DataColumn("almacen", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnalmacen);
+                this.columncant = new global::System.Data.DataColumn("cant", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncant);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1356,6 +1370,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string cant {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_stock.cantColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'cant\' de la tabla \'det_stock\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_stock.cantColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidcNull() {
                 return this.IsNull(this.tabledet_stock.idcColumn);
             }
@@ -1472,6 +1502,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetalmacenNull() {
                 this[this.tabledet_stock.almacenColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IscantNull() {
+                return this.IsNull(this.tabledet_stock.cantColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetcantNull() {
+                this[this.tabledet_stock.cantColumn] = global::System.Convert.DBNull;
             }
         }
         
