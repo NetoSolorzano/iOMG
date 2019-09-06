@@ -322,7 +322,7 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columncapitulo;
             
-            private global::System.Data.DataColumn columnmodelo;
+            private global::System.Data.DataColumn columnvalorizado;
             
             private global::System.Data.DataColumn columntipologia;
             
@@ -393,9 +393,9 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn modeloColumn {
+            public global::System.Data.DataColumn valorizadoColumn {
                 get {
-                    return this.columnmodelo;
+                    return this.columnvalorizado;
                 }
             }
             
@@ -444,14 +444,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public cab_stockRow Addcab_stockRow(string id, string fecha, string almacen, string capitulo, string modelo, string tipologia) {
+            public cab_stockRow Addcab_stockRow(string id, string fecha, string almacen, string capitulo, string valorizado, string tipologia) {
                 cab_stockRow rowcab_stockRow = ((cab_stockRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
                         fecha,
                         almacen,
                         capitulo,
-                        modelo,
+                        valorizado,
                         tipologia};
                 rowcab_stockRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcab_stockRow);
@@ -479,7 +479,7 @@ namespace iOMG {
                 this.columnfecha = base.Columns["fecha"];
                 this.columnalmacen = base.Columns["almacen"];
                 this.columncapitulo = base.Columns["capitulo"];
-                this.columnmodelo = base.Columns["modelo"];
+                this.columnvalorizado = base.Columns["valorizado"];
                 this.columntipologia = base.Columns["tipologia"];
             }
             
@@ -494,8 +494,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnalmacen);
                 this.columncapitulo = new global::System.Data.DataColumn("capitulo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncapitulo);
-                this.columnmodelo = new global::System.Data.DataColumn("modelo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnmodelo);
+                this.columnvalorizado = new global::System.Data.DataColumn("valorizado", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnvalorizado);
                 this.columntipologia = new global::System.Data.DataColumn("tipologia", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntipologia);
             }
@@ -1091,17 +1091,17 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string modelo {
+            public string valorizado {
                 get {
                     try {
-                        return ((string)(this[this.tablecab_stock.modeloColumn]));
+                        return ((string)(this[this.tablecab_stock.valorizadoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("El valor de la columna \'modelo\' de la tabla \'cab_stock\' es DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'valorizado\' de la tabla \'cab_stock\' es DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecab_stock.modeloColumn] = value;
+                    this[this.tablecab_stock.valorizadoColumn] = value;
                 }
             }
             
@@ -1171,14 +1171,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsmodeloNull() {
-                return this.IsNull(this.tablecab_stock.modeloColumn);
+            public bool IsvalorizadoNull() {
+                return this.IsNull(this.tablecab_stock.valorizadoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetmodeloNull() {
-                this[this.tablecab_stock.modeloColumn] = global::System.Convert.DBNull;
+            public void SetvalorizadoNull() {
+                this[this.tablecab_stock.valorizadoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -27,15 +27,14 @@ namespace iOMG
         string img_btN = "";
         string img_btE = "";
         string img_btP = "";
-        string img_btA = "";            // anula = bloquea
-        string img_btexc = "";          // exporta a excel
+        string img_btA = "";                                    // anula = bloquea
+        string img_btexc = "";                                  // exporta a excel
         string img_btq = "";
         string img_grab = "";
         string img_anul = "";
-        string img_imprime = "", img_preview = "";        // imagen del boton preview e imprimir reporte
-        string letpied = "";            // letra indentificadora de piedra en detalle 2
-        string cliente = Program.cliente;    // razon social para los reportes
-        int pageCount = 1, cuenta = 0;
+        string img_imprime = "", img_preview = "";              // imagen del boton preview e imprimir reporte
+        string letpied = "";                                    // letra indentificadora de piedra en detalle 2
+        string cliente = Program.cliente;                       // razon social para los reportes
         libreria lib = new libreria();
         DataTable dtg = new DataTable();
         // string de conexion
@@ -181,6 +180,9 @@ namespace iOMG
                 {
                     cmb_vtasloc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_vtasloc.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_tienda.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_tienda.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -205,6 +207,9 @@ namespace iOMG
                 {
                     cmb_fam.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
                     cmb_fam.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_famRes.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
+                    cmb_famRes.ValueMember = row.ItemArray[1].ToString();
                 }
             }
             //
@@ -217,11 +222,11 @@ namespace iOMG
         private void grilla_ing()                                   // arma la grilla ingresos
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_ingresos.Font = tiplg;
-            dgv_ingresos.DefaultCellStyle.Font = tiplg;
-            dgv_ingresos.RowTemplate.Height = 15;
-            dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_ingresos.AllowUserToAddRows = false;
+            dgv_reserv.Font = tiplg;
+            dgv_reserv.DefaultCellStyle.Font = tiplg;
+            dgv_reserv.RowTemplate.Height = 15;
+            dgv_reserv.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_reserv.AllowUserToAddRows = false;
         }
         private void grilla_sal()
         {
@@ -232,7 +237,7 @@ namespace iOMG
             dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_salidas.AllowUserToAddRows = false;
         }
-        private void grillares()                                    // arma la grilla del resumen de contrato
+        private void grillares(string modo)                                    // arma la grilla del stock
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_resumen.Font = tiplg;
@@ -240,9 +245,83 @@ namespace iOMG
             dgv_resumen.RowTemplate.Height = 15;
             dgv_resumen.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_resumen.AllowUserToAddRows = false;
-            //if (dgv_resumen.DataSource == null) dgv_resumen.ColumnCount = 22;
+            if (dgv_resumen.DataSource == null) dgv_resumen.ColumnCount = 17;
+            if (modo == "conval")
+            {
+                // id
+                dgv_resumen.Columns[0].Visible = false;
+                // codalm
+                dgv_resumen.Columns[1].Visible = true;
+                // codig
+                dgv_resumen.Columns[2].Visible = true;
+                // nombr
+                dgv_resumen.Columns[3].Visible = true;
+                // medid
+                dgv_resumen.Columns[4].Visible = true;
+                // precio
+                dgv_resumen.Columns[5].Visible = true;
+                // capit
+                dgv_resumen.Columns[6].Visible = true;
+                // model
+                dgv_resumen.Columns[7].Visible = true;
+                // mader
+                dgv_resumen.Columns[8].Visible = true;
+                // tipol
+                dgv_resumen.Columns[9].Visible = true;
+                // deta1
+                dgv_resumen.Columns[10].Visible = true;
+                // acaba
+                dgv_resumen.Columns[11].Visible = true;
+                // talle
+                dgv_resumen.Columns[12].Visible = true;
+                // deta2
+                dgv_resumen.Columns[13].Visible = true;
+                // deta3
+                dgv_resumen.Columns[14].Visible = true;
+                // juego
+                dgv_resumen.Columns[15].Visible = true;
+                // cant
+                dgv_resumen.Columns[16].Visible = true;
+            }
+            if (modo == "sinval")
+            {
+                // id
+                dgv_resumen.Columns[0].Visible = false;
+                // codalm
+                dgv_resumen.Columns[1].Visible = true;
+                // codig
+                dgv_resumen.Columns[2].Visible = true;
+                // nombr
+                dgv_resumen.Columns[3].Visible = true;
+                // medid
+                dgv_resumen.Columns[4].Visible = true;
+                // precio
+                dgv_resumen.Columns[5].Visible = false;
+                // capit
+                dgv_resumen.Columns[6].Visible = true;
+                // model
+                dgv_resumen.Columns[7].Visible = true;
+                // mader
+                dgv_resumen.Columns[8].Visible = true;
+                // tipol
+                dgv_resumen.Columns[9].Visible = true;
+                // deta1
+                dgv_resumen.Columns[10].Visible = true;
+                // acaba
+                dgv_resumen.Columns[11].Visible = true;
+                // talle
+                dgv_resumen.Columns[12].Visible = true;
+                // deta2
+                dgv_resumen.Columns[13].Visible = true;
+                // deta3
+                dgv_resumen.Columns[14].Visible = true;
+                // juego
+                dgv_resumen.Columns[15].Visible = true;
+                // cant
+                dgv_resumen.Columns[16].Visible = true;
+            }
         }
-        private void grillavtas()                                   // arma grilla de ventas
+        private void grillavtas()                                              // arma grilla de 
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_vtas.Font = tiplg;
@@ -262,15 +341,15 @@ namespace iOMG
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
-                    dgv_ingresos.DataSource = null;
+                    dgv_reserv.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.CommandType = CommandType.StoredProcedure;
-                    micon.Parameters.AddWithValue("@fini", dtp_ingfini.Value.ToString("yyyy-MM-dd"));
-                    micon.Parameters.AddWithValue("@fina", dtp_ingfinal.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fini", dtp_resfini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fina", dtp_resfinal.Value.ToString("yyyy-MM-dd"));
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-                    dgv_ingresos.DataSource = dt;
+                    dgv_reserv.DataSource = dt;
                     dt.Dispose();
                     da.Dispose();
                     grilla_ing();
@@ -429,9 +508,9 @@ namespace iOMG
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         da.Fill(dtg);
                         dgv_resumen.DataSource = dtg;
-                        //dt.Dispose();
                         da.Dispose();
-                        grillares();
+                        if (chk_stkval.Checked == true) grillares("conval");
+                        else grillares("sinval");
                     }
                     else
                     {
@@ -637,7 +716,7 @@ namespace iOMG
             // segun la pestanha activa debe exportar
             string nombre = "";
             if (tabControl1.Enabled == false) return;
-            if (tabControl1.SelectedTab == tabIng && dgv_ingresos.Rows.Count > 0)
+            if (tabControl1.SelectedTab == tabres && dgv_reserv.Rows.Count > 0)
             {
                 nombre = "Listado_ingresos_pedidosclientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
@@ -645,7 +724,7 @@ namespace iOMG
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
-                    DataTable dt = (DataTable)dgv_ingresos.DataSource;
+                    DataTable dt = (DataTable)dgv_reserv.DataSource;
                     wb.Worksheets.Add(dt, "Ingresos_pedidos");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
@@ -667,7 +746,7 @@ namespace iOMG
                     this.Close();
                 }
             }
-            if (tabControl1.SelectedTab == tabres && dgv_resumen.Rows.Count > 0)
+            if (tabControl1.SelectedTab == tabstock && dgv_resumen.Rows.Count > 0)
             {
                 nombre = "stock_" + cmb_destino.Text.Trim() +"_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
@@ -787,7 +866,7 @@ namespace iOMG
             }
             return repvtas;
         }
-        private repsalmacen generareporte()                             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
+        private repsalmacen generareporte()                         // reporte stock datos del formulario hacia dataset del reporte en crystal
         {
             repsalmacen rescont = new repsalmacen();                                    // dataset
             repsalmacen.cab_stockRow rowcabeza = rescont.cab_stock.Newcab_stockRow();
@@ -795,8 +874,8 @@ namespace iOMG
             rowcabeza.almacen = tx_dat_dest.Text;
             rowcabeza.capitulo = cmb_fam.Text.Trim();
             rowcabeza.fecha = DateTime.Now.Date.ToString();
-            rowcabeza.modelo = "";
             rowcabeza.tipologia = "";
+            rowcabeza.valorizado = chk_stkval.CheckState.ToString();
             rescont.cab_stock.Addcab_stockRow(rowcabeza);
             // detalle
             foreach(DataGridViewRow row in dgv_resumen.Rows)
@@ -829,7 +908,7 @@ namespace iOMG
             rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
             pedset.cab_reping.Addcab_repingRow(rowcab);
             //
-            foreach(DataGridViewRow row in dgv_ingresos.Rows)
+            foreach(DataGridViewRow row in dgv_reserv.Rows)
             {
                 if (row.Cells["pedido"].Value != null && row.Cells["pedido"].Value.ToString().Trim() != "")
                 {

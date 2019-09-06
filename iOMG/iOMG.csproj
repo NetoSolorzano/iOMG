@@ -356,6 +356,12 @@
       <DependentUpon>rep_stock.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="rep_stock_sinvalor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rep_stock_sinvalor.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="res_cont1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -516,6 +522,10 @@
     <EmbeddedResource Include="rep_stock.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rep_stock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rep_stock_sinvalor.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rep_stock_sinvalor.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="res_cont1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
