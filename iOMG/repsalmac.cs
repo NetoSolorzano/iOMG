@@ -106,8 +106,8 @@ namespace iOMG
             Bt_anul.Image = Image.FromFile(img_btA);
             bt_exc.Image = Image.FromFile(img_btexc);
             Bt_close.Image = Image.FromFile(img_btq);
-            bt_ingresos.Image = Image.FromFile(img_preview);
-            bt_salidas.Image = Image.FromFile(img_preview);
+            //bt_ingresos.Image = Image.FromFile(img_preview);
+            //bt_salidas.Image = Image.FromFile(img_preview);
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -180,9 +180,6 @@ namespace iOMG
                 {
                     cmb_vtasloc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_vtasloc.ValueMember = row.ItemArray[1].ToString();
-                    //
-                    cmb_tienda.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
-                    cmb_tienda.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -195,6 +192,9 @@ namespace iOMG
                 {
                     cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_destino.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_tienda.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_tienda.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del capitulo
                 const string concap = "select descrizionerid,idcodice from desc_gru " +
@@ -207,9 +207,6 @@ namespace iOMG
                 {
                     cmb_fam.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
                     cmb_fam.ValueMember = row.ItemArray[1].ToString();
-                    //
-                    cmb_famRes.Items.Add(row.ItemArray[1].ToString().Trim() + "  -  " + row.ItemArray[0].ToString());
-                    cmb_famRes.ValueMember = row.ItemArray[1].ToString();
                 }
             }
             //
@@ -219,7 +216,7 @@ namespace iOMG
         {
 
         }
-        private void grilla_ing()                                   // arma la grilla ingresos
+        private void grilla_rsv()                                               // arma la grilla de las reservas 
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_reserv.Font = tiplg;
@@ -237,7 +234,7 @@ namespace iOMG
             dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_salidas.AllowUserToAddRows = false;
         }
-        private void grillares(string modo)                                    // arma la grilla del stock
+        private void grillares(string modo)                                     // arma la grilla del stock
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_resumen.Font = tiplg;
@@ -321,7 +318,7 @@ namespace iOMG
                 dgv_resumen.Columns[16].Visible = true;
             }
         }
-        private void grillavtas()                                              // arma grilla de 
+        private void grillavtas()                                               // arma grilla de 
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_vtas.Font = tiplg;
@@ -332,9 +329,9 @@ namespace iOMG
             if (dgv_vtas.DataSource == null) dgv_vtas.ColumnCount = 7;
         }
         //
-        private void button1_Click(object sender, EventArgs e)          // filtra y muestra los ingresos de pedidos de clientes
+        private void button1_Click(object sender, EventArgs e)                  // filtra y muestra las reservas
         {
-            string consulta = "ingpedclte";                                 // todos los ingresos de pedidos
+            string consulta = "lisreserv";                                      // todos los ingresos de pedidos
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);    // solo estado anulado si se selecciona directamente
@@ -344,6 +341,7 @@ namespace iOMG
                     dgv_reserv.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@calm", tx_dat_almres.Text);
                     micon.Parameters.AddWithValue("@fini", dtp_resfini.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fina", dtp_resfinal.Value.ToString("yyyy-MM-dd"));
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -352,7 +350,7 @@ namespace iOMG
                     dgv_reserv.DataSource = dt;
                     dt.Dispose();
                     da.Dispose();
-                    grilla_ing();
+                    grilla_rsv();
                 }
                 else
                 {
@@ -601,6 +599,20 @@ namespace iOMG
                 //tx_dat_dest.Text = "";
             }
         }
+        //
+        private void cmb_tienda_SelectionChangeCommitted(object sender, EventArgs e)    // reservas
+        {
+            if (cmb_tienda.SelectedValue != null) tx_dat_almres.Text = cmb_tienda.SelectedValue.ToString();
+            else tx_dat_almres.Text = cmb_tienda.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_tienda_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_tienda.SelectedIndex = -1;
+                tx_dat_almres.Text = "";
+            }
+        }
         #endregion
 
         #region botones de comando
@@ -718,14 +730,14 @@ namespace iOMG
             if (tabControl1.Enabled == false) return;
             if (tabControl1.SelectedTab == tabres && dgv_reserv.Rows.Count > 0)
             {
-                nombre = "Listado_ingresos_pedidosclientes_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                nombre = "Listado_reservas_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                     "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
                     DataTable dt = (DataTable)dgv_reserv.DataSource;
-                    wb.Worksheets.Add(dt, "Ingresos_pedidos");
+                    wb.Worksheets.Add(dt, "Reservas");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
                     this.Close();
@@ -791,7 +803,7 @@ namespace iOMG
         }
         private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de ingresos de pedidos
         {
-            setParaCrystal("ingresos");
+            setParaCrystal("reservas");
         }
         private void bt_salidas_Click(object sender, EventArgs e)
         {
@@ -806,7 +818,7 @@ namespace iOMG
                 frmvizalm visualizador = new frmvizalm(datos);              // FORM frmvizalm PARA MOSTRAR el crystal
                 visualizador.Show();
             }
-            if (repo == "vtasxclte")
+            if (repo == "reservas")     // ME QUEDE ACA 06/09/2019
             {
                 //conClie datos = generarepvtasxclte();
                 //frmvizcont visualizador = new frmvizcont(datos);

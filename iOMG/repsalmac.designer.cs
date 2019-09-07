@@ -59,13 +59,9 @@
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmb_famRes = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tx_dat_almres = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cmb_tienda = new System.Windows.Forms.ComboBox();
             this.bt_ingresos = new System.Windows.Forms.Button();
@@ -124,7 +120,6 @@
             this.tabres.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).BeginInit();
             this.tabSal.SuspendLayout();
@@ -413,11 +408,8 @@
             // 
             this.tabres.Controls.Add(this.groupBox11);
             this.tabres.Controls.Add(this.groupBox9);
-            this.tabres.Controls.Add(this.groupBox5);
-            this.tabres.Controls.Add(this.label3);
-            this.tabres.Controls.Add(this.cmb_famRes);
             this.tabres.Controls.Add(this.groupBox7);
-            this.tabres.Controls.Add(this.textBox1);
+            this.tabres.Controls.Add(this.tx_dat_almres);
             this.tabres.Controls.Add(this.label4);
             this.tabres.Controls.Add(this.cmb_tienda);
             this.tabres.Controls.Add(this.bt_ingresos);
@@ -473,46 +465,6 @@
             this.groupBox10.TabIndex = 113;
             this.groupBox10.TabStop = false;
             // 
-            // groupBox5
-            // 
-            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox5.Controls.Add(this.groupBox6);
-            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox5.Location = new System.Drawing.Point(235, 46);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(121, 1);
-            this.groupBox5.TabIndex = 372;
-            this.groupBox5.TabStop = false;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Location = new System.Drawing.Point(0, -26);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(164, 1);
-            this.groupBox6.TabIndex = 113;
-            this.groupBox6.TabStop = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(239, 31);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 13);
-            this.label3.TabIndex = 371;
-            this.label3.Text = "Capitulo";
-            // 
-            // cmb_famRes
-            // 
-            this.cmb_famRes.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_famRes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_famRes.DropDownWidth = 100;
-            this.cmb_famRes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_famRes.FormattingEnabled = true;
-            this.cmb_famRes.Location = new System.Drawing.Point(329, 26);
-            this.cmb_famRes.Name = "cmb_famRes";
-            this.cmb_famRes.Size = new System.Drawing.Size(45, 21);
-            this.cmb_famRes.TabIndex = 370;
-            // 
             // groupBox7
             // 
             this.groupBox7.BackColor = System.Drawing.Color.DimGray;
@@ -532,22 +484,22 @@
             this.groupBox8.TabIndex = 113;
             this.groupBox8.TabStop = false;
             // 
-            // textBox1
+            // tx_dat_almres
             // 
-            this.textBox1.Location = new System.Drawing.Point(377, 4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(27, 20);
-            this.textBox1.TabIndex = 368;
-            this.textBox1.Visible = false;
+            this.tx_dat_almres.Location = new System.Drawing.Point(377, 4);
+            this.tx_dat_almres.Name = "tx_dat_almres";
+            this.tx_dat_almres.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_almres.TabIndex = 368;
+            this.tx_dat_almres.Visible = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(239, 8);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 13);
+            this.label4.Size = new System.Drawing.Size(48, 13);
             this.label4.TabIndex = 367;
-            this.label4.Text = "Tienda";
+            this.label4.Text = "Almacén";
             // 
             // cmb_tienda
             // 
@@ -560,6 +512,8 @@
             this.cmb_tienda.Name = "cmb_tienda";
             this.cmb_tienda.Size = new System.Drawing.Size(85, 21);
             this.cmb_tienda.TabIndex = 366;
+            this.cmb_tienda.SelectionChangeCommitted += new System.EventHandler(this.cmb_tienda_SelectionChangeCommitted);
+            this.cmb_tienda.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_tienda_KeyDown);
             // 
             // bt_ingresos
             // 
@@ -580,7 +534,7 @@
             this.dgv_reserv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_reserv.Location = new System.Drawing.Point(3, 50);
             this.dgv_reserv.Name = "dgv_reserv";
-            this.dgv_reserv.Size = new System.Drawing.Size(1025, 325);
+            this.dgv_reserv.Size = new System.Drawing.Size(1025, 324);
             this.dgv_reserv.TabIndex = 307;
             // 
             // dtp_resfinal
@@ -604,7 +558,7 @@
             // bt_filtra_res
             // 
             this.bt_filtra_res.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_filtra_res.Location = new System.Drawing.Point(634, 10);
+            this.bt_filtra_res.Location = new System.Drawing.Point(633, 10);
             this.bt_filtra_res.Name = "bt_filtra_res";
             this.bt_filtra_res.Size = new System.Drawing.Size(59, 29);
             this.bt_filtra_res.TabIndex = 3;
@@ -1125,7 +1079,6 @@
             this.tabres.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).EndInit();
             this.tabSal.ResumeLayout(false);
@@ -1231,13 +1184,9 @@
         private System.Windows.Forms.GroupBox groupBox12;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cmb_famRes;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tx_dat_almres;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmb_tienda;
     }
