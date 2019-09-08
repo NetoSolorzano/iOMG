@@ -460,7 +460,7 @@ namespace iOMG
                         micon.CommandType = CommandType.StoredProcedure;
                         micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
                         micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
-                        micon.Parameters.AddWithValue("@tienda", tx_dat_vtasloc.Text.Trim());
+                        micon.Parameters.AddWithValue("@tienda", tx_dat_kalm.Text.Trim());
                         if (rb_listado.Checked == true) micon.Parameters.AddWithValue("@modo", "listado");
                         if (rb_resumen.Checked == true) micon.Parameters.AddWithValue("@modo", "resumen");
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -561,15 +561,15 @@ namespace iOMG
         #region combos
         private void cmb_vtasloc_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (cmb_vtasloc.SelectedValue != null) tx_dat_vtasloc.Text = cmb_vtasloc.SelectedValue.ToString();
-            else tx_dat_vtasloc.Text = cmb_vtasloc.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            if (cmb_vtasloc.SelectedValue != null) tx_dat_kalm.Text = cmb_vtasloc.SelectedValue.ToString();
+            else tx_dat_kalm.Text = cmb_vtasloc.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
         private void cmb_vtasloc_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
                 cmb_vtasloc.SelectedIndex = -1;
-                tx_dat_vtasloc.Text = "";
+                tx_dat_kalm.Text = "";
             }
         }
         // 
@@ -818,9 +818,9 @@ namespace iOMG
                 frmvizalm visualizador = new frmvizalm(datos);              // FORM frmvizalm PARA MOSTRAR el crystal
                 visualizador.Show();
             }
-            if (repo == "reservas")     // ME QUEDE ACA 06/09/2019
+            if (repo == "reservas")
             {
-                repsalmacen datos = generareporte();
+                repsalmacen datos = generarepreservas();
                 frmvizalm visualizador = new frmvizalm(datos);
                 visualizador.Show();
             }

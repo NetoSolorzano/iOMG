@@ -228,6 +228,12 @@
       <DependentUpon>lispedclts.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="list_reservas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>list_reservas.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -456,6 +462,10 @@
     <EmbeddedResource Include="lispedclts.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>lispedclts.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="list_reservas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>list_reservas.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.cs</DependentUpon>

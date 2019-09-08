@@ -26,7 +26,7 @@ namespace iOMG
             // reporte de stock
             if (_datosreporte.cab_stock.Rows.Count > 0)
             {
-                if (_datosreporte.cab_stock.Rows[0][""].ToString() == "Checked")
+                if (_datosreporte.cab_stock.Rows[0]["id"].ToString() == "Checked")
                 {
                     rep_stock _resumen = new rep_stock();                       // stock valorizado
                     _resumen.SetDataSource(_datosreporte);
@@ -42,7 +42,9 @@ namespace iOMG
             // reportes de reservas
             if (_datosreporte.cab_lisReservas.Rows.Count > 0)
             {
-
+                list_reservas _resumen = new list_reservas();
+                _resumen.SetDataSource(_datosreporte);
+                crystalReportViewer1.ReportSource = _resumen;
             }
         }
     }

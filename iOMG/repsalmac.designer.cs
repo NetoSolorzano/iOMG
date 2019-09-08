@@ -94,16 +94,10 @@
             this.button2 = new System.Windows.Forms.Button();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.tabvtas = new System.Windows.Forms.TabPage();
-            this.tx_doclie = new System.Windows.Forms.TextBox();
-            this.tx_idclie = new System.Windows.Forms.TextBox();
-            this.tx_nomclie = new System.Windows.Forms.TextBox();
-            this.groupBox19 = new System.Windows.Forms.GroupBox();
-            this.groupBox20 = new System.Windows.Forms.GroupBox();
-            this.label27 = new System.Windows.Forms.Label();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.tx_dat_vtasloc = new System.Windows.Forms.TextBox();
+            this.tx_dat_kalm = new System.Windows.Forms.TextBox();
             this.cmb_vtasloc = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rb_listado = new System.Windows.Forms.RadioButton();
@@ -129,7 +123,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabvtas.SuspendLayout();
-            this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
@@ -833,14 +826,9 @@
             // 
             // tabvtas
             // 
-            this.tabvtas.Controls.Add(this.tx_doclie);
-            this.tabvtas.Controls.Add(this.tx_idclie);
-            this.tabvtas.Controls.Add(this.tx_nomclie);
-            this.tabvtas.Controls.Add(this.groupBox19);
-            this.tabvtas.Controls.Add(this.label27);
             this.tabvtas.Controls.Add(this.groupBox17);
             this.tabvtas.Controls.Add(this.label26);
-            this.tabvtas.Controls.Add(this.tx_dat_vtasloc);
+            this.tabvtas.Controls.Add(this.tx_dat_kalm);
             this.tabvtas.Controls.Add(this.cmb_vtasloc);
             this.tabvtas.Controls.Add(this.panel1);
             this.tabvtas.Controls.Add(this.dgv_vtas);
@@ -854,68 +842,15 @@
             this.tabvtas.Name = "tabvtas";
             this.tabvtas.Size = new System.Drawing.Size(1029, 377);
             this.tabvtas.TabIndex = 6;
-            this.tabvtas.Text = "Pedidos";
+            this.tabvtas.Text = "Kardex";
             this.tabvtas.UseVisualStyleBackColor = true;
-            // 
-            // tx_doclie
-            // 
-            this.tx_doclie.Location = new System.Drawing.Point(353, 4);
-            this.tx_doclie.Name = "tx_doclie";
-            this.tx_doclie.Size = new System.Drawing.Size(47, 20);
-            this.tx_doclie.TabIndex = 366;
-            this.tx_doclie.Visible = false;
-            // 
-            // tx_idclie
-            // 
-            this.tx_idclie.Location = new System.Drawing.Point(322, 4);
-            this.tx_idclie.Name = "tx_idclie";
-            this.tx_idclie.Size = new System.Drawing.Size(27, 20);
-            this.tx_idclie.TabIndex = 365;
-            this.tx_idclie.Visible = false;
-            // 
-            // tx_nomclie
-            // 
-            this.tx_nomclie.Location = new System.Drawing.Point(181, 26);
-            this.tx_nomclie.Name = "tx_nomclie";
-            this.tx_nomclie.ReadOnly = true;
-            this.tx_nomclie.Size = new System.Drawing.Size(232, 20);
-            this.tx_nomclie.TabIndex = 364;
-            this.tx_nomclie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // groupBox19
-            // 
-            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox19.Controls.Add(this.groupBox20);
-            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox19.Location = new System.Drawing.Point(134, 45);
-            this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Size = new System.Drawing.Size(279, 1);
-            this.groupBox19.TabIndex = 363;
-            this.groupBox19.TabStop = false;
-            // 
-            // groupBox20
-            // 
-            this.groupBox20.Location = new System.Drawing.Point(0, -26);
-            this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Size = new System.Drawing.Size(164, 1);
-            this.groupBox20.TabIndex = 113;
-            this.groupBox20.TabStop = false;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(136, 30);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(39, 13);
-            this.label27.TabIndex = 362;
-            this.label27.Text = "Cliente";
             // 
             // groupBox17
             // 
             this.groupBox17.BackColor = System.Drawing.Color.DimGray;
             this.groupBox17.Controls.Add(this.groupBox18);
             this.groupBox17.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox17.Location = new System.Drawing.Point(134, 23);
+            this.groupBox17.Location = new System.Drawing.Point(190, 23);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(137, 1);
             this.groupBox17.TabIndex = 361;
@@ -932,19 +867,19 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(136, 8);
+            this.label26.Location = new System.Drawing.Point(192, 8);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(69, 13);
+            this.label26.Size = new System.Drawing.Size(48, 13);
             this.label26.TabIndex = 359;
-            this.label26.Text = "Local Ventas";
+            this.label26.Text = "Almacén";
             // 
-            // tx_dat_vtasloc
+            // tx_dat_kalm
             // 
-            this.tx_dat_vtasloc.Location = new System.Drawing.Point(292, 4);
-            this.tx_dat_vtasloc.Name = "tx_dat_vtasloc";
-            this.tx_dat_vtasloc.Size = new System.Drawing.Size(27, 20);
-            this.tx_dat_vtasloc.TabIndex = 360;
-            this.tx_dat_vtasloc.Visible = false;
+            this.tx_dat_kalm.Location = new System.Drawing.Point(348, 4);
+            this.tx_dat_kalm.Name = "tx_dat_kalm";
+            this.tx_dat_kalm.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_kalm.TabIndex = 360;
+            this.tx_dat_kalm.Visible = false;
             // 
             // cmb_vtasloc
             // 
@@ -953,7 +888,7 @@
             this.cmb_vtasloc.DropDownWidth = 100;
             this.cmb_vtasloc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_vtasloc.FormattingEnabled = true;
-            this.cmb_vtasloc.Location = new System.Drawing.Point(204, 3);
+            this.cmb_vtasloc.Location = new System.Drawing.Point(260, 3);
             this.cmb_vtasloc.Name = "cmb_vtasloc";
             this.cmb_vtasloc.Size = new System.Drawing.Size(85, 21);
             this.cmb_vtasloc.TabIndex = 358;
@@ -999,7 +934,7 @@
             this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_vtas.Location = new System.Drawing.Point(3, 50);
             this.dgv_vtas.Name = "dgv_vtas";
-            this.dgv_vtas.Size = new System.Drawing.Size(789, 250);
+            this.dgv_vtas.Size = new System.Drawing.Size(1023, 324);
             this.dgv_vtas.TabIndex = 356;
             // 
             // button4
@@ -1091,7 +1026,6 @@
             this.groupBox1.ResumeLayout(false);
             this.tabvtas.ResumeLayout(false);
             this.tabvtas.PerformLayout();
-            this.groupBox19.ResumeLayout(false);
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1161,14 +1095,8 @@
         private System.Windows.Forms.GroupBox groupBox17;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox tx_dat_vtasloc;
+        private System.Windows.Forms.TextBox tx_dat_kalm;
         private System.Windows.Forms.ComboBox cmb_vtasloc;
-        private System.Windows.Forms.TextBox tx_idclie;
-        private System.Windows.Forms.TextBox tx_nomclie;
-        private System.Windows.Forms.GroupBox groupBox19;
-        private System.Windows.Forms.GroupBox groupBox20;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.TextBox tx_doclie;
         private System.Windows.Forms.TextBox tx_dat_dest;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cmb_destino;

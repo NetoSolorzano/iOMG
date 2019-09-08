@@ -68,7 +68,8 @@ REPORTES
 * Correcciones al programa detectadas en reu del 27/08 .......... ok    02/09/2019
 ** ALMACEN - REPORTES
 - Reporte de stock .............................................. ok
-- Reporte de reservas ........................................... 
+- Reporte de reservas ........................................... ok
+- Kardex de almacen ............................................. 
 
 
 
