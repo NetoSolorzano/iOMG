@@ -801,7 +801,7 @@ namespace iOMG
             if (tx_idclie.Text.Trim() == "") setParaCrystal("ventas");
             if (tx_idclie.Text.Trim() != "" && tx_nomclie.Text.Trim() != "" && rb_listado.Checked == true) setParaCrystal("vtasxclte");
         }
-        private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de ingresos de pedidos
+        private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de reservas
         {
             setParaCrystal("reservas");
         }
@@ -820,9 +820,9 @@ namespace iOMG
             }
             if (repo == "reservas")     // ME QUEDE ACA 06/09/2019
             {
-                //conClie datos = generarepvtasxclte();
-                //frmvizcont visualizador = new frmvizcont(datos);
-                //visualizador.Show();
+                repsalmacen datos = generareporte();
+                frmvizalm visualizador = new frmvizalm(datos);
+                visualizador.Show();
             }
             if (repo == "ingresos")
             {
@@ -837,46 +837,36 @@ namespace iOMG
                 //visualizador.Show();
             }
         }
-        private conClie generarepvtasxclte()
+        private repsalmacen generarepreservas()                         // reporte de reservas 
         {
-            conClie repvtas = new conClie();                        // xsd
-            conClie.repvtas_cabRow cabrow = repvtas.repvtas_cab.Newrepvtas_cabRow();
+            repsalmacen represerv = new repsalmacen();                        // xsd
+            repsalmacen.cab_lisReservasRow cabrow = represerv.cab_lisReservas.Newcab_lisReservasRow();
             cabrow.id = "0";
             cabrow.fecini = dtp_vtasfini.Value.ToString("dd/MM/yyyy");
             cabrow.fecfin = dtp_vtasfina.Value.ToString("dd/MM/yyyy");
-            cabrow.nudoclte = tx_doclie.Text.Trim();
-            cabrow.nomclie = tx_nomclie.Text.Trim();
-            if (rb_listado.Checked == true) cabrow.modo = "listado";
-            repvtas.repvtas_cab.Addrepvtas_cabRow(cabrow);
+            cabrow.almacen = tx_dat_almres.Text;
+            represerv.cab_lisReservas.Addcab_lisReservasRow(cabrow);
             // detalle
-            foreach (DataGridViewRow row in dgv_vtas.Rows)
+            foreach (DataGridViewRow row in dgv_reserv.Rows)
             {
-                if (rb_listado.Checked == true)                      // 
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
                 {
-                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "")
-                    {
-                        conClie.repvtas_detRow detrow = repvtas.repvtas_det.Newrepvtas_detRow();
-                        detrow.id = "0";    //String.Format("{0:dd/MM/yyyy}",row.Cells["fecha"].Value.ToString()); //.ToString("dd/MM/yyyy"); ... ninguno de estos funciono
-                        detrow.tienda = row.Cells["tienda"].Value.ToString();
-                        detrow.fecha = row.Cells["fecha"].Value.ToString().Substring(0,2) + "/" + row.Cells["fecha"].Value.ToString().Substring(3, 2) + "/" + row.Cells["fecha"].Value.ToString().Substring(6, 4); 
-                        detrow.contrato = row.Cells["contratoh"].Value.ToString();
-                        detrow.cant = row.Cells["cant"].Value.ToString().Trim();
-                        detrow.codigo = row.Cells["item"].Value.ToString();
-                        detrow.nombre = row.Cells["nombre"].Value.ToString().Trim();
-                        detrow.medidas = row.Cells["medidas"].Value.ToString().Trim();
-                        detrow.madera =  row.Cells["madera"].Value.ToString().Trim();
-                        detrow.precio = row.Cells["precio"].Value.ToString().Trim();
-                        detrow.total = double.Parse(row.Cells["total"].Value.ToString());
-                        detrow.estcont = row.Cells["status"].Value.ToString().Trim();
-                        if (row.Cells["fesal"].Value.ToString().Trim() == "") detrow.fecsal = row.Cells["fesal"].Value.ToString().Trim(); // salida de almacen con reserva
-                        else detrow.fecsal = row.Cells["fesal"].Value.ToString().Substring(8, 2) + "/" + row.Cells["fesal"].Value.ToString().Substring(5, 2) + "/" + row.Cells["fesal"].Value.ToString().Substring(0, 4);
-                        if (row.Cells["fecent"].Value.ToString().Trim() == "") detrow.fecent = row.Cells["fecent"].Value.ToString().Trim(); // fecha del pedido
-                        else detrow.fecent = row.Cells["fecent"].Value.ToString().Substring(0,10);  //.Substring(8, 2) + "/" + row.Cells["fecent"].Value.ToString().Substring(5, 2) + "/" + row.Cells["fecent"].Value.ToString().Substring(0, 4);
-                        repvtas.repvtas_det.Addrepvtas_detRow(detrow);
-                    }
+                    repsalmacen.det_lisReservasRow detrow = represerv.det_lisReservas.Newdet_lisReservasRow();
+                    detrow.id = "0";
+                    detrow.idalm = int.Parse(row.Cells["idalm"].Value.ToString());
+                    detrow.fecha = row.Cells["fecha"].Value.ToString().Substring(0, 10);
+                    detrow.almacen = row.Cells["almacen"].Value.ToString();
+                    detrow.contrato = row.Cells["contrato"].Value.ToString();
+                    detrow.cliente = row.Cells["cliente"].Value.ToString();
+                    detrow.item = row.Cells["item"].Value.ToString();
+                    detrow.cant = row.Cells["cant"].Value.ToString();
+                    detrow.coment = row.Cells["coment"].Value.ToString();
+                    detrow.status = row.Cells["status"].Value.ToString();
+                    // a.idreservh,b.idalm,a.fecha,a.almacen,a.contrato,cliente,b.item,b.cant,a.coment,a.STATUS 
+                    represerv.det_lisReservas.Adddet_lisReservasRow(detrow);
                 }
             }
-            return repvtas;
+            return represerv;
         }
         private repsalmacen generareporte()                         // reporte stock datos del formulario hacia dataset del reporte en crystal
         {
