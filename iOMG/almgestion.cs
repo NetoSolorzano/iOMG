@@ -462,8 +462,8 @@ namespace iOMG
             cn0.Open();
             try
             {
-                string sqlCmd = "update almloc set " + campo + "=@val where id=@idm";
-                MySqlCommand micon = new MySqlCommand(sqlCmd, cn0);
+                string sqlCmd = "update almloc set " + campo + "=@val where id=@idm";   // debería deshabilitarse esto porque cualquier cambio en el codigo
+                MySqlCommand micon = new MySqlCommand(sqlCmd, cn0);                     // afecta al kardex porque pasa a ser otro producto!
                 micon.Parameters.AddWithValue("@val", valor);
                 micon.Parameters.AddWithValue("@idm", idm);
                 micon.ExecuteNonQuery();
@@ -1733,7 +1733,6 @@ namespace iOMG
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (aa == DialogResult.Yes)
                         {
-                            /*
                             string codpar = advancedDataGridView1.Rows[e.RowIndex].Cells["capit"].Value.ToString() +
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["model"].Value.ToString() +
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["mader"].Value.ToString() +
@@ -1757,7 +1756,6 @@ namespace iOMG
                                     advancedDataGridView1.CurrentRow.Cells["contrat"].Value = rese.retval2;
                                 }
                             }
-                            */
                         }
                         else
                         {
@@ -1799,7 +1797,6 @@ namespace iOMG
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (aa == DialogResult.Yes)
                         {
-                            /*
                             movim rese = new movim("salida",
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString(),
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(),
@@ -1820,7 +1817,6 @@ namespace iOMG
                                     }
                                 }
                             }
-                            */
                         }
                         else
                         {

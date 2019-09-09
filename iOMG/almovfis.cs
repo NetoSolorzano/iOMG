@@ -870,7 +870,6 @@ namespace iOMG
                         }
                     }
                     // vamos a llamar a movfismas
-                    /*
                     movfismas resem = new movfismas("salida", "", "");    // modo,array,libre
                     var result = resem.ShowDialog();
                     if (result == DialogResult.Cancel)  // deberia ser OK, pero que chuuu
@@ -913,7 +912,6 @@ namespace iOMG
                             MessageBox.Show("No se proceso la información", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
-                    */
                 }
                 catch (MySqlException ex)
                 {

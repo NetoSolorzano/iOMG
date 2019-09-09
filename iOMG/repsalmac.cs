@@ -57,22 +57,7 @@ namespace iOMG
             string para4 = "";
             if (keyData == Keys.F1)
             {
-                if (tx_nomclie.Focused == true && rb_listado.Checked == true) 
-                {
-                    para1 = "anag_cli";
-                    para2 = "todos";
-                    ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
-                    var result = ayu2.ShowDialog();
-                    if (result == DialogResult.Cancel)
-                    {
-                        if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
-                        {
-                            tx_doclie.Text = ayu2.ReturnValue1;
-                            tx_idclie.Text = ayu2.ReturnValue0;      // id del cliente
-                            tx_nomclie.Text = ayu2.ReturnValue2;
-                        }
-                    }
-                }
+                // nada
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class
@@ -408,7 +393,7 @@ namespace iOMG
         private void bt_vtasfiltra_Click(object sender, EventArgs e)    // filtra y muestra ventas
         {
             string consulta = "";
-            if (rb_listado.Checked == true && tx_nomclie.Text.Trim() != "")         // reporte de ventas por cliente
+            if (rb_listado.Checked == true)         // reporte de ventas por cliente
             {
                 consulta = "repvtasxclt";
                 try
@@ -420,7 +405,7 @@ namespace iOMG
                         dgv_vtas.DataSource = null;
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@idclte", tx_idclie.Text.Trim());
+                        micon.Parameters.AddWithValue("@idclte", "");
                         micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
                         micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -798,8 +783,7 @@ namespace iOMG
         }
         private void button4_Click(object sender, EventArgs e)      // reporte de ventas
         {
-            if (tx_idclie.Text.Trim() == "") setParaCrystal("ventas");
-            if (tx_idclie.Text.Trim() != "" && tx_nomclie.Text.Trim() != "" && rb_listado.Checked == true) setParaCrystal("vtasxclte");
+            // veremos que va aca
         }
         private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de reservas
         {

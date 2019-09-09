@@ -85,6 +85,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="act_cont.cs" />
     <Compile Include="adicionals.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,6 +252,18 @@
     </Compile>
     <Compile Include="movenmas.designer.cs">
       <DependentUpon>movenmas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="movfismas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="movfismas.designer.cs">
+      <DependentUpon>movfismas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="movim.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="movim.designer.cs">
+      <DependentUpon>movim.cs</DependentUpon>
     </Compile>
     <Compile Include="movimas.cs">
       <SubType>Form</SubType>
@@ -475,6 +488,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="movenmas.resx">
       <DependentUpon>movenmas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="movfismas.resx">
+      <DependentUpon>movfismas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="movim.resx">
+      <DependentUpon>movim.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="movimas.resx">
       <DependentUpon>movimas.cs</DependentUpon>

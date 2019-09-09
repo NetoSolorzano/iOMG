@@ -283,7 +283,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                         micon.Parameters.AddWithValue("@pre", tx_precio.Text.Trim());
                         micon.ExecuteNonQuery();
-                        //
+                        // id de la operacion
                         inserta = "select last_insert_id()";
                         micon = new MySqlCommand(inserta, cn);
                         MySqlDataReader dr = micon.ExecuteReader();
@@ -292,6 +292,20 @@ namespace iOMG
                             id_mueble = dr.GetString(0); // ultimo ID ingresado
                         }
                         dr.Close();
+                        // kardex
+                        inserta = "insert into kardex (codalm,fecha,tipmov,item,cant_i,coment,idalm,USER,dias) " +
+                            "values (@coda,@fech,@tope,@codi,@cant,@come,@ida,@asd,now())";
+                        micon = new MySqlCommand(inserta, cn);
+                        micon.Parameters.AddWithValue("@coda", iOMG.Program.almuser);
+                        micon.Parameters.AddWithValue("@fech", dtp_fsal.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@tope", "INGRES");
+                        micon.Parameters.AddWithValue("@codi", codi);
+                        micon.Parameters.AddWithValue("@cant", "1");
+                        micon.Parameters.AddWithValue("@come", tx_comsal.Text.Trim());
+                        micon.Parameters.AddWithValue("@ida", id_mueble);
+                        micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
+                        micon.ExecuteNonQuery();
+                        //
                     }
                     // grabamos en ingresos y actualizamos el saldo del mueble en detaped
                     inserta = "insert into movalm (tipmov,fecha,docum,item,cant,madera,user,dia,almad,cntpaq,coment) " +
@@ -339,13 +353,16 @@ namespace iOMG
                     }
                     bien = true;
                 }
-                // actualizamos el estado del pedido
-                string proced = "estpedalm";
-                MySqlCommand conproc = new MySqlCommand(proced, cn);
-                conproc.CommandType = CommandType.StoredProcedure;
-                conproc.Parameters.AddWithValue("@pedido", tx_idped.Text.Trim());
-                conproc.Parameters.AddWithValue("@enuevo", MySqlDbType.String).Direction = ParameterDirection.Output;
-                conproc.ExecuteNonQuery();
+                if (rb_mov.Checked == true)
+                {
+                    // actualizamos el estado del pedido
+                    string proced = "estpedalm";
+                    MySqlCommand conproc = new MySqlCommand(proced, cn);
+                    conproc.CommandType = CommandType.StoredProcedure;
+                    conproc.Parameters.AddWithValue("@pedido", tx_idped.Text.Trim());
+                    conproc.Parameters.AddWithValue("@enuevo", MySqlDbType.String).Direction = ParameterDirection.Output;
+                    conproc.ExecuteNonQuery();
+                }
                 cn.Close();
             }
             catch (MySqlException ex)
