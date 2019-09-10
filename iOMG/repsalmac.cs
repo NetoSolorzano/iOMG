@@ -352,12 +352,12 @@ namespace iOMG
                 return;
             }
         }
-        private void bt_filtra_sal_Click(object sender, EventArgs e)    // filtra y muestra ....??
+        private void bt_filtra_sal_Click(object sender, EventArgs e)            // filtra y muestra salidas y autorizaciones de salida
         {
-            string consulta = "salpedclte";                                 // todos los ingresos de pedidos
+            string consulta = "salidas_alm";
             try
             {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);    // solo estado anulado si se selecciona directamente
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {

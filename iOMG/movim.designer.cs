@@ -61,6 +61,7 @@
             this.tx_evento = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.tx_d_codi = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -70,20 +71,18 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Crimson;
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(2, 386);
+            this.panel1.Location = new System.Drawing.Point(2, 381);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(423, 31);
+            this.panel1.Size = new System.Drawing.Size(626, 31);
             this.panel1.TabIndex = 14;
             // 
             // button1
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button1.BackColor = System.Drawing.Color.Red;
-            this.button1.Location = new System.Drawing.Point(335, 1);
+            this.button1.Location = new System.Drawing.Point(532, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 29);
             this.button1.TabIndex = 16;
@@ -93,21 +92,19 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.Crimson;
             this.panel2.Controls.Add(this.lb_titulo);
             this.panel2.Controls.Add(this.bt_close);
-            this.panel2.Location = new System.Drawing.Point(0, 2);
+            this.panel2.Location = new System.Drawing.Point(2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(438, 23);
+            this.panel2.Size = new System.Drawing.Size(626, 26);
             this.panel2.TabIndex = 16;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             // 
             // lb_titulo
             // 
             this.lb_titulo.AutoSize = true;
-            this.lb_titulo.Location = new System.Drawing.Point(193, 5);
+            this.lb_titulo.Location = new System.Drawing.Point(280, 7);
             this.lb_titulo.Name = "lb_titulo";
             this.lb_titulo.Size = new System.Drawing.Size(73, 13);
             this.lb_titulo.TabIndex = 15;
@@ -115,14 +112,14 @@
             // 
             // bt_close
             // 
-            this.bt_close.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.bt_close.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.bt_close.FlatAppearance.BorderSize = 0;
             this.bt_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bt_close.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bt_close.ForeColor = System.Drawing.Color.White;
             this.bt_close.Image = global::iOMG.Properties.Resources.close_square;
             this.bt_close.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bt_close.Location = new System.Drawing.Point(414, 2);
+            this.bt_close.Location = new System.Drawing.Point(599, 4);
             this.bt_close.Name = "bt_close";
             this.bt_close.Size = new System.Drawing.Size(23, 18);
             this.bt_close.TabIndex = 14;
@@ -131,8 +128,7 @@
             // 
             // panel3
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel3.Controls.Add(this.tx_d_codi);
             this.panel3.Controls.Add(this.tx_idr);
             this.panel3.Controls.Add(this.tx_comres);
             this.panel3.Controls.Add(this.label3);
@@ -146,9 +142,9 @@
             this.panel3.Controls.Add(this.lb_cliente);
             this.panel3.Controls.Add(this.tx_contra);
             this.panel3.Controls.Add(this.lb_contra);
-            this.panel3.Location = new System.Drawing.Point(3, 30);
+            this.panel3.Location = new System.Drawing.Point(2, 30);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(422, 100);
+            this.panel3.Size = new System.Drawing.Size(626, 100);
             this.panel3.TabIndex = 18;
             // 
             // tx_idr
@@ -161,15 +157,15 @@
             // 
             // tx_comres
             // 
-            this.tx_comres.Location = new System.Drawing.Point(78, 74);
+            this.tx_comres.Location = new System.Drawing.Point(219, 75);
             this.tx_comres.Name = "tx_comres";
-            this.tx_comres.Size = new System.Drawing.Size(334, 20);
+            this.tx_comres.Size = new System.Drawing.Size(393, 20);
             this.tx_comres.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 78);
+            this.label3.Location = new System.Drawing.Point(157, 79);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 10;
@@ -177,7 +173,7 @@
             // 
             // tx_status
             // 
-            this.tx_status.Location = new System.Drawing.Point(322, 28);
+            this.tx_status.Location = new System.Drawing.Point(522, 28);
             this.tx_status.Name = "tx_status";
             this.tx_status.ReadOnly = true;
             this.tx_status.Size = new System.Drawing.Size(90, 20);
@@ -186,7 +182,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(239, 32);
+            this.label2.Location = new System.Drawing.Point(439, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 8;
@@ -211,7 +207,7 @@
             // 
             // tx_fecon
             // 
-            this.tx_fecon.Location = new System.Drawing.Point(322, 5);
+            this.tx_fecon.Location = new System.Drawing.Point(522, 5);
             this.tx_fecon.Name = "tx_fecon";
             this.tx_fecon.ReadOnly = true;
             this.tx_fecon.Size = new System.Drawing.Size(90, 20);
@@ -220,7 +216,7 @@
             // lb_fecon
             // 
             this.lb_fecon.AutoSize = true;
-            this.lb_fecon.Location = new System.Drawing.Point(239, 9);
+            this.lb_fecon.Location = new System.Drawing.Point(439, 9);
             this.lb_fecon.Name = "lb_fecon";
             this.lb_fecon.Size = new System.Drawing.Size(80, 13);
             this.lb_fecon.TabIndex = 4;
@@ -231,7 +227,7 @@
             this.tx_cliente.Location = new System.Drawing.Point(78, 51);
             this.tx_cliente.Name = "tx_cliente";
             this.tx_cliente.ReadOnly = true;
-            this.tx_cliente.Size = new System.Drawing.Size(334, 20);
+            this.tx_cliente.Size = new System.Drawing.Size(534, 20);
             this.tx_cliente.TabIndex = 3;
             // 
             // lb_cliente
@@ -262,18 +258,16 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 136);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 132);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(423, 248);
+            this.dataGridView1.Size = new System.Drawing.Size(625, 248);
             this.dataGridView1.TabIndex = 20;
             // 
             // panel4
             // 
+            this.panel4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel4.Controls.Add(this.tx_dat_dest);
             this.panel4.Controls.Add(this.cmb_dest);
             this.panel4.Controls.Add(this.label5);
@@ -286,14 +280,14 @@
             this.panel4.Controls.Add(this.tx_evento);
             this.panel4.Controls.Add(this.label8);
             this.panel4.Controls.Add(this.label9);
-            this.panel4.Location = new System.Drawing.Point(3, 167);
+            this.panel4.Location = new System.Drawing.Point(2, 148);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(422, 100);
+            this.panel4.Size = new System.Drawing.Size(626, 100);
             this.panel4.TabIndex = 21;
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(203, 30);
+            this.tx_dat_dest.Location = new System.Drawing.Point(398, 29);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(36, 20);
             this.tx_dat_dest.TabIndex = 14;
@@ -304,16 +298,16 @@
             this.cmb_dest.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_dest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_dest.FormattingEnabled = true;
-            this.cmb_dest.Location = new System.Drawing.Point(311, 28);
+            this.cmb_dest.Location = new System.Drawing.Point(514, 28);
             this.cmb_dest.Name = "cmb_dest";
-            this.cmb_dest.Size = new System.Drawing.Size(110, 21);
+            this.cmb_dest.Size = new System.Drawing.Size(99, 21);
             this.cmb_dest.TabIndex = 13;
             this.cmb_dest.SelectedIndexChanged += new System.EventHandler(this.cmb_dest_SelectedIndexChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(245, 33);
+            this.label5.Location = new System.Drawing.Point(440, 32);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(66, 13);
             this.label5.TabIndex = 12;
@@ -322,9 +316,9 @@
             // dtp_fsal
             // 
             this.dtp_fsal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fsal.Location = new System.Drawing.Point(317, 5);
+            this.dtp_fsal.Location = new System.Drawing.Point(514, 4);
             this.dtp_fsal.Name = "dtp_fsal";
-            this.dtp_fsal.Size = new System.Drawing.Size(95, 20);
+            this.dtp_fsal.Size = new System.Drawing.Size(99, 20);
             this.dtp_fsal.TabIndex = 11;
             // 
             // rb_ajuste
@@ -355,7 +349,7 @@
             // 
             this.tx_comsal.Location = new System.Drawing.Point(78, 75);
             this.tx_comsal.Name = "tx_comsal";
-            this.tx_comsal.Size = new System.Drawing.Size(334, 20);
+            this.tx_comsal.Size = new System.Drawing.Size(535, 20);
             this.tx_comsal.TabIndex = 4;
             // 
             // label4
@@ -370,7 +364,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(245, 8);
+            this.label7.Location = new System.Drawing.Point(440, 7);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(69, 13);
             this.label7.TabIndex = 4;
@@ -380,7 +374,7 @@
             // 
             this.tx_evento.Location = new System.Drawing.Point(78, 52);
             this.tx_evento.Name = "tx_evento";
-            this.tx_evento.Size = new System.Drawing.Size(334, 20);
+            this.tx_evento.Size = new System.Drawing.Size(535, 20);
             this.tx_evento.TabIndex = 3;
             // 
             // label8
@@ -401,12 +395,20 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "TIPO SALIDA";
             // 
+            // tx_d_codi
+            // 
+            this.tx_d_codi.Location = new System.Drawing.Point(5, 75);
+            this.tx_d_codi.Name = "tx_d_codi";
+            this.tx_d_codi.ReadOnly = true;
+            this.tx_d_codi.Size = new System.Drawing.Size(149, 20);
+            this.tx_d_codi.TabIndex = 16;
+            // 
             // movim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(427, 419);
+            this.ClientSize = new System.Drawing.Size(631, 415);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);
@@ -469,5 +471,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tx_dat_dest;
         private System.Windows.Forms.TextBox tx_idr;
+        private System.Windows.Forms.TextBox tx_d_codi;
     }
 }

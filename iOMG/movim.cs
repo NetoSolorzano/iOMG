@@ -40,14 +40,14 @@ namespace iOMG
             if (parm1 == "reserva")
             {
                 panel3.Visible = true;
-                panel3.Left = 7;
+                panel3.Left = 0;
                 panel3.Top = 30;
                 panel4.Visible = false;
             }
             if (parm1 == "salida")
             {
                 panel4.Visible = true;
-                panel4.Left = 7;
+                panel4.Left = 0;
                 panel4.Top = 30;
                 panel3.Visible = false;
                 rb_mov.Checked = true;
@@ -282,7 +282,7 @@ namespace iOMG
             try
             {
                 DataTable dt = new DataTable();
-                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre) " +
+                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem " +
                     "from contrat a " +
                     "left join anag_cli b on b.idanagrafica=a.cliente " +
                     "left join detacon c on c.contratoh=a.contrato " +
@@ -308,18 +308,20 @@ namespace iOMG
                         tx_comres.Text = dt.Rows[0].ItemArray[2].ToString();
                         tx_cliente.Text = dt.Rows[0].ItemArray[4].ToString();
                         tx_status.Text = dt.Rows[0].ItemArray[3].ToString();
-                        dataGridView1.ColumnCount = 3;
-                        dataGridView1.Columns[0].Width = 150;
+                        dataGridView1.ColumnCount = 4;
+                        dataGridView1.Columns[0].Width = 160;
                         dataGridView1.Columns[0].HeaderText = dt.Columns[5].Caption;
                         dataGridView1.Columns[1].Width = 30;
                         dataGridView1.Columns[1].HeaderText = dt.Columns[6].Caption;
-                        dataGridView1.Columns[2].Width = 220;
+                        dataGridView1.Columns[2].Width = 230;
                         dataGridView1.Columns[2].HeaderText = dt.Columns[7].Caption;
+                        dataGridView1.Columns[3].Width = 200;
+                        dataGridView1.Columns[3].HeaderText = dt.Columns[8].Caption;
                         string sino = "no";
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
                             DataRow row = dt.Rows[i];
-                            dataGridView1.Rows.Add(row[5].ToString(), row[6].ToString(), row[7].ToString());
+                            dataGridView1.Rows.Add(row[5].ToString(), row[6].ToString(), row[7].ToString(), row[8].ToString());
                             string parte1 = "";
                             if (row[5].ToString().Trim().Length == 18)
                             {
@@ -330,9 +332,12 @@ namespace iOMG
                                 parte1 = row[5].ToString().Trim();   // item del contrato
                             }
                             string parte2 = para3.Trim();               // item del almloc
-                            //MessageBox.Show(parte1 + Environment.NewLine + parte2);
-                            if (parte1 == parte2) sino = "si";    // aca debemos validar por columnas ACA ACA ACA ACA
-                            // cap 1, mod 3, mad 1, tip 2, det1 2, aca 1, tal 2, det2 3, det 3
+                            if (parte1 == parte2)
+                            {
+                                sino = "si";    // aca debemos validar por columnas
+                                tx_comres.Text = row[8].ToString();
+                                tx_d_codi.Text = row[5].ToString();
+                            }
                         }
                         if (sino == "no")
                         {
