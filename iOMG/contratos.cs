@@ -867,6 +867,11 @@ namespace iOMG
                     cta = cta + 1;
                 }
             }
+            if (Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
+            {
+                if (escambio.Contains(tx_dat_estad.Text)) escribepag(tabuser);
+                else sololeepag(tabuser);
+            }
         }
         private void jaladatclt(string id)                                      // jala datos del cliente
         {
@@ -1249,9 +1254,26 @@ namespace iOMG
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
-                    MySqlCommand micon = new MySqlCommand(actua, conn);
-                    micon.Parameters.AddWithValue("@idc", tx_idcli.Text);
-                    micon.ExecuteNonQuery();
+                    if (tx_idcli.Text.Trim() != "")
+                    {
+                        MySqlCommand micon = new MySqlCommand(actua, conn);
+                        micon.Parameters.AddWithValue("@idc", tx_idcli.Text);
+                        micon.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        MySqlCommand micon = new MySqlCommand(actua, conn);
+                        micon.ExecuteNonQuery();
+                        //
+                        string jala = "select last_insert_id()";
+                        micon = new MySqlCommand(jala, conn);
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            tx_idcli.Text = dr.GetString(0);
+                        }
+                        dr.Close();
+                    }
                 }
                 else
                 {
@@ -2131,8 +2153,8 @@ namespace iOMG
                         dr[3] = cmb_estado.SelectedItem.ToString().Substring(9, 6);
                         dr[4] = tx_dat_orig.Text;
                         dr[5] = dtp_pedido.Value.ToString("yyy-MM-dd");
-                        dr[6] = tx_idcli.Text;
-                        dr[7] = tx_nombre.Text;
+                        dr[6] = tx_idcli.Text;                                          // *
+                        dr[7] = tx_nombre.Text;                                         // *
                         dr[8] = tx_coment.Text;
                         dr[9] = dtp_entreg.Value.ToString("yyy-MM-dd");
                         dr[10] = tx_dirent.Text;
@@ -2885,10 +2907,6 @@ namespace iOMG
                 tx_rind.Text = rind;
                 tx_dat_tiped.Text = tipede;
                 jalaoc("tx_idr");
-                if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
-                {
-                    // escribepag(tabuser);     // no se esto ... quien controla los permisos son los botones de comando
-                }
             }
         }
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda

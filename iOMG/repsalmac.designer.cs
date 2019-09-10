@@ -98,17 +98,21 @@
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
             this.tx_dat_kalm = new System.Windows.Forms.TextBox();
-            this.cmb_vtasloc = new System.Windows.Forms.ComboBox();
+            this.cmb_karalm = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rb_listado = new System.Windows.Forms.RadioButton();
             this.rb_resumen = new System.Windows.Forms.RadioButton();
-            this.dgv_vtas = new System.Windows.Forms.DataGridView();
             this.button4 = new System.Windows.Forms.Button();
-            this.dtp_vtasfina = new System.Windows.Forms.DateTimePicker();
-            this.dtp_vtasfini = new System.Windows.Forms.DateTimePicker();
-            this.bt_vtasfiltra = new System.Windows.Forms.Button();
+            this.dtp_karfina = new System.Windows.Forms.DateTimePicker();
+            this.dtp_karfini = new System.Windows.Forms.DateTimePicker();
+            this.bt_karfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.dgv_kardex = new ADGV.AdvancedDataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -125,7 +129,9 @@
             this.tabvtas.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_kardex)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -826,16 +832,18 @@
             // 
             // tabvtas
             // 
+            this.tabvtas.Controls.Add(this.dgv_kardex);
+            this.tabvtas.Controls.Add(this.groupBox13);
+            this.tabvtas.Controls.Add(this.groupBox5);
             this.tabvtas.Controls.Add(this.groupBox17);
             this.tabvtas.Controls.Add(this.label26);
             this.tabvtas.Controls.Add(this.tx_dat_kalm);
-            this.tabvtas.Controls.Add(this.cmb_vtasloc);
+            this.tabvtas.Controls.Add(this.cmb_karalm);
             this.tabvtas.Controls.Add(this.panel1);
-            this.tabvtas.Controls.Add(this.dgv_vtas);
             this.tabvtas.Controls.Add(this.button4);
-            this.tabvtas.Controls.Add(this.dtp_vtasfina);
-            this.tabvtas.Controls.Add(this.dtp_vtasfini);
-            this.tabvtas.Controls.Add(this.bt_vtasfiltra);
+            this.tabvtas.Controls.Add(this.dtp_karfina);
+            this.tabvtas.Controls.Add(this.dtp_karfini);
+            this.tabvtas.Controls.Add(this.bt_karfiltra);
             this.tabvtas.Controls.Add(this.label24);
             this.tabvtas.Controls.Add(this.label25);
             this.tabvtas.Location = new System.Drawing.Point(4, 22);
@@ -881,19 +889,19 @@
             this.tx_dat_kalm.TabIndex = 360;
             this.tx_dat_kalm.Visible = false;
             // 
-            // cmb_vtasloc
+            // cmb_karalm
             // 
-            this.cmb_vtasloc.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_vtasloc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_vtasloc.DropDownWidth = 100;
-            this.cmb_vtasloc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_vtasloc.FormattingEnabled = true;
-            this.cmb_vtasloc.Location = new System.Drawing.Point(260, 3);
-            this.cmb_vtasloc.Name = "cmb_vtasloc";
-            this.cmb_vtasloc.Size = new System.Drawing.Size(85, 21);
-            this.cmb_vtasloc.TabIndex = 358;
-            this.cmb_vtasloc.SelectionChangeCommitted += new System.EventHandler(this.cmb_vtasloc_SelectionChangeCommitted);
-            this.cmb_vtasloc.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_vtasloc_KeyDown);
+            this.cmb_karalm.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_karalm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_karalm.DropDownWidth = 100;
+            this.cmb_karalm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_karalm.FormattingEnabled = true;
+            this.cmb_karalm.Location = new System.Drawing.Point(260, 3);
+            this.cmb_karalm.Name = "cmb_karalm";
+            this.cmb_karalm.Size = new System.Drawing.Size(85, 21);
+            this.cmb_karalm.TabIndex = 358;
+            this.cmb_karalm.SelectionChangeCommitted += new System.EventHandler(this.cmb_vtasloc_SelectionChangeCommitted);
+            this.cmb_karalm.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_vtasloc_KeyDown);
             // 
             // panel1
             // 
@@ -903,6 +911,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(92, 45);
             this.panel1.TabIndex = 357;
+            this.panel1.Visible = false;
             // 
             // rb_listado
             // 
@@ -920,22 +929,11 @@
             this.rb_resumen.AutoSize = true;
             this.rb_resumen.Location = new System.Drawing.Point(3, 4);
             this.rb_resumen.Name = "rb_resumen";
-            this.rb_resumen.Size = new System.Drawing.Size(72, 17);
+            this.rb_resumen.Size = new System.Drawing.Size(71, 17);
             this.rb_resumen.TabIndex = 358;
             this.rb_resumen.TabStop = true;
-            this.rb_resumen.Text = "Resumido";
+            this.rb_resumen.Text = "Agrupado";
             this.rb_resumen.UseVisualStyleBackColor = true;
-            // 
-            // dgv_vtas
-            // 
-            this.dgv_vtas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_vtas.Location = new System.Drawing.Point(3, 50);
-            this.dgv_vtas.Name = "dgv_vtas";
-            this.dgv_vtas.Size = new System.Drawing.Size(1023, 324);
-            this.dgv_vtas.TabIndex = 356;
             // 
             // button4
             // 
@@ -948,34 +946,34 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // dtp_vtasfina
+            // dtp_karfina
             // 
-            this.dtp_vtasfina.Checked = false;
-            this.dtp_vtasfina.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_vtasfina.Location = new System.Drawing.Point(503, 26);
-            this.dtp_vtasfina.Name = "dtp_vtasfina";
-            this.dtp_vtasfina.Size = new System.Drawing.Size(95, 20);
-            this.dtp_vtasfina.TabIndex = 351;
+            this.dtp_karfina.Checked = false;
+            this.dtp_karfina.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_karfina.Location = new System.Drawing.Point(503, 26);
+            this.dtp_karfina.Name = "dtp_karfina";
+            this.dtp_karfina.Size = new System.Drawing.Size(95, 20);
+            this.dtp_karfina.TabIndex = 351;
             // 
-            // dtp_vtasfini
+            // dtp_karfini
             // 
-            this.dtp_vtasfini.Checked = false;
-            this.dtp_vtasfini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_vtasfini.Location = new System.Drawing.Point(503, 4);
-            this.dtp_vtasfini.Name = "dtp_vtasfini";
-            this.dtp_vtasfini.Size = new System.Drawing.Size(95, 20);
-            this.dtp_vtasfini.TabIndex = 350;
+            this.dtp_karfini.Checked = false;
+            this.dtp_karfini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_karfini.Location = new System.Drawing.Point(503, 4);
+            this.dtp_karfini.Name = "dtp_karfini";
+            this.dtp_karfini.Size = new System.Drawing.Size(95, 20);
+            this.dtp_karfini.TabIndex = 350;
             // 
-            // bt_vtasfiltra
+            // bt_karfiltra
             // 
-            this.bt_vtasfiltra.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_vtasfiltra.Location = new System.Drawing.Point(625, 10);
-            this.bt_vtasfiltra.Name = "bt_vtasfiltra";
-            this.bt_vtasfiltra.Size = new System.Drawing.Size(59, 29);
-            this.bt_vtasfiltra.TabIndex = 352;
-            this.bt_vtasfiltra.Text = "Filtra";
-            this.bt_vtasfiltra.UseVisualStyleBackColor = true;
-            this.bt_vtasfiltra.Click += new System.EventHandler(this.bt_vtasfiltra_Click);
+            this.bt_karfiltra.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_karfiltra.Location = new System.Drawing.Point(625, 10);
+            this.bt_karfiltra.Name = "bt_karfiltra";
+            this.bt_karfiltra.Size = new System.Drawing.Size(59, 29);
+            this.bt_karfiltra.TabIndex = 352;
+            this.bt_karfiltra.Text = "Filtra";
+            this.bt_karfiltra.UseVisualStyleBackColor = true;
+            this.bt_karfiltra.Click += new System.EventHandler(this.bt_vtasfiltra_Click);
             // 
             // label24
             // 
@@ -994,6 +992,56 @@
             this.label25.Size = new System.Drawing.Size(61, 13);
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox5.Location = new System.Drawing.Point(437, 23);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(161, 1);
+            this.groupBox5.TabIndex = 374;
+            this.groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(0, -26);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(164, 1);
+            this.groupBox6.TabIndex = 113;
+            this.groupBox6.TabStop = false;
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox13.Controls.Add(this.groupBox14);
+            this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox13.Location = new System.Drawing.Point(437, 45);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(161, 1);
+            this.groupBox13.TabIndex = 375;
+            this.groupBox13.TabStop = false;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Location = new System.Drawing.Point(0, -26);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(164, 1);
+            this.groupBox14.TabIndex = 113;
+            this.groupBox14.TabStop = false;
+            // 
+            // dgv_kardex
+            // 
+            this.dgv_kardex.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.dgv_kardex.AutoGenerateContextFilters = true;
+            this.dgv_kardex.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_kardex.DateWithTime = false;
+            this.dgv_kardex.Location = new System.Drawing.Point(3, 50);
+            this.dgv_kardex.Name = "dgv_kardex";
+            this.dgv_kardex.Size = new System.Drawing.Size(1023, 324);
+            this.dgv_kardex.TabIndex = 376;
+            this.dgv_kardex.TimeFilter = false;
             // 
             // repsalmac
             // 
@@ -1029,7 +1077,9 @@
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox13.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_kardex)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1084,11 +1134,10 @@
         private System.Windows.Forms.TabPage tabvtas;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton rb_resumen;
-        private System.Windows.Forms.DataGridView dgv_vtas;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.DateTimePicker dtp_vtasfina;
-        private System.Windows.Forms.DateTimePicker dtp_vtasfini;
-        private System.Windows.Forms.Button bt_vtasfiltra;
+        private System.Windows.Forms.DateTimePicker dtp_karfina;
+        private System.Windows.Forms.DateTimePicker dtp_karfini;
+        private System.Windows.Forms.Button bt_karfiltra;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.RadioButton rb_listado;
@@ -1096,7 +1145,7 @@
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox tx_dat_kalm;
-        private System.Windows.Forms.ComboBox cmb_vtasloc;
+        private System.Windows.Forms.ComboBox cmb_karalm;
         private System.Windows.Forms.TextBox tx_dat_dest;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cmb_destino;
@@ -1117,5 +1166,10 @@
         private System.Windows.Forms.TextBox tx_dat_almres;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmb_tienda;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private ADGV.AdvancedDataGridView dgv_kardex;
     }
 }

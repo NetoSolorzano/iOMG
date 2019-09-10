@@ -163,8 +163,8 @@ namespace iOMG
                 dalocven.Fill(dtlocven);
                 foreach (DataRow row in dtlocven.Rows)
                 {
-                    cmb_vtasloc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
-                    cmb_vtasloc.ValueMember = row.ItemArray[1].ToString();
+                    cmb_karalm.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_karalm.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -306,12 +306,12 @@ namespace iOMG
         private void grillavtas()                                               // arma grilla de 
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_vtas.Font = tiplg;
-            dgv_vtas.DefaultCellStyle.Font = tiplg;
-            dgv_vtas.RowTemplate.Height = 15;
-            dgv_vtas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_vtas.AllowUserToAddRows = false;
-            if (dgv_vtas.DataSource == null) dgv_vtas.ColumnCount = 7;
+            dgv_kardex.Font = tiplg;
+            dgv_kardex.DefaultCellStyle.Font = tiplg;
+            dgv_kardex.RowTemplate.Height = 15;
+            dgv_kardex.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_kardex.AllowUserToAddRows = false;
+            if (dgv_kardex.DataSource == null) dgv_kardex.ColumnCount = 7;
         }
         //
         private void button1_Click(object sender, EventArgs e)                  // filtra y muestra las reservas
@@ -352,7 +352,7 @@ namespace iOMG
                 return;
             }
         }
-        private void bt_filtra_sal_Click(object sender, EventArgs e)    // filtra y muestra las salidas (entregas)
+        private void bt_filtra_sal_Click(object sender, EventArgs e)    // filtra y muestra ....??
         {
             string consulta = "salpedclte";                                 // todos los ingresos de pedidos
             try
@@ -390,89 +390,52 @@ namespace iOMG
             }
 
         }
-        private void bt_vtasfiltra_Click(object sender, EventArgs e)    // filtra y muestra ventas
+        private void bt_vtasfiltra_Click(object sender, EventArgs e)            // filtra y muestra kardex
         {
-            string consulta = "";
-            if (rb_listado.Checked == true)         // reporte de ventas por cliente
+            if(tx_dat_kalm.Text.Trim() == "")
             {
-                consulta = "repvtasxclt";
-                try
-                {
-                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                    conn.Open();
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        dgv_vtas.DataSource = null;
-                        MySqlCommand micon = new MySqlCommand(consulta, conn);
-                        micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@idclte", "");
-                        micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
-                        micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
-                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        dgv_vtas.DataSource = dt;
-                        dt.Dispose();
-                        da.Dispose();
-                        grillavtas();
-                    }
-                    else
-                    {
-                        conn.Close();
-                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    conn.Close();
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "Error en obtener datos");
-                    Application.Exit();
-                    return;
-                }
+                MessageBox.Show("Debe seleccionar un almacén", "Atención - corrija", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_karalm.Focus();
+                return;
             }
-            else
+            string consulta = "";
+            consulta = "repkardex";
+            try
             {
-                consulta = "repventas";                          // CALL repventas('2019-07-01','2019-08-30','listado','');
-                try
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                    conn.Open();
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        dgv_vtas.DataSource = null;
-                        MySqlCommand micon = new MySqlCommand(consulta, conn);
-                        micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@fecini", dtp_vtasfini.Value.ToString("yyyy-MM-dd"));
-                        micon.Parameters.AddWithValue("@fecfin", dtp_vtasfina.Value.ToString("yyyy-MM-dd"));
-                        micon.Parameters.AddWithValue("@tienda", tx_dat_kalm.Text.Trim());
-                        if (rb_listado.Checked == true) micon.Parameters.AddWithValue("@modo", "listado");
-                        if (rb_resumen.Checked == true) micon.Parameters.AddWithValue("@modo", "resumen");
-                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        dgv_vtas.DataSource = dt;
-                        dt.Dispose();
-                        da.Dispose();
-                        grillavtas();
-                    }
-                    else
-                    {
-                        conn.Close();
-                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    conn.Close();
+                    dgv_kardex.DataSource = null;
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@almace", tx_dat_kalm.Text);
+                    micon.Parameters.AddWithValue("@fecini", dtp_karfini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fecfin", dtp_karfina.Value.ToString("yyyy-MM-dd"));
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgv_kardex.DataSource = dt;
+                    dt.Dispose();
+                    da.Dispose();
+                    grillavtas();
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error en obtener datos");
-                    Application.Exit();
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos");
+                Application.Exit();
+                return;
             }
         }
-        private void bt_resumen_Click(object sender, EventArgs e)   // genera resumen de contrato
+        private void bt_resumen_Click(object sender, EventArgs e)               // genera stock de almacen
         {
             {
                 string consulta = "rep_stock";
@@ -546,14 +509,14 @@ namespace iOMG
         #region combos
         private void cmb_vtasloc_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (cmb_vtasloc.SelectedValue != null) tx_dat_kalm.Text = cmb_vtasloc.SelectedValue.ToString();
-            else tx_dat_kalm.Text = cmb_vtasloc.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            if (cmb_karalm.SelectedValue != null) tx_dat_kalm.Text = cmb_karalm.SelectedValue.ToString();
+            else tx_dat_kalm.Text = cmb_karalm.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
         private void cmb_vtasloc_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
-                cmb_vtasloc.SelectedIndex = -1;
+                cmb_karalm.SelectedIndex = -1;
                 tx_dat_kalm.Text = "";
             }
         }
@@ -758,7 +721,7 @@ namespace iOMG
                     this.Close();
                 }
             }
-            if (tabControl1.SelectedTab == tabvtas && dgv_vtas.Rows.Count > 0)
+            if (tabControl1.SelectedTab == tabvtas && dgv_kardex.Rows.Count > 0)
             {
                 nombre = "Reportes_ventas_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
@@ -766,7 +729,7 @@ namespace iOMG
                 if (aa == DialogResult.Yes)
                 {
                     var wb = new XLWorkbook();
-                    DataTable dt = (DataTable)dgv_vtas.DataSource;
+                    DataTable dt = (DataTable)dgv_kardex.DataSource;
                     wb.Worksheets.Add(dt, "Ventas");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
@@ -777,15 +740,15 @@ namespace iOMG
         #endregion
 
         #region crystal
-        private void button2_Click(object sender, EventArgs e)      // resumen de contrato
+        private void button2_Click(object sender, EventArgs e)                  // stock del almacen
         {
             setParaCrystal("stock");
         }
-        private void button4_Click(object sender, EventArgs e)      // reporte de ventas
+        private void button4_Click(object sender, EventArgs e)                  // reporte de kardex
         {
-            // veremos que va aca
+            setParaCrystal("kardex");
         }
-        private void bt_ingresos_Click(object sender, EventArgs e)  // reportes de reservas
+        private void bt_ingresos_Click(object sender, EventArgs e)              // reportes de reservas
         {
             setParaCrystal("reservas");
         }
@@ -794,7 +757,7 @@ namespace iOMG
             setParaCrystal("salidas");
         }
 
-        private void setParaCrystal(string repo)                    // genera el set para el reporte de crystal
+        private void setParaCrystal(string repo)                        // genera el set para el reporte de crystal
         {
             if (repo== "stock")
             {
@@ -808,11 +771,11 @@ namespace iOMG
                 frmvizalm visualizador = new frmvizalm(datos);
                 visualizador.Show();
             }
-            if (repo == "ingresos")
+            if (repo == "kardex")
             {
-                //pedsclts datos = generarepingresos();
-                //frmvizcpeds visualizador = new frmvizcpeds(datos);
-                //visualizador.Show();
+                repsalmacen datos = generarepkardex();
+                frmvizalm visualizador = new frmvizalm(datos);
+                visualizador.Show();
             }
             if (repo == "salidas")
             {
@@ -826,8 +789,8 @@ namespace iOMG
             repsalmacen represerv = new repsalmacen();                        // xsd
             repsalmacen.cab_lisReservasRow cabrow = represerv.cab_lisReservas.Newcab_lisReservasRow();
             cabrow.id = "0";
-            cabrow.fecini = dtp_vtasfini.Value.ToString("dd/MM/yyyy");
-            cabrow.fecfin = dtp_vtasfina.Value.ToString("dd/MM/yyyy");
+            cabrow.fecini = dtp_karfini.Value.ToString("dd/MM/yyyy");
+            cabrow.fecfin = dtp_karfina.Value.ToString("dd/MM/yyyy");
             cabrow.almacen = tx_dat_almres.Text;
             represerv.cab_lisReservas.Addcab_lisReservasRow(cabrow);
             // detalle
@@ -852,7 +815,7 @@ namespace iOMG
             }
             return represerv;
         }
-        private repsalmacen generareporte()                         // reporte stock datos del formulario hacia dataset del reporte en crystal
+        private repsalmacen generareporte()                             // reporte stock datos del formulario hacia dataset del reporte en crystal
         {
             repsalmacen rescont = new repsalmacen();                                    // dataset
             repsalmacen.cab_stockRow rowcabeza = rescont.cab_stock.Newcab_stockRow();
@@ -885,35 +848,33 @@ namespace iOMG
             }
             return rescont;
         }
-        private pedsclts generarepingresos()
-        {   // a.idmovim,a.fechain,tipo,a.pedido,a.origen,a.destino,a.cant,a.articulo,nomad,med1,tipoes,madera,cliente,nomitem
-            pedsclts pedset = new pedsclts();
-            pedsclts.cab_repingRow rowcab = pedset.cab_reping.Newcab_repingRow();
+        private repsalmacen generarepkardex()                           // reporte de kardex
+        {   // 
+            repsalmacen pedset = new repsalmacen();
+            repsalmacen.cab_kardexRow rowcab = pedset.cab_kardex.Newcab_kardexRow();
             rowcab.id = "0";
-            rowcab.fini = dtp_fini_sal.Value.ToString().Substring(0, 10);
-            rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
-            pedset.cab_reping.Addcab_repingRow(rowcab);
+            rowcab.fecini = dtp_karfini.Value.ToString().Substring(0, 10);
+            rowcab.fecfin = dtp_karfina.Value.ToString().Substring(0, 10);
+            rowcab.almacen = tx_dat_kalm.Text.Trim();
+            pedset.cab_kardex.Addcab_kardexRow(rowcab);
             //
-            foreach(DataGridViewRow row in dgv_reserv.Rows)
+            foreach(DataGridViewRow row in dgv_kardex.Rows)
             {
-                if (row.Cells["pedido"].Value != null && row.Cells["pedido"].Value.ToString().Trim() != "")
+                if (row.Cells["codalm"].Value != null && row.Cells["codalm"].Value.ToString().Trim() != "")
                 {
-                    pedsclts.det_repingRow rowdet = pedset.det_reping.Newdet_repingRow();
+                    repsalmacen.det_kardexRow rowdet = pedset.det_kardex.Newdet_kardexRow();
                     rowdet.id = "0";
-                    rowdet.fecha = row.Cells["fechain"].Value.ToString().Substring(0, 10);
-                    rowdet.tipo = row.Cells["tipo"].Value.ToString();
-                    rowdet.pedido = row.Cells["pedido"].Value.ToString();
-                    rowdet.origen = row.Cells["origen"].Value.ToString();
-                    rowdet.destino = row.Cells["destino"].Value.ToString();
-                    rowdet.cant = row.Cells["cant"].Value.ToString();
-                    rowdet.articulo = row.Cells["articulo"].Value.ToString();
-                    rowdet.nonmad = row.Cells["nomad"].Value.ToString();
-                    rowdet.medidas = row.Cells["med1"].Value.ToString();
-                    rowdet.tipoes = row.Cells["tipoes"].Value.ToString();
+                    rowdet.fecha = row.Cells["fecha"].Value.ToString().Substring(0, 10);
+                    rowdet.tipmov = row.Cells["tipmov"].Value.ToString();
+                    rowdet.item = row.Cells["item"].Value.ToString();
+                    rowdet.entra = Int16.Parse(row.Cells["cant_i"].Value.ToString());
+                    rowdet.sale = Int16.Parse(row.Cells["cant_s"].Value.ToString());
+                    rowdet.nombre = row.Cells["nombr"].Value.ToString();
                     rowdet.madera = row.Cells["madera"].Value.ToString();
-                    rowdet.cliente = row.Cells["cliente"].Value.ToString();
-                    rowdet.nomitem = row.Cells["nomitem"].Value.ToString();
-                    pedset.det_reping.Adddet_repingRow(rowdet);
+                    rowdet.medidas = row.Cells["medid"].Value.ToString();
+                    rowdet.coment = row.Cells["coment"].Value.ToString();
+                    rowdet.idalm = row.Cells["idalm"].Value.ToString();
+                    pedset.det_kardex.Adddet_kardexRow(rowdet);
                 }
             }
             return pedset;

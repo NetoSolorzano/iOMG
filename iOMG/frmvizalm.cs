@@ -46,6 +46,13 @@ namespace iOMG
                 _resumen.SetDataSource(_datosreporte);
                 crystalReportViewer1.ReportSource = _resumen;
             }
+            // reporte de kardex
+            if (_datosreporte.cab_kardex.Rows.Count > 0)
+            {
+                rep_kardex _resumen = new rep_kardex();
+                _resumen.SetDataSource(_datosreporte);
+                crystalReportViewer1.ReportSource = _resumen;
+            }
         }
     }
 }

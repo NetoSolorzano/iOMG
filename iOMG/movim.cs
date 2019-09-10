@@ -309,7 +309,7 @@ namespace iOMG
                         tx_cliente.Text = dt.Rows[0].ItemArray[4].ToString();
                         tx_status.Text = dt.Rows[0].ItemArray[3].ToString();
                         dataGridView1.ColumnCount = 3;
-                        dataGridView1.Columns[0].Width = 100;
+                        dataGridView1.Columns[0].Width = 150;
                         dataGridView1.Columns[0].HeaderText = dt.Columns[5].Caption;
                         dataGridView1.Columns[1].Width = 30;
                         dataGridView1.Columns[1].HeaderText = dt.Columns[6].Caption;
@@ -320,8 +320,17 @@ namespace iOMG
                         {
                             DataRow row = dt.Rows[i];
                             dataGridView1.Rows.Add(row[5].ToString(), row[6].ToString(), row[7].ToString());
-                            string parte1 = row[5].ToString().Trim(); // +row[5].ToString().Substring(11, 3);
-                            string parte2 = para3.Trim();   //.Substring(0, 10)+para3.Substring(13, 3); ;
+                            string parte1 = "";
+                            if (row[5].ToString().Trim().Length == 18)
+                            {
+                                parte1 = row[5].ToString().Trim().Substring(0, 10) + row[5].ToString().Trim().Substring(12, 6);   // item del contrato
+                            }
+                            if (row[5].ToString().Trim().Length == 16)
+                            {
+                                parte1 = row[5].ToString().Trim();   // item del contrato
+                            }
+                            string parte2 = para3.Trim();               // item del almloc
+                            //MessageBox.Show(parte1 + Environment.NewLine + parte2);
                             if (parte1 == parte2) sino = "si";    // aca debemos validar por columnas ACA ACA ACA ACA
                             // cap 1, mod 3, mad 1, tip 2, det1 2, aca 1, tal 2, det2 3, det 3
                         }

@@ -69,8 +69,8 @@ REPORTES
 ** ALMACEN - REPORTES
 - Reporte de stock .............................................. ok
 - Reporte de reservas ........................................... ok
-- Kardex de almacen ............................................. 	... OJo, se modifico la estructura de la tabla kardex. SE DEBE DESHABILITAR grabacam() en almgestion
-
+- Kardex de almacen ............................................. ok ... OJo, se modifico la estructura de la tabla kardex. SE DEBE DESHABILITAR grabacam() en almgestion
+- 
 
 
 
