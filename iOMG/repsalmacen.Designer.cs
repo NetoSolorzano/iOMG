@@ -2923,6 +2923,16 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnfecha;
             
+            private global::System.Data.DataColumn columnnomitem;
+            
+            private global::System.Data.DataColumn columnmadera;
+            
+            private global::System.Data.DataColumn columnmedidas;
+            
+            private global::System.Data.DataColumn columnacabado;
+            
+            private global::System.Data.DataColumn columntitulo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public det_salidasDataTable() {
@@ -3062,6 +3072,46 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn nomitemColumn {
+                get {
+                    return this.columnnomitem;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn maderaColumn {
+                get {
+                    return this.columnmadera;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn medidasColumn {
+                get {
+                    return this.columnmedidas;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn acabadoColumn {
+                get {
+                    return this.columnacabado;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn tituloColumn {
+                get {
+                    return this.columntitulo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3097,7 +3147,25 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public det_salidasRow Adddet_salidasRow(string id, string idsal, string tipo, string reserva, string llegada, string partida, string contrato, string evento, string coment, string item, string cant, string idalm, string fecha) {
+            public det_salidasRow Adddet_salidasRow(
+                        string id, 
+                        string idsal, 
+                        string tipo, 
+                        string reserva, 
+                        string llegada, 
+                        string partida, 
+                        string contrato, 
+                        string evento, 
+                        string coment, 
+                        string item, 
+                        string cant, 
+                        string idalm, 
+                        string fecha, 
+                        string nomitem, 
+                        string madera, 
+                        string medidas, 
+                        string acabado, 
+                        string titulo) {
                 det_salidasRow rowdet_salidasRow = ((det_salidasRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -3112,7 +3180,12 @@ namespace iOMG {
                         item,
                         cant,
                         idalm,
-                        fecha};
+                        fecha,
+                        nomitem,
+                        madera,
+                        medidas,
+                        acabado,
+                        titulo};
                 rowdet_salidasRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_salidasRow);
                 return rowdet_salidasRow;
@@ -3148,6 +3221,11 @@ namespace iOMG {
                 this.columncant = base.Columns["cant"];
                 this.columnidalm = base.Columns["idalm"];
                 this.columnfecha = base.Columns["fecha"];
+                this.columnnomitem = base.Columns["nomitem"];
+                this.columnmadera = base.Columns["madera"];
+                this.columnmedidas = base.Columns["medidas"];
+                this.columnacabado = base.Columns["acabado"];
+                this.columntitulo = base.Columns["titulo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3179,6 +3257,16 @@ namespace iOMG {
                 base.Columns.Add(this.columnidalm);
                 this.columnfecha = new global::System.Data.DataColumn("fecha", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfecha);
+                this.columnnomitem = new global::System.Data.DataColumn("nomitem", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnomitem);
+                this.columnmadera = new global::System.Data.DataColumn("madera", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmadera);
+                this.columnmedidas = new global::System.Data.DataColumn("medidas", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmedidas);
+                this.columnacabado = new global::System.Data.DataColumn("acabado", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnacabado);
+                this.columntitulo = new global::System.Data.DataColumn("titulo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntitulo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5118,6 +5206,86 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string nomitem {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_salidas.nomitemColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'nomitem\' de la tabla \'det_salidas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_salidas.nomitemColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string madera {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_salidas.maderaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'madera\' de la tabla \'det_salidas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_salidas.maderaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string medidas {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_salidas.medidasColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'medidas\' de la tabla \'det_salidas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_salidas.medidasColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string acabado {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_salidas.acabadoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'acabado\' de la tabla \'det_salidas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_salidas.acabadoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string titulo {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_salidas.tituloColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'titulo\' de la tabla \'det_salidas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_salidas.tituloColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledet_salidas.idColumn);
             }
@@ -5270,6 +5438,66 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetfechaNull() {
                 this[this.tabledet_salidas.fechaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsnomitemNull() {
+                return this.IsNull(this.tabledet_salidas.nomitemColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetnomitemNull() {
+                this[this.tabledet_salidas.nomitemColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsmaderaNull() {
+                return this.IsNull(this.tabledet_salidas.maderaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetmaderaNull() {
+                this[this.tabledet_salidas.maderaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsmedidasNull() {
+                return this.IsNull(this.tabledet_salidas.medidasColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetmedidasNull() {
+                this[this.tabledet_salidas.medidasColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsacabadoNull() {
+                return this.IsNull(this.tabledet_salidas.acabadoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetacabadoNull() {
+                this[this.tabledet_salidas.acabadoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstituloNull() {
+                return this.IsNull(this.tabledet_salidas.tituloColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettituloNull() {
+                this[this.tabledet_salidas.tituloColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -892,7 +892,7 @@ namespace iOMG
             rowcab.id = "0";
             rowcab.fecini = dtp_fini_sal.Value.ToString().Substring(0, 10);
             rowcab.fecfin = dtp_final_sal.Value.ToString().Substring(0, 10);
-            rowcab.tipo = (rb_sal_todos.Checked == true) ? "0" : (rb_sal_mov.Checked == true)? "1" : (rb_sal_vtas.Checked == true)? "2" : (rb_sal_ajust.Checked == true)? "3" : "";
+            rowcab.tipo = (rb_sal_todos.Checked == true) ? "Todos" : (rb_sal_mov.Checked == true)? "Movim." : (rb_sal_vtas.Checked == true)? "Ventas" : (rb_sal_ajust.Checked == true)? "Ajustes" : "";
             pedset.cab_salidas.Addcab_salidasRow(rowcab);
             //
             foreach(DataGridViewRow row in dgv_salidas.Rows)
@@ -901,8 +901,10 @@ namespace iOMG
                 {
                     repsalmacen.det_salidasRow rowdet = pedset.det_salidas.Newdet_salidasRow();
                     rowdet.id = "0";
-                    rowdet.fecha = row.Cells["fecha"].Value.ToString().Substring(0, 10);
-                    rowdet.tipo = row.Cells["tipomov"].Value.ToString();
+                    if (row.Cells["idsalidash"].Value.ToString() != "0") rowdet.titulo = "SALIDA FISICA";
+                    else rowdet.titulo = "AUTORIZACION";
+                    rowdet.fecha = row.Cells["fecha"].Value.ToString().PadRight(10).Substring(0, 10);
+                    rowdet.tipo = (row.Cells["tipomov"].Value.ToString() == "1")? "Salida": (row.Cells["tipomov"].Value.ToString() == "2") ? "Movim.": row.Cells["tipomov"].Value.ToString();
                     rowdet.cant = row.Cells["cant"].Value.ToString();
                     rowdet.coment = row.Cells["coment"].Value.ToString();
                     rowdet.contrato = row.Cells["contrato"].Value.ToString();
@@ -913,6 +915,10 @@ namespace iOMG
                     rowdet.llegada = row.Cells["llegada"].Value.ToString();
                     rowdet.partida = row.Cells["partida"].Value.ToString();
                     rowdet.reserva = row.Cells["reserva"].Value.ToString();
+                    rowdet.nomitem = row.Cells["nomitem"].Value.ToString();
+                    rowdet.madera = row.Cells["madera"].Value.ToString();
+                    rowdet.medidas = row.Cells["medidas"].Value.ToString();
+                    rowdet.acabado = row.Cells["acabado"].Value.ToString();
                     pedset.det_salidas.Adddet_salidasRow(rowdet);
                 }
             }

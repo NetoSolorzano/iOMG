@@ -123,6 +123,11 @@
               <xs:element name="cant" msprop:Generator_ColumnVarNameInTable="columncant" msprop:Generator_ColumnPropNameInRow="cant" msprop:Generator_ColumnPropNameInTable="cantColumn" msprop:Generator_UserColumnName="cant" type="xs:string" minOccurs="0" />
               <xs:element name="idalm" msprop:Generator_ColumnVarNameInTable="columnidalm" msprop:Generator_ColumnPropNameInRow="idalm" msprop:Generator_ColumnPropNameInTable="idalmColumn" msprop:Generator_UserColumnName="idalm" type="xs:string" minOccurs="0" />
               <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="nomitem" msprop:Generator_ColumnVarNameInTable="columnnomitem" msprop:Generator_ColumnPropNameInRow="nomitem" msprop:Generator_ColumnPropNameInTable="nomitemColumn" msprop:Generator_UserColumnName="nomitem" type="xs:string" minOccurs="0" />
+              <xs:element name="madera" msprop:Generator_ColumnVarNameInTable="columnmadera" msprop:Generator_ColumnPropNameInRow="madera" msprop:Generator_ColumnPropNameInTable="maderaColumn" msprop:Generator_UserColumnName="madera" type="xs:string" minOccurs="0" />
+              <xs:element name="medidas" msprop:Generator_ColumnVarNameInTable="columnmedidas" msprop:Generator_ColumnPropNameInRow="medidas" msprop:Generator_ColumnPropNameInTable="medidasColumn" msprop:Generator_UserColumnName="medidas" type="xs:string" minOccurs="0" />
+              <xs:element name="acabado" msprop:Generator_ColumnVarNameInTable="columnacabado" msprop:Generator_ColumnPropNameInRow="acabado" msprop:Generator_ColumnPropNameInTable="acabadoColumn" msprop:Generator_UserColumnName="acabado" type="xs:string" minOccurs="0" />
+              <xs:element name="titulo" msprop:Generator_ColumnVarNameInTable="columntitulo" msprop:Generator_ColumnPropNameInRow="titulo" msprop:Generator_ColumnPropNameInTable="tituloColumn" msprop:Generator_UserColumnName="titulo" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
