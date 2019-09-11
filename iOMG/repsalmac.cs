@@ -361,11 +361,17 @@ namespace iOMG
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
+                    string tip = "";
+                    if (rb_sal_todos.Checked == true) tip = "0";
+                    if (rb_sal_mov.Checked == true) tip = "1";
+                    if (rb_sal_vtas.Checked == true) tip = "2";
+                    if (rb_sal_ajust.Checked == true) tip = "3";
                     dgv_salidas.DataSource = null;
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.CommandType = CommandType.StoredProcedure;
                     micon.Parameters.AddWithValue("@fini", dtp_fini_sal.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fina", dtp_final_sal.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tipo", tip);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -664,8 +670,8 @@ namespace iOMG
         {
             Tx_modo.Text = "IMPRIMIR";
             tabControl1.Enabled = true;
-            //cmb_tall_ing.Enabled = false;
-            //cmb_estad_ing.Enabled = false;
+            rb_sal_todos.Checked = true;                            // salidas
+            
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -752,7 +758,7 @@ namespace iOMG
         {
             setParaCrystal("reservas");
         }
-        private void bt_salidas_Click(object sender, EventArgs e)
+        private void bt_salidas_Click(object sender, EventArgs e)               // reportes salidas de almacen
         {
             setParaCrystal("salidas");
         }
@@ -779,9 +785,9 @@ namespace iOMG
             }
             if (repo == "salidas")
             {
-                //pedsclts datos = generarepsalidas();
-                //frmvizcpeds visualizador = new frmvizcpeds(datos);
-                //visualizador.Show();
+                repsalmacen datos = generarepsalidas();
+                frmvizalm visualizador = new frmvizalm(datos);
+                visualizador.Show();
             }
         }
         private repsalmacen generarepreservas()                         // reporte de reservas 
@@ -879,34 +885,35 @@ namespace iOMG
             }
             return pedset;
         }
-        private pedsclts generarepsalidas()                         // salidas de pedidos de clientes (entregas)
+        private repsalmacen generarepsalidas()                          // salidas de almacen
         {
-            //a.fecha,a.tipo,a.pedido,cliente,a.uantes,a.uactual,a.coment,b.item,b.cant,b.medidas,b.madera
-            pedsclts pedset = new pedsclts();
-            pedsclts.cab_repsalRow rowcab = pedset.cab_repsal.Newcab_repsalRow();
+            repsalmacen pedset = new repsalmacen();
+            repsalmacen.cab_salidasRow rowcab = pedset.cab_salidas.Newcab_salidasRow();
             rowcab.id = "0";
-            rowcab.fini = dtp_fini_sal.Value.ToString().Substring(0, 10);
-            rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
-            pedset.cab_repsal.Addcab_repsalRow(rowcab);
+            rowcab.fecini = dtp_fini_sal.Value.ToString().Substring(0, 10);
+            rowcab.fecfin = dtp_final_sal.Value.ToString().Substring(0, 10);
+            rowcab.tipo = (rb_sal_todos.Checked == true) ? "0" : (rb_sal_mov.Checked == true)? "1" : (rb_sal_vtas.Checked == true)? "2" : (rb_sal_ajust.Checked == true)? "3" : "";
+            pedset.cab_salidas.Addcab_salidasRow(rowcab);
             //
             foreach(DataGridViewRow row in dgv_salidas.Rows)
             {
-                if (row.Cells["tipo"].Value != null && row.Cells["tipo"].Value.ToString().Trim() != "")
+                if (row.Cells["tipomov"].Value != null && row.Cells["tipomov"].Value.ToString().Trim() != "")
                 {
-                    pedsclts.det_repsalRow rowdet = pedset.det_repsal.Newdet_repsalRow();
+                    repsalmacen.det_salidasRow rowdet = pedset.det_salidas.Newdet_salidasRow();
                     rowdet.id = "0";
                     rowdet.fecha = row.Cells["fecha"].Value.ToString().Substring(0, 10);
-                    rowdet.tipo = row.Cells["tipo"].Value.ToString();
-                    rowdet.pedido = row.Cells["pedido"].Value.ToString();
-                    rowdet.cliente = row.Cells["cliente"].Value.ToString();
-                    rowdet.uantes = row.Cells["uantes"].Value.ToString();
-                    rowdet.uactual = row.Cells["uactual"].Value.ToString();
-                    rowdet.coment = row.Cells["coment"].Value.ToString();
-                    rowdet.item = row.Cells["item"].Value.ToString();
+                    rowdet.tipo = row.Cells["tipomov"].Value.ToString();
                     rowdet.cant = row.Cells["cant"].Value.ToString();
-                    rowdet.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdet.madera = row.Cells["madera"].Value.ToString();
-                    pedset.det_repsal.Adddet_repsalRow(rowdet);
+                    rowdet.coment = row.Cells["coment"].Value.ToString();
+                    rowdet.contrato = row.Cells["contrato"].Value.ToString();
+                    rowdet.evento = row.Cells["evento"].Value.ToString();
+                    rowdet.idalm = row.Cells["idalm"].Value.ToString();
+                    rowdet.idsal = row.Cells["idsalidash"].Value.ToString();
+                    rowdet.item = row.Cells["item"].Value.ToString();
+                    rowdet.llegada = row.Cells["llegada"].Value.ToString();
+                    rowdet.partida = row.Cells["partida"].Value.ToString();
+                    rowdet.reserva = row.Cells["reserva"].Value.ToString();
+                    pedset.det_salidas.Adddet_salidasRow(rowdet);
                 }
             }
             return pedset;

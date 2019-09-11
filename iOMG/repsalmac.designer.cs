@@ -94,6 +94,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.tabvtas = new System.Windows.Forms.TabPage();
+            this.dgv_kardex = new ADGV.AdvancedDataGridView();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.label26 = new System.Windows.Forms.Label();
@@ -108,11 +113,15 @@
             this.bt_karfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.dgv_kardex = new ADGV.AdvancedDataGridView();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.rb_sal_todos = new System.Windows.Forms.RadioButton();
+            this.rb_sal_mov = new System.Windows.Forms.RadioButton();
+            this.rb_sal_vtas = new System.Windows.Forms.RadioButton();
+            this.rb_sal_ajust = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -127,11 +136,14 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabvtas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_kardex)).BeginInit();
+            this.groupBox13.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_kardex)).BeginInit();
+            this.groupBox15.SuspendLayout();
+            this.groupBox19.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -585,6 +597,9 @@
             // 
             // tabSal
             // 
+            this.tabSal.Controls.Add(this.panel2);
+            this.tabSal.Controls.Add(this.groupBox19);
+            this.tabSal.Controls.Add(this.groupBox15);
             this.tabSal.Controls.Add(this.bt_salidas);
             this.tabSal.Controls.Add(this.dgv_salidas);
             this.tabSal.Controls.Add(this.dtp_final_sal);
@@ -618,7 +633,7 @@
             this.dgv_salidas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_salidas.Location = new System.Drawing.Point(3, 49);
             this.dgv_salidas.Name = "dgv_salidas";
-            this.dgv_salidas.Size = new System.Drawing.Size(789, 250);
+            this.dgv_salidas.Size = new System.Drawing.Size(1023, 325);
             this.dgv_salidas.TabIndex = 327;
             // 
             // dtp_final_sal
@@ -853,6 +868,56 @@
             this.tabvtas.Text = "Kardex";
             this.tabvtas.UseVisualStyleBackColor = true;
             // 
+            // dgv_kardex
+            // 
+            this.dgv_kardex.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.dgv_kardex.AutoGenerateContextFilters = true;
+            this.dgv_kardex.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_kardex.DateWithTime = false;
+            this.dgv_kardex.Location = new System.Drawing.Point(3, 50);
+            this.dgv_kardex.Name = "dgv_kardex";
+            this.dgv_kardex.Size = new System.Drawing.Size(1023, 324);
+            this.dgv_kardex.TabIndex = 376;
+            this.dgv_kardex.TimeFilter = false;
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox13.Controls.Add(this.groupBox14);
+            this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox13.Location = new System.Drawing.Point(437, 45);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(161, 1);
+            this.groupBox13.TabIndex = 375;
+            this.groupBox13.TabStop = false;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Location = new System.Drawing.Point(0, -26);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(164, 1);
+            this.groupBox14.TabIndex = 113;
+            this.groupBox14.TabStop = false;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox5.Location = new System.Drawing.Point(437, 23);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(161, 1);
+            this.groupBox5.TabIndex = 374;
+            this.groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(0, -26);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(164, 1);
+            this.groupBox6.TabIndex = 113;
+            this.groupBox6.TabStop = false;
+            // 
             // groupBox17
             // 
             this.groupBox17.BackColor = System.Drawing.Color.DimGray;
@@ -993,55 +1058,98 @@
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
             // 
-            // groupBox5
+            // groupBox15
             // 
-            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox5.Controls.Add(this.groupBox6);
-            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox5.Location = new System.Drawing.Point(437, 23);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(161, 1);
-            this.groupBox5.TabIndex = 374;
-            this.groupBox5.TabStop = false;
+            this.groupBox15.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox15.Controls.Add(this.groupBox16);
+            this.groupBox15.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox15.Location = new System.Drawing.Point(376, 23);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(162, 1);
+            this.groupBox15.TabIndex = 363;
+            this.groupBox15.TabStop = false;
             // 
-            // groupBox6
+            // groupBox16
             // 
-            this.groupBox6.Location = new System.Drawing.Point(0, -26);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(164, 1);
-            this.groupBox6.TabIndex = 113;
-            this.groupBox6.TabStop = false;
+            this.groupBox16.Location = new System.Drawing.Point(0, -26);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(164, 1);
+            this.groupBox16.TabIndex = 113;
+            this.groupBox16.TabStop = false;
             // 
-            // groupBox13
+            // groupBox19
             // 
-            this.groupBox13.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox13.Controls.Add(this.groupBox14);
-            this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox13.Location = new System.Drawing.Point(437, 45);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(161, 1);
-            this.groupBox13.TabIndex = 375;
-            this.groupBox13.TabStop = false;
+            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox19.Controls.Add(this.groupBox20);
+            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox19.Location = new System.Drawing.Point(376, 45);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Size = new System.Drawing.Size(162, 1);
+            this.groupBox19.TabIndex = 364;
+            this.groupBox19.TabStop = false;
             // 
-            // groupBox14
+            // groupBox20
             // 
-            this.groupBox14.Location = new System.Drawing.Point(0, -26);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(164, 1);
-            this.groupBox14.TabIndex = 113;
-            this.groupBox14.TabStop = false;
+            this.groupBox20.Location = new System.Drawing.Point(0, -26);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(164, 1);
+            this.groupBox20.TabIndex = 113;
+            this.groupBox20.TabStop = false;
             // 
-            // dgv_kardex
+            // panel2
             // 
-            this.dgv_kardex.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.dgv_kardex.AutoGenerateContextFilters = true;
-            this.dgv_kardex.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_kardex.DateWithTime = false;
-            this.dgv_kardex.Location = new System.Drawing.Point(3, 50);
-            this.dgv_kardex.Name = "dgv_kardex";
-            this.dgv_kardex.Size = new System.Drawing.Size(1023, 324);
-            this.dgv_kardex.TabIndex = 376;
-            this.dgv_kardex.TimeFilter = false;
+            this.panel2.Controls.Add(this.rb_sal_ajust);
+            this.panel2.Controls.Add(this.rb_sal_vtas);
+            this.panel2.Controls.Add(this.rb_sal_mov);
+            this.panel2.Controls.Add(this.rb_sal_todos);
+            this.panel2.Location = new System.Drawing.Point(81, 8);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(248, 34);
+            this.panel2.TabIndex = 365;
+            // 
+            // rb_sal_todos
+            // 
+            this.rb_sal_todos.AutoSize = true;
+            this.rb_sal_todos.Location = new System.Drawing.Point(6, 8);
+            this.rb_sal_todos.Name = "rb_sal_todos";
+            this.rb_sal_todos.Size = new System.Drawing.Size(55, 17);
+            this.rb_sal_todos.TabIndex = 0;
+            this.rb_sal_todos.TabStop = true;
+            this.rb_sal_todos.Text = "Todos";
+            this.rb_sal_todos.UseVisualStyleBackColor = true;
+            // 
+            // rb_sal_mov
+            // 
+            this.rb_sal_mov.AutoSize = true;
+            this.rb_sal_mov.Location = new System.Drawing.Point(67, 8);
+            this.rb_sal_mov.Name = "rb_sal_mov";
+            this.rb_sal_mov.Size = new System.Drawing.Size(59, 17);
+            this.rb_sal_mov.TabIndex = 1;
+            this.rb_sal_mov.TabStop = true;
+            this.rb_sal_mov.Text = "Movim.";
+            this.rb_sal_mov.UseVisualStyleBackColor = true;
+            // 
+            // rb_sal_vtas
+            // 
+            this.rb_sal_vtas.AutoSize = true;
+            this.rb_sal_vtas.Location = new System.Drawing.Point(127, 8);
+            this.rb_sal_vtas.Name = "rb_sal_vtas";
+            this.rb_sal_vtas.Size = new System.Drawing.Size(58, 17);
+            this.rb_sal_vtas.TabIndex = 2;
+            this.rb_sal_vtas.TabStop = true;
+            this.rb_sal_vtas.Text = "Ventas";
+            this.rb_sal_vtas.UseVisualStyleBackColor = true;
+            // 
+            // rb_sal_ajust
+            // 
+            this.rb_sal_ajust.AutoSize = true;
+            this.rb_sal_ajust.Location = new System.Drawing.Point(191, 8);
+            this.rb_sal_ajust.Name = "rb_sal_ajust";
+            this.rb_sal_ajust.Size = new System.Drawing.Size(54, 17);
+            this.rb_sal_ajust.TabIndex = 3;
+            this.rb_sal_ajust.TabStop = true;
+            this.rb_sal_ajust.Text = "Ajuste";
+            this.rb_sal_ajust.UseVisualStyleBackColor = true;
             // 
             // repsalmac
             // 
@@ -1074,12 +1182,16 @@
             this.groupBox1.ResumeLayout(false);
             this.tabvtas.ResumeLayout(false);
             this.tabvtas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_kardex)).EndInit();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox13.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_kardex)).EndInit();
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox19.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1171,5 +1283,14 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
         private ADGV.AdvancedDataGridView dgv_kardex;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.RadioButton rb_sal_ajust;
+        private System.Windows.Forms.RadioButton rb_sal_vtas;
+        private System.Windows.Forms.RadioButton rb_sal_mov;
+        private System.Windows.Forms.RadioButton rb_sal_todos;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.GroupBox groupBox16;
     }
 }

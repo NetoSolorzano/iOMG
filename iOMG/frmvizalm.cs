@@ -53,6 +53,13 @@ namespace iOMG
                 _resumen.SetDataSource(_datosreporte);
                 crystalReportViewer1.ReportSource = _resumen;
             }
+            // reporte de salidas de almacen
+            if (_datosreporte.cab_salidas.Rows.Count > 0)
+            {
+                rep_alm_salidas _resumen = new rep_alm_salidas();
+                _resumen.SetDataSource(_datosreporte);
+                crystalReportViewer1.ReportSource = _resumen;
+            }
         }
     }
 }

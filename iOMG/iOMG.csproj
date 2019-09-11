@@ -372,6 +372,12 @@
       <DependentUpon>repvtas_xclte.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="rep_alm_salidas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rep_alm_salidas.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="rep_kardex.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -556,6 +562,10 @@
     <EmbeddedResource Include="repvtas_xclte.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>repvtas_xclte.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rep_alm_salidas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rep_alm_salidas.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="rep_kardex.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
