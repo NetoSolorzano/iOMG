@@ -815,6 +815,10 @@ namespace iOMG
                     detrow.cant = row.Cells["cant"].Value.ToString();
                     detrow.coment = row.Cells["coment"].Value.ToString();
                     detrow.status = row.Cells["status"].Value.ToString();
+                    detrow.nomitem = row.Cells["nomitem"].Value.ToString();
+                    detrow.madera = row.Cells["madera"].Value.ToString();
+                    detrow.medidas = row.Cells["medidas"].Value.ToString();
+                    detrow.acabado = row.Cells["acabado"].Value.ToString();
                     // a.idreservh,b.idalm,a.fecha,a.almacen,a.contrato,cliente,b.item,b.cant,a.coment,a.STATUS 
                     represerv.det_lisReservas.Adddet_lisReservasRow(detrow);
                 }

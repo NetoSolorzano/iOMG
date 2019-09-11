@@ -1537,6 +1537,14 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnstatus;
             
+            private global::System.Data.DataColumn columnnomitem;
+            
+            private global::System.Data.DataColumn columnmadera;
+            
+            private global::System.Data.DataColumn columnmedidas;
+            
+            private global::System.Data.DataColumn columnacabado;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public det_lisReservasDataTable() {
@@ -1652,6 +1660,38 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn nomitemColumn {
+                get {
+                    return this.columnnomitem;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn maderaColumn {
+                get {
+                    return this.columnmadera;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn medidasColumn {
+                get {
+                    return this.columnmedidas;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn acabadoColumn {
+                get {
+                    return this.columnacabado;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1687,7 +1727,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public det_lisReservasRow Adddet_lisReservasRow(string id, int idalm, string fecha, string almacen, string contrato, string cliente, string item, string cant, string coment, string status) {
+            public det_lisReservasRow Adddet_lisReservasRow(string id, int idalm, string fecha, string almacen, string contrato, string cliente, string item, string cant, string coment, string status, string nomitem, string madera, string medidas, string acabado) {
                 det_lisReservasRow rowdet_lisReservasRow = ((det_lisReservasRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -1699,7 +1739,11 @@ namespace iOMG {
                         item,
                         cant,
                         coment,
-                        status};
+                        status,
+                        nomitem,
+                        madera,
+                        medidas,
+                        acabado};
                 rowdet_lisReservasRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_lisReservasRow);
                 return rowdet_lisReservasRow;
@@ -1732,6 +1776,10 @@ namespace iOMG {
                 this.columncant = base.Columns["cant"];
                 this.columncoment = base.Columns["coment"];
                 this.columnstatus = base.Columns["status"];
+                this.columnnomitem = base.Columns["nomitem"];
+                this.columnmadera = base.Columns["madera"];
+                this.columnmedidas = base.Columns["medidas"];
+                this.columnacabado = base.Columns["acabado"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1757,6 +1805,14 @@ namespace iOMG {
                 base.Columns.Add(this.columncoment);
                 this.columnstatus = new global::System.Data.DataColumn("status", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnstatus);
+                this.columnnomitem = new global::System.Data.DataColumn("nomitem", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnomitem);
+                this.columnmadera = new global::System.Data.DataColumn("madera", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmadera);
+                this.columnmedidas = new global::System.Data.DataColumn("medidas", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmedidas);
+                this.columnacabado = new global::System.Data.DataColumn("acabado", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnacabado);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4202,6 +4258,70 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string nomitem {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_lisReservas.nomitemColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'nomitem\' de la tabla \'det_lisReservas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_lisReservas.nomitemColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string madera {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_lisReservas.maderaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'madera\' de la tabla \'det_lisReservas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_lisReservas.maderaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string medidas {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_lisReservas.medidasColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'medidas\' de la tabla \'det_lisReservas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_lisReservas.medidasColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string acabado {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_lisReservas.acabadoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'acabado\' de la tabla \'det_lisReservas\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_lisReservas.acabadoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledet_lisReservas.idColumn);
             }
@@ -4318,6 +4438,54 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetstatusNull() {
                 this[this.tabledet_lisReservas.statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsnomitemNull() {
+                return this.IsNull(this.tabledet_lisReservas.nomitemColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetnomitemNull() {
+                this[this.tabledet_lisReservas.nomitemColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsmaderaNull() {
+                return this.IsNull(this.tabledet_lisReservas.maderaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetmaderaNull() {
+                this[this.tabledet_lisReservas.maderaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsmedidasNull() {
+                return this.IsNull(this.tabledet_lisReservas.medidasColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetmedidasNull() {
+                this[this.tabledet_lisReservas.medidasColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsacabadoNull() {
+                return this.IsNull(this.tabledet_lisReservas.acabadoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetacabadoNull() {
+                this[this.tabledet_lisReservas.acabadoColumn] = global::System.Convert.DBNull;
             }
         }
         
