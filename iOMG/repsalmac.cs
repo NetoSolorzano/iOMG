@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
 using CrystalDecisions.CrystalReports.Engine;
@@ -541,7 +542,6 @@ namespace iOMG
             de.etiq_mov1.Addetiq_mov1Row(row);
 
             etiq_mov1 eti = new etiq_mov1();
-            //eti.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperEnvelope9;
             eti.SetDataSource(de);
             crystalReportViewer1.BorderStyle = BorderStyle.None;
             crystalReportViewer1.DisplayToolbar = false;    // true
@@ -553,12 +553,18 @@ namespace iOMG
         }
         private void bt_imp_etiq_Click(object sender, EventArgs e)
         {
+            PrintDocument pd = new PrintDocument();
+            pd.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom", 365, 300);       // me quede aca !! 11-09-2019
+            pd.DefaultPageSettings.PaperSize.RawKind = 119;
+            pd.PrinterSettings.DefaultPageSettings.PaperSize.RawKind = 119;
+            pd.DefaultPageSettings.Landscape = false;
+            //
             ReportDocument rd = new ReportDocument();
             //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
             rd.Load("etiq_mov1.rpt");
             //
             rd.Refresh();
-            rd.PrintToPrinter(2, true, 1, 2);
+            rd.PrintToPrinter(1, true, 1, 1);
         }
 
         #region advancedatagridview

@@ -123,8 +123,19 @@
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.tabEtiq = new System.Windows.Forms.TabPage();
-            this.pan_datos = new System.Windows.Forms.Panel();
+            this.bt_imp_etiq = new System.Windows.Forms.Button();
             this.pan_view = new System.Windows.Forms.Panel();
+            this.crystalReportViewer1 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.pan_datos = new System.Windows.Forms.Panel();
+            this.bt_gen_etiq = new System.Windows.Forms.Button();
+            this.tx_paq = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tx_cant = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tx_d_codi = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tx_d_id = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -133,17 +144,7 @@
             this.tx_d_mad = new System.Windows.Forms.TextBox();
             this.tx_d_med = new System.Windows.Forms.TextBox();
             this.tx_d_nom = new System.Windows.Forms.TextBox();
-            this.tx_d_id = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.tx_d_codi = new System.Windows.Forms.TextBox();
-            this.tx_paq = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tx_cant = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.bt_gen_etiq = new System.Windows.Forms.Button();
-            this.crystalReportViewer1 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
-            this.bt_imp_etiq = new System.Windows.Forms.Button();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -167,8 +168,8 @@
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabEtiq.SuspendLayout();
-            this.pan_datos.SuspendLayout();
             this.pan_view.SuspendLayout();
+            this.pan_datos.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -1189,6 +1190,39 @@
             this.tabEtiq.Text = "Etiquetas";
             this.tabEtiq.UseVisualStyleBackColor = true;
             // 
+            // bt_imp_etiq
+            // 
+            this.bt_imp_etiq.Image = global::iOMG.Properties.Resources.ticket32;
+            this.bt_imp_etiq.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.bt_imp_etiq.Location = new System.Drawing.Point(823, 332);
+            this.bt_imp_etiq.Name = "bt_imp_etiq";
+            this.bt_imp_etiq.Size = new System.Drawing.Size(87, 38);
+            this.bt_imp_etiq.TabIndex = 11;
+            this.bt_imp_etiq.Text = "Imprime";
+            this.bt_imp_etiq.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.bt_imp_etiq.UseVisualStyleBackColor = true;
+            this.bt_imp_etiq.Click += new System.EventHandler(this.bt_imp_etiq_Click);
+            // 
+            // pan_view
+            // 
+            this.pan_view.Controls.Add(this.crystalReportViewer1);
+            this.pan_view.Location = new System.Drawing.Point(248, 68);
+            this.pan_view.Name = "pan_view";
+            this.pan_view.Size = new System.Drawing.Size(569, 306);
+            this.pan_view.TabIndex = 0;
+            // 
+            // crystalReportViewer1
+            // 
+            this.crystalReportViewer1.ActiveViewIndex = -1;
+            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer1.Location = new System.Drawing.Point(0, 0);
+            this.crystalReportViewer1.Name = "crystalReportViewer1";
+            this.crystalReportViewer1.Size = new System.Drawing.Size(569, 306);
+            this.crystalReportViewer1.TabIndex = 0;
+            this.crystalReportViewer1.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
+            // 
             // pan_datos
             // 
             this.pan_datos.Controls.Add(this.bt_gen_etiq);
@@ -1213,13 +1247,90 @@
             this.pan_datos.Size = new System.Drawing.Size(1023, 64);
             this.pan_datos.TabIndex = 0;
             // 
-            // pan_view
+            // bt_gen_etiq
             // 
-            this.pan_view.Controls.Add(this.crystalReportViewer1);
-            this.pan_view.Location = new System.Drawing.Point(248, 68);
-            this.pan_view.Name = "pan_view";
-            this.pan_view.Size = new System.Drawing.Size(569, 306);
-            this.pan_view.TabIndex = 0;
+            this.bt_gen_etiq.Location = new System.Drawing.Point(432, 39);
+            this.bt_gen_etiq.Name = "bt_gen_etiq";
+            this.bt_gen_etiq.Size = new System.Drawing.Size(147, 23);
+            this.bt_gen_etiq.TabIndex = 10;
+            this.bt_gen_etiq.Text = "Genera Etiqueta";
+            this.bt_gen_etiq.UseVisualStyleBackColor = true;
+            this.bt_gen_etiq.Click += new System.EventHandler(this.bt_gen_etiq_Click);
+            // 
+            // tx_paq
+            // 
+            this.tx_paq.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_paq.Location = new System.Drawing.Point(977, 17);
+            this.tx_paq.Name = "tx_paq";
+            this.tx_paq.Size = new System.Drawing.Size(35, 26);
+            this.tx_paq.TabIndex = 9;
+            this.tx_paq.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(915, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(60, 26);
+            this.label3.TabIndex = 358;
+            this.label3.Text = "Paquetes\r\npor Mueble\r\n";
+            // 
+            // tx_cant
+            // 
+            this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_cant.Location = new System.Drawing.Point(871, 17);
+            this.tx_cant.Name = "tx_cant";
+            this.tx_cant.Size = new System.Drawing.Size(34, 26);
+            this.tx_cant.TabIndex = 8;
+            this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(807, 18);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 26);
+            this.label8.TabIndex = 357;
+            this.label8.Text = "Cantidad\r\nde Muebles\r\n";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(137, 4);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(40, 13);
+            this.label15.TabIndex = 354;
+            this.label15.Text = "Código";
+            // 
+            // tx_d_codi
+            // 
+            this.tx_d_codi.Location = new System.Drawing.Point(75, 18);
+            this.tx_d_codi.Name = "tx_d_codi";
+            this.tx_d_codi.ReadOnly = true;
+            this.tx_d_codi.Size = new System.Drawing.Size(170, 20);
+            this.tx_d_codi.TabIndex = 2;
+            this.tx_d_codi.Tag = "Id";
+            this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(38, 3);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(36, 13);
+            this.label13.TabIndex = 352;
+            this.label13.Text = "Id.Alm";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
+            // tx_d_id
+            // 
+            this.tx_d_id.Location = new System.Drawing.Point(38, 18);
+            this.tx_d_id.Name = "tx_d_id";
+            this.tx_d_id.Size = new System.Drawing.Size(37, 20);
+            this.tx_d_id.TabIndex = 0;
+            this.tx_d_id.Tag = "Id";
+            this.tx_d_id.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_id.Leave += new System.EventHandler(this.tx_d_id_Leave);
             // 
             // label21
             // 
@@ -1297,116 +1408,6 @@
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tx_d_id
-            // 
-            this.tx_d_id.Location = new System.Drawing.Point(38, 18);
-            this.tx_d_id.Name = "tx_d_id";
-            this.tx_d_id.Size = new System.Drawing.Size(37, 20);
-            this.tx_d_id.TabIndex = 0;
-            this.tx_d_id.Tag = "Id";
-            this.tx_d_id.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_id.Leave += new System.EventHandler(this.tx_d_id_Leave);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(38, 3);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(36, 13);
-            this.label13.TabIndex = 352;
-            this.label13.Text = "Id.Alm";
-            this.label13.Click += new System.EventHandler(this.label13_Click);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(137, 4);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(40, 13);
-            this.label15.TabIndex = 354;
-            this.label15.Text = "Código";
-            // 
-            // tx_d_codi
-            // 
-            this.tx_d_codi.Location = new System.Drawing.Point(75, 18);
-            this.tx_d_codi.Name = "tx_d_codi";
-            this.tx_d_codi.ReadOnly = true;
-            this.tx_d_codi.Size = new System.Drawing.Size(170, 20);
-            this.tx_d_codi.TabIndex = 2;
-            this.tx_d_codi.Tag = "Id";
-            this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_paq
-            // 
-            this.tx_paq.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_paq.Location = new System.Drawing.Point(977, 17);
-            this.tx_paq.Name = "tx_paq";
-            this.tx_paq.Size = new System.Drawing.Size(35, 26);
-            this.tx_paq.TabIndex = 9;
-            this.tx_paq.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(915, 17);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 26);
-            this.label3.TabIndex = 358;
-            this.label3.Text = "Paquetes\r\npor Mueble\r\n";
-            // 
-            // tx_cant
-            // 
-            this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_cant.Location = new System.Drawing.Point(871, 17);
-            this.tx_cant.Name = "tx_cant";
-            this.tx_cant.Size = new System.Drawing.Size(34, 26);
-            this.tx_cant.TabIndex = 8;
-            this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(807, 18);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(62, 26);
-            this.label8.TabIndex = 357;
-            this.label8.Text = "Cantidad\r\nde Muebles\r\n";
-            // 
-            // bt_gen_etiq
-            // 
-            this.bt_gen_etiq.Location = new System.Drawing.Point(432, 39);
-            this.bt_gen_etiq.Name = "bt_gen_etiq";
-            this.bt_gen_etiq.Size = new System.Drawing.Size(147, 23);
-            this.bt_gen_etiq.TabIndex = 10;
-            this.bt_gen_etiq.Text = "Genera Etiqueta";
-            this.bt_gen_etiq.UseVisualStyleBackColor = true;
-            this.bt_gen_etiq.Click += new System.EventHandler(this.bt_gen_etiq_Click);
-            // 
-            // crystalReportViewer1
-            // 
-            this.crystalReportViewer1.ActiveViewIndex = -1;
-            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crystalReportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crystalReportViewer1.Location = new System.Drawing.Point(0, 0);
-            this.crystalReportViewer1.Name = "crystalReportViewer1";
-            this.crystalReportViewer1.Size = new System.Drawing.Size(569, 306);
-            this.crystalReportViewer1.TabIndex = 0;
-            this.crystalReportViewer1.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
-            // 
-            // bt_imp_etiq
-            // 
-            this.bt_imp_etiq.Image = global::iOMG.Properties.Resources.ticket32;
-            this.bt_imp_etiq.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bt_imp_etiq.Location = new System.Drawing.Point(823, 332);
-            this.bt_imp_etiq.Name = "bt_imp_etiq";
-            this.bt_imp_etiq.Size = new System.Drawing.Size(87, 38);
-            this.bt_imp_etiq.TabIndex = 11;
-            this.bt_imp_etiq.Text = "Imprime";
-            this.bt_imp_etiq.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.bt_imp_etiq.UseVisualStyleBackColor = true;
-            this.bt_imp_etiq.Click += new System.EventHandler(this.bt_imp_etiq_Click);
-            // 
             // repsalmac
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1449,9 +1450,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabEtiq.ResumeLayout(false);
+            this.pan_view.ResumeLayout(false);
             this.pan_datos.ResumeLayout(false);
             this.pan_datos.PerformLayout();
-            this.pan_view.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1574,5 +1575,6 @@
         private System.Windows.Forms.Button bt_gen_etiq;
         private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         private System.Windows.Forms.Button bt_imp_etiq;
+        private System.Drawing.Printing.PrintDocument printDocument1;
     }
 }
