@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 
 namespace iOMG
 {
@@ -55,9 +57,9 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1)
+            if (keyData == Keys.F1 && (tx_d_id.Focused == true || tx_d_codi.Focused == true))
             {
-                // nada
+                
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class
@@ -479,6 +481,84 @@ namespace iOMG
                     return;
                 }
             }
+        }
+        private void label13_Click(object sender, EventArgs e)
+        {
+            // error
+        }
+        private void tx_d_id_Leave(object sender, EventArgs e)                  // busca codigo y jala datos en almloc
+        {
+            if (tx_d_id.Text.Trim() != "")
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    string consulta = "select a.id,a.codig,a.nombr,a.medid,m.descrizionerid,e.descrizionerid " +
+                        "from almloc a left join desc_mad m on m.idcodice=a.mader left join desc_est e on e.idcodice=a.acaba " +
+                        "where a.id=@alm";
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@alm", tx_d_id.Text.Trim());
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_d_codi.Text = dr.GetString(1);
+                        tx_d_nom.Text = dr.GetString(2);
+                        tx_d_med.Text = dr.GetString(3);
+                        tx_d_mad.Text = dr.GetString(4);
+                        tx_d_est.Text = dr.GetString(5);
+                    }
+                    dr.Close();
+                    tx_cant.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conectividad");
+                    return;
+                }
+                conn.Close();
+            }
+        }
+        private void bt_gen_etiq_Click(object sender, EventArgs e)              // genera etiqueta
+        {
+            if(tx_cant.Text.Trim() == "")
+            {
+                tx_cant.Focus();
+                return;
+            }
+            if(tx_paq.Text.Trim() == "")
+            {
+                tx_paq.Focus();
+                return;
+            }
+            repsalmacen de = new repsalmacen();     // xsd
+            repsalmacen.etiq_mov1Row row = de.etiq_mov1.Newetiq_mov1Row();
+            row.capmodmad = tx_d_codi.ToString().Substring(0, 5);
+            row.nombre = tx_d_nom.Text.Trim();
+            row.medidas = tx_d_med.Text.Trim();
+            row.idalm = tx_d_id.Text.Trim();
+            row.codigo = tx_d_codi.Text.Trim();
+            de.etiq_mov1.Addetiq_mov1Row(row);
+
+            etiq_mov1 eti = new etiq_mov1();
+            //eti.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperEnvelope9;
+            eti.SetDataSource(de);
+            crystalReportViewer1.BorderStyle = BorderStyle.None;
+            crystalReportViewer1.DisplayToolbar = false;    // true
+            crystalReportViewer1.Zoom(100);
+            crystalReportViewer1.ShowLogo = false;
+            //crystalReportViewer1.Width = 1180;
+            //crystalReportViewer1.Height = 770;
+            crystalReportViewer1.ReportSource = eti;
+        }
+        private void bt_imp_etiq_Click(object sender, EventArgs e)
+        {
+            ReportDocument rd = new ReportDocument();
+            //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
+            rd.Load("etiq_mov1.rpt");
+            //
+            rd.Refresh();
+            rd.PrintToPrinter(2, true, 1, 2);
         }
 
         #region advancedatagridview

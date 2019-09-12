@@ -605,8 +605,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.toolStrip1);
             this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "almovfis";
             this.Text = "Movimientos físicos";
             this.Load += new System.EventHandler(this.almovfis_Load);

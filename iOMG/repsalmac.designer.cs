@@ -72,6 +72,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabSal = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.rb_sal_ajust = new System.Windows.Forms.RadioButton();
+            this.rb_sal_vtas = new System.Windows.Forms.RadioButton();
+            this.rb_sal_mov = new System.Windows.Forms.RadioButton();
+            this.rb_sal_todos = new System.Windows.Forms.RadioButton();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.bt_salidas = new System.Windows.Forms.Button();
             this.dgv_salidas = new System.Windows.Forms.DataGridView();
             this.dtp_final_sal = new System.Windows.Forms.DateTimePicker();
@@ -113,15 +122,28 @@
             this.bt_karfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.groupBox19 = new System.Windows.Forms.GroupBox();
-            this.groupBox20 = new System.Windows.Forms.GroupBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.rb_sal_todos = new System.Windows.Forms.RadioButton();
-            this.rb_sal_mov = new System.Windows.Forms.RadioButton();
-            this.rb_sal_vtas = new System.Windows.Forms.RadioButton();
-            this.rb_sal_ajust = new System.Windows.Forms.RadioButton();
+            this.tabEtiq = new System.Windows.Forms.TabPage();
+            this.pan_datos = new System.Windows.Forms.Panel();
+            this.pan_view = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tx_d_est = new System.Windows.Forms.TextBox();
+            this.tx_d_mad = new System.Windows.Forms.TextBox();
+            this.tx_d_med = new System.Windows.Forms.TextBox();
+            this.tx_d_nom = new System.Windows.Forms.TextBox();
+            this.tx_d_id = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tx_d_codi = new System.Windows.Forms.TextBox();
+            this.tx_paq = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tx_cant = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.bt_gen_etiq = new System.Windows.Forms.Button();
+            this.crystalReportViewer1 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.bt_imp_etiq = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -130,6 +152,9 @@
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).BeginInit();
             this.tabSal.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.groupBox19.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabstock.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
@@ -141,9 +166,9 @@
             this.groupBox5.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox15.SuspendLayout();
-            this.groupBox19.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.tabEtiq.SuspendLayout();
+            this.pan_datos.SuspendLayout();
+            this.pan_view.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -408,6 +433,7 @@
             this.tabControl1.Controls.Add(this.tabSal);
             this.tabControl1.Controls.Add(this.tabstock);
             this.tabControl1.Controls.Add(this.tabvtas);
+            this.tabControl1.Controls.Add(this.tabEtiq);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -614,6 +640,99 @@
             this.tabSal.TabIndex = 1;
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.rb_sal_ajust);
+            this.panel2.Controls.Add(this.rb_sal_vtas);
+            this.panel2.Controls.Add(this.rb_sal_mov);
+            this.panel2.Controls.Add(this.rb_sal_todos);
+            this.panel2.Location = new System.Drawing.Point(81, 8);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(248, 34);
+            this.panel2.TabIndex = 365;
+            // 
+            // rb_sal_ajust
+            // 
+            this.rb_sal_ajust.AutoSize = true;
+            this.rb_sal_ajust.Location = new System.Drawing.Point(191, 8);
+            this.rb_sal_ajust.Name = "rb_sal_ajust";
+            this.rb_sal_ajust.Size = new System.Drawing.Size(54, 17);
+            this.rb_sal_ajust.TabIndex = 3;
+            this.rb_sal_ajust.TabStop = true;
+            this.rb_sal_ajust.Text = "Ajuste";
+            this.rb_sal_ajust.UseVisualStyleBackColor = true;
+            // 
+            // rb_sal_vtas
+            // 
+            this.rb_sal_vtas.AutoSize = true;
+            this.rb_sal_vtas.Location = new System.Drawing.Point(127, 8);
+            this.rb_sal_vtas.Name = "rb_sal_vtas";
+            this.rb_sal_vtas.Size = new System.Drawing.Size(58, 17);
+            this.rb_sal_vtas.TabIndex = 2;
+            this.rb_sal_vtas.TabStop = true;
+            this.rb_sal_vtas.Text = "Ventas";
+            this.rb_sal_vtas.UseVisualStyleBackColor = true;
+            // 
+            // rb_sal_mov
+            // 
+            this.rb_sal_mov.AutoSize = true;
+            this.rb_sal_mov.Location = new System.Drawing.Point(67, 8);
+            this.rb_sal_mov.Name = "rb_sal_mov";
+            this.rb_sal_mov.Size = new System.Drawing.Size(59, 17);
+            this.rb_sal_mov.TabIndex = 1;
+            this.rb_sal_mov.TabStop = true;
+            this.rb_sal_mov.Text = "Movim.";
+            this.rb_sal_mov.UseVisualStyleBackColor = true;
+            // 
+            // rb_sal_todos
+            // 
+            this.rb_sal_todos.AutoSize = true;
+            this.rb_sal_todos.Location = new System.Drawing.Point(6, 8);
+            this.rb_sal_todos.Name = "rb_sal_todos";
+            this.rb_sal_todos.Size = new System.Drawing.Size(55, 17);
+            this.rb_sal_todos.TabIndex = 0;
+            this.rb_sal_todos.TabStop = true;
+            this.rb_sal_todos.Text = "Todos";
+            this.rb_sal_todos.UseVisualStyleBackColor = true;
+            // 
+            // groupBox19
+            // 
+            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox19.Controls.Add(this.groupBox20);
+            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox19.Location = new System.Drawing.Point(376, 45);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Size = new System.Drawing.Size(162, 1);
+            this.groupBox19.TabIndex = 364;
+            this.groupBox19.TabStop = false;
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Location = new System.Drawing.Point(0, -26);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(164, 1);
+            this.groupBox20.TabIndex = 113;
+            this.groupBox20.TabStop = false;
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox15.Controls.Add(this.groupBox16);
+            this.groupBox15.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox15.Location = new System.Drawing.Point(376, 23);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(162, 1);
+            this.groupBox15.TabIndex = 363;
+            this.groupBox15.TabStop = false;
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Location = new System.Drawing.Point(0, -26);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(164, 1);
+            this.groupBox16.TabIndex = 113;
+            this.groupBox16.TabStop = false;
             // 
             // bt_salidas
             // 
@@ -1058,98 +1177,235 @@
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
             // 
-            // groupBox15
+            // tabEtiq
             // 
-            this.groupBox15.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox15.Controls.Add(this.groupBox16);
-            this.groupBox15.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox15.Location = new System.Drawing.Point(376, 23);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(162, 1);
-            this.groupBox15.TabIndex = 363;
-            this.groupBox15.TabStop = false;
+            this.tabEtiq.Controls.Add(this.bt_imp_etiq);
+            this.tabEtiq.Controls.Add(this.pan_view);
+            this.tabEtiq.Controls.Add(this.pan_datos);
+            this.tabEtiq.Location = new System.Drawing.Point(4, 22);
+            this.tabEtiq.Name = "tabEtiq";
+            this.tabEtiq.Size = new System.Drawing.Size(1029, 377);
+            this.tabEtiq.TabIndex = 7;
+            this.tabEtiq.Text = "Etiquetas";
+            this.tabEtiq.UseVisualStyleBackColor = true;
             // 
-            // groupBox16
+            // pan_datos
             // 
-            this.groupBox16.Location = new System.Drawing.Point(0, -26);
-            this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(164, 1);
-            this.groupBox16.TabIndex = 113;
-            this.groupBox16.TabStop = false;
+            this.pan_datos.Controls.Add(this.bt_gen_etiq);
+            this.pan_datos.Controls.Add(this.tx_paq);
+            this.pan_datos.Controls.Add(this.label3);
+            this.pan_datos.Controls.Add(this.tx_cant);
+            this.pan_datos.Controls.Add(this.label8);
+            this.pan_datos.Controls.Add(this.label15);
+            this.pan_datos.Controls.Add(this.tx_d_codi);
+            this.pan_datos.Controls.Add(this.label13);
+            this.pan_datos.Controls.Add(this.tx_d_id);
+            this.pan_datos.Controls.Add(this.label21);
+            this.pan_datos.Controls.Add(this.label19);
+            this.pan_datos.Controls.Add(this.label18);
+            this.pan_datos.Controls.Add(this.label17);
+            this.pan_datos.Controls.Add(this.tx_d_est);
+            this.pan_datos.Controls.Add(this.tx_d_mad);
+            this.pan_datos.Controls.Add(this.tx_d_med);
+            this.pan_datos.Controls.Add(this.tx_d_nom);
+            this.pan_datos.Location = new System.Drawing.Point(3, 2);
+            this.pan_datos.Name = "pan_datos";
+            this.pan_datos.Size = new System.Drawing.Size(1023, 64);
+            this.pan_datos.TabIndex = 0;
             // 
-            // groupBox19
+            // pan_view
             // 
-            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox19.Controls.Add(this.groupBox20);
-            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox19.Location = new System.Drawing.Point(376, 45);
-            this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Size = new System.Drawing.Size(162, 1);
-            this.groupBox19.TabIndex = 364;
-            this.groupBox19.TabStop = false;
+            this.pan_view.Controls.Add(this.crystalReportViewer1);
+            this.pan_view.Location = new System.Drawing.Point(248, 68);
+            this.pan_view.Name = "pan_view";
+            this.pan_view.Size = new System.Drawing.Size(569, 306);
+            this.pan_view.TabIndex = 0;
             // 
-            // groupBox20
+            // label21
             // 
-            this.groupBox20.Location = new System.Drawing.Point(0, -26);
-            this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Size = new System.Drawing.Size(164, 1);
-            this.groupBox20.TabIndex = 113;
-            this.groupBox20.TabStop = false;
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(719, 4);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(50, 13);
+            this.label21.TabIndex = 341;
+            this.label21.Text = "Acabado";
             // 
-            // panel2
+            // label19
             // 
-            this.panel2.Controls.Add(this.rb_sal_ajust);
-            this.panel2.Controls.Add(this.rb_sal_vtas);
-            this.panel2.Controls.Add(this.rb_sal_mov);
-            this.panel2.Controls.Add(this.rb_sal_todos);
-            this.panel2.Location = new System.Drawing.Point(81, 8);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(248, 34);
-            this.panel2.TabIndex = 365;
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(664, 4);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(43, 13);
+            this.label19.TabIndex = 339;
+            this.label19.Text = "Madera";
             // 
-            // rb_sal_todos
+            // label18
             // 
-            this.rb_sal_todos.AutoSize = true;
-            this.rb_sal_todos.Location = new System.Drawing.Point(6, 8);
-            this.rb_sal_todos.Name = "rb_sal_todos";
-            this.rb_sal_todos.Size = new System.Drawing.Size(55, 17);
-            this.rb_sal_todos.TabIndex = 0;
-            this.rb_sal_todos.TabStop = true;
-            this.rb_sal_todos.Text = "Todos";
-            this.rb_sal_todos.UseVisualStyleBackColor = true;
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(583, 4);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(47, 13);
+            this.label18.TabIndex = 338;
+            this.label18.Text = "Medidas";
             // 
-            // rb_sal_mov
+            // label17
             // 
-            this.rb_sal_mov.AutoSize = true;
-            this.rb_sal_mov.Location = new System.Drawing.Point(67, 8);
-            this.rb_sal_mov.Name = "rb_sal_mov";
-            this.rb_sal_mov.Size = new System.Drawing.Size(59, 17);
-            this.rb_sal_mov.TabIndex = 1;
-            this.rb_sal_mov.TabStop = true;
-            this.rb_sal_mov.Text = "Movim.";
-            this.rb_sal_mov.UseVisualStyleBackColor = true;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(369, 4);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(44, 13);
+            this.label17.TabIndex = 337;
+            this.label17.Text = "Nombre";
             // 
-            // rb_sal_vtas
+            // tx_d_est
             // 
-            this.rb_sal_vtas.AutoSize = true;
-            this.rb_sal_vtas.Location = new System.Drawing.Point(127, 8);
-            this.rb_sal_vtas.Name = "rb_sal_vtas";
-            this.rb_sal_vtas.Size = new System.Drawing.Size(58, 17);
-            this.rb_sal_vtas.TabIndex = 2;
-            this.rb_sal_vtas.TabStop = true;
-            this.rb_sal_vtas.Text = "Ventas";
-            this.rb_sal_vtas.UseVisualStyleBackColor = true;
+            this.tx_d_est.Location = new System.Drawing.Point(714, 18);
+            this.tx_d_est.Name = "tx_d_est";
+            this.tx_d_est.ReadOnly = true;
+            this.tx_d_est.Size = new System.Drawing.Size(61, 20);
+            this.tx_d_est.TabIndex = 7;
+            this.tx_d_est.Tag = "Id";
+            this.tx_d_est.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // rb_sal_ajust
+            // tx_d_mad
             // 
-            this.rb_sal_ajust.AutoSize = true;
-            this.rb_sal_ajust.Location = new System.Drawing.Point(191, 8);
-            this.rb_sal_ajust.Name = "rb_sal_ajust";
-            this.rb_sal_ajust.Size = new System.Drawing.Size(54, 17);
-            this.rb_sal_ajust.TabIndex = 3;
-            this.rb_sal_ajust.TabStop = true;
-            this.rb_sal_ajust.Text = "Ajuste";
-            this.rb_sal_ajust.UseVisualStyleBackColor = true;
+            this.tx_d_mad.Location = new System.Drawing.Point(658, 18);
+            this.tx_d_mad.Name = "tx_d_mad";
+            this.tx_d_mad.ReadOnly = true;
+            this.tx_d_mad.Size = new System.Drawing.Size(56, 20);
+            this.tx_d_mad.TabIndex = 5;
+            this.tx_d_mad.Tag = "Id";
+            this.tx_d_mad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_d_med
+            // 
+            this.tx_d_med.Location = new System.Drawing.Point(553, 18);
+            this.tx_d_med.Name = "tx_d_med";
+            this.tx_d_med.ReadOnly = true;
+            this.tx_d_med.Size = new System.Drawing.Size(105, 20);
+            this.tx_d_med.TabIndex = 4;
+            this.tx_d_med.Tag = "Id";
+            this.tx_d_med.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_d_nom
+            // 
+            this.tx_d_nom.Location = new System.Drawing.Point(245, 18);
+            this.tx_d_nom.Name = "tx_d_nom";
+            this.tx_d_nom.ReadOnly = true;
+            this.tx_d_nom.Size = new System.Drawing.Size(308, 20);
+            this.tx_d_nom.TabIndex = 3;
+            this.tx_d_nom.Tag = "Id";
+            this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_d_id
+            // 
+            this.tx_d_id.Location = new System.Drawing.Point(38, 18);
+            this.tx_d_id.Name = "tx_d_id";
+            this.tx_d_id.Size = new System.Drawing.Size(37, 20);
+            this.tx_d_id.TabIndex = 0;
+            this.tx_d_id.Tag = "Id";
+            this.tx_d_id.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_id.Leave += new System.EventHandler(this.tx_d_id_Leave);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(38, 3);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(36, 13);
+            this.label13.TabIndex = 352;
+            this.label13.Text = "Id.Alm";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(137, 4);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(40, 13);
+            this.label15.TabIndex = 354;
+            this.label15.Text = "Código";
+            // 
+            // tx_d_codi
+            // 
+            this.tx_d_codi.Location = new System.Drawing.Point(75, 18);
+            this.tx_d_codi.Name = "tx_d_codi";
+            this.tx_d_codi.ReadOnly = true;
+            this.tx_d_codi.Size = new System.Drawing.Size(170, 20);
+            this.tx_d_codi.TabIndex = 2;
+            this.tx_d_codi.Tag = "Id";
+            this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_paq
+            // 
+            this.tx_paq.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_paq.Location = new System.Drawing.Point(977, 17);
+            this.tx_paq.Name = "tx_paq";
+            this.tx_paq.Size = new System.Drawing.Size(35, 26);
+            this.tx_paq.TabIndex = 9;
+            this.tx_paq.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(915, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(60, 26);
+            this.label3.TabIndex = 358;
+            this.label3.Text = "Paquetes\r\npor Mueble\r\n";
+            // 
+            // tx_cant
+            // 
+            this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_cant.Location = new System.Drawing.Point(871, 17);
+            this.tx_cant.Name = "tx_cant";
+            this.tx_cant.Size = new System.Drawing.Size(34, 26);
+            this.tx_cant.TabIndex = 8;
+            this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(807, 18);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 26);
+            this.label8.TabIndex = 357;
+            this.label8.Text = "Cantidad\r\nde Muebles\r\n";
+            // 
+            // bt_gen_etiq
+            // 
+            this.bt_gen_etiq.Location = new System.Drawing.Point(432, 39);
+            this.bt_gen_etiq.Name = "bt_gen_etiq";
+            this.bt_gen_etiq.Size = new System.Drawing.Size(147, 23);
+            this.bt_gen_etiq.TabIndex = 10;
+            this.bt_gen_etiq.Text = "Genera Etiqueta";
+            this.bt_gen_etiq.UseVisualStyleBackColor = true;
+            this.bt_gen_etiq.Click += new System.EventHandler(this.bt_gen_etiq_Click);
+            // 
+            // crystalReportViewer1
+            // 
+            this.crystalReportViewer1.ActiveViewIndex = -1;
+            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer1.Location = new System.Drawing.Point(0, 0);
+            this.crystalReportViewer1.Name = "crystalReportViewer1";
+            this.crystalReportViewer1.Size = new System.Drawing.Size(569, 306);
+            this.crystalReportViewer1.TabIndex = 0;
+            this.crystalReportViewer1.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
+            // 
+            // bt_imp_etiq
+            // 
+            this.bt_imp_etiq.Image = global::iOMG.Properties.Resources.ticket32;
+            this.bt_imp_etiq.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.bt_imp_etiq.Location = new System.Drawing.Point(823, 332);
+            this.bt_imp_etiq.Name = "bt_imp_etiq";
+            this.bt_imp_etiq.Size = new System.Drawing.Size(87, 38);
+            this.bt_imp_etiq.TabIndex = 11;
+            this.bt_imp_etiq.Text = "Imprime";
+            this.bt_imp_etiq.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.bt_imp_etiq.UseVisualStyleBackColor = true;
+            this.bt_imp_etiq.Click += new System.EventHandler(this.bt_imp_etiq_Click);
             // 
             // repsalmac
             // 
@@ -1174,6 +1430,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).EndInit();
             this.tabSal.ResumeLayout(false);
             this.tabSal.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.groupBox19.ResumeLayout(false);
+            this.groupBox15.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.tabstock.ResumeLayout(false);
             this.tabstock.PerformLayout();
@@ -1188,10 +1448,10 @@
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox15.ResumeLayout(false);
-            this.groupBox19.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.tabEtiq.ResumeLayout(false);
+            this.pan_datos.ResumeLayout(false);
+            this.pan_datos.PerformLayout();
+            this.pan_view.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1292,5 +1552,27 @@
         private System.Windows.Forms.GroupBox groupBox20;
         private System.Windows.Forms.GroupBox groupBox15;
         private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.TabPage tabEtiq;
+        private System.Windows.Forms.Panel pan_view;
+        private System.Windows.Forms.Panel pan_datos;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox tx_d_est;
+        private System.Windows.Forms.TextBox tx_d_mad;
+        private System.Windows.Forms.TextBox tx_d_med;
+        private System.Windows.Forms.TextBox tx_d_nom;
+        private System.Windows.Forms.TextBox tx_d_id;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tx_d_codi;
+        private System.Windows.Forms.TextBox tx_paq;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tx_cant;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button bt_gen_etiq;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
+        private System.Windows.Forms.Button bt_imp_etiq;
     }
 }

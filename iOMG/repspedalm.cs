@@ -545,7 +545,8 @@ namespace iOMG
             {
                 consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
                     "space(1) as item,space(1) as nombre,space(1) as madera, '' as piedra,'' as medidas,sum(d.cant) as cant,sum(d.saldo) as saldo," +
-                    "space(1) as acabado,a.status,trim(a.origen),'' as estado,'' as cmadera,'' as cpiedra,d.fingreso,a.coment " +
+                    "space(1) as acabado,a.status,trim(a.origen),'' as estado,'' as cmadera,'' as cpiedra," +
+                    "if(d.fingreso='0000-00-00',NULL,d.fingreso) AS fingreso,a.coment " +
                     "from pedidos a left join detaped d on d.pedidoh=a.codped " +
                     "left join desc_stp b on b.idcodice=a.status " +
                     "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
@@ -556,7 +557,8 @@ namespace iOMG
             {
                 consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
                     "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
-                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso,'' as coment " +
+                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra," +
+                    "if(d.fingreso='0000-00-00',NULL,d.fingreso) AS fingreso,'' as coment " +
                     "from pedidos a left join detaped d on d.pedidoh=a.codped " +
                     "left join desc_stp b on b.idcodice=a.status " +
                     "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +

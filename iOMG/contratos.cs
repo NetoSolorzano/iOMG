@@ -3136,7 +3136,7 @@ namespace iOMG
             rowcabeza.contrato = tx_codped.Text;
             rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
             rowcabeza.id = "0";
-            rowcabeza.localVen = cmb_taller.Text;     //.SelectedText.ToString();
+            rowcabeza.localVen = cmb_taller.Text.PadRight(22).Substring(8,15);     //.SelectedText.ToString();
             rowcabeza.nomClie = tx_nombre.Text.Trim();
             rowcabeza.numDoc = tx_ndc.Text.Trim();
             if (cmb_tdoc.SelectedIndex == -1) rowcabeza.tipDoc = "";

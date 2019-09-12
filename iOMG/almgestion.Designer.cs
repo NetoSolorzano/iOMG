@@ -617,8 +617,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.toolStrip1);
             this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "almgestion";
             this.Text = "Gestión de Almacén";
             this.Load += new System.EventHandler(this.almgestion_Load);

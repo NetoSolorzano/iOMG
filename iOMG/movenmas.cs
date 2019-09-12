@@ -360,7 +360,9 @@ namespace iOMG
                     MySqlCommand conproc = new MySqlCommand(proced, cn);
                     conproc.CommandType = CommandType.StoredProcedure;
                     conproc.Parameters.AddWithValue("@pedido", tx_idped.Text.Trim());
-                    conproc.Parameters.AddWithValue("@enuevo", MySqlDbType.String).Direction = ParameterDirection.Output;
+                    conproc.Parameters.AddWithValue("@enuevo", "");
+                    conproc.Parameters["@enuevo"].Direction = ParameterDirection.Output;
+                    // conproc.Parameters.AddWithValue("@enuevo", MySqlDbType.String).Direction = ParameterDirection.Output;
                     conproc.ExecuteNonQuery();
                 }
                 cn.Close();

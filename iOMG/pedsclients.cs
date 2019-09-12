@@ -2127,7 +2127,7 @@ namespace iOMG
             rowcabeza.coment = tx_coment.Text;
             rowcabeza.contrato = tx_cont.Text;
             rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
-            rowcabeza.ciudad_des = cmb_destino.Text.PadRight(15).Substring(9,15); //tx_ciudades.Text;
+            rowcabeza.ciudad_des = cmb_destino.Text.PadRight(15).Substring(0,15); //tx_ciudades.Text;
             rowcabeza.status = (tx_status.Text == nomanu)? tx_status.Text:"";
             reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
             //

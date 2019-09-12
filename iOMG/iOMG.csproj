@@ -166,6 +166,12 @@
     <Compile Include="enlaces.designer.cs">
       <DependentUpon>enlaces.cs</DependentUpon>
     </Compile>
+    <Compile Include="etiq_mov1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>etiq_mov1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="facelec.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -458,6 +464,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="enlaces.resx">
       <DependentUpon>enlaces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="etiq_mov1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>etiq_mov1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="facelec.resx">
       <DependentUpon>facelec.cs</DependentUpon>
