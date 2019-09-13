@@ -3501,6 +3501,12 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columncodigo;
             
+            private global::System.Data.DataColumn columnconpaq;
+            
+            private global::System.Data.DataColumn columntotpaq;
+            
+            private global::System.Data.DataColumn columnacabado;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public etiq_mov1DataTable() {
@@ -3576,6 +3582,30 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn conpaqColumn {
+                get {
+                    return this.columnconpaq;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn totpaqColumn {
+                get {
+                    return this.columntotpaq;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn acabadoColumn {
+                get {
+                    return this.columnacabado;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3611,14 +3641,17 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public etiq_mov1Row Addetiq_mov1Row(string capmodmad, string idalm, string nombre, string medidas, string codigo) {
+            public etiq_mov1Row Addetiq_mov1Row(string capmodmad, string idalm, string nombre, string medidas, string codigo, string conpaq, string totpaq, string acabado) {
                 etiq_mov1Row rowetiq_mov1Row = ((etiq_mov1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         capmodmad,
                         idalm,
                         nombre,
                         medidas,
-                        codigo};
+                        codigo,
+                        conpaq,
+                        totpaq,
+                        acabado};
                 rowetiq_mov1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowetiq_mov1Row);
                 return rowetiq_mov1Row;
@@ -3646,6 +3679,9 @@ namespace iOMG {
                 this.columnnombre = base.Columns["nombre"];
                 this.columnmedidas = base.Columns["medidas"];
                 this.columncodigo = base.Columns["codigo"];
+                this.columnconpaq = base.Columns["conpaq"];
+                this.columntotpaq = base.Columns["totpaq"];
+                this.columnacabado = base.Columns["acabado"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3661,6 +3697,12 @@ namespace iOMG {
                 base.Columns.Add(this.columnmedidas);
                 this.columncodigo = new global::System.Data.DataColumn("codigo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncodigo);
+                this.columnconpaq = new global::System.Data.DataColumn("conpaq", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnconpaq);
+                this.columntotpaq = new global::System.Data.DataColumn("totpaq", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntotpaq);
+                this.columnacabado = new global::System.Data.DataColumn("acabado", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnacabado);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6103,6 +6145,54 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string conpaq {
+                get {
+                    try {
+                        return ((string)(this[this.tableetiq_mov1.conpaqColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'conpaq\' de la tabla \'etiq_mov1\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableetiq_mov1.conpaqColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string totpaq {
+                get {
+                    try {
+                        return ((string)(this[this.tableetiq_mov1.totpaqColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'totpaq\' de la tabla \'etiq_mov1\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableetiq_mov1.totpaqColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string acabado {
+                get {
+                    try {
+                        return ((string)(this[this.tableetiq_mov1.acabadoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'acabado\' de la tabla \'etiq_mov1\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableetiq_mov1.acabadoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IscapmodmadNull() {
                 return this.IsNull(this.tableetiq_mov1.capmodmadColumn);
             }
@@ -6159,6 +6249,42 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetcodigoNull() {
                 this[this.tableetiq_mov1.codigoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsconpaqNull() {
+                return this.IsNull(this.tableetiq_mov1.conpaqColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetconpaqNull() {
+                this[this.tableetiq_mov1.conpaqColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstotpaqNull() {
+                return this.IsNull(this.tableetiq_mov1.totpaqColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettotpaqNull() {
+                this[this.tableetiq_mov1.totpaqColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsacabadoNull() {
+                return this.IsNull(this.tableetiq_mov1.acabadoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetacabadoNull() {
+                this[this.tableetiq_mov1.acabadoColumn] = global::System.Convert.DBNull;
             }
         }
         

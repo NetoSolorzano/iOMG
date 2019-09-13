@@ -534,7 +534,7 @@ namespace iOMG
             }
             repsalmacen de = new repsalmacen();     // xsd
             repsalmacen.etiq_mov1Row row = de.etiq_mov1.Newetiq_mov1Row();
-            row.capmodmad = tx_d_codi.ToString().Substring(0, 5);
+            row.capmodmad = tx_d_codi.Text.ToString().Substring(0, 5);
             row.nombre = tx_d_nom.Text.Trim();
             row.medidas = tx_d_med.Text.Trim();
             row.idalm = tx_d_id.Text.Trim();
@@ -553,18 +553,33 @@ namespace iOMG
         }
         private void bt_imp_etiq_Click(object sender, EventArgs e)
         {
+            /*
             PrintDocument pd = new PrintDocument();
             pd.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom", 365, 300);       // me quede aca !! 11-09-2019
             pd.DefaultPageSettings.PaperSize.RawKind = 119;
             pd.PrinterSettings.DefaultPageSettings.PaperSize.RawKind = 119;
             pd.DefaultPageSettings.Landscape = false;
-            //
+            */
             ReportDocument rd = new ReportDocument();
-            //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
-            rd.Load("etiq_mov1.rpt");
-            //
-            rd.Refresh();
-            rd.PrintToPrinter(1, true, 1, 1);
+            rd.Load("etiq_mov3.rpt");           //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
+            for(int i=1; i<=int.Parse(tx_paq.Text); i++)
+            {
+                rd.SetDataSource("");
+                rd.Refresh();
+                repsalmacen de = new repsalmacen();     // xsd
+                repsalmacen.etiq_mov1Row row = de.etiq_mov1.Newetiq_mov1Row();
+                row.capmodmad = tx_d_codi.Text.ToString().Substring(0, 5);
+                row.nombre = tx_d_nom.Text.Trim();
+                row.medidas = tx_d_med.Text.Trim();
+                row.idalm = tx_d_id.Text.Trim();
+                row.codigo = tx_d_codi.Text.Trim();
+                row.conpaq = i.ToString();
+                row.totpaq = tx_paq.Text.Trim();
+                de.etiq_mov1.Addetiq_mov1Row(row);
+                rd.SetDataSource(de);
+                //
+                rd.PrintToPrinter(1, true, 1, 1);
+            }
         }
 
         #region advancedatagridview

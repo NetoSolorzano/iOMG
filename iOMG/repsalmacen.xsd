@@ -143,6 +143,9 @@
               <xs:element name="nombre" msprop:Generator_ColumnVarNameInTable="columnnombre" msprop:Generator_ColumnPropNameInRow="nombre" msprop:Generator_ColumnPropNameInTable="nombreColumn" msprop:Generator_UserColumnName="nombre" type="xs:string" minOccurs="0" />
               <xs:element name="medidas" msprop:Generator_ColumnVarNameInTable="columnmedidas" msprop:Generator_ColumnPropNameInRow="medidas" msprop:Generator_ColumnPropNameInTable="medidasColumn" msprop:Generator_UserColumnName="medidas" type="xs:string" minOccurs="0" />
               <xs:element name="codigo" msprop:Generator_ColumnVarNameInTable="columncodigo" msprop:Generator_ColumnPropNameInRow="codigo" msprop:Generator_ColumnPropNameInTable="codigoColumn" msprop:Generator_UserColumnName="codigo" type="xs:string" minOccurs="0" />
+              <xs:element name="conpaq" msprop:Generator_ColumnVarNameInTable="columnconpaq" msprop:Generator_ColumnPropNameInRow="conpaq" msprop:Generator_ColumnPropNameInTable="conpaqColumn" msprop:Generator_UserColumnName="conpaq" type="xs:string" minOccurs="0" />
+              <xs:element name="totpaq" msprop:Generator_ColumnVarNameInTable="columntotpaq" msprop:Generator_ColumnPropNameInRow="totpaq" msprop:Generator_ColumnPropNameInTable="totpaqColumn" msprop:Generator_UserColumnName="totpaq" type="xs:string" minOccurs="0" />
+              <xs:element name="acabado" msprop:Generator_ColumnVarNameInTable="columnacabado" msprop:Generator_ColumnPropNameInRow="acabado" msprop:Generator_ColumnPropNameInTable="acabadoColumn" msprop:Generator_UserColumnName="acabado" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
