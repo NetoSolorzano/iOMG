@@ -539,6 +539,8 @@ namespace iOMG
             row.medidas = tx_d_med.Text.Trim();
             row.idalm = tx_d_id.Text.Trim();
             row.codigo = tx_d_codi.Text.Trim();
+            row.conpaq = tx_cant.Text.Trim();
+            row.totpaq = tx_paq.Text.Trim();
             de.etiq_mov1.Addetiq_mov1Row(row);
 
             etiq_mov1 eti = new etiq_mov1();
@@ -555,7 +557,7 @@ namespace iOMG
         {
             /*
             PrintDocument pd = new PrintDocument();
-            pd.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom", 365, 300);       // me quede aca !! 11-09-2019
+            pd.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom", 365, 300);
             pd.DefaultPageSettings.PaperSize.RawKind = 119;
             pd.PrinterSettings.DefaultPageSettings.PaperSize.RawKind = 119;
             pd.DefaultPageSettings.Landscape = false;
