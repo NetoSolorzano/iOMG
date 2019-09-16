@@ -67,7 +67,7 @@ namespace iOMG
             float alt_rec_cod = 200.0F;                                  // alto rectangulo codigo
             float anc_rec_res = 250.0F;                                 // ancho rectangulo resto
             float alt_rec_res = 200.0F;                                  // alto rectangulo resto
-            float anc_rec_mad = 200.0F;                                 // ancho rectangulo madera      // 250.0F
+            float anc_rec_mad = 190.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
             float alt_rec_mad = 200.0F;                                  // alto rectangulo codigo
             float anc_rec_id = 250.0F;                                  // ancho rectangulo ID
             float alt_rec_id = 80.0F;                                   // alto rectangulo ID
