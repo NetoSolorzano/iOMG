@@ -123,17 +123,17 @@
             // 
             this.tx_nuser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tx_nuser.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_nuser.Location = new System.Drawing.Point(125, 1);
+            this.tx_nuser.Location = new System.Drawing.Point(123, 1);
             this.tx_nuser.Name = "tx_nuser";
             this.tx_nuser.ReadOnly = true;
-            this.tx_nuser.Size = new System.Drawing.Size(133, 21);
+            this.tx_nuser.Size = new System.Drawing.Size(193, 21);
             this.tx_nuser.TabIndex = 4;
             // 
             // tx_empresa
             // 
             this.tx_empresa.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tx_empresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_empresa.Location = new System.Drawing.Point(364, 1);
+            this.tx_empresa.Location = new System.Drawing.Point(417, 1);
             this.tx_empresa.Name = "tx_empresa";
             this.tx_empresa.ReadOnly = true;
             this.tx_empresa.Size = new System.Drawing.Size(249, 21);
@@ -143,7 +143,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(274, 4);
+            this.label2.Location = new System.Drawing.Point(328, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 16);
             this.label2.TabIndex = 2;
@@ -153,7 +153,7 @@
             // 
             this.tx_user.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tx_user.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_user.Location = new System.Drawing.Point(59, 1);
+            this.tx_user.Location = new System.Drawing.Point(58, 1);
             this.tx_user.Name = "tx_user";
             this.tx_user.ReadOnly = true;
             this.tx_user.Size = new System.Drawing.Size(65, 21);

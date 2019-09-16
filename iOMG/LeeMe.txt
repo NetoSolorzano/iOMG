@@ -71,7 +71,9 @@ REPORTES
 - Reporte de reservas ........................................... ok
 - Kardex de almacen ............................................. ok ... OJo, se modifico la estructura de la tabla kardex. SE DEBE DESHABILITAR grabacam() en almgestion
 - reporte de salidas y autorizaciones ........................... ok
-- Impresion de etiquetas de movimiento ..........................	.... etiquetas chicas
+- Impresion de etiquetas de movimiento .......................... ok .... etiquetas chicas
+- Cuadrar la impresion de la etiqueta de almacen ................ ok
+
 
 
 

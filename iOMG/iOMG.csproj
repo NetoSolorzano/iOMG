@@ -172,17 +172,11 @@
       <DependentUpon>etiq_mov1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="etiq_mov2.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>etiq_mov2.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="etiq_mov3.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>etiq_mov3.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="facelec.cs">
       <SubType>Form</SubType>
@@ -480,10 +474,6 @@
     <EmbeddedResource Include="etiq_mov1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>etiq_mov1.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="etiq_mov2.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>etiq_mov2.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="etiq_mov3.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Windows.Forms;
 
 namespace iOMG
@@ -35,8 +33,14 @@ namespace iOMG
 
         private void impresor_Load(object sender, EventArgs e)
         {
-            //printDocument1.Print();
+            PrinterSettings ps = new PrinterSettings();
+            IEnumerable<PaperSize> paperSizes = ps.PaperSizes.Cast<PaperSize>();
+            PaperSize sizeA5 = paperSizes.First<PaperSize>(size => size.Kind == PaperKind.A5);
+            ps.DefaultPageSettings.PaperSize = sizeA5;
+            ps.DefaultPageSettings.Landscape = true;
+            //
             printPreviewDialog1.Document = printDocument1;
+            printDocument1.PrinterSettings = ps;
             printPreviewDialog1.ShowDialog();
             this.Close();
         }
@@ -44,13 +48,12 @@ namespace iOMG
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             // GENERALES
-            printDocument1.DefaultPageSettings.Landscape = true;        // pagina en horizontal
             int pagini = e.PageSettings.PrinterSettings.FromPage;       // num pag inicio
             int pagfin = e.PageSettings.PrinterSettings.ToPage;         // num pag final
             float largo = e.PageBounds.Height - 10.0F;                  // largo de la pagina
             float ancho_pag = e.PageSettings.PaperSize.Width - 40.0F;   // ancho de la pagina
             float mar_sup = 20.0F;                                      // margen superior de la impresion
-            float mar_izq = 20.0F;                                      // margen izquierdo de la impresion
+            float mar_izq = 10.0F;                                      // margen izquierdo de la impresion // 20.0F
             // tipos y tamaños de letra
             Font lt_codigo = new Font("Arial", 80);                      // tipo y tamaño de letra rect_codigo
             Font lt_resto = new Font("Arial", 20);                       // tipo y tamaño de letra rect_resto
@@ -64,7 +67,7 @@ namespace iOMG
             float alt_rec_cod = 200.0F;                                  // alto rectangulo codigo
             float anc_rec_res = 250.0F;                                 // ancho rectangulo resto
             float alt_rec_res = 200.0F;                                  // alto rectangulo resto
-            float anc_rec_mad = 250.0F;                                 // ancho rectangulo madera
+            float anc_rec_mad = 200.0F;                                 // ancho rectangulo madera      // 250.0F
             float alt_rec_mad = 200.0F;                                  // alto rectangulo codigo
             float anc_rec_id = 250.0F;                                  // ancho rectangulo ID
             float alt_rec_id = 80.0F;                                   // alto rectangulo ID

@@ -555,13 +555,6 @@ namespace iOMG
         }
         private void bt_imp_etiq_Click(object sender, EventArgs e)
         {
-            /*
-            PrintDocument pd = new PrintDocument();
-            pd.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom", 365, 300);
-            pd.DefaultPageSettings.PaperSize.RawKind = 119;
-            pd.PrinterSettings.DefaultPageSettings.PaperSize.RawKind = 119;
-            pd.DefaultPageSettings.Landscape = false;
-            */
             ReportDocument rd = new ReportDocument();
             rd.Load("etiq_mov3.rpt");           //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
             for(int i=1; i<=int.Parse(tx_paq.Text); i++)
