@@ -26,7 +26,7 @@ namespace iOMG
             // reporte de stock
             if (_datosreporte.cab_stock.Rows.Count > 0)
             {
-                if (_datosreporte.cab_stock.Rows[0]["id"].ToString() == "Checked")
+                if (_datosreporte.cab_stock.Rows[0]["valorizado"].ToString() == "Checked")
                 {
                     rep_stock _resumen = new rep_stock();                       // stock valorizado
                     _resumen.SetDataSource(_datosreporte);

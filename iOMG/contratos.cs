@@ -727,19 +727,43 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@tip", tip);
                             micon.Parameters.AddWithValue("@dt1", de1);
                             //micon.Parameters.AddWithValue("@dt3", de3);
-                            //MySqlDataReader dr = micon.ExecuteReader();
                             MySqlDataAdapter da = new MySqlDataAdapter(micon);
                             DataTable dtm = new DataTable();
                             da.Fill(dtm);
                             if (dtm.Rows.Count == 0)
                             {
-                                MessageBox.Show("No existe en la base de datos0!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                tx_d_nom.Text = "";
-                                tx_d_med.Text = "";
-                                tx_d_mad.Text = "";
-                                tx_d_det2.Text = "";
-                                tx_d_est.Text = "";
-                                return;
+                                var aaa = MessageBox.Show("No existe en la base de items" + Environment.NewLine +
+                                    "Busca en el stock?", "Atención - confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                if (aaa == DialogResult.Yes)
+                                {
+                                    if (busstock(tx_d_codi.Text) == false)
+                                    {
+                                        MessageBox.Show("No existe en el stock", "Error en códido", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        tx_d_nom.Text = "";
+                                        tx_d_med.Text = "";
+                                        tx_d_mad.Text = "";
+                                        tx_d_det2.Text = "";
+                                        tx_d_est.Text = "";
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        dtm.Dispose();
+                                        conn.Close();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    tx_d_nom.Text = "";
+                                    tx_d_med.Text = "";
+                                    tx_d_mad.Text = "";
+                                    tx_d_det2.Text = "";
+                                    tx_d_est.Text = "";
+                                    dtm.Dispose();
+                                    conn.Close();
+                                    return;
+                                }
                             }
                             string gol = "";
                             for (int i = 0; i < dtm.Rows.Count; i++)
@@ -782,18 +806,38 @@ namespace iOMG
                             }
                             if (gol == "")
                             {
-                                MessageBox.Show("No existe en la base de datos1!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                tx_d_nom.Text = "";
-                                tx_d_med.Text = "";
-                                tx_d_mad.Text = "";
-                                tx_d_det2.Text = "";
-                                tx_d_est.Text = "";
-                                return;
+                                var aa = MessageBox.Show("No existe en la base de datos de items!" + Environment.NewLine + 
+                                    "Busca en el stock?", "Atención - Confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                if (aa == DialogResult.Yes)     // buscamos si existe en el stock
+                                {
+                                    if (busstock(tx_d_codi.Text) == false)
+                                    {
+                                        MessageBox.Show("No existe en el stock", "Error en códido", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        tx_d_nom.Text = "";
+                                        tx_d_med.Text = "";
+                                        tx_d_mad.Text = "";
+                                        tx_d_det2.Text = "";
+                                        tx_d_est.Text = "";
+                                        conn.Close();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    tx_d_nom.Text = "";
+                                    tx_d_med.Text = "";
+                                    tx_d_mad.Text = "";
+                                    tx_d_det2.Text = "";
+                                    tx_d_est.Text = "";
+                                    conn.Close();
+                                    return;
+                                }
                             }
                         }
                         else
                         {
                             MessageBox.Show("No se puede conectar a la base de datos", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            conn.Close();
                             return;
                         }
                     }
@@ -805,6 +849,43 @@ namespace iOMG
                     return;
                 }
             }
+        }
+        private bool busstock(string codigo)                                    // busca codigo en stock y retorna true o false
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return retorna;
+            }
+            string busca = "select a.nombr,a.medid,a.mader,m.descrizionerid,d2.descrizionerid,e.descrizionerid from almloc a " +
+                "left join desc_mad m on trim(m.idcodice)=trim(a.mader) " +
+                "left join desc_dt2 d2 on trim(d2.idcodice)=trim(a.deta2) " +
+                "left join desc_est e on trim(e.idcodice)=trim(a.acaba) " +
+                "where left(insert(a.codig,11,2,'XX'),18)=@cc";
+            MySqlCommand micon = new MySqlCommand(busca, conn);
+            micon.Parameters.AddWithValue("@cc", codigo);
+            MySqlDataReader dr = micon.ExecuteReader();
+            if (dr.HasRows)
+            {
+                if (dr.Read())
+                {
+                    tx_d_nom.Text = dr.GetString(0);
+                    tx_d_med.Text = dr.GetString(1);
+                    tx_d_mad.Text = dr.GetString(2);
+                    tx_dat_mad.Text = dr.GetString(3);
+                    tx_d_det2.Text = dr.GetString(4);
+                    tx_d_est.Text = dr.GetString(5);
+                    retorna = true;
+                    tx_d_can.Focus();
+                }
+            }
+            dr.Close();
+            conn.Close();
+            return retorna;
         }
         private void jalaoc(string campo)                                       // jala datos del contrato
         {
@@ -851,7 +932,9 @@ namespace iOMG
                         dtp_pedido.Value = Convert.ToDateTime(row["fecha"].ToString());     // fecha 
                         tx_idcli.Text = row["cliente"].ToString();                          // id del cliente
                         jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
-                        dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
+                        //dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
+                        if (advancedDataGridView1.CurrentRow.Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
+                        else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
                         tx_coment.Text = row["coment"].ToString();                          // comentario
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
                         tx_valor.Text = row["valor"].ToString();                            // valor del contrato

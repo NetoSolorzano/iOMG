@@ -356,9 +356,9 @@ namespace iOMG
 
         private void cuadre()
         {
-            ControlBox = false;
-            MaximizeBox = false;
-            MinimizeBox = false;
+            ControlBox = true;
+            MaximizeBox = true;
+            MinimizeBox = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Text = Program.tituloF;
             Left = Screen.PrimaryScreen.Bounds.Left;
