@@ -36,15 +36,15 @@ namespace iOMG
             if (parm1 == "reserva")
             {
                 panel3.Visible = true;
-                panel3.Left = 7;
-                panel3.Top = 30;
+                panel3.Left = 2;    // 7
+                panel3.Top = 25;     // 30
                 panel4.Visible = false;
             }
             if (parm1 == "salida")
             {
                 panel4.Visible = true;
-                panel4.Left = 7;
-                panel4.Top = 30;
+                panel4.Left = 2;    // 7
+                panel4.Top = 25;     // 30
                 panel3.Visible = false;
                 rb_mov.Checked = true;
                 combos();
@@ -285,7 +285,7 @@ namespace iOMG
             try
             {
                 DataTable dt2 = new DataTable();
-                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),trim(c.nombre),c.cant,c.saldo " +
+                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(insert(c.item,11,2,'')),trim(c.nombre),c.cant,c.saldo " +
                     "from contrat a " +
                     "left join anag_cli b on b.idanagrafica=a.cliente " +
                     "left join detacon c on c.contratoh=a.contrato " +

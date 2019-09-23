@@ -75,10 +75,3 @@ REPORTES
 - Cuadrar la impresion de la etiqueta de almacen ................ ok
 
 
-
-
-
-
-
-
-

@@ -70,24 +70,21 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.Crimson;
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(2, 377);
+            this.panel1.Location = new System.Drawing.Point(2, 370);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(415, 25);
+            this.panel1.Size = new System.Drawing.Size(415, 28);
             this.panel1.TabIndex = 14;
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button1.BackColor = System.Drawing.Color.Red;
             this.button1.Location = new System.Drawing.Point(331, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 22);
+            this.button1.Size = new System.Drawing.Size(80, 24);
             this.button1.TabIndex = 16;
             this.button1.Text = "Graba";
             this.button1.UseVisualStyleBackColor = true;
@@ -102,7 +99,7 @@
             this.panel2.Controls.Add(this.bt_close);
             this.panel2.Location = new System.Drawing.Point(1, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(416, 23);
+            this.panel2.Size = new System.Drawing.Size(418, 23);
             this.panel2.TabIndex = 16;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             // 
@@ -127,15 +124,13 @@
             this.bt_close.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.bt_close.Location = new System.Drawing.Point(392, 2);
             this.bt_close.Name = "bt_close";
-            this.bt_close.Size = new System.Drawing.Size(18, 18);
+            this.bt_close.Size = new System.Drawing.Size(20, 18);
             this.bt_close.TabIndex = 14;
             this.bt_close.UseVisualStyleBackColor = true;
             this.bt_close.Click += new System.EventHandler(this.bt_close_Click);
             // 
             // panel3
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.Controls.Add(this.tx_idr);
             this.panel3.Controls.Add(this.tx_comres);
             this.panel3.Controls.Add(this.label3);
@@ -149,7 +144,7 @@
             this.panel3.Controls.Add(this.lb_cliente);
             this.panel3.Controls.Add(this.tx_contra);
             this.panel3.Controls.Add(this.lb_contra);
-            this.panel3.Location = new System.Drawing.Point(3, 30);
+            this.panel3.Location = new System.Drawing.Point(2, 27);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(413, 100);
             this.panel3.TabIndex = 18;
@@ -265,19 +260,15 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(2, 136);
+            this.dataGridView1.Location = new System.Drawing.Point(1, 128);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(415, 223);
+            this.dataGridView1.Size = new System.Drawing.Size(414, 241);
             this.dataGridView1.TabIndex = 20;
             // 
             // panel4
             // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.Controls.Add(this.tx_dat_dest);
             this.panel4.Controls.Add(this.cmb_dest);
             this.panel4.Controls.Add(this.label5);
@@ -292,12 +283,12 @@
             this.panel4.Controls.Add(this.label9);
             this.panel4.Location = new System.Drawing.Point(3, 167);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(413, 100);
+            this.panel4.Size = new System.Drawing.Size(412, 100);
             this.panel4.TabIndex = 21;
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(178, 30);
+            this.tx_dat_dest.Location = new System.Drawing.Point(176, 30);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(58, 20);
             this.tx_dat_dest.TabIndex = 14;
@@ -308,7 +299,7 @@
             this.cmb_dest.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_dest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_dest.FormattingEnabled = true;
-            this.cmb_dest.Location = new System.Drawing.Point(307, 29);
+            this.cmb_dest.Location = new System.Drawing.Point(305, 29);
             this.cmb_dest.Name = "cmb_dest";
             this.cmb_dest.Size = new System.Drawing.Size(104, 21);
             this.cmb_dest.TabIndex = 13;
@@ -317,7 +308,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(239, 34);
+            this.label5.Location = new System.Drawing.Point(237, 34);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(66, 13);
             this.label5.TabIndex = 12;
@@ -326,7 +317,7 @@
             // dtp_fsal
             // 
             this.dtp_fsal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fsal.Location = new System.Drawing.Point(320, 5);
+            this.dtp_fsal.Location = new System.Drawing.Point(318, 5);
             this.dtp_fsal.Name = "dtp_fsal";
             this.dtp_fsal.Size = new System.Drawing.Size(92, 20);
             this.dtp_fsal.TabIndex = 11;
@@ -334,7 +325,7 @@
             // rb_ajuste
             // 
             this.rb_ajuste.AutoSize = true;
-            this.rb_ajuste.Location = new System.Drawing.Point(98, 23);
+            this.rb_ajuste.Location = new System.Drawing.Point(96, 23);
             this.rb_ajuste.Name = "rb_ajuste";
             this.rb_ajuste.Size = new System.Drawing.Size(54, 17);
             this.rb_ajuste.TabIndex = 1;
@@ -346,7 +337,7 @@
             // rb_mov
             // 
             this.rb_mov.AutoSize = true;
-            this.rb_mov.Location = new System.Drawing.Point(98, 4);
+            this.rb_mov.Location = new System.Drawing.Point(96, 4);
             this.rb_mov.Name = "rb_mov";
             this.rb_mov.Size = new System.Drawing.Size(78, 17);
             this.rb_mov.TabIndex = 0;
@@ -357,7 +348,7 @@
             // 
             // tx_comsal
             // 
-            this.tx_comsal.Location = new System.Drawing.Point(83, 76);
+            this.tx_comsal.Location = new System.Drawing.Point(81, 76);
             this.tx_comsal.Name = "tx_comsal";
             this.tx_comsal.Size = new System.Drawing.Size(329, 20);
             this.tx_comsal.TabIndex = 4;
@@ -365,7 +356,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 80);
+            this.label4.Location = new System.Drawing.Point(6, 80);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 13);
             this.label4.TabIndex = 10;
@@ -374,7 +365,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(250, 8);
+            this.label7.Location = new System.Drawing.Point(248, 8);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(69, 13);
             this.label7.TabIndex = 4;
@@ -382,7 +373,7 @@
             // 
             // tx_evento
             // 
-            this.tx_evento.Location = new System.Drawing.Point(83, 54);
+            this.tx_evento.Location = new System.Drawing.Point(81, 54);
             this.tx_evento.Name = "tx_evento";
             this.tx_evento.Size = new System.Drawing.Size(329, 20);
             this.tx_evento.TabIndex = 3;
@@ -390,7 +381,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 58);
+            this.label8.Location = new System.Drawing.Point(6, 58);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 13);
             this.label8.TabIndex = 2;
@@ -399,7 +390,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 15);
+            this.label9.Location = new System.Drawing.Point(6, 15);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(73, 13);
             this.label9.TabIndex = 0;
@@ -410,7 +401,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(420, 405);
+            this.ClientSize = new System.Drawing.Size(418, 401);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);
