@@ -889,28 +889,25 @@ namespace iOMG
                             // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
-                            micon.Parameters.AddWithValue("@cped", tx_codped.Text);
-                            micon.Parameters.AddWithValue("@tipo", tx_dat_tiped.Text);
-                            micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());   // row.Cells["cant"].Value.ToString()
                             micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[2].Value.ToString());   // row.Cells["item"].Value.ToString()
+                            micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());   // row.Cells["cant"].Value.ToString()
                             micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());   // row.Cells["nombre"].Value.ToString()
                             micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());   // row.Cells["medidas"].Value.ToString()
                             micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[5].Value.ToString());   //row.Cells[5].Value.ToString()            // codigo madera
                             micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // row.Cells[9].Value.ToString()
-                            micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());   // row.Cells["saldo"].Value.ToString()
-                            micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[6].Value.ToString());   // row.Cells["piedra"].Value.ToString()
+                            micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());   // row.Cells["piedra"].Value.ToString()
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());   // row.Cells["coment"].Value.ToString()
-                            micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[14].Value.ToString());   // row.Cells["total"].Value.ToString()
-                            micon.Parameters.AddWithValue("@tota", dataGridView1.Rows[i].Cells[14].Value.ToString());   // row.Cells["total"].Value.ToString()
-                            micon.Parameters.AddWithValue("@iddc", dataGridView1.Rows[i].Cells[16].Value.ToString());   // row.Cells["iddetc"].Value.ToString()
+                            if (dataGridView1.Rows[i].Cells[12].Value.ToString() != "00/00/0000") micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                            else micon.Parameters.AddWithValue("@fing", DBNull.Value);
+                            micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());   // row.Cells["saldo"].Value.ToString()
                             micon.ExecuteNonQuery();
                             // me quede aca viendo si el contrato tiene saldo por muebles pedidos o reservados .. NO DEBERIA ..
                             // actualizacion de saldos en el contrato
-                            micon = new MySqlCommand(actua, conn);
-                            micon.Parameters.AddWithValue("@can", row.Cells["cant"].Value.ToString());
-                            micon.Parameters.AddWithValue("@idd", row.Cells["iddetc"].Value.ToString());   // columna id detacon
-                                                                                                           //micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                            micon.ExecuteNonQuery();
+                            //micon = new MySqlCommand(actua, conn);
+                            //micon.Parameters.AddWithValue("@can", row.Cells["cant"].Value.ToString());
+                            //micon.Parameters.AddWithValue("@idd", row.Cells["iddetc"].Value.ToString());   // columna id detacon
+                            //micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                            //micon.ExecuteNonQuery();
                             retorna = true;
                         }
                     }
@@ -2004,7 +2001,7 @@ namespace iOMG
                                 dtg.Rows[i][4] = tx_cliente.Text.Trim();
                                 dtg.Rows[i][5] = "";
                                 dtg.Rows[i][6] = tx_dat_orig.Text;
-                                dtg.Rows[i][7] = "";
+                                dtg.Rows[i][7] = tx_dat_dest.Text;
                                 dtg.Rows[i][8] = dtp_pedido.Value.ToString("yyy-MM-dd");
                                 dtg.Rows[i][9] = dtp_entreg.Value.ToString("yyy-MM-dd");
                                 dtg.Rows[i][10] = tx_coment.Text;

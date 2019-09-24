@@ -400,7 +400,6 @@
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(46, 20);
             this.tx_dat_dest.TabIndex = 312;
-            this.tx_dat_dest.Visible = false;
             // 
             // groupBox7
             // 
