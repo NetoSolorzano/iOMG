@@ -1223,6 +1223,7 @@ namespace iOMG
             tx_dat_tiped.Text = tipede;
             cmb_tipo.Enabled = false;
             tx_codped.ReadOnly = true;
+            tx_cont.ReadOnly = false;
             dtp_fingreso.Checked = false;
             dtp_fingreso.Enabled = false;
             tx_saldo.ReadOnly = false;
@@ -1659,10 +1660,12 @@ namespace iOMG
             if (Tx_modo.Text != "NUEVO" && dataGridView1.Rows.Count > 0)
             {
                 // dataGridView1.Columns[2].Name = "item";
-                DataTable dt = (DataTable)dataGridView1.DataSource;
-                foreach(DataRow row in dt.Rows)   // DataGridViewRow row in dataGridView1.Rows
+                //DataTable dt = (DataTable)dataGridView1.DataSource;
+                foreach(DataGridViewRow row in dataGridView1.Rows)   // DataRow row in dt.Rows
                 {
-                    row[2] = row[2].ToString().Substring(0, 10) + tx_codta.Text.Trim() + row[2].ToString().Substring(12, 6);
+                    //row[2] = row[2].ToString().Substring(0, 10) + tx_codta.Text.Trim() + row[2].ToString().Substring(12, 6);
+                    if (row.Cells[2].Value != null && row.Cells[2].Value.ToString() != "")
+                        row.Cells[2].Value = row.Cells[2].Value.ToString().Substring(0, 10) + tx_codta.Text.Trim() + row.Cells[2].Value.ToString().Substring(12, 6);
                 }
             }
         }
@@ -1689,6 +1692,8 @@ namespace iOMG
         {
             if (Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text.Trim() == "")
             {
+                tx_cont.ReadOnly = true;
+                tx_codped.ReadOnly = true;
                 jalaoc("tx_codped");
             }
         }
@@ -1762,6 +1767,8 @@ namespace iOMG
                 tx_idr.Text = idr;
                 tx_rind.Text = rind;
                 tx_dat_tiped.Text = tipede;
+                tx_cont.ReadOnly = true;
+                tx_codped.ReadOnly = true;
                 jalaoc("tx_idr");
             }
         }
@@ -1869,40 +1876,86 @@ namespace iOMG
                 tx_d_can.Focus();
                 return;
             }
+            if (int.Parse(tx_d_can.Text) <= 0)
+            {
+                MessageBox.Show("La cantidad debe ser mayor a cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                tx_d_can.Focus();
+                return;
+            }
             if (tx_d_codi.Text.Trim() == "")
             {
                 MessageBox.Show("Ingrese el código del artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_d_codi.Focus();
                 return;
             }
-            //
-            if (Tx_modo.Text == "NUEVO")
+            // validamos cant item  validar que la cantidad no sea > cantidad del contrato
+            bool pasa = false;
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
-                if (tx_d_id.Text.Trim() == "")   // es nuevo
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_det2.Text, tx_acab.Text, tx_d_com.Text,tx_d_est.Text,
-                            tx_dat_mad.Text, "", "", tx_saldo.Text, tx_d_precio.Text, "N", tx_d_iddc.Text);
-                }
-            }
-            if (Tx_modo.Text == "EDITAR")
-            {
-                if (tx_d_id.Text.Trim() != "")  // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
-                {
-                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
-                    obj.Cells[8].Value = tx_d_com.Text;
-                    obj.Cells[1].Value = tx_d_can.Text;
-                    obj.Cells[13].Value = tx_d_can.Text;
-                    obj.Cells[15].Value = "A";  // registro actualizado
+                    string busca = "select cant from detacon where contratoh=@cont and item=@item";
+                    using (MySqlCommand micon = new MySqlCommand(busca, conn))
+                    {
+                        string cod = tx_d_codi.Text.Substring(0, 10) + "XX" + tx_d_codi.Text.Substring(12, 6);
+                        micon.Parameters.AddWithValue("@cont", tx_cont.Text.Trim());
+                        micon.Parameters.AddWithValue("@item", cod);
+                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        {
+                            int vc = 0;
+                            if (dr.Read())
+                            {
+                                //MessageBox.Show(cod, tx_cont.Text.Trim());
+                                vc = dr.GetInt32(0);
+                                if (int.Parse(tx_d_can.Text) > vc)
+                                {
+                                    MessageBox.Show("La cantidad pedida es mayor al contrato", "Error - corrija",
+                                        MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                    tx_d_can.Focus();
+                                    pasa = false;
+                                }
+                                else
+                                {
+                                    pasa = true;
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    // es nuevo ... NO PUEDE HABER NUEVOS ACA.... 05/08/2019
+                    MessageBox.Show("No se puede validar con el contrato", "Imposible conectarse al servidor",
+                        MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
-            dtp_fingreso.Checked = false;
-            dtp_fingreso.Value = DateTime.Now;
-            limpia_panel(panel1);               // limpia panel1
+            if (pasa == true)
+            {
+                if (Tx_modo.Text == "NUEVO")
+                {
+                    dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                                tx_d_mad.Text, tx_d_det2.Text, tx_acab.Text, tx_d_com.Text, tx_d_est.Text,
+                            tx_dat_mad.Text, "", "", tx_saldo.Text, tx_d_precio.Text, "N", tx_d_iddc.Text);
+                }
+                if (Tx_modo.Text == "EDITAR")
+                {
+                    if (tx_d_id.Text.Trim() != "")  // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
+                    {
+                        DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                        obj.Cells[8].Value = tx_d_com.Text;
+                        obj.Cells[1].Value = tx_d_can.Text;
+                        obj.Cells[13].Value = tx_d_can.Text;
+                        obj.Cells[15].Value = "A";  // registro actualizado
+                    }
+                    else
+                    {
+                        MessageBox.Show("No es posible agregar en este modo", "Modo Edición");
+                    }
+                }
+                dtp_fingreso.Checked = false;
+                dtp_fingreso.Value = DateTime.Now;
+                limpia_panel(panel1);               // limpia panel1
+            }
         }
         private void button1_Click(object sender, EventArgs e)      // graba pedido cabecera y detalle
         {
@@ -1947,7 +2000,7 @@ namespace iOMG
                     dr[4] = tx_cliente.Text.Trim();
                     dr[5] = "";
                     dr[6] = tx_dat_orig.Text;
-                    dr[7] = "";
+                    dr[7] = tx_dat_dest.Text;
                     dr[8] = dtp_pedido.Value.ToString("yyy-MM-dd");
                     dr[9] = dtp_entreg.Value.ToString("yyy-MM-dd");
                     dr[10] = tx_coment.Text;

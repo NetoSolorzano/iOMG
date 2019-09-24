@@ -130,6 +130,7 @@
             this.tx_idr = new iOMG.NumericTextBox();
             this.tx_rind = new iOMG.NumericTextBox();
             this.tx_cant = new iOMG.NumericTextBox();
+            this.tx_dat_cant = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -1106,12 +1107,22 @@
             this.tx_cant.ReadOnly = true;
             this.tx_cant.Size = new System.Drawing.Size(40, 20);
             this.tx_cant.TabIndex = 305;
+            this.tx_cant.Leave += new System.EventHandler(this.tx_cant_Leave);
+            // 
+            // tx_dat_cant
+            // 
+            this.tx_dat_cant.Location = new System.Drawing.Point(211, 159);
+            this.tx_dat_cant.Name = "tx_dat_cant";
+            this.tx_dat_cant.Size = new System.Drawing.Size(25, 20);
+            this.tx_dat_cant.TabIndex = 350;
+            this.tx_dat_cant.Visible = false;
             // 
             // ingpedclts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 505);
+            this.Controls.Add(this.tx_dat_cant);
             this.Controls.Add(this.tx_dat_ped);
             this.Controls.Add(this.groupBox31);
             this.Controls.Add(this.label16);
@@ -1302,5 +1313,6 @@
         private System.Windows.Forms.Label label16;
         private NumericTextBox tx_total;
         private System.Windows.Forms.TextBox tx_dat_ped;
+        private System.Windows.Forms.TextBox tx_dat_cant;
     }
 }

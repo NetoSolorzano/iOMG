@@ -400,6 +400,7 @@
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(46, 20);
             this.tx_dat_dest.TabIndex = 312;
+            this.tx_dat_dest.Visible = false;
             // 
             // groupBox7
             // 
@@ -407,7 +408,7 @@
             this.groupBox7.Controls.Add(this.groupBox8);
             this.groupBox7.Location = new System.Drawing.Point(682, 78);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(156, 1);
+            this.groupBox7.Size = new System.Drawing.Size(155, 1);
             this.groupBox7.TabIndex = 311;
             this.groupBox7.TabStop = false;
             // 
@@ -496,7 +497,7 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Location = new System.Drawing.Point(682, 25);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(155, 1);
+            this.groupBox1.Size = new System.Drawing.Size(154, 1);
             this.groupBox1.TabIndex = 283;
             this.groupBox1.TabStop = false;
             // 

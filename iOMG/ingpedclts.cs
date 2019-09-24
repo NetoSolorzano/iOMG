@@ -610,6 +610,7 @@ namespace iOMG
                         tx_acabad.Text = dr.GetString(13);
                         tx_dat_aca.Text = dr.GetString(9);
                         tx_cant.Text = dr.GetString(4);
+                        tx_dat_cant.Text = dr.GetString(4);
                         tx_precio.Text = dr.GetString(10);
                         tx_total.Text = dr.GetString(11);
                     }
@@ -767,6 +768,8 @@ namespace iOMG
             tx_pedido.Enabled = true;
             dtp_ingreso.Enabled = true;
             //cmb_tipo.Enabled = true;
+            tx_cant.Enabled = true;
+            tx_cant.ReadOnly = false;
             tx_comen.Enabled = true;
             tx_pedido.Focus();
         }
@@ -1075,6 +1078,8 @@ namespace iOMG
             }
             if (modo == "EDITAR")
             {
+                // aca validamos que la cantidad ingresada (editada) no sea mayor a la pedida
+                // .. me quede aca
                 var aa = MessageBox.Show("Confirma que desea MODIFICAR el ingreso?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
@@ -1152,6 +1157,25 @@ namespace iOMG
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")
             {
                 jalaoc("tx_codped");                        // jalamos los datos
+            }
+        }
+        private void tx_cant_Leave(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text == "NUEVO")
+            {
+                if (tx_cant.Text.Trim() != "")
+                {
+                    if(int.Parse(tx_cant.Text) <= 0)
+                    {
+                        MessageBox.Show("La cantidad debe ser mayor a cero", "Atención - corrija");
+                        tx_cant.Focus();
+                    }
+                    if (int.Parse(tx_cant.Text) > int.Parse(tx_dat_cant.Text))
+                    {
+                        MessageBox.Show("La cantidad no debe ser mayor a la pedida", "Atención - corrija");
+                        tx_cant.Focus();
+                    }
+                }
             }
         }
         #endregion leaves;
