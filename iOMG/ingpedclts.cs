@@ -97,6 +97,7 @@ namespace iOMG
                             tx_dat_aca.Text = ayu2.ReturnValueA[9].ToString();
                             tx_acabad.Text = ayu2.ReturnValueA[13].ToString();
                             tx_cant.Text = ayu2.ReturnValueA[4].ToString();
+                            tx_dat_cant.Text = ayu2.ReturnValueA[4].ToString();
                             tx_precio.Text = ayu2.ReturnValueA[10].ToString();
                             tx_total.Text = ayu2.ReturnValueA[11].ToString();
                         }
@@ -391,6 +392,7 @@ namespace iOMG
                 tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
                 tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
                 tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
+                tx_dat_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                 tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["precio"].Value.ToString();
                 tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
                 //
@@ -421,6 +423,7 @@ namespace iOMG
                         tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
                         tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
                         tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
+                        tx_dat_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                         tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["precio"].Value.ToString();
                         tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
                         //
@@ -1079,7 +1082,45 @@ namespace iOMG
             if (modo == "EDITAR")
             {
                 // aca validamos que la cantidad ingresada (editada) no sea mayor a la pedida
-                // .. me quede aca
+                bool pasa = false;
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        string busca = "select cant from detaped where pedidoh=@pedi and item=@item";
+                        using (MySqlCommand micon = new MySqlCommand(busca, conn))
+                        {
+                            string cod = tx_item.Text.Trim();
+                            micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
+                            micon.Parameters.AddWithValue("@item", cod);
+                            using (MySqlDataReader dr = micon.ExecuteReader())
+                            {
+                                int vc = 0;
+                                if (dr.Read())
+                                {
+                                    vc = dr.GetInt32(0);
+                                    if (int.Parse(tx_cant.Text) > vc)
+                                    {
+                                        MessageBox.Show("La cantidad ingresada es mayor al pedido", "Error - corrija",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        tx_cant.Focus();
+                                        pasa = false;
+                                    }
+                                    else
+                                    {
+                                        pasa = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No fue posible conectarse al servidor", "Error de conexión");
+                        return;
+                    }
+                }
+                if (pasa == false) return;
                 var aa = MessageBox.Show("Confirma que desea MODIFICAR el ingreso?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
