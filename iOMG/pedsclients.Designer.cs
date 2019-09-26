@@ -371,6 +371,7 @@
             this.tx_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tx_status.Location = new System.Drawing.Point(583, 7);
             this.tx_status.Name = "tx_status";
+            this.tx_status.ReadOnly = true;
             this.tx_status.Size = new System.Drawing.Size(80, 20);
             this.tx_status.TabIndex = 313;
             this.tx_status.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -815,11 +816,11 @@
             // 
             this.tx_saldo.Location = new System.Drawing.Point(713, 58);
             this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.ReadOnly = true;
             this.tx_saldo.Size = new System.Drawing.Size(37, 20);
             this.tx_saldo.TabIndex = 21;
             this.tx_saldo.Tag = "Id";
             this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_saldo.Visible = false;
             // 
             // label9
             // 
@@ -829,7 +830,6 @@
             this.label9.Size = new System.Drawing.Size(34, 13);
             this.label9.TabIndex = 303;
             this.label9.Text = "Saldo";
-            this.label9.Visible = false;
             // 
             // label8
             // 

@@ -576,6 +576,7 @@ namespace iOMG
             dataGridView1.Columns[10].Visible = false;           // 
             // codigo detalle 2 (piedra)
             dataGridView1.Columns[11].Visible = true;
+            dataGridView1.Columns[11].ReadOnly = true;           // lectura o no
             // fecha de ingreso del articulo
             dataGridView1.Columns[12].Visible = true;            // columna visible o no
             dataGridView1.Columns[12].HeaderText = "F.Ingreso"; // titulo de la columna
@@ -901,7 +902,8 @@ namespace iOMG
                             else micon.Parameters.AddWithValue("@fing", DBNull.Value);
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());   // row.Cells["saldo"].Value.ToString()
                             micon.ExecuteNonQuery();
-                            // me quede aca viendo si el contrato tiene saldo por muebles pedidos o reservados .. NO DEBERIA ..
+                            // me quede aca viendo si el contrato tiene saldo por muebles pedidos o reservados
+                            // no debe permitir cambiar la cantidad > saldo
                             // actualizacion de saldos en el contrato
                             //micon = new MySqlCommand(actua, conn);
                             //micon.Parameters.AddWithValue("@can", row.Cells["cant"].Value.ToString());
@@ -1699,10 +1701,13 @@ namespace iOMG
         }
         private void tx_d_can_Leave(object sender, EventArgs e)
         {
-            tx_saldo.Text = tx_d_can.Text;
-            if (tx_d_codi.Text.Trim() != "")
+            if (Tx_modo.Text == "NUEVO")
             {
-                tx_d_codi_Leave(null, null);
+                tx_saldo.Text = tx_d_can.Text;
+                if (tx_d_codi.Text.Trim() != "")
+                {
+                    tx_d_codi_Leave(null, null);
+                }
             }
         }
         private void tx_d_codi_Leave(object sender, EventArgs e)
@@ -1941,10 +1946,11 @@ namespace iOMG
                 {
                     if (tx_d_id.Text.Trim() != "")  // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
                     {
-                        DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                        DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;    // cant editada > cant grilla? -> saldo=saldo+(dif cant edit - cant grilla)
+                        int dif = int.Parse(tx_d_can.Text) - int.Parse(obj.Cells[1].Value.ToString());
                         obj.Cells[8].Value = tx_d_com.Text;
                         obj.Cells[1].Value = tx_d_can.Text;
-                        obj.Cells[13].Value = tx_d_can.Text;
+                        obj.Cells[13].Value = (int.Parse(tx_d_can.Text) + dif).ToString();
                         obj.Cells[15].Value = "A";  // registro actualizado
                     }
                     else
@@ -2072,8 +2078,22 @@ namespace iOMG
             }
             if (Tx_modo.Text == "ANULAR")
             {
-                if(tx_status.Text != nomanu)
+                if (tx_status.Text != nomanu)
                 {
+                    // aca falta validar si el pedido fue atendido aunque sea en parte
+                    // si ingreso todo o parte del pedido YA NO SE PUEDE ANULAR, solo cerrar
+                    int tot1 = 0, tot2 = 0;
+                    for (int i=0; i < dataGridView1.Rows.Count -1; i++)
+                    {
+                        tot1 = tot1 + ((dataGridView1.Rows[i].Cells[1].Value.ToString().Trim() == "") ? 0 : int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString()));   // cant
+                        tot2 = tot2 + ((dataGridView1.Rows[i].Cells[13].Value.ToString().Trim() == "") ? 0 : int.Parse(dataGridView1.Rows[i].Cells[13].Value.ToString()));  // saldo
+                    }
+                    if (tot1 != tot2)
+                    {
+                        MessageBox.Show("El pedido no se puede anular porque registra ingreso" + Environment.NewLine +
+                            "solo se puede editar o cerrar", "No es posible continuar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                     var xx = MessageBox.Show("Confirma que desea ANULAR el presente pedido?", "Atención - Confirme",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (xx == DialogResult.Yes)
