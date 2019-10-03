@@ -1018,7 +1018,7 @@ namespace iOMG
                 {
                     tx_idc.Text = dr.GetString(2);
                     tx_cliente.Text = dr.GetString(3);
-                    //tx_ciudades.Text = dr.GetString(4); //cmb_destino.Text.PadRight(15).Substring(9,15); me quede aca
+                    //tx_ciudades.Text = dr.GetString(4); //cmb_destino.Text.PadRight(15).Substring(9,15);
                     tx_dat_dest.Text = dr.GetString(5);
                     cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
                     retorna = true;

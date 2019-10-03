@@ -378,6 +378,7 @@ namespace iOMG
                     grilladet("edita");     // obtiene contenido de grilla con DT
                     dt.Dispose();
                     da.Dispose();
+                    //MessageBox.Show(dataGridView1.Rows[0].Cells[2].Value.ToString(), dataGridView1.Rows[0].Cells[10].Value.ToString());
                 }
                 conn.Close();
             }
@@ -1024,6 +1025,7 @@ namespace iOMG
                         }
                         else
                         {
+                            MessageBox.Show(dataGridView1.Rows[i].Cells[10].Value.ToString());  //
                             insdet = "update detaped set " +
                                 "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
                                 "where iddetaped=@idr";
@@ -1033,7 +1035,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[1].Value.ToString());
                             micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
                             micon.Parameters.AddWithValue("@medi", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                            micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());
+                            micon.Parameters.AddWithValue("@made", dataGridView1.Rows[i].Cells[10].Value.ToString());   // madera
                             micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());
                             micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
@@ -1637,7 +1639,7 @@ namespace iOMG
                     obj.Cells[7].Value = tx_d_est.Text;
                     obj.Cells[8].Value = tx_d_com.Text;
                     obj.Cells[9].Value = cmb_aca.Tag.ToString();
-                    obj.Cells[10].Value = cmb_mad.Tag.ToString();
+                    obj.Cells[10].Value = cmb_mad.Tag.ToString();   //  
                     obj.Cells[11].Value = cmb_det2.Text.Substring(0, 3);  // cmb_det2.Tag.ToString();
                     if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
                     obj.Cells[13].Value = tx_saldo.Text;
@@ -2077,6 +2079,8 @@ namespace iOMG
         {
             tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
             //tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
+            //cmb_mad.Tag = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+            cmb_mad.Tag = cmb_mad.SelectedItem.ToString().Substring(0, 1);
             armani();
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
