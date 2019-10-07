@@ -769,9 +769,41 @@ namespace iOMG
                 }
             }
             if (modo == "ANULAR")       // opción para borrar
-            { 
-                // 
-
+            {
+                var aa = MessageBox.Show("Confirma que desea BORRAR el item?", "Confirme por favor", 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    {
+                        conn.Open();
+                        if (conn.State == ConnectionState.Open)
+                        {
+                            string borra = "delete from items where id=@idc";
+                            using (MySqlCommand micon = new MySqlCommand(borra, conn))
+                            {
+                                micon.Parameters.AddWithValue("@idc", tx_idr.Text.Trim());
+                                micon.ExecuteNonQuery();
+                            }
+                            // borra del datagrid
+                            if (tx_rind.Text.Trim() != "")
+                            {
+                                for (int i=0; i<=dtg.Rows.Count; i++)
+                                {
+                                    if (i == int.Parse(tx_rind.Text)) dtg.Rows[i].Delete();
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("El número de fila no existe", "No se puede borrar");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
+                        }
+                    }
+                }
             }
             if (iserror == "no")
             {
@@ -1046,6 +1078,7 @@ namespace iOMG
             limpiar(this);
             limpia_chk();
             limpia_combos();
+            tx_idr.Text = "";
             advancedDataGridView1.CurrentCell = advancedDataGridView1.Rows[0].Cells[1];
             advancedDataGridView1.CurrentCell.Selected = true;
             tx_rind.Text = advancedDataGridView1.CurrentCell.RowIndex.ToString();
@@ -1057,6 +1090,7 @@ namespace iOMG
             limpia_chk();
             limpia_combos();
             limpiar(this);
+            tx_idr.Text = "";
             int fila = advancedDataGridView1.CurrentCell.RowIndex;
             int nfil = fila - 1;
             if (nfil < 0)
@@ -1074,6 +1108,7 @@ namespace iOMG
             limpia_chk();
             limpia_combos();
             limpiar(this);
+            tx_idr.Text = "";
             int fila = advancedDataGridView1.CurrentCell.RowIndex;
             int nfil = fila + 1;
             if(nfil > advancedDataGridView1.Rows.Count - 2)
@@ -1091,6 +1126,7 @@ namespace iOMG
             limpiar(this);
             limpia_chk();
             limpia_combos();
+            tx_idr.Text = "";
             advancedDataGridView1.CurrentCell = advancedDataGridView1.Rows[ultimo].Cells[1];
             advancedDataGridView1.CurrentCell.Selected = true;
             tx_rind.Text = ultimo.ToString();//advancedDataGridView1.Rows[ultimo].Cells[0].Value.ToString();

@@ -2130,7 +2130,11 @@ namespace iOMG
         {
             if (e.ColumnIndex == 1 && Tx_modo.Text != "NUEVO")
             {
-                //string codu = "";
+                if (Tx_modo.Text == "EDITAR")
+                {
+                    tx_d_can.ReadOnly = false;
+                    tx_d_com.ReadOnly = false;
+                }
                 string idr, rind = "";
                 idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
                 rind = advancedDataGridView1.CurrentRow.Index.ToString();
