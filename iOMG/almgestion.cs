@@ -46,7 +46,9 @@ namespace iOMG
         string nomform = "almgestion";                          //
         string img_btN = "";
         string img_btE = "";
-        string img_btA = "";
+        string img_btP = "";
+        string img_btA = "";            // anula = bloquea
+        string img_btexc = "";          // exporta a excel
         string img_bti = "";
         string img_bts = "";
         string img_btr = "";
@@ -107,7 +109,9 @@ namespace iOMG
                     {
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
+                        if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
                         if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
+                        if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
                         if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
                         //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
                         // boton de vista preliminar .... esta por verse su utlidad
@@ -247,6 +251,9 @@ namespace iOMG
             Bt_edit.Image = Image.FromFile(img_btE);
             Bt_anul.Image = Image.FromFile(img_btA);
             Bt_close.Image = Image.FromFile(img_btq);
+            bt_exc.Image = Image.FromFile(img_btexc);
+            bt_prev.Image = Image.FromFile(img_btP);
+            Bt_print.Image = Image.FromFile(img_btP);
             Bt_ini.Image = Image.FromFile(img_bti);
             Bt_sig.Image = Image.FromFile(img_bts);
             Bt_ret.Image = Image.FromFile(img_btr);

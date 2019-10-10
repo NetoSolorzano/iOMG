@@ -711,7 +711,7 @@ namespace iOMG
         //
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            string url = "http://www.artesanosdonbosco.pe";
+            string url = "http://www.artesanosdonbosco.org/es/";   //--http://www.artesanosdonbosco.pe;
             Process.Start(url);
         }
         #endregion

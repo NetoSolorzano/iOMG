@@ -73,5 +73,6 @@ REPORTES
 - reporte de salidas y autorizaciones ........................... ok
 - Impresion de etiquetas de movimiento .......................... ok .... etiquetas chicas
 - Cuadrar la impresion de la etiqueta de almacen ................ ok
-- me quede de pedidos clientes, no esta permitiendo pedir un item que aun tiene saldo
+- me quede de pedidos de almacen, nuevo form para arreglar readonly en edicion 09/10/2019 ...... 
+
 
