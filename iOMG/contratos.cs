@@ -952,8 +952,15 @@ namespace iOMG
             }
             if (Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
             {
-                if (escambio.Contains(tx_dat_estad.Text)) escribepag(tabuser);
-                else sololeepag(tabuser);
+                if (escambio.Contains(tx_dat_estad.Text))
+                {
+                    escribepag(tabuser);
+                }
+                else
+                {
+                    MessageBox.Show("No se permite modificar", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    sololeepag(tabuser);
+                }
             }
         }
         private void jaladatclt(string id)                                      // jala datos del cliente

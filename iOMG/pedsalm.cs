@@ -302,7 +302,7 @@ namespace iOMG
         }
         private void jalaoc(string campo)        // jala datos de usuarios por id o nom_user
         {
-            if (campo == "tx_idr" && tx_idr.Text != "")
+            if (campo == "tx_idr" && tx_idr.Text.Trim() != "")
             {   // id,codped,tipoes,origen,destino,fecha,entrega,coment
                 // tx_idr.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // 
                 tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();     // codigo pedido
@@ -1830,8 +1830,9 @@ namespace iOMG
             }
             tabControl1.SelectedTab = tabuser;
             escribe(this);
-            Tx_modo.Text = "EDITAR";
+            escribepag(tabuser);
             button1.Image = Image.FromFile(img_grab);
+            tabControl1.SelectedTab = tabuser;
             limpiar(this);
             limpiapag(tabuser);
             limpia_otros(tabuser);
@@ -1841,7 +1842,8 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
             dtp_fingreso.Checked = false;
-            jalaoc("tx_idr");
+            //jalaoc("tx_idr");
+            Tx_modo.Text = "EDITAR";  // 
             cmb_estado.Enabled = true;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -2254,11 +2256,18 @@ namespace iOMG
                 {
                     dtp_fingreso.Enabled = true;
                     tx_saldo.Enabled = true;
+                    tx_d_can.Enabled = true; // 
+                    tx_d_can.ReadOnly = false;
+                    //tx_d_com.Enabled = true; //
+                    MessageBox.Show(panel1.Enabled.ToString());
+
                 }
                 else
                 {
                     dtp_fingreso.Enabled = false;
                     tx_saldo.Enabled = false;
+                    //tx_d_can.ReadOnly = true; //
+                    //tx_d_com.ReadOnly = true; //
                 }
                 tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
                 tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
