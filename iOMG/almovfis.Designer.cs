@@ -119,7 +119,7 @@
             this.toolStripSeparator11});
             this.toolStrip1.Location = new System.Drawing.Point(0, 494);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(967, 35);
+            this.toolStrip1.Size = new System.Drawing.Size(896, 35);
             this.toolStrip1.TabIndex = 164;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -385,7 +385,7 @@
             // 
             this.bt_etiq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_etiq.Image = global::iOMG.Properties.Resources.ticket32;
-            this.bt_etiq.Location = new System.Drawing.Point(713, 461);
+            this.bt_etiq.Location = new System.Drawing.Point(642, 461);
             this.bt_etiq.Name = "bt_etiq";
             this.bt_etiq.Size = new System.Drawing.Size(32, 33);
             this.bt_etiq.TabIndex = 180;
@@ -395,7 +395,7 @@
             // bt_bmf
             // 
             this.bt_bmf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bt_bmf.Location = new System.Drawing.Point(383, 21);
+            this.bt_bmf.Location = new System.Drawing.Point(312, 21);
             this.bt_bmf.Name = "bt_bmf";
             this.bt_bmf.Size = new System.Drawing.Size(115, 25);
             this.bt_bmf.TabIndex = 179;
@@ -406,7 +406,7 @@
             // tx_totprec
             // 
             this.tx_totprec.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.tx_totprec.Location = new System.Drawing.Point(488, 468);
+            this.tx_totprec.Location = new System.Drawing.Point(453, 468);
             this.tx_totprec.Name = "tx_totprec";
             this.tx_totprec.ReadOnly = true;
             this.tx_totprec.Size = new System.Drawing.Size(85, 20);
@@ -418,7 +418,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(409, 472);
+            this.label4.Location = new System.Drawing.Point(374, 472);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 175;
@@ -428,7 +428,7 @@
             // 
             this.bt_salida.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_salida.BackColor = System.Drawing.SystemColors.Control;
-            this.bt_salida.Location = new System.Drawing.Point(850, 4);
+            this.bt_salida.Location = new System.Drawing.Point(779, 4);
             this.bt_salida.Name = "bt_salida";
             this.bt_salida.Size = new System.Drawing.Size(95, 39);
             this.bt_salida.TabIndex = 174;
@@ -439,7 +439,7 @@
             // bt_reserva
             // 
             this.bt_reserva.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bt_reserva.Location = new System.Drawing.Point(733, 4);
+            this.bt_reserva.Location = new System.Drawing.Point(662, 4);
             this.bt_reserva.Name = "bt_reserva";
             this.bt_reserva.Size = new System.Drawing.Size(95, 39);
             this.bt_reserva.TabIndex = 173;
@@ -455,7 +455,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(2, 47);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(965, 24);
+            this.dataGridView1.Size = new System.Drawing.Size(894, 24);
             this.dataGridView1.TabIndex = 172;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
@@ -470,7 +470,7 @@
             this.advancedDataGridView1.DateWithTime = false;
             this.advancedDataGridView1.Location = new System.Drawing.Point(2, 97);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.Size = new System.Drawing.Size(965, 363);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(894, 363);
             this.advancedDataGridView1.TabIndex = 171;
             this.advancedDataGridView1.TimeFilter = false;
             this.advancedDataGridView1.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
@@ -543,7 +543,7 @@
             // bt_borra
             // 
             this.bt_borra.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bt_borra.Location = new System.Drawing.Point(551, 21);
+            this.bt_borra.Location = new System.Drawing.Point(480, 21);
             this.bt_borra.Name = "bt_borra";
             this.bt_borra.Size = new System.Drawing.Size(95, 25);
             this.bt_borra.TabIndex = 169;
@@ -559,14 +559,14 @@
             this.dataGridView2.Location = new System.Drawing.Point(2, 71);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(965, 26);
+            this.dataGridView2.Size = new System.Drawing.Size(894, 26);
             this.dataGridView2.TabIndex = 168;
             this.dataGridView2.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellLeave);
             // 
             // tx_tarti
             // 
             this.tx_tarti.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.tx_tarti.Location = new System.Drawing.Point(325, 468);
+            this.tx_tarti.Location = new System.Drawing.Point(290, 468);
             this.tx_tarti.Name = "tx_tarti";
             this.tx_tarti.ReadOnly = true;
             this.tx_tarti.Size = new System.Drawing.Size(42, 20);
@@ -578,7 +578,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(233, 472);
+            this.label2.Location = new System.Drawing.Point(198, 472);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 166;
@@ -589,7 +589,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(967, 529);
+            this.ClientSize = new System.Drawing.Size(896, 529);
             this.Controls.Add(this.bt_etiq);
             this.Controls.Add(this.bt_bmf);
             this.Controls.Add(this.tx_totprec);

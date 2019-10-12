@@ -24,6 +24,7 @@ namespace iOMG
         public string perIm = "";
         string tipede = "";
         string tiesta = "";
+        string tiesan = "";                     // tipo estado anulado
         string img_btN = "";
         string img_btE = "";
         string img_btP = "";
@@ -130,9 +131,10 @@ namespace iOMG
                     }
                     if (row["formulario"].ToString() == "pedidos")
                     {
-                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
-                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
+                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();      // tipo de pedido por defecto en almacen
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();       // estado del pedido inicial
+                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();     // letra identificadora de Piedra en Detalle2
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "anulado") tiesan = row["valor"].ToString().Trim();       // estado anulado del pedido
                     }
                 }
                 da.Dispose();
@@ -540,6 +542,10 @@ namespace iOMG
             {
                 parte2 = " and a.status=@sta";
             }
+            else
+            {
+                parte2 = " and a.status<>@sta";
+            }
             string consulta = "";
             if (chk_resu.Checked == true)
             {
@@ -580,7 +586,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@fec2", dtp_entreg.Value.ToString("yyyy-MM-dd"));
                     if (parte0 != "") micon.Parameters.AddWithValue("@tal", tx_dat_orig.Text);
                     if (parte1 != "") micon.Parameters.AddWithValue("@des", tx_dat_dest.Text);
-                    if (parte2 != "") micon.Parameters.AddWithValue("@sta", tx_dat_estad.Text);
+                    if (tx_dat_estad.Text != "") micon.Parameters.AddWithValue("@sta", tx_dat_estad.Text);
+                    else micon.Parameters.AddWithValue("@sta", tiesan);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
