@@ -184,7 +184,7 @@
             this.tabgrilla.Location = new System.Drawing.Point(4, 22);
             this.tabgrilla.Name = "tabgrilla";
             this.tabgrilla.Padding = new System.Windows.Forms.Padding(3);
-            this.tabgrilla.Size = new System.Drawing.Size(969, 435);
+            this.tabgrilla.Size = new System.Drawing.Size(888, 435);
             this.tabgrilla.TabIndex = 0;
             this.tabgrilla.Text = "Pedidos";
             this.tabgrilla.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@
             this.advancedDataGridView1.DateWithTime = false;
             this.advancedDataGridView1.Location = new System.Drawing.Point(3, 34);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.Size = new System.Drawing.Size(965, 420);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(884, 420);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.TimeFilter = false;
             this.advancedDataGridView1.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);

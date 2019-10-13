@@ -469,6 +469,14 @@ namespace iOMG
                         tx_idr.Text = rlid.GetString(0);
                     }
                     rlid.Close();
+                    // actualiza saldo del pedido
+                    string actua = "update detaped set saldo=saldo-@cant,fingreso=@fing where pedidoh=@ped and item=@ite";
+                    micon = new MySqlCommand(actua, conn);
+                    micon.Parameters.AddWithValue("@fing", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@cant", int.Parse(tx_cant.Text));
+                    micon.Parameters.AddWithValue("@ped", tx_pedido.Text);
+                    micon.Parameters.AddWithValue("@ite", tx_item.Text.Trim());
+                    micon.ExecuteNonQuery();
                     retorna = true;
                 }
                 catch (MySqlException ex)

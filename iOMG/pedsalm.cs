@@ -86,7 +86,7 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")
+            if (keyData == Keys.F1 && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
             {
                 if(cmb_fam.Focused == true || cmb_mod.Focused == true || cmb_mad.Focused == true || cmb_tip.Focused == true ||
                     cmb_det1.Focused == true || cmb_aca.Focused == true || cmb_tal.Focused == true ||
@@ -500,9 +500,11 @@ namespace iOMG
                 // datos de los pedidos
                 string datgri = "select a.id,a.codped,b.descrizionerid,a.origen,a.destino,date_format(date(a.fecha),'%Y-%m-%d') as fecha," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
-                    "from pedidos a left join desc_stp b on b.idcodice=a.status where a.tipoes=@tip";
+                    "from pedidos a left join desc_stp b on b.idcodice=a.status " +
+                    "where a.tipoes=@tip and a.status<>@sta";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
+                cdg.Parameters.AddWithValue("@sta", estanu);
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
