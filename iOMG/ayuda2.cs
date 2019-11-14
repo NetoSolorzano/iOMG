@@ -283,8 +283,8 @@ namespace iOMG
             }
             if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
             {
-                consulta = "select a.pedido,cl.razonsocial as cliente,a.destino,ifnull(b.descrizionerid, '') as nomact," + 
-                    "a.articulo,dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado " +
+                consulta = "select a.pedido,cl.razonsocial as cliente,a.destino,ifnull(b.descrizionerid, '') as nomact,a.articulo," + 
+                    "dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado,a.cant " +
                     "from movim a " +
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@para3 " +
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
@@ -332,7 +332,7 @@ namespace iOMG
                 dataGridView1.Columns[10].Width = 40;
                 dataGridView1.Columns[10].ReadOnly = true;
                 //
-                ReturnValueA = new string[11] { "", "", "", "", "", "", "", "", "", "", "" };
+                ReturnValueA = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
             }
             // Se crea un MySqlAdapter para obtener los datos de la base
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -486,7 +486,8 @@ namespace iOMG
                                                 row.ItemArray[7].ToString(),
                                                 row.ItemArray[8].ToString(),
                                                 row.ItemArray[9].ToString(),
-                                                row.ItemArray[10].ToString()
+                                                row.ItemArray[10].ToString(),
+                                                row.ItemArray[11].ToString()
                                                 );
                         }
                         dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);

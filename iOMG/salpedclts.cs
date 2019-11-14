@@ -84,7 +84,7 @@ namespace iOMG
                             tx_cliente.Text = ayu2.ReturnValueA[1].ToString();
                             tx_dat_orig.Text = ayu2.ReturnValueA[2].ToString();
                             tx_origen.Text = ayu2.ReturnValueA[3].ToString();
-                            //tx_dat_dest.Text = ayu2.ReturnValueA[].ToString();
+                            tx_cant.Text = ayu2.ReturnValueA[11].ToString();
                             tx_item.Text = ayu2.ReturnValueA[4].ToString();
                             tx_nombre.Text = ayu2.ReturnValueA[5].ToString();
                             tx_medidas.Text = ayu2.ReturnValueA[6].ToString();

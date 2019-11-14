@@ -73,6 +73,8 @@ REPORTES
 - reporte de salidas y autorizaciones ........................... ok
 - Impresion de etiquetas de movimiento .......................... ok .... etiquetas chicas
 - Cuadrar la impresion de la etiqueta de almacen ................ ok
-- me quede de pedidos de almacen, nuevo form para arreglar readonly en edicion 09/10/2019 ...... 
+- me quede de pedidos de almacen, nuevo form para arreglar readonly en edicion 09/10/2019 
+------------------------------------------ retomando el proyecto el 13/11/2019 ---------------------------------------------
+- Salidas de pedidos de clientes, permitir salir cant < al total ingresado (salpedclts) .......... me quede aca 13/11/2019
 
 
