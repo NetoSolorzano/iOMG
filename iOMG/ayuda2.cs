@@ -295,7 +295,7 @@ namespace iOMG
                     "where a.fventa is null";
                 //
                 dataGridView1.Rows.Clear();
-                dataGridView1.ColumnCount = 11;
+                dataGridView1.ColumnCount = 12;
                 dataGridView1.Columns[0].Name = "pedido";
                 dataGridView1.Columns[0].Width = 70;
                 dataGridView1.Columns[0].ReadOnly = true;
@@ -331,6 +331,8 @@ namespace iOMG
                 dataGridView1.Columns[10].Name = "acabado";
                 dataGridView1.Columns[10].Width = 40;
                 dataGridView1.Columns[10].ReadOnly = true;
+                dataGridView1.Columns[11].Visible = true;
+                dataGridView1.Columns[11].Name = "cant";
                 //
                 ReturnValueA = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
             }
@@ -592,6 +594,7 @@ namespace iOMG
                     ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();
                     ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
                     ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                    ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();
                 }
             }
             this.Close();
@@ -696,6 +699,7 @@ namespace iOMG
                 ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
                 ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // 
                 ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // 
+                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();

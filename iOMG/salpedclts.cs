@@ -78,7 +78,7 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             // ayu2.ReturnValue0;
-                            // a.pedido,cliente,a.destino,nomact,a.articulo,dp.nombre,a.med1,a.madera,nomad,a.estado,acabado
+                            // a.pedido,cliente,a.destino,nomact,a.articulo,dp.nombre,a.med1,a.madera,nomad,a.estado,acabado,cant
                             tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
                             tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
                             tx_cliente.Text = ayu2.ReturnValueA[1].ToString();
@@ -201,7 +201,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.iddetam,date(a.fecha) as fecha,a.tipo,a.uantes,a.uactual,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,b.descrizionerid as nomad,c.descrizionerid as acabado," +
-                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin " +
+                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.cant " +
                     "from detam a " +
                     "left join detaped dp on dp.pedidoh=a.pedido " +
                     "left join desc_mad b on b.idcodice=dp.madera " +
@@ -244,7 +244,7 @@ namespace iOMG
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
-            advancedDataGridView1.RowTemplate.Height = 15;
+            advancedDataGridView1.RowTemplate.Height = 16;
             advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             advancedDataGridView1.DataSource = dtg;
             // id 
@@ -344,6 +344,11 @@ namespace iOMG
             advancedDataGridView1.Columns[16].HeaderText = "Destino";
             advancedDataGridView1.Columns[16].Width = 60;
             advancedDataGridView1.Columns[16].ReadOnly = true;
+            // cantidad
+            advancedDataGridView1.Columns[17].Visible = false;
+            advancedDataGridView1.Columns[17].HeaderText = "Cant";
+            advancedDataGridView1.Columns[17].Width = 40;
+            advancedDataGridView1.Columns[17].ReadOnly = true;
         }
         private void jalaoc(string campo)                   // jala datos
         {
@@ -366,6 +371,7 @@ namespace iOMG
                 tx_nomad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomad"].Value.ToString();
                 tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
                 tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
+                tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
             }
             if (campo == "tx_pedido" && tx_pedido.Text != "")
@@ -392,6 +398,7 @@ namespace iOMG
                         tx_nomad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["nomad"].Value.ToString();
                         tx_dat_aca.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["estado"].Value.ToString();
                         tx_acabad.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["acabado"].Value.ToString();
+                        tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                     }
                     cta = cta + 1;
@@ -731,7 +738,7 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_pedido.Enabled = true;
             dtp_ingreso.Enabled = true;
-            //cmb_tipo.Enabled = true;
+            tx_cant.Enabled = true;
             tx_comen.Enabled = true;
             tx_pedido.Focus();
         }
@@ -1116,6 +1123,10 @@ namespace iOMG
             {
                 jalaoc("tx_codped");                        // jalamos los datos
             }
+        }
+        private void tx_cant_Leave(object sender, EventArgs e)
+        {
+
         }
         #endregion leaves;
         #region advancedatagridview

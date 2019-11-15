@@ -994,6 +994,7 @@
             this.tx_cant.Size = new System.Drawing.Size(40, 20);
             this.tx_cant.TabIndex = 3;
             this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_cant.Leave += new System.EventHandler(this.tx_cant_Leave);
             // 
             // salpedclts
             // 

@@ -76,5 +76,6 @@ REPORTES
 - me quede de pedidos de almacen, nuevo form para arreglar readonly en edicion 09/10/2019 
 ------------------------------------------ retomando el proyecto el 13/11/2019 ---------------------------------------------
 - Salidas de pedidos de clientes, permitir salir cant < al total ingresado (salpedclts) .......... me quede aca 13/11/2019
+.. el dise;o actual del sistema es un pedido por cada mueble, uno por uno ... CONSULTAR CON GLORIA
 
 
