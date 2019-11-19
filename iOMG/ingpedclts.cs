@@ -779,8 +779,8 @@ namespace iOMG
             tx_pedido.Enabled = true;
             dtp_ingreso.Enabled = true;
             //cmb_tipo.Enabled = true;
-            tx_cant.Enabled = true;
-            tx_cant.ReadOnly = false;
+            tx_cant.Enabled = false;
+            tx_cant.ReadOnly = true;
             tx_comen.Enabled = true;
             tx_pedido.Focus();
         }
