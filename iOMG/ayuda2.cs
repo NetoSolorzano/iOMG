@@ -208,9 +208,9 @@ namespace iOMG
                 ReturnValueA = new string[11] { "", "", "", "", "", "", "", "", "", "", ""};
             }
             if (para1 == "pedidos" && para2 == "pend" && para3 != "" && para4 == "")
-            {
+            {   // b.cant
                 consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
-                    "b.cant,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
+                    "b.saldo,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
                     "m.descrizionerid as nomad,e.descrizionerid as acabado," +
                     "o.descrizionerid as nomorig,d.descrizionerid as nomdestin " +
                     "from pedidos a left join detaped b on b.pedidoh=a.codped " +
@@ -220,7 +220,8 @@ namespace iOMG
                     "left join desc_loc o on o.idcodice=a.origen " +
                     "left join desc_alm d on d.idcodice=a.destino " +
                     "left join anag_cli cl on cl.idanagrafica=a.cliente " +
-                    "where c.pedido is null and a.tipoes=@para3";
+                    "where b.saldo>0 and a.tipoes=@para3";
+                //"where c.pedido is null and a.tipoes=@para3";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 16;
                 dataGridView1.Columns[0].Name = " CODIGO";
@@ -235,7 +236,7 @@ namespace iOMG
                 dataGridView1.Columns[3].Name = " CLIENTE";
                 dataGridView1.Columns[3].Width = 100;
                 dataGridView1.Columns[3].ReadOnly = true;
-                dataGridView1.Columns[4].Name = " CANT";
+                dataGridView1.Columns[4].Name = "SALDO";
                 dataGridView1.Columns[4].Width = 50;
                 dataGridView1.Columns[4].ReadOnly = true;
                 dataGridView1.Columns[5].Name = " ITEM";

@@ -215,7 +215,7 @@
             this.toolStripSeparator11});
             this.toolStrip1.Location = new System.Drawing.Point(0, 408);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1043, 35);
+            this.toolStrip1.Size = new System.Drawing.Size(1020, 35);
             this.toolStrip1.TabIndex = 34;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -450,7 +450,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1037, 403);
+            this.tabControl1.Size = new System.Drawing.Size(1014, 403);
             this.tabControl1.TabIndex = 4;
             // 
             // tabcont
@@ -465,7 +465,7 @@
             this.tabcont.Controls.Add(this.dgv_contratos);
             this.tabcont.Location = new System.Drawing.Point(4, 22);
             this.tabcont.Name = "tabcont";
-            this.tabcont.Size = new System.Drawing.Size(1029, 377);
+            this.tabcont.Size = new System.Drawing.Size(1006, 377);
             this.tabcont.TabIndex = 5;
             this.tabcont.Text = "Contratos";
             this.tabcont.UseVisualStyleBackColor = true;
@@ -621,7 +621,7 @@
             this.dgv_contratos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_contratos.Location = new System.Drawing.Point(3, 64);
             this.dgv_contratos.Name = "dgv_contratos";
-            this.dgv_contratos.Size = new System.Drawing.Size(1023, 310);
+            this.dgv_contratos.Size = new System.Drawing.Size(1000, 310);
             this.dgv_contratos.TabIndex = 339;
             // 
             // tabpds
@@ -1112,7 +1112,7 @@
             this.tabres.Controls.Add(this.bt_resumen);
             this.tabres.Location = new System.Drawing.Point(4, 22);
             this.tabres.Name = "tabres";
-            this.tabres.Size = new System.Drawing.Size(1029, 377);
+            this.tabres.Size = new System.Drawing.Size(1006, 377);
             this.tabres.TabIndex = 3;
             this.tabres.Text = "Resumen de contrato";
             this.tabres.UseVisualStyleBackColor = true;
@@ -1268,7 +1268,7 @@
             this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_resumen.Location = new System.Drawing.Point(3, 98);
             this.dgv_resumen.Name = "dgv_resumen";
-            this.dgv_resumen.Size = new System.Drawing.Size(1023, 276);
+            this.dgv_resumen.Size = new System.Drawing.Size(1000, 276);
             this.dgv_resumen.TabIndex = 347;
             // 
             // bt_resumen
@@ -1515,7 +1515,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1043, 443);
+            this.ClientSize = new System.Drawing.Size(1020, 443);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.MaximizeBox = false;

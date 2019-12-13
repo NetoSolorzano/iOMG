@@ -738,7 +738,7 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_pedido.Enabled = true;
             dtp_ingreso.Enabled = true;
-            tx_cant.Enabled = false;
+            tx_cant.Enabled = true;
             tx_comen.Enabled = true;
             tx_pedido.Focus();
         }

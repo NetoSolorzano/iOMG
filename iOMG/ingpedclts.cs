@@ -558,7 +558,9 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                string consulta = "select count(*) from pedidos where trim(codped)=@doc";
+                string consulta = "select count(a.id) from pedidos a " +
+                    "left join detaped b on b.pedidoh=a.codped " +
+                    "where trim(a.codped)=@doc and b.saldo>0";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@doc", docu.Trim());
                 MySqlDataReader dr = micon.ExecuteReader();
@@ -569,7 +571,8 @@ namespace iOMG
                         if (dr.GetInt16(0) > 0) retorna = true;
                         else
                         {
-                            MessageBox.Show("No existe el pedido ingresado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            MessageBox.Show("No existe el pedido ingresado" + Environment.NewLine +
+                                "o el pedido no tiene saldo", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                             tx_pedido.Text = "";
                             tx_dat_ped.Text = "";
                             retorna = false;
@@ -779,8 +782,8 @@ namespace iOMG
             tx_pedido.Enabled = true;
             dtp_ingreso.Enabled = true;
             //cmb_tipo.Enabled = true;
-            tx_cant.Enabled = false;
-            tx_cant.ReadOnly = true;
+            tx_cant.Enabled = true;
+            tx_cant.ReadOnly = false;
             tx_comen.Enabled = true;
             tx_pedido.Focus();
         }
