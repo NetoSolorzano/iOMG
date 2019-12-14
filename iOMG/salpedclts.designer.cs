@@ -119,6 +119,7 @@
             this.tx_rind = new iOMG.NumericTextBox();
             this.tx_dat_cant = new System.Windows.Forms.TextBox();
             this.tx_cant = new iOMG.NumericTextBox();
+            this.tx_dat_idm = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -996,11 +997,20 @@
             this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_cant.Leave += new System.EventHandler(this.tx_cant_Leave);
             // 
+            // tx_dat_idm
+            // 
+            this.tx_dat_idm.Location = new System.Drawing.Point(198, 7);
+            this.tx_dat_idm.Name = "tx_dat_idm";
+            this.tx_dat_idm.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_idm.TabIndex = 353;
+            this.tx_dat_idm.Tag = "id del reg. en movim";
+            // 
             // salpedclts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 482);
+            this.Controls.Add(this.tx_dat_idm);
             this.Controls.Add(this.tx_dat_cant);
             this.Controls.Add(this.tx_cant);
             this.Controls.Add(this.tx_dat_ped);
@@ -1169,5 +1179,6 @@
         private System.Windows.Forms.TextBox tx_dat_ped;
         private System.Windows.Forms.TextBox tx_dat_cant;
         private NumericTextBox tx_cant;
+        private System.Windows.Forms.TextBox tx_dat_idm;
     }
 }

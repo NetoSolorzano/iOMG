@@ -77,7 +77,7 @@ namespace iOMG
                     {
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
-                            // ayu2.ReturnValue0;
+                            tx_dat_idm.Text = ayu2.ReturnValue0;
                             // a.pedido,cliente,a.destino,nomact,a.articulo,dp.nombre,a.med1,a.madera,nomad,a.estado,acabado,cant
                             tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
                             tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
@@ -437,10 +437,12 @@ namespace iOMG
                     string actua = "";
                     if (tx_dat_tiped.Text == tipede)
                     {
-                        actua = "update movim set fventa=@fepe where pedido=@pedi";                         // un articulo por cada pedido
+                        actua = "update movim set fventa=@fepe,cant=cant-@can where pedido=@pedi and idmovim=@idm";                         // un articulo por cada pedido
                         micon = new MySqlCommand(actua, conn);
                         micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@can", tx_cant.Text);
                         micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
+                        micon.Parameters.AddWithValue("@idm", tx_dat_idm.Text);
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;

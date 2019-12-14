@@ -285,18 +285,18 @@ namespace iOMG
             if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
             {
                 consulta = "select a.pedido,cl.razonsocial as cliente,a.destino,ifnull(b.descrizionerid, '') as nomact,a.articulo," + 
-                    "dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado,a.cant " +
-                    "from movim a " +
+                    "dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado,a.cant," +
+                    "a.saldo,a.idmovim from movim a " +
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@para3 " +
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_alm b on b.idcodice=a.destino " +
                     "left join detaped dp on dp.pedidoh=a.pedido " +
                     "left join desc_mad c on c.idcodice=a.madera " +
                     "left join desc_est d on d.idcodice=a.estado " +
-                    "where a.fventa is null";
+                    "where a.fventa is null or a.saldo>0";
                 //
                 dataGridView1.Rows.Clear();
-                dataGridView1.ColumnCount = 12;
+                dataGridView1.ColumnCount = 14;
                 dataGridView1.Columns[0].Name = "pedido";
                 dataGridView1.Columns[0].Width = 70;
                 dataGridView1.Columns[0].ReadOnly = true;
@@ -334,8 +334,12 @@ namespace iOMG
                 dataGridView1.Columns[10].ReadOnly = true;
                 dataGridView1.Columns[11].Visible = true;
                 dataGridView1.Columns[11].Name = "cant";
+                dataGridView1.Columns[12].Visible = true;
+                dataGridView1.Columns[12].Name = "saldo";
+                dataGridView1.Columns[13].Visible = true;
+                dataGridView1.Columns[13].Name = "IdMov";
                 //
-                ReturnValueA = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
+                ReturnValueA = new string[14] { "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
             }
             // Se crea un MySqlAdapter para obtener los datos de la base
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -490,7 +494,9 @@ namespace iOMG
                                                 row.ItemArray[8].ToString(),
                                                 row.ItemArray[9].ToString(),
                                                 row.ItemArray[10].ToString(),
-                                                row.ItemArray[11].ToString()
+                                                row.ItemArray[11].ToString(),
+                                                row.ItemArray[12].ToString(),
+                                                row.ItemArray[13].ToString()
                                                 );
                         }
                         dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -596,6 +602,8 @@ namespace iOMG
                     ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();
                     ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();
                     ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();
+                    ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
+                    ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
                 }
             }
             this.Close();
@@ -688,7 +696,7 @@ namespace iOMG
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                tx_id.Text = dataGridView1.CurrentRow.Cells[13].Value.ToString();
                 ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
                 ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
                 ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
@@ -701,6 +709,8 @@ namespace iOMG
                 ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // 
                 ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // 
                 ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
+                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
+                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();
@@ -765,7 +775,7 @@ namespace iOMG
                     tx_nombre.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                     //cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                     tx_codigo.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                    tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    tx_id.Text = dataGridView1.CurrentRow.Cells[13].Value.ToString();
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
                     ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
@@ -777,6 +787,9 @@ namespace iOMG
                     ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
                     ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // 
                     ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // 
+                    ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
+                    ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
+                    ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
                 }
                 this.Close();
             }
@@ -795,7 +808,7 @@ namespace iOMG
                     string cols5 = "anag_cli,contrat";         // busqueda en columna 3
                     string colst = "detacon";                  // 
                     string col16 = "pedidos";                  // 16 columnas
-                    string col11 = "movim";
+                    string col14 = "movim";
                     {
                         if (colst.Contains(para1))
                         {
@@ -859,7 +872,7 @@ namespace iOMG
                                                 );
                             }
                         }
-                        if (col11.Contains(para1))
+                        if (col14.Contains(para1))
                         {
                             if (row.ItemArray[1].ToString().ToLower().Contains(tx_buscar.Text.Trim().ToLower()))
                             {
@@ -873,7 +886,10 @@ namespace iOMG
                                                 row.ItemArray[7].ToString(),
                                                 row.ItemArray[8].ToString(),
                                                 row.ItemArray[9].ToString(),
-                                                row.ItemArray[10].ToString()
+                                                row.ItemArray[10].ToString(),
+                                                row.ItemArray[11].ToString(),
+                                                row.ItemArray[12].ToString(),
+                                                row.ItemArray[13].ToString()
                                                 );
                             }
                         }
@@ -959,7 +975,7 @@ namespace iOMG
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 //cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                tx_id.Text = dataGridView1.CurrentRow.Cells[13].Value.ToString();
                 ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // 
                 ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // 
                 ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // 
@@ -971,6 +987,9 @@ namespace iOMG
                 ReturnValueA[8] = dataGridView1.CurrentRow.Cells[8].Value.ToString();   // 
                 ReturnValueA[9] = dataGridView1.CurrentRow.Cells[9].Value.ToString();   // 
                 ReturnValueA[10] = dataGridView1.CurrentRow.Cells[10].Value.ToString();   // 
+                ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
+                ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();   // 
+                ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // 
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();
