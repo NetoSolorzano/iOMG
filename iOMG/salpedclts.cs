@@ -198,10 +198,10 @@ namespace iOMG
             }
             if (quien == "maestra")
             {
-                // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
+                // dp.cant
                 string datgri = "select a.iddetam,date(a.fecha) as fecha,a.tipo,a.uantes,a.uactual,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,b.descrizionerid as nomad,c.descrizionerid as acabado," +
-                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.cant " +
+                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,a.cant " +
                     "from detam a " +
                     "left join detaped dp on dp.pedidoh=a.pedido " +
                     "left join desc_mad b on b.idcodice=dp.madera " +
@@ -415,8 +415,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into detam (fecha,tipo,uantes,uactual,pedido,coment," +
-                    "USER,dia) " +
-                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@asd,now())";
+                    "USER,dia,cant) " +
+                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@asd,now(),@can)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -425,6 +425,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
                     micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
                     micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@can", tx_cant.Text);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);

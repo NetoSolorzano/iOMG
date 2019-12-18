@@ -443,8 +443,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into movim (fechain,tipoes,origen,destino,pedido,coment," +
-                    "cant,articulo,med1,precio,total,madera,estado,USER,dia) " +
-                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@cant,@arti,@med1,@prec,@tota,@made,@esta,@asd,now())";
+                    "cant,saldo,articulo,med1,precio,total,madera,estado,USER,dia) " +
+                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@cant,@sald,@arti,@med1,@prec,@tota,@made,@esta,@asd,now())";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -453,6 +453,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@pedi", tx_pedido.Text);
                     micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
                     micon.Parameters.AddWithValue("@cant", tx_cant.Text);
+                    micon.Parameters.AddWithValue("@sald", tx_cant.Text);
                     micon.Parameters.AddWithValue("@arti", tx_item.Text);
                     micon.Parameters.AddWithValue("@med1", tx_medidas.Text);
                     micon.Parameters.AddWithValue("@prec", tx_precio.Text);
