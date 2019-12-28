@@ -2775,8 +2775,17 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
+                string asalc = "sal_cont";
+                MySqlCommand misp = new MySqlCommand(asalc,conn);
+                misp.CommandType = CommandType.StoredProcedure;
+                misp.CommandTimeout = 100;
+                misp.Parameters.AddWithValue("@cont", cont);
+                //MySqlParameter reto = misp.Parameters.Add("@estad", MySqlDbType.VarChar);
+                //reto.Direction = ParameterDirection.Output;
+                misp.ExecuteNonQuery();
+                //
                 string compa = "act_cont";
-                MySqlCommand misp = new MySqlCommand(compa, conn);
+                misp = new MySqlCommand(compa, conn);
                 misp.CommandType = CommandType.StoredProcedure;
                 misp.CommandTimeout = 300;
                 misp.Parameters.AddWithValue("@cont", cont);

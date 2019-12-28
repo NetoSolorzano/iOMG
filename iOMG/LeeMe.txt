@@ -76,10 +76,11 @@ REPORTES
 - me quede de pedidos de almacen, nuevo form para arreglar readonly en edicion 09/10/2019 
 ------------------------------------------ retomando el proyecto el 13/11/2019 ---------------------------------------------
 - Salidas de pedidos de clientes, permitir salir cant < al total ingresado (salpedclts) ... esto no es asi, las salidas son de cada pedido, osea 1 articulo x pedido .... OK
-.. el diseño actual del sistema es un pedido por cada mueble, uno por uno ... CONSULTAR CON GLORIA
+.. el diseño actual del sistema es un pedido por cada mueble, uno por uno ... CONSULTAR CON GLORIA .. DICE NO, un pedido por item, un item varios muebles
 - Ingreso de pedidos de clientes, cantidad es 1 porque el pedido es 1 ....... 19/11/2019 
 04/12/2019 REUNION CON NORMA EN BARRANCO
-- Ella menciona que con respecto a los pedidos de clientes es 1 pedido x cada item no articulo
+- Ella menciona que con respecto a los pedidos de clientes es 1 pedido x cada item no articulo, un item varios articulos
+
 
 
 

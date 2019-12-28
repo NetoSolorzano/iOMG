@@ -438,7 +438,7 @@ namespace iOMG
                     string actua = "";
                     if (tx_dat_tiped.Text == tipede)
                     {
-                        actua = "update movim set fventa=@fepe,cant=cant-@can where pedido=@pedi and idmovim=@idm";                         // un articulo por cada pedido
+                        actua = "update movim set fventa=@fepe,saldo=saldo-@can where pedido=@pedi and idmovim=@idm";                         // un articulo por cada pedido
                         micon = new MySqlCommand(actua, conn);
                         micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                         micon.Parameters.AddWithValue("@can", tx_cant.Text);

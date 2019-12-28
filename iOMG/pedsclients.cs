@@ -146,7 +146,7 @@ namespace iOMG
                             //ayu2.ReturnValue1;    // codigo del articulo
                             //ayu2.ReturnValue0;    // id del articulo
                             //ayu3.ReturnValue2;    // nombre del articulo
-                            tx_d_can.Text = ayu2.ReturnValueA[2].ToString();
+                            tx_d_can.Text = ayu2.ReturnValueA[7].ToString();
                             if(ayu2.ReturnValue1.Trim().Length != 18)          // si el codigo no tiene taller
                             {
                                 tx_d_codi.Text = ayu2.ReturnValue1.Substring(0, 10) + tx_codta.Text.Trim() + ayu2.ReturnValue1.Substring(10, 6);
@@ -164,6 +164,7 @@ namespace iOMG
                             tx_d_com.Text = ayu2.ReturnValueA[8].ToString();
                             tx_d_precio.Text = ayu2.ReturnValueA[9].ToString();
                             tx_acab.Text = ayu2.ReturnValueA[10].ToString();
+                            tx_saldo.Text = ayu2.ReturnValueA[7].ToString();
                         }
                     }
                 }
@@ -887,6 +888,7 @@ namespace iOMG
                             insdet = "update detaped set " +
                                 "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
                                 "where iddetaped=@idr";
+                            //string actuaC = "update detacon set saldo=saldo-@can where iddetacon=@idd";       // problema de actualizar saldo en detacon 
                             // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -902,14 +904,6 @@ namespace iOMG
                             else micon.Parameters.AddWithValue("@fing", DBNull.Value);
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());   // row.Cells["saldo"].Value.ToString()
                             micon.ExecuteNonQuery();
-                            // me quede aca viendo si el contrato tiene saldo por muebles pedidos o reservados
-                            // no debe permitir cambiar la cantidad > saldo
-                            // actualizacion de saldos en el contrato
-                            //micon = new MySqlCommand(actua, conn);
-                            //micon.Parameters.AddWithValue("@can", row.Cells["cant"].Value.ToString());
-                            //micon.Parameters.AddWithValue("@idd", row.Cells["iddetc"].Value.ToString());   // columna id detacon
-                            //micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                            //micon.ExecuteNonQuery();
                             retorna = true;
                         }
                     }
@@ -1262,6 +1256,7 @@ namespace iOMG
             dtp_fingreso.Checked = false;
             jalaoc("tx_idr");
             tx_codped.ReadOnly = false;
+            tx_saldo.ReadOnly = false;
             //  solo se modifica comentarios
             tx_d_can.ReadOnly = true;
             tx_d_nom.ReadOnly = true;

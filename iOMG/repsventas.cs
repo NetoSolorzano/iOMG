@@ -731,6 +731,7 @@ namespace iOMG
         {
             if(tx_codped.Text != "")
             {
+                lib.estcont(tx_codped.Text.Trim());
                 try
                 {
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
