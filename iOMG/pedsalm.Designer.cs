@@ -184,7 +184,7 @@
             this.tabgrilla.Location = new System.Drawing.Point(4, 22);
             this.tabgrilla.Name = "tabgrilla";
             this.tabgrilla.Padding = new System.Windows.Forms.Padding(3);
-            this.tabgrilla.Size = new System.Drawing.Size(888, 435);
+            this.tabgrilla.Size = new System.Drawing.Size(969, 435);
             this.tabgrilla.TabIndex = 0;
             this.tabgrilla.Text = "Pedidos";
             this.tabgrilla.UseVisualStyleBackColor = true;
@@ -192,14 +192,15 @@
             // 
             // advancedDataGridView1
             // 
-            this.advancedDataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.advancedDataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.advancedDataGridView1.AutoGenerateContextFilters = true;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.DateWithTime = false;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(3, 34);
+            this.advancedDataGridView1.Location = new System.Drawing.Point(3, 5);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.Size = new System.Drawing.Size(884, 420);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(963, 427);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.TimeFilter = false;
             this.advancedDataGridView1.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
@@ -738,7 +739,7 @@
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(617, 34);
+            this.tx_dat_dest.Location = new System.Drawing.Point(617, 31);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_dest.TabIndex = 296;
@@ -746,7 +747,7 @@
             // 
             // tx_dat_orig
             // 
-            this.tx_dat_orig.Location = new System.Drawing.Point(325, 34);
+            this.tx_dat_orig.Location = new System.Drawing.Point(325, 31);
             this.tx_dat_orig.Name = "tx_dat_orig";
             this.tx_dat_orig.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_orig.TabIndex = 295;
@@ -764,7 +765,7 @@
             // 
             this.groupBox19.BackColor = System.Drawing.Color.White;
             this.groupBox19.Controls.Add(this.groupBox20);
-            this.groupBox19.Location = new System.Drawing.Point(428, 54);
+            this.groupBox19.Location = new System.Drawing.Point(428, 51);
             this.groupBox19.Name = "groupBox19";
             this.groupBox19.Size = new System.Drawing.Size(186, 1);
             this.groupBox19.TabIndex = 293;
@@ -782,7 +783,7 @@
             // 
             this.groupBox17.BackColor = System.Drawing.Color.White;
             this.groupBox17.Controls.Add(this.groupBox18);
-            this.groupBox17.Location = new System.Drawing.Point(164, 54);
+            this.groupBox17.Location = new System.Drawing.Point(164, 51);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(158, 1);
             this.groupBox17.TabIndex = 292;
@@ -971,7 +972,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(432, 39);
+            this.label11.Location = new System.Drawing.Point(432, 36);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(66, 13);
             this.label11.TabIndex = 280;
@@ -980,7 +981,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(168, 39);
+            this.label10.Location = new System.Drawing.Point(168, 36);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(61, 13);
             this.label10.TabIndex = 279;
@@ -1006,16 +1007,16 @@
             // 
             // tx_coment
             // 
-            this.tx_coment.Location = new System.Drawing.Point(236, 60);
+            this.tx_coment.Location = new System.Drawing.Point(236, 56);
             this.tx_coment.Multiline = true;
             this.tx_coment.Name = "tx_coment";
-            this.tx_coment.Size = new System.Drawing.Size(443, 30);
+            this.tx_coment.Size = new System.Drawing.Size(443, 35);
             this.tx_coment.TabIndex = 270;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(168, 67);
+            this.label1.Location = new System.Drawing.Point(168, 66);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 276;
@@ -1040,7 +1041,7 @@
             this.cmb_destino.DropDownWidth = 150;
             this.cmb_destino.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_destino.FormattingEnabled = true;
-            this.cmb_destino.Location = new System.Drawing.Point(529, 33);
+            this.cmb_destino.Location = new System.Drawing.Point(529, 30);
             this.cmb_destino.Name = "cmb_destino";
             this.cmb_destino.Size = new System.Drawing.Size(85, 21);
             this.cmb_destino.TabIndex = 268;
@@ -1052,7 +1053,7 @@
             this.cmb_taller.DropDownWidth = 100;
             this.cmb_taller.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_taller.FormattingEnabled = true;
-            this.cmb_taller.Location = new System.Drawing.Point(237, 33);
+            this.cmb_taller.Location = new System.Drawing.Point(237, 30);
             this.cmb_taller.Name = "cmb_taller";
             this.cmb_taller.Size = new System.Drawing.Size(85, 21);
             this.cmb_taller.TabIndex = 267;

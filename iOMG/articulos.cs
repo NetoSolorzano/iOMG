@@ -738,9 +738,9 @@ namespace iOMG
                         dr[11] = tx_nombre.Text.Trim();
                         dr[12] = tx_medidas.Text.Trim();
                         dr[13] = "C.U.";
-                        dr[14] = tx_umed.Text;
+                        dr[14] = tx_precio.Text;
                         dtg.Rows.Add(dr);
-                        dtu.Rows.Add(dr);
+                        //dtu.Rows.Add(dr);
                     }
                     else
                     {
@@ -821,11 +821,11 @@ namespace iOMG
             conn.Open();
             if(conn.State == ConnectionState.Open)
             {
+                string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
+                tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
+                tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
                 try
                 {
-                    string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
-                    tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
-                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
                     string inserta = "insert into items (" +
                         "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,medid,umed,soles2018) values (" +
                         "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@jgo,@nomb,@medi,@umed,@prec)";
@@ -844,7 +844,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
                     micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                     micon.Parameters.AddWithValue("@umed", "C.U.");
-                    micon.Parameters.AddWithValue("@prec", tx_umed.Text);
+                    micon.Parameters.AddWithValue("@prec", tx_precio.Text);
                     micon.ExecuteNonQuery();
                     retorna = true;
                 }
@@ -853,6 +853,7 @@ namespace iOMG
                     MessageBox.Show(ex.Message, "Error en conexión");
                     Application.Exit();
                 }
+                // insert grid process in button1 click event tipe "NUEVO"
             }
             else
             {
@@ -869,11 +870,11 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
+                string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
+                tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
+                tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
                 try
                 {
-                    string codi = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
-                    tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
-                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + "N000";
                     string actua = "update items set " +
                         "codig=@codi,capit=@capi,model=@mode,mader=@made,tipol=@tipo,deta1=@det1,acaba=@acab,talle=@tall," +
                         "deta2=@det2,deta3=@det3,juego=@jgo,nombr=@nomb,medid=@medi,umed=@umed,soles2018=@prec " +
@@ -893,7 +894,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
                     micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                     micon.Parameters.AddWithValue("@umed", "C.U.");
-                    micon.Parameters.AddWithValue("@prec", tx_umed.Text);
+                    micon.Parameters.AddWithValue("@prec", tx_precio.Text);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                     micon.ExecuteNonQuery();
                 }
@@ -901,6 +902,29 @@ namespace iOMG
                 {
                     MessageBox.Show(ex.Message, "Error en conexión");
                     Application.Exit();
+                }
+                // grid update process
+                for (int i = 0; i < dtg.Rows.Count; i++)
+                {
+                    DataRow row = dtg.Rows[i];
+                    if (row[0].ToString() == tx_idr.Text)
+                    {
+                        // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles2018
+                        dtg.Rows[i][1] = codi;
+                        dtg.Rows[i][2] = tx_dat_cap.Text.Trim();
+                        dtg.Rows[i][3] = tx_dat_mod.Text.Trim();
+                        dtg.Rows[i][4] = tx_dat_mad.Text.Trim();
+                        dtg.Rows[i][5] = tx_dat_tip.Text.Trim();
+                        dtg.Rows[i][6] = tx_dat_det1.Text.Trim();
+                        dtg.Rows[i][7] = tx_dat_aca.Text.Trim();
+                        dtg.Rows[i][8] = tx_dat_tal.Text.Trim();
+                        dtg.Rows[i][9] = tx_dat_det2.Text.Trim();
+                        dtg.Rows[i][10] = tx_dat_det3.Text.Trim();
+                        dtg.Rows[i][11] = tx_nombre.Text.Trim();
+                        dtg.Rows[i][12] = tx_medidas.Text.Trim();
+                        dtg.Rows[i][13] = "C.U.";
+                        dtg.Rows[i][14] = tx_precio.Text;
+                    }
                 }
             }
             else
@@ -1150,40 +1174,52 @@ namespace iOMG
         #region comboboxes
         private void cmb_cap_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_cap.Text = cmb_cap.SelectedItem.ToString().Substring(0, 1);
-            dataload("capit");
+            if (cmb_cap.SelectedItem == null) tx_dat_cap.Text = "";
+            else
+            {
+                tx_dat_cap.Text = cmb_cap.SelectedItem.ToString().Substring(0, 1);
+                dataload("capit");
+            }
         }
         private void cmb_mod_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_mod.Text = cmb_mod.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_mod.SelectedItem == null) tx_dat_mod.Text = "";
+            else tx_dat_mod.Text = cmb_mod.SelectedItem.ToString().Substring(0, 3);
         }
         private void cmb_mad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
+            if (cmb_mad.SelectedItem == null) tx_dat_mad.Text = "";
+            else tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_tip.Text = cmb_tip.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_tip.SelectedItem == null) tx_dat_tip.Text = "";
+            else tx_dat_tip.Text = cmb_tip.SelectedItem.ToString().Substring(0, 2);
         }
         private void cmb_det1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_det1.Text = cmb_det1.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_det1.SelectedItem == null) tx_dat_det1.Text = "";
+            else tx_dat_det1.Text = cmb_det1.SelectedItem.ToString().Substring(0, 2);
         }
         private void cmb_aca_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_aca.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
+            if (cmb_aca.SelectedItem == null) tx_dat_aca.Text = "";
+            else tx_dat_aca.Text = cmb_aca.SelectedItem.ToString().Substring(0, 1);
         }
         private void cmb_tal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
+            if (cmb_tal.SelectedItem == null) tx_dat_tal.Text = "";
+            else tx_dat_tal.Text = cmb_tal.SelectedItem.ToString().Substring(0, 2);
         }
         private void cmb_det2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_det2.SelectedItem == null) tx_dat_det2.Text = "";
+            else tx_dat_det2.Text = cmb_det2.SelectedItem.ToString().Substring(0, 3);
         }
         private void cmb_det3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tx_dat_det3.Text = cmb_det3.SelectedItem.ToString().Substring(0, 3);
+            if (cmb_det3.SelectedItem == null) tx_dat_det3.Text = "";
+            else tx_dat_det3.Text = cmb_det3.SelectedItem.ToString().Substring(0, 3);
         }
         #endregion comboboxes
 

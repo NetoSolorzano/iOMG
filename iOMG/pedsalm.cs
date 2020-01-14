@@ -2458,6 +2458,7 @@ namespace iOMG
             posi = posit;
             SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
             Font lt_tit = new Font("Arial", 7);
+            Font lt_gran = new Font("Arial", 14);
             PointF ptoimp;
             Pen blackPen = new Pen(Color.Black, 2);
             StringFormat sf = new StringFormat();
@@ -2519,10 +2520,15 @@ namespace iOMG
             }
             posi = posi + alfi * 2;             // avance de fila
             ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString("OBSERVACIONES", lt_tit, Brushes.Black, ptoimp);
-            posi = posi + alfi;             // avance de fila
+            e.Graphics.DrawString("OBSERVACIONES:", lt_gran, Brushes.Black, ptoimp);
+            posi = posi + alfi * 2;             // avance de fila
             ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString(tx_coment.Text, lt_tit, Brushes.Black, ptoimp);
+            SizeF sizrec = new SizeF(700, alfi * 4);
+            PointF ptodir = new PointF(col2, posi);
+            RectangleF recped = new RectangleF(ptodir, sizrec);
+            Pen marco = new Pen(Color.Empty, 1);
+            e.Graphics.DrawRectangle(marco, Rectangle.Round(recped));
+            e.Graphics.DrawString(tx_coment.Text, lt_gran, Brushes.Black, recped);
             cuenta = 0;
         }
         private float impcab2(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
@@ -2534,7 +2540,8 @@ namespace iOMG
             Font lt_cliente = new Font("Arial", 15, FontStyle.Bold);
             Font lt_pag = new Font("Arial", 9);
             Font lt_fec = new Font("Arial", 9);
-            Font lt_tit = new Font("Arial", 9);                        // tipo de letra del titulo
+            Font lt_tit = new Font("Arial", 9);                         // tipo de letra del titulo
+            Font lt_titN = new Font("Arial", 11, FontStyle.Bold);       // tipo de letra del titulo negrita grande
             Pen grueso = new Pen(Color.Black, 2);                       // linea gruesa
             Pen delgado = new Pen(Color.Black, 1);                      // linea delgada
             StringFormat sf = new StringFormat();                       // formato centrado
@@ -2552,7 +2559,7 @@ namespace iOMG
             string pag = "Pág. " + pageCount.ToString();
             e.Graphics.DrawString(pag, lt_pag, Brushes.Black, ptopag, StringFormat.GenericTypographic);
             // pintamos la fecha
-            PointF ptofec = new PointF(ancho_pag - 80.0F, piy + 15.0F);
+            PointF ptofec = new PointF(ancho_pag - 90.0F, piy + 15.0F);
             string fecha = DateTime.Today.ToShortDateString();
             e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
             // almacen destino y numero de pedido, fecha y entrega programada
@@ -2575,7 +2582,7 @@ namespace iOMG
             ptodir = new PointF(coli + 700, posi + 15.0F);
             RectangleF recent = new RectangleF(ptodir, sizrec);
             e.Graphics.DrawRectangle(grueso, Rectangle.Round(recent));
-            e.Graphics.DrawString(dtp_entreg.Value.ToShortDateString(), lt_tit, Brushes.Black, recent, sf);
+            e.Graphics.DrawString(dtp_entreg.Value.ToShortDateString(), lt_titN, Brushes.Black, recent, sf);
             posi = posi + alfi * 6;
             // pintamos el recuadro de la familia productora        
             SizeF reclargo = new SizeF(ancho_pag - 50.0F, piy);
