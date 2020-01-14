@@ -84,7 +84,8 @@ REPORTES
 - pedsalm, mejoras al formato de impresion, segun pedido en reunion ..... ok 14/01/20
 - defs, no debe permitir 2 codigos iguales ..... ok 14/01/2020
 - articulos, no cambia precio en edicion y no actualiza grilla ....... ok 14/01/2020
-
-
+- SE AGREGARON 2 COLUMNAS A ALMLOC Y VENDALM para el ID del ajuste ingreso y codigo pedido almacen ....... OK 14/01/2020
+- almgestion, leer las 2 columnas nuevas y ponerlas readonly .... 
+- almovfis, leer las 2 columnas nuevas y ponerlas readonly ......  
 
 
