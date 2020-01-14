@@ -1027,7 +1027,7 @@ namespace iOMG
                         }
                         else
                         {
-                            MessageBox.Show(dataGridView1.Rows[i].Cells[10].Value.ToString());  //
+                            //MessageBox.Show(dataGridView1.Rows[i].Cells[10].Value.ToString());  //
                             insdet = "update detaped set " +
                                 "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
                                 "where iddetaped=@idr";
@@ -2261,7 +2261,7 @@ namespace iOMG
                     tx_d_can.Enabled = true; // 
                     tx_d_can.ReadOnly = false;
                     //tx_d_com.Enabled = true; //
-                    MessageBox.Show(panel1.Enabled.ToString());
+                    //MessageBox.Show(panel1.Enabled.ToString());
 
                 }
                 else

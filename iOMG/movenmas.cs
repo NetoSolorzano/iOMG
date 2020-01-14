@@ -327,10 +327,10 @@ namespace iOMG
                         string mueble = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() + tx_dat_tip.Text.Trim() +
                             tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() + tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();  // +
                             //tx_dat_jgo.Text.Trim();   // el juego no va en el codigo porque los pedidos de fab. se hacen sin juego
-                        string actua = "update detaped set saldo=saldo-@cant,fingreso=@fing where pedidoh=@docu and left(item,18)=@codm";
+                        string actua = "update detaped set saldo=if(@cant>saldo,0,saldo-@cant),fingreso=@fing where pedidoh=@docu and left(item,18)=@codm";
                         micin = new MySqlCommand(actua, cn);
                         micin.Parameters.AddWithValue("@cant", Int16.Parse(tx_cant.Text.Trim()));
-                        micin.Parameters.AddWithValue("@fing", dtp_fsal.Value.ToShortDateString());
+                        micin.Parameters.AddWithValue("@fing", dtp_fsal.Value);   // dtp_fsal.Value.ToShortDateString()
                         micin.Parameters.AddWithValue("@docu", tx_idped.Text.Trim());
                         micin.Parameters.AddWithValue("@codm", mueble);
                         micin.ExecuteNonQuery();
