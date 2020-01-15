@@ -1286,8 +1286,10 @@ namespace iOMG
                 advancedDataGridView1.Columns["almdes"].Visible = true;
                 dataGridView1.Columns["almdes"].Visible = true;
                 dataGridView2.Columns["almdes"].Visible = true;
-                dataGridView1.Columns["idajuste"].Visible = true;   // ME QUEDE ACA, ESTOS NO SE MUESTRAN
+                advancedDataGridView1.Columns["idajuste"].Visible = true;
+                dataGridView1.Columns["idajuste"].Visible = true;
                 dataGridView2.Columns["idajuste"].Visible = true;
+                advancedDataGridView1.Columns["pedalm"].Visible = true;
                 dataGridView1.Columns["pedalm"].Visible = true;
                 dataGridView2.Columns["pedalm"].Visible = true;
             }
