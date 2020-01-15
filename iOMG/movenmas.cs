@@ -262,8 +262,8 @@ namespace iOMG
                             tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() + 
                             tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim() + tx_dat_jgo.Text.Trim();
                         inserta = "insert into almloc (" +
-                            "codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,medid,soles2018) values (" +
-                            "@coda,@fech,@tope,@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@jgo,@nomb,@medi,@pre)";
+                            "codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,medid,soles2018,idajuste,pedalm) values (" +
+                            "@coda,@fech,@tope,@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@jgo,@nomb,@medi,@pre,@idaj,@peal)";
                         MySqlCommand micon = new MySqlCommand(inserta, cn);
                         micon.Parameters.AddWithValue("@coda", iOMG.Program.almuser);
                         micon.Parameters.AddWithValue("@fech", dtp_fsal.Value.ToString("yyyy-MM-dd"));
@@ -282,6 +282,8 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
                         micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                         micon.Parameters.AddWithValue("@pre", tx_precio.Text.Trim());
+                        micon.Parameters.AddWithValue("@idaj", (rb_ajuste.Checked == true)? "0":"");            // aca deberia haber un id de ajustes
+                        micon.Parameters.AddWithValue("@peal", (rb_mov.Checked == true) ? tx_idped.Text : "");
                         micon.ExecuteNonQuery();
                         // id de la operacion
                         inserta = "select last_insert_id()";
@@ -327,10 +329,10 @@ namespace iOMG
                         string mueble = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() + tx_dat_tip.Text.Trim() +
                             tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() + tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();  // +
                             //tx_dat_jgo.Text.Trim();   // el juego no va en el codigo porque los pedidos de fab. se hacen sin juego
-                        string actua = "update detaped set saldo=saldo-@cant,fingreso=@fing where pedidoh=@docu and left(item,18)=@codm";
+                        string actua = "update detaped set saldo=if(@cant>saldo,0,saldo-@cant),fingreso=@fing where pedidoh=@docu and left(item,18)=@codm";
                         micin = new MySqlCommand(actua, cn);
                         micin.Parameters.AddWithValue("@cant", Int16.Parse(tx_cant.Text.Trim()));
-                        micin.Parameters.AddWithValue("@fing", dtp_fsal.Value.ToShortDateString());
+                        micin.Parameters.AddWithValue("@fing", dtp_fsal.Value);   // dtp_fsal.Value.ToShortDateString()
                         micin.Parameters.AddWithValue("@docu", tx_idped.Text.Trim());
                         micin.Parameters.AddWithValue("@codm", mueble);
                         micin.ExecuteNonQuery();

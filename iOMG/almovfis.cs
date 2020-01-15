@@ -149,7 +149,7 @@ namespace iOMG
             {
                 string sqlCmd = "select distinct a.marca,a.id,a.codalm,a.fechop,a.codig,a.capit,a.model,a.mader,a.tipol,a.deta1,a.acaba,a.talle,a.deta2,a.deta3,a.juego," +
                     "ifnull(a.nombr,'') as nombr,ifnull(a.medid,'') as medid,a.reserva,a.contrat,a.salida,a.evento,a.almdes," +
-                    "ifnull(b.umed,'') as umed,ifnull(b.soles2018,0) as soles2018 " +
+                    "ifnull(b.umed,'') as umed,ifnull(b.soles2018,0) as soles2018,a.idajuste,a.pedalm " +
                     "from almloc a " +
                     "left join (select * from items group by capit,model,tipol,deta1,acaba,deta2) b " +
                     "on b.capit=a.capit and b.model=a.model and b.tipol=a.tipol and b.deta1=a.deta1 and b.acaba=a.acaba and b.deta2=a.deta2 " +
@@ -224,6 +224,10 @@ namespace iOMG
             advancedDataGridView1.Columns[23].Width = 70;           // precio soles hasta el 2017
             advancedDataGridView1.Columns[23].ReadOnly = true;
             advancedDataGridView1.Columns[23].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            advancedDataGridView1.Columns[24].Width = 30;           // id ajuste ingreso
+            advancedDataGridView1.Columns[24].ReadOnly = true;
+            advancedDataGridView1.Columns[25].Width = 70;           // cod pedido almacen
+            advancedDataGridView1.Columns[25].ReadOnly = true;
         }
         private void init()                                                 // inicializa ancho de columnas grilla de filtros
         {
@@ -1024,6 +1028,13 @@ namespace iOMG
                 advancedDataGridView1.Columns["almdes"].Visible = true;
                 dataGridView1.Columns["almdes"].Visible = true;
                 dataGridView2.Columns["almdes"].Visible = true;
+                // 
+                advancedDataGridView1.Columns["idajuste"].Visible = true;
+                dataGridView1.Columns["idajuste"].Visible = true;
+                dataGridView2.Columns["idajuste"].Visible = true;
+                advancedDataGridView1.Columns["pedalm"].Visible = true;
+                dataGridView1.Columns["pedalm"].Visible = true;
+                dataGridView2.Columns["pedalm"].Visible = true;
             }
         }
         private void rb_redu_CheckedChanged(object sender, EventArgs e)

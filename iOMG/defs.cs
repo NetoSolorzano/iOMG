@@ -91,6 +91,8 @@ namespace iOMG
             Bt_sig.Image = Image.FromFile(img_bts);
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
+
+            textBox1.CharacterCasing = CharacterCasing.Upper;
         }
         private void grilla()                   // arma la grilla
         {
@@ -470,8 +472,8 @@ namespace iOMG
             if (modo == "EDITAR")
             {
                 string consulta = "update descrittive set " +
-                        "codigo=@cod,descrizione=@des,descrizionerid=@der,numero=@num " +
-                        "where id=@idc";
+                        "descrizione=@des,descrizionerid=@der,numero=@num " +
+                        "where id=@idc";    // codigo=@cod,
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
@@ -552,7 +554,7 @@ namespace iOMG
         }
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            /*  validamos segun el modo
+            //  validamos segun el modo
             if (textBox1.Text != "" && Tx_modo.Text=="NUEVO")
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -563,13 +565,13 @@ namespace iOMG
                     Application.Exit();
                     return;
                 }
-                string consulta = "select count(nom_user) as cant from usuarios where nom_user=@usuario";
+                string consulta = "select count(idcodice) as cant from descrittive where idcodice=@uso";
                 MySqlCommand mycomand = new MySqlCommand(consulta, conn);
-                mycomand.Parameters.AddWithValue("@usuario", this.textBox1.Text);
+                mycomand.Parameters.AddWithValue("@uso", this.textBox1.Text);
                 int cant = System.Convert.ToInt16(mycomand.ExecuteScalar());
                 if (cant > 0)
                 {
-                    MessageBox.Show("Usuario YA existe!", "Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show("Código YA existe!", "Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
                     this.textBox1.Text = "";
                     return;        
                 }
@@ -577,15 +579,27 @@ namespace iOMG
             }
             if (textBox1.Text != "" && Tx_modo.Text != "NUEVO")
             {
-                DataRow[] linea = dtg.Select("nom_user like '%" + textBox1.Text + "%'");
+                int contador = 0;
+                DataRow[] linea = dtg.Select("idcodice like '%" + textBox1.Text + "%' and idtabella='" + textBox4.Text + "'");
                 foreach(DataRow row in linea)
                 {
-                    textBox2.Text = row[1].ToString();
-                    textBox3.Text = row[2].ToString();
+                    contador = contador + 1;
+                    textBox2.Text = row[3].ToString();
+                    textBox3.Text = row[4].ToString();
+                    textBox5.Text = row[5].ToString();
+                    checkBox1.Checked = (row[5].ToString() == "0") ? false : true;
                 }
-                
+                if(contador == 0)
+                {
+                    MessageBox.Show("Código NO existe!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox1.Text = "";
+                    textBox2.Text = "";
+                    textBox3.Text = "";
+                    textBox5.Text = "";
+                    checkBox1.Checked = false;
+                    return;
+                }
             }
-            */
         }
         #endregion leaves;
 
@@ -664,6 +678,7 @@ namespace iOMG
             this.button1.Image = Image.FromFile(img_grab);
             this.textBox1.Focus();
             limpiar(this);
+            limpiatab(tabreg);
             limpia_otros();
             limpia_combos();
         }
@@ -682,7 +697,10 @@ namespace iOMG
             escribe(this);
             Tx_modo.Text = "EDITAR";
             button1.Image = Image.FromFile(img_grab);
+            var qa = tx_rind.Text;
             limpiar(this);
+            limpiatab(tabreg);
+            tx_rind.Text = qa;
             limpia_otros();
             limpia_combos();
             jalaoc("tx_idr");
@@ -713,7 +731,10 @@ namespace iOMG
             escribe(this);
             Tx_modo.Text = "ANULAR";
             button1.Image = Image.FromFile(img_anul);
+            var qa = tx_rind.Text;
             limpiar(this);
+            limpiatab(tabreg);
+            tx_rind.Text = qa;
             limpia_otros();
             limpia_combos();
             jalaoc("tx_idr");

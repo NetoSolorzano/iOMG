@@ -56,6 +56,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPed = new System.Windows.Forms.TabPage();
+            this.chk_resu = new System.Windows.Forms.CheckBox();
             this.bt_preview = new System.Windows.Forms.Button();
             this.bt_imprime = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -106,14 +107,13 @@
             this.tabres = new System.Windows.Forms.TabPage();
             this.tx_codped = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.bt_prev_res = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.chk_resu = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPed.SuspendLayout();
@@ -425,6 +425,16 @@
             this.tabPed.TabIndex = 0;
             this.tabPed.Text = "Pedidos";
             this.tabPed.UseVisualStyleBackColor = true;
+            // 
+            // chk_resu
+            // 
+            this.chk_resu.AutoSize = true;
+            this.chk_resu.Location = new System.Drawing.Point(251, 30);
+            this.chk_resu.Name = "chk_resu";
+            this.chk_resu.Size = new System.Drawing.Size(116, 17);
+            this.chk_resu.TabIndex = 319;
+            this.chk_resu.Text = "Resumido x pedido";
+            this.chk_resu.UseVisualStyleBackColor = true;
             // 
             // bt_preview
             // 
@@ -910,7 +920,7 @@
             // 
             this.tabres.Controls.Add(this.tx_codped);
             this.tabres.Controls.Add(this.label8);
-            this.tabres.Controls.Add(this.button2);
+            this.tabres.Controls.Add(this.bt_prev_res);
             this.tabres.Controls.Add(this.button3);
             this.tabres.Controls.Add(this.dgv_resumen);
             this.tabres.Controls.Add(this.bt_resumen);
@@ -939,14 +949,15 @@
             this.label8.TabIndex = 360;
             this.label8.Text = "Cod.Pedido";
             // 
-            // button2
+            // bt_prev_res
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(654, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(61, 44);
-            this.button2.TabIndex = 358;
-            this.button2.UseVisualStyleBackColor = true;
+            this.bt_prev_res.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_prev_res.Location = new System.Drawing.Point(654, 3);
+            this.bt_prev_res.Name = "bt_prev_res";
+            this.bt_prev_res.Size = new System.Drawing.Size(61, 44);
+            this.bt_prev_res.TabIndex = 358;
+            this.bt_prev_res.UseVisualStyleBackColor = true;
+            this.bt_prev_res.Click += new System.EventHandler(this.bt_prev_res_Click);
             // 
             // button3
             // 
@@ -993,16 +1004,6 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
-            // 
-            // chk_resu
-            // 
-            this.chk_resu.AutoSize = true;
-            this.chk_resu.Location = new System.Drawing.Point(251, 30);
-            this.chk_resu.Name = "chk_resu";
-            this.chk_resu.Size = new System.Drawing.Size(116, 17);
-            this.chk_resu.TabIndex = 319;
-            this.chk_resu.Text = "Resumido x pedido";
-            this.chk_resu.UseVisualStyleBackColor = true;
             // 
             // repspedalm
             // 
@@ -1118,7 +1119,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabres;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bt_prev_res;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridView dgv_resumen;
         private System.Windows.Forms.Button bt_resumen;
