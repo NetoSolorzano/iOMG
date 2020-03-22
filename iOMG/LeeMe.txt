@@ -80,7 +80,8 @@ REPORTES
 - Ingreso de pedidos de clientes, cantidad es 1 porque el pedido es 1 ....... 19/11/2019 
 04/12/2019 REUNION CON NORMA EN BARRANCO
 - Ella menciona que con respecto a los pedidos de clientes es 1 pedido x cada item no articulo, un item varios articulos
-
+----------------------------------- retomando el proyecto despues del correo de Norma 03/03/2020 -----------------------------------
+** CONTRATO CLIENTES, adecuaciones de Isacco y de reunión entre ellos -> pasado a limpio por Norma en correo del 03/03/2020 y 11/03/2020
 
 
 
