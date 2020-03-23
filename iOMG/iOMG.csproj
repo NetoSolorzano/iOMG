@@ -142,6 +142,12 @@
       <DependentUpon>ContratoE.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ContratoG.cs">
+      <SubType>Component</SubType>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContratoG.rpt</DependentUpon>
+    </Compile>
     <Compile Include="ContratoI.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -457,6 +463,10 @@
     <EmbeddedResource Include="ContratoE.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ContratoE.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContratoG.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ContratoG.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ContratoI.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
