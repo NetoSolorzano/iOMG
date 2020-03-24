@@ -22,7 +22,7 @@ namespace iOMG
         {
             if (_datosReporte.cabecera.Rows.Count > 0 && _datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "1")
             {
-                ContratoG _contrato = new ContratoG();
+                ContratoI _contrato = new ContratoI();  // antes ContratoG (23/03/2020)
                 _contrato.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _contrato;
             }
