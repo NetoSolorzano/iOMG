@@ -82,6 +82,6 @@ REPORTES
 - Ella menciona que con respecto a los pedidos de clientes es 1 pedido x cada item no articulo, un item varios articulos
 ----------------------------------- retomando el proyecto despues del correo de Norma 03/03/2020 -----------------------------------
 ** CONTRATO CLIENTES, adecuaciones de Isacco y de reunión entre ellos -> pasado a limpio por Norma en correo del 03/03/2020 y 11/03/2020
-
+FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY OTRA FORMA 24/03/2020
 
 

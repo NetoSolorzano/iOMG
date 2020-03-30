@@ -1157,6 +1157,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columntotal;
             
+            private global::System.Data.DataColumn columntienda;
+            
             private global::System.Data.DataColumn columncoment;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1274,6 +1276,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn tiendaColumn {
+                get {
+                    return this.columntienda;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public global::System.Data.DataColumn comentColumn {
                 get {
                     return this.columncoment;
@@ -1317,7 +1327,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public detalleRow AdddetalleRow(string id, string cant, string codigo, string nombre, string medidas, string madera, string det2, string acabado, string precio, string total, string coment) {
+            public detalleRow AdddetalleRow(string id, string cant, string codigo, string nombre, string medidas, string madera, string det2, string acabado, string precio, string total, string tienda, string coment) {
                 detalleRow rowdetalleRow = ((detalleRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -1330,6 +1340,7 @@ namespace iOMG {
                         acabado,
                         precio,
                         total,
+                        tienda,
                         coment};
                 rowdetalleRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdetalleRow);
@@ -1363,6 +1374,7 @@ namespace iOMG {
                 this.columnacabado = base.Columns["acabado"];
                 this.columnprecio = base.Columns["precio"];
                 this.columntotal = base.Columns["total"];
+                this.columntienda = base.Columns["tienda"];
                 this.columncoment = base.Columns["coment"];
             }
             
@@ -1389,6 +1401,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnprecio);
                 this.columntotal = new global::System.Data.DataColumn("total", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntotal);
+                this.columntienda = new global::System.Data.DataColumn("tienda", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntienda);
                 this.columncoment = new global::System.Data.DataColumn("coment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncoment);
             }
@@ -5128,6 +5142,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string tienda {
+                get {
+                    try {
+                        return ((string)(this[this.tabledetalle.tiendaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'tienda\' de la tabla \'detalle\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledetalle.tiendaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public string coment {
                 get {
                     try {
@@ -5260,6 +5290,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SettotalNull() {
                 this[this.tabledetalle.totalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstiendaNull() {
+                return this.IsNull(this.tabledetalle.tiendaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettiendaNull() {
+                this[this.tabledetalle.tiendaColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

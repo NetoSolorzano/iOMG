@@ -2963,7 +2963,13 @@ namespace iOMG
                 }
             }
         }
+        private void chk_lugent_CheckStateChanged(object sender, EventArgs e)
+        {
+            if(chk_lugent.CheckState == CheckState.Checked)
+            {
 
+            }
+        }
         #endregion leaves;
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
@@ -3266,7 +3272,7 @@ namespace iOMG
                     rowdetalle.precio = row.Cells["precio"].Value.ToString();
                     rowdetalle.total = row.Cells["total"].Value.ToString();
                     rowdetalle.coment = row.Cells["coment"].Value.ToString();
-                    // aca falta el coment del articulo
+                    rowdetalle.tienda = nnnn;    // row.Cells[""].Value.ToString();
                     repcontrato.detalle.AdddetalleRow(rowdetalle);
                     //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
                 }

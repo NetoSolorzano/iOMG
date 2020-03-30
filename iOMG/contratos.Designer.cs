@@ -228,6 +228,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.chk_lugent = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -267,7 +268,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(982, 465);
+            this.tabControl1.Size = new System.Drawing.Size(982, 496);
             this.tabControl1.TabIndex = 161;
             // 
             // tabgrilla
@@ -303,6 +304,7 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.chk_lugent);
             this.tabuser.Controls.Add(this.groupBox39);
             this.tabuser.Controls.Add(this.label52);
             this.tabuser.Controls.Add(this.tx_bruto);
@@ -358,7 +360,7 @@
             this.tabuser.Location = new System.Drawing.Point(4, 22);
             this.tabuser.Name = "tabuser";
             this.tabuser.Padding = new System.Windows.Forms.Padding(3);
-            this.tabuser.Size = new System.Drawing.Size(974, 439);
+            this.tabuser.Size = new System.Drawing.Size(974, 470);
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
@@ -1611,7 +1613,7 @@
             // 
             this.groupBox9.BackColor = System.Drawing.Color.DimGray;
             this.groupBox9.Controls.Add(this.groupBox10);
-            this.groupBox9.Location = new System.Drawing.Point(1, 435);
+            this.groupBox9.Location = new System.Drawing.Point(3, 457);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(482, 1);
             this.groupBox9.TabIndex = 303;
@@ -1627,7 +1629,7 @@
             // 
             // tx_dirent
             // 
-            this.tx_dirent.Location = new System.Drawing.Point(76, 416);
+            this.tx_dirent.Location = new System.Drawing.Point(76, 438);
             this.tx_dirent.Name = "tx_dirent";
             this.tx_dirent.Size = new System.Drawing.Size(564, 20);
             this.tx_dirent.TabIndex = 301;
@@ -1635,16 +1637,16 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(1, 420);
+            this.label11.Location = new System.Drawing.Point(5, 442);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(75, 13);
+            this.label11.Size = new System.Drawing.Size(72, 13);
             this.label11.TabIndex = 302;
-            this.label11.Text = "Direc. Entrega";
+            this.label11.Text = "Direc. Entreg.";
             // 
             // dtp_entreg
             // 
             this.dtp_entreg.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_entreg.Location = new System.Drawing.Point(734, 416);
+            this.dtp_entreg.Location = new System.Drawing.Point(734, 438);
             this.dtp_entreg.Name = "dtp_entreg";
             this.dtp_entreg.ShowCheckBox = true;
             this.dtp_entreg.Size = new System.Drawing.Size(112, 20);
@@ -1705,7 +1707,7 @@
             // 
             this.groupBox15.BackColor = System.Drawing.Color.DimGray;
             this.groupBox15.Controls.Add(this.groupBox16);
-            this.groupBox15.Location = new System.Drawing.Point(4, 26);
+            this.groupBox15.Location = new System.Drawing.Point(4, 25);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(174, 1);
             this.groupBox15.TabIndex = 291;
@@ -1751,7 +1753,7 @@
             // 
             this.groupBox13.BackColor = System.Drawing.Color.White;
             this.groupBox13.Controls.Add(this.groupBox14);
-            this.groupBox13.Location = new System.Drawing.Point(484, 435);
+            this.groupBox13.Location = new System.Drawing.Point(484, 457);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(156, 1);
             this.groupBox13.TabIndex = 289;
@@ -1768,7 +1770,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(660, 420);
+            this.label7.Location = new System.Drawing.Point(660, 442);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(71, 13);
             this.label7.TabIndex = 288;
@@ -1885,7 +1887,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 10);
+            this.label6.Location = new System.Drawing.Point(7, 9);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(70, 13);
             this.label6.TabIndex = 278;
@@ -1946,7 +1948,7 @@
             this.cmb_tipo.DropDownWidth = 100;
             this.cmb_tipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_tipo.FormattingEnabled = true;
-            this.cmb_tipo.Location = new System.Drawing.Point(94, 6);
+            this.cmb_tipo.Location = new System.Drawing.Point(94, 5);
             this.cmb_tipo.Name = "cmb_tipo";
             this.cmb_tipo.Size = new System.Drawing.Size(85, 21);
             this.cmb_tipo.TabIndex = 264;
@@ -1972,7 +1974,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(882, 377);
+            this.button1.Location = new System.Drawing.Point(882, 393);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 50);
             this.button1.TabIndex = 272;
@@ -2055,7 +2057,7 @@
             this.toolStripSeparator10,
             this.Bt_fin,
             this.toolStripSeparator11});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 470);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 502);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(986, 35);
             this.toolStrip1.TabIndex = 162;
@@ -2321,11 +2323,22 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // chk_lugent
+            // 
+            this.chk_lugent.AutoSize = true;
+            this.chk_lugent.Location = new System.Drawing.Point(9, 418);
+            this.chk_lugent.Name = "chk_lugent";
+            this.chk_lugent.Size = new System.Drawing.Size(137, 17);
+            this.chk_lugent.TabIndex = 362;
+            this.chk_lugent.Text = "Cliente recoje en tienda";
+            this.chk_lugent.UseVisualStyleBackColor = true;
+            this.chk_lugent.CheckStateChanged += new System.EventHandler(this.chk_lugent_CheckStateChanged);
+            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(986, 505);
+            this.ClientSize = new System.Drawing.Size(986, 537);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tabControl1);
             this.Name = "contratos";
@@ -2572,5 +2585,6 @@
         private System.Windows.Forms.Label label52;
         private NumericTextBox tx_bruto;
         private System.Windows.Forms.TextBox tx_dat_mad;
+        private System.Windows.Forms.CheckBox chk_lugent;
     }
 }
