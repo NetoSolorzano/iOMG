@@ -313,7 +313,7 @@ namespace iOMG
             {
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
-                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto " +
+                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente";   //  where a.tipocon=@tip
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
@@ -593,14 +593,14 @@ namespace iOMG
             // descuento %
             advancedDataGridView1.Columns[14].Visible = false;
         }
-        private void grilladet(string modo)                                     // grilla detalle de pedido
-        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na
+        private void grilladet(string modo)                                     // grilla detalle
+        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na,tda_item
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 15;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 16;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -695,6 +695,12 @@ namespace iOMG
             dataGridView1.Columns[13].Name = "CodPie";
             // na (nuevo o actualiza)
             dataGridView1.Columns[14].Visible = false;
+            // tda del item
+            dataGridView1.Columns[15].Visible = true;
+            dataGridView1.Columns[15].HeaderText = "Tienda";      // titulo de la columna
+            dataGridView1.Columns[15].Width = 60;                 // ancho
+            dataGridView1.Columns[15].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[15].Name = "tda_item";
         }
         private void armani()                                                   // arma el codigo y busca en la maestra
         {
@@ -908,6 +914,7 @@ namespace iOMG
                 tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
                 tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
                 tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
+                chk_lugent.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString() == "1") ? true:false ;
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
@@ -1012,7 +1019,7 @@ namespace iOMG
         private void jaladet(string pedido)                                     // jala el detalle del contrato
         {
             string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
-                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na " +
+                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na,tda_item " +
                 "FROM detacon a " +
                 "left join desc_dt2 b on b.idcodice=a.piedra " +
                 "left join desc_mad c on c.idcodice=a.madera " +
@@ -1085,8 +1092,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
-                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia) values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta," +
-                        "@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now())";
+                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje) values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta," +
+                        "@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
@@ -1102,6 +1109,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@dent", tx_dirent.Text);
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@cltr", chk_lugent.CheckState.ToString());
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -1117,8 +1125,8 @@ namespace iOMG
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string acabado = dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(9, 1);
                         string insdet = "insert into detacon (" +
-                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado) values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2,@esta)";
+                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado,tda_item) values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2,@esta,@tdai)";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                         micon.Parameters.AddWithValue("@tipe", tx_dat_orig.Text);       // tx_dat_tiped.Text
@@ -1134,6 +1142,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                        micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // tienda item
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1166,7 +1175,7 @@ namespace iOMG
                     // a.valor,a.acuenta,a.saldo,a.dscto
                     string actua = "update contrat set " +
                         "tipocon=@tco,tipoes=@loc,fecha=@fec,cliente=@clt,coment=@com,entrega=@ent,dentrega=@den," +
-                        "valor=@val,acuenta=@acta,saldo=@sal,dscto=@dscto " +
+                        "valor=@val,acuenta=@acta,saldo=@sal,dscto=@dscto,clte_recoje=@cltr " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
@@ -1181,6 +1190,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@acta", tx_acta.Text);
                     micon.Parameters.AddWithValue("@sal", tx_saldo.Text);
                     micon.Parameters.AddWithValue("@dscto", tx_dscto.Text);
+                    micon.Parameters.AddWithValue("@cltr", chk_lugent.CheckState.ToString());
                     micon.ExecuteNonQuery();
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1189,8 +1199,8 @@ namespace iOMG
                         if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "N")   // nueva fila de detalle o actualizacion
                         {
                             insdet = "insert into detacon (" +
-                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,coment,piedra) values (" +
-                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@come,@pied)";
+                                "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,coment,piedra,tda_item) values (" +
+                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@come,@pied,@tdai)";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                             micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -1206,12 +1216,14 @@ namespace iOMG
                             //micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                             micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                            micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // tienda item
                             micon.ExecuteNonQuery();
                         }
                         if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "A")
                         {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,space(1) as na
                             insdet = "update detacon set tipo=@tipe,item=@item,cant=@cant," +
-                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald,coment=@come,piedra=@pied " +
+                                "nombre=@nomb,medidas=@medi,madera=@made,precio=@prec,total=@tota,saldo=@sald,coment=@come,piedra=@pied," +
+                                "tda_item=@tdai " +
                                 "where iddetacon=@idr";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -1228,6 +1240,7 @@ namespace iOMG
                             //micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                             micon.Parameters.AddWithValue("@pied", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                            micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // tienda item
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -2494,13 +2507,14 @@ namespace iOMG
                     obj.Cells[12].Value = tx_d_det2.Text;
                     obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();     // sera?
                     obj.Cells[14].Value = "N";
+                    obj.Cells[15].Value = tx_dat_orig.Text;
                 }
                 else
                 {
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N");
+                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N",tx_dat_orig.Text);
                     }
                     else
                     {
@@ -2521,7 +2535,7 @@ namespace iOMG
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
                     //a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment,
-                    //piedra,codpie,na
+                    //piedra,codpie,na,tda_item
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
                     obj.Cells[1].Value = tx_d_codi.Text;
                     obj.Cells[2].Value = tx_d_can.Text;
@@ -2537,6 +2551,7 @@ namespace iOMG
                     obj.Cells[12].Value = tx_d_det2.Text;
                     obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();
                     obj.Cells[14].Value = "A";  // registro actualizado
+                    obj.Cells[15].Value = tx_dat_orig.Text;
                 }
                 else
                 {
@@ -2557,6 +2572,7 @@ namespace iOMG
                     tr["piedra"] = tx_d_det2.Text;
                     tr["codpie"] = cmb_det2.Text.ToString().Substring(0, 3).Trim();
                     tr["na"] = "N";
+                    tr["tda_item"] = tx_dat_orig.Text;
                     dtg.Rows.Add(tr);
                 }
             }
@@ -2967,7 +2983,14 @@ namespace iOMG
         {
             if(chk_lugent.CheckState == CheckState.Checked)
             {
-
+                tx_dirent.Tag = tx_dirent.Text;
+                tx_dirent.Text = "";
+                tx_dirent.ReadOnly = true;
+            }
+            if (chk_lugent.CheckState == CheckState.Unchecked)
+            {
+                tx_dirent.Text = tx_dirent.Tag.ToString();
+                tx_dirent.ReadOnly = false;
             }
         }
         #endregion leaves;
@@ -3272,7 +3295,7 @@ namespace iOMG
                     rowdetalle.precio = row.Cells["precio"].Value.ToString();
                     rowdetalle.total = row.Cells["total"].Value.ToString();
                     rowdetalle.coment = row.Cells["coment"].Value.ToString();
-                    rowdetalle.tienda = nnnn;    // row.Cells[""].Value.ToString();
+                    rowdetalle.tienda = row.Cells["tda_item"].Value.ToString();    // 
                     repcontrato.detalle.AdddetalleRow(rowdetalle);
                     //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
                 }
