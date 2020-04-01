@@ -38,6 +38,8 @@
               <xs:element name="fechEnt" msprop:Generator_ColumnVarNameInTable="columnfechEnt" msprop:Generator_ColumnPropNameInRow="fechEnt" msprop:Generator_ColumnPropNameInTable="fechEntColumn" msprop:Generator_UserColumnName="fechEnt" type="xs:string" minOccurs="0" />
               <xs:element name="usuario" msprop:Generator_ColumnVarNameInTable="columnusuario" msprop:Generator_ColumnPropNameInRow="usuario" msprop:Generator_ColumnPropNameInTable="usuarioColumn" msprop:Generator_UserColumnName="usuario" type="xs:string" minOccurs="0" />
               <xs:element name="dirEntreg" msprop:Generator_ColumnVarNameInTable="columndirEntreg" msprop:Generator_ColumnPropNameInRow="dirEntreg" msprop:Generator_ColumnPropNameInTable="dirEntregColumn" msprop:Generator_UserColumnName="dirEntreg" type="xs:string" minOccurs="0" />
+              <xs:element name="clte_r" msprop:Generator_ColumnVarNameInTable="columnclte_r" msprop:Generator_ColumnPropNameInRow="clte_r" msprop:Generator_ColumnPropNameInTable="clte_rColumn" msprop:Generator_UserColumnName="clte_r" type="xs:string" minOccurs="0" />
+              <xs:element name="serespman" msprop:Generator_ColumnVarNameInTable="columnserespman" msprop:Generator_ColumnPropNameInRow="serespman" msprop:Generator_ColumnPropNameInTable="serespmanColumn" msprop:Generator_UserColumnName="serespman" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

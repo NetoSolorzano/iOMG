@@ -32,6 +32,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.chk_lugent = new System.Windows.Forms.CheckBox();
             this.groupBox39 = new System.Windows.Forms.GroupBox();
             this.groupBox40 = new System.Windows.Forms.GroupBox();
             this.label52 = new System.Windows.Forms.Label();
@@ -228,7 +229,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.chk_lugent = new System.Windows.Forms.CheckBox();
+            this.chk_serema = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -277,7 +278,7 @@
             this.tabgrilla.Location = new System.Drawing.Point(4, 22);
             this.tabgrilla.Name = "tabgrilla";
             this.tabgrilla.Padding = new System.Windows.Forms.Padding(3);
-            this.tabgrilla.Size = new System.Drawing.Size(974, 439);
+            this.tabgrilla.Size = new System.Drawing.Size(974, 470);
             this.tabgrilla.TabIndex = 0;
             this.tabgrilla.Text = "Contratos";
             this.tabgrilla.UseVisualStyleBackColor = true;
@@ -304,6 +305,7 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.chk_serema);
             this.tabuser.Controls.Add(this.chk_lugent);
             this.tabuser.Controls.Add(this.groupBox39);
             this.tabuser.Controls.Add(this.label52);
@@ -365,6 +367,17 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // chk_lugent
+            // 
+            this.chk_lugent.AutoSize = true;
+            this.chk_lugent.Location = new System.Drawing.Point(9, 418);
+            this.chk_lugent.Name = "chk_lugent";
+            this.chk_lugent.Size = new System.Drawing.Size(137, 17);
+            this.chk_lugent.TabIndex = 362;
+            this.chk_lugent.Text = "Cliente recoje en tienda";
+            this.chk_lugent.UseVisualStyleBackColor = true;
+            this.chk_lugent.CheckStateChanged += new System.EventHandler(this.chk_lugent_CheckStateChanged);
             // 
             // groupBox39
             // 
@@ -2323,16 +2336,15 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // chk_lugent
+            // chk_serema
             // 
-            this.chk_lugent.AutoSize = true;
-            this.chk_lugent.Location = new System.Drawing.Point(9, 418);
-            this.chk_lugent.Name = "chk_lugent";
-            this.chk_lugent.Size = new System.Drawing.Size(137, 17);
-            this.chk_lugent.TabIndex = 362;
-            this.chk_lugent.Text = "Cliente recoje en tienda";
-            this.chk_lugent.UseVisualStyleBackColor = true;
-            this.chk_lugent.CheckStateChanged += new System.EventHandler(this.chk_lugent_CheckStateChanged);
+            this.chk_serema.AutoSize = true;
+            this.chk_serema.Location = new System.Drawing.Point(253, 418);
+            this.chk_serema.Name = "chk_serema";
+            this.chk_serema.Size = new System.Drawing.Size(167, 17);
+            this.chk_serema.TabIndex = 363;
+            this.chk_serema.Text = "Servicio especial de maniobra";
+            this.chk_serema.UseVisualStyleBackColor = true;
             // 
             // contratos
             // 
@@ -2586,5 +2598,6 @@
         private NumericTextBox tx_bruto;
         private System.Windows.Forms.TextBox tx_dat_mad;
         private System.Windows.Forms.CheckBox chk_lugent;
+        private System.Windows.Forms.CheckBox chk_serema;
     }
 }

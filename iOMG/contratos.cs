@@ -174,6 +174,7 @@ namespace iOMG
             //cmb_tipo.Enabled = false;
             tx_d_nom.Enabled = false;
         }
+        #region resto del mundo
         private void init()
         {
             this.BackColor = Color.FromName(colback);
@@ -915,6 +916,7 @@ namespace iOMG
                 tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
                 tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
                 chk_lugent.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString() == "1") ? true:false ;
+                chk_serema.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString() == "1") ? true : false;
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
@@ -1092,8 +1094,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
-                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje) values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta," +
-                        "@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr)";
+                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma) values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta," +
+                        "@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
@@ -1109,7 +1111,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@dent", tx_dirent.Text);
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
                     micon.Parameters.AddWithValue("@asd", asd);
-                    micon.Parameters.AddWithValue("@cltr", chk_lugent.CheckState.ToString());
+                    micon.Parameters.AddWithValue("@cltr", (chk_lugent.CheckState.ToString() == "True") ? "1" : "0");
+                    micon.Parameters.AddWithValue("@ceem", (chk_serema.CheckState.ToString() == "True") ? "1" : "0");
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -1175,7 +1178,7 @@ namespace iOMG
                     // a.valor,a.acuenta,a.saldo,a.dscto
                     string actua = "update contrat set " +
                         "tipocon=@tco,tipoes=@loc,fecha=@fec,cliente=@clt,coment=@com,entrega=@ent,dentrega=@den," +
-                        "valor=@val,acuenta=@acta,saldo=@sal,dscto=@dscto,clte_recoje=@cltr " +
+                        "valor=@val,acuenta=@acta,saldo=@sal,dscto=@dscto,clte_recoje=@cltr,seresma=@ceem " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
@@ -1190,7 +1193,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@acta", tx_acta.Text);
                     micon.Parameters.AddWithValue("@sal", tx_saldo.Text);
                     micon.Parameters.AddWithValue("@dscto", tx_dscto.Text);
-                    micon.Parameters.AddWithValue("@cltr", chk_lugent.CheckState.ToString());
+                    micon.Parameters.AddWithValue("@cltr", (chk_lugent.CheckState.ToString() == "True") ? "1":"0");
+                    micon.Parameters.AddWithValue("@ceem", (chk_serema.CheckState.ToString() == "True") ? "1" : "0");
                     micon.ExecuteNonQuery();
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1481,6 +1485,7 @@ namespace iOMG
             bt_prev.Enabled = false;
             bt_exc.Enabled = true;
         }
+        #endregion
 
         #region autocompletados
         private void autodptos()
@@ -3277,8 +3282,10 @@ namespace iOMG
             rowcabeza.dirEntreg = tx_dirent.Text.Trim();
             rowcabeza.fechEnt = dtp_entreg.Value.ToString("dd/MM/yyyy");
             rowcabeza.usuario = asd;
+            rowcabeza.clte_r = (chk_lugent.Checked.ToString()=="True")? "1":"0";
+            rowcabeza.serespman = (chk_serema.Checked.ToString() == "True") ? "1" : "0";
             repcontrato.cabecera.AddcabeceraRow(rowcabeza);
-
+            //MessageBox.Show(chk_lugent.Checked.ToString(), "Valor lugent");
             foreach (DataGridViewRow row in dataGridView1.Rows)  //
             {
                 if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0,1) != "Z")
