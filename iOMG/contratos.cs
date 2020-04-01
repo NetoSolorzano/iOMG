@@ -314,7 +314,7 @@ namespace iOMG
             {
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
-                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje " +
+                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente";   //  where a.tipocon=@tip
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
@@ -510,7 +510,7 @@ namespace iOMG
         private void grilla()                                                   // arma la grilla
         {
             // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-            // a.valor,a.acuenta,a.saldo,a.dscto 
+            // a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -593,6 +593,10 @@ namespace iOMG
             advancedDataGridView1.Columns[13].Visible = false;
             // descuento %
             advancedDataGridView1.Columns[14].Visible = false;
+            // cliente recoje
+            advancedDataGridView1.Columns[15].Visible = false;
+            // servicio espacial de maniobra
+            advancedDataGridView1.Columns[16].Visible = false;
         }
         private void grilladet(string modo)                                     // grilla detalle
         {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na,tda_item
