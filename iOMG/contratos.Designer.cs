@@ -32,6 +32,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.chk_serema = new System.Windows.Forms.CheckBox();
             this.chk_lugent = new System.Windows.Forms.CheckBox();
             this.groupBox39 = new System.Windows.Forms.GroupBox();
             this.groupBox40 = new System.Windows.Forms.GroupBox();
@@ -229,7 +230,11 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.chk_serema = new System.Windows.Forms.CheckBox();
+            this.tx_piso = new iOMG.NumericTextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.chk_ascensor = new System.Windows.Forms.CheckBox();
+            this.groupBox41 = new System.Windows.Forms.GroupBox();
+            this.groupBox42 = new System.Windows.Forms.GroupBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -260,6 +265,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.groupBox41.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -305,6 +311,10 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.groupBox41);
+            this.tabuser.Controls.Add(this.chk_ascensor);
+            this.tabuser.Controls.Add(this.label53);
+            this.tabuser.Controls.Add(this.tx_piso);
             this.tabuser.Controls.Add(this.chk_serema);
             this.tabuser.Controls.Add(this.chk_lugent);
             this.tabuser.Controls.Add(this.groupBox39);
@@ -367,6 +377,16 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // chk_serema
+            // 
+            this.chk_serema.AutoSize = true;
+            this.chk_serema.Location = new System.Drawing.Point(193, 418);
+            this.chk_serema.Name = "chk_serema";
+            this.chk_serema.Size = new System.Drawing.Size(167, 17);
+            this.chk_serema.TabIndex = 363;
+            this.chk_serema.Text = "Servicio especial de maniobra";
+            this.chk_serema.UseVisualStyleBackColor = true;
             // 
             // chk_lugent
             // 
@@ -1628,7 +1648,7 @@
             this.groupBox9.Controls.Add(this.groupBox10);
             this.groupBox9.Location = new System.Drawing.Point(3, 457);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(482, 1);
+            this.groupBox9.Size = new System.Drawing.Size(638, 1);
             this.groupBox9.TabIndex = 303;
             this.groupBox9.TabStop = false;
             // 
@@ -1645,7 +1665,7 @@
             this.tx_dirent.Location = new System.Drawing.Point(76, 438);
             this.tx_dirent.Name = "tx_dirent";
             this.tx_dirent.Size = new System.Drawing.Size(564, 20);
-            this.tx_dirent.TabIndex = 301;
+            this.tx_dirent.TabIndex = 366;
             // 
             // label11
             // 
@@ -1663,7 +1683,7 @@
             this.dtp_entreg.Name = "dtp_entreg";
             this.dtp_entreg.ShowCheckBox = true;
             this.dtp_entreg.Size = new System.Drawing.Size(112, 20);
-            this.dtp_entreg.TabIndex = 300;
+            this.dtp_entreg.TabIndex = 367;
             // 
             // dtp_pedido
             // 
@@ -1786,7 +1806,7 @@
             this.label7.Location = new System.Drawing.Point(660, 442);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(71, 13);
-            this.label7.TabIndex = 288;
+            this.label7.TabIndex = 367;
             this.label7.Text = "Fech Entrega";
             // 
             // label5
@@ -1920,7 +1940,7 @@
             this.tx_coment.Location = new System.Drawing.Point(76, 393);
             this.tx_coment.Name = "tx_coment";
             this.tx_coment.Size = new System.Drawing.Size(770, 20);
-            this.tx_coment.TabIndex = 270;
+            this.tx_coment.TabIndex = 361;
             // 
             // label1
             // 
@@ -2000,7 +2020,7 @@
             this.tx_dscto.Location = new System.Drawing.Point(253, 370);
             this.tx_dscto.Name = "tx_dscto";
             this.tx_dscto.Size = new System.Drawing.Size(73, 20);
-            this.tx_dscto.TabIndex = 336;
+            this.tx_dscto.TabIndex = 359;
             this.tx_dscto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_dscto.Leave += new System.EventHandler(this.tx_dscto_Leave);
             // 
@@ -2020,7 +2040,7 @@
             this.tx_acta.Location = new System.Drawing.Point(599, 370);
             this.tx_acta.Name = "tx_acta";
             this.tx_acta.Size = new System.Drawing.Size(73, 20);
-            this.tx_acta.TabIndex = 330;
+            this.tx_acta.TabIndex = 360;
             this.tx_acta.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_acta.Leave += new System.EventHandler(this.tx_acta_Leave);
             // 
@@ -2336,15 +2356,51 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // chk_serema
+            // tx_piso
             // 
-            this.chk_serema.AutoSize = true;
-            this.chk_serema.Location = new System.Drawing.Point(253, 418);
-            this.chk_serema.Name = "chk_serema";
-            this.chk_serema.Size = new System.Drawing.Size(167, 17);
-            this.chk_serema.TabIndex = 363;
-            this.chk_serema.Text = "Servicio especial de maniobra";
-            this.chk_serema.UseVisualStyleBackColor = true;
+            this.tx_piso.AllowSpace = false;
+            this.tx_piso.Location = new System.Drawing.Point(419, 415);
+            this.tx_piso.Name = "tx_piso";
+            this.tx_piso.Size = new System.Drawing.Size(30, 20);
+            this.tx_piso.TabIndex = 364;
+            this.tx_piso.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(449, 419);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(30, 13);
+            this.label53.TabIndex = 377;
+            this.label53.Text = " Piso";
+            // 
+            // chk_ascensor
+            // 
+            this.chk_ascensor.AutoSize = true;
+            this.chk_ascensor.Location = new System.Drawing.Point(532, 418);
+            this.chk_ascensor.Name = "chk_ascensor";
+            this.chk_ascensor.Size = new System.Drawing.Size(115, 17);
+            this.chk_ascensor.TabIndex = 365;
+            this.chk_ascensor.Text = "Ascensor de carga";
+            this.chk_ascensor.UseVisualStyleBackColor = true;
+            // 
+            // groupBox41
+            // 
+            this.groupBox41.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox41.Controls.Add(this.groupBox42);
+            this.groupBox41.Location = new System.Drawing.Point(2, 434);
+            this.groupBox41.Name = "groupBox41";
+            this.groupBox41.Size = new System.Drawing.Size(638, 1);
+            this.groupBox41.TabIndex = 378;
+            this.groupBox41.TabStop = false;
+            // 
+            // groupBox42
+            // 
+            this.groupBox42.Location = new System.Drawing.Point(0, -26);
+            this.groupBox42.Name = "groupBox42";
+            this.groupBox42.Size = new System.Drawing.Size(164, 1);
+            this.groupBox42.TabIndex = 113;
+            this.groupBox42.TabStop = false;
             // 
             // contratos
             // 
@@ -2391,6 +2447,7 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.groupBox41.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2599,5 +2656,10 @@
         private System.Windows.Forms.TextBox tx_dat_mad;
         private System.Windows.Forms.CheckBox chk_lugent;
         private System.Windows.Forms.CheckBox chk_serema;
+        private System.Windows.Forms.Label label53;
+        private NumericTextBox tx_piso;
+        private System.Windows.Forms.CheckBox chk_ascensor;
+        private System.Windows.Forms.GroupBox groupBox41;
+        private System.Windows.Forms.GroupBox groupBox42;
     }
 }

@@ -609,6 +609,10 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnserespman;
             
+            private global::System.Data.DataColumn columnpiso;
+            
+            private global::System.Data.DataColumn columnascensor;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public cabeceraDataTable() {
@@ -844,6 +848,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn pisoColumn {
+                get {
+                    return this.columnpiso;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ascensorColumn {
+                get {
+                    return this.columnascensor;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -904,7 +924,9 @@ namespace iOMG {
                         string usuario, 
                         string dirEntreg, 
                         string clte_r, 
-                        string serespman) {
+                        string serespman, 
+                        string piso, 
+                        string ascensor) {
                 cabeceraRow rowcabeceraRow = ((cabeceraRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -931,7 +953,9 @@ namespace iOMG {
                         usuario,
                         dirEntreg,
                         clte_r,
-                        serespman};
+                        serespman,
+                        piso,
+                        ascensor};
                 rowcabeceraRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcabeceraRow);
                 return rowcabeceraRow;
@@ -979,6 +1003,8 @@ namespace iOMG {
                 this.columndirEntreg = base.Columns["dirEntreg"];
                 this.columnclte_r = base.Columns["clte_r"];
                 this.columnserespman = base.Columns["serespman"];
+                this.columnpiso = base.Columns["piso"];
+                this.columnascensor = base.Columns["ascensor"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1034,6 +1060,10 @@ namespace iOMG {
                 base.Columns.Add(this.columnclte_r);
                 this.columnserespman = new global::System.Data.DataColumn("serespman", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnserespman);
+                this.columnpiso = new global::System.Data.DataColumn("piso", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpiso);
+                this.columnascensor = new global::System.Data.DataColumn("ascensor", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnascensor);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4753,6 +4783,38 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string piso {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.pisoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'piso\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.pisoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ascensor {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.ascensorColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'ascensor\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.ascensorColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecabecera.idColumn);
             }
@@ -5049,6 +5111,30 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetserespmanNull() {
                 this[this.tablecabecera.serespmanColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IspisoNull() {
+                return this.IsNull(this.tablecabecera.pisoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetpisoNull() {
+                this[this.tablecabecera.pisoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsascensorNull() {
+                return this.IsNull(this.tablecabecera.ascensorColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetascensorNull() {
+                this[this.tablecabecera.ascensorColumn] = global::System.Convert.DBNull;
             }
         }
         
