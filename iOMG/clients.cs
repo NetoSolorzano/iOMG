@@ -473,7 +473,7 @@ namespace iOMG
                     string consulta = "select nombre from ubigeos where depart=@dep and provin=@prov and distri<>'00'";
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.Parameters.AddWithValue("@dep", textBox13.Text.Substring(0, 2));
-                    micon.Parameters.AddWithValue("@prov", textBox13.Text.Substring(2, 2));
+                    micon.Parameters.AddWithValue("@prov", (textBox13.Text.Length > 2)? textBox13.Text.Substring(2, 2):"  ");
                     try
                     {
                         MySqlDataReader dr = micon.ExecuteReader();
@@ -694,6 +694,27 @@ namespace iOMG
             }
             if (modo == "EDITAR")
             {
+                if(textBox7.Text.Trim() == "")
+                {
+                    textBox7.Focus();
+                    return;
+                }
+                if (textBox8.Text.Trim() == "")
+                {
+                    textBox8.Focus();
+                    return;
+                }
+                if (textBox9.Text.Trim() == "")
+                {
+                    textBox9.Focus();
+                    return;
+                }
+                if (textBox13.Text.Length < 6)
+                {
+                    MessageBox.Show("Falta información de ubigeo o es incorrecta", "Confirme dpto, prov. o distrito");
+                    textBox8.Focus();
+                    return;
+                }
                 var aa = MessageBox.Show("Confirma que desea modificar el cliente?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
@@ -954,7 +975,7 @@ namespace iOMG
                     string consulta = "select distri from ubigeos where trim(nombre)=@dist and depart=@dep and provin=@prov and distri<>'00'";
                     MySqlCommand micon = new MySqlCommand(consulta, conn);
                     micon.Parameters.AddWithValue("@dep", textBox13.Text.Substring(0, 2));
-                    micon.Parameters.AddWithValue("@prov", textBox13.Text.Substring(2, 2));
+                    micon.Parameters.AddWithValue("@prov", (textBox13.Text.Length > 2)? textBox13.Text.Substring(2, 2):"  ");
                     micon.Parameters.AddWithValue("@dist", textBox9.Text.Trim());
                     try
                     {
