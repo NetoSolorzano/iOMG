@@ -42,6 +42,9 @@
               <xs:element name="serespman" msprop:Generator_ColumnVarNameInTable="columnserespman" msprop:Generator_ColumnPropNameInRow="serespman" msprop:Generator_ColumnPropNameInTable="serespmanColumn" msprop:Generator_UserColumnName="serespman" type="xs:string" minOccurs="0" />
               <xs:element name="piso" msprop:Generator_ColumnVarNameInTable="columnpiso" msprop:Generator_ColumnPropNameInRow="piso" msprop:Generator_ColumnPropNameInTable="pisoColumn" msprop:Generator_UserColumnName="piso" type="xs:string" minOccurs="0" />
               <xs:element name="ascensor" msprop:Generator_ColumnVarNameInTable="columnascensor" msprop:Generator_ColumnPropNameInRow="ascensor" msprop:Generator_ColumnPropNameInTable="ascensorColumn" msprop:Generator_UserColumnName="ascensor" type="xs:string" minOccurs="0" />
+              <xs:element name="contac" msprop:Generator_ColumnVarNameInTable="columncontac" msprop:Generator_ColumnPropNameInRow="contac" msprop:Generator_ColumnPropNameInTable="contacColumn" msprop:Generator_UserColumnName="contac" type="xs:string" minOccurs="0" />
+              <xs:element name="drefer" msprop:Generator_ColumnVarNameInTable="columndrefer" msprop:Generator_ColumnPropNameInRow="drefer" msprop:Generator_ColumnPropNameInTable="dreferColumn" msprop:Generator_UserColumnName="drefer" type="xs:string" minOccurs="0" />
+              <xs:element name="telcont" msprop:Generator_ColumnVarNameInTable="columntelcont" msprop:Generator_ColumnPropNameInRow="telcont" msprop:Generator_ColumnPropNameInTable="telcontColumn" msprop:Generator_UserColumnName="telcont" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

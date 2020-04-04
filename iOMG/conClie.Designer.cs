@@ -613,6 +613,12 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnascensor;
             
+            private global::System.Data.DataColumn columncontac;
+            
+            private global::System.Data.DataColumn columndrefer;
+            
+            private global::System.Data.DataColumn columntelcont;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public cabeceraDataTable() {
@@ -864,6 +870,30 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn contacColumn {
+                get {
+                    return this.columncontac;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn dreferColumn {
+                get {
+                    return this.columndrefer;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn telcontColumn {
+                get {
+                    return this.columntelcont;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -926,7 +956,10 @@ namespace iOMG {
                         string clte_r, 
                         string serespman, 
                         string piso, 
-                        string ascensor) {
+                        string ascensor, 
+                        string contac, 
+                        string drefer, 
+                        string telcont) {
                 cabeceraRow rowcabeceraRow = ((cabeceraRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -955,7 +988,10 @@ namespace iOMG {
                         clte_r,
                         serespman,
                         piso,
-                        ascensor};
+                        ascensor,
+                        contac,
+                        drefer,
+                        telcont};
                 rowcabeceraRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcabeceraRow);
                 return rowcabeceraRow;
@@ -1005,6 +1041,9 @@ namespace iOMG {
                 this.columnserespman = base.Columns["serespman"];
                 this.columnpiso = base.Columns["piso"];
                 this.columnascensor = base.Columns["ascensor"];
+                this.columncontac = base.Columns["contac"];
+                this.columndrefer = base.Columns["drefer"];
+                this.columntelcont = base.Columns["telcont"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1064,6 +1103,12 @@ namespace iOMG {
                 base.Columns.Add(this.columnpiso);
                 this.columnascensor = new global::System.Data.DataColumn("ascensor", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnascensor);
+                this.columncontac = new global::System.Data.DataColumn("contac", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncontac);
+                this.columndrefer = new global::System.Data.DataColumn("drefer", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndrefer);
+                this.columntelcont = new global::System.Data.DataColumn("telcont", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntelcont);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4815,6 +4860,54 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string contac {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.contacColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'contac\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.contacColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string drefer {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.dreferColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'drefer\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.dreferColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string telcont {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.telcontColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'telcont\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.telcontColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecabecera.idColumn);
             }
@@ -5135,6 +5228,42 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetascensorNull() {
                 this[this.tablecabecera.ascensorColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IscontacNull() {
+                return this.IsNull(this.tablecabecera.contacColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetcontacNull() {
+                this[this.tablecabecera.contacColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsdreferNull() {
+                return this.IsNull(this.tablecabecera.dreferColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetdreferNull() {
+                this[this.tablecabecera.dreferColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IstelcontNull() {
+                return this.IsNull(this.tablecabecera.telcontColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SettelcontNull() {
+                this[this.tablecabecera.telcontColumn] = global::System.Convert.DBNull;
             }
         }
         
