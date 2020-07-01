@@ -319,7 +319,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
-                    "a.pcontacto,a.dreferen,a.telcont " +
+                    "a.pcontacto,a.dreferen,a.telcont,a.totsad " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente";   //  where a.tipocon=@tip
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
@@ -515,7 +515,7 @@ namespace iOMG
         private void grilla()                                                   // arma la grilla
         {
             // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-            // a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor,a.pcontacto,a.dreferen,a.telcont
+            // a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor,a.pcontacto,a.dreferen,a.telcont,a.totsad
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -612,6 +612,8 @@ namespace iOMG
             advancedDataGridView1.Columns[20].Visible = false;
             // telefono del contacto .. telcont
             advancedDataGridView1.Columns[21].Visible = false;
+            // total servicios adicionales
+            advancedDataGridView1.Columns[22].Visible = false;
         }
         private void grilladet(string modo)                                     // grilla detalle
         {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na,tda_item
@@ -941,6 +943,7 @@ namespace iOMG
                 tx_contac.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[19].Value.ToString();     // persona de contacto
                 tx_dirRef.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[20].Value.ToString();     // referencia de direccion
                 tx_telcont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[21].Value.ToString();    // telefono del contact
+                tx_totesp.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[22].Value.ToString();    // total servicios adicionales
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
@@ -981,6 +984,7 @@ namespace iOMG
                         tx_contac.Text = row["pcontacto"].ToString();                       // persona de contacto
                         tx_dirRef.Text = row["dreferen"].ToString();                        // referencia de direccion
                         tx_telcont.Text = row["telcont"].ToString();                        // telefono del contacto de instal
+                        tx_totesp.Text = string.Format("{0:#0.00}", row["totsad"].ToString());                          // total servicios adicionales
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
@@ -1124,9 +1128,9 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
-                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont) " +
+                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad) " +
                         "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
-                        "@pise,@asce,@pecon,@drefe,@tecont)";
+                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
@@ -1148,7 +1152,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@asce", (chk_ascensor.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@pecon", tx_contac.Text);
                     micon.Parameters.AddWithValue("@drefe", tx_dirRef.Text);
-                    micon.Parameters.AddWithValue("@tecont", tx_telcont.Text); 
+                    micon.Parameters.AddWithValue("@tecont", tx_telcont.Text);
+                    micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00":tx_totesp.Text);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -1215,7 +1220,7 @@ namespace iOMG
                     string actua = "update contrat set " +
                         "tipocon=@tco,tipoes=@loc,fecha=@fec,cliente=@clt,coment=@com,entrega=@ent,dentrega=@den,valor=@val," +
                         "acuenta=@acta,saldo=@sal,dscto=@dscto,clte_recoje=@cltr,seresma=@ceem,pisoent=@pise,ascensor=@asce," +
-                        "pcontacto=@pecon,dreferen=@drefe,telcont=@tecont " +
+                        "pcontacto=@pecon,dreferen=@drefe,telcont=@tecont,totsad=@totadi " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
@@ -1237,6 +1242,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@pecon", tx_contac.Text);
                     micon.Parameters.AddWithValue("@drefe", tx_dirRef.Text);
                     micon.Parameters.AddWithValue("@tecont", tx_telcont.Text);
+                    micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00" : tx_totesp.Text);
                     micon.ExecuteNonQuery();
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1435,11 +1441,17 @@ namespace iOMG
         }
         private void calculos()                                                 // calculos de total, y saldo
         {
-            decimal val = 0, dsto = 0, acta = 0;  //sald = 0
+            decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                // buscamos los codigos adicionales para acumularlos y guardarlo en el campo 
+                if(dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0,1) == letgru)
+                {
+                    espe = espe + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                }
             }
+            tx_totesp.Text = espe.ToString("0.00");
             tx_bruto.Text = val.ToString("0.00");
             if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
             if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
@@ -1447,6 +1459,7 @@ namespace iOMG
             tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
+            //if (tx_totesp.Text.Trim() == "") tx_totesp.Text = "0.00";
         }
         private bool valexist(String docu)                                      // valida existencia de documento
         {
@@ -2297,7 +2310,7 @@ namespace iOMG
                         // insertamos en el datatable
                         DataRow dr = dtg.NewRow();
                         // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-                        // a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor,a.pcontacto,a.dreferen
+                        // a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor,a.pcontacto,a.dreferen,telcont,totsad
                         string cid = tx_idr.Text;
                         dr[0] = cid;
                         dr[1] = tx_dat_tiped.Text;
@@ -2320,6 +2333,8 @@ namespace iOMG
                         dr[18] = (chk_ascensor.Checked.ToString() == "true") ? "1" : "0";
                         dr[19] = tx_contac.Text;
                         dr[20] = tx_dirRef.Text;
+                        dr[21] = tx_telcont.Text;
+                        dr[22] = tx_totesp.Text;
                         dtg.Rows.Add(dr);
                     }
                     else
@@ -2370,6 +2385,8 @@ namespace iOMG
                                 dtg.Rows[i][18] = (chk_ascensor.Checked.ToString() == "True") ? "1" : "0";
                                 dtg.Rows[i][19] = tx_contac.Text;
                                 dtg.Rows[i][20] = tx_dirRef.Text;
+                                dtg.Rows[i][21] = tx_telcont.Text;
+                                dtg.Rows[i][22] = tx_totesp.Text;
                             }
                         }
                     }
@@ -3348,11 +3365,12 @@ namespace iOMG
             rowcabeza.contac = tx_contac.Text;
             rowcabeza.drefer = tx_dirRef.Text;
             rowcabeza.telcont = tx_telcont.Text;
+            rowcabeza.totadic = tx_totesp.Text;
             repcontrato.cabecera.AddcabeceraRow(rowcabeza);
             //MessageBox.Show(chk_lugent.Checked.ToString(), "Valor lugent");
             foreach (DataGridViewRow row in dataGridView1.Rows)  //
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0,1) != "Z")
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0,1) != letgru) // "Z"
                 {
                     conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
                     rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
@@ -3373,7 +3391,7 @@ namespace iOMG
             }
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0, 1) == "Z")
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru) // "Z"
                 {
                     conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
                     rowdetalle.id = "0";
@@ -3409,7 +3427,7 @@ namespace iOMG
             }
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == "Z")
+                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru)    // "Z"
                 {
                     conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
                     rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();

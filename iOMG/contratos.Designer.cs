@@ -32,6 +32,11 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.tx_totesp = new iOMG.NumericTextBox();
+            this.groupBox49 = new System.Windows.Forms.GroupBox();
+            this.groupBox50 = new System.Windows.Forms.GroupBox();
+            this.tx_telcont = new iOMG.NumericTextBox();
+            this.label57 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
             this.groupBox47 = new System.Windows.Forms.GroupBox();
             this.groupBox48 = new System.Windows.Forms.GroupBox();
@@ -55,6 +60,8 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabcodigo = new System.Windows.Forms.TabPage();
+            this.label56 = new System.Windows.Forms.Label();
+            this.tx_d_tda = new System.Windows.Forms.TextBox();
             this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.label35 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
@@ -91,6 +98,7 @@
             this.cmb_tal = new System.Windows.Forms.ComboBox();
             this.tx_d_nom = new System.Windows.Forms.TextBox();
             this.cmb_aca = new System.Windows.Forms.ComboBox();
+            this.tx_d_med = new System.Windows.Forms.TextBox();
             this.cmb_det1 = new System.Windows.Forms.ComboBox();
             this.tx_d_mad = new System.Windows.Forms.TextBox();
             this.cmb_tip = new System.Windows.Forms.ComboBox();
@@ -244,17 +252,11 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.tx_d_med = new System.Windows.Forms.TextBox();
-            this.tx_d_tda = new System.Windows.Forms.TextBox();
-            this.label56 = new System.Windows.Forms.Label();
-            this.groupBox49 = new System.Windows.Forms.GroupBox();
-            this.groupBox50 = new System.Windows.Forms.GroupBox();
-            this.tx_telcont = new iOMG.NumericTextBox();
-            this.label57 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
+            this.groupBox49.SuspendLayout();
             this.groupBox47.SuspendLayout();
             this.groupBox45.SuspendLayout();
             this.groupBox43.SuspendLayout();
@@ -285,7 +287,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.groupBox49.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -331,6 +332,7 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_totesp);
             this.tabuser.Controls.Add(this.groupBox49);
             this.tabuser.Controls.Add(this.tx_telcont);
             this.tabuser.Controls.Add(this.label57);
@@ -407,6 +409,52 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // tx_totesp
+            // 
+            this.tx_totesp.AllowSpace = false;
+            this.tx_totesp.Location = new System.Drawing.Point(882, 370);
+            this.tx_totesp.Name = "tx_totesp";
+            this.tx_totesp.ReadOnly = true;
+            this.tx_totesp.Size = new System.Drawing.Size(73, 20);
+            this.tx_totesp.TabIndex = 389;
+            this.tx_totesp.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_totesp.Visible = false;
+            // 
+            // groupBox49
+            // 
+            this.groupBox49.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox49.Controls.Add(this.groupBox50);
+            this.groupBox49.Location = new System.Drawing.Point(659, 457);
+            this.groupBox49.Name = "groupBox49";
+            this.groupBox49.Size = new System.Drawing.Size(188, 1);
+            this.groupBox49.TabIndex = 388;
+            this.groupBox49.TabStop = false;
+            // 
+            // groupBox50
+            // 
+            this.groupBox50.Location = new System.Drawing.Point(0, -26);
+            this.groupBox50.Name = "groupBox50";
+            this.groupBox50.Size = new System.Drawing.Size(164, 1);
+            this.groupBox50.TabIndex = 113;
+            this.groupBox50.TabStop = false;
+            // 
+            // tx_telcont
+            // 
+            this.tx_telcont.AllowSpace = false;
+            this.tx_telcont.Location = new System.Drawing.Point(716, 438);
+            this.tx_telcont.Name = "tx_telcont";
+            this.tx_telcont.Size = new System.Drawing.Size(130, 20);
+            this.tx_telcont.TabIndex = 368;
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(659, 442);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(54, 13);
+            this.label57.TabIndex = 386;
+            this.label57.Text = "Teléfonos";
             // 
             // label55
             // 
@@ -668,6 +716,24 @@
             this.tabcodigo.Size = new System.Drawing.Size(925, 79);
             this.tabcodigo.TabIndex = 0;
             this.tabcodigo.Text = "CODIGO";
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(810, 40);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(40, 13);
+            this.label56.TabIndex = 379;
+            this.label56.Text = "Tienda";
+            // 
+            // tx_d_tda
+            // 
+            this.tx_d_tda.Location = new System.Drawing.Point(807, 56);
+            this.tx_d_tda.Name = "tx_d_tda";
+            this.tx_d_tda.Size = new System.Drawing.Size(56, 20);
+            this.tx_d_tda.TabIndex = 14;
+            this.tx_d_tda.Tag = "Id";
+            this.tx_d_tda.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_dat_mad
             // 
@@ -1014,6 +1080,15 @@
             this.cmb_aca.Size = new System.Drawing.Size(35, 21);
             this.cmb_aca.TabIndex = 5;
             this.cmb_aca.SelectionChangeCommitted += new System.EventHandler(this.cmb_aca_SelectionChangeCommitted);
+            // 
+            // tx_d_med
+            // 
+            this.tx_d_med.Location = new System.Drawing.Point(653, 18);
+            this.tx_d_med.Name = "tx_d_med";
+            this.tx_d_med.Size = new System.Drawing.Size(97, 20);
+            this.tx_d_med.TabIndex = 10;
+            this.tx_d_med.Tag = "Id";
+            this.tx_d_med.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // cmb_det1
             // 
@@ -2511,68 +2586,6 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // tx_d_med
-            // 
-            this.tx_d_med.Location = new System.Drawing.Point(653, 18);
-            this.tx_d_med.Name = "tx_d_med";
-            this.tx_d_med.Size = new System.Drawing.Size(97, 20);
-            this.tx_d_med.TabIndex = 10;
-            this.tx_d_med.Tag = "Id";
-            this.tx_d_med.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_d_tda
-            // 
-            this.tx_d_tda.Location = new System.Drawing.Point(807, 56);
-            this.tx_d_tda.Name = "tx_d_tda";
-            this.tx_d_tda.Size = new System.Drawing.Size(56, 20);
-            this.tx_d_tda.TabIndex = 14;
-            this.tx_d_tda.Tag = "Id";
-            this.tx_d_tda.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(810, 40);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(40, 13);
-            this.label56.TabIndex = 379;
-            this.label56.Text = "Tienda";
-            // 
-            // groupBox49
-            // 
-            this.groupBox49.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox49.Controls.Add(this.groupBox50);
-            this.groupBox49.Location = new System.Drawing.Point(659, 457);
-            this.groupBox49.Name = "groupBox49";
-            this.groupBox49.Size = new System.Drawing.Size(188, 1);
-            this.groupBox49.TabIndex = 388;
-            this.groupBox49.TabStop = false;
-            // 
-            // groupBox50
-            // 
-            this.groupBox50.Location = new System.Drawing.Point(0, -26);
-            this.groupBox50.Name = "groupBox50";
-            this.groupBox50.Size = new System.Drawing.Size(164, 1);
-            this.groupBox50.TabIndex = 113;
-            this.groupBox50.TabStop = false;
-            // 
-            // tx_telcont
-            // 
-            this.tx_telcont.AllowSpace = false;
-            this.tx_telcont.Location = new System.Drawing.Point(716, 438);
-            this.tx_telcont.Name = "tx_telcont";
-            this.tx_telcont.Size = new System.Drawing.Size(130, 20);
-            this.tx_telcont.TabIndex = 368;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(659, 442);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(54, 13);
-            this.label57.TabIndex = 386;
-            this.label57.Text = "Teléfonos";
-            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2588,6 +2601,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
+            this.groupBox49.ResumeLayout(false);
             this.groupBox47.ResumeLayout(false);
             this.groupBox45.ResumeLayout(false);
             this.groupBox43.ResumeLayout(false);
@@ -2622,7 +2636,6 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.groupBox49.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2852,5 +2865,6 @@
         private System.Windows.Forms.GroupBox groupBox50;
         private NumericTextBox tx_telcont;
         private System.Windows.Forms.Label label57;
+        private NumericTextBox tx_totesp;
     }
 }
