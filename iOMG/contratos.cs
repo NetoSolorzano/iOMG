@@ -142,6 +142,7 @@ namespace iOMG
                     para1 = "PAGCON";
                     para2 = tx_codped.Text.Trim();
                     para3 = tx_saldo.Text.Trim();
+                    para4 = tx_valor.Text.Trim();
                     regpagos pagos = new regpagos(para1, para2, para3, para4);
                     var result = pagos.ShowDialog();
                     if(result == DialogResult.Cancel)
@@ -1803,6 +1804,7 @@ namespace iOMG
             tx_codped.ReadOnly = false;
             tx_acta.Enabled = true;
             tx_coment.Enabled = true;
+            tx_saldo.ReadOnly = true;
             tx_acta.ReadOnly = true;
             tx_codped.Focus();
         }
@@ -2044,6 +2046,9 @@ namespace iOMG
             cmb_tal.Enabled = false;
             //
             tx_acta.ReadOnly = true;
+            tx_saldo.ReadOnly = true;
+            tx_valor.ReadOnly = true;
+            tx_bruto.ReadOnly = true;
         }
         private void escribepag(TabPage pag)
         {
@@ -2144,6 +2149,9 @@ namespace iOMG
             cmb_mod.Enabled = false;
             // 
             tx_acta.ReadOnly = true;
+            tx_saldo.ReadOnly = true;
+            tx_valor.ReadOnly = true;
+            tx_bruto.ReadOnly = true;
         }
         private static void limpiar(Form ofrm)
         {

@@ -35,8 +35,8 @@ namespace iOMG
         {
             para1 = param1;              // pago contrato = PAGCON
             para2 = param2;              // contrato
-            para3 = param3;              // imp.total contrato
-            para4 = param4;              // 
+            para3 = param3;              // saldo del contrato
+            para4 = param4;              // imp.total contrato
             InitializeComponent();
         }
 
@@ -278,6 +278,8 @@ namespace iOMG
                     if (conn.State == ConnectionState.Open)
                     {
                         string conactin = "";
+                        string nsald = "";
+                        nsald = (decimal.Parse(para4) - decimal.Parse(tx_total.Text)).ToString();
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
                             if (row.Cells["marca"].Value != null && row.Cells["marca"].Value.ToString().Trim() != "")
@@ -309,15 +311,21 @@ namespace iOMG
                                     micon.Parameters.AddWithValue("@corr", row.Cells["numero"].Value.ToString());
                                     micon.Parameters.AddWithValue("@val", para3);            // row.Cells[""].Value.ToString()
                                     micon.Parameters.AddWithValue("@act", tx_total.Text);    // row.Cells[""].Value.ToString()
-                                    micon.Parameters.AddWithValue("@sal", (decimal.Parse(para3) - decimal.Parse(tx_total.Text)).ToString());    // row.Cells[""].Value.ToString()
+                                    micon.Parameters.AddWithValue("@sal", nsald);    // row.Cells[""].Value.ToString()
                                     micon.Parameters.AddWithValue("@sol", row.Cells["moneda"].Value.ToString());
                                     micon.Parameters.AddWithValue("@asd", asd);
                                     micon.ExecuteNonQuery();
                                 }
                             }
                         }
+                        MySqlCommand miupd = new MySqlCommand("update contrat set acuenta=@acta,saldo=@sal where contrato=@cont", conn);
+                        miupd.Parameters.AddWithValue("@acta", tx_total.Text);
+                        miupd.Parameters.AddWithValue("@sal", nsald);
+                        miupd.Parameters.AddWithValue("@cont", para2);
+                        miupd.ExecuteNonQuery();
+                        //
                         ReturnValue0 = tx_total.Text;       // total pagado
-                        ReturnValue1 = ;    // debe calcular nuevo saldo
+                        ReturnValue1 = nsald;    // debe calcular nuevo saldo
                         ReturnValue2 = "";
                         this.Close();
                         conn.Close();
