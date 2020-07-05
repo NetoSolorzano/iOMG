@@ -112,7 +112,8 @@ namespace iOMG
                             cmb_det1_SelectionChangeCommitted(null, null);
                             cmb_aca.SelectedIndex = cmb_aca.FindString(ayu2.ReturnValue1.Substring(9, 1));
                             cmb_aca_SelectionChangeCommitted(null, null);
-                            if (tx_dat_orig.Text == "") cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
+                            //if (tx_dat_orig.Text == "") cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
+                            cmb_tal.SelectedIndex = cmb_tal.FindString(ayu2.ReturnValue1.Substring(10, 2));
                             cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
                             cmb_det2_SelectionChangeCommitted(null, null);
                             cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
@@ -147,7 +148,13 @@ namespace iOMG
                     {
                         if (!string.IsNullOrEmpty(pagos.ReturnValue0))
                         {
-                            tx_acta.Text = pagos.ReturnValue0;
+                            tx_acta.Text = pagos.ReturnValue0;  // nuevo a cuenta
+                            tx_saldo.Text = pagos.ReturnValue1; // nuevo saldo
+                            // actualizamos la grilla
+                            Int16 fdt = Int16.Parse(tx_rind.Text.ToString());
+                            DataRow row = dtg.Rows[fdt];
+                            dtg.Rows[fdt][12] = tx_acta.Text;
+                            dtg.Rows[fdt][13] = tx_saldo.Text;
                         }
                     }
                 }
@@ -198,7 +205,7 @@ namespace iOMG
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
-            tx_ndc.MaxLength = 11;
+            tx_ndc.MaxLength = 12;
             tx_nombre.MaxLength = 100;
             tx_direc.MaxLength = 100;
             tx_dpto.MaxLength = 45;
@@ -208,12 +215,14 @@ namespace iOMG
             tx_telef1.MaxLength = 15;
             tx_telef2.MaxLength = 15;
             tx_coment.MaxLength = 240;           // nombre
+            tx_d_com.MaxLength = 80;
             tx_dirent.MaxLength = 45;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
             tx_piso.MaxLength = 2;
             tx_dirRef.MaxLength = 90;           // referencia de la dirección
             tx_contac.MaxLength = 90;           // persona de contacto
             tx_telcont.MaxLength = 25;          // telefono de contacto
+            
         }
         private void jalainfo()                                                 // obtiene datos de imagenes
         {
@@ -1540,6 +1549,42 @@ namespace iOMG
             bt_prev.Enabled = false;
             bt_exc.Enabled = true;
         }
+        private void tx_d_nom_Enter(object sender, EventArgs e)
+        {
+            tx_d_nom.ReadOnly = true;
+            if(cmb_mod.Text == "000" && ("NUEVO,EDITAR").Contains(Tx_modo.Text))
+            {
+                tx_d_nom.ReadOnly = false;
+            }
+        }
+        private void cmb_tip_Enter(object sender, EventArgs e)
+        {
+            /*if (("NUEVO,EDITAR").Contains(Tx_modo.Text) && cmb_mod.Text == "000")
+            {
+                cmb_tip.Enabled = false;
+            }
+            else cmb_tip.Enabled = true; */
+        }
+        private void cmb_det1_Enter(object sender, EventArgs e)
+        {
+            /*if (("NUEVO,EDITAR").Contains(Tx_modo.Text) && cmb_mod.Text == "000") cmb_det1.Enabled = false;
+            else cmb_det1.Enabled = true; */
+        }
+        private void cmb_aca_Enter(object sender, EventArgs e)
+        {
+            /*if (("NUEVO,EDITAR").Contains(Tx_modo.Text) && cmb_mod.Text == "000") cmb_aca.Enabled = false;
+            else cmb_aca.Enabled = true;*/
+        }
+        private void cmb_det2_Enter(object sender, EventArgs e)
+        {
+            /*if (("NUEVO,EDITAR").Contains(Tx_modo.Text) && cmb_mod.Text == "000") cmb_det2.Enabled = false;
+            else cmb_det2.Enabled = true;*/
+        }
+        private void cmb_det3_Enter(object sender, EventArgs e)
+        {
+            /*if (("NUEVO,EDITAR").Contains(Tx_modo.Text) && cmb_mod.Text == "000") cmb_det3.Enabled = false;
+            else cmb_det3.Enabled = true;*/
+        }
         #endregion
 
         #region autocompletados
@@ -1715,6 +1760,7 @@ namespace iOMG
             tx_saldo.ReadOnly = true;
             tx_a_salcan.ReadOnly = true;
             tx_d_saldo.ReadOnly = true;
+            tx_acta.ReadOnly = true;
             if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
             else tx_codped.ReadOnly = false;
             cmb_taller.Focus();
@@ -1757,6 +1803,7 @@ namespace iOMG
             tx_codped.ReadOnly = false;
             tx_acta.Enabled = true;
             tx_coment.Enabled = true;
+            tx_acta.ReadOnly = true;
             tx_codped.Focus();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -1988,6 +2035,15 @@ namespace iOMG
                     oControls.Enabled = true;
                 }
             }
+            //
+            cmb_tip.Enabled = false;
+            cmb_det1.Enabled = false;
+            cmb_aca.Enabled = false;
+            cmb_det2.Enabled = false;
+            cmb_det3.Enabled = false;
+            cmb_tal.Enabled = false;
+            //
+            tx_acta.ReadOnly = true;
         }
         private void escribepag(TabPage pag)
         {
@@ -2078,6 +2134,16 @@ namespace iOMG
                     oControls.Enabled = true;
                 }
             }
+            //
+            cmb_tip.Enabled = false;
+            cmb_det1.Enabled = false;
+            cmb_aca.Enabled = false;
+            cmb_det2.Enabled = false;
+            cmb_det3.Enabled = false;
+            cmb_tal.Enabled = false;
+            cmb_mod.Enabled = false;
+            // 
+            tx_acta.ReadOnly = true;
         }
         private static void limpiar(Form ofrm)
         {
@@ -2193,7 +2259,7 @@ namespace iOMG
         {
             tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0,1);
             tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
-            armani();
+            //armani();
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
         {
@@ -2329,7 +2395,7 @@ namespace iOMG
                         dr[14] = tx_dscto.Text;
                         dr[15] = (chk_lugent.Checked.ToString() == "True")? "1":"0";    // cliente recoje en tienda
                         dr[16] = (chk_serema.Checked.ToString() == "true")? "1":"0";
-                        dr[17] = tx_piso.Text;
+                        dr[17] = (tx_piso.Text.Trim().Length == 0) ? "0": tx_piso.Text;
                         dr[18] = (chk_ascensor.Checked.ToString() == "true") ? "1" : "0";
                         dr[19] = tx_contac.Text;
                         dr[20] = tx_dirRef.Text;
@@ -3225,7 +3291,10 @@ namespace iOMG
                     string tal = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(10, 2);
                     string de2 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(12, 3);
                     string de3 = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(15, 3);
-
+                    //
+                    cmb_aca.Enabled = true;
+                    cmb_det2.Enabled = true;
+                    //
                     cmb_fam.Tag = fam;
                     cmb_fam.SelectedIndex = cmb_fam.FindString(cmb_fam.Tag.ToString());
                     cmb_mod.Tag = mod;
@@ -3251,6 +3320,10 @@ namespace iOMG
                     cmb_det3_SelectionChangeCommitted(null, null);
                     //tx_saldo.Text = dataGridView1.Rows[e.RowIndex].Cells["saldo"].Value.ToString();              // saldo
                     tx_d_tda.Text = dataGridView1.Rows[e.RowIndex].Cells["tda_item"].Value.ToString();
+                    //
+                    cmb_aca.Enabled = false;
+                    cmb_det2.Enabled = false;
+                    //
                 }
             }
         }

@@ -317,7 +317,7 @@ namespace iOMG
                             }
                         }
                         ReturnValue0 = tx_total.Text;       // total pagado
-                        ReturnValue1 = "";
+                        ReturnValue1 = ;    // debe calcular nuevo saldo
                         ReturnValue2 = "";
                         this.Close();
                         conn.Close();

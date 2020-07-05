@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
@@ -252,6 +253,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -1017,6 +1019,7 @@
             this.cmb_det3.Size = new System.Drawing.Size(43, 21);
             this.cmb_det3.TabIndex = 8;
             this.cmb_det3.SelectionChangeCommitted += new System.EventHandler(this.cmb_det3_SelectionChangeCommitted);
+            this.cmb_det3.Enter += new System.EventHandler(this.cmb_det3_Enter);
             // 
             // label37
             // 
@@ -1038,6 +1041,7 @@
             this.cmb_det2.Size = new System.Drawing.Size(50, 21);
             this.cmb_det2.TabIndex = 7;
             this.cmb_det2.SelectionChangeCommitted += new System.EventHandler(this.cmb_det2_SelectionChangeCommitted);
+            this.cmb_det2.Enter += new System.EventHandler(this.cmb_det2_Enter);
             // 
             // label36
             // 
@@ -1068,6 +1072,7 @@
             this.tx_d_nom.TabIndex = 9;
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_nom.Enter += new System.EventHandler(this.tx_d_nom_Enter);
             // 
             // cmb_aca
             // 
@@ -1080,6 +1085,7 @@
             this.cmb_aca.Size = new System.Drawing.Size(35, 21);
             this.cmb_aca.TabIndex = 5;
             this.cmb_aca.SelectionChangeCommitted += new System.EventHandler(this.cmb_aca_SelectionChangeCommitted);
+            this.cmb_aca.Enter += new System.EventHandler(this.cmb_aca_Enter);
             // 
             // tx_d_med
             // 
@@ -1101,6 +1107,7 @@
             this.cmb_det1.Size = new System.Drawing.Size(39, 21);
             this.cmb_det1.TabIndex = 4;
             this.cmb_det1.SelectionChangeCommitted += new System.EventHandler(this.cmb_det1_SelectionChangeCommitted);
+            this.cmb_det1.Enter += new System.EventHandler(this.cmb_det1_Enter);
             // 
             // tx_d_mad
             // 
@@ -1123,6 +1130,7 @@
             this.cmb_tip.Size = new System.Drawing.Size(39, 21);
             this.cmb_tip.TabIndex = 3;
             this.cmb_tip.SelectedIndexChanged += new System.EventHandler(this.cmb_tip_SelectedIndexChanged);
+            this.cmb_tip.Enter += new System.EventHandler(this.cmb_tip_Enter);
             // 
             // tx_d_det2
             // 
@@ -2272,6 +2280,7 @@
             this.tx_acta.Size = new System.Drawing.Size(73, 20);
             this.tx_acta.TabIndex = 360;
             this.tx_acta.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.tx_acta, "F1 para acceder a pagos");
             this.tx_acta.Leave += new System.EventHandler(this.tx_acta_Leave);
             // 
             // tx_valor
@@ -2596,6 +2605,7 @@
             this.Name = "contratos";
             this.Text = "contratos";
             this.Load += new System.EventHandler(this.contratos_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.users_KeyDown);
             this.tabControl1.ResumeLayout(false);
             this.tabgrilla.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
@@ -2866,5 +2876,6 @@
         private NumericTextBox tx_telcont;
         private System.Windows.Forms.Label label57;
         private NumericTextBox tx_totesp;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -84,4 +84,7 @@ REPORTES
 ** CONTRATO CLIENTES, adecuaciones de Isacco y de reunión entre ellos -> pasado a limpio por Gloria en correo del 03/03/2020 y 11/03/2020
 FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY OTRA FORMA 24/03/2020
 - El dato que va en "Costo total del servicio" es la suma de los codigos adicionales del contrato, según correo de Gloria del 29/06 ....... ok 01/07/2020 
-
+- form contratos, adecuación clientes extranjeros, 12 digitos ........ ok 04/07/2020
+- form contratos, no debe permitir cambiar el nombre del articulo salvo que sea a diseño ..... ok 04/07/2020
+- form contratos, deshabilitar botones de codigo, dejar solo capitulo y madera ............... ok 04/07/2020
+- form contratos y regpagos, los pagos deben agregarse,modificarse,borrarse y actualizar registros automaticamente ..... 
