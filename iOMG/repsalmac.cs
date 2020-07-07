@@ -446,16 +446,28 @@ namespace iOMG
         }
         private void bt_resumen_Click(object sender, EventArgs e)               // genera stock de almacen
         {
+            try
             {
-                string consulta = "rep_stock";
-                try
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                    conn.Open();
-                    if (conn.State == ConnectionState.Open)
+                    string consulta = "";
+                    dtg.Clear();
+                    dgv_resumen.DataSource = null;
+                    if (tx_dat_dest.Text.Trim() == "")
                     {
-                        dtg.Clear();
-                        dgv_resumen.DataSource = null;
+                        consulta = "pivot_stock1";
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.CommandType = CommandType.StoredProcedure;
+                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                        da.Fill(dtg);
+                        dgv_resumen.DataSource = dtg;
+                        da.Dispose();
+                    }
+                    else
+                    {
+                        consulta = "rep_stock";
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
                         micon.Parameters.AddWithValue("@calm", tx_dat_dest.Text);
@@ -467,20 +479,20 @@ namespace iOMG
                         if (chk_stkval.Checked == true) grillares("conval");
                         else grillares("sinval");
                     }
-                    else
-                    {
-                        conn.Close();
-                        MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    conn.Close();
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error en obtener datos");
-                    Application.Exit();
+                    conn.Close();
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener datos");
+                Application.Exit();
+                return;
             }
         }
         private void label13_Click(object sender, EventArgs e)
