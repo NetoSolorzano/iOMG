@@ -87,4 +87,8 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form contratos, adecuación clientes extranjeros, 12 digitos ........ ok 04/07/2020
 - form contratos, no debe permitir cambiar el nombre del articulo salvo que sea a diseño ..... ok 04/07/2020
 - form contratos, deshabilitar botones de codigo, dejar solo capitulo y madera ............... ok 04/07/2020
-- form contratos y regpagos, los pagos deben agregarse,modificarse,borrarse y actualizar registros automaticamente ..... 
+- form contratos y regpagos, los pagos deben agregarse,modificarse,borrarse y actualizar registros automaticamente ..... ok 05/07/2020
+- form contratos, grilla principal solo contratos NO entregados NO anulados, si se ingresa directamente el contrato
+  y no existe en la grilla, debe buscarlo en la base de datos y mostrarlo .................... ok 07/07/2020
+
+

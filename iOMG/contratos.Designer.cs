@@ -1927,7 +1927,7 @@
             // 
             this.dtp_pedido.Checked = false;
             this.dtp_pedido.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_pedido.Location = new System.Drawing.Point(661, 7);
+            this.dtp_pedido.Location = new System.Drawing.Point(661, 6);
             this.dtp_pedido.Name = "dtp_pedido";
             this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
             this.dtp_pedido.TabIndex = 299;
@@ -1996,7 +1996,7 @@
             // 
             this.groupBox7.BackColor = System.Drawing.Color.DimGray;
             this.groupBox7.Controls.Add(this.groupBox8);
-            this.groupBox7.Location = new System.Drawing.Point(775, 26);
+            this.groupBox7.Location = new System.Drawing.Point(775, 25);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(171, 1);
             this.groupBox7.TabIndex = 290;
@@ -2087,7 +2087,7 @@
             // 
             this.groupBox3.BackColor = System.Drawing.Color.DimGray;
             this.groupBox3.Controls.Add(this.groupBox4);
-            this.groupBox3.Location = new System.Drawing.Point(586, 26);
+            this.groupBox3.Location = new System.Drawing.Point(586, 25);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(170, 1);
             this.groupBox3.TabIndex = 284;
@@ -2140,7 +2140,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(774, 11);
+            this.label12.Location = new System.Drawing.Point(774, 10);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(82, 13);
             this.label12.TabIndex = 281;
@@ -2167,7 +2167,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(587, 10);
+            this.label2.Location = new System.Drawing.Point(587, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 277;
@@ -2195,11 +2195,12 @@
             this.cmb_estado.DropDownWidth = 100;
             this.cmb_estado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_estado.FormattingEnabled = true;
-            this.cmb_estado.Location = new System.Drawing.Point(861, 6);
+            this.cmb_estado.Location = new System.Drawing.Point(861, 5);
             this.cmb_estado.Name = "cmb_estado";
             this.cmb_estado.Size = new System.Drawing.Size(85, 21);
             this.cmb_estado.TabIndex = 265;
             this.cmb_estado.SelectionChangeCommitted += new System.EventHandler(this.cmb_estado_SelectionChangeCommitted);
+            this.cmb_estado.Enter += new System.EventHandler(this.cmb_estado_Enter);
             // 
             // cmb_taller
             // 

@@ -41,6 +41,7 @@ namespace iOMG
         string tiesta = "";             // estado inicial por defecto del contrato
         string tiesan = "";             // estado anulado / codigo
         string escambio = "";           // estados del contrato que admiten modificacion
+        string cnojal = "";             // estados de contratos que no se jalan a la grilla
         string canovald2 = "";          // captitulos donde no se valida det2
         string conovald2 = "";          // valor por defecto al no validar det2
         string tdc = "";                // tipo de documento para contratos
@@ -152,10 +153,13 @@ namespace iOMG
                             tx_acta.Text = pagos.ReturnValue0;  // nuevo a cuenta
                             tx_saldo.Text = pagos.ReturnValue1; // nuevo saldo
                             // actualizamos la grilla
-                            Int16 fdt = Int16.Parse(tx_rind.Text.ToString());
-                            DataRow row = dtg.Rows[fdt];
-                            dtg.Rows[fdt][12] = tx_acta.Text;
-                            dtg.Rows[fdt][13] = tx_saldo.Text;
+                            if(Tx_modo.Text == "EDITAR")
+                            {
+                                Int16 fdt = Int16.Parse(tx_rind.Text.ToString());
+                                DataRow row = dtg.Rows[fdt];
+                                dtg.Rows[fdt][12] = tx_acta.Text;
+                                dtg.Rows[fdt][13] = tx_saldo.Text;
+                            }
                         }
                     }
                 }
@@ -273,7 +277,8 @@ namespace iOMG
                         if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();             // letra identificadora de Piedra en Detalle2
                         if (row["campo"].ToString() == "grilladet" && row["param"].ToString() == "limite") vfdmax = int.Parse(row["valor"].ToString().Trim());  // cantidad de filas de detalle maximo del cont estandar
                         if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();              // tipo de numeracion de los contratos: MANUAL o AUTOMA 
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();              // codigo de estado anulado
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();                // codigo de estado anulado
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "nogrilla") cnojal = row["valor"].ToString().Trim();              // estados de contratos que no se jalan a la grilla
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -330,9 +335,11 @@ namespace iOMG
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
                     "a.pcontacto,a.dreferen,a.telcont,a.totsad " +
-                    "from contrat a left join anag_cli b on b.idanagrafica=a.cliente";   //  where a.tipocon=@tip
+                    "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
+                    "where not find_in_set(a.status,@tea)";   // where a.status not in (@tea)
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 //cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
+                cdg.Parameters.AddWithValue("@tea", cnojal);          // estados de contratos que no se jalan a la grilla
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
@@ -927,7 +934,7 @@ namespace iOMG
         }
         private void jalaoc(string campo)                                       // jala datos del contrato
         {
-            if (campo == "tx_idr" && tx_idr.Text != "")
+            if (campo == "tx_idr" && tx_rind.Text != "") // tx_idr.Text
             {
                 // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                 // a.valor,a.acuenta,a.saldo,a.dscto 
@@ -1098,6 +1105,72 @@ namespace iOMG
                 return;
             }
         }
+        private bool jalacont(string ctrato)                                    // jala contrato desde la base de datos
+        {
+            bool retorna = false;
+            string jalac = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
+                    "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
+                    "a.pcontacto,a.dreferen,a.telcont,a.totsad " +
+                    "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
+                    "where a.contrato=@cont";
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlCommand micon = new MySqlCommand(jalac, conn);
+                    micon.Parameters.AddWithValue("@cont", ctrato);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        if (dr.Read())
+                        {
+                            //tx_codped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();     // contrato
+                            tx_idr.Text = dr.GetString(0);
+                            tx_dat_tiped.Text = dr.GetString(1);  // tipo contrato
+                            tx_dat_orig.Text = dr.GetString(4);   // local venta
+                            dtp_pedido.Value = dr.GetDateTime(5); // Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString());
+                            tx_dat_estad.Text = dr.GetString(3);  // estado
+                            tx_idcli.Text = dr.GetString(6);      // id del cliente
+                            tx_coment.Text = dr.GetString(8);     // comentario
+                            tx_dirent.Text = dr.GetString(10);     // direc. de entrega
+                            // advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString().Trim() == ""
+                            if (dr.GetDateTime(9) == null) dtp_entreg.Checked = false;
+                            else dtp_entreg.Value = dr.GetDateTime(9);    // fecha entrega
+                            tx_valor.Text = dr.GetString(11);     // valor del contrato
+                            tx_dscto.Text = dr.GetString(14);     // descuento final
+                            tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
+                            tx_acta.Text = dr.GetString(12);     // pago a cuenta
+                            tx_saldo.Text = dr.GetString(13);     // saldo actual del contrato
+                            chk_lugent.Checked = (dr.GetString(15) == "1") ? true : false;
+                            chk_serema.Checked = (dr.GetString(16) == "1") ? true : false;
+                            chk_ascensor.Checked = (dr.GetString(18) == "1") ? true : false;  // ascensor
+                            tx_piso.Text = dr.GetString(17);     // piso de la instalac.
+                            tx_contac.Text = dr.GetString(19);     // persona de contacto
+                            tx_dirRef.Text = dr.GetString(20);     // referencia de direccion
+                            tx_telcont.Text = dr.GetString(21);    // telefono del contact
+                            tx_totesp.Text = dr.GetString(22);    // total servicios adicionales
+                            jaladatclt(dr.GetString(6));          // jala datos del cliente
+                            //                                                                                                    //
+                            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
+                            cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
+                            cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);    // estado
+                        }
+                        dr.Close();
+                        retorna = true;
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener detalle del contrato");
+                Application.Exit();
+                return retorna;
+            }
+            return retorna;
+        }
         private bool graba()                                                    // graba cabecera y detalle
         {
             bool retorna = false;
@@ -1230,7 +1303,7 @@ namespace iOMG
                     string actua = "update contrat set " +
                         "tipocon=@tco,tipoes=@loc,fecha=@fec,cliente=@clt,coment=@com,entrega=@ent,dentrega=@den,valor=@val," +
                         "acuenta=@acta,saldo=@sal,dscto=@dscto,clte_recoje=@cltr,seresma=@ceem,pisoent=@pise,ascensor=@asce," +
-                        "pcontacto=@pecon,dreferen=@drefe,telcont=@tecont,totsad=@totadi " +
+                        "pcontacto=@pecon,dreferen=@drefe,telcont=@tecont,totsad=@totadi,status=@stat " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
@@ -1253,6 +1326,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@drefe", tx_dirRef.Text);
                     micon.Parameters.AddWithValue("@tecont", tx_telcont.Text);
                     micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00" : tx_totesp.Text);
+                    micon.Parameters.AddWithValue("@stat", tx_dat_estad.Text);
                     micon.ExecuteNonQuery();
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1837,6 +1911,7 @@ namespace iOMG
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
+            /* POR REVISAR ESTE CODIGO, 06/07/2020, jalaoc si contrato esta en la grilla, sino jala de la base
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
@@ -1862,6 +1937,7 @@ namespace iOMG
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
             jalaoc("tx_idr");
+            */
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -1869,7 +1945,7 @@ namespace iOMG
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
-            if (tx_idr.Text != "" && tx_rind.Text != "")
+            if (tx_idr.Text != "" || tx_rind.Text != "")    // &&
             {
                 setParaCrystal();
             }
@@ -2225,10 +2301,20 @@ namespace iOMG
         }
         #endregion limpiadores_modos;
         #region comboboxes
+        private void cmb_estado_Enter(object sender, EventArgs e)
+        {
+            cmb_estado.Tag = cmb_estado.SelectedIndex;
+        }
         private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
             else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            var aaa = MessageBox.Show("Confirma que desea cambiar el estado del contrato?" + Environment.NewLine + 
+                "no es una acción recomendada, el estado cambia de forma automática", "Alerta de procedimiento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (aaa == DialogResult.No)
+            {
+                cmb_estado.SelectedIndex = int.Parse(cmb_estado.Tag.ToString());
+            }
         }
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -2511,9 +2597,11 @@ namespace iOMG
                         {
                             // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                             // a.valor,a.acuenta,a.saldo,a.dscto
-                            dtg.Rows[i][3] = tiesan; // cmb_estado.SelectedText.ToString();
+                            //dtg.Rows[i][3] = tiesan; // cmb_estado.SelectedText.ToString();
+                            row.Delete();
                         }
                     }
+                    dtg.AcceptChanges();
                 }
             }
             if (iserror == "no")
@@ -2881,6 +2969,21 @@ namespace iOMG
             if (Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text == "")
             {
                 jalaoc("tx_codped");                        // jalamos los datos
+                if(tx_idr.Text == "")
+                {
+                    // jalamos desde la base de datos, debe ser un contrato entregado o anulado
+                    if (jalacont(tx_codped.Text) == false)
+                    {
+                        MessageBox.Show("Error en obtener datos del contrato", "Error de conexión");
+                        Application.Exit();
+                        return;
+                    }
+                    else
+                    {
+                        jaladet(tx_codped.Text);
+                        // verificar que jale los codigos adicionales
+                    }
+                }
                 if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
                 {
                     escribepag(tabuser);
