@@ -214,7 +214,8 @@ namespace iOMG
             //
             tx_status.Visible = false;                  // solo sera visible si tiene estado
             // longitudes maximas de campos
-            tx_coment.MaxLength = 250;
+            tx_coment.MaxLength = 240;
+            tx_d_com.MaxLength = 100;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
         }
         private void jalainfo()                             // obtiene datos de imagenes
