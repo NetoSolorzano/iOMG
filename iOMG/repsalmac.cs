@@ -202,7 +202,25 @@ namespace iOMG
         }
         private void grilla()                                       // arma la grilla salidas
         {
-
+            Font tiplg = new Font("Arial", 7, FontStyle.Regular);
+            dgv_resumen.Font = tiplg;
+            dgv_resumen.DefaultCellStyle.Font = tiplg;
+            dgv_resumen.RowTemplate.Height = 15;
+            dgv_resumen.DefaultCellStyle.BackColor = Color.AliceBlue;
+            dgv_resumen.AllowUserToAddRows = false;
+            //
+            dgv_resumen.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;  // nombre
+            dgv_resumen.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv_resumen.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            for (int i=4;i<dgv_resumen.Columns.Count; i++)
+            {
+                dgv_resumen.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv_resumen.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+            int anchColOpt = dgv_resumen.Columns[1].Width;
+            dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv_resumen.Columns[1].Width = anchColOpt / 2;
         }
         private void grilla_rsv()                                               // arma la grilla de las reservas 
         {
@@ -455,14 +473,16 @@ namespace iOMG
                     string consulta = "";
                     dtg.Clear();
                     dgv_resumen.DataSource = null;
-                    if (tx_dat_dest.Text.Trim() == "")
+                    if (rb_resalm.Checked == true)   // tx_dat_dest.Text.Trim() == ""
                     {
                         consulta = "pivot_stock1";
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
+                        micon.Parameters.AddWithValue("@vcap", cmb_fam.Text.Trim());
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         da.Fill(dtg);
                         dgv_resumen.DataSource = dtg;
+                        grilla();       // pone las columnas al ancho de la data
                         da.Dispose();
                     }
                     else
@@ -587,6 +607,20 @@ namespace iOMG
                 //
                 rd.PrintToPrinter(1, true, 1, 1);
             }
+        }
+        private void rb_resalm_CheckedChanged(object sender, EventArgs e)
+        {
+            cmb_destino.Enabled = false;
+            tx_dat_dest.Text = "";
+            chk_stkval.Enabled = false;
+            chk_stkval.Checked = false;
+        }
+        private void rb_liststock_CheckedChanged(object sender, EventArgs e)
+        {
+            cmb_destino.Enabled = true;
+            tx_dat_dest.Text = "";
+            chk_stkval.Enabled = true;
+            chk_stkval.Checked = false;
         }
 
         #region advancedatagridview
@@ -779,7 +813,8 @@ namespace iOMG
             Tx_modo.Text = "IMPRIMIR";
             tabControl1.Enabled = true;
             rb_sal_todos.Checked = true;                            // salidas
-            
+            cmb_destino.Enabled = false;
+            rb_liststock.Checked = true;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -856,7 +891,8 @@ namespace iOMG
         #region crystal
         private void button2_Click(object sender, EventArgs e)                  // stock del almacen
         {
-            setParaCrystal("stock");
+            if(rb_resalm.Checked == true) setParaCrystal("restkalm");
+            else setParaCrystal("stock");
         }
         private void button4_Click(object sender, EventArgs e)                  // reporte de kardex
         {
@@ -873,6 +909,12 @@ namespace iOMG
 
         private void setParaCrystal(string repo)                        // genera el set para el reporte de crystal
         {
+            if(repo == "restkalm")
+            {
+                /*repsalmacen datos = generareprsa();
+                frmvizalm visualizador = new frmvizalm(datos);
+                visualizador.Show();*/
+            }
             if (repo== "stock")
             {
                 repsalmacen datos = generareporte();                        // repsalmacen = dataset de los reportes de almacen
@@ -1036,6 +1078,10 @@ namespace iOMG
             }
             return pedset;
         }
+        /*private repsalmacen generareprsa()                              // stock items en filas, almacenes en columnas
+        {
+
+        }*/
         #endregion
     }
 }

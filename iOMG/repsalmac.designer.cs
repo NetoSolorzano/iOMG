@@ -145,6 +145,9 @@
             this.tx_d_med = new System.Windows.Forms.TextBox();
             this.tx_d_nom = new System.Windows.Forms.TextBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.groupBox21 = new System.Windows.Forms.GroupBox();
+            this.rb_liststock = new System.Windows.Forms.RadioButton();
+            this.rb_resalm = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -170,6 +173,7 @@
             this.tabEtiq.SuspendLayout();
             this.pan_view.SuspendLayout();
             this.pan_datos.SuspendLayout();
+            this.groupBox21.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -440,7 +444,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1037, 403);
-            this.tabControl1.TabIndex = 4;
+            this.tabControl1.TabIndex = 0;
             // 
             // tabres
             // 
@@ -805,6 +809,7 @@
             // 
             // tabstock
             // 
+            this.tabstock.Controls.Add(this.groupBox21);
             this.tabstock.Controls.Add(this.chk_stkval);
             this.tabstock.Controls.Add(this.dgv_resumen);
             this.tabstock.Controls.Add(this.groupBox3);
@@ -829,7 +834,7 @@
             this.chk_stkval.Location = new System.Drawing.Point(479, 18);
             this.chk_stkval.Name = "chk_stkval";
             this.chk_stkval.Size = new System.Drawing.Size(75, 17);
-            this.chk_stkval.TabIndex = 367;
+            this.chk_stkval.TabIndex = 1;
             this.chk_stkval.Text = "Valorizado";
             this.chk_stkval.UseVisualStyleBackColor = true;
             // 
@@ -939,7 +944,7 @@
             this.cmb_destino.Location = new System.Drawing.Point(345, 4);
             this.cmb_destino.Name = "cmb_destino";
             this.cmb_destino.Size = new System.Drawing.Size(85, 21);
-            this.cmb_destino.TabIndex = 359;
+            this.cmb_destino.TabIndex = 0;
             this.cmb_destino.SelectionChangeCommitted += new System.EventHandler(this.cmb_destino_SelectionChangeCommitted);
             this.cmb_destino.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_destino_KeyDown);
             // 
@@ -950,7 +955,7 @@
             this.button2.Location = new System.Drawing.Point(692, 6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(50, 41);
-            this.button2.TabIndex = 358;
+            this.button2.TabIndex = 3;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -960,7 +965,7 @@
             this.bt_resumen.Location = new System.Drawing.Point(591, 12);
             this.bt_resumen.Name = "bt_resumen";
             this.bt_resumen.Size = new System.Drawing.Size(59, 29);
-            this.bt_resumen.TabIndex = 342;
+            this.bt_resumen.TabIndex = 2;
             this.bt_resumen.Text = "Genera";
             this.bt_resumen.UseVisualStyleBackColor = true;
             this.bt_resumen.Click += new System.EventHandler(this.bt_resumen_Click);
@@ -1408,6 +1413,40 @@
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // groupBox21
+            // 
+            this.groupBox21.Controls.Add(this.rb_resalm);
+            this.groupBox21.Controls.Add(this.rb_liststock);
+            this.groupBox21.Location = new System.Drawing.Point(139, -3);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Size = new System.Drawing.Size(146, 52);
+            this.groupBox21.TabIndex = 368;
+            this.groupBox21.TabStop = false;
+            // 
+            // rb_liststock
+            // 
+            this.rb_liststock.AutoSize = true;
+            this.rb_liststock.Location = new System.Drawing.Point(6, 8);
+            this.rb_liststock.Name = "rb_liststock";
+            this.rb_liststock.Size = new System.Drawing.Size(90, 17);
+            this.rb_liststock.TabIndex = 0;
+            this.rb_liststock.TabStop = true;
+            this.rb_liststock.Text = "Listado Stock";
+            this.rb_liststock.UseVisualStyleBackColor = true;
+            this.rb_liststock.CheckedChanged += new System.EventHandler(this.rb_liststock_CheckedChanged);
+            // 
+            // rb_resalm
+            // 
+            this.rb_resalm.AutoSize = true;
+            this.rb_resalm.Location = new System.Drawing.Point(6, 31);
+            this.rb_resalm.Name = "rb_resalm";
+            this.rb_resalm.Size = new System.Drawing.Size(93, 17);
+            this.rb_resalm.TabIndex = 1;
+            this.rb_resalm.TabStop = true;
+            this.rb_resalm.Text = "Resumen Alm.";
+            this.rb_resalm.UseVisualStyleBackColor = true;
+            this.rb_resalm.CheckedChanged += new System.EventHandler(this.rb_resalm_CheckedChanged);
+            // 
             // repsalmac
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1453,6 +1492,8 @@
             this.pan_view.ResumeLayout(false);
             this.pan_datos.ResumeLayout(false);
             this.pan_datos.PerformLayout();
+            this.groupBox21.ResumeLayout(false);
+            this.groupBox21.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1576,5 +1617,8 @@
         private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         private System.Windows.Forms.Button bt_imp_etiq;
         private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.GroupBox groupBox21;
+        private System.Windows.Forms.RadioButton rb_resalm;
+        private System.Windows.Forms.RadioButton rb_liststock;
     }
 }
