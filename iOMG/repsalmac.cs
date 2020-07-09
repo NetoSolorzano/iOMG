@@ -472,7 +472,9 @@ namespace iOMG
                 {
                     string consulta = "";
                     dtg.Clear();
+                    dtg.Columns.Clear();
                     dgv_resumen.DataSource = null;
+                    //dgv_resumen.ColumnCount = 0;
                     if (rb_resalm.Checked == true)   // tx_dat_dest.Text.Trim() == ""
                     {
                         consulta = "pivot_stock1";
