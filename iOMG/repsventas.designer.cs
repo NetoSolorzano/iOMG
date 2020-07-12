@@ -148,13 +148,13 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.rb_listado = new System.Windows.Forms.RadioButton();
             this.rb_resumen = new System.Windows.Forms.RadioButton();
-            this.dgv_vtas = new System.Windows.Forms.DataGridView();
             this.button4 = new System.Windows.Forms.Button();
             this.dtp_vtasfina = new System.Windows.Forms.DateTimePicker();
             this.dtp_vtasfini = new System.Windows.Forms.DateTimePicker();
             this.bt_vtasfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
+            this.dgv_vtas = new ADGV.AdvancedDataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabcont.SuspendLayout();
@@ -465,7 +465,7 @@
             this.tabcont.Controls.Add(this.dgv_contratos);
             this.tabcont.Location = new System.Drawing.Point(4, 22);
             this.tabcont.Name = "tabcont";
-            this.tabcont.Size = new System.Drawing.Size(899, 377);
+            this.tabcont.Size = new System.Drawing.Size(1026, 377);
             this.tabcont.TabIndex = 5;
             this.tabcont.Text = "Contratos";
             this.tabcont.UseVisualStyleBackColor = true;
@@ -637,7 +637,7 @@
             this.tabpds.Controls.Add(this.cmb_pedtaller);
             this.tabpds.Location = new System.Drawing.Point(4, 22);
             this.tabpds.Name = "tabpds";
-            this.tabpds.Size = new System.Drawing.Size(899, 377);
+            this.tabpds.Size = new System.Drawing.Size(1026, 377);
             this.tabpds.TabIndex = 4;
             this.tabpds.Text = "Pedidos";
             this.tabpds.UseVisualStyleBackColor = true;
@@ -931,7 +931,7 @@
             this.tabIng.Location = new System.Drawing.Point(4, 22);
             this.tabIng.Name = "tabIng";
             this.tabIng.Padding = new System.Windows.Forms.Padding(3);
-            this.tabIng.Size = new System.Drawing.Size(899, 377);
+            this.tabIng.Size = new System.Drawing.Size(1026, 377);
             this.tabIng.TabIndex = 0;
             this.tabIng.Text = "Ingresos";
             this.tabIng.UseVisualStyleBackColor = true;
@@ -1017,7 +1017,7 @@
             this.tabSal.Location = new System.Drawing.Point(4, 22);
             this.tabSal.Name = "tabSal";
             this.tabSal.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSal.Size = new System.Drawing.Size(899, 377);
+            this.tabSal.Size = new System.Drawing.Size(1026, 377);
             this.tabSal.TabIndex = 1;
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
@@ -1284,6 +1284,7 @@
             // 
             // tabvtas
             // 
+            this.tabvtas.Controls.Add(this.dgv_vtas);
             this.tabvtas.Controls.Add(this.tx_doclie);
             this.tabvtas.Controls.Add(this.tx_idclie);
             this.tabvtas.Controls.Add(this.tx_nomclie);
@@ -1294,7 +1295,6 @@
             this.tabvtas.Controls.Add(this.tx_dat_vtasloc);
             this.tabvtas.Controls.Add(this.cmb_vtasloc);
             this.tabvtas.Controls.Add(this.panel1);
-            this.tabvtas.Controls.Add(this.dgv_vtas);
             this.tabvtas.Controls.Add(this.button4);
             this.tabvtas.Controls.Add(this.dtp_vtasfina);
             this.tabvtas.Controls.Add(this.dtp_vtasfini);
@@ -1303,7 +1303,7 @@
             this.tabvtas.Controls.Add(this.label25);
             this.tabvtas.Location = new System.Drawing.Point(4, 22);
             this.tabvtas.Name = "tabvtas";
-            this.tabvtas.Size = new System.Drawing.Size(899, 377);
+            this.tabvtas.Size = new System.Drawing.Size(1026, 377);
             this.tabvtas.TabIndex = 6;
             this.tabvtas.Text = "Ventas";
             this.tabvtas.UseVisualStyleBackColor = true;
@@ -1442,17 +1442,6 @@
             this.rb_resumen.Text = "Resumido";
             this.rb_resumen.UseVisualStyleBackColor = true;
             // 
-            // dgv_vtas
-            // 
-            this.dgv_vtas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_vtas.Location = new System.Drawing.Point(3, 50);
-            this.dgv_vtas.Name = "dgv_vtas";
-            this.dgv_vtas.Size = new System.Drawing.Size(1025, 324);
-            this.dgv_vtas.TabIndex = 356;
-            // 
             // button4
             // 
             this.button4.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -1510,6 +1499,17 @@
             this.label25.Size = new System.Drawing.Size(61, 13);
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
+            // 
+            // dgv_vtas
+            // 
+            this.dgv_vtas.AutoGenerateContextFilters = true;
+            this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_vtas.DateWithTime = false;
+            this.dgv_vtas.Location = new System.Drawing.Point(6, 52);
+            this.dgv_vtas.Name = "dgv_vtas";
+            this.dgv_vtas.Size = new System.Drawing.Size(1015, 322);
+            this.dgv_vtas.TabIndex = 367;
+            this.dgv_vtas.TimeFilter = false;
             // 
             // repsventas
             // 
@@ -1651,7 +1651,6 @@
         private System.Windows.Forms.TabPage tabvtas;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton rb_resumen;
-        private System.Windows.Forms.DataGridView dgv_vtas;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.DateTimePicker dtp_vtasfina;
         private System.Windows.Forms.DateTimePicker dtp_vtasfini;
@@ -1692,5 +1691,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private ADGV.AdvancedDataGridView dgv_vtas;
     }
 }

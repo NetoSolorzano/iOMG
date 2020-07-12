@@ -90,7 +90,11 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form contratos y regpagos, los pagos deben agregarse,modificarse,borrarse y actualizar registros automaticamente ..... ok 05/07/2020
 - form contratos, grilla principal solo contratos NO entregados NO anulados, si se ingresa directamente el contrato
   y no existe en la grilla, debe buscarlo en la base de datos y mostrarlo .................... ok 07/07/2020
-- form repsalmac, crear un reporte de stock en horizontal, filas items, columnas almacenes ... ok 08/07/2020
+- form repsalmac, crear un reporte de stock en horizontal, filas items, columnas almacenes sin crystal ... ok 08/07/2020
 - form repsalmac, pulir funcionamiento de grillas, problemas entre listado stock y resumen ... ok 09/07/2020
-
+- form salpedclts, validar cant de salida, ocultar campo, poner lineas, etc .................. ok 10/07/2020
+- form ingpedclts, pulir funcionamiento,  poner lineas, etc. .................... OK 10/07/2020
+- form salpedclts, probar cambios de estado en salidas parciales y totales .................................
+- form repsventas, agregar fecha salida al reporte de ventas ... ummmmm y cuando salió del almacen??? ......
+- form repsventas, mejorar la visualizacion en las grillas ........... (me quede aca 11/07/2020)
 

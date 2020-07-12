@@ -132,7 +132,7 @@ namespace iOMG
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
             // longitudes maximas de campos
-            tx_comen.MaxLength = 50;
+            tx_comen.MaxLength = 100;
             //cmb_tipo.Enabled = false;                       // no se debe mover el tipo de ingreso
         }
         private void jalainfo()                             // obtiene datos de imagenes
@@ -1130,6 +1130,58 @@ namespace iOMG
         private void tx_cant_Leave(object sender, EventArgs e)
         {
             // no hacemos nada. control debe ser readonly porque la cant siempre debe ser 1, es 1 pedido de clientes, 1 mueble.
+            // despues de reu con Gloria del 29/12/2019 se quedo que es un pedido x item pero la cantidad puede ser > 1
+            // ==> pedido cant > 1, salidas pueden ser <> 1 y > 0
+            // 10/07/2020, la cantidad de salida NO puede ser > al saldo x salir o entregar
+            // saldo cant entrada (movim), saldo >= cant salida
+            string consulta = "select pedido,sum(cant) as cant, sum(saldo) as saldo from movim where pedido=@pedi group by pedido";
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if(conn.State == ConnectionState.Open)
+            {
+                try
+                {
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        if (dr.Read())
+                        {
+                            //MessageBox.Show("Saldo:" + dr.GetInt16(2).ToString(),"Cant: " + tx_cant.Text);
+                            if(dr.GetInt16(2) < Int16.Parse(tx_cant.Text))
+                            {
+                                MessageBox.Show("La cantidad debe ser = ó < al saldo de los ingresos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                tx_cant.Text = dr.GetInt16(2).ToString();
+                            }
+                        }
+                    }
+                    dr.Close();
+                    conn.Close();
+                }
+                catch(MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error interno o de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    conn.Close();
+                    Application.Exit();
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("No se puede conectarse al servidor", "Revise su conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+                return;
+            }
+        }
+        private void tx_cant_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            int.TryParse(tx_cant.Text.Trim(), out int rvi);
+            if(tx_cant.Text.Trim() == "" || rvi < 1)
+            {
+                MessageBox.Show("El valor debe ser > 1","Corrija por favor");
+                e.Cancel = true;
+            }
         }
         #endregion leaves;
         #region advancedatagridview

@@ -498,8 +498,9 @@
             // 
             // groupBox15
             // 
-            this.groupBox15.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox15.BackColor = System.Drawing.Color.White;
             this.groupBox15.Controls.Add(this.groupBox16);
+            this.groupBox15.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox15.Location = new System.Drawing.Point(579, 26);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(160, 1);
@@ -537,8 +538,9 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox1.BackColor = System.Drawing.Color.White;
             this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox1.Location = new System.Drawing.Point(6, 26);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(154, 1);
@@ -555,11 +557,12 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox3.BackColor = System.Drawing.Color.White;
             this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox3.Location = new System.Drawing.Point(279, 26);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(145, 1);
+            this.groupBox3.Size = new System.Drawing.Size(175, 1);
             this.groupBox3.TabIndex = 302;
             this.groupBox3.TabStop = false;
             // 
@@ -599,8 +602,9 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox5.BackColor = System.Drawing.Color.White;
             this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox5.Location = new System.Drawing.Point(111, 176);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(94, 1);
@@ -626,11 +630,12 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox7.BackColor = System.Drawing.Color.White;
             this.groupBox7.Controls.Add(this.groupBox8);
+            this.groupBox7.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox7.Location = new System.Drawing.Point(6, 61);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(65, 1);
+            this.groupBox7.Size = new System.Drawing.Size(81, 1);
             this.groupBox7.TabIndex = 309;
             this.groupBox7.TabStop = false;
             // 
@@ -653,11 +658,12 @@
             // 
             // groupBox9
             // 
-            this.groupBox9.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox9.BackColor = System.Drawing.Color.White;
             this.groupBox9.Controls.Add(this.groupBox10);
+            this.groupBox9.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox9.Location = new System.Drawing.Point(6, 83);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(65, 1);
+            this.groupBox9.Size = new System.Drawing.Size(81, 1);
             this.groupBox9.TabIndex = 312;
             this.groupBox9.TabStop = false;
             // 
@@ -689,8 +695,9 @@
             // 
             // groupBox11
             // 
-            this.groupBox11.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox11.BackColor = System.Drawing.Color.White;
             this.groupBox11.Controls.Add(this.groupBox12);
+            this.groupBox11.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox11.Location = new System.Drawing.Point(111, 52);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(537, 1);
@@ -716,8 +723,9 @@
             // 
             // groupBox13
             // 
-            this.groupBox13.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox13.BackColor = System.Drawing.Color.White;
             this.groupBox13.Controls.Add(this.groupBox14);
+            this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox13.Location = new System.Drawing.Point(111, 77);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(175, 1);
@@ -767,8 +775,9 @@
             // 
             // groupBox17
             // 
-            this.groupBox17.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox17.BackColor = System.Drawing.Color.White;
             this.groupBox17.Controls.Add(this.groupBox18);
+            this.groupBox17.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox17.Location = new System.Drawing.Point(346, 77);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(175, 1);
@@ -802,8 +811,9 @@
             // 
             // groupBox19
             // 
-            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox19.BackColor = System.Drawing.Color.White;
             this.groupBox19.Controls.Add(this.groupBox20);
+            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox19.Location = new System.Drawing.Point(111, 102);
             this.groupBox19.Name = "groupBox19";
             this.groupBox19.Size = new System.Drawing.Size(537, 1);
@@ -836,8 +846,9 @@
             // 
             // groupBox21
             // 
-            this.groupBox21.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox21.BackColor = System.Drawing.Color.White;
             this.groupBox21.Controls.Add(this.groupBox22);
+            this.groupBox21.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox21.Location = new System.Drawing.Point(111, 128);
             this.groupBox21.Name = "groupBox21";
             this.groupBox21.Size = new System.Drawing.Size(537, 1);
@@ -879,8 +890,9 @@
             // 
             // groupBox23
             // 
-            this.groupBox23.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox23.BackColor = System.Drawing.Color.White;
             this.groupBox23.Controls.Add(this.groupBox24);
+            this.groupBox23.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox23.Location = new System.Drawing.Point(111, 152);
             this.groupBox23.Name = "groupBox23";
             this.groupBox23.Size = new System.Drawing.Size(154, 1);
@@ -914,8 +926,9 @@
             // 
             // groupBox25
             // 
-            this.groupBox25.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox25.BackColor = System.Drawing.Color.White;
             this.groupBox25.Controls.Add(this.groupBox26);
+            this.groupBox25.ForeColor = System.Drawing.Color.White;
             this.groupBox25.Location = new System.Drawing.Point(301, 152);
             this.groupBox25.Name = "groupBox25";
             this.groupBox25.Size = new System.Drawing.Size(154, 1);
@@ -965,8 +978,9 @@
             // 
             // groupBox27
             // 
-            this.groupBox27.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox27.BackColor = System.Drawing.Color.White;
             this.groupBox27.Controls.Add(this.groupBox28);
+            this.groupBox27.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox27.Location = new System.Drawing.Point(494, 152);
             this.groupBox27.Name = "groupBox27";
             this.groupBox27.Size = new System.Drawing.Size(154, 1);
@@ -1000,8 +1014,9 @@
             // 
             // groupBox29
             // 
-            this.groupBox29.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox29.BackColor = System.Drawing.Color.White;
             this.groupBox29.Controls.Add(this.groupBox30);
+            this.groupBox29.ForeColor = System.Drawing.Color.White;
             this.groupBox29.Location = new System.Drawing.Point(301, 176);
             this.groupBox29.Name = "groupBox29";
             this.groupBox29.Size = new System.Drawing.Size(154, 1);
@@ -1027,8 +1042,9 @@
             // 
             // groupBox31
             // 
-            this.groupBox31.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox31.BackColor = System.Drawing.Color.White;
             this.groupBox31.Controls.Add(this.groupBox32);
+            this.groupBox31.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox31.Location = new System.Drawing.Point(494, 176);
             this.groupBox31.Name = "groupBox31";
             this.groupBox31.Size = new System.Drawing.Size(154, 1);
@@ -1122,59 +1138,59 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 505);
+            this.Controls.Add(this.groupBox31);
+            this.Controls.Add(this.groupBox27);
+            this.Controls.Add(this.groupBox29);
+            this.Controls.Add(this.groupBox25);
+            this.Controls.Add(this.groupBox17);
+            this.Controls.Add(this.groupBox23);
+            this.Controls.Add(this.groupBox21);
+            this.Controls.Add(this.groupBox19);
+            this.Controls.Add(this.groupBox13);
+            this.Controls.Add(this.groupBox11);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox9);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox15);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tx_dat_cant);
             this.Controls.Add(this.tx_dat_ped);
-            this.Controls.Add(this.groupBox31);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.tx_total);
-            this.Controls.Add(this.groupBox29);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.tx_precio);
             this.Controls.Add(this.tx_dat_aca);
-            this.Controls.Add(this.groupBox27);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.tx_acabad);
             this.Controls.Add(this.tx_dat_mad);
-            this.Controls.Add(this.groupBox25);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.tx_nomad);
-            this.Controls.Add(this.groupBox23);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.tx_medidas);
             this.Controls.Add(this.tx_nombre);
-            this.Controls.Add(this.groupBox21);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.tx_item);
-            this.Controls.Add(this.groupBox19);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.tx_comen);
             this.Controls.Add(this.tx_dat_dest);
-            this.Controls.Add(this.groupBox17);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.tx_dest);
             this.Controls.Add(this.tx_dat_orig);
-            this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.tx_origen);
-            this.Controls.Add(this.groupBox11);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tx_idr);
-            this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tx_rind);
-            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tx_cant);
             this.Controls.Add(this.tx_cliente);
             this.Controls.Add(this.dtp_ingreso);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tx_dat_tiped);
-            this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cmb_tipo);
             this.Controls.Add(this.label1);

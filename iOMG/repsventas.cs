@@ -248,9 +248,25 @@ namespace iOMG
             //
             conn.Close();
         }
-        private void grilla()                                       // arma la grilla salidas
+        private void grilla(string dgv)                                       // arma la grilla salidas
         {
-
+            switch (dgv)
+            {
+                case "dgv_vtas":
+                    for (int i = 0; i < dgv_vtas.Columns.Count; i++)
+                    {
+                        dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                    for (int i = 0; i < dgv_vtas.Columns.Count; i++)
+                    {
+                        int a = dgv_vtas.Columns[i].Width;
+                        dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        dgv_vtas.Columns[i].Width = a;
+                    }
+                    break;
+                case "":
+                    break;
+            }
         }
         private void grillacont()                                   // arma grilla contratos
         {
@@ -667,9 +683,10 @@ namespace iOMG
                         DataTable dt = new DataTable();
                         da.Fill(dt);
                         dgv_vtas.DataSource = dt;
-                        dt.Dispose();
-                        da.Dispose();
+                        //dt.Dispose();
                         grillavtas();
+                        grilla("dgv_vtas");
+                        da.Dispose();
                     }
                     else
                     {
@@ -707,9 +724,10 @@ namespace iOMG
                         DataTable dt = new DataTable();
                         da.Fill(dt);
                         dgv_vtas.DataSource = dt;
-                        dt.Dispose();
-                        da.Dispose();
+                        //dt.Dispose();
                         grillavtas();
+                        grilla("dgv_vtas");
+                        da.Dispose();
                     }
                     else
                     {
@@ -1316,7 +1334,7 @@ namespace iOMG
                         detrow.precio = row.Cells["precio"].Value.ToString().Trim();
                         detrow.total = double.Parse(row.Cells["total"].Value.ToString());
                         detrow.pedido = row.Cells["PEDIDO"].Value.ToString().Trim();
-                        detrow.stock = row.Cells["STOCK"].Value.ToString().Trim();
+                        detrow.stock = row.Cells["RESERVA"].Value.ToString().Trim();
                         repvtas.repvtas_det.Addrepvtas_detRow(detrow);
                     }
                 }
