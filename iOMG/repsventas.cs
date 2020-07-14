@@ -78,6 +78,10 @@ namespace iOMG
             // Call the base class
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        private void repsventas_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) SendKeys.Send("{TAB}");
+        }
         private void repsventas_Load(object sender, EventArgs e)
         {
             ToolTip toolTipNombre = new ToolTip();           // Create the ToolTip and associate with the Form container.
@@ -142,7 +146,7 @@ namespace iOMG
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
                         if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
-                        if (row["param"].ToString() == "img_preview") img_preview = row["valor"].ToString().Trim();  // imagen del boton VISTA PRELIMINAR
+                        if (row["param"].ToString() == "img_pre") img_preview = row["valor"].ToString().Trim();  // imagen del boton VISTA PRELIMINAR
                     }
                     if (row["formulario"].ToString() == "xxx")
                     {
@@ -248,7 +252,7 @@ namespace iOMG
             //
             conn.Close();
         }
-        private void grilla(string dgv)                                       // arma la grilla salidas
+        private void grilla(string dgv)                             // arma la grilla salidas
         {
             switch (dgv)
             {
@@ -265,7 +269,6 @@ namespace iOMG
                     for (int i = 0; i < dgv_vtas.Columns.Count; i++)
                     {
                         dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        // es valor decimal la columna ?? si ==> alinea a al derecha
                         _ = decimal.TryParse(dgv_vtas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
                         if (vd != 0) dgv_vtas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                     }
@@ -277,9 +280,32 @@ namespace iOMG
                         dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                         dgv_vtas.Columns[i].Width = a;
                     }
-                    if (b < dgv_vtas.Width) dgv_vtas.Width = b + 45;
+                    if (b < dgv_vtas.Width) dgv_vtas.Width = b + 60;
                     break;
-                case "":
+                case "dgv_salidas":
+                    Font tipls = new Font("Arial", 7, FontStyle.Bold);
+                    dgv_salidas.Font = tipls;
+                    dgv_salidas.DefaultCellStyle.Font = tipls;
+                    dgv_salidas.RowTemplate.Height = 15;
+                    dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+                    dgv_salidas.AllowUserToAddRows = false;
+                    dgv_salidas.Width = 1021;
+                    //
+                    for (int i = 0; i < dgv_salidas.Columns.Count; i++)
+                    {
+                        dgv_salidas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        _ = decimal.TryParse(dgv_salidas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                        if (vd != 0) dgv_salidas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                    int s = 0;
+                    for (int i=0; i < dgv_salidas.Columns.Count; i++)
+                    {
+                        int a = dgv_salidas.Columns[i].Width;
+                        s += a;
+                        dgv_salidas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        dgv_salidas.Columns[i].Width = a;
+                    }
+                    if (s < dgv_salidas.Width) dgv_salidas.Width = s + 40;
                     break;
             }
         }
@@ -329,22 +355,14 @@ namespace iOMG
             //dgv_pedidos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             */
         }
-        private void grilla_sal()
-        {
-            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_salidas.Font = tiplg;
-            dgv_salidas.DefaultCellStyle.Font = tiplg;
-            dgv_salidas.RowTemplate.Height = 15;
-            dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_salidas.AllowUserToAddRows = false;
-        }
         private void grillares()                                    // arma la grilla del resumen de contrato
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_resumen.Font = tiplg;
             dgv_resumen.DefaultCellStyle.Font = tiplg;
             dgv_resumen.RowTemplate.Height = 15;
-            dgv_resumen.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_resumen.EnableHeadersVisualStyles = false;
+            //dgv_resumen.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_resumen.AllowUserToAddRows = false;
             if (dgv_resumen.DataSource == null) dgv_resumen.ColumnCount = 22;
             // id,codigo,nombre,madera,CanC,sep_id,sep_fecha,sep_almac,canS,ent_id,ent_fecha,canE,
@@ -381,17 +399,21 @@ namespace iOMG
             //dgv_resumen.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // SEPARACION - Id
             dgv_resumen.Columns[5].Visible = true;
-            dgv_resumen.Columns[5].HeaderText = "RESERVA Id";
+            dgv_resumen.Columns[5].HeaderText = "Id";
             dgv_resumen.Columns[5].Width = 50;
             dgv_resumen.Columns[5].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             dgv_resumen.Columns[5].Tag = "validaNO";          // las celdas de esta columna se validan
+            dgv_resumen.Columns[5].DefaultCellStyle.BackColor = Color.Aquamarine;
+            dgv_resumen.Columns[5].HeaderCell.Style.BackColor = Color.Aquamarine;
             //dgv_resumen.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // SEPARACION - Fecha
             dgv_resumen.Columns[6].Visible = true;
-            dgv_resumen.Columns[6].HeaderText = "Fecha";
+            dgv_resumen.Columns[6].HeaderText = "RESERVA Fecha";
             dgv_resumen.Columns[6].Width = 70;
             dgv_resumen.Columns[6].ReadOnly = true;
             dgv_resumen.Columns[6].Tag = "validaNO";          // las celdas de esta columna se NO se validan
+            dgv_resumen.Columns[6].DefaultCellStyle.BackColor = Color.Aquamarine;
+            dgv_resumen.Columns[6].HeaderCell.Style.BackColor = Color.Aquamarine;
             //dgv_resumen.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // SEPARACION - Almacen
             dgv_resumen.Columns[7].Visible = true;
@@ -399,6 +421,8 @@ namespace iOMG
             dgv_resumen.Columns[7].Width = 70;
             dgv_resumen.Columns[7].ReadOnly = true;
             dgv_resumen.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[7].DefaultCellStyle.BackColor = Color.Aquamarine;
+            dgv_resumen.Columns[7].HeaderCell.Style.BackColor = Color.Aquamarine;
             //dgv_resumen.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // SEPARACION - Cant
             dgv_resumen.Columns[8].Visible = true;
@@ -406,20 +430,26 @@ namespace iOMG
             dgv_resumen.Columns[8].Width = 50;
             dgv_resumen.Columns[8].ReadOnly = true;
             dgv_resumen.Columns[8].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[8].DefaultCellStyle.BackColor = Color.Aquamarine;
+            dgv_resumen.Columns[8].HeaderCell.Style.BackColor = Color.Aquamarine;
             //dgv_resumen.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // ENTREGAS - Id
             dgv_resumen.Columns[9].Visible = true;
-            dgv_resumen.Columns[9].HeaderText = "ENTREGA Id";
+            dgv_resumen.Columns[9].HeaderText = "Id";
             dgv_resumen.Columns[9].Width = 50;
             dgv_resumen.Columns[9].ReadOnly = true;
             dgv_resumen.Columns[9].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[9].DefaultCellStyle.BackColor = Color.Beige;
+            dgv_resumen.Columns[9].HeaderCell.Style.BackColor = Color.Beige;
             //dgv_resumen.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // ENTREGAS - Fecha
             dgv_resumen.Columns[10].Visible = true;
-            dgv_resumen.Columns[10].HeaderText = "Fecha";
+            dgv_resumen.Columns[10].HeaderText = "ENTREGA Fecha";
             dgv_resumen.Columns[10].Width = 70;
             dgv_resumen.Columns[10].ReadOnly = true;
             dgv_resumen.Columns[10].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[10].DefaultCellStyle.BackColor = Color.Beige;
+            dgv_resumen.Columns[10].HeaderCell.Style.BackColor = Color.Beige;
             //dgv_resumen.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // ENTREGAS - Cant
             dgv_resumen.Columns[11].Visible = true;
@@ -427,70 +457,92 @@ namespace iOMG
             dgv_resumen.Columns[11].Width = 50;
             dgv_resumen.Columns[11].ReadOnly = true;
             dgv_resumen.Columns[11].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[11].DefaultCellStyle.BackColor = Color.Beige;
+            dgv_resumen.Columns[11].HeaderCell.Style.BackColor = Color.Beige;
             //dgv_resumen.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // PEDIDOS - Pedido
+            // PEDIDOS - taller
             dgv_resumen.Columns[12].Visible = true;
-            dgv_resumen.Columns[12].HeaderText = "PEDIDOS Pedido";
-            dgv_resumen.Columns[12].Width = 70;
+            dgv_resumen.Columns[12].HeaderText = "Taller";
+            dgv_resumen.Columns[12].Width = 50;
             dgv_resumen.Columns[12].ReadOnly = true;
             dgv_resumen.Columns[12].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            //dgv_resumen.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // PEDIDOS - Fecha
+            dgv_resumen.Columns[12].DisplayIndex = 12;
+            dgv_resumen.Columns[12].DefaultCellStyle.BackColor = Color.Coral;
+            dgv_resumen.Columns[12].HeaderCell.Style.BackColor = Color.Coral;
+            // PEDIDOS - Pedido
             dgv_resumen.Columns[13].Visible = true;
-            dgv_resumen.Columns[13].HeaderText = "Fecha";
+            dgv_resumen.Columns[13].HeaderText = "Pedido";
             dgv_resumen.Columns[13].Width = 70;
             dgv_resumen.Columns[13].ReadOnly = true;
             dgv_resumen.Columns[13].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            //dgv_resumen.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // PEDIDOS - Cant
+            dgv_resumen.Columns[13].DefaultCellStyle.BackColor = Color.Coral;
+            dgv_resumen.Columns[13].HeaderCell.Style.BackColor = Color.Coral;
+            //dgv_resumen.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // PEDIDOS - Fecha
             dgv_resumen.Columns[14].Visible = true;
-            dgv_resumen.Columns[14].HeaderText = "Cant";
-            dgv_resumen.Columns[14].Width = 50;
+            dgv_resumen.Columns[14].HeaderText = "PEDIDOS Fecha";
+            dgv_resumen.Columns[14].Width = 70;
             dgv_resumen.Columns[14].ReadOnly = true;
             dgv_resumen.Columns[14].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // INGRESOS - Id4
+            dgv_resumen.Columns[14].DefaultCellStyle.BackColor = Color.Coral;
+            dgv_resumen.Columns[14].HeaderCell.Style.BackColor = Color.Coral;
+            //dgv_resumen.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // PEDIDOS - Cant
             dgv_resumen.Columns[15].Visible = true;
-            dgv_resumen.Columns[15].HeaderText = "INGRESO Id";
+            dgv_resumen.Columns[15].HeaderText = "Cant";
             dgv_resumen.Columns[15].Width = 50;
             dgv_resumen.Columns[15].ReadOnly = true;
             dgv_resumen.Columns[15].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // INGRESOS - Fecha
+            dgv_resumen.Columns[15].DefaultCellStyle.BackColor = Color.Coral;
+            dgv_resumen.Columns[15].HeaderCell.Style.BackColor = Color.Coral;
+            // INGRESOS - Id4
             dgv_resumen.Columns[16].Visible = true;
-            dgv_resumen.Columns[16].HeaderText = "Fecha";
-            dgv_resumen.Columns[16].Width = 70;
+            dgv_resumen.Columns[16].HeaderText = " Id";
+            dgv_resumen.Columns[16].Width = 50;
             dgv_resumen.Columns[16].ReadOnly = true;
             dgv_resumen.Columns[16].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // INGRESOS - Cant
+            dgv_resumen.Columns[16].DefaultCellStyle.BackColor = Color.DeepSkyBlue;
+            dgv_resumen.Columns[16].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
+            // INGRESOS - Fecha
             dgv_resumen.Columns[17].Visible = true;
-            dgv_resumen.Columns[17].HeaderText = "Cant";
-            dgv_resumen.Columns[17].Width = 50;
+            dgv_resumen.Columns[17].HeaderText = "INGRESOS Fecha";
+            dgv_resumen.Columns[17].Width = 70;
             dgv_resumen.Columns[17].ReadOnly = true;
             dgv_resumen.Columns[17].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // ENTREGAS - Id
+            dgv_resumen.Columns[17].DefaultCellStyle.BackColor = Color.DeepSkyBlue;
+            dgv_resumen.Columns[17].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
+            // INGRESOS - Cant
             dgv_resumen.Columns[18].Visible = true;
-            dgv_resumen.Columns[18].HeaderText = "SALIDAS Id";
+            dgv_resumen.Columns[18].HeaderText = "Cant";
             dgv_resumen.Columns[18].Width = 50;
             dgv_resumen.Columns[18].ReadOnly = true;
             dgv_resumen.Columns[18].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // ENTREGAS - Fecha
+            dgv_resumen.Columns[18].DefaultCellStyle.BackColor = Color.DeepSkyBlue;
+            dgv_resumen.Columns[18].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
+            // ENTREGAS - Id
             dgv_resumen.Columns[19].Visible = true;
-            dgv_resumen.Columns[19].HeaderText = "Fecha";
-            dgv_resumen.Columns[19].Width = 70;
+            dgv_resumen.Columns[19].HeaderText = " Id";
+            dgv_resumen.Columns[19].Width = 50;
             dgv_resumen.Columns[19].ReadOnly = true;
             dgv_resumen.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // ENTREGAS - Cant
+            dgv_resumen.Columns[19].DefaultCellStyle.BackColor = Color.Green;
+            dgv_resumen.Columns[19].HeaderCell.Style.BackColor = Color.Green;
+            // ENTREGAS - Fecha
             dgv_resumen.Columns[20].Visible = true;
-            dgv_resumen.Columns[20].HeaderText = "Cant";
-            dgv_resumen.Columns[20].Width = 50;
+            dgv_resumen.Columns[20].HeaderText = "SALIDAS Fecha";
+            dgv_resumen.Columns[20].Width = 70;
             dgv_resumen.Columns[20].ReadOnly = true;
             dgv_resumen.Columns[20].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // PEDIDOS - taller
+            dgv_resumen.Columns[20].DefaultCellStyle.BackColor = Color.Green;
+            dgv_resumen.Columns[20].HeaderCell.Style.BackColor = Color.Green;
+            // ENTREGAS - Cant
             dgv_resumen.Columns[21].Visible = true;
-            dgv_resumen.Columns[21].HeaderText = "Taller";
+            dgv_resumen.Columns[21].HeaderText = "Cant";
             dgv_resumen.Columns[21].Width = 50;
             dgv_resumen.Columns[21].ReadOnly = true;
             dgv_resumen.Columns[21].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            dgv_resumen.Columns[21].DisplayIndex = 12;
+            dgv_resumen.Columns[21].DefaultCellStyle.BackColor = Color.Green;
+            dgv_resumen.Columns[21].HeaderCell.Style.BackColor = Color.Green;
         }
         //
         private void button1_Click(object sender, EventArgs e)          // filtra y muestra los ingresos de pedidos de clientes
@@ -547,10 +599,13 @@ namespace iOMG
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-                    dgv_salidas.DataSource = dt;
-                    dt.Dispose();
-                    da.Dispose();
-                    grilla_sal();
+                    if (dt.Rows.Count > 0)
+                    {
+                        dgv_salidas.DataSource = dt;
+                        dt.Dispose();
+                        da.Dispose();
+                        grilla("dgv_salidas");
+                    }
                 }
                 else
                 {
@@ -687,9 +742,13 @@ namespace iOMG
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         DataTable dt = new DataTable();
                         da.Fill(dt);
-                        dgv_vtas.DataSource = dt;
+                        if (dt.Rows.Count > 0)
+                        {
+                            dgv_vtas.DataSource = dt;
+                            grilla("dgv_vtas");
+                        }
+                        else dgv_vtas.DataSource = null;
                         //dt.Dispose();
-                        grilla("dgv_vtas");
                         da.Dispose();
                     }
                     else
@@ -728,8 +787,12 @@ namespace iOMG
                         DataTable dt = new DataTable();
                         da.Fill(dt);
                         dgv_vtas.DataSource = dt;
-                        //dt.Dispose();
-                        grilla("dgv_vtas");
+                        if (dt.Rows.Count > 0) 
+                        { 
+                            dgv_vtas.DataSource = dt;
+                            grilla("dgv_vtas");
+                        }
+                        else dgv_vtas.DataSource = null;
                         da.Dispose();
                     }
                     else
@@ -1430,6 +1493,7 @@ namespace iOMG
             }
             return pedset;
         }
+
         private pedsclts generarepingresos()
         {   // a.idmovim,a.fechain,tipo,a.pedido,a.origen,a.destino,a.cant,a.articulo,nomad,med1,tipoes,madera,cliente,nomitem
             pedsclts pedset = new pedsclts();

@@ -134,6 +134,7 @@
             this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.tabvtas = new System.Windows.Forms.TabPage();
+            this.dgv_vtas = new ADGV.AdvancedDataGridView();
             this.tx_doclie = new System.Windows.Forms.TextBox();
             this.tx_idclie = new System.Windows.Forms.TextBox();
             this.tx_nomclie = new System.Windows.Forms.TextBox();
@@ -154,7 +155,6 @@
             this.bt_vtasfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.dgv_vtas = new ADGV.AdvancedDataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabcont.SuspendLayout();
@@ -176,10 +176,10 @@
             this.tabres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
             this.tabvtas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
             this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -1025,9 +1025,10 @@
             // bt_salidas
             // 
             this.bt_salidas.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_salidas.Image = global::iOMG.Properties.Resources.print_preview_24;
             this.bt_salidas.Location = new System.Drawing.Point(654, 3);
             this.bt_salidas.Name = "bt_salidas";
-            this.bt_salidas.Size = new System.Drawing.Size(61, 44);
+            this.bt_salidas.Size = new System.Drawing.Size(56, 44);
             this.bt_salidas.TabIndex = 338;
             this.bt_salidas.UseVisualStyleBackColor = true;
             this.bt_salidas.Click += new System.EventHandler(this.bt_salidas_Click);
@@ -1040,7 +1041,7 @@
             this.dgv_salidas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_salidas.Location = new System.Drawing.Point(3, 49);
             this.dgv_salidas.Name = "dgv_salidas";
-            this.dgv_salidas.Size = new System.Drawing.Size(1023, 325);
+            this.dgv_salidas.Size = new System.Drawing.Size(1021, 325);
             this.dgv_salidas.TabIndex = 327;
             // 
             // dtp_final_sal
@@ -1236,7 +1237,7 @@
             this.tx_codped.Location = new System.Drawing.Point(354, 16);
             this.tx_codped.Name = "tx_codped";
             this.tx_codped.Size = new System.Drawing.Size(81, 20);
-            this.tx_codped.TabIndex = 359;
+            this.tx_codped.TabIndex = 0;
             this.tx_codped.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_codped.Leave += new System.EventHandler(this.tx_codped_Leave);
             // 
@@ -1256,7 +1257,7 @@
             this.button2.Location = new System.Drawing.Point(580, 6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(50, 41);
-            this.button2.TabIndex = 358;
+            this.button2.TabIndex = 2;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -1269,7 +1270,7 @@
             this.dgv_resumen.Location = new System.Drawing.Point(3, 98);
             this.dgv_resumen.Name = "dgv_resumen";
             this.dgv_resumen.Size = new System.Drawing.Size(1020, 276);
-            this.dgv_resumen.TabIndex = 347;
+            this.dgv_resumen.TabIndex = 3;
             // 
             // bt_resumen
             // 
@@ -1277,7 +1278,7 @@
             this.bt_resumen.Location = new System.Drawing.Point(462, 11);
             this.bt_resumen.Name = "bt_resumen";
             this.bt_resumen.Size = new System.Drawing.Size(59, 29);
-            this.bt_resumen.TabIndex = 342;
+            this.bt_resumen.TabIndex = 1;
             this.bt_resumen.Text = "Genera";
             this.bt_resumen.UseVisualStyleBackColor = true;
             this.bt_resumen.Click += new System.EventHandler(this.bt_resumen_Click);
@@ -1307,6 +1308,17 @@
             this.tabvtas.TabIndex = 6;
             this.tabvtas.Text = "Ventas";
             this.tabvtas.UseVisualStyleBackColor = true;
+            // 
+            // dgv_vtas
+            // 
+            this.dgv_vtas.AutoGenerateContextFilters = true;
+            this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_vtas.DateWithTime = false;
+            this.dgv_vtas.Location = new System.Drawing.Point(6, 52);
+            this.dgv_vtas.Name = "dgv_vtas";
+            this.dgv_vtas.Size = new System.Drawing.Size(1015, 322);
+            this.dgv_vtas.TabIndex = 367;
+            this.dgv_vtas.TimeFilter = false;
             // 
             // tx_doclie
             // 
@@ -1500,17 +1512,6 @@
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
             // 
-            // dgv_vtas
-            // 
-            this.dgv_vtas.AutoGenerateContextFilters = true;
-            this.dgv_vtas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_vtas.DateWithTime = false;
-            this.dgv_vtas.Location = new System.Drawing.Point(6, 52);
-            this.dgv_vtas.Name = "dgv_vtas";
-            this.dgv_vtas.Size = new System.Drawing.Size(1015, 322);
-            this.dgv_vtas.TabIndex = 367;
-            this.dgv_vtas.TimeFilter = false;
-            // 
             // repsventas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1523,6 +1524,7 @@
             this.Name = "repsventas";
             this.Text = "Reportes - Ventas clientes";
             this.Load += new System.EventHandler(this.repsventas_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.repsventas_KeyDown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -1554,11 +1556,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
             this.tabvtas.ResumeLayout(false);
             this.tabvtas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).EndInit();
             this.groupBox19.ResumeLayout(false);
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).EndInit();
             this.ResumeLayout(false);
 
         }
