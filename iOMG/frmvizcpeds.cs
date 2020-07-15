@@ -24,6 +24,9 @@ namespace iOMG
 
         private void frmvizcpeds_Load(object sender, EventArgs e)
         {
+            crystalReportViewer1.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
+            crystalReportViewer1.ShowGroupTreeButton = false;
+
             if (_datosReporte.cabeza_pedclt.Rows.Count > 0)
             {
                 pedsclte _pedidoc = new pedsclte();

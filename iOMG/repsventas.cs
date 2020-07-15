@@ -307,53 +307,82 @@ namespace iOMG
                     }
                     if (s < dgv_salidas.Width) dgv_salidas.Width = s + 40;
                     break;
+                case "dgv_ingresos":
+                    Font tipli = new Font("Arial", 7, FontStyle.Bold);
+                    dgv_ingresos.Font = tipli;
+                    dgv_ingresos.DefaultCellStyle.Font = tipli;
+                    dgv_ingresos.RowTemplate.Height = 15;
+                    dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+                    dgv_ingresos.AllowUserToAddRows = false;
+                    //
+                    for (int i = 0; i < dgv_ingresos.Columns.Count; i++)
+                    {
+                        dgv_ingresos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        _ = decimal.TryParse(dgv_ingresos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                        if (vd != 0) dgv_ingresos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                    int y = 0;
+                    for (int i = 0; i < dgv_ingresos.Columns.Count; i++)
+                    {
+                        int a = dgv_ingresos.Columns[i].Width;
+                        y += a;
+                        dgv_ingresos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        dgv_ingresos.Columns[i].Width = a;
+                    }
+                    if (y < dgv_ingresos.Width) dgv_ingresos.Width = y + 40;
+                    break;
+                case "dgv_pedidos":
+                    Font tiplp = new Font("Arial", 7, FontStyle.Bold);
+                    dgv_pedidos.Font = tiplp;
+                    dgv_pedidos.DefaultCellStyle.Font = tiplp;
+                    dgv_pedidos.RowTemplate.Height = 15;
+                    dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+                    dgv_pedidos.AllowUserToAddRows = false;
+                    if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 16;
+                    //
+                    for (int i = 0; i < dgv_pedidos.Columns.Count; i++)
+                    {
+                        dgv_pedidos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        _ = decimal.TryParse(dgv_pedidos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                        if (vd != 0) dgv_pedidos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                    int p = 0;
+                    for (int i = 0; i < dgv_pedidos.Columns.Count; i++)
+                    {
+                        int a = dgv_pedidos.Columns[i].Width;
+                        p += a;
+                        dgv_pedidos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        dgv_pedidos.Columns[i].Width = a;
+                    }
+                    if (p < dgv_pedidos.Width) dgv_pedidos.Width = p + 40;
+                    break;
+                case "dgv_contratos":
+                    Font tiplc = new Font("Arial", 7, FontStyle.Bold);
+                    dgv_contratos.Font = tiplc;
+                    dgv_contratos.DefaultCellStyle.Font = tiplc;
+                    dgv_contratos.RowTemplate.Height = 15;
+                    dgv_contratos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+                    dgv_contratos.AllowUserToAddRows = false;
+                    if (dgv_contratos.DataSource == null) dgv_contratos.ColumnCount = 8;
+                    //
+                    for (int i = 0; i < dgv_contratos.Columns.Count; i++)
+                    {
+                        dgv_contratos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        _ = decimal.TryParse(dgv_contratos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                        if (vd != 0) dgv_contratos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                    int c = 0;
+                    for (int i = 0; i < dgv_contratos.Columns.Count; i++)
+                    {
+                        int a = dgv_contratos.Columns[i].Width;
+                        if (a > 400) a = 400;
+                        c += a;
+                        dgv_contratos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        dgv_contratos.Columns[i].Width = a;
+                    }
+                    if (c < dgv_contratos.Width) dgv_contratos.Width = c + 40;
+                    break;
             }
-        }
-        private void grillacont()                                   // arma grilla contratos
-        {
-            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_contratos.Font = tiplg;
-            dgv_contratos.DefaultCellStyle.Font = tiplg;
-            dgv_contratos.RowTemplate.Height = 15;
-            dgv_contratos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_contratos.AllowUserToAddRows = false;
-            if (dgv_contratos.DataSource == null) dgv_contratos.ColumnCount = 8;
-        }
-        private void grillapeds()                                   // arma grilla de pedidos
-        {
-            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_pedidos.Font = tiplg;
-            dgv_pedidos.DefaultCellStyle.Font = tiplg;
-            dgv_pedidos.RowTemplate.Height = 15;
-            dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_pedidos.AllowUserToAddRows = false;
-            if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 16;
-        }
-        private void grilla_ing()                                   // arma la grilla ingresos
-        {   // a.idmovim,a.fechain,tipo,a.pedido,a.origen,a.destino,a.cant,a.articulo,nomad,med1,tipoes,madera,cliente,nomitem
-            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
-            dgv_ingresos.Font = tiplg;
-            dgv_ingresos.DefaultCellStyle.Font = tiplg;
-            dgv_ingresos.RowTemplate.Height = 15;
-            dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dgv_ingresos.AllowUserToAddRows = false;
-            /*
-            if (dgv_ingresos.DataSource == null) dgv_ingresos.ColumnCount = 8;
-            // Fecha ingreso real
-            dgv_ingresos.Columns[0].Visible = true;
-            dgv_ingresos.Columns[0].HeaderText = "Fecha";    // titulo de la columna
-            dgv_ingresos.Columns[0].Width = 70;                // ancho
-            dgv_ingresos.Columns[0].ReadOnly = false;           // lectura o no
-            dgv_ingresos.Columns[0].Tag = "validaNO";
-            //dgv_pedidos.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // almacen ingresado
-            dgv_ingresos.Columns[1].Visible = true;            // columna visible o no
-            dgv_ingresos.Columns[1].HeaderText = "Almacén";    // titulo de la columna
-            dgv_ingresos.Columns[1].Width = 60;                // ancho
-            dgv_ingresos.Columns[1].ReadOnly = true;           // lectura o no
-            dgv_ingresos.Columns[1].Tag = "validaSI";
-            //dgv_pedidos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            */
         }
         private void grillares()                                    // arma la grilla del resumen de contrato
         {
@@ -565,7 +594,7 @@ namespace iOMG
                     dgv_ingresos.DataSource = dt;
                     dt.Dispose();
                     da.Dispose();
-                    grilla_ing();
+                    grilla("dgv_ingresos");
                 }
                 else
                 {
@@ -648,7 +677,7 @@ namespace iOMG
                     dgv_contratos.DataSource = dt;
                     dt.Dispose();
                     da.Dispose();
-                    grillacont();
+                    grilla("dgv_contratos");
                 }
                 else
                 {
@@ -704,7 +733,7 @@ namespace iOMG
                     dgv_pedidos.DataSource = dt;
                     dt.Dispose();
                     da.Dispose();
-                    grillapeds();
+                    grilla("dgv_pedidos");
                 }
                 else
                 {
