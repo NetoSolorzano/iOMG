@@ -1429,6 +1429,7 @@ namespace iOMG
                         detrow.precio = row.Cells["precio"].Value.ToString().Trim();
                         detrow.total = double.Parse(row.Cells["total"].Value.ToString());
                         detrow.pedido = row.Cells["PEDIDO"].Value.ToString().Trim();
+                        detrow.fecsal = row.Cells["DESPACHO"].Value.ToString().Trim();
                         detrow.stock = row.Cells["RESERVA"].Value.ToString().Trim();
                         repvtas.repvtas_det.Addrepvtas_detRow(detrow);
                     }

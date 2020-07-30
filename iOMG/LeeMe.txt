@@ -94,8 +94,9 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form repsalmac, pulir funcionamiento de grillas, problemas entre listado stock y resumen ... ok 09/07/2020
 - form salpedclts, validar cant de salida, ocultar campo, poner lineas, etc .................. ok 10/07/2020
 - form ingpedclts, pulir funcionamiento,  poner lineas, etc. ......................... OK 10/07/2020
-- form salpedclts, probar cambios de estado en salidas parciales y totales ................................. 
-- form repsventas, agregar fecha salida al reporte de ventas ... ummmmm y cuando salió del almacen??? ...... 
-- form repsventas, mejorar la visualizacion en las grillas ................................................. ok 15/07/2020
-- 
+- form salpedclts, probar cambios de estado en salidas parciales y totales ........... 
+- form repsventas, agregar fecha salida al reporte de ventas ......................... ok 15/07/2020
+- form repsventas, mejorar la visualizacion en las grillas ........................... ok 15/07/2020
+- form clients, agregar funcionalidad de uso conectorsolorsoft ruc y dni ............. 
+
 

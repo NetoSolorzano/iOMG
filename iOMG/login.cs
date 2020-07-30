@@ -118,12 +118,10 @@ namespace iOMG
                             dr.Close();
                             // cambiamos la contraseña si fue hecha
                             cambiacont();
+                            // jala datos de configuracion
+                            jaladatos();
                             // nos vamos al form principal
                             Program.vg_user = this.Tx_user.Text;
-                            // obtenemos la configuración de los colores
-                            jalacolor();
-                            // llamamos al form principal
-                            //MainWindow frm2 = new MainWindow();
                             main Main = new main();
                             Main.Show();
                             this.Hide();
@@ -241,39 +239,43 @@ namespace iOMG
                 cn.Close();
             }
         }
-
-        private void valope()
+        private void jaladatos()
         {
             MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
             cn.Open();
             try
             {
-                // user's change your own passwords?
-                string consulta = "select value from confmod where param='chpwd'";
+                string consulta = "select param,value,used from confmod";
                 MySqlCommand micon = new MySqlCommand(consulta, cn);
-                try
+                MySqlDataReader dr = micon.ExecuteReader();
+                if (dr.HasRows)
                 {
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.HasRows)
+                    while (dr.Read())
                     {
-                        if (dr.Read())
+                        // usa conector solorsoft para ruc y dni?
+                        if (dr.GetString(0) == "conSolorsoft")
                         {
-                            if (dr.GetString(0) == "yes")
-                            {
-                                this.panel1.Visible = true;
-                            }
+                            if (dr.GetString(1) == "1") iOMG.Program.vg_conSol = true;
+                            else iOMG.Program.vg_conSol = false;
+                        }
+                        // usuario puede cambiar su contraseña?
+                        if (dr.GetString(0) == "chpwd")
+                        {
+                            if (dr.GetString(1) == "1") this.panel1.Visible = true;
                             else this.panel1.Visible = false;
                         }
+                        // obtenemos la configuración de los colores
+                        if (dr.GetString(0).StartsWith("color") == true)
+                        {
+                            if (dr.GetString(0).ToString() == "colorback") Program.colbac = dr.GetString(1).ToString();
+                            if (dr.GetString(0).ToString() == "colorpgfr") Program.colpag = dr.GetString(1).ToString();
+                            if (dr.GetString(0).ToString() == "colorgrid") Program.colgri = dr.GetString(1).ToString();
+                            if (dr.GetString(0).ToString() == "colorstrip") Program.colstr = dr.GetString(1).ToString();
+                        }
                     }
-                    dr.Close();
-                    jalaclie();         // jala datos de cliente y logo
                 }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "Esta en la base de datos correcta?", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //Application.Exit();
-                    return;
-                }
+                // jala datos de cliente y logo
+                jalaclie();         
             }
             catch (MySqlException ex)
             {
@@ -283,56 +285,6 @@ namespace iOMG
             }
             cn.Close();
         }
-
-        private void jalacolor()
-        {
-            MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
-            cn.Open();
-            try
-            {
-                string consulta = "select param,value from confmod where param like 'color%'";
-                MySqlCommand micon = new MySqlCommand(consulta, cn);
-                DataTable dt = new DataTable();
-                MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                try
-                {
-                    da.Fill(dt);
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        DataRow row = dt.Rows[i];
-                        if (row[0].ToString() == "colorback")
-                        {
-                            Program.colbac = row[1].ToString();
-                        }
-                        if (row[0].ToString() == "colorpgfr")
-                        {
-                            Program.colpag = row[1].ToString();
-                        }
-                        if (row[0].ToString() == "colorgrid")
-                        {
-                            Program.colgri = row[1].ToString();
-                        }
-                        if (row[0].ToString() == "colorstrip")
-                        {
-                            Program.colstr = row[1].ToString();
-                        }
-                    }
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "No fue posible obtener colores", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.Message, "Error en conexión");
-                Application.Exit();
-                return;
-            }
-            cn.Close();
-        }
-
         private void jalaclie()
         {
             MySqlConnection cn = new MySqlConnection(DB_CONN_STR);

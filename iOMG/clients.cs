@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
+using System.IO;
 
 namespace iOMG
 {
@@ -16,6 +18,7 @@ namespace iOMG
         string colpage = iOMG.Program.colpag;   // color de los pageframes
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
+        bool conectS = iOMG.Program.vg_conSol;  // usa conector solorsoft? true=si; false=no
         static string nomtab = "anagrafiche";   // idcategoria='CLI' -> vista anag_cli
         public int totfilgrid, cta;      // variables para impresion
         public string perAg = "";
@@ -33,6 +36,8 @@ namespace iOMG
         string img_grab = "";
         string img_anul = "";
         string vapadef = "";            // variable pais por defecto para los clientes
+        string vtc_dni = "";
+        string vtc_ruc = "";
         libreria lib = new libreria();
         AutoCompleteStringCollection paises = new AutoCompleteStringCollection();       // autocompletado paises
         AutoCompleteStringCollection departamentos = new AutoCompleteStringCollection();// autocompletado departamentos
@@ -142,80 +147,80 @@ namespace iOMG
             // tipo de documento
             advancedDataGridView1.Columns[1].Visible = true;            // columna visible o no
             advancedDataGridView1.Columns[1].HeaderText = "TipoDoc";    // titulo de la columna
-            advancedDataGridView1.Columns[1].Width = 60;                // ancho
+            advancedDataGridView1.Columns[1].Width = 50;                // ancho
             advancedDataGridView1.Columns[1].ReadOnly = false;           // lectura o no
             advancedDataGridView1.Columns[1].Tag = "validaSI";
-            advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // numero de documento
             advancedDataGridView1.Columns[2].Visible = true;
             advancedDataGridView1.Columns[2].HeaderText = "Documento";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 80;                // ancho
             advancedDataGridView1.Columns[2].ReadOnly = false;           // lectura o no
             advancedDataGridView1.Columns[2].Tag = "validaSI";
-            advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // nombre
             advancedDataGridView1.Columns[3].Visible = true;       
             advancedDataGridView1.Columns[3].HeaderText = "Nombre";
-            advancedDataGridView1.Columns[3].Width = 150;
+            advancedDataGridView1.Columns[3].Width = 200;
             advancedDataGridView1.Columns[3].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[3].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // direccion
             advancedDataGridView1.Columns[4].Visible = true;
             advancedDataGridView1.Columns[4].HeaderText = "Dirección";
-            advancedDataGridView1.Columns[4].Width = 150;
+            advancedDataGridView1.Columns[4].Width = 200;
             advancedDataGridView1.Columns[4].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[4].Tag = "validaNO";          // las celdas de esta columna se validan
-            advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // departamento
             advancedDataGridView1.Columns[5].Visible = true;       
             advancedDataGridView1.Columns[5].HeaderText = "Departamento";
-            advancedDataGridView1.Columns[5].Width = 100;
+            advancedDataGridView1.Columns[5].Width = 70;
             advancedDataGridView1.Columns[5].ReadOnly = false;
             advancedDataGridView1.Columns[5].Tag = "validaSI";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // provincia
             advancedDataGridView1.Columns[6].Visible = true;       
             advancedDataGridView1.Columns[6].HeaderText = "Provincia";
-            advancedDataGridView1.Columns[6].Width = 100;
+            advancedDataGridView1.Columns[6].Width = 70;
             advancedDataGridView1.Columns[6].ReadOnly = true;
             advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // distrito
             advancedDataGridView1.Columns[7].Visible = true;
             advancedDataGridView1.Columns[7].HeaderText = "Distrito";
-            advancedDataGridView1.Columns[7].Width = 100;
+            advancedDataGridView1.Columns[7].Width = 70;
             advancedDataGridView1.Columns[7].ReadOnly = true;
             advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // telefono 1
             advancedDataGridView1.Columns[8].Visible = true;
             advancedDataGridView1.Columns[8].HeaderText = "Teléfono1";
             advancedDataGridView1.Columns[8].Width = 70;
             advancedDataGridView1.Columns[8].ReadOnly = true;
             advancedDataGridView1.Columns[8].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // telefono 2
             advancedDataGridView1.Columns[9].Visible = true;
             advancedDataGridView1.Columns[9].HeaderText = "Teléfono2";
             advancedDataGridView1.Columns[9].Width = 70;
             advancedDataGridView1.Columns[9].ReadOnly = false;
             advancedDataGridView1.Columns[9].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Correo electrónico
             advancedDataGridView1.Columns[10].Visible = true;
             advancedDataGridView1.Columns[10].HeaderText = "Correo Electrónico";
             advancedDataGridView1.Columns[10].Width = 120;
             advancedDataGridView1.Columns[10].ReadOnly = false;
             advancedDataGridView1.Columns[10].Tag = "validaNO";          // las celdas de esta columna se NO se validan
-            advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // pais de procedencia
             advancedDataGridView1.Columns[11].Visible = true;
             advancedDataGridView1.Columns[11].HeaderText = "País Origen";
-            advancedDataGridView1.Columns[11].Width = 100;
+            advancedDataGridView1.Columns[11].Width = 50;
             advancedDataGridView1.Columns[11].ReadOnly = false;
             advancedDataGridView1.Columns[11].Tag = "validaSI";          // las celdas de esta columna se SI se validan
-            advancedDataGridView1.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //advancedDataGridView1.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // ubigeo
             advancedDataGridView1.Columns[12].Visible = false;
             // estado, bloqueado o no
@@ -227,16 +232,17 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select campo,param,valor from enlaces where formulario=@nofo";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in (@nofo,@nofa)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");   // nomform
+                micon.Parameters.AddWithValue("@nofa", nomform);
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 for (int t = 0; t < dt.Rows.Count; t++)
                 {
                     DataRow row = dt.Rows[t];
-                    if (row["campo"].ToString() == "imagenes")
+                    if (row["formulario"].ToString() == "main" && row["campo"].ToString() == "imagenes")
                     {
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
@@ -251,7 +257,15 @@ namespace iOMG
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
                     }
-                    if (row["campo"].ToString() == "pais" && row["param"].ToString() == "default") vapadef = row["valor"].ToString().Trim();         // pais por defecto
+                    if (row["formulario"].ToString() == "main" && row["campo"].ToString() == "pais" && row["param"].ToString() == "default")
+                    {
+                        vapadef = row["valor"].ToString().Trim();            // pais por defecto
+                    }
+                    if (row["formulario"].ToString() == nomform && row["campo"].ToString() == "documento")
+                    {
+                        if (row["param"].ToString() == "dni") vtc_dni = row["valor"].ToString().Trim();
+                        if (row["param"].ToString() == "ruc") vtc_ruc = row["valor"].ToString().Trim();
+                    }
                 }
                 da.Dispose();
                 dt.Dispose();
@@ -356,6 +370,38 @@ namespace iOMG
                     break;
             }
             return retorna;
+        }
+        private void conectorSolorsoft(string cual)
+        {
+            if(cual == "RUC")
+            {
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.FileName = @"c:\users\neto\source\repos\ConectorSolorsoft\ConectorSolorsoft\bin\debug\ConectorSolorsoft.exe";
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                start.Arguments = textBox3.Text + " " + "0";  // 2 parametros, ruc a buscar, tipo de retorno (0=variable)
+                using (Process proceso = Process.Start(start))
+                {
+                    using (StreamReader reader = proceso.StandardOutput)
+                    {
+                        string result = reader.ReadToEnd();
+                        string[] datos = result.Split('|');
+
+                        textBox4.Text = datos[1];       // razon social
+                                                        //tx_situa.Text = datos[2];
+                                                        //tx_domic.Text = datos[3];
+                        textBox13.Text = datos[4];
+                        textBox6.Text = datos[5] + " " + datos[6] + " " + datos[7];
+                        textBox7.Text = datos[8];
+                        textBox8.Text = datos[9];
+                        textBox9.Text = datos[10];
+                    }
+                }
+            }
+            if (cual == "DNI")
+            {
+                // me quede aca
+            }
         }
 
         #region autocompletados
@@ -888,7 +934,7 @@ namespace iOMG
         }
         private void textBox7_Leave(object sender, EventArgs e)         // departamento, jala provincia
         {
-            if(textBox7.Text != "")
+            if(textBox7.Text != "" && iOMG.Program.vg_conSol == false)
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -926,7 +972,7 @@ namespace iOMG
         }
         private void textBox8_Leave(object sender, EventArgs e)         // provincia de un departamento, jala distrito
         {
-            if(textBox8.Text != "" && textBox7.Text.Trim() != "")
+            if(textBox8.Text != "" && textBox7.Text.Trim() != "" && iOMG.Program.vg_conSol == false)
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -966,7 +1012,7 @@ namespace iOMG
         }
         private void textBox9_Leave(object sender, EventArgs e)
         {
-            if(textBox9.Text.Trim() != "" && textBox8.Text.Trim() != "" && textBox7.Text.Trim() != "")
+            if(textBox9.Text.Trim() != "" && textBox8.Text.Trim() != "" && textBox7.Text.Trim() != "" && iOMG.Program.vg_conSol == false)
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -1017,7 +1063,7 @@ namespace iOMG
         }
         private void textBox13_Leave(object sender, EventArgs e)        // ubigeo
         {
-            if(textBox13.Text.Trim() != "")
+            if(textBox13.Text.Trim() != "" && iOMG.Program.vg_conSol == false)
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -1070,6 +1116,7 @@ namespace iOMG
                     textBox3.Focus();
                     return;
                 }
+                string encuentra = "no";
                 if (Tx_modo.Text == "NUEVO")    //  || Tx_modo.Text == "EDITAR"
                 {
                     foreach (DataRow row in dtg.Rows)   // && row["tipdoc"].ToString() == textBox2.Text.Trim()  && Tx_modo.Text == "NUEVO"
@@ -1077,8 +1124,35 @@ namespace iOMG
                         if (row["RUC"].ToString().Trim() == textBox3.Text.Trim())
                         {
                             MessageBox.Show("Ya existe el cliente!", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            encuentra = "si";
                             textBox3.Focus();
                             return;
+                        }
+                    }
+                    if (textBox2.Text == vtc_ruc)
+                    {
+                        if (lib.valiruc(textBox3.Text, vtc_ruc) == false)
+                        {
+                            MessageBox.Show("Número de RUC inválido", "Atención - revise", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            textBox3.Focus();
+                            return;
+                        }
+                        if (encuentra == "no")
+                        {
+                            if (iOMG.Program.vg_conSol == true) // conector solorsoft para ruc
+                            {
+                                conectorSolorsoft("RUC");
+                            }
+                        }
+                    }
+                    if (textBox2.Text == vtc_dni)
+                    {
+                        if (encuentra == "no")
+                        {
+                            if (iOMG.Program.vg_conSol == true) // conector solorsoft para dni
+                            {
+                                conectorSolorsoft("DNI");
+                            }
                         }
                     }
                 }
@@ -1090,6 +1164,7 @@ namespace iOMG
         }
         private void comboBox1_Leave(object sender, EventArgs e)
         {
+            textBox3.Text = "";
             textBox3.Focus();
         }
         #endregion leaves;

@@ -22,6 +22,7 @@ namespace iOMG
         public static string retorna1 = "";
         public static string ruc = "";          // ruc del cliente
         public static string tituloF = "Intregrador de Almacén, Ventas y Facturación Electrónica";      // titulo del sistema
+        public static bool vg_conSol = false;   // usa conector solorsoft para ruc y dni
 
         [STAThread]
         static void Main()
