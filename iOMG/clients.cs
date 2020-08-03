@@ -382,6 +382,7 @@ namespace iOMG
                 start.Arguments = textBox3.Text + " " + "0";  // 2 parametros, ruc a buscar, tipo de retorno (0=variable)
                 using (Process proceso = Process.Start(start))
                 {
+                    
                     using (StreamReader reader = proceso.StandardOutput)
                     {
                         string result = reader.ReadToEnd();
@@ -400,7 +401,39 @@ namespace iOMG
             }
             if (cual == "DNI")
             {
-                // me quede aca
+                int limite = 19000;
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                start.WorkingDirectory = @"c:\users\neto\source\repos\conectorc\conectorc\bin\x86\Debug\";
+                start.FileName = start.WorkingDirectory + "conectorc.exe";
+                start.Arguments = "D 12345678";  // 2 parametros, "D" y dni a buscar
+                Process p = Process.Start(start);
+                p.WaitForInputIdle();
+                p.WaitForExit(limite);
+                if(p.HasExited == false)
+                {
+                    if (p.Responding)
+                    {
+                        p.CloseMainWindow();
+                    }
+                    else
+                    {
+                        p.Kill();
+                    }
+                }
+                else
+                {
+                    // leemos el .config del conectorc
+                    ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
+                    configMap.ExeConfigFilename = @start.WorkingDirectory.ToString() + "conectorc.exe.config";  // @"d:\test\justAConfigFile.config.whateverYouLikeExtension";
+                    Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+                    textBox4.Text = config.AppSettings.Settings["rnombre"].Value + " " + 
+                        config.AppSettings.Settings["rapater"].Value + " " + 
+                        config.AppSettings.Settings["ramater"].Value;
+                    textBox3.Text = config.AppSettings.Settings["rnumero"].Value;
+                    p.Close();
+                }
             }
         }
 
