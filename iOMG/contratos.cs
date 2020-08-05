@@ -16,6 +16,7 @@ namespace iOMG
         string colpage = iOMG.Program.colpag;   // color de los pageframes
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
+        bool conSol = iOMG.Program.vg_conSol;   // usa conector solorsoft ?
         static string nomtab = "contrat";
         #region variables 
         public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion sin crystal, con crystal ya no se usan
@@ -58,6 +59,8 @@ namespace iOMG
         string dets3 = "";                  // detalles3 para adicionales
         string acadef = "";                 // acabados para adicionales
         string vpaisdef = "";               // pais por defecto para los clientes y proveedores
+        string docDni = "";             // codigo documento dni
+        string docRuc = "";             // codigo documento RUC
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
         libreria lib = new libreria();
@@ -235,11 +238,12 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi)";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi,@cli)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
                 micon.Parameters.AddWithValue("@ped", "contratos");
                 micon.Parameters.AddWithValue("@adi", "adicionals");
+                micon.Parameters.AddWithValue("@cli", "clients");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -289,6 +293,11 @@ namespace iOMG
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle2") dets2 = row["valor"].ToString().Trim();    // 
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "detalle3") dets3 = row["valor"].ToString().Trim();    // 
                         if (row["campo"].ToString() == "identificador" && row["param"].ToString() == "acabados") acadef = row["valor"].ToString().Trim();    // 
+                    }
+                    if (row["formulario"].ToString() == "clients")
+                    {
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "dni") docDni = row["valor"].ToString().Trim();
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ruc") docRuc = row["valor"].ToString().Trim();
                     }
                 }
                 da.Dispose();
@@ -3044,7 +3053,10 @@ namespace iOMG
                     }
                 }
             }
-            if (Tx_modo.Text == "NUEVO") cmb_fam.Focus();
+            else
+            {
+                if (Tx_modo.Text == "NUEVO") cmb_tdoc.Focus();
+            }
         }
         private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -3084,11 +3096,33 @@ namespace iOMG
                         dr.Close();
                         conn.Close();
                         var aaa = MessageBox.Show("No existe el cliente" + Environment.NewLine +
-                            "desea crealo?", "Atención verifique", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            "desea crealo?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (aaa == DialogResult.Yes)
                         {
-                            chk_cliente.Checked = true;         // 
-                            tx_nombre.Focus();
+                            chk_cliente.Checked = true;
+                            // llamamos a conectorSolorsoft si esta habilitado
+                            if(conSol == true)
+                            {
+                                if (tx_dat_tdoc.Text == docDni)
+                                {
+                                    string[] rl = lib.conectorSolorsoft("DNI", tx_ndc.Text);
+                                    tx_nombre.Text = rl[0];
+                                }
+                                if (tx_dat_tdoc.Text == docRuc)
+                                {
+                                    string[] rl = lib.conectorSolorsoft("RUC", tx_ndc.Text);
+                                    tx_nombre.Text = rl[0];
+                                    tx_direc.Text = rl[2];
+                                    tx_dpto.Text = rl[3];
+                                    tx_prov.Text = rl[4];
+                                    tx_dist.Text = rl[5];
+                                }
+                            }
+                            else
+                            {
+                                chk_cliente.Checked = true;
+                                tx_nombre.Focus();
+                            }
                         }
                         else
                         {

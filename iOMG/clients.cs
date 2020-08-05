@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
-using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -371,12 +370,14 @@ namespace iOMG
             }
             return retorna;
         }
-        private void conectorSolorsoft(string cual)
+        private void XconectorSolorsoft(string cual)
         {
+            string dirLoc = Directory.GetCurrentDirectory() + @"\conectores\";
             if(cual == "RUC")
             {
                 ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = @"c:\users\neto\source\repos\ConectorSolorsoft\ConectorSolorsoft\bin\debug\ConectorSolorsoft.exe";
+                //start.FileName = @"c:\users\neto\source\repos\ConectorSolorsoft\ConectorSolorsoft\bin\debug\ConectorSolorsoft.exe";
+                start.FileName = dirLoc + "ConectorSolorsoft.exe";
                 start.UseShellExecute = false;
                 start.RedirectStandardOutput = true;
                 start.Arguments = textBox3.Text + " " + "0";  // 2 parametros, ruc a buscar, tipo de retorno (0=variable)
@@ -401,13 +402,14 @@ namespace iOMG
             }
             if (cual == "DNI")
             {
-                int limite = 19000;
+                int limite = 30000;
                 ProcessStartInfo start = new ProcessStartInfo();
                 start.UseShellExecute = false;
                 start.RedirectStandardOutput = true;
-                start.WorkingDirectory = @"c:\users\neto\source\repos\conectorc\conectorc\bin\x86\Debug\";
-                start.FileName = start.WorkingDirectory + "conectorc.exe";
-                start.Arguments = "D 12345678";  // 2 parametros, "D" y dni a buscar
+                //start.WorkingDirectory = @"c:\users\neto\source\repos\conectorc\conectorc\bin\x86\Debug\";
+                //start.FileName = start.WorkingDirectory + "conectorc.exe";
+                start.FileName = dirLoc + "conectorc.exe";
+                start.Arguments = "D " + textBox3.Text;  // 2 parametros, "D" y dni a buscar
                 Process p = Process.Start(start);
                 p.WaitForInputIdle();
                 p.WaitForExit(limite);
@@ -426,7 +428,8 @@ namespace iOMG
                 {
                     // leemos el .config del conectorc
                     ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
-                    configMap.ExeConfigFilename = @start.WorkingDirectory.ToString() + "conectorc.exe.config";  // @"d:\test\justAConfigFile.config.whateverYouLikeExtension";
+                    //configMap.ExeConfigFilename = @start.WorkingDirectory.ToString() + "conectorc.exe.config";  // @"d:\test\justAConfigFile.config.whateverYouLikeExtension";
+                    configMap.ExeConfigFilename = dirLoc + "conectorc.exe.config";
                     Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
                     textBox4.Text = config.AppSettings.Settings["rnombre"].Value + " " + 
                         config.AppSettings.Settings["rapater"].Value + " " + 
@@ -1174,7 +1177,14 @@ namespace iOMG
                         {
                             if (iOMG.Program.vg_conSol == true) // conector solorsoft para ruc
                             {
-                                conectorSolorsoft("RUC");
+                                //XconectorSolorsoft("RUC");
+                                string[] rl = lib.conectorSolorsoft("RUC", textBox3.Text);
+                                textBox4.Text = rl[0];      // razon social
+                                textBox13.Text = rl[1];     // ubigeo
+                                textBox6.Text = rl[2];      // direccion
+                                textBox7.Text = rl[3];      // departamento
+                                textBox8.Text = rl[4];      // provincia
+                                textBox9.Text = rl[5];      // distrito
                             }
                         }
                     }
@@ -1184,7 +1194,10 @@ namespace iOMG
                         {
                             if (iOMG.Program.vg_conSol == true) // conector solorsoft para dni
                             {
-                                conectorSolorsoft("DNI");
+                                //XconectorSolorsoft("DNI");
+                                string[] rl = lib.conectorSolorsoft("DNI", textBox3.Text);
+                                textBox4.Text = rl[0];      // nombre
+                                textBox3.Text = rl[1];     // num dni
                             }
                         }
                     }

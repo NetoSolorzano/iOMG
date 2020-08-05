@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Configuration;
 // se agrega la siguiente referencia para enviar texto a impresora
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace iOMG
 {
@@ -2806,6 +2807,76 @@ namespace iOMG
             string retorna = "";
             string[] tabla = new string[] { "_", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "W", "X", "Y", "Z" };
             retorna = tabla[num];
+            return retorna;
+        }
+        public string[] conectorSolorsoft(string cual, string numDoc)
+        {
+            string[] retorna = new string[6];
+            retorna[0]="";retorna[1] = ""; retorna[2] = ""; retorna[3] = "";
+            retorna[4] = ""; retorna[5] = "";
+            string dirLoc = Directory.GetCurrentDirectory() + @"\conectores\";
+            if (cual == "RUC")
+            {
+                ProcessStartInfo start = new ProcessStartInfo();
+                //start.FileName = @"c:\users\neto\source\repos\ConectorSolorsoft\ConectorSolorsoft\bin\debug\ConectorSolorsoft.exe";
+                start.FileName = dirLoc + "ConectorSolorsoft.exe";
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                start.Arguments = numDoc + " " + "0";  // 2 parametros, ruc a buscar, tipo de retorno (0=variable)
+                using (Process proceso = Process.Start(start))
+                {
+
+                    using (StreamReader reader = proceso.StandardOutput)
+                    {
+                        string result = reader.ReadToEnd();
+                        string[] datos = result.Split('|');
+
+                        retorna[0] = datos[1];       // textBox4.Text razon social
+                                           //tx_situa.Text = datos[2];
+                                           //tx_domic.Text = datos[3];
+                        retorna[1] = datos[4];    // textBox13.Text ubigeo
+                        retorna[2] = datos[5] + " " + datos[6] + " " + datos[7];  // textBox6.Text direccion
+                        retorna[3] = datos[8];    // textBox7.Text departamento
+                        retorna[4] = datos[9];      // textBox8.Text provincia
+                        retorna[5] = datos[10];     // textBox9.Text distrito
+                    }
+                }
+            }
+            if (cual == "DNI")
+            {
+                int limite = 30000;
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                start.FileName = dirLoc + "conectorc.exe";
+                start.Arguments = "D " + numDoc;  // 2 parametros, "D" y dni a buscar
+                Process p = Process.Start(start);
+                p.WaitForInputIdle();
+                p.WaitForExit(limite);
+                if (p.HasExited == false)
+                {
+                    if (p.Responding)
+                    {
+                        p.CloseMainWindow();
+                    }
+                    else
+                    {
+                        p.Kill();
+                    }
+                }
+                else
+                {
+                    // leemos el .config del conectorc
+                    ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
+                    configMap.ExeConfigFilename = dirLoc + "conectorc.exe.config";
+                    Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+                    retorna[0] = config.AppSettings.Settings["rnombre"].Value + " " +
+                        config.AppSettings.Settings["rapater"].Value + " " +
+                        config.AppSettings.Settings["ramater"].Value;   // textBox9.Text NOMBRE
+                    retorna[1] = config.AppSettings.Settings["rnumero"].Value;  // textBox3.Text NUMERO DNI
+                    p.Close();
+                }
+            }
             return retorna;
         }
     }
