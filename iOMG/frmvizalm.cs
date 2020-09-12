@@ -23,6 +23,13 @@ namespace iOMG
 
         private void frmvizalm_Load(object sender, System.EventArgs e)
         {
+            // reporte stock resumido x almacen
+            if (_datosreporte.cab_restock.Rows.Count > 0)
+            {
+                rep_stock_res _resumen = new rep_stock_res();
+                _resumen.SetDataSource(_datosreporte);
+                crystalReportViewer1.ReportSource = _resumen;
+            }
             // reporte de stock
             if (_datosreporte.cab_stock.Rows.Count > 0)
             {

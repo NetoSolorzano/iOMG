@@ -565,9 +565,10 @@ namespace iOMG
                     Application.Exit();
                     return;
                 }
-                string consulta = "select count(idcodice) as cant from descrittive where idcodice=@uso";
+                string consulta = "select count(idcodice) as cant from descrittive where idcodice=@uso and idtabella=@tab";
                 MySqlCommand mycomand = new MySqlCommand(consulta, conn);
-                mycomand.Parameters.AddWithValue("@uso", this.textBox1.Text);
+                mycomand.Parameters.AddWithValue("@uso", textBox1.Text);
+                mycomand.Parameters.AddWithValue("@tab", textBox4.Text);
                 int cant = System.Convert.ToInt16(mycomand.ExecuteScalar());
                 if (cant > 0)
                 {

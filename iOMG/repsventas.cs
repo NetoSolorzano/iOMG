@@ -264,23 +264,28 @@ namespace iOMG
                     dgv_vtas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
                     dgv_vtas.AllowUserToAddRows = false;
                     dgv_vtas.Width = 1015;
-                    if (dgv_vtas.DataSource == null) dgv_vtas.ColumnCount = 11;
-                    //
-                    for (int i = 0; i < dgv_vtas.Columns.Count; i++)
+                    if (dgv_vtas.DataSource != null)
                     {
-                        dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        _ = decimal.TryParse(dgv_vtas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
-                        if (vd != 0) dgv_vtas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        //dgv_vtas.ColumnCount = 11;
+                        if (dgv_vtas.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dgv_vtas.Columns.Count; i++)
+                            {
+                                dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                                _ = decimal.TryParse(dgv_vtas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                                if (vd != 0) dgv_vtas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                            }
+                            int b = 0;
+                            for (int i = 0; i < dgv_vtas.Columns.Count; i++)
+                            {
+                                int a = dgv_vtas.Columns[i].Width;
+                                b += a;
+                                dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                                dgv_vtas.Columns[i].Width = a;
+                            }
+                            if (b < dgv_vtas.Width) dgv_vtas.Width = b + 60;
+                        }
                     }
-                    int b = 0;
-                    for (int i = 0; i < dgv_vtas.Columns.Count; i++)
-                    {
-                        int a = dgv_vtas.Columns[i].Width;
-                        b += a;
-                        dgv_vtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        dgv_vtas.Columns[i].Width = a;
-                    }
-                    if (b < dgv_vtas.Width) dgv_vtas.Width = b + 60;
                     break;
                 case "dgv_salidas":
                     Font tipls = new Font("Arial", 7, FontStyle.Bold);
@@ -290,22 +295,24 @@ namespace iOMG
                     dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
                     dgv_salidas.AllowUserToAddRows = false;
                     dgv_salidas.Width = 1021;
-                    //
-                    for (int i = 0; i < dgv_salidas.Columns.Count; i++)
+                    if (dgv_salidas.Rows.Count > 0)
                     {
-                        dgv_salidas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        _ = decimal.TryParse(dgv_salidas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
-                        if (vd != 0) dgv_salidas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        for (int i = 0; i < dgv_salidas.Columns.Count; i++)
+                        {
+                            dgv_salidas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                            _ = decimal.TryParse(dgv_salidas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                            if (vd != 0) dgv_salidas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        }
+                        int s = 0;
+                        for (int i = 0; i < dgv_salidas.Columns.Count; i++)
+                        {
+                            int a = dgv_salidas.Columns[i].Width;
+                            s += a;
+                            dgv_salidas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                            dgv_salidas.Columns[i].Width = a;
+                        }
+                        if (s < dgv_salidas.Width) dgv_salidas.Width = s + 40;
                     }
-                    int s = 0;
-                    for (int i=0; i < dgv_salidas.Columns.Count; i++)
-                    {
-                        int a = dgv_salidas.Columns[i].Width;
-                        s += a;
-                        dgv_salidas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        dgv_salidas.Columns[i].Width = a;
-                    }
-                    if (s < dgv_salidas.Width) dgv_salidas.Width = s + 40;
                     break;
                 case "dgv_ingresos":
                     Font tipli = new Font("Arial", 7, FontStyle.Bold);
@@ -314,22 +321,24 @@ namespace iOMG
                     dgv_ingresos.RowTemplate.Height = 15;
                     dgv_ingresos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
                     dgv_ingresos.AllowUserToAddRows = false;
-                    //
-                    for (int i = 0; i < dgv_ingresos.Columns.Count; i++)
+                    if (dgv_ingresos.Rows.Count > 0)
                     {
-                        dgv_ingresos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        _ = decimal.TryParse(dgv_ingresos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
-                        if (vd != 0) dgv_ingresos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        for (int i = 0; i < dgv_ingresos.Columns.Count; i++)
+                        {
+                            dgv_ingresos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                            _ = decimal.TryParse(dgv_ingresos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                            if (vd != 0) dgv_ingresos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        }
+                        int y = 0;
+                        for (int i = 0; i < dgv_ingresos.Columns.Count; i++)
+                        {
+                            int a = dgv_ingresos.Columns[i].Width;
+                            y += a;
+                            dgv_ingresos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                            dgv_ingresos.Columns[i].Width = a;
+                        }
+                        if (y < dgv_ingresos.Width) dgv_ingresos.Width = y + 40;
                     }
-                    int y = 0;
-                    for (int i = 0; i < dgv_ingresos.Columns.Count; i++)
-                    {
-                        int a = dgv_ingresos.Columns[i].Width;
-                        y += a;
-                        dgv_ingresos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        dgv_ingresos.Columns[i].Width = a;
-                    }
-                    if (y < dgv_ingresos.Width) dgv_ingresos.Width = y + 40;
                     break;
                 case "dgv_pedidos":
                     Font tiplp = new Font("Arial", 7, FontStyle.Bold);
@@ -338,23 +347,28 @@ namespace iOMG
                     dgv_pedidos.RowTemplate.Height = 15;
                     dgv_pedidos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
                     dgv_pedidos.AllowUserToAddRows = false;
-                    if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 16;
-                    //
-                    for (int i = 0; i < dgv_pedidos.Columns.Count; i++)
+                    if (dgv_pedidos.DataSource != null)
                     {
-                        dgv_pedidos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        _ = decimal.TryParse(dgv_pedidos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
-                        if (vd != 0) dgv_pedidos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        //dgv_pedidos.ColumnCount = 16;
+                        if (dgv_pedidos.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dgv_pedidos.Columns.Count; i++)
+                            {
+                                dgv_pedidos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                                _ = decimal.TryParse(dgv_pedidos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                                if (vd != 0) dgv_pedidos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                            }
+                            int p = 0;
+                            for (int i = 0; i < dgv_pedidos.Columns.Count; i++)
+                            {
+                                int a = dgv_pedidos.Columns[i].Width;
+                                p += a;
+                                dgv_pedidos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                                dgv_pedidos.Columns[i].Width = a;
+                            }
+                            if (p < dgv_pedidos.Width) dgv_pedidos.Width = p + 40;
+                        }
                     }
-                    int p = 0;
-                    for (int i = 0; i < dgv_pedidos.Columns.Count; i++)
-                    {
-                        int a = dgv_pedidos.Columns[i].Width;
-                        p += a;
-                        dgv_pedidos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        dgv_pedidos.Columns[i].Width = a;
-                    }
-                    if (p < dgv_pedidos.Width) dgv_pedidos.Width = p + 40;
                     break;
                 case "dgv_contratos":
                     Font tiplc = new Font("Arial", 7, FontStyle.Bold);
@@ -363,24 +377,29 @@ namespace iOMG
                     dgv_contratos.RowTemplate.Height = 15;
                     dgv_contratos.DefaultCellStyle.BackColor = Color.MediumAquamarine;
                     dgv_contratos.AllowUserToAddRows = false;
-                    if (dgv_contratos.DataSource == null) dgv_contratos.ColumnCount = 8;
-                    //
-                    for (int i = 0; i < dgv_contratos.Columns.Count; i++)
+                    if (dgv_contratos.DataSource == null || dgv_contratos.Rows.Count < 1)
                     {
-                        dgv_contratos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        _ = decimal.TryParse(dgv_contratos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
-                        if (vd != 0) dgv_contratos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        //dgv_contratos.ColumnCount = 8;
                     }
-                    int c = 0;
-                    for (int i = 0; i < dgv_contratos.Columns.Count; i++)
+                    else
                     {
-                        int a = dgv_contratos.Columns[i].Width;
-                        if (a > 400) a = 400;
-                        c += a;
-                        dgv_contratos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        dgv_contratos.Columns[i].Width = a;
+                        for (int i = 0; i < dgv_contratos.Columns.Count; i++)
+                        {
+                            dgv_contratos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                            _ = decimal.TryParse(dgv_contratos.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                            if (vd != 0) dgv_contratos.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        }
+                        int c = 0;
+                        for (int i = 0; i < dgv_contratos.Columns.Count; i++)
+                        {
+                            int a = dgv_contratos.Columns[i].Width;
+                            if (a > 400) a = 400;
+                            c += a;
+                            dgv_contratos.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                            dgv_contratos.Columns[i].Width = a;
+                        }
+                        if (c < dgv_contratos.Width) dgv_contratos.Width = c + 40;
                     }
-                    if (c < dgv_contratos.Width) dgv_contratos.Width = c + 40;
                     break;
             }
         }
@@ -1523,7 +1542,6 @@ namespace iOMG
             }
             return pedset;
         }
-
         private pedsclts generarepingresos()
         {   // a.idmovim,a.fechain,tipo,a.pedido,a.origen,a.destino,a.cant,a.articulo,nomad,med1,tipoes,madera,cliente,nomitem
             pedsclts pedset = new pedsclts();
@@ -1533,7 +1551,7 @@ namespace iOMG
             rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
             pedset.cab_reping.Addcab_repingRow(rowcab);
             //
-            foreach(DataGridViewRow row in dgv_ingresos.Rows)
+            foreach (DataGridViewRow row in dgv_ingresos.Rows)
             {
                 if (row.Cells["pedido"].Value != null && row.Cells["pedido"].Value.ToString().Trim() != "")
                 {
@@ -1567,7 +1585,7 @@ namespace iOMG
             rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
             pedset.cab_repsal.Addcab_repsalRow(rowcab);
             //
-            foreach(DataGridViewRow row in dgv_salidas.Rows)
+            foreach (DataGridViewRow row in dgv_salidas.Rows)
             {
                 if (row.Cells["tipo"].Value != null && row.Cells["tipo"].Value.ToString().Trim() != "")
                 {
@@ -1600,19 +1618,19 @@ namespace iOMG
             rowcabeza.ran = (rb_fcont.Checked == true) ? "C" : "E";
             liscont.liscont_cab.Addliscont_cabRow(rowcabeza);
             //
-            foreach(DataGridViewRow row in dgv_contratos.Rows)
+            foreach (DataGridViewRow row in dgv_contratos.Rows)
             {
                 if (row.Cells["fecha"].Value != null && row.Cells["fecha"].Value.ToString().Trim() != "")
                 {
                     conClie.liscont_detRow rowdetalle = liscont.liscont_det.Newliscont_detRow();
                     rowdetalle.id = "0";
-                    rowdetalle.fecha = row.Cells[0].Value.ToString().PadRight(10).Substring(0,10);
+                    rowdetalle.fecha = row.Cells[0].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdetalle.tienda = row.Cells[1].Value.ToString();
                     rowdetalle.contrato = row.Cells[2].Value.ToString();
                     rowdetalle.cliente = row.Cells[3].Value.ToString();
                     rowdetalle.coment = row.Cells[4].Value.ToString();
-                    rowdetalle.fentrega = row.Cells[5].Value.ToString().PadRight(10).Substring(0,10);
-                    rowdetalle.fenreal = row.Cells[6].Value.ToString().PadRight(10).Substring(0,10);
+                    rowdetalle.fentrega = row.Cells[5].Value.ToString().PadRight(10).Substring(0, 10);
+                    rowdetalle.fenreal = row.Cells[6].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdetalle.estado = row.Cells[7].Value.ToString();
                     liscont.liscont_det.Addliscont_detRow(rowdetalle);
                 }
@@ -1620,5 +1638,14 @@ namespace iOMG
             return liscont;
         }
         #endregion
+
+        private void tabvtas_Enter(object sender, EventArgs e)
+        {
+            if (rb_resumen.Checked == false && rb_listado.Checked == false)
+            {
+                rb_listado.Checked = true;
+            }
+        }
+
     }
 }

@@ -429,7 +429,7 @@
             this.textBox5.Location = new System.Drawing.Point(167, 112);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(179, 18);
-            this.textBox5.TabIndex = 189;
+            this.textBox5.TabIndex = 5;
             // 
             // tx_rind
             // 
@@ -450,7 +450,7 @@
             this.comboBox1.Location = new System.Drawing.Point(168, 13);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(144, 21);
-            this.comboBox1.TabIndex = 186;
+            this.comboBox1.TabIndex = 1;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // tx_idr
@@ -584,7 +584,7 @@
             this.checkBox1.Location = new System.Drawing.Point(85, 138);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(73, 17);
-            this.checkBox1.TabIndex = 167;
+            this.checkBox1.TabIndex = 6;
             this.checkBox1.Text = "Habilitado";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -603,7 +603,7 @@
             this.textBox3.Location = new System.Drawing.Point(167, 85);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(393, 18);
-            this.textBox3.TabIndex = 162;
+            this.textBox3.TabIndex = 4;
             // 
             // textBox2
             // 
@@ -612,7 +612,7 @@
             this.textBox2.Location = new System.Drawing.Point(167, 63);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(94, 18);
-            this.textBox2.TabIndex = 161;
+            this.textBox2.TabIndex = 3;
             // 
             // textBox1
             // 
@@ -622,7 +622,7 @@
             this.textBox1.MaxLength = 10;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(94, 18);
-            this.textBox1.TabIndex = 160;
+            this.textBox1.TabIndex = 2;
             this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
             // button1
@@ -631,7 +631,7 @@
             this.button1.Location = new System.Drawing.Point(500, 130);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 56);
-            this.button1.TabIndex = 159;
+            this.button1.TabIndex = 7;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 

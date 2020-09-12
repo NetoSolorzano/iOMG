@@ -16,14 +16,14 @@ namespace iOMG {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class ContratoE : ReportClass {
+    public class rep_stock_res : ReportClass {
         
-        public ContratoE() {
+        public rep_stock_res() {
         }
         
         public override string ResourceName {
             get {
-                return "ContratoE.rpt";
+                return "rep_stock_res.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace iOMG {
         
         public override string FullResourceName {
             get {
-                return "iOMG.ContratoE.rpt";
+                return "iOMG.rep_stock_res.rpt";
             }
             set {
                 // Do nothing
@@ -87,20 +87,12 @@ namespace iOMG {
                 return this.ReportDefinition.Sections[4];
             }
         }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedContratoE : Component, ICachedReport {
+    public class Cachedrep_stock_res : Component, ICachedReport {
         
-        public CachedContratoE() {
+        public Cachedrep_stock_res() {
         }
         
         [Browsable(false)]
@@ -137,7 +129,7 @@ namespace iOMG {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            ContratoE rpt = new ContratoE();
+            rep_stock_res rpt = new rep_stock_res();
             rpt.Site = this.Site;
             return rpt;
         }

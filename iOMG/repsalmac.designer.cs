@@ -89,6 +89,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabstock = new System.Windows.Forms.TabPage();
+            this.lay_almacenes = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox21 = new System.Windows.Forms.GroupBox();
+            this.rb_resalm = new System.Windows.Forms.RadioButton();
+            this.rb_liststock = new System.Windows.Forms.RadioButton();
             this.chk_stkval = new System.Windows.Forms.CheckBox();
             this.dgv_resumen = new ADGV.AdvancedDataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -145,9 +149,6 @@
             this.tx_d_med = new System.Windows.Forms.TextBox();
             this.tx_d_nom = new System.Windows.Forms.TextBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.groupBox21 = new System.Windows.Forms.GroupBox();
-            this.rb_liststock = new System.Windows.Forms.RadioButton();
-            this.rb_resalm = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -161,6 +162,7 @@
             this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabstock.SuspendLayout();
+            this.groupBox21.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -173,7 +175,6 @@
             this.tabEtiq.SuspendLayout();
             this.pan_view.SuspendLayout();
             this.pan_datos.SuspendLayout();
-            this.groupBox21.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -207,7 +208,7 @@
             this.toolStripSeparator10,
             this.Bt_fin,
             this.toolStripSeparator11});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 408);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 476);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1043, 35);
             this.toolStrip1.TabIndex = 34;
@@ -443,7 +444,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1037, 403);
+            this.tabControl1.Size = new System.Drawing.Size(1037, 471);
             this.tabControl1.TabIndex = 0;
             // 
             // tabres
@@ -464,7 +465,7 @@
             this.tabres.Location = new System.Drawing.Point(4, 22);
             this.tabres.Name = "tabres";
             this.tabres.Padding = new System.Windows.Forms.Padding(3);
-            this.tabres.Size = new System.Drawing.Size(1029, 377);
+            this.tabres.Size = new System.Drawing.Size(1029, 445);
             this.tabres.TabIndex = 0;
             this.tabres.Text = "Reservas";
             this.tabres.UseVisualStyleBackColor = true;
@@ -641,7 +642,7 @@
             this.tabSal.Location = new System.Drawing.Point(4, 22);
             this.tabSal.Name = "tabSal";
             this.tabSal.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSal.Size = new System.Drawing.Size(1029, 377);
+            this.tabSal.Size = new System.Drawing.Size(1029, 445);
             this.tabSal.TabIndex = 1;
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
@@ -809,6 +810,7 @@
             // 
             // tabstock
             // 
+            this.tabstock.Controls.Add(this.lay_almacenes);
             this.tabstock.Controls.Add(this.groupBox21);
             this.tabstock.Controls.Add(this.chk_stkval);
             this.tabstock.Controls.Add(this.dgv_resumen);
@@ -823,15 +825,70 @@
             this.tabstock.Controls.Add(this.bt_resumen);
             this.tabstock.Location = new System.Drawing.Point(4, 22);
             this.tabstock.Name = "tabstock";
-            this.tabstock.Size = new System.Drawing.Size(1029, 377);
+            this.tabstock.Size = new System.Drawing.Size(1029, 445);
             this.tabstock.TabIndex = 3;
             this.tabstock.Text = "Stock";
             this.tabstock.UseVisualStyleBackColor = true;
             // 
+            // lay_almacenes
+            // 
+            this.lay_almacenes.ColumnCount = 6;
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.66667F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.33333F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
+            this.lay_almacenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lay_almacenes.Location = new System.Drawing.Point(496, 2);
+            this.lay_almacenes.Name = "lay_almacenes";
+            this.lay_almacenes.RowCount = 4;
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.61905F));
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.38095F));
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.lay_almacenes.Size = new System.Drawing.Size(446, 83);
+            this.lay_almacenes.TabIndex = 369;
+            // 
+            // groupBox21
+            // 
+            this.groupBox21.Controls.Add(this.rb_resalm);
+            this.groupBox21.Controls.Add(this.rb_liststock);
+            this.groupBox21.Location = new System.Drawing.Point(22, 2);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Size = new System.Drawing.Size(146, 52);
+            this.groupBox21.TabIndex = 368;
+            this.groupBox21.TabStop = false;
+            // 
+            // rb_resalm
+            // 
+            this.rb_resalm.AutoSize = true;
+            this.rb_resalm.Location = new System.Drawing.Point(6, 31);
+            this.rb_resalm.Name = "rb_resalm";
+            this.rb_resalm.Size = new System.Drawing.Size(93, 17);
+            this.rb_resalm.TabIndex = 1;
+            this.rb_resalm.TabStop = true;
+            this.rb_resalm.Text = "Resumen Alm.";
+            this.rb_resalm.UseVisualStyleBackColor = true;
+            this.rb_resalm.CheckedChanged += new System.EventHandler(this.rb_resalm_CheckedChanged);
+            // 
+            // rb_liststock
+            // 
+            this.rb_liststock.AutoSize = true;
+            this.rb_liststock.Location = new System.Drawing.Point(6, 8);
+            this.rb_liststock.Name = "rb_liststock";
+            this.rb_liststock.Size = new System.Drawing.Size(90, 17);
+            this.rb_liststock.TabIndex = 0;
+            this.rb_liststock.TabStop = true;
+            this.rb_liststock.Text = "Listado Stock";
+            this.rb_liststock.UseVisualStyleBackColor = true;
+            this.rb_liststock.CheckedChanged += new System.EventHandler(this.rb_liststock_CheckedChanged);
+            // 
             // chk_stkval
             // 
             this.chk_stkval.AutoSize = true;
-            this.chk_stkval.Location = new System.Drawing.Point(479, 18);
+            this.chk_stkval.Location = new System.Drawing.Point(205, 64);
             this.chk_stkval.Name = "chk_stkval";
             this.chk_stkval.Size = new System.Drawing.Size(75, 17);
             this.chk_stkval.TabIndex = 1;
@@ -844,9 +901,10 @@
             this.dgv_resumen.AutoGenerateContextFilters = true;
             this.dgv_resumen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_resumen.DateWithTime = false;
-            this.dgv_resumen.Location = new System.Drawing.Point(3, 52);
+            this.dgv_resumen.Location = new System.Drawing.Point(3, 86);
             this.dgv_resumen.Name = "dgv_resumen";
-            this.dgv_resumen.Size = new System.Drawing.Size(1023, 322);
+            this.dgv_resumen.ReadOnly = true;
+            this.dgv_resumen.Size = new System.Drawing.Size(1023, 356);
             this.dgv_resumen.TabIndex = 366;
             this.dgv_resumen.TimeFilter = false;
             this.dgv_resumen.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
@@ -861,7 +919,7 @@
             this.groupBox3.BackColor = System.Drawing.Color.DimGray;
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox3.Location = new System.Drawing.Point(291, 47);
+            this.groupBox3.Location = new System.Drawing.Point(174, 52);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(121, 1);
             this.groupBox3.TabIndex = 365;
@@ -878,7 +936,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(295, 32);
+            this.label1.Location = new System.Drawing.Point(178, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 364;
@@ -891,7 +949,7 @@
             this.cmb_fam.DropDownWidth = 100;
             this.cmb_fam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_fam.FormattingEnabled = true;
-            this.cmb_fam.Location = new System.Drawing.Point(385, 27);
+            this.cmb_fam.Location = new System.Drawing.Point(268, 32);
             this.cmb_fam.Name = "cmb_fam";
             this.cmb_fam.Size = new System.Drawing.Size(45, 21);
             this.cmb_fam.TabIndex = 363;
@@ -903,7 +961,7 @@
             this.groupBox1.BackColor = System.Drawing.Color.DimGray;
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox1.Location = new System.Drawing.Point(291, 24);
+            this.groupBox1.Location = new System.Drawing.Point(174, 29);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(121, 1);
             this.groupBox1.TabIndex = 362;
@@ -919,7 +977,7 @@
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(433, 5);
+            this.tx_dat_dest.Location = new System.Drawing.Point(316, 10);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(27, 20);
             this.tx_dat_dest.TabIndex = 361;
@@ -928,7 +986,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(295, 9);
+            this.label11.Location = new System.Drawing.Point(178, 14);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 360;
@@ -941,7 +999,7 @@
             this.cmb_destino.DropDownWidth = 150;
             this.cmb_destino.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_destino.FormattingEnabled = true;
-            this.cmb_destino.Location = new System.Drawing.Point(345, 4);
+            this.cmb_destino.Location = new System.Drawing.Point(228, 9);
             this.cmb_destino.Name = "cmb_destino";
             this.cmb_destino.Size = new System.Drawing.Size(85, 21);
             this.cmb_destino.TabIndex = 0;
@@ -952,7 +1010,7 @@
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Image = global::iOMG.Properties.Resources.print_preview_24;
-            this.button2.Location = new System.Drawing.Point(692, 6);
+            this.button2.Location = new System.Drawing.Point(961, 22);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(50, 41);
             this.button2.TabIndex = 3;
@@ -962,11 +1020,11 @@
             // bt_resumen
             // 
             this.bt_resumen.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_resumen.Location = new System.Drawing.Point(591, 12);
+            this.bt_resumen.Location = new System.Drawing.Point(349, 19);
             this.bt_resumen.Name = "bt_resumen";
-            this.bt_resumen.Size = new System.Drawing.Size(59, 29);
+            this.bt_resumen.Size = new System.Drawing.Size(59, 49);
             this.bt_resumen.TabIndex = 2;
-            this.bt_resumen.Text = "Genera";
+            this.bt_resumen.Text = "Genera Reporte";
             this.bt_resumen.UseVisualStyleBackColor = true;
             this.bt_resumen.Click += new System.EventHandler(this.bt_resumen_Click);
             // 
@@ -988,7 +1046,7 @@
             this.tabvtas.Controls.Add(this.label25);
             this.tabvtas.Location = new System.Drawing.Point(4, 22);
             this.tabvtas.Name = "tabvtas";
-            this.tabvtas.Size = new System.Drawing.Size(1029, 377);
+            this.tabvtas.Size = new System.Drawing.Size(1029, 445);
             this.tabvtas.TabIndex = 6;
             this.tabvtas.Text = "Kardex";
             this.tabvtas.UseVisualStyleBackColor = true;
@@ -1190,7 +1248,7 @@
             this.tabEtiq.Controls.Add(this.pan_datos);
             this.tabEtiq.Location = new System.Drawing.Point(4, 22);
             this.tabEtiq.Name = "tabEtiq";
-            this.tabEtiq.Size = new System.Drawing.Size(1029, 377);
+            this.tabEtiq.Size = new System.Drawing.Size(1029, 445);
             this.tabEtiq.TabIndex = 7;
             this.tabEtiq.Text = "Etiquetas";
             this.tabEtiq.UseVisualStyleBackColor = true;
@@ -1413,45 +1471,11 @@
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // groupBox21
-            // 
-            this.groupBox21.Controls.Add(this.rb_resalm);
-            this.groupBox21.Controls.Add(this.rb_liststock);
-            this.groupBox21.Location = new System.Drawing.Point(139, -3);
-            this.groupBox21.Name = "groupBox21";
-            this.groupBox21.Size = new System.Drawing.Size(146, 52);
-            this.groupBox21.TabIndex = 368;
-            this.groupBox21.TabStop = false;
-            // 
-            // rb_liststock
-            // 
-            this.rb_liststock.AutoSize = true;
-            this.rb_liststock.Location = new System.Drawing.Point(6, 8);
-            this.rb_liststock.Name = "rb_liststock";
-            this.rb_liststock.Size = new System.Drawing.Size(90, 17);
-            this.rb_liststock.TabIndex = 0;
-            this.rb_liststock.TabStop = true;
-            this.rb_liststock.Text = "Listado Stock";
-            this.rb_liststock.UseVisualStyleBackColor = true;
-            this.rb_liststock.CheckedChanged += new System.EventHandler(this.rb_liststock_CheckedChanged);
-            // 
-            // rb_resalm
-            // 
-            this.rb_resalm.AutoSize = true;
-            this.rb_resalm.Location = new System.Drawing.Point(6, 31);
-            this.rb_resalm.Name = "rb_resalm";
-            this.rb_resalm.Size = new System.Drawing.Size(93, 17);
-            this.rb_resalm.TabIndex = 1;
-            this.rb_resalm.TabStop = true;
-            this.rb_resalm.Text = "Resumen Alm.";
-            this.rb_resalm.UseVisualStyleBackColor = true;
-            this.rb_resalm.CheckedChanged += new System.EventHandler(this.rb_resalm_CheckedChanged);
-            // 
             // repsalmac
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1043, 443);
+            this.ClientSize = new System.Drawing.Size(1043, 511);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.MaximizeBox = false;
@@ -1477,6 +1501,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.tabstock.ResumeLayout(false);
             this.tabstock.PerformLayout();
+            this.groupBox21.ResumeLayout(false);
+            this.groupBox21.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -1492,8 +1518,6 @@
             this.pan_view.ResumeLayout(false);
             this.pan_datos.ResumeLayout(false);
             this.pan_datos.PerformLayout();
-            this.groupBox21.ResumeLayout(false);
-            this.groupBox21.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1620,5 +1644,6 @@
         private System.Windows.Forms.GroupBox groupBox21;
         private System.Windows.Forms.RadioButton rb_resalm;
         private System.Windows.Forms.RadioButton rb_liststock;
+        private System.Windows.Forms.TableLayoutPanel lay_almacenes;
     }
 }

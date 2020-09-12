@@ -408,11 +408,17 @@
       <DependentUpon>rep_stock.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="rep_stock_sinvalor.cs">
+    <Compile Include="rep_stock_res.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>rep_stock_res.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rep_stock_sinvalor.cs">
       <DependentUpon>rep_stock_sinvalor.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="res_cont1.cs">
       <AutoGen>True</AutoGen>
@@ -431,6 +437,12 @@
     </Compile>
     <Compile Include="sernum.designer.cs">
       <DependentUpon>sernum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="terminosYcondiciones.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>terminosYcondiciones.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="users.cs">
       <SubType>Form</SubType>
@@ -605,6 +617,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rep_stock.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="rep_stock_res.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rep_stock_res.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="rep_stock_sinvalor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rep_stock_sinvalor.cs</LastGenOutput>
@@ -618,6 +634,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="sernum.resx">
       <DependentUpon>sernum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="terminosYcondiciones.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>terminosYcondiciones.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="users.resx">
       <DependentUpon>users.cs</DependentUpon>

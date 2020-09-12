@@ -183,6 +183,12 @@ namespace iOMG
                     //
                     cmb_tienda.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_tienda.ValueMember = row.ItemArray[1].ToString();
+                    // 
+                    CheckBox chk = new CheckBox();
+                    chk.Name = row.ItemArray[1].ToString();
+                    chk.Text = row.ItemArray[1].ToString();
+                    //chk.SetBounds(10,10,20,20);
+                    lay_almacenes.Controls.Add(chk);
                 }
                 // seleccion del capitulo
                 const string concap = "select descrizionerid,idcodice from desc_gru " +
@@ -477,7 +483,7 @@ namespace iOMG
                     //dgv_resumen.ColumnCount = 0;
                     if (rb_resalm.Checked == true)   // tx_dat_dest.Text.Trim() == ""
                     {
-                        consulta = "pivot_stock1";
+                        consulta = "pivot_stock";  // pivot_stock1
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
                         micon.Parameters.AddWithValue("@vcap", cmb_fam.Text.Trim());
@@ -893,6 +899,29 @@ namespace iOMG
         #region crystal
         private void button2_Click(object sender, EventArgs e)                  // stock del almacen
         {
+            if (dgv_resumen.Rows.Count <= 0)
+            {
+                bt_resumen.Focus();
+                bt_resumen_Click(null,null);
+                return;
+            }
+            int cta = 0;
+            foreach(CheckBox chk in lay_almacenes.Controls)
+            {
+                if (chk.Checked == true) cta += 1;
+            }
+            if (cta > 5)
+            {
+                MessageBox.Show("El formato pre establecido A4, solo soporta 5 almacenes", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lay_almacenes.Focus();
+                return;
+            }
+            if (cta == 0)
+            {
+                MessageBox.Show("Seleccione al menos un almacen a imprimir", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lay_almacenes.Focus();
+                return;
+            }
             if(rb_resalm.Checked == true) setParaCrystal("restkalm");
             else setParaCrystal("stock");
         }
@@ -913,9 +942,9 @@ namespace iOMG
         {
             if(repo == "restkalm")
             {
-                /*repsalmacen datos = generareprsa();
+                repsalmacen datos = generareprsa();
                 frmvizalm visualizador = new frmvizalm(datos);
-                visualizador.Show();*/
+                visualizador.Show();
             }
             if (repo== "stock")
             {
@@ -1080,10 +1109,83 @@ namespace iOMG
             }
             return pedset;
         }
-        /*private repsalmacen generareprsa()                              // stock items en filas, almacenes en columnas
+        private repsalmacen generareprsa()                              // stock items en filas, almacenes en columnas
         {
-
-        }*/
+            repsalmacen repstkres = new repsalmacen();                  // formato A4, limitado a 5 almacenes
+            repsalmacen.cab_restockRow rowcab = repstkres.cab_restock.Newcab_restockRow();
+            rowcab.id = "0";
+            rowcab.capitulo = cmb_fam.Text.Trim();
+            rowcab.fecha = DateTime.Now.Date.ToString();
+            rowcab.valorizado = chk_stkval.CheckState.ToString();
+            string nom_al1 = "", nom_al2 = "", nom_al3 = "", nom_al4 = "", nom_al5 = "";
+            cta = 0;
+            foreach (CheckBox chk in lay_almacenes.Controls)
+            {
+                if (chk.Checked == true)
+                {
+                    cta += 1;
+                    if (cta == 1)
+                    {
+                        nom_al1 = chk.Text;
+                        rowcab.alm1 = nom_al1;
+                    }
+                    if (cta == 2)
+                    {
+                        nom_al2 = chk.Text;
+                        rowcab.alm2 = nom_al2;
+                    }
+                    if (cta == 3)
+                    {
+                        nom_al3 = chk.Text;
+                        rowcab.alm3 = nom_al3;
+                    }
+                    if (cta == 4)
+                    {
+                        nom_al4 = chk.Text;
+                        rowcab.alm4 = nom_al4;
+                    }
+                    if (cta == 5)
+                    {
+                        nom_al5 = chk.Text;
+                        rowcab.alm5 = nom_al5;
+                    }
+                }
+            }
+            repstkres.cab_restock.Addcab_restockRow(rowcab);
+            // detalle
+            int cc = dgv_resumen.Columns.Count;               // cant columnas, desde la 4ta es almacen hasta la enesima
+            foreach (DataGridViewRow row in dgv_resumen.Rows)
+            {
+                if (row.Cells["codig"].Value != null && row.Cells["codig"].Value.ToString().Trim() != "")
+                {
+                    int val1 = 0, val2 = 0, val3 = 0, val4 = 0, val5 = 0;
+                    for (int i = 4; i < cc; i++)
+                    {
+                        if (row.Cells[i].OwningColumn.Name.ToString() == nom_al1) val1 = string.IsNullOrEmpty(row.Cells[i].Value.ToString())? 0 : int.Parse(row.Cells[i].Value.ToString());
+                        if (row.Cells[i].OwningColumn.Name.ToString() == nom_al2) val2 = string.IsNullOrEmpty(row.Cells[i].Value.ToString())? 0 : int.Parse(row.Cells[i].Value.ToString());
+                        if (row.Cells[i].OwningColumn.Name.ToString() == nom_al3) val3 = string.IsNullOrEmpty(row.Cells[i].Value.ToString())? 0 : int.Parse(row.Cells[i].Value.ToString());
+                        if (row.Cells[i].OwningColumn.Name.ToString() == nom_al4) val4 = string.IsNullOrEmpty(row.Cells[i].Value.ToString())? 0 : int.Parse(row.Cells[i].Value.ToString());
+                        if (row.Cells[i].OwningColumn.Name.ToString() == nom_al5) val5 = string.IsNullOrEmpty(row.Cells[i].Value.ToString())? 0 : int.Parse(row.Cells[i].Value.ToString());
+                    }
+                    if ((val1 + val2 + val3 + val4 + val5) > 0)
+                    {
+                        repsalmacen.det_restockRow rowdet = repstkres.det_restock.Newdet_restockRow();
+                        rowdet.idc = "0";
+                        rowdet.item = row.Cells["codig"].Value.ToString();
+                        rowdet.nombre = row.Cells["nombr"].Value.ToString();
+                        rowdet.madera = row.Cells["mader"].Value.ToString();
+                        rowdet.medidas = row.Cells["medid"].Value.ToString();
+                        rowdet.cant1 = (nom_al1 != "") ? val1.ToString() : "";
+                        rowdet.cant2 = (nom_al2 != "") ? val2.ToString() : "";
+                        rowdet.cant3 = (nom_al3 != "") ? val3.ToString() : "";
+                        rowdet.cant4 = (nom_al4 != "") ? val4.ToString() : "";
+                        rowdet.cant5 = (nom_al5 != "") ? val5.ToString() : "";
+                        repstkres.det_restock.Adddet_restockRow(rowdet);
+                    }
+                }
+            }
+            return repstkres;
+        }
         #endregion
     }
 }

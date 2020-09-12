@@ -97,8 +97,10 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form salpedclts, probar cambios de estado en salidas parciales y totales ........... 
 - form repsventas, agregar fecha salida al reporte de ventas ......................... ok 15/07/2020
 - form repsventas, mejorar la visualizacion en las grillas ........................... ok 15/07/2020
-- form clients, agregar funcionalidad de uso conectorsolorsoft ruc y dni
+- form clients, agregar funcionalidad de uso conectorsolorsoft ruc y dni ............. ok (no esta habilitado) 05/09/2020
    me falta pasarle el numero de dni a las páginas ................................... ok 04/08/2020
 - libreria, agregar metodo conectorSolorsoft ......................................... ok 05/08/2020
 - form contratos, agregar funcionalidad de uso conectorsolorsoft ruc y dni ........... ok 05/08/2020
+- form repsalmac, STOCK, agregar opción de selección de almacenes para imprimir, formato establecido en A4 ...........ok 10/09/2020, 5 almacenes limitado
+
 

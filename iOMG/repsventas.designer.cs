@@ -56,7 +56,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabcont = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBox27 = new System.Windows.Forms.GroupBox();
+            this.groupBox28 = new System.Windows.Forms.GroupBox();
             this.rb_fentrega = new System.Windows.Forms.RadioButton();
+            this.groupBox29 = new System.Windows.Forms.GroupBox();
+            this.groupBox30 = new System.Windows.Forms.GroupBox();
             this.rb_fcont = new System.Windows.Forms.RadioButton();
             this.label23 = new System.Windows.Forms.Label();
             this.dtp_confina = new System.Windows.Forms.DateTimePicker();
@@ -99,6 +103,10 @@
             this.tx_dat_pedtaller = new System.Windows.Forms.TextBox();
             this.cmb_pedtaller = new System.Windows.Forms.ComboBox();
             this.tabIng = new System.Windows.Forms.TabPage();
+            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.groupBox25 = new System.Windows.Forms.GroupBox();
+            this.groupBox26 = new System.Windows.Forms.GroupBox();
             this.bt_ingresos = new System.Windows.Forms.Button();
             this.dgv_ingresos = new System.Windows.Forms.DataGridView();
             this.dtp_ingfinal = new System.Windows.Forms.DateTimePicker();
@@ -107,6 +115,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabSal = new System.Windows.Forms.TabPage();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.groupBox21 = new System.Windows.Forms.GroupBox();
+            this.groupBox22 = new System.Windows.Forms.GroupBox();
             this.bt_salidas = new System.Windows.Forms.Button();
             this.dgv_salidas = new System.Windows.Forms.DataGridView();
             this.dtp_final_sal = new System.Windows.Forms.DateTimePicker();
@@ -134,6 +146,10 @@
             this.dgv_resumen = new System.Windows.Forms.DataGridView();
             this.bt_resumen = new System.Windows.Forms.Button();
             this.tabvtas = new System.Windows.Forms.TabPage();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.dgv_vtas = new ADGV.AdvancedDataGridView();
             this.tx_doclie = new System.Windows.Forms.TextBox();
             this.tx_idclie = new System.Windows.Forms.TextBox();
@@ -155,26 +171,12 @@
             this.bt_vtasfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.groupBox21 = new System.Windows.Forms.GroupBox();
-            this.groupBox22 = new System.Windows.Forms.GroupBox();
-            this.groupBox23 = new System.Windows.Forms.GroupBox();
-            this.groupBox24 = new System.Windows.Forms.GroupBox();
-            this.groupBox25 = new System.Windows.Forms.GroupBox();
-            this.groupBox26 = new System.Windows.Forms.GroupBox();
-            this.groupBox27 = new System.Windows.Forms.GroupBox();
-            this.groupBox28 = new System.Windows.Forms.GroupBox();
-            this.groupBox29 = new System.Windows.Forms.GroupBox();
-            this.groupBox30 = new System.Windows.Forms.GroupBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabcont.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.groupBox27.SuspendLayout();
+            this.groupBox29.SuspendLayout();
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_contratos)).BeginInit();
             this.tabpds.SuspendLayout();
@@ -186,24 +188,22 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pedidos)).BeginInit();
             this.groupBox15.SuspendLayout();
             this.tabIng.SuspendLayout();
+            this.groupBox23.SuspendLayout();
+            this.groupBox25.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).BeginInit();
             this.tabSal.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            this.groupBox21.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.tabres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).BeginInit();
             this.tabvtas.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).BeginInit();
             this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox11.SuspendLayout();
-            this.groupBox21.SuspendLayout();
-            this.groupBox23.SuspendLayout();
-            this.groupBox25.SuspendLayout();
-            this.groupBox27.SuspendLayout();
-            this.groupBox29.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -509,6 +509,25 @@
             this.panel2.Size = new System.Drawing.Size(297, 54);
             this.panel2.TabIndex = 351;
             // 
+            // groupBox27
+            // 
+            this.groupBox27.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox27.Controls.Add(this.groupBox28);
+            this.groupBox27.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox27.Location = new System.Drawing.Point(132, 47);
+            this.groupBox27.Name = "groupBox27";
+            this.groupBox27.Size = new System.Drawing.Size(161, 1);
+            this.groupBox27.TabIndex = 371;
+            this.groupBox27.TabStop = false;
+            // 
+            // groupBox28
+            // 
+            this.groupBox28.Location = new System.Drawing.Point(0, -26);
+            this.groupBox28.Name = "groupBox28";
+            this.groupBox28.Size = new System.Drawing.Size(164, 1);
+            this.groupBox28.TabIndex = 113;
+            this.groupBox28.TabStop = false;
+            // 
             // rb_fentrega
             // 
             this.rb_fentrega.AutoSize = true;
@@ -519,6 +538,25 @@
             this.rb_fentrega.TabStop = true;
             this.rb_fentrega.Text = "Por fecha entrega";
             this.rb_fentrega.UseVisualStyleBackColor = true;
+            // 
+            // groupBox29
+            // 
+            this.groupBox29.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox29.Controls.Add(this.groupBox30);
+            this.groupBox29.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox29.Location = new System.Drawing.Point(132, 25);
+            this.groupBox29.Name = "groupBox29";
+            this.groupBox29.Size = new System.Drawing.Size(161, 1);
+            this.groupBox29.TabIndex = 370;
+            this.groupBox29.TabStop = false;
+            // 
+            // groupBox30
+            // 
+            this.groupBox30.Location = new System.Drawing.Point(0, -26);
+            this.groupBox30.Name = "groupBox30";
+            this.groupBox30.Size = new System.Drawing.Size(164, 1);
+            this.groupBox30.TabIndex = 113;
+            this.groupBox30.TabStop = false;
             // 
             // rb_fcont
             // 
@@ -964,6 +1002,44 @@
             this.tabIng.Text = "Ingresos";
             this.tabIng.UseVisualStyleBackColor = true;
             // 
+            // groupBox23
+            // 
+            this.groupBox23.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox23.Controls.Add(this.groupBox24);
+            this.groupBox23.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox23.Location = new System.Drawing.Point(377, 45);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Size = new System.Drawing.Size(161, 1);
+            this.groupBox23.TabIndex = 371;
+            this.groupBox23.TabStop = false;
+            // 
+            // groupBox24
+            // 
+            this.groupBox24.Location = new System.Drawing.Point(0, -26);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Size = new System.Drawing.Size(164, 1);
+            this.groupBox24.TabIndex = 113;
+            this.groupBox24.TabStop = false;
+            // 
+            // groupBox25
+            // 
+            this.groupBox25.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox25.Controls.Add(this.groupBox26);
+            this.groupBox25.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox25.Location = new System.Drawing.Point(377, 23);
+            this.groupBox25.Name = "groupBox25";
+            this.groupBox25.Size = new System.Drawing.Size(161, 1);
+            this.groupBox25.TabIndex = 370;
+            this.groupBox25.TabStop = false;
+            // 
+            // groupBox26
+            // 
+            this.groupBox26.Location = new System.Drawing.Point(0, -26);
+            this.groupBox26.Name = "groupBox26";
+            this.groupBox26.Size = new System.Drawing.Size(164, 1);
+            this.groupBox26.TabIndex = 113;
+            this.groupBox26.TabStop = false;
+            // 
             // bt_ingresos
             // 
             this.bt_ingresos.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -1051,6 +1127,44 @@
             this.tabSal.TabIndex = 1;
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox11.Controls.Add(this.groupBox12);
+            this.groupBox11.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox11.Location = new System.Drawing.Point(377, 45);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(161, 1);
+            this.groupBox11.TabIndex = 371;
+            this.groupBox11.TabStop = false;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Location = new System.Drawing.Point(0, -26);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(164, 1);
+            this.groupBox12.TabIndex = 113;
+            this.groupBox12.TabStop = false;
+            // 
+            // groupBox21
+            // 
+            this.groupBox21.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox21.Controls.Add(this.groupBox22);
+            this.groupBox21.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox21.Location = new System.Drawing.Point(377, 23);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Size = new System.Drawing.Size(161, 1);
+            this.groupBox21.TabIndex = 370;
+            this.groupBox21.TabStop = false;
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.Location = new System.Drawing.Point(0, -26);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Size = new System.Drawing.Size(164, 1);
+            this.groupBox22.TabIndex = 113;
+            this.groupBox22.TabStop = false;
             // 
             // bt_salidas
             // 
@@ -1340,6 +1454,45 @@
             this.tabvtas.TabIndex = 6;
             this.tabvtas.Text = "Ventas";
             this.tabvtas.UseVisualStyleBackColor = true;
+            this.tabvtas.Enter += new System.EventHandler(this.tabvtas_Enter);
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox9.Controls.Add(this.groupBox10);
+            this.groupBox9.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox9.Location = new System.Drawing.Point(437, 45);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(161, 1);
+            this.groupBox9.TabIndex = 369;
+            this.groupBox9.TabStop = false;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Location = new System.Drawing.Point(0, -26);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(164, 1);
+            this.groupBox10.TabIndex = 113;
+            this.groupBox10.TabStop = false;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox7.Controls.Add(this.groupBox8);
+            this.groupBox7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox7.Location = new System.Drawing.Point(437, 23);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(161, 1);
+            this.groupBox7.TabIndex = 368;
+            this.groupBox7.TabStop = false;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Location = new System.Drawing.Point(0, -26);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(164, 1);
+            this.groupBox8.TabIndex = 113;
+            this.groupBox8.TabStop = false;
             // 
             // dgv_vtas
             // 
@@ -1544,158 +1697,6 @@
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
             // 
-            // groupBox7
-            // 
-            this.groupBox7.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox7.Controls.Add(this.groupBox8);
-            this.groupBox7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox7.Location = new System.Drawing.Point(437, 23);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(161, 1);
-            this.groupBox7.TabIndex = 368;
-            this.groupBox7.TabStop = false;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Location = new System.Drawing.Point(0, -26);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(164, 1);
-            this.groupBox8.TabIndex = 113;
-            this.groupBox8.TabStop = false;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox9.Controls.Add(this.groupBox10);
-            this.groupBox9.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox9.Location = new System.Drawing.Point(437, 45);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(161, 1);
-            this.groupBox9.TabIndex = 369;
-            this.groupBox9.TabStop = false;
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Location = new System.Drawing.Point(0, -26);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(164, 1);
-            this.groupBox10.TabIndex = 113;
-            this.groupBox10.TabStop = false;
-            // 
-            // groupBox11
-            // 
-            this.groupBox11.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox11.Controls.Add(this.groupBox12);
-            this.groupBox11.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox11.Location = new System.Drawing.Point(377, 45);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(161, 1);
-            this.groupBox11.TabIndex = 371;
-            this.groupBox11.TabStop = false;
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Location = new System.Drawing.Point(0, -26);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(164, 1);
-            this.groupBox12.TabIndex = 113;
-            this.groupBox12.TabStop = false;
-            // 
-            // groupBox21
-            // 
-            this.groupBox21.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox21.Controls.Add(this.groupBox22);
-            this.groupBox21.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox21.Location = new System.Drawing.Point(377, 23);
-            this.groupBox21.Name = "groupBox21";
-            this.groupBox21.Size = new System.Drawing.Size(161, 1);
-            this.groupBox21.TabIndex = 370;
-            this.groupBox21.TabStop = false;
-            // 
-            // groupBox22
-            // 
-            this.groupBox22.Location = new System.Drawing.Point(0, -26);
-            this.groupBox22.Name = "groupBox22";
-            this.groupBox22.Size = new System.Drawing.Size(164, 1);
-            this.groupBox22.TabIndex = 113;
-            this.groupBox22.TabStop = false;
-            // 
-            // groupBox23
-            // 
-            this.groupBox23.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox23.Controls.Add(this.groupBox24);
-            this.groupBox23.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox23.Location = new System.Drawing.Point(377, 45);
-            this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(161, 1);
-            this.groupBox23.TabIndex = 371;
-            this.groupBox23.TabStop = false;
-            // 
-            // groupBox24
-            // 
-            this.groupBox24.Location = new System.Drawing.Point(0, -26);
-            this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Size = new System.Drawing.Size(164, 1);
-            this.groupBox24.TabIndex = 113;
-            this.groupBox24.TabStop = false;
-            // 
-            // groupBox25
-            // 
-            this.groupBox25.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox25.Controls.Add(this.groupBox26);
-            this.groupBox25.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox25.Location = new System.Drawing.Point(377, 23);
-            this.groupBox25.Name = "groupBox25";
-            this.groupBox25.Size = new System.Drawing.Size(161, 1);
-            this.groupBox25.TabIndex = 370;
-            this.groupBox25.TabStop = false;
-            // 
-            // groupBox26
-            // 
-            this.groupBox26.Location = new System.Drawing.Point(0, -26);
-            this.groupBox26.Name = "groupBox26";
-            this.groupBox26.Size = new System.Drawing.Size(164, 1);
-            this.groupBox26.TabIndex = 113;
-            this.groupBox26.TabStop = false;
-            // 
-            // groupBox27
-            // 
-            this.groupBox27.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox27.Controls.Add(this.groupBox28);
-            this.groupBox27.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox27.Location = new System.Drawing.Point(132, 47);
-            this.groupBox27.Name = "groupBox27";
-            this.groupBox27.Size = new System.Drawing.Size(161, 1);
-            this.groupBox27.TabIndex = 371;
-            this.groupBox27.TabStop = false;
-            // 
-            // groupBox28
-            // 
-            this.groupBox28.Location = new System.Drawing.Point(0, -26);
-            this.groupBox28.Name = "groupBox28";
-            this.groupBox28.Size = new System.Drawing.Size(164, 1);
-            this.groupBox28.TabIndex = 113;
-            this.groupBox28.TabStop = false;
-            // 
-            // groupBox29
-            // 
-            this.groupBox29.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox29.Controls.Add(this.groupBox30);
-            this.groupBox29.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox29.Location = new System.Drawing.Point(132, 25);
-            this.groupBox29.Name = "groupBox29";
-            this.groupBox29.Size = new System.Drawing.Size(161, 1);
-            this.groupBox29.TabIndex = 370;
-            this.groupBox29.TabStop = false;
-            // 
-            // groupBox30
-            // 
-            this.groupBox30.Location = new System.Drawing.Point(0, -26);
-            this.groupBox30.Name = "groupBox30";
-            this.groupBox30.Size = new System.Drawing.Size(164, 1);
-            this.groupBox30.TabIndex = 113;
-            this.groupBox30.TabStop = false;
-            // 
             // repsventas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1716,6 +1717,8 @@
             this.tabcont.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.groupBox27.ResumeLayout(false);
+            this.groupBox29.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_contratos)).EndInit();
             this.tabpds.ResumeLayout(false);
@@ -1731,28 +1734,26 @@
             this.groupBox15.ResumeLayout(false);
             this.tabIng.ResumeLayout(false);
             this.tabIng.PerformLayout();
+            this.groupBox23.ResumeLayout(false);
+            this.groupBox25.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ingresos)).EndInit();
             this.tabSal.ResumeLayout(false);
             this.tabSal.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox21.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.tabres.ResumeLayout(false);
             this.tabres.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resumen)).EndInit();
             this.tabvtas.ResumeLayout(false);
             this.tabvtas.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtas)).EndInit();
             this.groupBox19.ResumeLayout(false);
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox21.ResumeLayout(false);
-            this.groupBox23.ResumeLayout(false);
-            this.groupBox25.ResumeLayout(false);
-            this.groupBox27.ResumeLayout(false);
-            this.groupBox29.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
