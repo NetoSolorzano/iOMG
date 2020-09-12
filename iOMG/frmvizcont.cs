@@ -25,6 +25,7 @@ namespace iOMG
                 ContratoI _contrato = new ContratoI();  // antes ContratoG (23/03/2020)
                 _contrato.SetDataSource(_datosReporte);
                 crystalReportViewer1.ReportSource = _contrato;
+                crystalReportViewer1.ShowPrintButton = false;
             }
             if (_datosReporte.cabecera.Rows.Count > 0 && _datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "2")
             {

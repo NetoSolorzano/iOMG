@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
+using CrystalDecisions.Shared;
 
 namespace iOMG
 {
@@ -1950,7 +1951,9 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
-            setParaCrystal();
+            //setParaCrystal();
+            PrintReport(Application.StartupPath + "\\ContratoI.rpt", "CutePDFWriter", 1);
+            PrintReport(Application.StartupPath + "\\terminosYcondiciones.rpt", "CutePDFWriter", 2);
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
@@ -3699,6 +3702,22 @@ namespace iOMG
             conn.Close();
             //
             return repcontrato;
+        }
+        public void PrintReport(string reportPath, string PrinterName, int cual)    // cual => 1=contrato, 2=condiciones
+        {
+            CrystalDecisions.CrystalReports.Engine.ReportDocument rptDoc =
+                                new CrystalDecisions.CrystalReports.Engine.ReportDocument();
+            rptDoc.Load(reportPath);
+            //_contrato.SetDataSource(_datosReporte);
+            if (cual == 1)
+            {
+                conClie datos = generareporte();
+                rptDoc.SetDataSource(datos);
+            }
+            rptDoc.PrintOptions.PaperOrientation = PaperOrientation.Portrait;
+            rptDoc.PrintOptions.PaperSize = PaperSize.PaperA4;
+            rptDoc.PrintOptions.PrinterName = PrinterName;
+            rptDoc.PrintToPrinter(1, false, 0, 0);
         }
         #endregion crystal
     }
