@@ -214,19 +214,21 @@ namespace iOMG
             dgv_resumen.RowTemplate.Height = 15;
             dgv_resumen.DefaultCellStyle.BackColor = Color.AliceBlue;
             dgv_resumen.AllowUserToAddRows = false;
-            //
-            dgv_resumen.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;  // nombre
-            dgv_resumen.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv_resumen.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            for (int i=4;i<dgv_resumen.Columns.Count; i++)
+            if (dgv_resumen.Columns.Count > 0)
             {
-                dgv_resumen.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgv_resumen.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgv_resumen.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;  // nombre
+                dgv_resumen.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv_resumen.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                for (int i = 4; i < dgv_resumen.Columns.Count; i++)
+                {
+                    dgv_resumen.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    dgv_resumen.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+                int anchColOpt = dgv_resumen.Columns[1].Width;
+                dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                dgv_resumen.Columns[1].Width = anchColOpt / 2;
             }
-            int anchColOpt = dgv_resumen.Columns[1].Width;
-            dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dgv_resumen.Columns[1].Width = anchColOpt / 2;
         }
         private void grilla_rsv()                                               // arma la grilla de las reservas 
         {
@@ -486,7 +488,7 @@ namespace iOMG
                         consulta = "pivot_stock";  // pivot_stock1
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@vcap", cmb_fam.Text.Trim());
+                        micon.Parameters.AddWithValue("@vcap", (cmb_fam.Text.Length > 0) ? cmb_fam.Text.Substring(0, 1) : "");
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         da.Fill(dtg);
                         dgv_resumen.DataSource = dtg;
@@ -526,39 +528,6 @@ namespace iOMG
         private void label13_Click(object sender, EventArgs e)
         {
             // error
-        }
-        private void tx_d_id_Leave(object sender, EventArgs e)                  // busca codigo y jala datos en almloc
-        {
-            if (tx_d_id.Text.Trim() != "")
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    string consulta = "select a.id,a.codig,a.nombr,a.medid,m.descrizionerid,e.descrizionerid " +
-                        "from almloc a left join desc_mad m on m.idcodice=a.mader left join desc_est e on e.idcodice=a.acaba " +
-                        "where a.id=@alm";
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@alm", tx_d_id.Text.Trim());
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        tx_d_codi.Text = dr.GetString(1);
-                        tx_d_nom.Text = dr.GetString(2);
-                        tx_d_med.Text = dr.GetString(3);
-                        tx_d_mad.Text = dr.GetString(4);
-                        tx_d_est.Text = dr.GetString(5);
-                    }
-                    dr.Close();
-                    tx_cant.Focus();
-                }
-                else
-                {
-                    MessageBox.Show("No se puede conectar al servidor", "Error de conectividad");
-                    return;
-                }
-                conn.Close();
-            }
         }
         private void bt_gen_etiq_Click(object sender, EventArgs e)              // genera etiqueta
         {
@@ -615,6 +584,43 @@ namespace iOMG
                 //
                 rd.PrintToPrinter(1, true, 1, 1);
             }
+        }
+        private void tx_d_id_Leave(object sender, EventArgs e)                  // busca codigo y jala datos en almloc
+        {
+            if (tx_d_id.Text.Trim() != "")
+            {
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    string consulta = "select a.id,a.codig,a.nombr,a.medid,m.descrizionerid,e.descrizionerid " +
+                        "from almloc a left join desc_mad m on m.idcodice=a.mader left join desc_est e on e.idcodice=a.acaba " +
+                        "where a.id=@alm";
+                    MySqlCommand micon = new MySqlCommand(consulta, conn);
+                    micon.Parameters.AddWithValue("@alm", tx_d_id.Text.Trim());
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_d_codi.Text = dr.GetString(1);
+                        tx_d_nom.Text = dr.GetString(2);
+                        tx_d_med.Text = dr.GetString(3);
+                        tx_d_mad.Text = dr.GetString(4);
+                        tx_d_est.Text = dr.GetString(5);
+                    }
+                    dr.Close();
+                    tx_cant.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("No se puede conectar al servidor", "Error de conectividad");
+                    return;
+                }
+                conn.Close();
+            }
+        }
+        private void tabstock_Enter(object sender, EventArgs e)
+        {
+            rb_resalm.Checked = true;
         }
         private void rb_resalm_CheckedChanged(object sender, EventArgs e)
         {
@@ -937,7 +943,6 @@ namespace iOMG
         {
             setParaCrystal("salidas");
         }
-
         private void setParaCrystal(string repo)                        // genera el set para el reporte de crystal
         {
             if(repo == "restkalm")

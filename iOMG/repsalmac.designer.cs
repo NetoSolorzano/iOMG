@@ -149,6 +149,9 @@
             this.tx_d_med = new System.Windows.Forms.TextBox();
             this.tx_d_nom = new System.Windows.Forms.TextBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.label9 = new System.Windows.Forms.Label();
+            this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.groupBox23 = new System.Windows.Forms.GroupBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -175,6 +178,7 @@
             this.tabEtiq.SuspendLayout();
             this.pan_view.SuspendLayout();
             this.pan_datos.SuspendLayout();
+            this.groupBox22.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -810,6 +814,7 @@
             // 
             // tabstock
             // 
+            this.tabstock.Controls.Add(this.label9);
             this.tabstock.Controls.Add(this.lay_almacenes);
             this.tabstock.Controls.Add(this.groupBox21);
             this.tabstock.Controls.Add(this.chk_stkval);
@@ -823,12 +828,14 @@
             this.tabstock.Controls.Add(this.cmb_destino);
             this.tabstock.Controls.Add(this.button2);
             this.tabstock.Controls.Add(this.bt_resumen);
+            this.tabstock.Controls.Add(this.groupBox22);
             this.tabstock.Location = new System.Drawing.Point(4, 22);
             this.tabstock.Name = "tabstock";
             this.tabstock.Size = new System.Drawing.Size(1029, 445);
             this.tabstock.TabIndex = 3;
             this.tabstock.Text = "Stock";
             this.tabstock.UseVisualStyleBackColor = true;
+            this.tabstock.Enter += new System.EventHandler(this.tabstock_Enter);
             // 
             // lay_almacenes
             // 
@@ -838,17 +845,17 @@
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 72F));
             this.lay_almacenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lay_almacenes.Location = new System.Drawing.Point(496, 2);
+            this.lay_almacenes.Location = new System.Drawing.Point(496, 21);
             this.lay_almacenes.Name = "lay_almacenes";
-            this.lay_almacenes.RowCount = 4;
-            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.61905F));
-            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.38095F));
-            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.lay_almacenes.RowCount = 3;
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
+            this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.lay_almacenes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.lay_almacenes.Size = new System.Drawing.Size(446, 83);
+            this.lay_almacenes.Size = new System.Drawing.Size(446, 60);
             this.lay_almacenes.TabIndex = 369;
             // 
             // groupBox21
@@ -857,7 +864,7 @@
             this.groupBox21.Controls.Add(this.rb_liststock);
             this.groupBox21.Location = new System.Drawing.Point(22, 2);
             this.groupBox21.Name = "groupBox21";
-            this.groupBox21.Size = new System.Drawing.Size(146, 52);
+            this.groupBox21.Size = new System.Drawing.Size(146, 71);
             this.groupBox21.TabIndex = 368;
             this.groupBox21.TabStop = false;
             // 
@@ -876,6 +883,7 @@
             // rb_liststock
             // 
             this.rb_liststock.AutoSize = true;
+            this.rb_liststock.Enabled = false;
             this.rb_liststock.Location = new System.Drawing.Point(6, 8);
             this.rb_liststock.Name = "rb_liststock";
             this.rb_liststock.Size = new System.Drawing.Size(90, 17);
@@ -883,6 +891,7 @@
             this.rb_liststock.TabStop = true;
             this.rb_liststock.Text = "Listado Stock";
             this.rb_liststock.UseVisualStyleBackColor = true;
+            this.rb_liststock.Visible = false;
             this.rb_liststock.CheckedChanged += new System.EventHandler(this.rb_liststock_CheckedChanged);
             // 
             // chk_stkval
@@ -894,6 +903,7 @@
             this.chk_stkval.TabIndex = 1;
             this.chk_stkval.Text = "Valorizado";
             this.chk_stkval.UseVisualStyleBackColor = true;
+            this.chk_stkval.Visible = false;
             // 
             // dgv_resumen
             // 
@@ -919,7 +929,7 @@
             this.groupBox3.BackColor = System.Drawing.Color.DimGray;
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox3.Location = new System.Drawing.Point(174, 52);
+            this.groupBox3.Location = new System.Drawing.Point(174, 49);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(121, 1);
             this.groupBox3.TabIndex = 365;
@@ -936,7 +946,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(178, 37);
+            this.label1.Location = new System.Drawing.Point(178, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 364;
@@ -949,7 +959,7 @@
             this.cmb_fam.DropDownWidth = 100;
             this.cmb_fam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_fam.FormattingEnabled = true;
-            this.cmb_fam.Location = new System.Drawing.Point(268, 32);
+            this.cmb_fam.Location = new System.Drawing.Point(268, 30);
             this.cmb_fam.Name = "cmb_fam";
             this.cmb_fam.Size = new System.Drawing.Size(45, 21);
             this.cmb_fam.TabIndex = 363;
@@ -961,11 +971,12 @@
             this.groupBox1.BackColor = System.Drawing.Color.DimGray;
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox1.Location = new System.Drawing.Point(174, 29);
+            this.groupBox1.Location = new System.Drawing.Point(6, 76);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(121, 1);
             this.groupBox1.TabIndex = 362;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Visible = false;
             // 
             // groupBox2
             // 
@@ -977,7 +988,7 @@
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(316, 10);
+            this.tx_dat_dest.Location = new System.Drawing.Point(148, 57);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(27, 20);
             this.tx_dat_dest.TabIndex = 361;
@@ -986,11 +997,12 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(178, 14);
+            this.label11.Location = new System.Drawing.Point(10, 61);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 360;
             this.label11.Text = "Almacén";
+            this.label11.Visible = false;
             // 
             // cmb_destino
             // 
@@ -999,10 +1011,11 @@
             this.cmb_destino.DropDownWidth = 150;
             this.cmb_destino.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_destino.FormattingEnabled = true;
-            this.cmb_destino.Location = new System.Drawing.Point(228, 9);
+            this.cmb_destino.Location = new System.Drawing.Point(60, 56);
             this.cmb_destino.Name = "cmb_destino";
             this.cmb_destino.Size = new System.Drawing.Size(85, 21);
             this.cmb_destino.TabIndex = 0;
+            this.cmb_destino.Visible = false;
             this.cmb_destino.SelectionChangeCommitted += new System.EventHandler(this.cmb_destino_SelectionChangeCommitted);
             this.cmb_destino.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_destino_KeyDown);
             // 
@@ -1020,7 +1033,7 @@
             // bt_resumen
             // 
             this.bt_resumen.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bt_resumen.Location = new System.Drawing.Point(349, 19);
+            this.bt_resumen.Location = new System.Drawing.Point(349, 16);
             this.bt_resumen.Name = "bt_resumen";
             this.bt_resumen.Size = new System.Drawing.Size(59, 49);
             this.bt_resumen.TabIndex = 2;
@@ -1471,6 +1484,34 @@
             this.tx_d_nom.Tag = "Id";
             this.tx_d_nom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(648, 5);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(170, 13);
+            this.label9.TabIndex = 370;
+            this.label9.Text = "Selección de Almacenes a imprimir";
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox22.Controls.Add(this.groupBox23);
+            this.groupBox22.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox22.Location = new System.Drawing.Point(498, 12);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Size = new System.Drawing.Size(444, 1);
+            this.groupBox22.TabIndex = 371;
+            this.groupBox22.TabStop = false;
+            // 
+            // groupBox23
+            // 
+            this.groupBox23.Location = new System.Drawing.Point(0, -26);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Size = new System.Drawing.Size(164, 1);
+            this.groupBox23.TabIndex = 113;
+            this.groupBox23.TabStop = false;
+            // 
             // repsalmac
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1518,6 +1559,7 @@
             this.pan_view.ResumeLayout(false);
             this.pan_datos.ResumeLayout(false);
             this.pan_datos.PerformLayout();
+            this.groupBox22.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1645,5 +1687,8 @@
         private System.Windows.Forms.RadioButton rb_resalm;
         private System.Windows.Forms.RadioButton rb_liststock;
         private System.Windows.Forms.TableLayoutPanel lay_almacenes;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox22;
+        private System.Windows.Forms.GroupBox groupBox23;
     }
 }
