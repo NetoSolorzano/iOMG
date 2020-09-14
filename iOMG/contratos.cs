@@ -3,9 +3,11 @@ using System.Data;
 using System.Configuration;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
 using CrystalDecisions.Shared;
+using PaperSize = CrystalDecisions.Shared.PaperSize;
 
 namespace iOMG
 {
@@ -63,6 +65,7 @@ namespace iOMG
         string docDni = "";             // codigo documento dni
         string docRuc = "";             // codigo documento RUC
         string cliente = Program.cliente;    // razon social para los reportes
+        string impDef = "";                 // nombre de la impresora por defecto
         #endregion
         libreria lib = new libreria();
         // string de conexion
@@ -284,6 +287,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "numeracion" && row["param"].ToString() == "modo") tncont = row["valor"].ToString().Trim();              // tipo de numeracion de los contratos: MANUAL o AUTOMA 
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();                // codigo de estado anulado
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "nogrilla") cnojal = row["valor"].ToString().Trim();              // estados de contratos que no se jalan a la grilla
+                        if (row["campo"].ToString() == "impresora" && row["param"].ToString() == "default") impDef = row["valor"].ToString().Trim();            // nombre de la impresora por defecto
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -1952,8 +1956,13 @@ namespace iOMG
         private void Bt_print_Click(object sender, EventArgs e)
         {
             //setParaCrystal();
-            PrintReport(Application.StartupPath + "\\ContratoI.rpt", "CutePDFWriter", 1);
-            PrintReport(Application.StartupPath + "\\terminosYcondiciones.rpt", "CutePDFWriter", 2);
+            if (impDef == "")
+            {
+                PrinterSettings setPrintD = new PrinterSettings();
+                impDef = setPrintD.PrinterName;
+            }
+            PrintReport(Application.StartupPath + "\\ContratoI.rpt", impDef, 1);  // "CutePDFWriter"
+            PrintReport(Application.StartupPath + "\\terminosYcondiciones.rpt", impDef, 2);  // "CutePDFWriter"
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {

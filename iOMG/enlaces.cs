@@ -66,7 +66,7 @@ namespace iOMG
             toolTipNombre.SetToolTip(toolStrip1, nomform);   // Set up the ToolTip text for the object
             init();
             toolboton();
-            limpiar(this);
+            limpiar(tabreg);
             sololee(this);
             dataload();
             grilla();
@@ -190,12 +190,14 @@ namespace iOMG
             {
 
             }
-            //textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[].Value.ToString();  // 
-            textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // formulario
-            textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // campo
-            textBox3.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // descrip
-            textBox4.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();  // valor
-            textBox5.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();  // parametro
+            if (tx_rind.Text.Trim() != "")
+            {
+                textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // formulario
+                textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // campo
+                textBox3.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // descrip
+                textBox4.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[4].Value.ToString();  // valor
+                textBox5.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();  // parametro
+            }
         }
         public void dataload()                  // jala datos para los combos y la grilla
         {
@@ -311,7 +313,7 @@ namespace iOMG
                 }
             }
         }
-        public static void limpiar(Form ofrm)
+        public static void limpiar(TabPage ofrm)
         {
             foreach (Control oControls in ofrm.Controls)
             {
@@ -361,25 +363,26 @@ namespace iOMG
             }
             if (modo == "EDITAR")
             {
-                string consulta = "update enlaces set " +
-                        " " +
-                        "where idcodice=@idc";
+                string consulta = "update enlaces set valor=@nval,descrip=@ndes " +
+                        "where id=@idr";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
                     MySqlCommand mycom = new MySqlCommand(consulta, conn);
-                    mycom.Parameters.AddWithValue("@idc", tx_idr.Text);
+                    mycom.Parameters.AddWithValue("@idr", tx_idr.Text);
+                    mycom.Parameters.AddWithValue("@nval", textBox4.Text);
+                    mycom.Parameters.AddWithValue("@ndes", textBox3.Text);
                     try
                     {
                         mycom.ExecuteNonQuery();
-                        //string resulta = lib.ult_mov(nomform, nomtab, asd);
-                        //if (resulta != "OK")                                        // actualizamos la tabla usuarios
-                        //{
-                        //    MessageBox.Show(resulta, "Error en actualización de tabla usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //    Application.Exit();
-                        //    return;
-                        //}
+                        string resulta = lib.ult_mov(nomform, nomtab, asd);
+                        if (resulta != "OK")                                        // actualizamos la tabla usuarios
+                        {
+                            MessageBox.Show(resulta, "Error en actualización de tabla usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Application.Exit();
+                            return;
+                        }
                     }
                     catch (MySqlException ex)
                     {
@@ -403,10 +406,11 @@ namespace iOMG
             if (iserror == "no")
             {
                 // debe limpiar los campos y actualizar la grilla
-                limpiar(this);
+                limpiar(tabreg);
+                limpia_combos();
+                limpia_chk();
                 limpia_otros();
                 this.textBox1.Focus();
-                //dataload();
             }
         }
         #endregion boton_form;
@@ -537,7 +541,7 @@ namespace iOMG
             this.Tx_modo.Text = "NUEVO";
             this.button1.Image = Image.FromFile(img_grab);
             this.textBox1.Focus();
-            limpiar(this);
+            limpiar(tabreg);
             limpia_otros();
             limpia_combos();
         }
@@ -556,7 +560,7 @@ namespace iOMG
             escribe(this);
             Tx_modo.Text = "EDITAR";
             button1.Image = Image.FromFile(img_grab);
-            limpiar(this);
+            limpiar(tabreg);
             limpia_otros();
             limpia_combos();
             jalaoc("tx_idr");
@@ -587,14 +591,14 @@ namespace iOMG
             escribe(this);
             Tx_modo.Text = "ANULAR";
             button1.Image = Image.FromFile(img_anul);
-            limpiar(this);
+            limpiar(tabreg);
             limpia_otros();
             limpia_combos();
             jalaoc("tx_idr");
         }
         private void Bt_first_Click(object sender, EventArgs e)
         {
-            limpiar(this);
+            limpiar(tabreg);
             limpia_chk();
             limpia_combos();
             //--
@@ -606,7 +610,7 @@ namespace iOMG
             string aca = tx_idr.Text;
             limpia_chk();
             limpia_combos();
-            limpiar(this);
+            limpiar(tabreg);
             //--
             tx_idr.Text = lib.goback(nomtab, aca);
             tx_idr_Leave(null, null);
@@ -616,14 +620,14 @@ namespace iOMG
             string aca = tx_idr.Text;
             limpia_chk();
             limpia_combos();
-            limpiar(this);
+            limpiar(tabreg);
             //--
             tx_idr.Text = lib.gonext(nomtab, aca);
             tx_idr_Leave(null, null);
         }
         private void Bt_last_Click(object sender, EventArgs e)
         {
-            limpiar(this);
+            limpiar(tabreg);
             limpia_chk();
             limpia_combos();
             //--
@@ -652,13 +656,15 @@ namespace iOMG
             if(e.ColumnIndex == 1)
             {
                 //string codu = "";
-                string idr = "";
+                string idr = "", rin = "";
                 idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-                tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
+                rin = advancedDataGridView1.CurrentRow.Index.ToString();
                 tabControl1.SelectedTab = tabreg;
-                limpiar(this);
+                limpiar(tabreg);
                 limpia_otros();
                 limpia_combos();
+                tx_idr.Text = idr;
+                tx_rind.Text = rin;
                 jalaoc("tx_idr");
             }
         }
