@@ -1560,6 +1560,12 @@ namespace iOMG
                 cmb_tal.Focus();
                 return;
             }
+            if (tx_d_codi.Text.Trim() == "")
+            {
+                MessageBox.Show("Seleccione un código correcto", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                cmb_fam.Focus();
+                return;
+            }
             // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {
@@ -1607,9 +1613,27 @@ namespace iOMG
                 {
                     if (dataGridView1.Rows.Count < 100)
                     {
-                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                            cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                        string hay = "no";
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            if (row.Cells[2].Value != null)
+                            {
+                                if (row.Cells[2].Value.ToString() == tx_d_codi.Text) hay = "si";
+                            }
+                        }
+                        if (hay == "no")
+                        {
+                            dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                                 tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
+                                cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Esta repitiendo el código", "Item duplicado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            tx_d_codi.Text = "";
+                            tx_d_codi.Focus();
+                            return;
+                        }
                     }
                     else
                     {

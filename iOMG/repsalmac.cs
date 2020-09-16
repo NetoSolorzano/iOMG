@@ -564,6 +564,7 @@ namespace iOMG
         }
         private void bt_imp_etiq_Click(object sender, EventArgs e)
         {
+            /*
             ReportDocument rd = new ReportDocument();
             rd.Load("etiq_mov3.rpt");           //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
             for(int i=1; i<=int.Parse(tx_paq.Text); i++)
@@ -583,7 +584,10 @@ namespace iOMG
                 rd.SetDataSource(de);
                 //
                 rd.PrintToPrinter(1, true, 1, 1);
-            }
+            }   */
+            //ReportDocument rd = (ReportDocument)crystalReportViewer1;
+            crystalReportViewer1.PrintReport();
+            //rd.PrintToPrinter(1, true, 1, 1);
         }
         private void tx_d_id_Leave(object sender, EventArgs e)                  // busca codigo y jala datos en almloc
         {

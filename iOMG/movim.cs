@@ -57,6 +57,7 @@ namespace iOMG
         private void movim_Load(object sender, EventArgs e)
         {
             combos();
+            tx_contra.Focus();
         }
         private void panel2_MouseDown(object sender, MouseEventArgs e)
         {
@@ -282,11 +283,18 @@ namespace iOMG
             try
             {
                 DataTable dt = new DataTable();
-                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem " +
+                /*string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem " +
                     "from contrat a " +
                     "left join anag_cli b on b.idanagrafica=a.cliente " +
                     "left join detacon c on c.contratoh=a.contrato " +
-                    "where a.contrato=@cont and a.status<>'ENTREG'";
+                    "where a.contrato=@cont and a.status<>'ENTREG'";*/
+                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem,x.cant " +
+                    "from contrat a " +
+                    "left join anag_cli b on b.idanagrafica = a.cliente " +
+                    "left join detacon c on c.contratoh = a.contrato " +
+                    "LEFT JOIN (SELECT a.item, sum(a.cant) AS cant FROM reservd a LEFT JOIN reservh b ON a.reservh = b.idreservh " +
+                        "WHERE b.contrato = @cont AND b.status <> 'ANULADO' GROUP BY a.item) x on x.item = concat(left(c.item, 10), SUBSTRING(c.item, 13, 6)) " +
+                    "where a.contrato = @cont and a.status <> 'ENTREG'";
                 try
                 {
                     MySqlCommand micon = new MySqlCommand(consulta, cn);
@@ -338,12 +346,24 @@ namespace iOMG
                                 tx_comres.Text = row[8].ToString();
                                 tx_d_codi.Text = row[5].ToString();
                             }
+                            if (row[9] != null) // comparamos la cant. reservada
+                            {
+                                if (row[5].ToString().Trim() != "" && para3.Substring(0,10) + "XX" + para3.Substring(10,6) == row[5].ToString())
+                                {
+                                    if (int.Parse(row[9].ToString()) >= int.Parse(row[6].ToString()))
+                                    {
+                                        MessageBox.Show("El mueble seleccionado ya esta reservado totalmente", "Atención Revise", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        bt_close_Click(null, null);
+                                    }
+                                }
+                            }
                         }
                         if (sino == "no")
                         {
                             MessageBox.Show("Este contrato NO CONTIENE el mueble seleccionado", "Atención Revise", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             bt_close_Click(null, null);
                         }
+                        
                     }
                 }
                 catch (MySqlException ex)

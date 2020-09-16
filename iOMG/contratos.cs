@@ -2374,7 +2374,7 @@ namespace iOMG
         {
             tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0,1);
             tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
-            //armani();
+            armani();
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
         {
@@ -2995,8 +2995,10 @@ namespace iOMG
                     // jalamos desde la base de datos, debe ser un contrato entregado o anulado
                     if (jalacont(tx_codped.Text) == false)
                     {
-                        MessageBox.Show("Error en obtener datos del contrato", "Error de conexión");
-                        Application.Exit();
+                        //MessageBox.Show("Error en obtener datos del contrato", "Error de conexión");
+                        MessageBox.Show("Error en obtener datos del contrato", "No existe el contrato",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        tx_codped.Text = "";
+                        tx_codped.Focus();
                         return;
                     }
                     else
