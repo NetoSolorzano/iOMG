@@ -88,6 +88,7 @@
             this.cmb_mad = new System.Windows.Forms.ComboBox();
             this.cmb_mod = new System.Windows.Forms.ComboBox();
             this.cmb_cap = new System.Windows.Forms.ComboBox();
+            this.tx_itemPed = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -97,7 +98,6 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel1.BackColor = System.Drawing.Color.Crimson;
             this.panel1.Controls.Add(this.button1);
             this.panel1.Location = new System.Drawing.Point(2, 305);
@@ -119,7 +119,6 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel2.BackColor = System.Drawing.Color.Crimson;
             this.panel2.Controls.Add(this.lb_titulo);
             this.panel2.Controls.Add(this.bt_close);
@@ -156,7 +155,6 @@
             // 
             // panel4
             // 
-            this.panel4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel4.Controls.Add(this.tx_codm);
             this.panel4.Controls.Add(this.lb_codm);
             this.panel4.Controls.Add(this.dtp_fsal);
@@ -277,7 +275,7 @@
             // 
             // panel3
             // 
-            this.panel3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.panel3.Controls.Add(this.tx_itemPed);
             this.panel3.Controls.Add(this.tx_precio);
             this.panel3.Controls.Add(this.label17);
             this.panel3.Controls.Add(this.tx_dat_det3);
@@ -729,12 +727,20 @@
             this.cmb_cap.TabIndex = 14;
             this.cmb_cap.SelectedIndexChanged += new System.EventHandler(this.cmb_cap_SelectedIndexChanged);
             // 
+            // tx_itemPed
+            // 
+            this.tx_itemPed.Location = new System.Drawing.Point(236, 98);
+            this.tx_itemPed.Name = "tx_itemPed";
+            this.tx_itemPed.Size = new System.Drawing.Size(159, 20);
+            this.tx_itemPed.TabIndex = 55;
+            this.tx_itemPed.Visible = false;
+            // 
             // movenmas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(540, 341);
+            this.ClientSize = new System.Drawing.Size(541, 344);
             this.ControlBox = false;
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel4);
@@ -825,5 +831,6 @@
         private System.Windows.Forms.ComboBox cmb_det3;
         private System.Windows.Forms.TextBox tx_precio;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox tx_itemPed;
     }
 }

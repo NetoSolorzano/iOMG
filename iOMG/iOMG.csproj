@@ -116,6 +116,12 @@
     <Compile Include="ayuda2.designer.cs">
       <DependentUpon>ayuda2.cs</DependentUpon>
     </Compile>
+    <Compile Include="bin\Debug\etiq_mov2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>etiq_mov2.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="clients.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,12 +177,6 @@
     </Compile>
     <Compile Include="enlaces.designer.cs">
       <DependentUpon>enlaces.cs</DependentUpon>
-    </Compile>
-    <Compile Include="etiq_mov1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>etiq_mov1.rpt</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="etiq_mov3.cs">
       <DependentUpon>etiq_mov3.rpt</DependentUpon>
@@ -465,6 +465,10 @@
     <EmbeddedResource Include="ayuda2.resx">
       <DependentUpon>ayuda2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="bin\Debug\etiq_mov2.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>etiq_mov2.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="clients.resx">
       <DependentUpon>clients.cs</DependentUpon>
     </EmbeddedResource>
@@ -492,10 +496,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="enlaces.resx">
       <DependentUpon>enlaces.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="etiq_mov1.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>etiq_mov1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="etiq_mov3.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

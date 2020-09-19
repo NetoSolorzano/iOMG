@@ -721,8 +721,9 @@ namespace iOMG
                 string consulta =
                     "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
                     "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
-                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso " +
+                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso,ifnull(m.item,'') as Cod_Ingreso " +
                     "from pedidos a left join detaped d on d.pedidoh=a.codped " +
+                    "left join movalm m on trim(m.docum)=@ped and m.itemped=d.item " +
                     "left join desc_stp b on b.idcodice=a.status " +
                     "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
                     "left join desc_est e on e.idcodice=d.estado " +
@@ -737,7 +738,7 @@ namespace iOMG
                     {
                         dgv_resumen.DataSource = null;
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
-                        micon.Parameters.AddWithValue("@ped", tx_codped.Text);
+                        micon.Parameters.AddWithValue("@ped", tx_codped.Text.Trim());
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         DataTable dt = new DataTable();
                         da.Fill(dt);

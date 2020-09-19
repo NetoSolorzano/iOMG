@@ -1896,7 +1896,7 @@ namespace iOMG
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
-                    string busca = "select cant from detacon where contratoh=@cont and item=@item";
+                    string busca = "select cant,saldo from detacon where contratoh=@cont and item=@item";
                     using (MySqlCommand micon = new MySqlCommand(busca, conn))
                     {
                         string cod = tx_d_codi.Text.Substring(0, 10) + "XX" + tx_d_codi.Text.Substring(12, 6);
@@ -1904,15 +1904,23 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@item", cod);
                         using (MySqlDataReader dr = micon.ExecuteReader())
                         {
-                            int vc = 0;
+                            //int vc = 0;
+                            int vs = 0;
                             if (dr.Read())
                             {
-                                //MessageBox.Show(cod, tx_cont.Text.Trim());
-                                vc = dr.GetInt32(0);
-                                if (int.Parse(tx_d_can.Text) > vc)
+                                //vc = dr.GetInt32(0);
+                                vs = dr.GetInt32(1);
+                                /*if (int.Parse(tx_d_can.Text) > vc)
                                 {
                                     MessageBox.Show("La cantidad pedida es mayor al contrato", "Error - corrija",
                                         MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                    tx_d_can.Focus();
+                                    pasa = false;
+                                }*/
+                                if (int.Parse(tx_d_can.Text) > vs)
+                                {
+                                    MessageBox.Show("La cantidad pedida es mayor al saldo del contrato!", "Error - corrija",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     tx_d_can.Focus();
                                     pasa = false;
                                 }
@@ -2285,6 +2293,7 @@ namespace iOMG
             rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
             rowcabeza.ciudad_des = cmb_destino.Text.PadRight(15).Substring(0,15); //tx_ciudades.Text;
             rowcabeza.status = (tx_status.Text == nomanu)? tx_status.Text:"";
+            rowcabeza.taller = (cmb_taller.Text.Trim().Length < 7) ? cmb_taller.Text : cmb_taller.Text.Substring(9, cmb_taller.Text.Trim().Length - 6);
             reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
             //
             foreach (DataGridViewRow row in dataGridView1.Rows)

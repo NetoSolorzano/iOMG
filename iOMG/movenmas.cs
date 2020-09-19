@@ -68,6 +68,8 @@ namespace iOMG
             cmb_mod.DropDownWidth = 150;
             cmb_tal.DropDownWidth = 150;
             cmb_tip.DropDownWidth = 150;
+
+            tx_idped.CharacterCasing = CharacterCasing.Upper;
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)    // F1
         {
@@ -222,6 +224,27 @@ namespace iOMG
                 tx_medidas.Focus();
                 return;
             }
+            // validamos que el item a ingresar sea igual al capitulo del item pedido
+            string cod = tx_dat_cap.Text.Trim() + tx_dat_mod.Text.Trim() + tx_dat_mad.Text.Trim() +
+                    tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
+                    tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
+            if (rb_mov.Checked == true && cod != tx_itemPed.Text.Trim())
+            {
+                var xxx = MessageBox.Show("El código a ingresar es diferente al código pedido!" + Environment.NewLine +
+                    "Confirma que es correcto?", "Atención verifique",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (xxx == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    if (tx_dat_cap.Text.Trim() != tx_itemPed.Text.Substring(0, 1))
+                    {
+                        MessageBox.Show("Al menos el capítulo debe ser el mismo!", "No puede continar", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        return;
+                    }
+                }
+            }
             //
             var aa = MessageBox.Show("Confirma que desea grabar la operación?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (aa == DialogResult.Yes)
@@ -310,8 +333,8 @@ namespace iOMG
                         //
                     }
                     // grabamos en ingresos y actualizamos el saldo del mueble en detaped
-                    inserta = "insert into movalm (tipmov,fecha,docum,item,cant,madera,user,dia,almad,cntpaq,coment) " +
-                        "values (@tope,@fech,@docu,@codi,@cant,@made,@asd,now(),@coda,@cpaq,@come)";
+                    inserta = "insert into movalm (tipmov,fecha,docum,item,cant,madera,user,dia,almad,cntpaq,coment,itemped) " +
+                        "values (@tope,@fech,@docu,@codi,@cant,@made,@asd,now(),@coda,@cpaq,@come,@iped)";
                     MySqlCommand micin = new MySqlCommand(inserta,cn);
                     micin.Parameters.AddWithValue("@tope","INGRES");
                     micin.Parameters.AddWithValue("@fech", dtp_fsal.Value.ToString("yyyy-MM-dd"));
@@ -323,6 +346,7 @@ namespace iOMG
                     micin.Parameters.AddWithValue("@coda", iOMG.Program.almuser);
                     micin.Parameters.AddWithValue("@cpaq", Int16.Parse(tx_paq.Text.Trim()));
                     micin.Parameters.AddWithValue("@come", tx_comsal.Text.Trim());
+                    micin.Parameters.AddWithValue("@iped", tx_itemPed.Text);
                     micin.ExecuteNonQuery();
                     if (rb_mov.Checked == true)
                     {
@@ -334,7 +358,7 @@ namespace iOMG
                         micin.Parameters.AddWithValue("@cant", Int16.Parse(tx_cant.Text.Trim()));
                         micin.Parameters.AddWithValue("@fing", dtp_fsal.Value);   // dtp_fsal.Value.ToShortDateString()
                         micin.Parameters.AddWithValue("@docu", tx_idped.Text.Trim());
-                        micin.Parameters.AddWithValue("@codm", mueble);
+                        micin.Parameters.AddWithValue("@codm", tx_itemPed.Text);   // mueble
                         micin.ExecuteNonQuery();
                     }
                     // una vez grabado todo .. se debe imprimir las etiquetas una por cada paquete
@@ -688,6 +712,7 @@ namespace iOMG
                                 tx_nombre.Text = ayu.ReturnValue2;
                                 tx_medidas.Text = ayu.ReturnValue3;
                                 tx_precio.Text = ayu.ReturnValue4;
+                                tx_itemPed.Text = ayu.ReturnValue0;
                                 //
                                 cmb_cap.SelectedIndex = cmb_cap.FindString(tx_dat_cap.Text);
                                 cmb_mod.SelectedIndex = cmb_mod.FindString(tx_dat_mod.Text);

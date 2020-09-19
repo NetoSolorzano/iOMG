@@ -19,25 +19,19 @@ namespace iOMG
         string colpage = iOMG.Program.colpag;   // color de los pageframes
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
-        static string nomtab = "";         // 
+        //static string nomtab = "";         // 
         public int totfilgrid, cta;             // variables para impresion
         public string perAg = "";
         public string perMo = "";
         public string perAn = "";
         public string perIm = "";
-        string tipede = "";
-        string tiesta = "";
         string img_btN = "";
         string img_btE = "";
         string img_btP = "";
         string img_btA = "";                                    // anula = bloquea
         string img_btexc = "";                                  // exporta a excel
         string img_btq = "";
-        string img_grab = "";
-        string img_anul = "";
-        string img_imprime = "", img_preview = "";              // imagen del boton preview e imprimir reporte
-        string letpied = "";                                    // letra indentificadora de piedra en detalle 2
-        string cliente = Program.cliente;                       // razon social para los reportes
+        string v_etiq1 = "";                                    // nombre del rpt etiqueta
         libreria lib = new libreria();
         DataTable dtg = new DataTable();
         // string de conexion
@@ -106,7 +100,7 @@ namespace iOMG
                 string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
-                micon.Parameters.AddWithValue("@ped", "xxx");
+                micon.Parameters.AddWithValue("@ped", nomform);
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -121,17 +115,18 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
                         if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
                         if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
-                        //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();        // imagen del boton de accion IMPRIMIR
+                        /*if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();        // imagen del boton de accion IMPRIMIR
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
                         if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
                         if (row["param"].ToString() == "img_preview") img_preview = row["valor"].ToString().Trim();  // imagen del boton VISTA PRELIMINAR
+                        */
                     }
-                    if (row["formulario"].ToString() == "xxx")
+                    if (row["formulario"].ToString() == nomform)
                     {
-                        if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "almacen") tipede = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
-                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
-                        if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
+                        if (row["campo"].ToString() == "etiqueta" && row["param"].ToString() == "nombre") v_etiq1 = row["valor"].ToString().Trim();         // tipo de pedido por defecto en almacen
+                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // estado del pedido inicial
+                        //if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();         // letra identificadora de Piedra en Detalle2
                     }
                 }
                 da.Dispose();
@@ -551,23 +546,20 @@ namespace iOMG
             row.conpaq = tx_cant.Text.Trim();
             row.totpaq = tx_paq.Text.Trim();
             de.etiq_mov1.Addetiq_mov1Row(row);
-
-            etiq_mov1 eti = new etiq_mov1();
-            eti.SetDataSource(de);
+            ReportDocument RPTT = new ReportDocument();
+            RPTT.Load(v_etiq1);    // "etiq_mov1.rpt"
+            RPTT.SetDataSource(de);
             crystalReportViewer1.BorderStyle = BorderStyle.None;
             crystalReportViewer1.DisplayToolbar = false;    // true
             crystalReportViewer1.Zoom(100);
             crystalReportViewer1.ShowLogo = false;
-            //crystalReportViewer1.Width = 1180;
-            //crystalReportViewer1.Height = 770;
-            crystalReportViewer1.ReportSource = eti;
+            crystalReportViewer1.ReportSource = RPTT;
         }
         private void bt_imp_etiq_Click(object sender, EventArgs e)
         {
-            /*
             ReportDocument rd = new ReportDocument();
-            rd.Load("etiq_mov3.rpt");           //cryRpt.Load("PUT CRYSTAL REPORT PATH HERE\CrystalReport1.rpt");
-            for(int i=1; i<=int.Parse(tx_paq.Text); i++)
+            rd.Load(v_etiq1);
+            for (int i = 1; i <= int.Parse(tx_paq.Text); i++)
             {
                 rd.SetDataSource("");
                 rd.Refresh();
@@ -582,12 +574,9 @@ namespace iOMG
                 row.totpaq = tx_paq.Text.Trim();
                 de.etiq_mov1.Addetiq_mov1Row(row);
                 rd.SetDataSource(de);
-                //
-                rd.PrintToPrinter(1, true, 1, 1);
-            }   */
-            //ReportDocument rd = (ReportDocument)crystalReportViewer1;
-            crystalReportViewer1.PrintReport();
-            //rd.PrintToPrinter(1, true, 1, 1);
+                crystalReportViewer1.ReportSource = rd;
+                crystalReportViewer1.PrintReport();
+            }
         }
         private void tx_d_id_Leave(object sender, EventArgs e)                  // busca codigo y jala datos en almloc
         {

@@ -657,6 +657,7 @@ namespace iOMG
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
+            dataGridView1.Columns[0].ReadOnly = true;
             dataGridView1.Columns[0].HeaderText = "Id";         // titulo de la columna
             dataGridView1.Columns[0].Name = "iddetacon";
             // item
@@ -3727,7 +3728,7 @@ namespace iOMG
             }
             rptDoc.PrintOptions.PaperOrientation = PaperOrientation.Portrait;
             rptDoc.PrintOptions.PaperSize = PaperSize.PaperA4;
-            rptDoc.PrintOptions.PrinterName = PrinterName;
+            if (PrinterName != "") rptDoc.PrintOptions.PrinterName = PrinterName;
             rptDoc.PrintToPrinter(1, false, 0, 0);
         }
         #endregion crystal
