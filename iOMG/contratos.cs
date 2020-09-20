@@ -1354,7 +1354,7 @@ namespace iOMG
                                 "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@come,@pied,@tdai)";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@cope", tx_codped.Text);
-                            micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                            micon.Parameters.AddWithValue("@tipe", tx_dat_orig.Text);  //  tx_dat_tiped.Text 20/09/2020
                             micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[1].Value.ToString());
                             micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[2].Value.ToString());
                             micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
@@ -1378,7 +1378,7 @@ namespace iOMG
                                 "where iddetacon=@idr";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
-                            micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                            micon.Parameters.AddWithValue("@tipe", tx_dat_orig.Text);   // tx_dat_tiped.Text
                             micon.Parameters.AddWithValue("@item", dataGridView1.Rows[i].Cells[1].Value.ToString());
                             micon.Parameters.AddWithValue("@cant", dataGridView1.Rows[i].Cells[2].Value.ToString());
                             micon.Parameters.AddWithValue("@nomb", dataGridView1.Rows[i].Cells[3].Value.ToString());
@@ -2373,9 +2373,12 @@ namespace iOMG
         }
         private void cmb_mad_SelectionChangeCommitted(object sender, EventArgs e)       // madera
         {
-            tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0,1);
-            tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
-            armani();
+            if (cmb_mad.SelectedItem != null)
+            {
+                tx_d_mad.Text = cmb_mad.SelectedItem.ToString().Substring(0, 1);
+                tx_dat_mad.Text = cmb_mad.SelectedItem.ToString().Substring(4, cmb_mad.SelectedItem.ToString().Length - 4).Trim();
+                armani();
+            }
         }
         private void cmb_tip_SelectedIndexChanged(object sender, EventArgs e)           // tipologia
         {
@@ -2525,8 +2528,8 @@ namespace iOMG
                         Application.Exit();
                         return;
                     }
-                    // vista previa
-                    setParaCrystal();
+                    // vista previa   setParaCrystal();
+                    Bt_print.PerformClick();
                 }
                 else
                 {

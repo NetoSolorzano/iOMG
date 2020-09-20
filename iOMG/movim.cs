@@ -288,7 +288,7 @@ namespace iOMG
                     "left join anag_cli b on b.idanagrafica=a.cliente " +
                     "left join detacon c on c.contratoh=a.contrato " +
                     "where a.contrato=@cont and a.status<>'ENTREG'";*/
-                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem,x.cant " +
+                string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem,ifnull(x.cant,0) " +
                     "from contrat a " +
                     "left join anag_cli b on b.idanagrafica = a.cliente " +
                     "left join detacon c on c.contratoh = a.contrato " +
@@ -304,7 +304,7 @@ namespace iOMG
                     if (dt.Rows.Count < 1)
                     {
                         cn.Close();
-                        MessageBox.Show("No existe el contrato ingresado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        MessageBox.Show("No existe el contrato ingresado o esta entregado", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                         tx_contra.Text = "";
                         tx_contra.Focus();
                         return;
@@ -330,7 +330,7 @@ namespace iOMG
                         {
                             DataRow row = dt.Rows[i];
                             dataGridView1.Rows.Add(row[5].ToString(), row[6].ToString(), row[7].ToString(), row[8].ToString());
-                            string parte1 = "";
+                            string parte1 = "";     // item del contrato
                             if (row[5].ToString().Trim().Length == 18)
                             {
                                 parte1 = row[5].ToString().Trim().Substring(0, 10) + row[5].ToString().Trim().Substring(12, 6);   // item del contrato
@@ -345,6 +345,17 @@ namespace iOMG
                                 sino = "si";    // aca debemos validar por columnas
                                 tx_comres.Text = row[8].ToString();
                                 tx_d_codi.Text = row[5].ToString();
+                            }
+                            else
+                            {
+                                if (parte1.Substring(1,3) == "000")     // vemos si el item del contrato es A DISEÑO
+                                {
+                                    if (parte1.Substring(0, 1) == parte2.Substring(0, 1) && parte1.Substring(4,1) == parte2.Substring(4,1))
+                                    {
+                                        // en este caso, el item del contrato es a diseño y el capitulo y madera son iguales
+                                        // ME QUEDE ACA !!
+                                    }
+                                }
                             }
                             if (row[9] != null) // comparamos la cant. reservada
                             {

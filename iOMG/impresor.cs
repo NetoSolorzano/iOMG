@@ -37,7 +37,7 @@ namespace iOMG
             IEnumerable<PaperSize> paperSizes = ps.PaperSizes.Cast<PaperSize>();
             PaperSize sizeA5 = paperSizes.First<PaperSize>(size => size.Kind == PaperKind.A5);
             ps.DefaultPageSettings.PaperSize = sizeA5;
-            ps.DefaultPageSettings.Landscape = true;
+            ps.DefaultPageSettings.Landscape = false;
             //
             printPreviewDialog1.Document = printDocument1;
             printDocument1.PrinterSettings = ps;
@@ -50,30 +50,31 @@ namespace iOMG
             // GENERALES
             int pagini = e.PageSettings.PrinterSettings.FromPage;       // num pag inicio
             int pagfin = e.PageSettings.PrinterSettings.ToPage;         // num pag final
-            float largo = e.PageBounds.Height - 10.0F;                  // largo de la pagina
-            float ancho_pag = e.PageSettings.PaperSize.Width - 40.0F;   // ancho de la pagina
+            float largo = 408.0F;        // e.PageBounds.Height - 10.0F;                  // largo de la pagina
+            float ancho_pag = 543.0F;    // e.PageSettings.PaperSize.Width - 40.0F;   // ancho de la pagina
+            //e.PageSettings.PrinterSettings.DefaultPageSettings.PaperSize.Width = ancho_pag;
             float mar_sup = 20.0F;                                      // margen superior de la impresion
             float mar_izq = 10.0F;                                      // margen izquierdo de la impresion // 20.0F
             // tipos y tamaños de letra
-            Font lt_codigo = new Font("Arial", 80);                      // tipo y tamaño de letra rect_codigo
-            Font lt_resto = new Font("Arial", 20);                       // tipo y tamaño de letra rect_resto
-            Font lt_madera = new Font("Arial", 120, FontStyle.Bold);      // tipo y tamaño de letra rect_madera
+            Font lt_codigo = new Font("Arial", 50, FontStyle.Bold);     // tipo y tamaño de letra rect_codigo
+            Font lt_resto = new Font("Arial", 15);                       // tipo y tamaño de letra rect_resto
+            Font lt_madera = new Font("Arial", 100, FontStyle.Bold);      // tipo y tamaño de letra rect_madera
             Font lt_id = new Font("Arial", 30);                          // tipo y tamaño de letra rect_id
             Font lt_juego = new Font("Arial", 30);                       // tipo y tamaño de letra rect_juego
             Font lt_cant = new Font("Arial", 25);                        // tipo y tamaño de letra rect_cant
-            Font lt_nombre = new Font("Arial", 30);                      // tipo y tamaño de letra rect_nombre
+            Font lt_nombre = new Font("Arial", 28);                      // tipo y tamaño de letra rect_nombre
             // rectangulos
-            float anc_rec_cod = 350.0F;                                 // ancho rectangulo codigo
+            float anc_rec_cod = 240.0F;                                 // ancho rectangulo codigo
             float alt_rec_cod = 200.0F;                                  // alto rectangulo codigo
-            float anc_rec_res = 250.0F;                                 // ancho rectangulo resto
+            float anc_rec_res = 200.0F;                                 // ancho rectangulo resto
             float alt_rec_res = 200.0F;                                  // alto rectangulo resto
-            float anc_rec_mad = 190.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
+            float anc_rec_mad = 100.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
             float alt_rec_mad = 200.0F;                                  // alto rectangulo codigo
-            float anc_rec_id = 250.0F;                                  // ancho rectangulo ID
+            float anc_rec_id = 200.0F;                                  // ancho rectangulo ID
             float alt_rec_id = 80.0F;                                   // alto rectangulo ID
-            float anc_rec_jgo = 250.0F;                                 // ancho rectangulo juego
+            float anc_rec_jgo = 200.0F;                                 // ancho rectangulo juego
             float alt_rec_jgo = 80.0F;                                  // alto rectangulo juego
-            float anc_rec_can = 250.0F;                                 // ancho rectangulo cantidad
+            float anc_rec_can = 200.0F;                                 // ancho rectangulo cantidad
             float alt_rec_can = 80.0F;                                  // alto rectangulo cantidad
             float anc_rec_nom = (anc_rec_res + anc_rec_mad + anc_rec_cod) - anc_rec_id;// ancho rectangulo nombre
             float alt_rec_nom = alt_rec_id + alt_rec_jgo + alt_rec_can; // alto rectangulo nombre

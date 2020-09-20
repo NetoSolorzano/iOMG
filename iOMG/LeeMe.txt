@@ -108,6 +108,6 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - El formato del contrato actual "ContratoI.rpt" tiene 2 copias, una dentro del proyecto y otra en la carpeta de ejecucion, OJO, deben ser iguales
 - 
 
-- form repspedalm, faltan los formatos de impresion ..................................
+- form repspedalm, faltan los formatos de impresion .................................. 
 
 
