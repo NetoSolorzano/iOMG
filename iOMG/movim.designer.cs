@@ -34,6 +34,7 @@
             this.lb_titulo = new System.Windows.Forms.Label();
             this.bt_close = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.tx_d_codi = new System.Windows.Forms.TextBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.tx_comres = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -61,7 +62,7 @@
             this.tx_evento = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.tx_d_codi = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -128,6 +129,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.tx_d_codi);
             this.panel3.Controls.Add(this.tx_idr);
             this.panel3.Controls.Add(this.tx_comres);
@@ -147,9 +149,18 @@
             this.panel3.Size = new System.Drawing.Size(626, 100);
             this.panel3.TabIndex = 18;
             // 
+            // tx_d_codi
+            // 
+            this.tx_d_codi.Location = new System.Drawing.Point(277, 5);
+            this.tx_d_codi.Name = "tx_d_codi";
+            this.tx_d_codi.ReadOnly = true;
+            this.tx_d_codi.Size = new System.Drawing.Size(149, 20);
+            this.tx_d_codi.TabIndex = 16;
+            this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // tx_idr
             // 
-            this.tx_idr.Location = new System.Drawing.Point(197, 9);
+            this.tx_idr.Location = new System.Drawing.Point(212, 28);
             this.tx_idr.Name = "tx_idr";
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
             this.tx_idr.TabIndex = 15;
@@ -157,15 +168,15 @@
             // 
             // tx_comres
             // 
-            this.tx_comres.Location = new System.Drawing.Point(219, 75);
+            this.tx_comres.Location = new System.Drawing.Point(78, 75);
             this.tx_comres.Name = "tx_comres";
-            this.tx_comres.Size = new System.Drawing.Size(393, 20);
+            this.tx_comres.Size = new System.Drawing.Size(534, 20);
             this.tx_comres.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(157, 79);
+            this.label3.Location = new System.Drawing.Point(8, 79);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 10;
@@ -395,20 +406,21 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "TIPO SALIDA";
             // 
-            // tx_d_codi
+            // label6
             // 
-            this.tx_d_codi.Location = new System.Drawing.Point(5, 75);
-            this.tx_d_codi.Name = "tx_d_codi";
-            this.tx_d_codi.ReadOnly = true;
-            this.tx_d_codi.Size = new System.Drawing.Size(149, 20);
-            this.tx_d_codi.TabIndex = 16;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(195, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Item contratado";
             // 
             // movim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(631, 415);
+            this.ClientSize = new System.Drawing.Size(627, 411);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);
@@ -472,5 +484,6 @@
         private System.Windows.Forms.TextBox tx_dat_dest;
         private System.Windows.Forms.TextBox tx_idr;
         private System.Windows.Forms.TextBox tx_d_codi;
+        private System.Windows.Forms.Label label6;
     }
 }

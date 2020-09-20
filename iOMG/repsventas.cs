@@ -286,6 +286,7 @@ namespace iOMG
                             if (b < dgv_vtas.Width) dgv_vtas.Width = b + 60;
                         }
                     }
+                    dgv_vtas.ReadOnly = true;
                     break;
                 case "dgv_salidas":
                     Font tipls = new Font("Arial", 7, FontStyle.Bold);
@@ -313,6 +314,7 @@ namespace iOMG
                         }
                         if (s < dgv_salidas.Width) dgv_salidas.Width = s + 40;
                     }
+                    dgv_salidas.ReadOnly = true;
                     break;
                 case "dgv_ingresos":
                     Font tipli = new Font("Arial", 7, FontStyle.Bold);
@@ -339,6 +341,7 @@ namespace iOMG
                         }
                         if (y < dgv_ingresos.Width) dgv_ingresos.Width = y + 40;
                     }
+                    dgv_ingresos.ReadOnly = true;
                     break;
                 case "dgv_pedidos":
                     Font tiplp = new Font("Arial", 7, FontStyle.Bold);
@@ -369,6 +372,7 @@ namespace iOMG
                             if (p < dgv_pedidos.Width) dgv_pedidos.Width = p + 40;
                         }
                     }
+                    dgv_pedidos.ReadOnly = true;
                     break;
                 case "dgv_contratos":
                     Font tiplc = new Font("Arial", 7, FontStyle.Bold);
@@ -400,6 +404,7 @@ namespace iOMG
                         }
                         if (c < dgv_contratos.Width) dgv_contratos.Width = c + 40;
                     }
+                    dgv_contratos.ReadOnly = true;
                     break;
             }
         }

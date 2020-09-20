@@ -116,7 +116,7 @@ namespace iOMG
             cn.Open();
             try
             {
-                // inserta la reserva en maestra de reservas
+                // inserta la reserva en maestra de reservas                              // ME QUEDE ACA !!
                 string texto = "insert into reservh (fecha,contrato,evento,coment,user,dia,almacen) " +
                     "values (@ptxfec,@ptxcon,@ptxt03,@ptxcom,@vg_us,now(),@ptxalm)";
                 MySqlCommand micon = new MySqlCommand(texto, cn);
@@ -137,8 +137,8 @@ namespace iOMG
                 }
                 dr.Close();
                 // y el detalle de la reserva
-                texto = "insert into reservd (reservh,item,cant,user,dia,almacen,idalm) " +
-                    "values (@ptxidr,@ptxite,@ptxcan,@asd,now(),@ptxalm,@ida)";
+                texto = "insert into reservd (reservh,item,cant,user,dia,almacen,idalm,itemCont) " +
+                    "values (@ptxidr,@ptxite,@ptxcan,@asd,now(),@ptxalm,@ida,@itcon)";
                 micon = new MySqlCommand(texto, cn);
                 micon.Parameters.AddWithValue("@ptxidr", tx_idr.Text);
                 micon.Parameters.AddWithValue("@ptxite", para3); // codigo del mueble
@@ -146,13 +146,14 @@ namespace iOMG
                 micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
                 micon.Parameters.AddWithValue("@ptxalm", para4);
                 micon.Parameters.AddWithValue("@ida", para2);
+                micon.Parameters.AddWithValue("@itcon", tx_d_codi.Text);
                 micon.ExecuteNonQuery();
                 // actualiza saldo en detalle del contrato
                 texto = "UPDATE detacon SET saldo=saldo-@can " +
                     "where contratoh=@ptxcon and item=@ptxi";
                 micon = new MySqlCommand(texto, cn);
                 micon.Parameters.AddWithValue("@ptxcon", tx_contra.Text);
-                micon.Parameters.AddWithValue("@ptxi", para3);
+                micon.Parameters.AddWithValue("@ptxi", tx_d_codi.Text);   // para3
                 micon.Parameters.AddWithValue("@can", 1);
                 micon.ExecuteNonQuery();
                 // algo hará en estado de contratos
@@ -353,7 +354,9 @@ namespace iOMG
                                     if (parte1.Substring(0, 1) == parte2.Substring(0, 1) && parte1.Substring(4,1) == parte2.Substring(4,1))
                                     {
                                         // en este caso, el item del contrato es a diseño y el capitulo y madera son iguales
-                                        // ME QUEDE ACA !!
+                                        sino = "si";
+                                        tx_comres.Text = row[8].ToString();
+                                        tx_d_codi.Text = row[5].ToString();
                                     }
                                 }
                             }
@@ -472,16 +475,4 @@ namespace iOMG
         }
 
     }
-    /*
-    public class ComboItem
-    {
-        public string Text { get; set; }
-        public object Value { get; set; }
-
-        public override string ToString()
-        {
-            return Text;
-        }
-    }
-    */
 }
