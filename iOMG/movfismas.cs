@@ -179,10 +179,10 @@ namespace iOMG
                         micon.ExecuteNonQuery();
                         // kardex
                         acc2 = "insert into kardex (codalm,fecha,tipmov,item,cant_s,coment,idalm,USER,dias) " +
-                            "select codalm,@fech,'SALIDA',codig,'1',concat('X venta - Reserva:',reserva),@v_id,@asd,now() from almloc where id=@ida";
+                            "select codalm,@fech,'SALIDA',codig,'1',concat('X venta - Reserva:',reserva),id,@asd,now() from almloc where id=@ida";
                         micon = new MySqlCommand(acc2, cn);
                         micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@v_id", tx_idr.Text);
+                        //micon.Parameters.AddWithValue("@v_id",);    // tx_idr.Text (posible error 21-09-2020)
                         micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
                         micon.Parameters.AddWithValue("@fech", dtp_fsal.Value.ToString("yyyy-MM-dd"));
                         micon.ExecuteNonQuery();
@@ -192,19 +192,19 @@ namespace iOMG
                     else
                     {
                         string accX = "insert into kardex (codalm,fecha,tipmov,item,cant_s,coment,idalm,USER,dias) " +
-                            "select codalm,@fech,'SALIDA',codig,'1',concat('Movimiento ',@ptxlle),@v_id,@asd,now() from almloc where id=@ida";
+                            "select codalm,@fech,'SALIDA',codig,'1',concat('Movimiento ',@ptxlle),id,@asd,now() from almloc where id=@ida";
                         micon = new MySqlCommand(accX, cn);
                         micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@v_id", tx_idr.Text);
+                        //micon.Parameters.AddWithValue("@v_id", );   // tx_idr.Text ... debe ser el id del almacen
                         micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
                         micon.Parameters.AddWithValue("@ptxlle", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.Parameters.AddWithValue("@fech", dtp_fsal.Value.ToString("yyyy-MM-dd"));
                         micon.ExecuteNonQuery();
                         accX = "insert into kardex (codalm,fecha,tipmov,item,cant_i,coment,idalm,USER,dias) " +
-                            "select @ptxlle,@fech,'INGRESO',codig,'1',concat('Movimiento ',codalm),@v_id,@asd,now() from almloc where id=@ida";
+                            "select @ptxlle,@fech,'INGRESO',codig,'1',concat('Movimiento ',codalm),id,@asd,now() from almloc where id=@ida";
                         micon = new MySqlCommand(accX, cn);
                         micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
-                        micon.Parameters.AddWithValue("@v_id", tx_idr.Text);
+                        //micon.Parameters.AddWithValue("@v_id", tx_idr.Text);
                         micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
                         micon.Parameters.AddWithValue("@ptxlle", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         micon.Parameters.AddWithValue("@fech", dtp_fsal.Value.ToString("yyyy-MM-dd"));

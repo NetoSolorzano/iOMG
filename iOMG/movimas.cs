@@ -143,7 +143,7 @@ namespace iOMG
                                 micon.ExecuteNonQuery();
                                 // actualiza saldo en detalle del contrato
                                 texto = "UPDATE detacon SET saldo=saldo-@can " +
-                                    "where contratoh=@ptxcon and item=@ptxi";
+                                    "where contratoh=@ptxcon and trim(insert(c.item,11,2,''))=@ptxi";   //item 
                                 micon = new MySqlCommand(texto, cn);
                                 micon.Parameters.AddWithValue("@ptxcon", tx_contra.Text);
                                 micon.Parameters.AddWithValue("@ptxi", dataGridView1.Rows[i].Cells[0].Value.ToString());

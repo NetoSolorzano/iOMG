@@ -19,7 +19,7 @@ namespace iOMG
         //string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";ConnectionLifeTime=" + ctl + ";";
 
-        //
+        // 18-09-2020, REUNION GLORIA, NESTOR. LOS CODIGOS Z NO INFLUYEN EN EL ESTADO DE UN CONTRATO
         public void act_cont(string numcon,string tipo)
         {
             MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
@@ -37,7 +37,7 @@ namespace iOMG
                 string texto="select ifnull(SUM(a.cant),0) as cant,a.contratoh " +
                 "from detacon a " +
                 "left join items b on UPPER(TRIM(a.item))=UPPER(TRIM(b.codig)) " +
-                "where TRIM(a.contratoh)=@vpcont";
+                "where TRIM(a.contratoh)=@vpcont and left(a.item,1)<>'Z'";  // where TRIM(a.contratoh)=@vpcont
                 MySqlCommand micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 MySqlDataReader dr = micon.ExecuteReader();
@@ -46,10 +46,13 @@ namespace iOMG
                     cantit = dr.GetInt16(0); // cantidad de articulos del contrato
                 }
                 dr.Close();
-                //*************************** calculamos la cantidad de articulos que tienen pedido  ***  vpcont='012601'
-                texto="select ifnull(sum(a.cant),0) as cant from pedidos a " +
-                    "left join contrat c on c.contrato=a.contrato " +
-                    "where c.contrato=@vpcont";
+                //*************************** calculamos la cantidad de articulos que tienen pedido  ***  cambio 21-09-2020
+                //texto="select ifnull(sum(a.cant),0) as cant from pedidos a " +
+                //    "left join contrat c on c.contrato=a.contrato " +
+                //    "where c.contrato=@vpcont";
+                texto = "SELECT ifnull(sum(d.cant),0) from pedidos p " +
+                "LEFT JOIN detaped d ON d.pedidoh = p.codped " +
+                "where p.contrato = @vpcont AND left(d.item,1)<> 'Z' AND p.status<>'ANULAD'";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 dr = micon.ExecuteReader();
@@ -61,7 +64,7 @@ namespace iOMG
                 //******************************* calculamos la cantidad de articulos reservados de ese contrato vpcont='012601'
                 texto="select ifnull(SUM(a.cant),0) as cant from reservd a " +
                     "left join reservh b on a.reservh=b.idreservh " +
-                    "where TRIM(b.contrato)=@vpcont and b.status not in('SALIDAS','ANULADO')";
+                    "where TRIM(b.contrato)=@vpcont and b.status not in('SALIDAS','ANULADO') AND left(a.item,1)<>'Z'";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 dr = micon.ExecuteReader();
@@ -73,8 +76,9 @@ namespace iOMG
                 //****************************** calculamos la cantidad de articulos ya entregados de ese contrato
                 // salidas por ventas en clientes movimientos
                 // salidas por ventas en almacen a partir de una reserva  vpcont='012601'
-                texto="select ifnull(sum(a.cant),0) as cant from movim a left join pedidos b on a.pedido=b.codped " +
-                    "where TRIM(b.contrato)=@vpcont and a.fventa is not null";
+                texto= "select ifnull(sum(a.cant),0) as cant from movim a " +
+                    "left join pedidos b on a.pedido=b.codped AND b.status<>'ANULAD' " +
+                    "where TRIM(b.contrato)=@vpcont and a.fventa is not null and left(a.articulo,1)<>'Z'";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 dr = micon.ExecuteReader();
@@ -85,7 +89,7 @@ namespace iOMG
                 dr.Close();
                 texto="select ifnull(SUM(a.cant),0) as cant from salidasd a " +
                     "left join salidash b on a.salidash=b.idsalidash " +
-                    "where b.tipomov=2 and TRIM(b.contrato)=@vpcont and b.status<>'ANULADO'";
+                    "where b.tipomov=2 and TRIM(b.contrato)=@vpcont and b.status<>'ANULADO' and left(a.item,1)<>'Z'";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 dr = micon.ExecuteReader();
@@ -97,8 +101,8 @@ namespace iOMG
                 cantes = canten + cansal;    // cantidad de articulos ya entregados del contrato
                 //********************************** calculamos la cantidad de articulos no entregados del contrato  vpcont='012601'
                 texto="select ifnull(sum(a.cant),0) as cant from movim a " +
-                    "left join pedidos b on a.pedido=b.codped " +
-                    "where TRIM(b.contrato)=@vpcont and a.fventa is null";
+                    "left join pedidos b on a.pedido=b.codped AND b.status<>'ANULAD' " +
+                    "where TRIM(b.contrato)=@vpcont and a.fventa is null and left(a.articulo,1)<>'Z'";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 dr = micon.ExecuteReader();
