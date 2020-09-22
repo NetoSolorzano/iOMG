@@ -142,12 +142,14 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
                                 micon.ExecuteNonQuery();
                                 // actualiza saldo en detalle del contrato
-                                texto = "UPDATE detacon SET saldo=saldo-@can " +
-                                    "where contratoh=@ptxcon and trim(insert(c.item,11,2,''))=@ptxi";   //item 
+                                string cc = dataGridView1.Rows[i].Cells[0].Value.ToString().Substring(0,10) + "XX" +
+                                    dataGridView1.Rows[i].Cells[0].Value.ToString().Substring(10, 6);
+                                texto = "update detacon set saldo=saldo-1 " +
+                                    "where trim(contratoh)=@ptxcon and trim(item)=@ptxi";   //trim(insert(item,11,2,'')=@ptxi)
                                 micon = new MySqlCommand(texto, cn);
-                                micon.Parameters.AddWithValue("@ptxcon", tx_contra.Text);
-                                micon.Parameters.AddWithValue("@ptxi", dataGridView1.Rows[i].Cells[0].Value.ToString());
-                                micon.Parameters.AddWithValue("@can", 1);
+                                micon.Parameters.AddWithValue("@ptxcon", tx_contra.Text.Trim());
+                                micon.Parameters.AddWithValue("@ptxi", cc);   // dataGridView1.Rows[i].Cells[0].Value.ToString()
+                                //micon.Parameters.AddWithValue("@can", "1");
                                 micon.ExecuteNonQuery();
                                 // actualizamos el temporal
                                 texto = "update tempo set idres=@idr,contrat=@cont where ida=@ida";
@@ -158,7 +160,7 @@ namespace iOMG
                                 micon.ExecuteNonQuery();
                             }
                             // algo hará en estado de contratos
-                            string reto = lib.estcont(tx_contra.Text.Trim());
+                            // string reto = lib.estcont(tx_contra.Text.Trim()); // COMENTADO 21/09/2020
                             //acciones acc = new acciones();
                             //acc.act_cont(tx_contra.Text, "RESERVA");
                             //

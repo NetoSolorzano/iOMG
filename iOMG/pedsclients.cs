@@ -795,9 +795,11 @@ namespace iOMG
                 }
             }
             // cambiar el estado del contrato
-            string reto = lib.estcont(tx_cont.Text.Trim());
-            MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
-                reto, "CONTRATO CON NUEVO ESTADO");
+            //string reto = lib.estcont(tx_cont.Text.Trim());
+            acciones reto = new acciones();
+            reto.act_cont(tx_cont.Text.Trim(),"");
+            //MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
+            //    reto, "CONTRATO CON NUEVO ESTADO");
             retorna = true;
             //
             conn.Close();
@@ -909,9 +911,11 @@ namespace iOMG
                         }
                     }
                     // cambiar el estado del contrato
-                    string reto = lib.estcont(tx_cont.Text.Trim());
-                    MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
-                        reto, "CONTRATO CON NUEVO ESTADO"); micon.ExecuteNonQuery();
+                    //string reto = lib.estcont(tx_cont.Text.Trim());
+                    acciones reto = new acciones();
+                    reto.act_cont(tx_cont.Text.Trim(), "");
+                    //MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
+                    //    reto, "CONTRATO CON NUEVO ESTADO"); micon.ExecuteNonQuery();
                     retorna = true;
                 }
                 catch (MySqlException ex)
@@ -976,9 +980,11 @@ namespace iOMG
                     }
                 }
                 // cambiar el estado del contrato
-                string reto = lib.estcont(tx_cont.Text.Trim());
-                MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
-                    reto, "CONTRATO CON NUEVO ESTADO");
+                //string reto = lib.estcont(tx_cont.Text.Trim());
+                acciones reto = new acciones();
+                reto.act_cont(tx_cont.Text.Trim(), "");
+                //MessageBox.Show("Estado actual del contrato " + tx_cont.Text.Trim() + Environment.NewLine +
+                //    reto, "CONTRATO CON NUEVO ESTADO");
                 retorna = true;
             }
             else

@@ -116,7 +116,7 @@ namespace iOMG
             cn.Open();
             try
             {
-                // inserta la reserva en maestra de reservas                              // ME QUEDE ACA !!
+                // inserta la reserva en maestra de reservas   
                 string texto = "insert into reservh (fecha,contrato,evento,coment,user,dia,almacen) " +
                     "values (@ptxfec,@ptxcon,@ptxt03,@ptxcom,@vg_us,now(),@ptxalm)";
                 MySqlCommand micon = new MySqlCommand(texto, cn);

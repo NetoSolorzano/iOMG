@@ -558,7 +558,7 @@ namespace iOMG
             {
                 // a.pedido,cliente,a.destino,nomact,a.articulo,dp.nombre,a.med1,a.madera,nomad,a.estado,acabado
                 string consulta = "select a.pedido,ifnull(cl.razonsocial,'') as cliente,a.destino,ifnull(b.descrizionerid,'') as nomact," + 
-                    "a.articulo,dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado " +
+                    "a.articulo,dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado,idmovim " +
                     "from movim a " +
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@tpe " +
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
@@ -587,6 +587,7 @@ namespace iOMG
                         tx_dat_mad.Text = dr.GetString(7);
                         tx_acabad.Text = dr.GetString(10);
                         tx_dat_aca.Text = dr.GetString(9);
+                        tx_dat_idm.Text = dr.GetString(11);
                     }
                     dr.Close();
                 }
@@ -994,6 +995,12 @@ namespace iOMG
                     cmb_tipo.Focus();
                     return;
                 }
+                if (tx_cant.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese la cantidad", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tx_cant.Focus();
+                    return;
+                }
             }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;
@@ -1134,54 +1141,57 @@ namespace iOMG
             // ==> pedido cant > 1, salidas pueden ser <> 1 y > 0
             // 10/07/2020, la cantidad de salida NO puede ser > al saldo x salir o entregar
             // saldo cant entrada (movim), saldo >= cant salida
-            string consulta = "select pedido,sum(cant) as cant, sum(saldo) as saldo from movim where pedido=@pedi group by pedido";
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if(conn.State == ConnectionState.Open)
+            if (tx_cant.Text.Trim() != "")
             {
-                try
+                string consulta = "select pedido,sum(cant) as cant, sum(saldo) as saldo " +
+                    "from movim where pedido=@pedi group by pedido";
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
                 {
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.HasRows)
+                    try
                     {
-                        if (dr.Read())
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.HasRows)
                         {
-                            //MessageBox.Show("Saldo:" + dr.GetInt16(2).ToString(),"Cant: " + tx_cant.Text);
-                            if(dr.GetInt16(2) < Int16.Parse(tx_cant.Text))
+                            if (dr.Read())
                             {
-                                MessageBox.Show("La cantidad debe ser = ó < al saldo de los ingresos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                tx_cant.Text = dr.GetInt16(2).ToString();
+                                if (dr.GetInt16(2) < Int16.Parse(tx_cant.Text) || Int16.Parse(tx_cant.Text) == 0)
+                                {
+                                    MessageBox.Show("La cantidad debe ser 1 ó <= al saldo de los ingresos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    tx_cant.Text = dr.GetInt16(2).ToString();
+                                }
                             }
                         }
+                        dr.Close();
+                        conn.Close();
                     }
-                    dr.Close();
-                    conn.Close();
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error interno o de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        conn.Close();
+                        Application.Exit();
+                        return;
+                    }
                 }
-                catch(MySqlException ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error interno o de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    conn.Close();
+                    MessageBox.Show("No se puede conectarse al servidor", "Revise su conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Application.Exit();
                     return;
                 }
             }
-            else
-            {
-                MessageBox.Show("No se puede conectarse al servidor", "Revise su conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-                return;
-            }
         }
         private void tx_cant_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            int.TryParse(tx_cant.Text.Trim(), out int rvi);
+            /*int.TryParse(tx_cant.Text.Trim(), out int rvi);
             if(tx_cant.Text.Trim() == "" || rvi < 1)
             {
                 MessageBox.Show("El valor debe ser > 1","Corrija por favor");
                 e.Cancel = true;
-            }
+            }*/
         }
         #endregion leaves;
         #region advancedatagridview
