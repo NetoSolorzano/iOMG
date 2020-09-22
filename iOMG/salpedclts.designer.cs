@@ -120,6 +120,10 @@
             this.tx_cant = new iOMG.NumericTextBox();
             this.tx_idr = new iOMG.NumericTextBox();
             this.tx_rind = new iOMG.NumericTextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tx_contrato = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -135,6 +139,7 @@
             this.groupBox23.SuspendLayout();
             this.groupBox25.SuspendLayout();
             this.groupBox27.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // advancedDataGridView1
@@ -684,7 +689,7 @@
             this.groupBox13.BackColor = System.Drawing.Color.White;
             this.groupBox13.Controls.Add(this.groupBox14);
             this.groupBox13.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.groupBox13.Location = new System.Drawing.Point(111, 77);
+            this.groupBox13.Location = new System.Drawing.Point(279, 77);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(175, 1);
             this.groupBox13.TabIndex = 319;
@@ -701,7 +706,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(114, 62);
+            this.label8.Location = new System.Drawing.Point(282, 61);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(71, 13);
             this.label8.TabIndex = 318;
@@ -709,7 +714,7 @@
             // 
             // tx_origen
             // 
-            this.tx_origen.Location = new System.Drawing.Point(186, 58);
+            this.tx_origen.Location = new System.Drawing.Point(354, 57);
             this.tx_origen.Name = "tx_origen";
             this.tx_origen.ReadOnly = true;
             this.tx_origen.Size = new System.Drawing.Size(100, 20);
@@ -717,7 +722,7 @@
             // 
             // tx_dat_orig
             // 
-            this.tx_dat_orig.Location = new System.Drawing.Point(292, 59);
+            this.tx_dat_orig.Location = new System.Drawing.Point(460, 57);
             this.tx_dat_orig.Name = "tx_dat_orig";
             this.tx_dat_orig.Size = new System.Drawing.Size(34, 20);
             this.tx_dat_orig.TabIndex = 320;
@@ -725,7 +730,7 @@
             // 
             // tx_dat_dest
             // 
-            this.tx_dat_dest.Location = new System.Drawing.Point(37, 97);
+            this.tx_dat_dest.Location = new System.Drawing.Point(48, 127);
             this.tx_dat_dest.Name = "tx_dat_dest";
             this.tx_dat_dest.Size = new System.Drawing.Size(34, 20);
             this.tx_dat_dest.TabIndex = 324;
@@ -736,7 +741,7 @@
             this.groupBox17.BackColor = System.Drawing.Color.White;
             this.groupBox17.Controls.Add(this.groupBox18);
             this.groupBox17.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.groupBox17.Location = new System.Drawing.Point(411, 77);
+            this.groupBox17.Location = new System.Drawing.Point(533, 77);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(115, 1);
             this.groupBox17.TabIndex = 323;
@@ -753,7 +758,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(414, 62);
+            this.label9.Location = new System.Drawing.Point(536, 61);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 13);
             this.label9.TabIndex = 322;
@@ -972,7 +977,7 @@
             // 
             // tx_dat_cant
             // 
-            this.tx_dat_cant.Location = new System.Drawing.Point(532, 57);
+            this.tx_dat_cant.Location = new System.Drawing.Point(654, 46);
             this.tx_dat_cant.Name = "tx_dat_cant";
             this.tx_dat_cant.Size = new System.Drawing.Size(25, 20);
             this.tx_dat_cant.TabIndex = 352;
@@ -991,7 +996,7 @@
             // 
             this.tx_cant.AllowSpace = false;
             this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_cant.Location = new System.Drawing.Point(486, 58);
+            this.tx_cant.Location = new System.Drawing.Point(608, 57);
             this.tx_cant.Name = "tx_cant";
             this.tx_cant.Size = new System.Drawing.Size(40, 20);
             this.tx_cant.TabIndex = 3;
@@ -1020,11 +1025,51 @@
             this.tx_rind.TabIndex = 310;
             this.tx_rind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.BackColor = System.Drawing.Color.White;
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox5.Location = new System.Drawing.Point(111, 77);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(175, 1);
+            this.groupBox5.TabIndex = 355;
+            this.groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(0, -26);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(164, 1);
+            this.groupBox6.TabIndex = 113;
+            this.groupBox6.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(114, 61);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.TabIndex = 354;
+            this.label3.Text = "Contrato";
+            // 
+            // tx_contrato
+            // 
+            this.tx_contrato.Location = new System.Drawing.Point(165, 57);
+            this.tx_contrato.Name = "tx_contrato";
+            this.tx_contrato.ReadOnly = true;
+            this.tx_contrato.Size = new System.Drawing.Size(100, 20);
+            this.tx_contrato.TabIndex = 356;
+            // 
             // salpedclts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(747, 482);
+            this.Controls.Add(this.tx_contrato);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox27);
             this.Controls.Add(this.groupBox25);
             this.Controls.Add(this.groupBox17);
@@ -1098,6 +1143,7 @@
             this.groupBox23.ResumeLayout(false);
             this.groupBox25.ResumeLayout(false);
             this.groupBox27.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1196,5 +1242,9 @@
         private System.Windows.Forms.TextBox tx_dat_cant;
         private NumericTextBox tx_cant;
         private System.Windows.Forms.TextBox tx_dat_idm;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tx_contrato;
     }
 }

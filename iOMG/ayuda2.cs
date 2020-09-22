@@ -212,7 +212,7 @@ namespace iOMG
                 consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
                     "b.saldo,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
                     "m.descrizionerid as nomad,e.descrizionerid as acabado," +
-                    "o.descrizionerid as nomorig,d.descrizionerid as nomdestin " +
+                    "o.descrizionerid as nomorig,d.descrizionerid as nomdestin,a.contrato " +
                     "from pedidos a left join detaped b on b.pedidoh=a.codped " +
                     "left join movim c on c.pedido=a.codped " +
                     "left join desc_mad m on m.idcodice=b.madera " +
@@ -223,7 +223,7 @@ namespace iOMG
                     "where b.saldo>0 and a.tipoes=@para3";
                 //"where c.pedido is null and a.tipoes=@para3";
                 dataGridView1.Rows.Clear();
-                dataGridView1.ColumnCount = 16;
+                dataGridView1.ColumnCount = 17;
                 dataGridView1.Columns[0].Name = " CODIGO";
                 dataGridView1.Columns[0].Width = 70;
                 dataGridView1.Columns[0].ReadOnly = true;
@@ -279,14 +279,16 @@ namespace iOMG
                 dataGridView1.Columns[15].Name = " NODEST";
                 dataGridView1.Columns[15].Width = 40;
                 dataGridView1.Columns[15].ReadOnly = true;
+                dataGridView1.Columns[16].Visible = false;
+                dataGridView1.Columns[16].Name = "CONTRATO";
                 //
-                ReturnValueA = new string[16] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+                ReturnValueA = new string[17] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
             }
             if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
             {
                 consulta = "select a.pedido,cl.razonsocial as cliente,a.destino,ifnull(b.descrizionerid, '') as nomact,a.articulo," + 
                     "dp.nombre,a.med1,a.madera,ifnull(c.descrizionerid,'') as nomad,a.estado,ifnull(d.descrizionerid,'') as acabado,a.cant," +
-                    "a.saldo,a.idmovim from movim a " +
+                    "a.saldo,a.idmovim,pe.contrato from movim a " +
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@para3 " +
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_alm b on b.idcodice=a.destino " +
@@ -296,7 +298,7 @@ namespace iOMG
                     "where a.fventa is null or a.saldo>0";
                 //
                 dataGridView1.Rows.Clear();
-                dataGridView1.ColumnCount = 14;
+                dataGridView1.ColumnCount = 15;
                 dataGridView1.Columns[0].Name = "pedido";
                 dataGridView1.Columns[0].Width = 70;
                 dataGridView1.Columns[0].ReadOnly = true;
@@ -338,8 +340,10 @@ namespace iOMG
                 dataGridView1.Columns[12].Name = "saldo";
                 dataGridView1.Columns[13].Visible = true;
                 dataGridView1.Columns[13].Name = "IdMov";
+                dataGridView1.Columns[14].Visible = false;
+                dataGridView1.Columns[14].Name = "Contrato";
                 //
-                ReturnValueA = new string[14] { "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+                ReturnValueA = new string[15] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
             }
             // Se crea un MySqlAdapter para obtener los datos de la base
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -469,7 +473,8 @@ namespace iOMG
                                                 row.ItemArray[12].ToString(),
                                                 row.ItemArray[13].ToString(),
                                                 row.ItemArray[14].ToString(),
-                                                row.ItemArray[15].ToString()
+                                                row.ItemArray[15].ToString(),
+                                                row.ItemArray[16].ToString()
                                                 );
                         }
                         dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -496,7 +501,8 @@ namespace iOMG
                                                 row.ItemArray[10].ToString(),
                                                 row.ItemArray[11].ToString(),
                                                 row.ItemArray[12].ToString(),
-                                                row.ItemArray[13].ToString()
+                                                row.ItemArray[13].ToString(),
+                                                row.ItemArray[14].ToString()
                                                 );
                         }
                         dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -587,6 +593,7 @@ namespace iOMG
                     ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
                     ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
                     ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();
+                    ReturnValueA[16] = dataGridView1.CurrentRow.Cells[16].Value.ToString();
                 }
                 if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
                 {
@@ -604,6 +611,7 @@ namespace iOMG
                     ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();
                     ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
                     ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
+                    ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
                 }
             }
             this.Close();
@@ -690,6 +698,7 @@ namespace iOMG
                 ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // 
                 ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // 
                 ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();   // 
+                ReturnValueA[16] = dataGridView1.CurrentRow.Cells[16].Value.ToString();   // 
             }
             if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
             {
@@ -711,6 +720,7 @@ namespace iOMG
                 ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
                 ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
                 ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
+                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();
@@ -769,6 +779,7 @@ namespace iOMG
                     ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // 
                     ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // 
                     ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();   // 
+                    ReturnValueA[16] = dataGridView1.CurrentRow.Cells[16].Value.ToString();   // 
                 }
                 if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
                 {
@@ -790,6 +801,7 @@ namespace iOMG
                     ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
                     ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();
                     ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();
+                    ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();
                 }
                 this.Close();
             }
@@ -808,7 +820,7 @@ namespace iOMG
                     string cols5 = "anag_cli,contrat";         // busqueda en columna 3
                     string colst = "detacon";                  // 
                     string col16 = "pedidos";                  // 16 columnas
-                    string col14 = "movim";
+                    string col14 = "movim";             // 14 columnas
                     {
                         if (colst.Contains(para1))
                         {
@@ -868,7 +880,8 @@ namespace iOMG
                                                 row.ItemArray[12].ToString(),
                                                 row.ItemArray[13].ToString(),
                                                 row.ItemArray[14].ToString(),
-                                                row.ItemArray[15].ToString()
+                                                row.ItemArray[15].ToString(),
+                                                row.ItemArray[16].ToString()
                                                 );
                             }
                         }
@@ -889,7 +902,8 @@ namespace iOMG
                                                 row.ItemArray[10].ToString(),
                                                 row.ItemArray[11].ToString(),
                                                 row.ItemArray[12].ToString(),
-                                                row.ItemArray[13].ToString()
+                                                row.ItemArray[13].ToString(),
+                                                row.ItemArray[14].ToString()
                                                 );
                             }
                         }
@@ -969,6 +983,7 @@ namespace iOMG
                 ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // acabado
                 ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // nomorig
                 ReturnValueA[15] = dataGridView1.CurrentRow.Cells[15].Value.ToString();   // nomdestin
+                ReturnValueA[16] = dataGridView1.CurrentRow.Cells[16].Value.ToString();   // contrato
             }
             if (para1 == "movim" && para2 == "pend" && para3 != "" && para4 == "")
             {
@@ -990,6 +1005,7 @@ namespace iOMG
                 ReturnValueA[11] = dataGridView1.CurrentRow.Cells[11].Value.ToString();   // 
                 ReturnValueA[12] = dataGridView1.CurrentRow.Cells[12].Value.ToString();   // 
                 ReturnValueA[13] = dataGridView1.CurrentRow.Cells[13].Value.ToString();   // 
+                ReturnValueA[14] = dataGridView1.CurrentRow.Cells[14].Value.ToString();   // 
             }
             iOMG.Program.retorna1 = cellva;
             tx_codigo.Focus();

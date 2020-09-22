@@ -65,7 +65,7 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1) //  && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"
+            if (keyData == Keys.F1 && Tx_modo.Text == "NUEVO")
             {
                 if (tx_pedido.Focused == true)     // pedidos de clientes
                 {
@@ -79,8 +79,8 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             // ayu2.ReturnValue0;
-                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15
-                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin
+                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15,      16  
+                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin,contrato
                             // llenado de campos
                             tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
                             tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
@@ -100,6 +100,8 @@ namespace iOMG
                             tx_dat_cant.Text = ayu2.ReturnValueA[4].ToString();
                             tx_precio.Text = ayu2.ReturnValueA[10].ToString();
                             tx_total.Text = ayu2.ReturnValueA[11].ToString();
+                            tx_contrato.Text = ayu2.ReturnValueA[16].ToString();
+                            // saldo solo jala de ingresos existentes
                         }
                     }
                 }
@@ -142,6 +144,7 @@ namespace iOMG
             // longitudes maximas de campos
             tx_comen.MaxLength = 50;
             cmb_tipo.Enabled = false;                       // no se debe mover el tipo de ingreso
+            tx_pedido.CharacterCasing = CharacterCasing.Upper;
         }
         private void jalainfo()                             // obtiene datos de imagenes
         {
@@ -209,7 +212,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.idmovim,date(a.fechain) as fechain,a.tipoes,a.origen,a.destino,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total," +
-                    "a.madera,a.estado,d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.nombre " +
+                    "a.madera,a.estado,d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.nombre,pe.contrato,a.saldo " +
                     "from movim a left join desc_mad b on b.idcodice=a.madera " +
                     "left join desc_est c on c.idcodice=a.estado " +
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@tpe " +
@@ -248,7 +251,7 @@ namespace iOMG
         {
             // a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,a.cliente,a.coment,
             // a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total,
-            // a.madera,a.estado,nomorig,nomdestin,nombre    ==> 20 columnas
+            // a.madera,a.estado,nomorig,nomdestin,nombre,contrato,saldo    ==> 22 columnas
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -367,6 +370,8 @@ namespace iOMG
             advancedDataGridView1.Columns[19].HeaderText = "nombre";
             advancedDataGridView1.Columns[19].Width = 60;
             advancedDataGridView1.Columns[19].ReadOnly = true;
+            advancedDataGridView1.Columns[20].Visible = false;  // contrato
+            advancedDataGridView1.Columns[21].Visible = false;  // saldo
         }
         private void jalaoc(string campo)                   // jala datos
         {
@@ -374,7 +379,7 @@ namespace iOMG
             {
                 // a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,a.cliente,a.coment,
                 // a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total,
-                // a.madera,a.estado,nomorig,nomdestin,nombre    ==> 20 columnas
+                // a.madera,a.estado,nomorig,nomdestin,nombre,contrato,saldo    ==> 22 columnas
                 tx_pedido.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["pedido"].Value.ToString();                      // 
                 dtp_ingreso.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fechain"].Value.ToString());
                 tx_dat_tiped.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["tipoes"].Value.ToString();                   // tipo ingreso
@@ -395,6 +400,8 @@ namespace iOMG
                 tx_dat_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                 tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["precio"].Value.ToString();
                 tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
+                tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
+                tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["saldo"].Value.ToString();
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
             }
@@ -426,6 +433,8 @@ namespace iOMG
                         tx_dat_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                         tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["precio"].Value.ToString();
                         tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
+                        tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
+                        tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["saldo"].Value.ToString();
                         //
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                     }
@@ -504,7 +513,6 @@ namespace iOMG
             {
                 try
                 {
-                    // 
                     string actua = "update movim set " +
                         "tipoes=@tipe,fechain=@fein,coment=@come,USER=@asd,dia=now() " +
                         "where idmovim=@idr";
@@ -539,14 +547,19 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                /*      // ACA COORDINAR CON GLORIA SI SE BORRA, ANULA O NO SE HACE NADA
-                string anu = "update movim set user=@asd,dia=now() " +
-                    "where id=@idr";
+                // despues de pasar las validaciones se BORRA 22/09/2020
+                string anu = "delete from movim where idmovim=@idr";
                 MySqlCommand micon = new MySqlCommand(anu, conn);
-                micon.Parameters.AddWithValue("@asd", asd);
                 micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                 micon.ExecuteNonQuery();
-                */
+                anu = "update detaped set saldo=saldo+@can where trim(pedidoh)=@ped and trim(item)=@cod";
+                micon = new MySqlCommand(anu, conn);
+                micon.Parameters.AddWithValue("@can", int.Parse(tx_cant.Text));
+                micon.Parameters.AddWithValue("@ped", tx_pedido.Text.Trim());
+                micon.Parameters.AddWithValue("@cod", tx_item.Text.Trim());
+                micon.ExecuteNonQuery();
+                //
+                micon.Dispose();
                 retorna = true;
             }
             conn.Close();
@@ -595,7 +608,7 @@ namespace iOMG
                 string consulta = "select a.codped,a.origen,a.destino,trim(cl.razonsocial) as cliente," +
                     "b.cant,b.item,b.nombre,b.medidas,b.madera,b.estado,b.precio,b.total," +
                     "ifnull(m.descrizionerid,'') as nomad,ifnull(e.descrizionerid,'') as acabado," +
-                    "ifnull(o.descrizionerid,'') as nomorig,ifnull(d.descrizionerid,'') as nomdestin " +
+                    "ifnull(o.descrizionerid,'') as nomorig,ifnull(d.descrizionerid,'') as nomdestin,a.contrato " +
                     "from pedidos a left join detaped b on b.pedidoh=a.codped " +
                     "left join desc_mad m on m.idcodice=b.madera " +
                     "left join desc_est e on e.idcodice=b.estado " +
@@ -628,6 +641,7 @@ namespace iOMG
                         tx_dat_cant.Text = dr.GetString(4);
                         tx_precio.Text = dr.GetString(10);
                         tx_total.Text = dr.GetString(11);
+                        tx_contrato.Text = dr.GetString(16);
                     }
                     dr.Close();
                 }
@@ -1026,13 +1040,19 @@ namespace iOMG
         private void button1_Click(object sender, EventArgs e)
         {
             // validamos que los campos no esten vacíos
-            string modos = "NUEVO,EDITAR";
-            if (modos.Contains(Tx_modo.Text))
+            // string modos = "NUEVO,EDITAR";
+            if (true)   // modos.Contains(Tx_modo.Text)
             {
                 if (tx_dat_tiped.Text == "")
                 {
                     MessageBox.Show("Seleccione el tipo de ingreso", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     cmb_tipo.Focus();
+                    return;
+                }
+                if (tx_cant.Text.Trim() == "" || tx_cant.Text.Trim() == "0")
+                {
+                    MessageBox.Show("La cantidad debe ser mayor a cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tx_cant.Focus();
                     return;
                 }
             }
@@ -1097,6 +1117,7 @@ namespace iOMG
                 bool pasa = false;
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
+                    conn.Open();
                     if (conn.State == ConnectionState.Open)
                     {
                         string busca = "select cant from detaped where pedidoh=@pedi and item=@item";
@@ -1157,9 +1178,15 @@ namespace iOMG
                     return;
                 }
             }
-            if (modo == "ANULAR")       // opción para borrar o anular
+            if (modo == "ANULAR")       // se anula o borra o ambos ??????? quedamos con Gloria que se BORRA 18/09/2020
             {
-                // se anula o borra o ambos ??????? ..... pensando varon
+                // validar que no tenga salida este ingreso
+                if (int.Parse(tx_saldo.Text) == 0 || int.Parse(tx_saldo.Text) < int.Parse(tx_cant.Text))
+                {
+                    MessageBox.Show("El ingreso tiene documento enlazado" + Environment.NewLine +
+                        "debe anular primero la salida o salidas", "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    return;
+                }
                 var aa = MessageBox.Show("Confirma que desea ANULAR el ingreso?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
@@ -1174,12 +1201,15 @@ namespace iOMG
                         DataRow row = dtg.Rows[i];
                         if (row[0].ToString() == tx_idr.Text)
                         {
-                            // 
-                            // dtg.Rows[i][3] = tiesan; // cmb_estado.SelectedText.ToString();
+                            row.Delete();
                         }
                     }
+                    dtg.AcceptChanges();
                 }
             }
+            // actualizamos el estado del contrato
+            acciones acc = new acciones();
+            acc.act_cont(tx_contrato.Text,"");
             if (iserror == "no")
             {
                 // debe limpiar los campos y actualizar la grilla
@@ -1209,7 +1239,7 @@ namespace iOMG
             }
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")
             {
-                jalaoc("tx_codped");                        // jalamos los datos
+                jalaoc("tx_pedido");                        // jalamos los datos
             }
         }
         private void tx_cant_Leave(object sender, EventArgs e)
