@@ -75,6 +75,7 @@ namespace iOMG
             bt_reserva.Enabled = false;
             bt_salida.Enabled = false;
             bt_borra.Enabled = false;
+            bt_extornaS.Enabled = false;
             //
             jaladat();
             advancedDataGridView1.DataSource = dt;
@@ -91,7 +92,7 @@ namespace iOMG
         }
 
         #region funcionas propias del form
-        private void jalainfo()                                                         // obtiene datos de imagenes
+        private void jalainfo()                                             // obtiene datos de imagenes
         {
             try
             {
@@ -947,6 +948,22 @@ namespace iOMG
                 }
             }
         }
+        private void bt_extornaS_Click(object sender, EventArgs e)      // extorna mueble salido por venta
+        {
+            movextorno rexto = new movextorno("EXTORNO DE SALIDA POR VENTA");
+            var result = rexto.ShowDialog();
+            if (result == DialogResult.Cancel)  // deberia ser OK, pero que chuuu
+            {
+                if (rexto.retorno == true)
+                {
+                    MessageBox.Show("El mueble se re-ingresó con exito", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("No se logró re-ingresar el mueble", "Verifique por favor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
         private void almovfis_Enter(object sender, EventArgs e)
         {
             selec();
@@ -1163,7 +1180,6 @@ namespace iOMG
         private void Bt_add_Click(object sender, EventArgs e)
         {
             Tx_modo.Text = "NUEVO";
-            //button1.Image = Image.FromFile(img_grab);
             panel1.Enabled = true;
             dataGridView1.Enabled = true;
             dataGridView2.Enabled = true;
@@ -1172,6 +1188,7 @@ namespace iOMG
             bt_salida.Enabled = true;
             bt_borra.Enabled = true;
             bt_bmf.Enabled = true;
+            bt_extornaS.Enabled = true;
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1184,6 +1201,7 @@ namespace iOMG
             bt_salida.Enabled = true;
             bt_borra.Enabled = true;
             bt_bmf.Enabled = true;
+            bt_extornaS.Enabled = true;
         }
         private void Bt_close_Click(object sender, EventArgs e)
         {
@@ -1242,6 +1260,5 @@ namespace iOMG
 
         }
         #endregion botones_de_comando  ;
-
     }
 }

@@ -103,10 +103,10 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form contratos, agregar funcionalidad de uso conectorsolorsoft ruc y dni ........... ok 05/08/2020
 - form repsalmac, STOCK, agregar opción de selección de almacenes para imprimir, formato establecido en A4 ...........ok 10/09/2020, 5 almacenes limitado
 - form repsalmac, tickets, afinar la impresion y cantidad de impresiones ............. ok 17/09/2020
-** CORRECCIONES, MEJORAS, ADECUACIONES - Reunión con Gloria/Nestor el 18/09/2020 ..... me quede aca
-- Nombre impresora para contratos, si tiene envía, sino piede seleccionar ............ ok
+** CORRECCIONES, MEJORAS, ADECUACIONES - Reunión con Gloria/Nestor el 18/09/2020 .......................... me quede aca
+- form contratos, nombre impresora para contratos, si tiene envía, sino puede seleccionar ............ ok
 - El formato del contrato actual "ContratoI.rpt" tiene 2 copias, una dentro del proyecto y otra en la carpeta de ejecucion, OJO, deben ser iguales
-- 
+- Se crea una opción de reporte para "historico de ventas" ...........................
 
 - form repspedalm, faltan los formatos de impresion .................................. 
 

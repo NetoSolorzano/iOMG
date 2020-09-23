@@ -271,6 +271,12 @@
     <Compile Include="movenmas.designer.cs">
       <DependentUpon>movenmas.cs</DependentUpon>
     </Compile>
+    <Compile Include="movextorno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="movextorno.designer.cs">
+      <DependentUpon>movextorno.cs</DependentUpon>
+    </Compile>
     <Compile Include="movfismas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -545,6 +551,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="movenmas.resx">
       <DependentUpon>movenmas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="movextorno.resx">
+      <DependentUpon>movextorno.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="movfismas.resx">
       <DependentUpon>movfismas.cs</DependentUpon>

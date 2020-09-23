@@ -171,11 +171,12 @@ namespace iOMG
                     if (dataGridView1.Rows[i].Cells[6].Value.ToString().Trim() != "")   // si tiene contrato = salida por venta = 2
                     {
                         // graba en vendalm solo salidas por venta, osea con reserva
-                        string acc2 = "insert into vendalm (ida,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,salida,evento,almdes,medid,idajuste,pedalm) " +
-                        "select id,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,@v_id,evento,almdes,medid,idajuste,pedalm from almloc where id=@ida";
+                        string acc2 = "insert into vendalm (ida,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,salida,evento,almdes,medid,idajuste,pedalm,fechSalR) " +
+                        "select id,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,@v_id,evento,almdes,medid,idajuste,pedalm,@fsr from almloc where id=@ida";
                         micon = new MySqlCommand(acc2, cn);
                         micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
                         micon.Parameters.AddWithValue("@v_id", tx_idr.Text);
+                        micon.Parameters.AddWithValue("@fsr", dtp_fsal.Value.ToString("yyyy-MM-dd"));
                         micon.ExecuteNonQuery();
                         // kardex
                         acc2 = "insert into kardex (codalm,fecha,tipmov,item,cant_s,coment,idalm,USER,dias) " +
@@ -227,8 +228,13 @@ namespace iOMG
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show(ex.Message, "Error en conexión");
-                Application.Exit();
+                var aa = MessageBox.Show(ex.Message + Environment.NewLine + 
+                    "Desea continuar y revisar la salida?", "Error en conexión",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                if (aa == DialogResult.No)
+                {
+                    Application.Exit();
+                }
+                bien = false;
             }
             return bien;
         }

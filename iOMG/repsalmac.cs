@@ -173,6 +173,9 @@ namespace iOMG
                 dadest.Fill(dtdest);
                 foreach (DataRow row in dtdest.Rows)
                 {
+                    cmb_hist_alm.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_hist_alm.ValueMember = row.ItemArray[1].ToString();
+                    //
                     cmb_destino.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_destino.ValueMember = row.ItemArray[1].ToString();
                     //
@@ -201,7 +204,7 @@ namespace iOMG
             //
             conn.Close();
         }
-        private void grilla()                                       // arma la grilla salidas
+        private void grilla()                                       // arma la resumen
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Regular);
             dgv_resumen.Font = tiplg;
@@ -234,7 +237,7 @@ namespace iOMG
             dgv_reserv.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_reserv.AllowUserToAddRows = false;
         }
-        private void grilla_sal()
+        private void grilla_sal()                                               // grilla salidas
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_salidas.Font = tiplg;
@@ -243,7 +246,7 @@ namespace iOMG
             dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_salidas.AllowUserToAddRows = false;
         }
-        private void grillares(string modo)                                     // arma la grilla del stock
+        private void grillares(string modo)                                     // arma la grilla stock
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_resumen.Font = tiplg;
@@ -327,7 +330,7 @@ namespace iOMG
                 dgv_resumen.Columns[16].Visible = true;
             }
         }
-        private void grillavtas()                                               // arma grilla de 
+        private void grillavtas()                                               // arma grilla de kardex
         {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_kardex.Font = tiplg;
@@ -336,6 +339,21 @@ namespace iOMG
             dgv_kardex.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_kardex.AllowUserToAddRows = false;
             if (dgv_kardex.DataSource == null) dgv_kardex.ColumnCount = 7;
+        }
+        private void grillaHist()                                                // grilla historico
+        {
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dgv_hist.Font = tiplg;
+            dgv_hist.DefaultCellStyle.Font = tiplg;
+            dgv_hist.RowTemplate.Height = 15;
+            dgv_hist.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dgv_hist.AllowUserToAddRows = false;
+            //if (dgv_hist.DataSource == null) dgv_kardex.ColumnCount = 7;
+            foreach (DataGridViewColumn col in dgv_hist.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
         }
         //
         private void button1_Click(object sender, EventArgs e)                  // filtra y muestra las reservas
@@ -520,6 +538,31 @@ namespace iOMG
                 return;
             }
         }
+        private void bt_hist_Click(object sender, EventArgs e)                  // genera rep historico
+        {
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                string parte = "";
+                if (tx_dat_hist_alm.Text != "") parte = parte + " and codalm=@alm";
+                string consulta = "select * from vendalm where fechSalR between @fini and @ffin" + parte;
+                dgv_hist.DataSource = null;
+                dgv_hist.ReadOnly = true;
+                using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                {
+                    micon.Parameters.AddWithValue("@fini", dtp_hist_ini.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@ffin", dtp_hist_fin.Value.ToString("yyyy-MM-dd"));
+                    if (parte != "") micon.Parameters.AddWithValue("@alm", tx_dat_hist_alm.Text);
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_hist.DataSource = dt;
+                        grillaHist();
+                    }
+                }
+            }
+        }
         private void label13_Click(object sender, EventArgs e)
         {
             // error
@@ -662,6 +705,19 @@ namespace iOMG
         #endregion
 
         #region combos
+        private void cmb_hist_alm_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_hist_alm.SelectedValue != null) tx_dat_hist_alm.Text = cmb_hist_alm.SelectedValue.ToString();
+            else tx_dat_hist_alm.Text = cmb_hist_alm.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_hist_alm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_hist_alm.SelectedIndex = -1;
+                tx_dat_hist_alm.Text = "";
+            }
+        }
         private void cmb_vtasloc_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_karalm.SelectedValue != null) tx_dat_kalm.Text = cmb_karalm.SelectedValue.ToString();
@@ -675,7 +731,6 @@ namespace iOMG
                 tx_dat_kalm.Text = "";
             }
         }
-        // 
         private void cmb_destino_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_destino.SelectedValue != null) tx_dat_dest.Text = cmb_destino.SelectedValue.ToString();
@@ -689,7 +744,6 @@ namespace iOMG
                 tx_dat_dest.Text = "";
             }
         }
-        //
         private void cmb_fam_SelectionChangeCommitted(object sender, EventArgs e)       // capitulo familia
         {
             // de momento no hacemos nada
@@ -699,10 +753,8 @@ namespace iOMG
             if (e.KeyCode == Keys.Delete)
             {
                 cmb_fam.SelectedIndex = -1;
-                //tx_dat_dest.Text = "";
             }
         }
-        //
         private void cmb_tienda_SelectionChangeCommitted(object sender, EventArgs e)    // reservas
         {
             if (cmb_tienda.SelectedValue != null) tx_dat_almres.Text = cmb_tienda.SelectedValue.ToString();
