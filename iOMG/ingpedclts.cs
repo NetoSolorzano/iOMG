@@ -574,7 +574,7 @@ namespace iOMG
             {
                 string consulta = "select count(a.id) from pedidos a " +
                     "left join detaped b on b.pedidoh=a.codped " +
-                    "where trim(a.codped)=@doc and b.saldo>0";
+                    "where trim(a.codped)=@doc and b.saldo>0 and a.status<>'ANULAD'";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@doc", docu.Trim());
                 MySqlDataReader dr = micon.ExecuteReader();
@@ -585,7 +585,7 @@ namespace iOMG
                         if (dr.GetInt16(0) > 0) retorna = true;
                         else
                         {
-                            MessageBox.Show("No existe el pedido ingresado" + Environment.NewLine +
+                            MessageBox.Show("No existe el pedido ingresado, esta anulado" + Environment.NewLine +
                                 "o el pedido no tiene saldo", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                             tx_pedido.Text = "";
                             tx_dat_ped.Text = "";
@@ -1053,6 +1053,12 @@ namespace iOMG
                 {
                     MessageBox.Show("La cantidad debe ser mayor a cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     tx_cant.Focus();
+                    return;
+                }
+                if (tx_pedido.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese el pedido!","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    tx_pedido.Focus();
                     return;
                 }
             }

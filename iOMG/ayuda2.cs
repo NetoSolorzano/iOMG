@@ -220,7 +220,7 @@ namespace iOMG
                     "left join desc_loc o on o.idcodice=a.origen " +
                     "left join desc_alm d on d.idcodice=a.destino " +
                     "left join anag_cli cl on cl.idanagrafica=a.cliente " +
-                    "where b.saldo>0 and a.tipoes=@para3";
+                    "where b.saldo>0 and a.tipoes=@para3 and a.status<>'ANULAD'";
                 //"where c.pedido is null and a.tipoes=@para3";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 17;

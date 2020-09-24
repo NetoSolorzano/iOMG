@@ -3,6 +3,7 @@
 //PARAMETERS vpcont,formu && contrato
 //LOCAL texto,asd,cantit,cantrs
 using MySql.Data.MySqlClient;
+using System;
 using System.Configuration;
 using System.Windows.Forms;
 namespace iOMG
@@ -17,13 +18,30 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
         //string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
-        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";ConnectionLifeTime=" + ctl + ";";
+        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120";
+            //";ConnectionLifeTime=" + ctl + ";";
 
         // 18-09-2020, REUNION GLORIA, NESTOR. LOS CODIGOS Z NO INFLUYEN EN EL ESTADO DE UN CONTRATO
         public void act_cont(string numcon,string tipo)
         {
             MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
-            cn.Open();
+            while (true)
+            {
+                try
+                {
+                    cn.Open();
+                    if (cn.State == System.Data.ConnectionState.Open) break;
+                }
+                catch
+                {
+                    var aa = MessageBox.Show("La conexión al servidor esta tardando demasiado" + Environment.NewLine +
+                        "Desea seguir esperando?", "Problema de conectividad", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (aa == DialogResult.No)
+                    {
+                        Application.Exit();
+                    }
+                }
+            }
             try
             {
                 int cantit = 0;

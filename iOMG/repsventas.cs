@@ -869,6 +869,8 @@ namespace iOMG
             if(tx_codped.Text != "")
             {
                 //lib.estcont(tx_codped.Text.Trim()); comentado 21/09/2020
+                acciones acc = new acciones();  // ahora se usa éste actualizador 21/09/2020
+                acc.act_cont(tx_codped.Text,"");
                 try
                 {
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);

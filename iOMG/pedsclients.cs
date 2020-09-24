@@ -49,6 +49,7 @@ namespace iOMG
         string estanu = "";             // estado de pedido de clientes anulado
         string nomanu = "";             // nombre estado anulado
         string estcer = "";             // estado de pedido de clientes cerrado tal como esta, ya no se atiende
+        string codVar = "";             // 4 caracteres de inicio que permiten varios items por pedido
         //string canovald2 = "";          // captitulos donde no se valida det2
         //string conovald2 = "";          // valor por defecto al no validar det2
         //string letpied = "";            // letra identificadora de piedra en detalle2
@@ -260,6 +261,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "indentif" && row["param"].ToString() == "letra") letiden = row["valor"].ToString().Trim();         // letra identif para codigo de pedido
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "codAnu") estanu = row["valor"].ToString().Trim();         // codigo estado anulado
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "Anulado") nomanu = row["valor"].ToString().Trim();         // nombre estado anulado
+                        if (row["campo"].ToString() == "articulos" && row["param"].ToString() == "varios") codVar = row["valor"].ToString().Trim();         // codigo que permite varios items x pedido
                     }
                 }
                 da.Dispose();
@@ -516,6 +518,7 @@ namespace iOMG
             dataGridView1.Columns[0].Width = 30;                // ancho
             dataGridView1.Columns[0].HeaderText = "Id";         // titulo de la columna
             dataGridView1.Columns[0].Name = "iddetaped";
+            dataGridView1.Columns[0].ReadOnly = true;
             // cant
             dataGridView1.Columns[1].Visible = true;            // columna visible o no
             dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
@@ -1009,7 +1012,7 @@ namespace iOMG
                 "from contrat a " +
                 "left join anag_cli b on b.idanagrafica=a.cliente " +
                 "left join desc_alm c on c.idcodice=a.tipoes " +
-                "where a.contrato=@cont";
+                "where a.contrato=@cont and a.status<>'ANULAD'";
             MySqlCommand micon = new MySqlCommand(consulta, conn);
             micon.Parameters.AddWithValue("@cont", cont);
             MySqlDataReader dr = micon.ExecuteReader();
@@ -1734,12 +1737,13 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO")
             {
-                if (tx_cont.Text.Trim() != "" && tx_cliente.Text.Trim() == "")
+                if (tx_cont.Text.Trim() != "")  //  && tx_cliente.Text.Trim() == ""
                 {
                     if (buscont(tx_cont.Text) == false)
                     {
-                        MessageBox.Show("No existe el contrato", "Error");
+                        MessageBox.Show("No existe el contrato o se encuentra ANULADO", "Error");
                         tx_cont.Text = "";
+                        tx_cliente.Text = "";
                     }
                 }
             }
@@ -1905,6 +1909,16 @@ namespace iOMG
                         tx_d_can.Focus();
                         return;
                     }
+                }
+            }
+            // POR DEFECTO, SOLO SE PERMITE UN ITEM POR PEDIDO 18/09/2020 a menos que sea silla kandinski
+            // validamos que solo sea un 1 item en detalle a menos que variable [codVar] sea para varios
+            if (dataGridView1.Rows.Count != 1)
+            {
+                if (tx_d_codi.Text.Substring(0,4) != codVar || (tx_d_codi.Text.Substring(0, 4) != dataGridView1.Rows[0].Cells[2].Value.ToString().Substring(0, 4)))
+                {
+                    MessageBox.Show("No se permite mas items","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    return;
                 }
             }
             // validamos cant item  validar que la cantidad no sea > cantidad del contrato
@@ -2309,8 +2323,8 @@ namespace iOMG
                     rowdetalle.madera = lib.descorta(row.Cells["madera"].Value.ToString(),"mad");
                     reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
                     //
-                    can =+ int.Parse(row.Cells["cant"].Value.ToString());
-                    tot =+ decimal.Parse(row.Cells["total"].Value.ToString());
+                    can += int.Parse(row.Cells["cant"].Value.ToString());
+                    tot += decimal.Parse(row.Cells["total"].Value.ToString());
                 }
             }
             pedsclts.cabeza_pedcltRow rowcabeza = reppedido.cabeza_pedclt.Newcabeza_pedcltRow();
