@@ -27,7 +27,8 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
         //string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
-        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";ConnectionLifeTime=" + ctl + ";";
+        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + 
+            ";ConnectionLifeTime=" + ctl + ";default command timeout=120";
 
         public movim(string parm1,string parm2,string parm3,string parm4)    // parm1 = modo = reserva o salida
         {                                                       // parm2 = id del mueble
@@ -284,15 +285,10 @@ namespace iOMG
             try
             {
                 DataTable dt = new DataTable();
-                /*string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem " +
-                    "from contrat a " +
-                    "left join anag_cli b on b.idanagrafica=a.cliente " +
-                    "left join detacon c on c.contratoh=a.contrato " +
-                    "where a.contrato=@cont and a.status<>'ENTREG'";*/
                 string consulta = "select a.fecha,a.tipoes,a.coment,a.status,b.RazonSocial,trim(c.item),c.cant,trim(c.nombre),c.coment as comitem,ifnull(x.cant,0) " +
                     "from contrat a " +
                     "left join anag_cli b on b.idanagrafica = a.cliente " +
-                    "left join detacon c on c.contratoh = a.contrato " +
+                    "left join detacon c on c.contratoh = a.contrato AND c.saldo>0 " +
                     "LEFT JOIN (SELECT a.item, sum(a.cant) AS cant FROM reservd a LEFT JOIN reservh b ON a.reservh = b.idreservh " +
                         "WHERE b.contrato = @cont AND b.status <> 'ANULADO' GROUP BY a.item) x on x.item = concat(left(c.item, 10), SUBSTRING(c.item, 13, 6)) " +
                     "where a.contrato = @cont and a.status <> 'ENTREG'";
@@ -349,14 +345,17 @@ namespace iOMG
                             }
                             else
                             {
-                                if (parte1.Substring(1,3) == "000")     // vemos si el item del contrato es A DISEÑO
+                                if (parte1 != "")
                                 {
-                                    if (parte1.Substring(0, 1) == parte2.Substring(0, 1) && parte1.Substring(4,1) == parte2.Substring(4,1))
+                                    if (parte1.Substring(1, 3) == "000")     // vemos si el item del contrato es A DISEÑO
                                     {
-                                        // en este caso, el item del contrato es a diseño y el capitulo y madera son iguales
-                                        sino = "si";
-                                        tx_comres.Text = row[8].ToString();
-                                        tx_d_codi.Text = row[5].ToString();
+                                        if (parte1.Substring(0, 1) == parte2.Substring(0, 1) && parte1.Substring(4, 1) == parte2.Substring(4, 1))
+                                        {
+                                            // en este caso, el item del contrato es a diseño y el capitulo y madera son iguales
+                                            sino = "si";
+                                            tx_comres.Text = row[8].ToString();
+                                            tx_d_codi.Text = row[5].ToString();
+                                        }
                                     }
                                 }
                             }

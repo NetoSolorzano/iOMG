@@ -424,8 +424,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into detam (fecha,tipo,uantes,uactual,pedido,coment," +
-                    "USER,dia,cant) " +
-                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@asd,now(),@can)";
+                    "USER,dia,cant,item) " +
+                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@asd,now(),@can,@ite)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -435,6 +435,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@come", tx_comen.Text.Trim());
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@can", tx_cant.Text);
+                    micon.Parameters.AddWithValue("@ite", tx_item.Text);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -1009,6 +1010,12 @@ namespace iOMG
             //string modos = "NUEVO,EDITAR";
             if (true)   // modos.Contains(Tx_modo.Text)
             {
+                if (tx_pedido.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese el código de pedido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tx_pedido.Focus();
+                    return;
+                }
                 if (tx_dat_tiped.Text == "")
                 {
                     MessageBox.Show("Seleccione el tipo de ingreso", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
@@ -1019,6 +1026,12 @@ namespace iOMG
                 {
                     MessageBox.Show("Ingrese la cantidad", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     tx_cant.Focus();
+                    return;
+                }
+                if (tx_item.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione el pedido correctamente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tx_pedido.Focus();
                     return;
                 }
             }
@@ -1143,11 +1156,13 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO" && tx_pedido.Text != "")
             {
-                if (valexist(tx_pedido.Text) == true && tx_dat_ped.Text.Trim() != tx_pedido.Text.Trim())
+                // no podemos usar este codigo porque los pedidos si pueden tener mas de item, caso silla kandisky 18/09/2020
+                // debe seleccionarse forzosamente desde F1
+                /*if (valexist(tx_pedido.Text) == true && tx_dat_ped.Text.Trim() != tx_pedido.Text.Trim())
                 {
                     // jalamos los datos del pedido y mostramos
                     jalaped(tx_pedido.Text);
-                }
+                }*/
             }
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")
             {
@@ -1164,7 +1179,7 @@ namespace iOMG
             if (tx_cant.Text.Trim() != "")
             {
                 string consulta = "select pedido,sum(cant) as cant, sum(saldo) as saldo " +
-                    "from movim where pedido=@pedi group by pedido";
+                    "from movim where pedido=@pedi and articulo=@arti group by pedido";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
@@ -1173,6 +1188,7 @@ namespace iOMG
                     {
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
+                        micon.Parameters.AddWithValue("@arti", tx_item.Text.Trim());
                         MySqlDataReader dr = micon.ExecuteReader();
                         if (dr.HasRows)
                         {

@@ -214,13 +214,13 @@ namespace iOMG
                     "m.descrizionerid as nomad,e.descrizionerid as acabado," +
                     "o.descrizionerid as nomorig,d.descrizionerid as nomdestin,a.contrato " +
                     "from pedidos a left join detaped b on b.pedidoh=a.codped " +
-                    "left join movim c on c.pedido=a.codped " +
                     "left join desc_mad m on m.idcodice=b.madera " +
                     "left join desc_est e on e.idcodice=b.estado " +
                     "left join desc_loc o on o.idcodice=a.origen " +
                     "left join desc_alm d on d.idcodice=a.destino " +
                     "left join anag_cli cl on cl.idanagrafica=a.cliente " +
                     "where b.saldo>0 and a.tipoes=@para3 and a.status<>'ANULAD'";
+                //"left join movim c on c.pedido=a.codped " +
                 //"where c.pedido is null and a.tipoes=@para3";
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 17;
@@ -241,7 +241,7 @@ namespace iOMG
                 dataGridView1.Columns[4].ReadOnly = true;
                 dataGridView1.Columns[5].Name = " ITEM";
                 dataGridView1.Columns[5].Width = 100;
-                dataGridView1.Columns[5].Visible = false;
+                dataGridView1.Columns[5].Visible = true;
                 dataGridView1.Columns[6].Name = " NOMBRE";
                 dataGridView1.Columns[6].Width = 100;
                 dataGridView1.Columns[6].Visible = false;
@@ -292,10 +292,10 @@ namespace iOMG
                     "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@para3 " +
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_alm b on b.idcodice=a.destino " +
-                    "left join detaped dp on dp.pedidoh=a.pedido " +
+                    "left join detaped dp on dp.pedidoh=a.pedido AND dp.item=a.articulo " +
                     "left join desc_mad c on c.idcodice=a.madera " +
                     "left join desc_est d on d.idcodice=a.estado " +
-                    "where a.fventa is null or a.saldo>0";
+                    "where a.saldo>0";  // a.fventa is null or
                 //
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 15;

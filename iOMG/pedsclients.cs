@@ -68,7 +68,9 @@ namespace iOMG
         static string usua = ConfigurationManager.AppSettings["user"].ToString();
         static string cont = ConfigurationManager.AppSettings["pass"].ToString();
         static string data = ConfigurationManager.AppSettings["data"].ToString();
-        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
+        static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
+        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";" +
+            "ConnectionLifeTime=" + ctl + ";default command timeout=120";
         DataTable dtg = new DataTable();
         DataTable dtu = new DataTable();        // dtg primario, original con la carga del 
         DataTable dttaller = new DataTable();   // combo taller de fabric.

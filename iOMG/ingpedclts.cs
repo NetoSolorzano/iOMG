@@ -219,7 +219,7 @@ namespace iOMG
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_loc d on d.idcodice=a.origen " +
                     "left join desc_alm e on e.idcodice=a.destino " +
-                    "left join detaped dp on dp.pedidoh=a.pedido " +
+                    "left join detaped dp on dp.pedidoh=a.pedido AND dp.item=a.articulo " +
                     "order by idmovim";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tpe", tipedc);                    // codigo pedido cliente
@@ -1061,6 +1061,12 @@ namespace iOMG
                     tx_pedido.Focus();
                     return;
                 }
+                if (tx_item.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione correctamente el pedido", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_pedido.Focus();
+                    return;
+                }
             }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;
@@ -1237,11 +1243,12 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO" && tx_pedido.Text != "")
             {
-                if (valexist(tx_pedido.Text) == true && tx_dat_ped.Text.Trim() != tx_pedido.Text.Trim())
+                // SOLO SE PERMITE CON F1
+                /*if (valexist(tx_pedido.Text) == true && tx_dat_ped.Text.Trim() != tx_pedido.Text.Trim())
                 {
                     // jalamos los datos del pedido y mostramos
                     jalaped(tx_pedido.Text);
-                }
+                }*/ 
             }
             if (Tx_modo.Text != "NUEVO" && tx_pedido.Text != "" && tx_idr.Text == "")
             {
@@ -1252,7 +1259,7 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO")
             {
-                if (tx_cant.Text.Trim() != "")
+                if (tx_cant.Text.Trim() != "" && tx_dat_cant.Text.Trim() != "")
                 {
                     if(int.Parse(tx_cant.Text) <= 0)
                     {
