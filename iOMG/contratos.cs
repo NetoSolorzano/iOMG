@@ -2750,6 +2750,18 @@ namespace iOMG
                 tx_d_can.Focus();
                 return;
             }
+            /*if (tx_d_id.Text.Trim() == "")  // validamos que el codigo no se repita en la grilla
+            {
+                for(int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    if (tx_d_codi.Text == dataGridView1.Rows[i].Cells[1].Value.ToString())
+                    {
+                        MessageBox.Show("Esta repitiendo el código del artículo","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        cmb_fam.Focus();
+                        return;
+                    }
+                }
+            }*/
             // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {

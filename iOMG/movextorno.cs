@@ -36,8 +36,11 @@ namespace iOMG
         private void movextorno_Load(object sender, EventArgs e)
         {
             tx_idr.Text = "";
+            tx_idr.ReadOnly = false;
             tx_salida.Text = "";
+            tx_salida.ReadOnly = true;
             tx_contrato.Text = "";
+            tx_contrato.ReadOnly = true;
         }
         private void movextorno_KeyDown(object sender, KeyEventArgs e)
         {
@@ -76,7 +79,7 @@ namespace iOMG
                             DataTable dt = new DataTable();
                             da.Fill(dt);
                             dataGridView1.DataSource = dt;
-                            foreach (DataGridViewColumn col in dt.Columns)
+                            foreach (DataGridViewColumn col in dataGridView1.Columns)
                             {
                                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                             }
@@ -102,6 +105,7 @@ namespace iOMG
                 if (salidaR() == true) retorno = true; // true = se efectuo la operacion
                 else retorno = false;
             }
+            this.Close();
         }
         //
         private bool salidaR()
@@ -126,7 +130,7 @@ namespace iOMG
                 // restamos en salidasd
                 string resta = "update salidasd set cant=cant-@can where salidash=@ids";
                 micon = new MySqlCommand(resta, conn);
-                micon.Parameters.AddWithValue("@ida", tx_salida.Text);
+                micon.Parameters.AddWithValue("@ids", tx_salida.Text);
                 micon.Parameters.AddWithValue("@can", 1);
                 micon.ExecuteNonQuery();
                 // falta actualizar el estado del contrato
@@ -136,6 +140,17 @@ namespace iOMG
                 string borra = "delete from vendalm where ida=@idm";
                 micon = new MySqlCommand(borra, conn);
                 micon.Parameters.AddWithValue("@idm", tx_idr.Text);
+                micon.ExecuteNonQuery();
+                // kardex
+                string accX = "insert into kardex (codalm,fecha,tipmov,item,cant_i,coment,idalm,USER,dias) " +
+                            "values (@ptxlle,@fech,'INGRESO',@codi,'1',concat('Extorno vta. salida ',@nsal),@ida,@asd,now())";
+                micon = new MySqlCommand(accX, conn);
+                micon.Parameters.AddWithValue("@ptxlle", dataGridView1.Rows[0].Cells["codalm"].Value.ToString());
+                micon.Parameters.AddWithValue("@fech", DateTime.Now.ToString("yyyy-MM-dd"));
+                micon.Parameters.AddWithValue("@codi", dataGridView1.Rows[0].Cells["codig"].Value.ToString());
+                micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[0].Cells["ida"].Value.ToString());
+                micon.Parameters.AddWithValue("@nsal", tx_salida.Text);
+                micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
                 micon.ExecuteNonQuery();
                 //
                 bien = true;

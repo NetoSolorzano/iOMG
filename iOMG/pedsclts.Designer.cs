@@ -548,6 +548,10 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columntaller;
             
+            private global::System.Data.DataColumn columncant;
+            
+            private global::System.Data.DataColumn columntotal;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public cabeza_pedcltDataTable() {
@@ -679,6 +683,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn cantColumn {
+                get {
+                    return this.columncant;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn totalColumn {
+                get {
+                    return this.columntotal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -714,7 +734,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public cabeza_pedcltRow Addcabeza_pedcltRow(string id, string codped, string contrato, string cliente, string razonsocial, string origen, string fecha, string entrega, string coment, string ciudad_des, string status, string taller) {
+            public cabeza_pedcltRow Addcabeza_pedcltRow(string id, string codped, string contrato, string cliente, string razonsocial, string origen, string fecha, string entrega, string coment, string ciudad_des, string status, string taller, string cant, string total) {
                 cabeza_pedcltRow rowcabeza_pedcltRow = ((cabeza_pedcltRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -728,7 +748,9 @@ namespace iOMG {
                         coment,
                         ciudad_des,
                         status,
-                        taller};
+                        taller,
+                        cant,
+                        total};
                 rowcabeza_pedcltRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcabeza_pedcltRow);
                 return rowcabeza_pedcltRow;
@@ -763,6 +785,8 @@ namespace iOMG {
                 this.columnciudad_des = base.Columns["ciudad_des"];
                 this.columnstatus = base.Columns["status"];
                 this.columntaller = base.Columns["taller"];
+                this.columncant = base.Columns["cant"];
+                this.columntotal = base.Columns["total"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -792,6 +816,10 @@ namespace iOMG {
                 base.Columns.Add(this.columnstatus);
                 this.columntaller = new global::System.Data.DataColumn("taller", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntaller);
+                this.columncant = new global::System.Data.DataColumn("cant", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncant);
+                this.columntotal = new global::System.Data.DataColumn("total", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntotal);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3684,6 +3712,38 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string cant {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabeza_pedclt.cantColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'cant\' de la tabla \'cabeza_pedclt\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabeza_pedclt.cantColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string total {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabeza_pedclt.totalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'total\' de la tabla \'cabeza_pedclt\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabeza_pedclt.totalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecabeza_pedclt.idColumn);
             }
@@ -3824,6 +3884,30 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SettallerNull() {
                 this[this.tablecabeza_pedclt.tallerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IscantNull() {
+                return this.IsNull(this.tablecabeza_pedclt.cantColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetcantNull() {
+                this[this.tablecabeza_pedclt.cantColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IstotalNull() {
+                return this.IsNull(this.tablecabeza_pedclt.totalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SettotalNull() {
+                this[this.tablecabeza_pedclt.totalColumn] = global::System.Convert.DBNull;
             }
         }
         

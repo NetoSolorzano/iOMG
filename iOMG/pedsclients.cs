@@ -1895,6 +1895,18 @@ namespace iOMG
                 tx_d_codi.Focus();
                 return;
             }
+            if (tx_d_id.Text.Trim() == "")  // validamos que el codigo no se repita en la grilla
+            {
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    if (tx_d_codi.Text == dataGridView1.Rows[i].Cells[2].Value.ToString())
+                    {
+                        MessageBox.Show("Esta repitiendo el código del artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        tx_d_can.Focus();
+                        return;
+                    }
+                }
+            }
             // validamos cant item  validar que la cantidad no sea > cantidad del contrato
             bool pasa = false;
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
@@ -1910,19 +1922,10 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@item", cod);
                         using (MySqlDataReader dr = micon.ExecuteReader())
                         {
-                            //int vc = 0;
                             int vs = 0;
                             if (dr.Read())
                             {
-                                //vc = dr.GetInt32(0);
                                 vs = dr.GetInt32(1);
-                                /*if (int.Parse(tx_d_can.Text) > vc)
-                                {
-                                    MessageBox.Show("La cantidad pedida es mayor al contrato", "Error - corrija",
-                                        MessageBoxButtons.OK,MessageBoxIcon.Error);
-                                    tx_d_can.Focus();
-                                    pasa = false;
-                                }*/
                                 if (int.Parse(tx_d_can.Text) > vs)
                                 {
                                     MessageBox.Show("La cantidad pedida es mayor al saldo del contrato!", "Error - corrija",
@@ -2287,21 +2290,8 @@ namespace iOMG
         private pedsclts generareporte()             // procedimiento para meter los datos del formulario hacia las tablas del dataset del reporte en crystal
         {
             pedsclts reppedido = new pedsclts();                                    // dataset
-            pedsclts.cabeza_pedcltRow rowcabeza = reppedido.cabeza_pedclt.Newcabeza_pedcltRow();
-            rowcabeza.codped = tx_codped.Text;
-            rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
-            rowcabeza.id = "0";
-            rowcabeza.origen = cmb_taller.Text;
-            rowcabeza.razonsocial = tx_cliente.Text;
-            rowcabeza.cliente = tx_idc.Text;
-            rowcabeza.coment = tx_coment.Text;
-            rowcabeza.contrato = tx_cont.Text;
-            rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
-            rowcabeza.ciudad_des = cmb_destino.Text.PadRight(15).Substring(0,15); //tx_ciudades.Text;
-            rowcabeza.status = (tx_status.Text == nomanu)? tx_status.Text:"";
-            rowcabeza.taller = (cmb_taller.Text.Trim().Length < 7) ? cmb_taller.Text : cmb_taller.Text.Substring(9, cmb_taller.Text.Trim().Length - 6);
-            reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
-            //
+            int can = 0;
+            decimal tot = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Cells["item"].Value != null)
@@ -2318,8 +2308,28 @@ namespace iOMG
                     rowdetalle.precio = row.Cells["total"].Value.ToString();   //tx_d_precio.Text;
                     rowdetalle.madera = lib.descorta(row.Cells["madera"].Value.ToString(),"mad");
                     reppedido.deta_pedclt.Adddeta_pedcltRow(rowdetalle);
+                    //
+                    can =+ int.Parse(row.Cells["cant"].Value.ToString());
+                    tot =+ decimal.Parse(row.Cells["total"].Value.ToString());
                 }
             }
+            pedsclts.cabeza_pedcltRow rowcabeza = reppedido.cabeza_pedclt.Newcabeza_pedcltRow();
+            rowcabeza.codped = tx_codped.Text;
+            rowcabeza.fecha = dtp_pedido.Value.ToString("dd/MM/yyyy");
+            rowcabeza.id = "0";
+            rowcabeza.origen = cmb_taller.Text;
+            rowcabeza.razonsocial = tx_cliente.Text;
+            rowcabeza.cliente = tx_idc.Text;
+            rowcabeza.coment = tx_coment.Text;
+            rowcabeza.contrato = tx_cont.Text;
+            rowcabeza.entrega = dtp_entreg.Value.ToString("dd/MM/yyyy");
+            rowcabeza.ciudad_des = cmb_destino.Text.PadRight(15).Substring(0, 15); //tx_ciudades.Text;
+            rowcabeza.status = (tx_status.Text == nomanu) ? tx_status.Text : "";
+            rowcabeza.taller = (cmb_taller.Text.Trim().Length < 7) ? cmb_taller.Text : cmb_taller.Text.Substring(9, cmb_taller.Text.Trim().Length - 6);
+            rowcabeza.cant = can.ToString();
+            rowcabeza.total = tot.ToString();
+            reppedido.cabeza_pedclt.Addcabeza_pedcltRow(rowcabeza);
+            //
             return reppedido;
         }
         #endregion crystal

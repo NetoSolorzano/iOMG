@@ -35,12 +35,12 @@
             this.bt_close = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tx_idr = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tx_salida = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tx_contrato = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tx_salida = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tx_idr = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -131,23 +131,22 @@
             this.panel4.Size = new System.Drawing.Size(625, 49);
             this.panel4.TabIndex = 21;
             // 
-            // label1
+            // label3
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 18;
-            this.label1.Text = "Id Almacén";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(471, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "Contrato";
             // 
-            // tx_idr
+            // tx_contrato
             // 
-            this.tx_idr.Location = new System.Drawing.Point(83, 15);
-            this.tx_idr.Name = "tx_idr";
-            this.tx_idr.ReadOnly = true;
-            this.tx_idr.Size = new System.Drawing.Size(58, 20);
-            this.tx_idr.TabIndex = 17;
-            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
+            this.tx_contrato.Location = new System.Drawing.Point(521, 15);
+            this.tx_contrato.Name = "tx_contrato";
+            this.tx_contrato.ReadOnly = true;
+            this.tx_contrato.Size = new System.Drawing.Size(61, 20);
+            this.tx_contrato.TabIndex = 21;
             // 
             // label2
             // 
@@ -162,31 +161,33 @@
             // 
             this.tx_salida.Location = new System.Drawing.Point(374, 15);
             this.tx_salida.Name = "tx_salida";
+            this.tx_salida.ReadOnly = true;
             this.tx_salida.Size = new System.Drawing.Size(58, 20);
             this.tx_salida.TabIndex = 19;
             // 
-            // label3
+            // label1
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(471, 19);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 13);
-            this.label3.TabIndex = 22;
-            this.label3.Text = "Contrato";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(20, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "Id Almacén";
             // 
-            // tx_contrato
+            // tx_idr
             // 
-            this.tx_contrato.Location = new System.Drawing.Point(521, 15);
-            this.tx_contrato.Name = "tx_contrato";
-            this.tx_contrato.Size = new System.Drawing.Size(61, 20);
-            this.tx_contrato.TabIndex = 21;
+            this.tx_idr.Location = new System.Drawing.Point(83, 15);
+            this.tx_idr.Name = "tx_idr";
+            this.tx_idr.Size = new System.Drawing.Size(58, 20);
+            this.tx_idr.TabIndex = 17;
+            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
             // 
             // movextorno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(622, 221);
+            this.ClientSize = new System.Drawing.Size(618, 217);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);
