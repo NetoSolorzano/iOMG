@@ -37,7 +37,7 @@ namespace iOMG
             IEnumerable<PaperSize> paperSizes = ps.PaperSizes.Cast<PaperSize>();
             PaperSize sizeA5 = paperSizes.First<PaperSize>(size => size.Kind == PaperKind.A5);
             ps.DefaultPageSettings.PaperSize = sizeA5;
-            ps.DefaultPageSettings.Landscape = false;
+            ps.DefaultPageSettings.Landscape = true;   // false
             //
             printPreviewDialog1.Document = printDocument1;
             printDocument1.PrinterSettings = ps;
@@ -53,11 +53,11 @@ namespace iOMG
             float largo = 408.0F;        // e.PageBounds.Height - 10.0F;                  // largo de la pagina
             float ancho_pag = 543.0F;    // e.PageSettings.PaperSize.Width - 40.0F;   // ancho de la pagina
             //e.PageSettings.PrinterSettings.DefaultPageSettings.PaperSize.Width = ancho_pag;
-            float mar_sup = 20.0F;                                      // margen superior de la impresion
-            float mar_izq = 10.0F;                                      // margen izquierdo de la impresion // 20.0F
+            float mar_sup = 50.0F;                                      // margen superior de la impresion
+            float mar_izq = 15.0F;                                      // margen izquierdo de la impresion // 20.0F
             // tipos y tamaños de letra
             Font lt_codigo = new Font("Arial", 50, FontStyle.Bold);     // tipo y tamaño de letra rect_codigo
-            Font lt_resto = new Font("Arial", 15);                       // tipo y tamaño de letra rect_resto
+            Font lt_resto = new Font("Arial", 25);                       // tipo y tamaño de letra rect_resto
             Font lt_madera = new Font("Arial", 100, FontStyle.Bold);      // tipo y tamaño de letra rect_madera
             Font lt_id = new Font("Arial", 30);                          // tipo y tamaño de letra rect_id
             Font lt_juego = new Font("Arial", 30);                       // tipo y tamaño de letra rect_juego
@@ -66,9 +66,9 @@ namespace iOMG
             // rectangulos
             float anc_rec_cod = 240.0F;                                 // ancho rectangulo codigo
             float alt_rec_cod = 200.0F;                                  // alto rectangulo codigo
-            float anc_rec_res = 200.0F;                                 // ancho rectangulo resto
+            float anc_rec_res = 400.0F;                                 // ancho rectangulo resto   // float anc_rec_res = 200.0F;
             float alt_rec_res = 200.0F;                                  // alto rectangulo resto
-            float anc_rec_mad = 100.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
+            float anc_rec_mad = 150.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
             float alt_rec_mad = 200.0F;                                  // alto rectangulo codigo
             float anc_rec_id = 200.0F;                                  // ancho rectangulo ID
             float alt_rec_id = 80.0F;                                   // alto rectangulo ID

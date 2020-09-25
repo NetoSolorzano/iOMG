@@ -2769,7 +2769,7 @@ namespace iOMG
             }
             return retorna;
         }
-        public string estcont(string cont)                                  // recalcula, actualiza y retorna el estado del contrato
+        public string Xestcont(string cont)                                  // recalcula, actualiza y retorna el estado del contrato
         {
             string retorna = "";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
