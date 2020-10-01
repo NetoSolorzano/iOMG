@@ -705,6 +705,7 @@
             this.tabpds.TabIndex = 4;
             this.tabpds.Text = "Pedidos";
             this.tabpds.UseVisualStyleBackColor = true;
+            this.tabpds.Enter += new System.EventHandler(this.tabpds_Enter);
             // 
             // panel4
             // 

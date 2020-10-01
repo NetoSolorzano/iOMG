@@ -74,7 +74,11 @@ namespace iOMG
         static string usua = ConfigurationManager.AppSettings["user"].ToString();
         static string cont = ConfigurationManager.AppSettings["pass"].ToString();
         static string data = ConfigurationManager.AppSettings["data"].ToString();
-        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
+        static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
+        //string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";default command timeout=120";
+        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120" +
+        ";ConnectionLifeTime=" + ctl + ";";
+
         DataTable dtg = new DataTable();
         DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
         DataTable dttaller = new DataTable();   // combo taller de fabric.
@@ -1001,8 +1005,8 @@ namespace iOMG
                         tx_idcli.Text = row["cliente"].ToString();                          // id del cliente
                         jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
                         //dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
-                        if (advancedDataGridView1.CurrentRow.Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
-                        else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
+                        if (advancedDataGridView1.Rows[cta].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
+                        else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[cta].Cells[9].Value.ToString());    // fecha entrega
                         tx_coment.Text = row["coment"].ToString();                          // comentario
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
                         tx_valor.Text = row["valor"].ToString();                            // valor del contrato
@@ -2574,6 +2578,20 @@ namespace iOMG
                                 dtg.Rows[i][22] = tx_totesp.Text;
                             }
                         }
+                        // el estado es anulado??
+                        if (tx_dat_estad.Text == tiesan)
+                        {
+                            // actualizamos el datatable
+                            for (int i = 0; i < dtg.Rows.Count; i++)
+                            {
+                                DataRow row = dtg.Rows[i];
+                                if (row[0].ToString() == tx_idr.Text)
+                                {
+                                    row.Delete();
+                                }
+                            }
+                            dtg.AcceptChanges();
+                        }
                     }
                 }
                 else
@@ -2582,7 +2600,7 @@ namespace iOMG
                     return;
                 }
             }
-            if (modo == "ANULAR")       // opción para borrar o anular
+            if (modo == "ANULAR")       // opción para borrar o anular, NO ESTA HABILITADO, SE USA EDICION
             {
                 // si el contrato no tiene movimientos o enlaces se puede borrar
                 // si tiene mov. enlaces, etc. solo se puede anular

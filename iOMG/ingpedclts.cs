@@ -1225,7 +1225,9 @@ namespace iOMG
             if (iserror == "no")
             {
                 // debe limpiar los campos y actualizar la grilla
+                string zz = tx_dat_tiped.Text; 
                 limpiar(this);
+                tx_dat_tiped.Text = zz;
                 dtp_ingreso.Value = DateTime.Now;
                 cmb_tipo.Focus();
             }

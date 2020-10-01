@@ -17,10 +17,8 @@ namespace iOMG
         static string cont = ConfigurationManager.AppSettings["pass"].ToString();
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
-        //string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
-        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120";
-            //";ConnectionLifeTime=" + ctl + ";";
-
+        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120" +
+        ";ConnectionLifeTime=" + ctl + ";";
         // 18-09-2020, REUNION GLORIA, NESTOR. LOS CODIGOS Z NO INFLUYEN EN EL ESTADO DE UN CONTRATO
         public void act_cont(string numcon,string tipo)
         {

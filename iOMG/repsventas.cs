@@ -403,6 +403,7 @@ namespace iOMG
                             dgv_contratos.Columns[i].Width = a;
                         }
                         if (c < dgv_contratos.Width) dgv_contratos.Width = c + 40;
+                        else dgv_contratos.Width = c;
                     }
                     dgv_contratos.ReadOnly = true;
                     break;
@@ -1186,6 +1187,9 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
+            rb_fcont.Checked = true;
+            rb_ped_todos.Checked = true;
+            rb_ped_fped.Checked = true;
             Tx_modo.Text = "IMPRIMIR";
             tabControl1.Enabled = true;
             //cmb_tall_ing.Enabled = false;
@@ -1652,6 +1656,10 @@ namespace iOMG
             {
                 rb_listado.Checked = true;
             }
+        }
+        private void tabpds_Enter(object sender, EventArgs e)
+        {
+            // nada, mejor en el boton de comando imprimir
         }
 
     }
