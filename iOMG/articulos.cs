@@ -108,10 +108,10 @@ namespace iOMG
         private void grilla()                               // arma la grilla
         {
             // id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,umed,soles2018
-            Font tiplg = new Font("Arial",7, FontStyle.Bold);
+            Font tiplg = new Font("Arial",9, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
-            advancedDataGridView1.RowTemplate.Height = 15;
+            advancedDataGridView1.RowTemplate.Height = 16;
             advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             advancedDataGridView1.DataSource = dtg;
             // id 

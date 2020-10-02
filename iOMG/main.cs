@@ -92,6 +92,7 @@ namespace iOMG
         string img_btf = "";                                            // imagen del boton de accion IR AL FINAL
         // varios
         public string nufha = "";                                       // nombre del formulario hijo activo
+        string www_pag = "";                                            // sitio web de la imagen logo de la empresa
         #endregion
 
         public main()
@@ -156,7 +157,6 @@ namespace iOMG
             pn_menu.Controls.Add(menuStrip1);
             menuStrip1.Dock = DockStyle.Top;
         }
-
         private void jalainfo()
         {
             try
@@ -266,6 +266,10 @@ namespace iOMG
                         if (row["param"].ToString() == "img_bts") img_bts = row["valor"].ToString().Trim();         // imagen del boton de accion SIGUIENTE
                         if (row["param"].ToString() == "img_btr") img_btr = row["valor"].ToString().Trim();         // imagen del boton de accion RETROCEDE
                         if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
+                    }
+                    if (row["campo"].ToString() == "www")
+                    {
+                        if (row["param"].ToString() == "pagweb") www_pag = row["valor"].ToString().Trim();          // sitio web del logo
                     }
                 }
                 da.Dispose();
@@ -410,7 +414,7 @@ namespace iOMG
             menuStrip1.Items.Add("Anulaciones",img_F4,fac_anulac_Click);              // F4
             menuStrip1.Items.Add("Reportes",img_F5,fac_reportes_Click);               // F5
             //
-            menuStrip1.Visible = true;
+            menuStrip1.Visible = false;
         }
         private void fac_rapida_Click(object sender, EventArgs e)       // factura rapida
         {
@@ -422,7 +426,6 @@ namespace iOMG
             pn_centro.Controls.Add(ffe1);
             ffe1.Show();
         }
-        //
         private void fac_clientes_Click(object sender, EventArgs e)     // factura de clientes con contrato
         {
             MessageBox.Show("Form de facturas de contratos de clientes");
@@ -560,53 +563,6 @@ namespace iOMG
             menuStrip1.Items.Add("Permisos", img_pc5, pc_permisos_Click);                    // permisos
             menuStrip1.Visible = true;
         }
-        //
-        private void bt_maestras_Click(object sender, EventArgs e)
-        {
-            Image img_ma1 = Image.FromFile(imgma1);
-            Image img_ma2 = Image.FromFile(imgma2);
-            Image img_ma3 = Image.FromFile(imgma3);
-            menuStrip1.Items.Clear();
-            menuStrip1.Items.Add("Clientes", img_ma1, ma_clientes_Click);                   // clientes
-            menuStrip1.Items.Add("Artículos", img_ma2, ma_articulos_Click);                 // articulos 
-            menuStrip1.Items.Add("Adicionales", img_ma3, ma_artadic_Click);                // adicionales para los contratos clientes
-            menuStrip1.Visible = true;
-        }
-        private void ma_clientes_Click(object sender, EventArgs e)
-        {
-            clients fmc = new clients();
-            fmc.TopLevel = false;
-            fmc.Parent = this;
-            pn_centro.Controls.Add(fmc);
-            fmc.Location = new Point((pn_centro.Width - fmc.Width) / 2, (pn_centro.Height - fmc.Height) / 2);
-            fmc.Anchor = AnchorStyles.None;
-            fmc.Show();
-            fmc.BringToFront();
-        }
-        private void ma_articulos_Click(object sender, EventArgs e)
-        {
-            //items fma = new items();
-            articulos fma = new articulos();
-            fma.TopLevel = false;
-            fma.Parent = this;
-            pn_centro.Controls.Add(fma);
-            fma.Location = new Point((pn_centro.Width - fma.Width) / 2, (pn_centro.Height - fma.Height) / 2);
-            fma.Anchor = AnchorStyles.None;
-            fma.Show();
-            fma.BringToFront();
-        }
-        private void ma_artadic_Click(object sender, EventArgs e)
-        {
-            adicionals fad = new adicionals();
-            fad.TopLevel = false;
-            fad.Parent = this;
-            pn_centro.Controls.Add(fad);
-            fad.Location = new Point((pn_centro.Width - fad.Width) / 2, (pn_centro.Height - fad.Height) / 2);
-            fad.Anchor = AnchorStyles.None;
-            fad.Show();
-            fad.BringToFront();
-        }
-        //
         private void pc_usuarios_Click(object sender, EventArgs e)
         {
             users fuser = new iOMG.users();
@@ -663,6 +619,52 @@ namespace iOMG
             fper.BringToFront();
         }
         //
+        private void bt_maestras_Click(object sender, EventArgs e)
+        {
+            Image img_ma1 = Image.FromFile(imgma1);
+            Image img_ma2 = Image.FromFile(imgma2);
+            Image img_ma3 = Image.FromFile(imgma3);
+            menuStrip1.Items.Clear();
+            menuStrip1.Items.Add("Clientes", img_ma1, ma_clientes_Click);                   // clientes
+            menuStrip1.Items.Add("Artículos", img_ma2, ma_articulos_Click);                 // articulos 
+            menuStrip1.Items.Add("Adicionales", img_ma3, ma_artadic_Click);                // adicionales para los contratos clientes
+            menuStrip1.Visible = true;
+        }
+        private void ma_clientes_Click(object sender, EventArgs e)
+        {
+            clients fmc = new clients();
+            fmc.TopLevel = false;
+            fmc.Parent = this;
+            pn_centro.Controls.Add(fmc);
+            fmc.Location = new Point((pn_centro.Width - fmc.Width) / 2, (pn_centro.Height - fmc.Height) / 2);
+            fmc.Anchor = AnchorStyles.None;
+            fmc.Show();
+            fmc.BringToFront();
+        }
+        private void ma_articulos_Click(object sender, EventArgs e)
+        {
+            //items fma = new items();
+            articulos fma = new articulos();
+            fma.TopLevel = false;
+            fma.Parent = this;
+            pn_centro.Controls.Add(fma);
+            //fma.Location = new Point((pn_centro.Width - fma.Width) / 2, (pn_centro.Height - fma.Height) / 2);
+            fma.Anchor = AnchorStyles.None;
+            fma.Show();
+            fma.BringToFront();
+        }
+        private void ma_artadic_Click(object sender, EventArgs e)
+        {
+            adicionals fad = new adicionals();
+            fad.TopLevel = false;
+            fad.Parent = this;
+            pn_centro.Controls.Add(fad);
+            fad.Location = new Point((pn_centro.Width - fad.Width) / 2, (pn_centro.Height - fad.Height) / 2);
+            fad.Anchor = AnchorStyles.None;
+            fad.Show();
+            fad.BringToFront();
+        }
+        //
         private void bt_almacen_Click(object sender, EventArgs e)
         {
             Image img_alm1 = Image.FromFile(imgalm1);
@@ -711,7 +713,7 @@ namespace iOMG
         //
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            string url = "http://www.artesanosdonbosco.org/es/";   //--http://www.artesanosdonbosco.pe;
+            string url = www_pag;           // "http://www.artesanosdonbosco.org/es/";   //--http://www.artesanosdonbosco.pe;
             Process.Start(url);
         }
         #endregion
