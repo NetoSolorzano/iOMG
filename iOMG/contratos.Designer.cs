@@ -322,7 +322,7 @@
             this.advancedDataGridView1.DateWithTime = false;
             this.advancedDataGridView1.Location = new System.Drawing.Point(3, 6);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.Size = new System.Drawing.Size(969, 431);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(969, 477);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.TimeFilter = false;
             this.advancedDataGridView1.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
@@ -1220,7 +1220,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(856, 31);
+            this.button2.Location = new System.Drawing.Point(856, 27);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(59, 39);
             this.button2.TabIndex = 394;
@@ -1237,6 +1237,7 @@
             this.label50.Size = new System.Drawing.Size(57, 13);
             this.label50.TabIndex = 393;
             this.label50.Text = "Saldo Und";
+            this.label50.Visible = false;
             // 
             // tx_a_comen
             // 
@@ -1385,6 +1386,7 @@
             this.tx_a_salcan.Size = new System.Drawing.Size(59, 20);
             this.tx_a_salcan.TabIndex = 392;
             this.tx_a_salcan.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_a_salcan.Visible = false;
             // 
             // tx_a_total
             // 

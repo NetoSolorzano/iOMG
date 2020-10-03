@@ -52,6 +52,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tx_dat_det3 = new System.Windows.Forms.TextBox();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.tx_acabado = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // printDocument1
@@ -258,11 +259,20 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // tx_acabado
+            // 
+            this.tx_acabado.Location = new System.Drawing.Point(138, 155);
+            this.tx_acabado.Name = "tx_acabado";
+            this.tx_acabado.ReadOnly = true;
+            this.tx_acabado.Size = new System.Drawing.Size(73, 20);
+            this.tx_acabado.TabIndex = 71;
+            // 
             // impresor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(405, 219);
+            this.Controls.Add(this.tx_acabado);
             this.Controls.Add(this.tx_dat_det3);
             this.Controls.Add(this.tx_idm);
             this.Controls.Add(this.label4);
@@ -321,5 +331,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tx_dat_det3;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.TextBox tx_acabado;
     }
 }

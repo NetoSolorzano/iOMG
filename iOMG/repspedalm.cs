@@ -99,6 +99,7 @@ namespace iOMG
             bt_imp_ing.Image = Image.FromFile(img_imprime);
             bt_preview_ing.Image = Image.FromFile(img_preview);
             bt_prev_res.Image = Image.FromFile(img_preview);
+            button3.Image = Image.FromFile(img_imprime);
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -504,36 +505,42 @@ namespace iOMG
             //dgv_resumen.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // Cant
             dgv_resumen.Columns[11].Visible = true;
-            dgv_resumen.Columns[11].HeaderText = "Cant";
+            dgv_resumen.Columns[11].HeaderText = "CanPed";
             dgv_resumen.Columns[11].Width = 50;
             dgv_resumen.Columns[11].ReadOnly = true;
             dgv_resumen.Columns[11].Tag = "validaNO";          // las celdas de esta columna SI se validan
             //dgv_resumen.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // Saldo
+            // cant atendida
             dgv_resumen.Columns[12].Visible = true;
-            dgv_resumen.Columns[12].HeaderText = "Saldo";
+            dgv_resumen.Columns[12].HeaderText = "CanIng";
             dgv_resumen.Columns[12].Width = 50;
             dgv_resumen.Columns[12].ReadOnly = true;
             dgv_resumen.Columns[12].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            //dgv_resumen.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // acabado
+            // Saldo
             dgv_resumen.Columns[13].Visible = true;
-            dgv_resumen.Columns[13].HeaderText = "Acabado";
+            dgv_resumen.Columns[13].HeaderText = "Saldo";
             dgv_resumen.Columns[13].Width = 50;
             dgv_resumen.Columns[13].ReadOnly = true;
             dgv_resumen.Columns[13].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //dgv_resumen.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // acabado
+            dgv_resumen.Columns[14].Visible = true;
+            dgv_resumen.Columns[14].HeaderText = "Acabado";
+            dgv_resumen.Columns[14].Width = 50;
+            dgv_resumen.Columns[14].ReadOnly = true;
+            dgv_resumen.Columns[14].Tag = "validaNO";          // las celdas de esta columna SI se validan
             // resto de campos
-            dgv_resumen.Columns[14].Visible = false;
             dgv_resumen.Columns[15].Visible = false;
             dgv_resumen.Columns[16].Visible = false;
             dgv_resumen.Columns[17].Visible = false;
             dgv_resumen.Columns[18].Visible = false;
+            dgv_resumen.Columns[19].Visible = false;
             // fecha de ingreso
-            dgv_resumen.Columns[19].Visible = true;
-            dgv_resumen.Columns[19].HeaderText = "Fech.Ing.";
-            dgv_resumen.Columns[19].Width = 80;
-            dgv_resumen.Columns[19].ReadOnly = true;
-            dgv_resumen.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            dgv_resumen.Columns[20].Visible = true;
+            dgv_resumen.Columns[20].HeaderText = "Fech.Ing.";
+            dgv_resumen.Columns[20].Width = 80;
+            dgv_resumen.Columns[20].ReadOnly = true;
+            dgv_resumen.Columns[20].Tag = "validaNO";          // las celdas de esta columna SI se validan
         }
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
@@ -720,8 +727,8 @@ namespace iOMG
             {
                 string consulta =
                     "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
-                    "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
-                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso,ifnull(m.item,'') as Cod_Ingreso " +
+                    "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant AS CantPed,m.cant AS CantIng,d.saldo," +
+                    "e.descrizionerid,a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso " +
                     "from pedidos a left join detaped d on d.pedidoh=a.codped " +
                     "left join movalm m on trim(m.docum)=@ped and m.itemped=d.item " +
                     "left join desc_stp b on b.idcodice=a.status " +
@@ -729,7 +736,7 @@ namespace iOMG
                     "left join desc_est e on e.idcodice=d.estado " +
                     "left join desc_mad f on f.idcodice=d.madera " +
                     "left join desc_dt2 g on g.idcodice=d.piedra " +
-                    "where a.codped=@ped";
+                    "where a.codped=@ped";  // ,ifnull(m.item,'') as Cod_Ingreso
                 try
                 {
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1409,20 +1416,23 @@ namespace iOMG
             // 
             // columnas del reporte
             float col0 = coli;              // it contador filas
-            float col1 = coli + 50.0F;      // 
-            float col9 = coli + 120.0F;     // 
-            float col2 = coli + 190.0F;     // 
-            float col3 = coli + 270.0F;     // 
-            float col4 = coli + 330.0F;     // 
-            float col5 = coli + 490.0F;     // 
-            float col6 = coli + 700.0F;     // 
-            float col7 = coli + 750.0F;     // 
-            float col8 = coli + 800.0F;     // 
+            float col1 = coli + 30.0F;      // fecha del pedido
+            float col2 = coli + 100.0F;     // fecha de la entrega
+            float col3 = coli + 170.0F;     // codigo
+            float col4 = coli + 300.0F;     // nombre artículo
+            float col5 = coli + 500.0F;     // madera
+            float col6 = coli + 560.0F;     // Det.2
+            float col7 = coli + 640.0F;     // medidas
+            float col8 = coli + 720.0F;     // Cant.Ped
+            float col9 = coli + 780.0F;     // Cant.Mov
+            float col10 = coli + 840.0F;    // saldo
+            float col11 = coli + 900.0F;    // acabado
+            float col12 = coli + 970.0F;    // fecha ingreso
             //
             float posit = impcab_res(piy, coli, alin, posi, alfi, e,
-                col0, col1, col2, col3, col4, col5, col6, col7, col8, col9);
+                col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12);
             posi = posit;
-            SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
+            SizeF espnom = new SizeF(200.0F, alfi);         // recuadro para el nombre y comentario
             Font lt_tit = new Font("Arial", 7);
             Font lt_quie = new Font("Arial", 8, FontStyle.Bold);
             PointF ptoimp;
@@ -1431,43 +1441,52 @@ namespace iOMG
             sf.Alignment = StringAlignment.Near;
             sf.FormatFlags = StringFormatFlags.NoWrap;
             // leemos las columnas del data table
-            for (int fila = cuenta; fila < dgv_ingresos.Rows.Count; fila++)
+            // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
+            // d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant AS CantPed,m.cant AS CantIng,d.saldo,
+            // e.descrizionerid,a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso
+            for (int fila = cuenta; fila < dgv_resumen.Rows.Count; fila++)
             {
-                string data0 = (fila + 1).ToString("###");                                             // contador
-                string dataI = dgv_ingresos.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);     // 
-                string data9 = dgv_ingresos.Rows[fila].Cells[8].Value.ToString();                      // 
-                string data1 = dgv_ingresos.Rows[fila].Cells[1].Value.ToString().Substring(0, 10);     // 
-                string data2 = dgv_ingresos.Rows[fila].Cells[2].Value.ToString();                      // 
-                string data3 = dgv_ingresos.Rows[fila].Cells[3].Value.ToString();                      // 
-                string data4 = dgv_ingresos.Rows[fila].Cells[4].Value.ToString();                      // 
-                string data5 = dgv_ingresos.Rows[fila].Cells[5].Value.ToString();                      // 
-                string data6 = dgv_ingresos.Rows[fila].Cells[6].Value.ToString();                      // 
-                string data7 = dgv_ingresos.Rows[fila].Cells[7].Value.ToString();                      // 
+                string data0 = (fila + 1).ToString("###");                                            // contador
+                string data1 = dgv_resumen.Rows[fila].Cells[0].Value.ToString().Substring(0, 10);     // fecha pedido
+                string data2 = dgv_resumen.Rows[fila].Cells[5].Value.ToString().Substring(0, 10);     // fecha entrega
+                string data3 = dgv_resumen.Rows[fila].Cells[6].Value.ToString();                      // codigo
+                string data4 = dgv_resumen.Rows[fila].Cells[7].Value.ToString();                      // nombre articulo
+                string data5 = dgv_resumen.Rows[fila].Cells[8].Value.ToString();                      // madera
+                string data6 = dgv_resumen.Rows[fila].Cells[9].Value.ToString();                      // detalle 2
+                string data7 = dgv_resumen.Rows[fila].Cells[10].Value.ToString();                     // medidas
+                string data8 = dgv_resumen.Rows[fila].Cells[11].Value.ToString();                     // cant pedid
+                string data9 = dgv_resumen.Rows[fila].Cells[12].Value.ToString();                     // cant ingre
+                string data10 = dgv_resumen.Rows[fila].Cells[13].Value.ToString();                    // saldo
+                string data11 = dgv_resumen.Rows[fila].Cells[14].Value.ToString();                    // acabado
+                string data12 = dgv_resumen.Rows[fila].Cells[20].Value.ToString().Substring(0, 10);   // fecha ingreso
                 // 
                 ptoimp = new PointF(col0, posi);
                 e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col1, posi);
-                e.Graphics.DrawString(dataI, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col2, posi);
+                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col3, posi);
+                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col4, posi);
+                RectangleF recn = new RectangleF(ptoimp, espnom);
+                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, recn, sf);
+                ptoimp = new PointF(col5, posi);
+                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col6, posi);
+                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col7, posi);
+                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col8, posi);
+                e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col9, posi);
                 e.Graphics.DrawString(data9, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col2, posi);
-                e.Graphics.DrawString(data1, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col3, posi);
-                RectangleF recn = new RectangleF(ptoimp, espnom);
-                e.Graphics.DrawString(data2, lt_tit, Brushes.Black, recn, sf);
-                ptoimp = new PointF(col4, posi);
-                RectangleF recco = new RectangleF(ptoimp, espnom);
-                e.Graphics.DrawString(data3, lt_tit, Brushes.Black, ptoimp, sf);
-                ptoimp = new PointF(col5, posi);
-                Size siznom = new Size(200, 15);
-                RectangleF recnom = new RectangleF(ptoimp, siznom);
-                e.Graphics.DrawString(data4, lt_tit, Brushes.Black, recnom, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col6, posi);
-                e.Graphics.DrawString(data5, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col7, posi);
-                e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-                ptoimp = new PointF(col8, posi);
-                e.Graphics.DrawString(data7, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col10, posi);
+                e.Graphics.DrawString(data10, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col11, posi);
+                e.Graphics.DrawString(data11, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                ptoimp = new PointF(col12, posi);
+                e.Graphics.DrawString(data12, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 //
                 posi = posi + alfi + 5;             // avance de fila
                 e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
@@ -1488,7 +1507,7 @@ namespace iOMG
             cuenta = 0;
         }
         private float impcab_res(float piy, float coli, float alin, float posi, float alfi, System.Drawing.Printing.PrintPageEventArgs e,
-            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8, float col9)
+            float col0, float col1, float col2, float col3, float col4, float col5, float col6, float col7, float col8, float col9, float col10, float col11, float col12)
         {
             float ancho_pag = printDocument1.DefaultPageSettings.Bounds.Width;  // ancho de la pag.
             float colm = coli + 280.0F;                                 // columna media
@@ -1519,36 +1538,44 @@ namespace iOMG
             e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
             // titulo y filtros
             SizeF anctyf = new SizeF();
-            anctyf = e.Graphics.MeasureString("RESUMEN DE PEDIDOS", lt_cliente);
+            anctyf = e.Graphics.MeasureString("RESUMEN PEDIDO DE ALMACEN " + tx_codped.Text, lt_cliente);
             PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
-            e.Graphics.DrawString("RESUMEN PEDIDO DE ALMACEN", lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
-            string ddd = "Del " + dtp_fini_ing.Value.ToString("dd/MM/yyyy") + " Al " + dtp_final_ing.Value.ToString("dd/MM/yyyy");
+            e.Graphics.DrawString("RESUMEN PEDIDO DE ALMACEN " + tx_codped.Text, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            string ddd = "Taller: " + dgv_resumen.Rows[0].Cells[3].Value.ToString() + "   Estado: " + dgv_resumen.Rows[0].Cells[2].Value.ToString();
             anctyf = e.Graphics.MeasureString(ddd, lt_tit);
             ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
             e.Graphics.DrawString(ddd, lt_tit, Brushes.Black, ptotit, StringFormat.GenericTypographic);
             // titulo de las columnas
-            // a.fecha,c.descrizionerid,a.docum,a.item,'nombreArt',a.cant,'saldo',a.coment,a.almad,b.status
+            // a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega,
+            // d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant AS CantPed,m.cant AS CantIng,d.saldo,
+            // e.descrizionerid,a.status,trim(a.origen),d.estado,d.madera,d.piedra,d.fingreso
             posi = posi + alfi;
             PointF ptoimp = new PointF(col0, posi);
             e.Graphics.DrawString("It", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col1, posi);
-            e.Graphics.DrawString("F.Ingreso", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col9, posi);
-            e.Graphics.DrawString("Taller", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Fech.Ped.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col2, posi);
-            e.Graphics.DrawString("Almacén", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Fech.Ent.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col3, posi);
-            e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Código", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col4, posi);
-            e.Graphics.DrawString("Articulo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Nombre Artículo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col5, posi);
-            e.Graphics.DrawString("Nombre", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col6, posi);
-            e.Graphics.DrawString("Cant", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col7, posi);
             e.Graphics.DrawString("Madera", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col6, posi);
+            e.Graphics.DrawString("Det.2", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col7, posi);
+            e.Graphics.DrawString("Medidas", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col8, posi);
-            e.Graphics.DrawString("Comentario", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("C.Ped.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col9, posi);
+            e.Graphics.DrawString("C.Ent.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col10, posi);
+            e.Graphics.DrawString("Saldo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col11, posi);
+            e.Graphics.DrawString("Acabad", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col12, posi);
+            e.Graphics.DrawString("Fech.Ing.", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             posi = posi + alfi + 7.0F;             // avance de fila
             e.Graphics.DrawLine(delgado, coli, posi, ancho_pag - 20.0F, posi);
             posi = posi + 2;             // avance de fila
@@ -1577,6 +1604,20 @@ namespace iOMG
             printDocument1.DefaultPageSettings.Landscape = true;
             printPreviewDialog1.Document = printDocument1;
             printPreviewDialog1.ShowDialog();
+        }
+
+        private void button3_Click(object sender, EventArgs e)          // imprime resumen de pedido
+        {
+            PrintDialog printDlg = new PrintDialog();
+
+            printDlg.Document = printDocument1; //printDoc;
+            printDlg.AllowSomePages = true;
+            printDlg.AllowSelection = true;
+            //
+            pageCount = 1;
+            printDocument1.DefaultPageSettings.Landscape = true;
+            //
+            if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
         }
 
         private void bt_preview_ing_Click(object sender, EventArgs e)

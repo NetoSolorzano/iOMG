@@ -955,7 +955,7 @@
             this.bt_prev_res.Location = new System.Drawing.Point(654, 3);
             this.bt_prev_res.Name = "bt_prev_res";
             this.bt_prev_res.Size = new System.Drawing.Size(61, 44);
-            this.bt_prev_res.TabIndex = 358;
+            this.bt_prev_res.TabIndex = 361;
             this.bt_prev_res.UseVisualStyleBackColor = true;
             this.bt_prev_res.Click += new System.EventHandler(this.bt_prev_res_Click);
             // 
@@ -965,8 +965,9 @@
             this.button3.Location = new System.Drawing.Point(724, 3);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(61, 44);
-            this.button3.TabIndex = 357;
+            this.button3.TabIndex = 362;
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // dgv_resumen
             // 
@@ -982,7 +983,7 @@
             this.bt_resumen.Location = new System.Drawing.Point(412, 11);
             this.bt_resumen.Name = "bt_resumen";
             this.bt_resumen.Size = new System.Drawing.Size(59, 29);
-            this.bt_resumen.TabIndex = 342;
+            this.bt_resumen.TabIndex = 360;
             this.bt_resumen.Text = "Genera";
             this.bt_resumen.UseVisualStyleBackColor = true;
             this.bt_resumen.Click += new System.EventHandler(this.bt_resumen_Click);

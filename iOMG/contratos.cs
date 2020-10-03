@@ -197,6 +197,7 @@ namespace iOMG
             //cmb_tipo.Enabled = false;
             tx_d_nom.Enabled = false;
         }
+
         #region resto del mundo
         private void init()
         {
@@ -1288,7 +1289,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[13].Value.ToString());
-                        micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // tienda item
+                        micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // ME QUEDE ACA 02-10-2020
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1726,6 +1727,7 @@ namespace iOMG
             tx_dist.AutoCompleteCustomSource = adistr;
         }
         #endregion autocompletados
+
         #region botones_de_comando_y_permisos  
         private void toolboton()
         {
@@ -1852,8 +1854,9 @@ namespace iOMG
             tx_rind.ReadOnly = true;
             tx_valor.ReadOnly = true;
             tx_saldo.ReadOnly = true;
-            tx_a_salcan.ReadOnly = true;
             tx_d_saldo.ReadOnly = true;
+            tx_a_codig.ReadOnly = true;
+            tx_a_salcan.ReadOnly = true;
             tx_acta.ReadOnly = true;
             if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
             else tx_codped.ReadOnly = false;
@@ -1899,6 +1902,8 @@ namespace iOMG
             tx_coment.Enabled = true;
             tx_saldo.ReadOnly = true;
             tx_acta.ReadOnly = true;
+            tx_a_codig.ReadOnly = true;
+            tx_a_salcan.ReadOnly = true;
             tx_codped.Focus();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -1997,6 +2002,7 @@ namespace iOMG
         }
         //
         #endregion botones_de_comando_y_permisos  ;
+
         #region limpiadores_modos
         private void sololee(Form lfrm)
         {
@@ -2151,6 +2157,10 @@ namespace iOMG
             tx_saldo.ReadOnly = true;
             tx_valor.ReadOnly = true;
             tx_bruto.ReadOnly = true;
+            //
+            tx_a_id.ReadOnly = true;
+            tx_a_codig.ReadOnly = true;
+            tx_a_total.ReadOnly = true;
         }
         private void escribepag(TabPage pag)
         {
@@ -2254,6 +2264,10 @@ namespace iOMG
             tx_saldo.ReadOnly = true;
             tx_valor.ReadOnly = true;
             tx_bruto.ReadOnly = true;
+            //
+            tx_a_id.ReadOnly = true;
+            tx_a_codig.ReadOnly = true;
+            tx_a_total.ReadOnly = true;
         }
         private static void limpiar(Form ofrm)
         {
@@ -2326,6 +2340,7 @@ namespace iOMG
             cmb_det3.SelectedIndex = -1;
         }
         #endregion limpiadores_modos;
+
         #region comboboxes
         private void cmb_estado_Enter(object sender, EventArgs e)
         {
@@ -2413,6 +2428,7 @@ namespace iOMG
             armani();
         }
         #endregion comboboxes
+
         #region boton_form GRABA EDITA ANULA - agrega detalle
         private void button1_Click(object sender, EventArgs e)
         {
@@ -2902,7 +2918,7 @@ namespace iOMG
         {
             if (tx_a_nombre.Text == "")
             {
-                MessageBox.Show("El código no existe en la maestra", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                MessageBox.Show("El código/nombre no existe en la maestra", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 tx_a_nombre.Focus();
                 return;
             }
@@ -2920,30 +2936,37 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO")
             {
-                if (tx_d_id.Text.Trim() != "")
+                if (tx_a_id.Text.Trim() != "")
                 {
-                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
-                    obj.Cells[1].Value = tx_a_codig.Text;
-                    obj.Cells[2].Value = tx_a_cant.Text;
-                    obj.Cells[3].Value = tx_a_nombre.Text;
-                    obj.Cells[4].Value = tx_a_medid.Text;
-                    obj.Cells[5].Value = "";
-                    obj.Cells[6].Value = Math.Round(decimal.Parse(tx_a_precio.Text),2).ToString("0.00");
-                    obj.Cells[7].Value = Math.Round(decimal.Parse(tx_a_total.Text), 2).ToString("0.00");
-                    obj.Cells[8].Value = tx_a_cant.Text;
-                    obj.Cells[9].Value = "";
-                    obj.Cells[10].Value = "";
-                    obj.Cells[11].Value = tx_a_comen.Text;
-                    obj.Cells[12].Value = "";
-                    obj.Cells[13].Value = "";
-                    obj.Cells[14].Value = "N";
+                    for (int i=0;i<dataGridView1.Rows.Count - 1 ; i++)
+                    {
+                        if (tx_a_id.Text.Trim() == dataGridView1.Rows[i].Cells[0].Value.ToString())
+                        {
+                            DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                            obj.Cells[1].Value = tx_a_codig.Text;   // obj.Cells[1].Value = 
+                            obj.Cells[2].Value = tx_a_cant.Text;
+                            obj.Cells[3].Value = tx_a_nombre.Text;
+                            obj.Cells[4].Value = tx_a_medid.Text;
+                            obj.Cells[5].Value = "";
+                            obj.Cells[6].Value = Math.Round(decimal.Parse(tx_a_precio.Text), 2).ToString("0.00");
+                            obj.Cells[7].Value = Math.Round(decimal.Parse(tx_a_total.Text), 2).ToString("0.00");
+                            obj.Cells[8].Value = tx_a_cant.Text;
+                            obj.Cells[9].Value = "";
+                            obj.Cells[10].Value = "";
+                            obj.Cells[11].Value = tx_a_comen.Text;
+                            obj.Cells[12].Value = "";
+                            obj.Cells[13].Value = "";
+                            obj.Cells[14].Value = "N";
+                            obj.Cells[14].Value = "";   // no tiene tienda
+                        }
+                    }
                 }
                 else
                 {
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                             "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N");
+                             "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
                     }
                     else
                     {
@@ -2961,30 +2984,38 @@ namespace iOMG
                         "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
                 }
-                if (tx_d_id.Text.Trim() != "")
+                if (tx_a_id.Text.Trim() != "")
                 {
-                    // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
-                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
-                    obj.Cells[1].Value = tx_a_codig.Text;
-                    obj.Cells[2].Value = tx_a_cant.Text;
-                    obj.Cells[3].Value = tx_a_nombre.Text;
-                    obj.Cells[4].Value = tx_a_medid.Text;
-                    obj.Cells[5].Value = "";
-                    obj.Cells[6].Value = tx_a_precio.Text;
-                    obj.Cells[7].Value = tx_a_total.Text;
-                    obj.Cells[8].Value = tx_a_salcan.Text;
-                    obj.Cells[9].Value = "";
-                    obj.Cells[10].Value = "";
-                    obj.Cells[11].Value = tx_a_comen.Text;
-                    obj.Cells[12].Value = "";
-                    obj.Cells[13].Value = "";
-                    obj.Cells[14].Value = "A";  // registro actualizado
+                    DataTable dtg = (DataTable)dataGridView1.DataSource;
+                    foreach(DataRow row in dtg.Rows)
+                    {
+                        if (tx_a_id.Text.Trim() == row[0].ToString())    // row.Cells[0].Value.ToString()
+                        {
+                            // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
+                            //DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                            row[1] = tx_a_codig.Text;   // obj.Cells[1].Value = 
+                            row[2] = tx_a_cant.Text;
+                            row[3] = tx_a_nombre.Text;
+                            row[4] = tx_a_medid.Text;
+                            row[5] = "";
+                            row[6] = tx_a_precio.Text;
+                            row[7] = tx_a_total.Text;
+                            row[8] = tx_a_salcan.Text;
+                            row[9] = "";
+                            row[10] = "";
+                            row[11] = tx_a_comen.Text;
+                            row[12] = "";
+                            row[13] = "";
+                            row[14] = "A";  // registro actualizado
+                            row[15] = "";   // adicionales no tienen tienda
+                        }
+                    }
                 }
                 else
                 {
                     DataTable dtg = (DataTable)dataGridView1.DataSource;
                     DataRow tr = dtg.NewRow();
-                    tr["iddetacon"] = "0";  // dataGridView1.Rows.Count;
+                    tr["iddetacon"] = dataGridView1.Rows.Count.ToString();  // "0";
                     tr["item"] = tx_a_codig.Text;
                     tr["cant"] = tx_a_cant.Text;
                     tr["nombre"] = tx_a_nombre.Text;
@@ -2998,6 +3029,7 @@ namespace iOMG
                     tr["coment"] = tx_a_comen.Text;
                     tr["piedra"] = "";
                     tr["na"] = "N";
+                    tr["tda_item"] = "";
                     dtg.Rows.Add(tr);
                 }
             }
@@ -3011,6 +3043,7 @@ namespace iOMG
             calculos();
         }
         #endregion boton_form;
+
         #region leaves and enter
         private void tx_idr_Leave(object sender, EventArgs e)
         {
@@ -3044,6 +3077,8 @@ namespace iOMG
                 if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
                 {
                     escribepag(tabuser);
+                    tx_a_codig.ReadOnly = true;
+                    tx_a_total.ReadOnly = true;
                 }
             }
         }
@@ -3063,7 +3098,7 @@ namespace iOMG
                 tx_a_total.Text = (Decimal.Parse(tx_a_cant.Text) * Decimal.Parse(tx_a_precio.Text)).ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO") tx_a_salcan.Text = tx_a_cant.Text;
-            if (Tx_modo.Text == "EDITAR" && tx_d_id.Text.Trim() == "") tx_d_saldo.Text = tx_d_can.Text;
+            if (Tx_modo.Text == "EDITAR" && tx_a_id.Text.Trim() == "") tx_a_salcan.Text = tx_a_cant.Text;
         }
         private void tx_d_prec_Leave(object sender, EventArgs e)
         {
@@ -3333,6 +3368,7 @@ namespace iOMG
             }
         }
         #endregion leaves;
+
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
         {
@@ -3436,6 +3472,7 @@ namespace iOMG
             e.Cancel = true;
         }
         #endregion
+
         #region datagridview1 - grilla detalle del contrato
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -3587,6 +3624,7 @@ namespace iOMG
             }
         }
         #endregion
+
         #region crystal
         private void setParaCrystal()                   // genera el set para el reporte de crystal
         {
