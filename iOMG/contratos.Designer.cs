@@ -1924,6 +1924,7 @@
             this.dtp_entreg.ShowCheckBox = true;
             this.dtp_entreg.Size = new System.Drawing.Size(112, 20);
             this.dtp_entreg.TabIndex = 17;
+            this.dtp_entreg.ValueChanged += new System.EventHandler(this.dtp_entreg_ValueChanged);
             // 
             // dtp_pedido
             // 

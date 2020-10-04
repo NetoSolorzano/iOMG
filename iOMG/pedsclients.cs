@@ -1913,82 +1913,82 @@ namespace iOMG
                     }
                 }
             }
-            // POR DEFECTO, SOLO SE PERMITE UN ITEM POR PEDIDO 18/09/2020 a menos que sea silla kandinski
-            // validamos que solo sea un 1 item en detalle a menos que variable [codVar] sea para varios
-            if (dataGridView1.Rows.Count != 1)
+            if (Tx_modo.Text == "NUEVO")
             {
-                if (tx_d_codi.Text.Substring(0,4) != codVar || (tx_d_codi.Text.Substring(0, 4) != dataGridView1.Rows[0].Cells[2].Value.ToString().Substring(0, 4)))
+                // POR DEFECTO, SOLO SE PERMITE UN ITEM POR PEDIDO 18/09/2020 a menos que sea silla kandinski
+                // validamos que solo sea un 1 item en detalle a menos que variable [codVar] sea para varios
+                if (dataGridView1.Rows.Count != 1)
                 {
-                    MessageBox.Show("No se permite mas items","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-                    return;
-                }
-            }
-            // validamos cant item  validar que la cantidad no sea > cantidad del contrato
-            bool pasa = false;
-            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
-            {
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    string busca = "select cant,saldo from detacon where contratoh=@cont and item=@item";
-                    using (MySqlCommand micon = new MySqlCommand(busca, conn))
+                    if (tx_d_codi.Text.Substring(0, 4) != codVar || (tx_d_codi.Text.Substring(0, 4) != dataGridView1.Rows[0].Cells[2].Value.ToString().Substring(0, 4)))
                     {
-                        string cod = tx_d_codi.Text.Substring(0, 10) + "XX" + tx_d_codi.Text.Substring(12, 6);
-                        micon.Parameters.AddWithValue("@cont", tx_cont.Text.Trim());
-                        micon.Parameters.AddWithValue("@item", cod);
-                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        MessageBox.Show("No se permite mas items", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+                // validamos cant item  validar que la cantidad no sea > cantidad del contrato
+                bool pasa = false;
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        string busca = "select cant,saldo from detacon where contratoh=@cont and item=@item";
+                        using (MySqlCommand micon = new MySqlCommand(busca, conn))
                         {
-                            int vs = 0;
-                            if (dr.Read())
+                            string cod = tx_d_codi.Text.Substring(0, 10) + "XX" + tx_d_codi.Text.Substring(12, 6);
+                            micon.Parameters.AddWithValue("@cont", tx_cont.Text.Trim());
+                            micon.Parameters.AddWithValue("@item", cod);
+                            using (MySqlDataReader dr = micon.ExecuteReader())
                             {
-                                vs = dr.GetInt32(1);
-                                if (int.Parse(tx_d_can.Text) > vs)
+                                int vs = 0;
+                                if (dr.Read())
                                 {
-                                    MessageBox.Show("La cantidad pedida es mayor al saldo del contrato!", "Error - corrija",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    tx_d_can.Focus();
-                                    pasa = false;
-                                }
-                                else
-                                {
-                                    pasa = true;
+                                    vs = dr.GetInt32(1);
+                                    if (int.Parse(tx_d_can.Text) > vs)
+                                    {
+                                        MessageBox.Show("La cantidad pedida es mayor al saldo del contrato!", "Error - corrija",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        tx_d_can.Focus();
+                                        pasa = false;
+                                    }
+                                    else
+                                    {
+                                        pasa = true;
+                                    }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("No se puede validar con el contrato", "Imposible conectarse al servidor",
+                            MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("No se puede validar con el contrato", "Imposible conectarse al servidor",
-                        MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                }
-            }
-            if (pasa == true)
-            {
-                if (Tx_modo.Text == "NUEVO")
+                if (pasa == true)
                 {
                     dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
                                 tx_d_mad.Text, tx_d_det2.Text, tx_acab.Text, tx_d_com.Text, tx_d_est.Text,
                             tx_dat_mad.Text, "", "", tx_saldo.Text, tx_d_precio.Text, "N", tx_d_iddc.Text);
                 }
-                if (Tx_modo.Text == "EDITAR")
+            }
+            if (Tx_modo.Text == "EDITAR")   // SOLO SE PERMITE EDITAR COMENTARIO DE ITEM 01/10/2020
+            {
+                if (tx_d_id.Text.Trim() != "")  // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
                 {
-                    if (tx_d_id.Text.Trim() != "")  // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
-                    {
-                        DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;    // cant editada > cant grilla? -> saldo=saldo+(dif cant edit - cant grilla)
-                        int dif = int.Parse(tx_d_can.Text) - int.Parse(obj.Cells[1].Value.ToString());
-                        obj.Cells[8].Value = tx_d_com.Text;
-                        obj.Cells[1].Value = tx_d_can.Text;
-                        obj.Cells[13].Value = (int.Parse(tx_d_can.Text) + dif).ToString();
-                        obj.Cells[15].Value = "A";  // registro actualizado
-                    }
-                    else
-                    {
-                        MessageBox.Show("No es posible agregar en este modo", "Modo Edición");
-                    }
+                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;    // cant editada > cant grilla? -> saldo=saldo+(dif cant edit - cant grilla)
+                    //int dif = int.Parse(tx_d_can.Text) - int.Parse(obj.Cells[1].Value.ToString());
+                    obj.Cells[8].Value = tx_d_com.Text;
+                    //obj.Cells[1].Value = tx_d_can.Text;
+                    //obj.Cells[13].Value = (int.Parse(tx_d_can.Text) + dif).ToString();
+                    obj.Cells[15].Value = "A";  // registro actualizado
                 }
-                dtp_fingreso.Checked = false;
-                dtp_fingreso.Value = DateTime.Now;
+                else
+                {
+                    MessageBox.Show("No es posible agregar en este modo", "Modo Edición");
+                }
+                //dtp_fingreso.Checked = false;
+                //dtp_fingreso.Value = DateTime.Now;
                 limpia_panel(panel1);               // limpia panel1
             }
         }

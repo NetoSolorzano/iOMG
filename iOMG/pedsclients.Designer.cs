@@ -811,6 +811,7 @@
             this.dtp_fingreso.ShowCheckBox = true;
             this.dtp_fingreso.Size = new System.Drawing.Size(115, 20);
             this.dtp_fingreso.TabIndex = 304;
+            this.dtp_fingreso.Visible = false;
             // 
             // tx_saldo
             // 
@@ -821,6 +822,7 @@
             this.tx_saldo.TabIndex = 21;
             this.tx_saldo.Tag = "Id";
             this.tx_saldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_saldo.Visible = false;
             // 
             // label9
             // 
@@ -830,6 +832,7 @@
             this.label9.Size = new System.Drawing.Size(34, 13);
             this.label9.TabIndex = 303;
             this.label9.Text = "Saldo";
+            this.label9.Visible = false;
             // 
             // label8
             // 
@@ -839,6 +842,7 @@
             this.label8.Size = new System.Drawing.Size(90, 13);
             this.label8.TabIndex = 301;
             this.label8.Text = "Fecha de Ingreso";
+            this.label8.Visible = false;
             // 
             // bt_det
             // 

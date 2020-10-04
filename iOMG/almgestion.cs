@@ -620,6 +620,7 @@ namespace iOMG
                     advancedDataGridView1.CurrentRow.Cells["tipol"].Value.ToString() +
                     advancedDataGridView1.CurrentRow.Cells["deta1"].Value.ToString() +
                     advancedDataGridView1.CurrentRow.Cells["acaba"].Value.ToString() +
+                    "XX" +
                     advancedDataGridView1.CurrentRow.Cells["deta2"].Value.ToString() +
                     advancedDataGridView1.CurrentRow.Cells["deta3"].Value.ToString();
                 string actua = "update reservh a,reservd b set a.status=@vstat,b.almacen='' " +

@@ -2485,6 +2485,12 @@ namespace iOMG
                     tx_codped.Focus();
                     return;
                 }
+                if (decimal.Parse(tx_saldo.Text.ToString()) < 0)
+                {
+                    MessageBox.Show("El saldo es negativo, el pago debe ser inferior o igual al valor del contrato","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    tx_acta.Focus();
+                    return;
+                }
             }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;
@@ -3365,6 +3371,17 @@ namespace iOMG
             {
                 tx_dirent.Text = tx_dirent.Tag.ToString();
                 tx_dirent.ReadOnly = false;
+            }
+        }
+        private void dtp_entreg_ValueChanged(object sender, EventArgs e)
+        {
+            if (dtp_entreg.Checked == true)
+            {
+                if (dtp_pedido.Value.Date > dtp_entreg.Value.Date)
+                {
+                    MessageBox.Show("La fecha de entrega debe ser mayor", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtp_entreg.Value = dtp_pedido.Value;
+                }
             }
         }
         #endregion leaves;
