@@ -84,7 +84,7 @@ namespace iOMG
                             tx_cliente.Text = ayu2.ReturnValueA[1].ToString();
                             tx_dat_orig.Text = ayu2.ReturnValueA[2].ToString();
                             tx_origen.Text = ayu2.ReturnValueA[3].ToString();
-                            tx_cant.Text = ayu2.ReturnValueA[11].ToString();
+                            tx_cant.Text = ayu2.ReturnValueA[12].ToString();        // saldo del ingreso
                             tx_item.Text = ayu2.ReturnValueA[4].ToString();
                             tx_nombre.Text = ayu2.ReturnValueA[5].ToString();
                             tx_medidas.Text = ayu2.ReturnValueA[6].ToString();
@@ -97,6 +97,13 @@ namespace iOMG
                     }
                 }
                 return true;    // indicate that you handled this keystroke
+            }
+            if (keyData == Keys.F1 && Tx_modo.Text == "ANULAR")
+            {
+                if (tx_idr.Focused == true)
+                {
+                    // no hacemos anda aca porque se jala desde la grilla
+                }
             }
             // Call the base class
             return base.ProcessCmdKey(ref msg, keyData);
@@ -203,7 +210,7 @@ namespace iOMG
                 // dp.cant
                 string datgri = "select a.iddetam,date(a.fecha) as fecha,a.tipo,a.uantes,a.uactual,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,b.descrizionerid as nomad,c.descrizionerid as acabado," +
-                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,a.cant,pe.contrato,pe.origen " +
+                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,a.cant,pe.contrato,pe.origen,a.idmov " +
                     "from detam a " +
                     "left join detaped dp on dp.pedidoh=a.pedido " +
                     "left join desc_mad b on b.idcodice=dp.madera " +
@@ -241,8 +248,9 @@ namespace iOMG
         }
         private void grilla()                               // arma la grilla
         {
-            // iddetam,fecha,tipo,uantes,uactual,pedido,cliente,coment,
-            // item,nombre,medidas,madera,estado,nomad,acabado,nomorig,nomdestin
+            // a.iddetam,fecha,a.tipo,a.uantes,a.uactual,a.pedido,cliente,a.coment,
+            // dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,nomad,acabado,
+            // nomorig,nomdestin,a.cant,pe.contrato,pe.origen,a.idmov
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -347,15 +355,20 @@ namespace iOMG
             advancedDataGridView1.Columns[16].Width = 60;
             advancedDataGridView1.Columns[16].ReadOnly = true;
             // cantidad
-            advancedDataGridView1.Columns[17].Visible = false;
+            advancedDataGridView1.Columns[17].Visible = true;
             advancedDataGridView1.Columns[17].HeaderText = "Cant";
             advancedDataGridView1.Columns[17].Width = 40;
             advancedDataGridView1.Columns[17].ReadOnly = true;
+            //
             advancedDataGridView1.Columns[18].Visible = false;  // contrato
+            //
             advancedDataGridView1.Columns[19].Visible = true;   // taller
             advancedDataGridView1.Columns[19].HeaderText = "Taller";
             advancedDataGridView1.Columns[19].Width = 60;
             advancedDataGridView1.Columns[19].ReadOnly = true;
+            // id movim
+            advancedDataGridView1.Columns[20].Visible = false;
+            advancedDataGridView1.Columns[20].HeaderText = "idmov";
         }
         private void jalaoc(string campo)                   // jala datos
         {
@@ -381,6 +394,7 @@ namespace iOMG
                 tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                 tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
+                tx_dat_idm.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["idmov"].Value.ToString();
             }
             if (campo == "tx_pedido" && tx_pedido.Text != "")
             {
@@ -409,6 +423,7 @@ namespace iOMG
                         tx_cant.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["cant"].Value.ToString();
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                         tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
+                        tx_dat_idm.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["idmov"].Value.ToString();
                     }
                     cta = cta + 1;
                 }
@@ -424,8 +439,8 @@ namespace iOMG
                 try
                 {
                     string inserta = "insert into detam (fecha,tipo,uantes,uactual,pedido,coment," +
-                    "USER,dia,cant,item) " +
-                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@asd,now(),@can,@ite)";
+                    "USER,dia,cant,item,idmov) " +
+                    "values (@fepe,@tipe,@orig,@dest,@pedi,@come,@asd,now(),@can,@ite,@idm)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_ingreso.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -436,6 +451,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@can", tx_cant.Text);
                     micon.Parameters.AddWithValue("@ite", tx_item.Text);
+                    micon.Parameters.AddWithValue("@idm", tx_dat_idm.Text);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -524,11 +540,19 @@ namespace iOMG
                 MySqlCommand micon = new MySqlCommand(anu, conn);
                 micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                 micon.ExecuteNonQuery();
-                anu = "update movim set saldo=saldo+@can where trim(upper(pedido))=@ped and idmovim>0";
+                //anu = "update movim set saldo=saldo+@can where trim(upper(pedido))=@ped and idmovim>0";
+                anu = "update movim set saldo=saldo+@can where idmovim=@idm";
                 micon = new MySqlCommand(anu, conn);
                 micon.Parameters.AddWithValue("@can", int.Parse(tx_cant.Text));
-                micon.Parameters.AddWithValue("@ped", tx_pedido.Text.Trim());
+                //micon.Parameters.AddWithValue("@ped", tx_pedido.Text.Trim());
+                micon.Parameters.AddWithValue("@idm", tx_dat_idm.Text.Trim());
                 micon.ExecuteNonQuery();
+                //
+                anu = "update movim set fventa=null where idmovim=@idm and cant=saldo";
+                micon = new MySqlCommand(anu, conn);
+                micon.Parameters.AddWithValue("@idm", tx_dat_idm.Text.Trim());
+                micon.ExecuteNonQuery();
+                //
                 micon.Dispose();
                 acciones acc = new acciones();
                 acc.act_cont(tx_contrato.Text.Trim(),"");
@@ -795,8 +819,10 @@ namespace iOMG
             button1.Image = Image.FromFile(img_anul);
             limpiar(this);
             tx_pedido.Enabled = true;
-            tx_pedido.ReadOnly = false;
-            tx_pedido.Focus();
+            tx_pedido.ReadOnly = true;
+            tx_idr.Enabled = true;
+            tx_idr.ReadOnly = false;
+            tx_idr.Focus();
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -1178,10 +1204,16 @@ namespace iOMG
             // ==> pedido cant > 1, salidas pueden ser <> 1 y > 0
             // 10/07/2020, la cantidad de salida NO puede ser > al saldo x salir o entregar
             // saldo cant entrada (movim), saldo >= cant salida
+            // PEDIDO -> X INGRESOS -> Y SALIDAS DE X
+            // C00001A cant.3 -> ING 111 cant.2 -> SAL 331 cant.1
+            // C00001A                             SAL 332 cant.1
+            // C00001A        -> ING 112 cant.1 -> SAL 333 cant.1
             if (tx_cant.Text.Trim() != "")
             {
+                //string consulta = "select pedido,sum(cant) as cant, sum(saldo) as saldo " +
+                //    "from movim where pedido=@pedi and articulo=@arti group by pedido";
                 string consulta = "select pedido,sum(cant) as cant, sum(saldo) as saldo " +
-                    "from movim where pedido=@pedi and articulo=@arti group by pedido";
+                    "from movim where idmovim=@idm";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
@@ -1189,8 +1221,9 @@ namespace iOMG
                     try
                     {
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
-                        micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
-                        micon.Parameters.AddWithValue("@arti", tx_item.Text.Trim());
+                        //micon.Parameters.AddWithValue("@pedi", tx_pedido.Text.Trim());
+                        //micon.Parameters.AddWithValue("@arti", tx_item.Text.Trim());
+                        micon.Parameters.AddWithValue("@idm", tx_dat_idm.Text.Trim());
                         MySqlDataReader dr = micon.ExecuteReader();
                         if (dr.HasRows)
                         {

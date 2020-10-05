@@ -117,13 +117,13 @@
             this.tx_dat_ped = new System.Windows.Forms.TextBox();
             this.tx_dat_cant = new System.Windows.Forms.TextBox();
             this.tx_dat_idm = new System.Windows.Forms.TextBox();
-            this.tx_cant = new iOMG.NumericTextBox();
-            this.tx_idr = new iOMG.NumericTextBox();
-            this.tx_rind = new iOMG.NumericTextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tx_contrato = new System.Windows.Forms.TextBox();
+            this.tx_cant = new iOMG.NumericTextBox();
+            this.tx_idr = new iOMG.NumericTextBox();
+            this.tx_rind = new iOMG.NumericTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -992,39 +992,6 @@
             this.tx_dat_idm.Tag = "id del reg. en movim";
             this.tx_dat_idm.Visible = false;
             // 
-            // tx_cant
-            // 
-            this.tx_cant.AllowSpace = false;
-            this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_cant.Location = new System.Drawing.Point(608, 57);
-            this.tx_cant.Name = "tx_cant";
-            this.tx_cant.Size = new System.Drawing.Size(40, 20);
-            this.tx_cant.TabIndex = 3;
-            this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_cant.Leave += new System.EventHandler(this.tx_cant_Leave);
-            this.tx_cant.Validating += new System.ComponentModel.CancelEventHandler(this.tx_cant_Validating);
-            // 
-            // tx_idr
-            // 
-            this.tx_idr.AllowSpace = false;
-            this.tx_idr.Location = new System.Drawing.Point(48, 64);
-            this.tx_idr.Name = "tx_idr";
-            this.tx_idr.ReadOnly = true;
-            this.tx_idr.Size = new System.Drawing.Size(40, 20);
-            this.tx_idr.TabIndex = 313;
-            this.tx_idr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
-            // 
-            // tx_rind
-            // 
-            this.tx_rind.AllowSpace = false;
-            this.tx_rind.Location = new System.Drawing.Point(48, 42);
-            this.tx_rind.Name = "tx_rind";
-            this.tx_rind.ReadOnly = true;
-            this.tx_rind.Size = new System.Drawing.Size(40, 20);
-            this.tx_rind.TabIndex = 310;
-            this.tx_rind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.Color.White;
@@ -1060,6 +1027,39 @@
             this.tx_contrato.ReadOnly = true;
             this.tx_contrato.Size = new System.Drawing.Size(100, 20);
             this.tx_contrato.TabIndex = 356;
+            // 
+            // tx_cant
+            // 
+            this.tx_cant.AllowSpace = false;
+            this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_cant.Location = new System.Drawing.Point(608, 57);
+            this.tx_cant.Name = "tx_cant";
+            this.tx_cant.Size = new System.Drawing.Size(40, 20);
+            this.tx_cant.TabIndex = 3;
+            this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_cant.Leave += new System.EventHandler(this.tx_cant_Leave);
+            this.tx_cant.Validating += new System.ComponentModel.CancelEventHandler(this.tx_cant_Validating);
+            // 
+            // tx_idr
+            // 
+            this.tx_idr.AllowSpace = false;
+            this.tx_idr.Location = new System.Drawing.Point(48, 64);
+            this.tx_idr.Name = "tx_idr";
+            this.tx_idr.ReadOnly = true;
+            this.tx_idr.Size = new System.Drawing.Size(40, 20);
+            this.tx_idr.TabIndex = 313;
+            this.tx_idr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
+            // 
+            // tx_rind
+            // 
+            this.tx_rind.AllowSpace = false;
+            this.tx_rind.Location = new System.Drawing.Point(48, 42);
+            this.tx_rind.Name = "tx_rind";
+            this.tx_rind.ReadOnly = true;
+            this.tx_rind.Size = new System.Drawing.Size(40, 20);
+            this.tx_rind.TabIndex = 310;
+            this.tx_rind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // salpedclts
             // 
