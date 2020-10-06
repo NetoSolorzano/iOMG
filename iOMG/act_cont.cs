@@ -44,7 +44,8 @@ namespace iOMG
             {
                 int cantit = 0;
                 int cantne = 0;
-                int cantes = 0;
+                //int cantes = 0;
+                int caning = 0;
                 int cantrs = 0;
                 int canped = 0;
                 int canten = 0;
@@ -90,7 +91,17 @@ namespace iOMG
                 }
                 dr.Close();
                 //************************* calculamos la cantidad de articulos ingresados de los pedidos ********
-
+                texto = "select ifnull(SUM(a.cant),0) as cant from movim a " +
+                    "left join pedidos b on a.pedido=b.codped AND b.status<>'ANULAD' " +
+                    "where TRIM(b.contrato)=@vpcont and left(a.articulo,1)<>'Z'";
+                micon = new MySqlCommand(texto, cn);
+                micon.Parameters.AddWithValue("@vpcont", numcon);
+                dr = micon.ExecuteReader();
+                if (dr.Read())
+                {
+                    caning = dr.GetInt16(0);    // cantidad articulos ingresados
+                }
+                dr.Close();
                 //****************************** calculamos la cantidad de articulos ya entregados de ese contrato
                 // salidas por ventas en clientes movimientos
                 // salidas por ventas en almacen a partir de una reserva  vpcont='012601'
@@ -119,7 +130,7 @@ namespace iOMG
                     cansal = dr.GetInt16(0);     // cantidad de articulos salidos del contrato
                 }
                 dr.Close();
-                cantes = canten + cansal;    // cantidad de articulos ya entregados del contrato
+                //cantes = canten + cansal;    // cantidad de articulos ya entregados del contrato
                 //********************************** calculamos la cantidad de articulos no entregados del contrato  vpcont='012601'
                 texto="select ifnull(sum(a.cant),0) as cant from movim a " +
                     "left join pedidos b on a.pedido=b.codped AND b.status<>'ANULAD' " +
@@ -143,13 +154,14 @@ namespace iOMG
                     "canten: " + canten.ToString() + Environment.NewLine +
                     "cansal: " + cansal.ToString());*/
                 texto="update contrat set status='------' where TRIM(contrato)=@vpcont";
-                if(canped + cantrs == cantit && cantne == 0) texto="update contrat set status='PORLLE', codped=' ' where TRIM(contrato)=@vpcont";
-                if(cantne + cantrs < cantit && cantne + cantrs != 0 && canten + cansal == 0 && cantne != 0) texto="update contrat set status='LLEPAR', codped=' ' where TRIM(contrato)=@vpcont";
-                if(cantne + cantrs >= cantit) texto="update contrat set status='PORENT',codped=' ' where TRIM(contrato)=@vpcont";
-                if(canten + cansal < cantit && canten + cansal != 0) texto="update contrat set status='ENTPAR', codped='parcia' where TRIM(contrato)=@vpcont";
-                if(canped + cantrs + cansal < cantit) texto="update contrat set status='PEDPAR', codped=' ' where TRIM(contrato)=@vpcont";
-                if(canped + cantrs + cansal == 0) texto="update contrat set status='PENDIE', codped=' ' where TRIM(contrato)=@vpcont";
-                if(canten + cansal == cantit) texto="update contrat set status='ENTREG', codped='total' where TRIM(contrato)=@vpcont";
+                if(canped + cantrs == cantit && caning == 0) texto="update contrat set status='PORLLE', codped=' ' where TRIM(contrato)=@vpcont";
+                //if(cantne + cantrs < cantit && cantne + cantrs != 0 && canten + cansal == 0 && cantne != 0) texto="update contrat set status='LLEPAR', codped=' ' where TRIM(contrato)=@vpcont";
+                if (cantne + cantrs == cantit && caning > 0 && caning < canped) texto = "update contrat set status='LLEPAR', codped=' ' where TRIM(contrato)=@vpcont";
+                if (cantne + cantrs == cantit && canped == caning && cansal + canten == 0) texto="update contrat set status='PORENT',codped=' ' where TRIM(contrato)=@vpcont";
+                if (cansal + canten > 0 && canten + cansal < cantrs + caning) texto="update contrat set status='ENTPAR', codped='parcia' where TRIM(contrato)=@vpcont";
+                if (canped + cantrs + cansal < cantit) texto="update contrat set status='PEDPAR', codped=' ' where TRIM(contrato)=@vpcont";
+                if (canped + cantrs == 0) texto="update contrat set status='PENDIE', codped=' ' where TRIM(contrato)=@vpcont";
+                if (canten + cansal == cantit) texto="update contrat set status='ENTREG', codped='total' where TRIM(contrato)=@vpcont";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 micon.ExecuteNonQuery();

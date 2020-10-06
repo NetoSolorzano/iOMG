@@ -86,7 +86,7 @@ namespace iOMG
             float mar_sup = 50.0F;                                      // margen superior de la impresion
             float mar_izq = 15.0F;                                      // margen izquierdo de la impresion // 20.0F
             // tipos y tamaños de letra
-            Font lt_codigo = new Font("Arial", 50, FontStyle.Bold);     // tipo y tamaño de letra rect_codigo
+            Font lt_codigo = new Font("Arial", 60, FontStyle.Bold);     // tipo y tamaño de letra rect_codigo
             Font lt_resto = new Font("Arial", 25);                       // tipo y tamaño de letra rect_resto
             Font lt_madera = new Font("Arial", 100, FontStyle.Bold);      // tipo y tamaño de letra rect_madera
             Font lt_id = new Font("Arial", 30);                          // tipo y tamaño de letra rect_id
@@ -94,13 +94,13 @@ namespace iOMG
             Font lt_cant = new Font("Arial", 25);                        // tipo y tamaño de letra rect_cant
             Font lt_nombre = new Font("Arial", 28);                      // tipo y tamaño de letra rect_nombre
             // rectangulos
-            float anc_rec_cod = 240.0F;                                 // ancho rectangulo codigo
+            float anc_rec_cod = 260.0F;                                 // ancho rectangulo codigo
             float alt_rec_cod = 200.0F;                                  // alto rectangulo codigo
-            float anc_rec_res = 400.0F;                                 // ancho rectangulo nombre acabado   // float anc_rec_res = 200.0F;
+            float anc_rec_res = 390.0F;                                 // ancho rectangulo nombre acabado   // float anc_rec_res = 200.0F;
             float alt_rec_res = 100.0F;                                  // alto rectangulo nombre acabado
-            float anc_rec_art = 400.0F;                                 // ancho rectangulo codigo parcial
+            float anc_rec_art = 390.0F;                                 // ancho rectangulo codigo parcial
             float alt_rec_art = 100.0F;                                 // alto rectangulo codigo parcial
-            float anc_rec_mad = 150.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
+            float anc_rec_mad = 140.0F;                                 // ancho rectangulo madera      // 250.0F 200.0F
             float alt_rec_mad = 200.0F;                                  // alto rectangulo codigo
             float anc_rec_id = 200.0F;                                  // ancho rectangulo ID
             float alt_rec_id = 80.0F;                                   // alto rectangulo ID
