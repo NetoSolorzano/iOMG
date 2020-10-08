@@ -167,6 +167,7 @@ namespace iOMG
             string consulta = "select idpagamenti,fecha,montosol,via,detalle,dv,serie,numero," +
                 "valor,acuenta,saldo,moneda,monto,space(1) as marca " +
                 "from pagamenti where contrato=@cont";
+            /*
             dataGridView1.Rows.Clear();
             dataGridView1.ColumnCount = 14;
             dataGridView1.Columns[0].HeaderText = "ID";
@@ -220,7 +221,7 @@ namespace iOMG
             dataGridView1.Columns[12].Visible = false;
             dataGridView1.Columns[13].Visible = false;       // marca N=nuevo A=actualizado
             dataGridView1.Columns[13].Name = "marca";
-            //
+            */
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
@@ -228,6 +229,9 @@ namespace iOMG
                 MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
                 mdaDatos.SelectCommand.Parameters.AddWithValue("@cont", para2);
                 mdaDatos.Fill(dtDatos);
+                dataGridView1.DataSource = dtDatos;
+                dataGridView1.ReadOnly = true;
+                /*
                 int li = 0;   // idpagamenti,fecha,montosol,via,detalle,dv,serie,numero,
                               // valor,acuenta,saldo,moneda,monto,space(1) as marca
                 for (li = 0; li < dtDatos.Rows.Count; li++) // 
@@ -250,13 +254,14 @@ namespace iOMG
                                         row.ItemArray[13].ToString()
                                         );
                 }
+                */
             }
             calcula();
             conn.Close();
         }
         private void calcula()
         {
-            decimal toti = 0;
+            /*decimal toti = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if(row.Cells[0].Value != null)
@@ -265,6 +270,18 @@ namespace iOMG
                 }
             }
             tx_total.Text = toti.ToString();
+            */
+            decimal x = 0;
+            for (int i = 0; i < dtDatos.Rows.Count; i++)  // int i = 0; i < dataGridView1.Rows.Count - 1; i++
+            {
+                //decimal y;
+                if (decimal.TryParse(dtDatos.Rows[i]["montosol"].ToString(), out decimal y))
+                {
+                    x = x + y; //decimal.Parse(dtDatos.Rows[i]["montosol"].ToString()    // decimal.Parse(dataGridView1.Rows[i].Cells["montosol"].Value.ToString())
+                }
+                //MessageBox.Show("estoy calculando, x=" + x.ToString(),"i=" + i.ToString());
+            }
+            tx_total.Text = x.ToString();
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -395,6 +412,23 @@ namespace iOMG
             if (tx_idr.Text.Trim() == "")
             {
                 // idpagamenti,fecha,montosol,via,detalle,dv,serie,numero,valor,acuenta,saldo,moneda,monto,marca
+                DataRow rw = dtDatos.NewRow();
+                rw["idpagamenti"] = 0;
+                rw["fecha"] = dtp_pago.Value.ToString("dd/MM/yyyy");
+                rw["montosol"] = tx_importe.Text;
+                rw["via"] = tx_dat_fpago.Text;
+                rw["detalle"] = tx_comen.Text.Trim();
+                rw["dv"] = tx_dat_td.Text;
+                rw["serie"] = tx_serie.Text;
+                rw["numero"] = tx_corre.Text;
+                rw["valor"] = tx_importe.Text;
+                rw["acuenta"] = 0;
+                rw["saldo"] = 0;
+                rw["moneda"] = tx_dat_mone.Text;
+                rw["monto"] = tx_importe.Text;
+                rw["marca"] = "N";
+                dtDatos.Rows.Add(rw);
+                /*
                 dataGridView1.Rows.Add(0,
                     dtp_pago.Value.ToString("dd/MM/yyyy"),
                     tx_importe.Text,
@@ -409,7 +443,9 @@ namespace iOMG
                     tx_dat_mone.Text,
                     tx_importe.Text,
                     "N");
+                */
             }
+            /*
             if (tx_idr.Text.Trim() != "")
             {
                 foreach(DataGridViewRow row in dataGridView1.Rows)
@@ -430,6 +466,7 @@ namespace iOMG
                     }
                 }
             }
+            */
             calcula();
             // limpiamos
             tx_idr.Text = "";
@@ -449,8 +486,8 @@ namespace iOMG
                 dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString(), "Pago borrado!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (aa == DialogResult.Yes)
             {
-                if (dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "" &&
-                    dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "0")
+                // dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "" && dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "0"
+                if (e.Row.Index > -1)
                 {
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                     conn.Open();
@@ -469,7 +506,25 @@ namespace iOMG
                         return;
                     }
                     conn.Close();
+                    //
+                    for (int i = 0; i < dtDatos.Rows.Count; i++)  // int i = dtDatos.Rows.Count - 1; i >= 0; i--
+                    {
+                        DataRow dr = dtDatos.Rows[i];
+                        if (dr["idpagamenti"].ToString() == e.Row.Cells["idpagamenti"].Value.ToString())   // dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString()
+                            dr.Delete();
+                        MessageBox.Show("acabo de borrar desde el datatable");
+                    }
+                    try
+                    {
+                        dtDatos.AcceptChanges();
+                        dtDatos.Rows.Add();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
+                calcula();
             }
             else
             {

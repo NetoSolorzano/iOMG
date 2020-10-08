@@ -156,7 +156,7 @@ namespace iOMG
                     para3 = tx_saldo.Text.Trim();
                     para4 = tx_valor.Text.Trim();
                     regpagos pagos = new regpagos(para1, para2, para3, para4);
-                    var result = pagos.ShowDialog();
+                    DialogResult result = pagos.ShowDialog();
                     if(result == DialogResult.Cancel)
                     {
                         if (!string.IsNullOrEmpty(pagos.ReturnValue0))
@@ -1040,6 +1040,8 @@ namespace iOMG
                 {
                     MessageBox.Show("No se permite modificar", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     sololeepag(tabuser);
+                    tx_acta.Enabled = true;
+                    tx_acta.ReadOnly = true;
                 }
             }
         }

@@ -1274,6 +1274,7 @@ namespace iOMG
             tx_d_mad.Text = "";
             tx_d_med.Text = "";
             tx_d_nom.Text = "";
+            tx_saldo.Text = "";
         }
         private void limpia_chk()
         {
@@ -1839,6 +1840,7 @@ namespace iOMG
             cmb_estado.Enabled = false;
             tx_codped.ReadOnly = true;
             dtp_fingreso.Checked = false;
+            tx_saldo.ReadOnly = true;
             cmb_taller.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1870,6 +1872,7 @@ namespace iOMG
             dtp_fingreso.Checked = false;
             //jalaoc("tx_idr");
             Tx_modo.Text = "EDITAR";  // 
+            tx_saldo.ReadOnly = false;
             cmb_estado.Enabled = true;
         }
         private void Bt_anul_Click(object sender, EventArgs e)

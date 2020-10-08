@@ -192,15 +192,15 @@ namespace iOMG
             advancedDataGridView1.Columns[9].Width = 30;            // detalle 1
             advancedDataGridView1.Columns[9].ReadOnly = true;
             advancedDataGridView1.Columns[10].Width = 20;            // acabado
-            advancedDataGridView1.Columns[10].ReadOnly = true;
+            advancedDataGridView1.Columns[10].ReadOnly = false;
             advancedDataGridView1.Columns[11].Width = 30;            // taller
             advancedDataGridView1.Columns[11].ReadOnly = true;
             advancedDataGridView1.Columns[12].Width = 40;            // detalle 2
-            advancedDataGridView1.Columns[12].ReadOnly = true;
+            advancedDataGridView1.Columns[12].ReadOnly = false;
             advancedDataGridView1.Columns[13].Width = 40;           // detalle 3
             advancedDataGridView1.Columns[13].ReadOnly = true;
             advancedDataGridView1.Columns[14].Width = 40;           // juego
-            advancedDataGridView1.Columns[14].ReadOnly = true;
+            advancedDataGridView1.Columns[14].ReadOnly = false;
             advancedDataGridView1.Columns[15].Width = 190;          // nombre
             advancedDataGridView1.Columns[15].ReadOnly = false;
             advancedDataGridView1.Columns[16].Width = 70;            // medidas
@@ -444,9 +444,8 @@ namespace iOMG
                 }
                 if (nomcol == "deta2")
                 {
-                    string consulta = "select count(*) from items where capit=@cap and deta2=@det2";
+                    string consulta = "select count(*) from desc_dt2 where idcodice=@det2";   // select count(*) from items where capit=@cap and deta2=@det2
                     MySqlCommand micon = new MySqlCommand(consulta, cn);
-                    micon.Parameters.AddWithValue("@cap", colcap);
                     micon.Parameters.AddWithValue("@det2", valcol);
                     MySqlDataReader dr = micon.ExecuteReader();
                     if (dr.Read())
@@ -455,7 +454,18 @@ namespace iOMG
                     }
                     dr.Close();
                 }
-                // hay validacion de deta3 ?????
+                if (nomcol == "acaba")
+                {
+                    string consulta = "select count(*) from desc_est where idcodice=@aca";
+                    MySqlCommand micon = new MySqlCommand(consulta, cn);
+                    micon.Parameters.AddWithValue("@aca", valcol);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        if (dr.GetInt16(0) > 0) retorna = true;
+                    }
+                    dr.Close();
+                }
             }
             catch (MySqlException ex)
             {
@@ -478,6 +488,15 @@ namespace iOMG
                 micon.Parameters.AddWithValue("@val", valor);
                 micon.Parameters.AddWithValue("@idm", idm);
                 micon.ExecuteNonQuery();
+                if (campo == "codig")                                                   // generamos el kardex
+                {
+                    string consulta;
+                    // salida de codigo anterior
+                    consulta = "insert into kardex (codalm,fecha,tipmov,item,cant_i,cant_s,coment,user,dias,idalm) " +
+                        "values ()";
+                    // ingreso de nuevo codigo
+                }
+
             }
             catch (Exception ex)
             {
@@ -1613,8 +1632,80 @@ namespace iOMG
                         }
                         break;
                     case "acaba":
+                        if (vali_par(advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), 
+                            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), "") == true)
+                        {
+                            var ll = MessageBox.Show("Realmente desea cambiar el valor?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (ll == DialogResult.Yes)
+                            {
+                                // cambia el codigo en la grilla
+                                advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value =
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["capit"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["model"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["mader"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["tipol"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["deta1"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["acaba"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["talle"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["deta2"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["deta3"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["juego"].Value.ToString();
+                                // graba el nuevo codigo y letra en almloc
+                                grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
+                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
+                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString());
+                            }
+                            else
+                            {
+                                advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valant;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Valor incorrecto: " + valnue,
+                                    "Verifique por favor", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valant;
+                        }
+                        break;
                     case "talle":
                     case "deta2":
+                        if (vali_par(advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(),
+                            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), "") == true)   // valida si existe en la maestra el dato cambiado, debe validar toda la estructura ..
+                        {   // ,string nomcol, string valcol, string colcap
+                            var aaa = MessageBox.Show("Realmente desea cambiar el valor?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (aaa == DialogResult.Yes)
+                            {
+                                // cambia el codigo en la grilla
+                                advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value =
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["capit"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["model"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["mader"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["tipol"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["deta1"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["acaba"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["talle"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["deta2"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["deta3"].Value.ToString() +
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["juego"].Value.ToString();
+                                // graba el nuevo codigo y letra en almloc
+                                grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
+                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
+                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString());
+                            }
+                            else
+                            {
+                                advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valant;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Valor incorrecto: " + valnue,
+                                    "Verifique por favor", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valant;
+                        }
+                        break;
                     case "deta3":
                     case "juego":
                         var a12 = MessageBox.Show("Confirma que desea cambiar el valor de la columna?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

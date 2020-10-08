@@ -86,7 +86,7 @@ namespace iOMG
             float mar_sup = 50.0F;                                      // margen superior de la impresion
             float mar_izq = 15.0F;                                      // margen izquierdo de la impresion // 20.0F
             // tipos y tamaños de letra
-            Font lt_codigo = new Font("Arial", 60, FontStyle.Bold);     // tipo y tamaño de letra rect_codigo
+            Font lt_codigo = new Font("Arial", 65, FontStyle.Bold);     // tipo y tamaño de letra rect_codigo
             Font lt_resto = new Font("Arial", 25);                       // tipo y tamaño de letra rect_resto
             Font lt_madera = new Font("Arial", 100, FontStyle.Bold);      // tipo y tamaño de letra rect_madera
             Font lt_id = new Font("Arial", 30);                          // tipo y tamaño de letra rect_id
@@ -135,7 +135,7 @@ namespace iOMG
             e.Graphics.DrawRectangle(blackPen, mar_izq, mar_sup + alt_rec_cod + alt_rec_id + alt_rec_jgo, anc_rec_can, alt_rec_can); // cantid
             e.Graphics.DrawRectangle(blackPen, mar_izq + anc_rec_id, mar_sup + alt_rec_cod, anc_rec_nom, alt_rec_nom);      // nombre
 
-            e.Graphics.DrawString(tx_dat_cap.Text + " " + tx_dat_mod.Text, lt_codigo, Brushes.Black, rect_codigo, drawFormat);  // codig
+            e.Graphics.DrawString(tx_dat_cap.Text + "" + tx_dat_mod.Text, lt_codigo, Brushes.Black, rect_codigo, drawFormat);  // codig 07/10/2020 SIN ESPACIO COORD.CON NESTOR
             e.Graphics.DrawString(tx_acabado.Text, lt_resto, Brushes.Black, rect_resto, drawFormat);   // nombre del acabado
             e.Graphics.DrawString(tx_dat_tip.Text + tx_dat_det1.Text + tx_dat_aca.Text + tx_dat_tal.Text + tx_dat_det2.Text + tx_dat_det3.Text,
                 lt_resto, Brushes.Black, rect_artic, drawFormat);   // Resto
