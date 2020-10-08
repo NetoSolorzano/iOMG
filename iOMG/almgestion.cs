@@ -13,8 +13,10 @@ namespace iOMG
 {
     public partial class almgestion : Form
     {
-        string valant = "";
-        string valnue = "";
+        string valant = "";                 // valor celda antes de cambio 
+        string valnue = "";                 // valor celda despues de cambio
+        string codant = "";                 // codigo antes de cambio de valor de celda
+        string codnue = "";                 // codigo despues de cambio de valor de celda
         DataTable dt = new DataTable();
         DataView dv = new DataView();
         List<bool> marcas = new List<bool>();
@@ -57,6 +59,7 @@ namespace iOMG
         string img_grab = "";
         string img_anul = "";
         string vcprecio = "";                                   // nombre del campo precio de la tabla "alm2018"
+        string vcomentAu = "";                                  // comentario cuando el kardex es por movimientos automaticos, cuando se cambia valores en la grilla
         #endregion
 
         public almgestion()
@@ -125,6 +128,7 @@ namespace iOMG
                     if (row["formulario"].ToString() == nomform)
                     {
                         if (row["campo"].ToString() == "precio" && row["param"].ToString() == "campo") vcprecio = row["valor"].ToString().Trim();         // campo de precio actual
+                        if (row["campo"].ToString() == "kardex" && row["param"].ToString() == "comAut") vcomentAu = row["valor"].ToString().Trim();         // comentario generico mov kardex
                     }
                 }
                 da.Dispose();
@@ -331,7 +335,7 @@ namespace iOMG
             rb_redu_CheckedChanged(null, null);
             rb_todos_CheckedChanged(null, null);
         }
-        private bool vali_alm(string codi)                                                  // valida almacen
+        private bool vali_alm(string codi)                                              // valida almacen
         {
             bool retorna = false;
             string DB_CONN_STR0 = DB_CONN_STR;
@@ -372,7 +376,7 @@ namespace iOMG
             cn0.Dispose(); // return connection to pool
             return retorna;
         }
-        private bool vali_par(string nomcol, string valcol, string colcap)                      // valida existencia de dato en la maestra
+        private bool vali_par(string nomcol, string valcol, string colcap)              // valida existencia de dato en la maestra
         {                                                   // en consecuencia con la estructura de la maestra
             bool retorna = false;
             MySqlConnection cn = new MySqlConnection(DB_CONN_STR);
@@ -476,7 +480,7 @@ namespace iOMG
             cn.Close();
             return retorna;
         }
-        private void grabacam(int idm, string campo, string valor)                                  // graba el cambio en la tabla almloc y la maestra de items
+        private void grabacam(int idm, string campo, string valor, string almac)        // graba el cambio en la tabla almloc y la maestra de items
         {
             string DB_CONN_STR1 = DB_CONN_STR;
             MySqlConnection cn0 = new MySqlConnection(DB_CONN_STR1);
@@ -491,12 +495,24 @@ namespace iOMG
                 if (campo == "codig")                                                   // generamos el kardex
                 {
                     string consulta;
-                    // salida de codigo anterior
-                    consulta = "insert into kardex (codalm,fecha,tipmov,item,cant_i,cant_s,coment,user,dias,idalm) " +
-                        "values ()";
-                    // ingreso de nuevo codigo
+                    // salida de codigo anterior y entrada nuevo codigo
+                    consulta = "insert into kardex (codalm,fecha,tipmov,item,cant_s,cant_i,coment,idalm,USER,dias) " +
+                            "values (@coda,@fech,@tope,@codi,@cant,0,@come,@ida,@asd,now())," +
+                            "(@coda,@fech,@topi,@codn,0,@cani,@come,@ida,@asd,now())";
+                    micon = new MySqlCommand(consulta, cn0);
+                    micon.Parameters.AddWithValue("@coda", almac);
+                    micon.Parameters.AddWithValue("@fech", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@tope", "SALIDA");
+                    micon.Parameters.AddWithValue("@topi", "INGRES");
+                    micon.Parameters.AddWithValue("@codi", codant);   // valant (este el el dato anterior, es el valor que cambio)
+                    micon.Parameters.AddWithValue("@codn", codnue);   // valnue (este es el dato nuevo, no es el código!!)
+                    micon.Parameters.AddWithValue("@cant", "1");
+                    micon.Parameters.AddWithValue("@cani", "1");
+                    micon.Parameters.AddWithValue("@come", vcomentAu);
+                    micon.Parameters.AddWithValue("@ida", idm);
+                    micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
+                    micon.ExecuteNonQuery();
                 }
-
             }
             catch (Exception ex)
             {
@@ -994,7 +1010,7 @@ namespace iOMG
                 {
                     int mark = 0;
                     row.Cells["marca"].Value = mark;
-                    grabacam(int.Parse(row.Cells["id"].Value.ToString()), "marca", mark.ToString());
+                    grabacam(int.Parse(row.Cells["id"].Value.ToString()), "marca", mark.ToString(), "");
                 }
             }
         }
@@ -1532,6 +1548,7 @@ namespace iOMG
             if (advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
             {
                 valant = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                codant = advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString();
             }
         }
         private void advancedDataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -1545,7 +1562,7 @@ namespace iOMG
                     case "marca": //  0
                         int mark = (advancedDataGridView1.Rows[e.RowIndex].Cells[advancedDataGridView1.Columns["marca"].Index].Value.ToString() == "False") ? 0 : 1;
                         grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells[advancedDataGridView1.Columns["id"].Index].Value.ToString()),
-                                        advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(), mark.ToString());
+                                        advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(), mark.ToString(), "");
                         break;
                     case "codalm": // 2
                         if ((advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != "" ||
@@ -1559,7 +1576,7 @@ namespace iOMG
                                 {
                                     // ejecuta el proceso interno de cambio de almacen
                                     grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue, "");
                                 }
                                 else
                                 {
@@ -1608,11 +1625,13 @@ namespace iOMG
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["deta2"].Value.ToString() +
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["deta3"].Value.ToString() +
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["juego"].Value.ToString();
+                                codnue = advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString();
                                 // graba el nuevo codigo y letra en almloc
                                 grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue, "");
                                 grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString());
+                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(), 
+                                        advancedDataGridView1.Rows[e.RowIndex].Cells["codalm"].Value.ToString());
                                 // jala nuevos datos de la maestra y actualiza la grilla
                                 //jalareg(advancedDataGridView1.Rows[e.RowIndex].Cells["capit"].Value.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells["model"].Value.ToString(),
                                 //    advancedDataGridView1.Rows[e.RowIndex].Cells["tipol"].Value.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells["deta1"].Value.ToString(),
@@ -1650,11 +1669,13 @@ namespace iOMG
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["deta2"].Value.ToString() +
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["deta3"].Value.ToString() +
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["juego"].Value.ToString();
+                                codnue = advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString();
                                 // graba el nuevo codigo y letra en almloc
                                 grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue, "");
                                 grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString());
+                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(),
+                                        advancedDataGridView1.Rows[e.RowIndex].Cells["codalm"].Value.ToString());
                             }
                             else
                             {
@@ -1688,11 +1709,13 @@ namespace iOMG
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["deta2"].Value.ToString() +
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["deta3"].Value.ToString() +
                                     advancedDataGridView1.Rows[e.RowIndex].Cells["juego"].Value.ToString();
+                                codnue = advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString();
                                 // graba el nuevo codigo y letra en almloc
                                 grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                        advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue, "");
                                 grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString());
+                                        "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(),
+                                        advancedDataGridView1.Rows[e.RowIndex].Cells["codalm"].Value.ToString());
                             }
                             else
                             {
@@ -1723,11 +1746,13 @@ namespace iOMG
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["deta2"].Value.ToString() +
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["deta3"].Value.ToString() +
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["juego"].Value.ToString();
+                            codnue = advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString();
                             // graba el nuevo codigo y letra en almloc
                             grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                    advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                    advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue, "");
                             grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()),
-                                    "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString());
+                                    "codig", advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(),
+                                    advancedDataGridView1.Rows[e.RowIndex].Cells["codalm"].Value.ToString());
                             // jala nuevos datos de la maestra y actualiza la grilla
                             //jalareg(advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(), Int16.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells["id"].Value.ToString()));
                             //jalareg(advancedDataGridView1.Rows[e.RowIndex].Cells["capit"].Value.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells["model"].Value.ToString(),
@@ -1743,7 +1768,7 @@ namespace iOMG
                         {
                             advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valnue;
                             grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells[index].Value.ToString()),
-                                advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(), valnue);
+                                advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(), valnue, "");
                             //grabaitems("nombr",advancedDataGridView1.Rows[e.RowIndex].Cells["codig"].Value.ToString(),valnue);
                         }
                         else
@@ -1758,7 +1783,7 @@ namespace iOMG
                         {
                             advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valnue;
                             grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells[index].Value.ToString()),
-                                advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(), valnue);
+                                advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(), valnue, "");
                         }
                         else
                         {
@@ -1773,7 +1798,7 @@ namespace iOMG
                         {
                             advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = valnue;
                             grabacam(int.Parse(advancedDataGridView1.Rows[e.RowIndex].Cells[index].Value.ToString()),
-                                advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue);
+                                advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString(), valnue, "");
                         }
                         else
                         {

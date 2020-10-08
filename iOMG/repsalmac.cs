@@ -227,6 +227,7 @@ namespace iOMG
                 dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgv_resumen.Columns[1].Width = anchColOpt / 2;
             }
+            dgv_resumen.ReadOnly = true;
         }
         private void grilla_rsv()                                               // arma la grilla de las reservas 
         {
@@ -236,6 +237,7 @@ namespace iOMG
             dgv_reserv.RowTemplate.Height = 15;
             dgv_reserv.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_reserv.AllowUserToAddRows = false;
+            dgv_reserv.ReadOnly = true;
         }
         private void grilla_sal()                                               // grilla salidas
         {
@@ -245,6 +247,7 @@ namespace iOMG
             dgv_salidas.RowTemplate.Height = 15;
             dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_salidas.AllowUserToAddRows = false;
+            dgv_salidas.ReadOnly = true;
         }
         private void grillares(string modo)                                     // arma la grilla stock
         {
@@ -329,6 +332,7 @@ namespace iOMG
                 // cant
                 dgv_resumen.Columns[16].Visible = true;
             }
+            dgv_resumen.ReadOnly = true;
         }
         private void grillavtas()                                               // arma grilla de kardex
         {
@@ -339,6 +343,7 @@ namespace iOMG
             dgv_kardex.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             dgv_kardex.AllowUserToAddRows = false;
             if (dgv_kardex.DataSource == null) dgv_kardex.ColumnCount = 7;
+            dgv_kardex.ReadOnly = true;
         }
         private void grillaHist()                                                // grilla historico
         {
@@ -354,6 +359,7 @@ namespace iOMG
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
+            dgv_hist.ReadOnly = true;
         }
         //
         private void button1_Click(object sender, EventArgs e)                  // filtra y muestra las reservas
