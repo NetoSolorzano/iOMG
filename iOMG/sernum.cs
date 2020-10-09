@@ -31,6 +31,7 @@ namespace iOMG
         string img_btq = "";
         string img_grab = "";
         string img_anul = "";
+        string var_tipdoc = "";
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -66,9 +67,9 @@ namespace iOMG
             toolTipNombre.SetToolTip(toolStrip1, nomform);   // Set up the ToolTip text for the object
             init();
             toolboton();
-            limpiar(this);
+            limpiar(tabreg);
             sololee(this);
-            dataload();
+            dataload("todo");
             grilla();
             this.KeyPreview = true;
             //Bt_add_Click(null, null);
@@ -91,6 +92,10 @@ namespace iOMG
             Bt_sig.Image = Image.FromFile(img_bts);
             Bt_ret.Image = Image.FromFile(img_btr);
             Bt_fin.Image = Image.FromFile(img_btf);
+
+            // maximos para documentos de venta electronicos
+            textBox1.MaxLength = 4;             // serie
+            textBox2.MaxLength = 8;             // numero
         }
         private void grilla()                   // arma la grilla
         {
@@ -122,7 +127,7 @@ namespace iOMG
             advancedDataGridView1.Columns[3].Visible = true;
             advancedDataGridView1.Columns[3].HeaderText = "Serie";
             advancedDataGridView1.Columns[3].Width = 50;
-            advancedDataGridView1.Columns[3].ReadOnly = false;          // las celdas de esta columna pueden cambiarse
+            advancedDataGridView1.Columns[3].ReadOnly = true;          // las celdas de esta columna pueden cambiarse
             advancedDataGridView1.Columns[3].Tag = "validaNO";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // inicial
@@ -131,7 +136,7 @@ namespace iOMG
             advancedDataGridView1.Columns[5].Visible = true;
             advancedDataGridView1.Columns[5].HeaderText = "#Actual";
             advancedDataGridView1.Columns[5].Width = 70;
-            advancedDataGridView1.Columns[5].ReadOnly = false;
+            advancedDataGridView1.Columns[5].ReadOnly = true;
             advancedDataGridView1.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // final
@@ -140,7 +145,7 @@ namespace iOMG
             advancedDataGridView1.Columns[7].Visible = true;       
             advancedDataGridView1.Columns[7].HeaderText = "Comentario";
             advancedDataGridView1.Columns[7].Width = 100;
-            advancedDataGridView1.Columns[7].ReadOnly = false;
+            advancedDataGridView1.Columns[7].ReadOnly = true;
             advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna SI se validan
             advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // invisibles
@@ -195,7 +200,7 @@ namespace iOMG
             advancedDataGridView1.Columns[28].Visible = false;  
             advancedDataGridView1.Columns[28].HeaderText = "Ubigeo";
             advancedDataGridView1.Columns[28].Width = 60;
-            advancedDataGridView1.Columns[28].ReadOnly = false;
+            advancedDataGridView1.Columns[28].ReadOnly = true;
             advancedDataGridView1.Columns[28].Tag = "validaSI";
             advancedDataGridView1.Columns[28].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
@@ -205,16 +210,18 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select campo,param,valor from enlaces where formulario=@nofo";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in (@nofo,@noma,@noco)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
-                micon.Parameters.AddWithValue("@nofo", "main");   // nomform
+                micon.Parameters.AddWithValue("@nofo", nomform);
+                micon.Parameters.AddWithValue("@noma", "main");
+                micon.Parameters.AddWithValue("@noco", "contratos");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 for (int t = 0; t < dt.Rows.Count; t++)
                 {
                     DataRow row = dt.Rows[t];
-                    if (row["campo"].ToString() == "imagenes")
+                    if (row["formulario"].ToString() == "main" && row["campo"].ToString() == "imagenes")
                     {
                         if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
                         if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
@@ -228,6 +235,10 @@ namespace iOMG
                         if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
                         if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
                         if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                    }
+                    if (row["formulario"].ToString() == "contratos")
+                    {
+                        if (row["campo"].ToString() == "contrato" && row["param"].ToString() == "tipdoc") var_tipdoc = row["valor"].ToString().Trim();
                     }
                 }
                 da.Dispose();
@@ -258,8 +269,8 @@ namespace iOMG
             comboBox1.SelectedValue = textBox4.Text;
             textCmb2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[2].Value.ToString();  // tipdoc
             comboBox2.SelectedValue = textCmb2.Text;
-            textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString();  // serie
-            textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();  // actual
+            textBox1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[3].Value.ToString().Trim();  // serie
+            textBox2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString().Trim();  // actual
             textBox3.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();   // coment
             textBox5.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[17].Value.ToString();   // sede
             comboBox3.SelectedValue = textBox5.Text;
@@ -269,7 +280,7 @@ namespace iOMG
             textBox9.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[28].Value.ToString();   // ubigeo
             //checkBox1.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString() == "1") ? true : false;
         }
-        public void dataload()                  // jala datos para los combos y la grilla
+        public void dataload(string cual)                  // jala datos para los combos y la grilla
         {
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -279,49 +290,55 @@ namespace iOMG
                 Application.Exit();
                 return;
             }
-            tabControl1.SelectedTab = tabreg;
-            // DATOS DEL COMBOBOX1  Razón social
-            this.comboBox1.Items.Clear();
-            const string contpu = "select idcodice,descrizione from descrittive " +
-                "where idtabella='RAZ' order by idcodice";
-            MySqlCommand cmbtpu = new MySqlCommand(contpu, conn);
-            DataTable dttpu = new DataTable();
-            MySqlDataAdapter datpu = new MySqlDataAdapter(cmbtpu);
-            datpu.Fill(dttpu);
-            comboBox1.DataSource = dttpu;
-            comboBox1.DisplayMember = "descrizione";
-            comboBox1.ValueMember = "idcodice";
-            // DATOS DEL COMBOBOX2  tipo documento
-            comboBox2.Items.Clear();
-            const string selcmb2 = "select idcodice,descrizione from descrittive " +
-                "where idtabella='TDV' order by idcodice";
-            MySqlCommand comcmb2 = new MySqlCommand(selcmb2, conn);
-            DataTable dtcmb2 = new DataTable();
-            MySqlDataAdapter dacmb2 = new MySqlDataAdapter(comcmb2);
-            dacmb2.Fill(dtcmb2);
-            comboBox2.DataSource = dtcmb2;
-            comboBox2.DisplayMember = "descrizione";
-            comboBox2.ValueMember = "idcodice";
-            // DATOS DEL COMBOBOX3   
-            comboBox3.Items.Clear();
-            const string selcmb3 = "select idcodice,descrizione from descrittive " +
-                "where idtabella='LOC' order by idcodice";
-            MySqlCommand comcmb3 = new MySqlCommand(selcmb3, conn);
-            DataTable dtcmb3 = new DataTable();
-            MySqlDataAdapter dacmb3 = new MySqlDataAdapter(comcmb3);
-            dacmb3.Fill(dtcmb3);
-            comboBox3.DataSource = dtcmb3;
-            comboBox3.DisplayMember = "descrizione";
-            comboBox3.ValueMember = "idcodice";
-            // datos de las series
-            string datgri = "select id,rsocial,tipdoc,serie,inicial,actual,final,coment,status,userc,fechc,userm,fechm,usera,fecha,vercrea," +
-                "vermodi,sede,destino,format,zona,glosaser," +
-                "imp_ini,imp_fec,imp_det,imp_dtr,imp_pie,dir_pe,ubigeo " +
-                "from series order by sede,tipdoc,serie";
-            MySqlCommand cdg = new MySqlCommand(datgri, conn);
-            MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
-            dtg.Clear();
-            dag.Fill(dtg);
+            if (cual == "todo")
+            {
+                tabControl1.SelectedTab = tabreg;
+                // DATOS DEL COMBOBOX1  Razón social
+                this.comboBox1.Items.Clear();
+                const string contpu = "select idcodice,descrizione from descrittive " +
+                    "where idtabella='RAZ' and numero=1 order by idcodice";
+                MySqlCommand cmbtpu = new MySqlCommand(contpu, conn);
+                DataTable dttpu = new DataTable();
+                MySqlDataAdapter datpu = new MySqlDataAdapter(cmbtpu);
+                datpu.Fill(dttpu);
+                comboBox1.DataSource = dttpu;
+                comboBox1.DisplayMember = "descrizione";
+                comboBox1.ValueMember = "idcodice";
+                // DATOS DEL COMBOBOX2  tipo documento
+                comboBox2.Items.Clear();
+                const string selcmb2 = "select idcodice,descrizione from descrittive " +
+                    "where idtabella='TDV' and numero=1 order by idcodice";
+                MySqlCommand comcmb2 = new MySqlCommand(selcmb2, conn);
+                DataTable dtcmb2 = new DataTable();
+                MySqlDataAdapter dacmb2 = new MySqlDataAdapter(comcmb2);
+                dacmb2.Fill(dtcmb2);
+                comboBox2.DataSource = dtcmb2;
+                comboBox2.DisplayMember = "descrizione";
+                comboBox2.ValueMember = "idcodice";
+                // DATOS DEL COMBOBOX3   
+                comboBox3.Items.Clear();
+                const string selcmb3 = "select idcodice,descrizione,codigo from descrittive " +
+                    "where idtabella='VEN' and numero=1 order by idcodice";
+                MySqlCommand comcmb3 = new MySqlCommand(selcmb3, conn);
+                DataTable dtcmb3 = new DataTable();
+                MySqlDataAdapter dacmb3 = new MySqlDataAdapter(comcmb3);
+                dacmb3.Fill(dtcmb3);
+                comboBox3.DataSource = dtcmb3;
+                comboBox3.DisplayMember = "descrizione";
+                comboBox3.ValueMember = "idcodice";
+            }
+            if (cual == "todo" || cual == "series")
+            {
+                // datos de las series
+                string datgri = "select id,rsocial,tipdoc,serie,inicial,actual,final,coment,status,userc,fechc,userm,fechm,usera,fecha,vercrea," +
+                    "vermodi,sede,destino,format,zona,glosaser," +
+                    "imp_ini,imp_fec,imp_det,imp_dtr,imp_pie,dir_pe,ubigeo " +
+                    "from series order by sede,tipdoc,serie";
+                MySqlCommand cdg = new MySqlCommand(datgri, conn);
+                MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
+                dtg.Clear();
+                dag.Fill(dtg);
+            }
             //
             conn.Close();
         }
@@ -419,7 +436,7 @@ namespace iOMG
                 }
             }
         }
-        public static void limpiar(Form ofrm)
+        public static void limpiar(TabPage ofrm)
         {
             foreach (Control oControls in ofrm.Controls)
             {
@@ -439,7 +456,9 @@ namespace iOMG
         }
         public void limpia_combos()
         {
-            this.comboBox1.SelectedIndex = -1;
+            comboBox1.SelectedIndex = -1;
+            comboBox2.SelectedIndex = -1;
+            comboBox3.SelectedIndex = -1;
         }
         #endregion limpiadores_modos;
 
@@ -475,6 +494,18 @@ namespace iOMG
             {
                 MessageBox.Show("Seleccione el Local o sede", " Atención ");
                 comboBox3.Focus();
+                return;
+            }
+            if (textBox1.Text.Length > textBox1.MaxLength)
+            {
+                MessageBox.Show("La cantidad de caracteres es mayor al permitido","Error");
+                textBox1.Focus();
+                return;
+            }
+            if (textBox2.Text.Length > textBox2.MaxLength)
+            {
+                MessageBox.Show("La cantidad de caracteres es mayor al permitido", "Error");
+                textBox2.Focus();
                 return;
             }
             // grabamos, actualizamos, etc
@@ -595,10 +626,12 @@ namespace iOMG
             if (iserror == "no")
             {
                 // debe limpiar los campos y actualizar la grilla
-                limpiar(this);
+                limpiar(tabreg);
                 limpia_otros();
+                limpia_chk();
+                limpia_combos();
                 //this.textBox1.Focus();
-                //dataload();
+                dataload("series");
             }
         }
         #endregion boton_form;
@@ -615,43 +648,6 @@ namespace iOMG
                 //tx_idr.Text = aca;
                 jalaoc("tx_idr");               // jalamos los datos del registro
             }
-        }
-        private void textBox1_Leave(object sender, EventArgs e)
-        {
-            /*  validamos segun el modo
-            if (textBox1.Text != "" && Tx_modo.Text=="NUEVO")
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State != ConnectionState.Open)
-                {
-                    MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
-                    Application.Exit();
-                    return;
-                }
-                string consulta = "select count(nom_user) as cant from usuarios where nom_user=@usuario";
-                MySqlCommand mycomand = new MySqlCommand(consulta, conn);
-                mycomand.Parameters.AddWithValue("@usuario", this.textBox1.Text);
-                int cant = System.Convert.ToInt16(mycomand.ExecuteScalar());
-                if (cant > 0)
-                {
-                    MessageBox.Show("Usuario YA existe!", "Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                    this.textBox1.Text = "";
-                    return;        
-                }
-                conn.Close();
-            }
-            if (textBox1.Text != "" && Tx_modo.Text != "NUEVO")
-            {
-                DataRow[] linea = dtg.Select("nom_user like '%" + textBox1.Text + "%'");
-                foreach(DataRow row in linea)
-                {
-                    textBox2.Text = row[1].ToString();
-                    textBox3.Text = row[2].ToString();
-                }
-                
-            }
-            */
         }
         #endregion leaves;
 
@@ -728,30 +724,32 @@ namespace iOMG
             escribe(this);
             this.Tx_modo.Text = "NUEVO";
             this.button1.Image = Image.FromFile(img_grab);
-            this.textBox1.Focus();
-            limpiar(this);
+            limpiar(tabreg);
             limpia_otros();
             limpia_combos();
+            textBox1.ReadOnly = false;
+            comboBox1.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
             advancedDataGridView1.Enabled = true;
             string codu = "";
             string idr = "";
+            tabControl1.SelectedTab = tabgrilla;
+            escribe(this);
+            Tx_modo.Text = "EDITAR";
+            button1.Image = Image.FromFile(img_grab);
+            limpiar(tabreg);
+            limpia_otros();
+            limpia_combos();
             if (advancedDataGridView1.CurrentRow.Index > -1)
             {
                 codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
                 idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
             }
-            tabControl1.SelectedTab = tabgrilla;
-            escribe(this);
-            Tx_modo.Text = "EDITAR";
-            button1.Image = Image.FromFile(img_grab);
-            limpiar(this);
-            limpia_otros();
-            limpia_combos();
             jalaoc("tx_idr");
+            textBox1.ReadOnly = false;
         }
         private void Bt_close_Click(object sender, EventArgs e)
         {
@@ -779,14 +777,14 @@ namespace iOMG
             escribe(this);
             Tx_modo.Text = "ANULAR";
             button1.Image = Image.FromFile(img_anul);
-            limpiar(this);
+            limpiar(tabreg);
             limpia_otros();
             limpia_combos();
-            jalaoc("tx_idr");
+            //jalaoc("tx_idr");
         }
         private void Bt_first_Click(object sender, EventArgs e)
         {
-            limpiar(this);
+            limpiar(tabreg);
             limpia_chk();
             limpia_combos();
             //--
@@ -798,7 +796,7 @@ namespace iOMG
             string aca = tx_idr.Text;
             limpia_chk();
             limpia_combos();
-            limpiar(this);
+            limpiar(tabreg);
             //--
             tx_idr.Text = lib.goback(nomtab, aca);
             tx_idr_Leave(null, null);
@@ -808,14 +806,14 @@ namespace iOMG
             string aca = tx_idr.Text;
             limpia_chk();
             limpia_combos();
-            limpiar(this);
+            limpiar(tabreg);
             //--
             tx_idr.Text = lib.gonext(nomtab, aca);
             tx_idr_Leave(null, null);
         }
         private void Bt_last_Click(object sender, EventArgs e)
         {
-            limpiar(this);
+            limpiar(tabreg);
             limpia_chk();
             limpia_combos();
             //--
@@ -842,6 +840,16 @@ namespace iOMG
             {
                 DataRow row = ((DataTable)comboBox2.DataSource).Rows[comboBox2.SelectedIndex];
                 textCmb2.Text = (string)row["idcodice"];
+                if (textCmb2.Text == var_tipdoc)
+                {
+                    textBox1.MaxLength = 2;             // serie
+                    textBox2.MaxLength = 6;             // numero
+                }
+                else
+                {
+                    textBox1.MaxLength = 4;             // serie
+                    textBox2.MaxLength = 8;             // numero
+                }
             }
         }
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -850,6 +858,7 @@ namespace iOMG
             {
                 DataRow row = ((DataTable)comboBox3.DataSource).Rows[comboBox3.SelectedIndex];
                 textBox5.Text = (string)row["idcodice"];
+                //textBox1.Text = row["codigo"].ToString().Trim();
             }
         }
         #endregion comboboxes
@@ -867,15 +876,16 @@ namespace iOMG
         {
             if(e.ColumnIndex == 1)
             {
-                //string codu = "";
+                string rin = "";
                 string idr = "";
                 idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-                tx_rind.Text = advancedDataGridView1.CurrentRow.Index.ToString();
+                rin = advancedDataGridView1.CurrentRow.Index.ToString();
                 tabControl1.SelectedTab = tabreg;
-                limpiar(this);
+                limpiar(tabreg);
                 limpia_otros();
                 limpia_combos();
                 tx_idr.Text = idr;
+                tx_rind.Text = rin;
                 jalaoc("tx_idr");
             }
         }
