@@ -682,12 +682,31 @@ namespace iOMG
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
         {
-            //DataTable dtg = (DataTable)dgv_resumen.DataSource;
-            dtg.DefaultView.RowFilter = dgv_resumen.FilterString;
+            if (tabControl1.SelectedTab.Name == "tabstock") dtg.DefaultView.RowFilter = dgv_resumen.FilterString;
+            if (tabControl1.SelectedTab.Name == "tabHist")
+            {
+                DataTable dt = (DataTable)dgv_hist.DataSource;
+                dt.DefaultView.RowFilter = dgv_hist.FilterString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabvtas")
+            {
+                DataTable dt = (DataTable)dgv_kardex.DataSource;
+                dt.DefaultView.RowFilter = dgv_kardex.FilterString;
+            }
         }
         private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)
         {
-            dtg.DefaultView.Sort = dgv_resumen.SortString;
+            if (tabControl1.SelectedTab.Name == "tabstock") dtg.DefaultView.Sort = dgv_resumen.SortString;
+            if (tabControl1.SelectedTab.Name == "tabHist")
+            {
+                DataTable dt = (DataTable)dgv_hist.DataSource;
+                dt.DefaultView.Sort = dgv_hist.SortString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabvtas")
+            {
+                DataTable dt = (DataTable)dgv_kardex.DataSource;
+                dt.DefaultView.Sort = dgv_kardex.SortString;
+            }
         }
         private void advancedDataGridView1_CellEnter_1(object sender, DataGridViewCellEventArgs e)
         {

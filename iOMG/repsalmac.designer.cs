@@ -151,7 +151,6 @@
             this.tx_d_mad = new System.Windows.Forms.TextBox();
             this.tx_d_med = new System.Windows.Forms.TextBox();
             this.tx_d_nom = new System.Windows.Forms.TextBox();
-            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.tabHist = new System.Windows.Forms.TabPage();
             this.groupBox24 = new System.Windows.Forms.GroupBox();
             this.groupBox25 = new System.Windows.Forms.GroupBox();
@@ -162,12 +161,13 @@
             this.tx_dat_hist_alm = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.cmb_hist_alm = new System.Windows.Forms.ComboBox();
-            this.dgv_hist = new System.Windows.Forms.DataGridView();
             this.dtp_hist_fin = new System.Windows.Forms.DateTimePicker();
             this.dtp_hist_ini = new System.Windows.Forms.DateTimePicker();
             this.bt_hist_filtra = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.dgv_hist = new ADGV.AdvancedDataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
@@ -876,7 +876,7 @@
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 73F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
             this.lay_almacenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lay_almacenes.Location = new System.Drawing.Point(496, 21);
             this.lay_almacenes.Name = "lay_almacenes";
@@ -1125,6 +1125,8 @@
             this.dgv_kardex.Size = new System.Drawing.Size(1023, 324);
             this.dgv_kardex.TabIndex = 376;
             this.dgv_kardex.TimeFilter = false;
+            this.dgv_kardex.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.dgv_kardex.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
             // 
             // groupBox13
             // 
@@ -1536,13 +1538,13 @@
             // 
             // tabHist
             // 
+            this.tabHist.Controls.Add(this.dgv_hist);
             this.tabHist.Controls.Add(this.groupBox24);
             this.tabHist.Controls.Add(this.groupBox26);
             this.tabHist.Controls.Add(this.groupBox28);
             this.tabHist.Controls.Add(this.tx_dat_hist_alm);
             this.tabHist.Controls.Add(this.label10);
             this.tabHist.Controls.Add(this.cmb_hist_alm);
-            this.tabHist.Controls.Add(this.dgv_hist);
             this.tabHist.Controls.Add(this.dtp_hist_fin);
             this.tabHist.Controls.Add(this.dtp_hist_ini);
             this.tabHist.Controls.Add(this.bt_hist_filtra);
@@ -1643,17 +1645,6 @@
             this.cmb_hist_alm.SelectionChangeCommitted += new System.EventHandler(this.cmb_hist_alm_SelectionChangeCommitted);
             this.cmb_hist_alm.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_hist_alm_KeyDown);
             // 
-            // dgv_hist
-            // 
-            this.dgv_hist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgv_hist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_hist.Location = new System.Drawing.Point(2, 51);
-            this.dgv_hist.Name = "dgv_hist";
-            this.dgv_hist.Size = new System.Drawing.Size(1025, 391);
-            this.dgv_hist.TabIndex = 380;
-            // 
             // dtp_hist_fin
             // 
             this.dtp_hist_fin.Checked = false;
@@ -1700,6 +1691,19 @@
             this.label14.Size = new System.Drawing.Size(61, 13);
             this.label14.TabIndex = 378;
             this.label14.Text = "Fech Inicial";
+            // 
+            // dgv_hist
+            // 
+            this.dgv_hist.AutoGenerateContextFilters = true;
+            this.dgv_hist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_hist.DateWithTime = false;
+            this.dgv_hist.Location = new System.Drawing.Point(3, 51);
+            this.dgv_hist.Name = "dgv_hist";
+            this.dgv_hist.Size = new System.Drawing.Size(1023, 391);
+            this.dgv_hist.TabIndex = 388;
+            this.dgv_hist.TimeFilter = false;
+            this.dgv_hist.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.dgv_hist.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
             // 
             // repsalmac
             // 
@@ -1895,11 +1899,11 @@
         private System.Windows.Forms.TextBox tx_dat_hist_alm;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox cmb_hist_alm;
-        private System.Windows.Forms.DataGridView dgv_hist;
         private System.Windows.Forms.DateTimePicker dtp_hist_fin;
         private System.Windows.Forms.DateTimePicker dtp_hist_ini;
         private System.Windows.Forms.Button bt_hist_filtra;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label14;
+        private ADGV.AdvancedDataGridView dgv_hist;
     }
 }

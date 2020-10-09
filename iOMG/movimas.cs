@@ -24,7 +24,8 @@ namespace iOMG
         static string cont = ConfigurationManager.AppSettings["pass"].ToString();
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
-        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";ConnectionLifeTime=" + ctl + ";";
+        string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + 
+            ";ConnectionLifeTime=" + ctl + ";default command timeout = 120";
         
         public movimas(string parm1,string parm2,string parm3)    // parm1 = modo = reserva o salida
         {                                                       // parm2 = 
@@ -58,7 +59,7 @@ namespace iOMG
             try
             {
                 DataTable dt = new DataTable();
-                string consulta = "select codigo,nombre,cant,almacen,ida from tempo";
+                string consulta = "select codigo,nombre,cant,almacen,ida,space(22) as itcont from tempo";
                 MySqlCommand micon = new MySqlCommand(consulta, cn);
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 da.Fill(dt);
@@ -69,6 +70,7 @@ namespace iOMG
                 dataGridView1.Columns[3].Width = 60;    // almacen
                 dataGridView1.Columns[4].Width = 40;    // id alm
                 dataGridView1.Columns[4].Visible = false;
+                dataGridView1.Columns[5].Visible = false;
             }
             catch (MySqlException ex)
             {
@@ -131,8 +133,8 @@ namespace iOMG
                                 }
                                 dr.Close();
                                 // y el detalle de la reserva
-                                texto = "insert into reservd (reservh,item,cant,user,dia,almacen,idalm) " +
-                                    "values (@ptxidr,@ptxite,@ptxcan,@asd,now(),@ptxalm,@ida)";
+                                texto = "insert into reservd (reservh,item,cant,user,dia,almacen,idalm,itemCont) " +
+                                    "values (@ptxidr,@ptxite,@ptxcan,@asd,now(),@ptxalm,@ida,@itcon)";
                                 micon = new MySqlCommand(texto, cn);
                                 micon.Parameters.AddWithValue("@ptxidr", tx_idr.Text);
                                 micon.Parameters.AddWithValue("@ptxite", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -140,10 +142,20 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@asd", iOMG.Program.vg_user);
                                 micon.Parameters.AddWithValue("@ptxalm", dataGridView1.Rows[i].Cells[3].Value.ToString());
                                 micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
+                                micon.Parameters.AddWithValue("@itcon", dataGridView1.Rows[i].Cells[5].Value.ToString().Substring(0, 10) + "XX" + dataGridView1.Rows[i].Cells[5].Value.ToString().Substring(10, 6));
                                 micon.ExecuteNonQuery();
                                 // actualiza saldo en detalle del contrato
-                                string cc = dataGridView1.Rows[i].Cells[0].Value.ToString().Substring(0,10) + "XX" +
-                                    dataGridView1.Rows[i].Cells[0].Value.ToString().Substring(10, 6);
+                                string cc;
+                                if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "")
+                                {
+                                    cc = dataGridView1.Rows[i].Cells[0].Value.ToString().Substring(0, 10) + "XX" +
+                                        dataGridView1.Rows[i].Cells[0].Value.ToString().Substring(10, 6);
+                                }
+                                else
+                                {
+                                    cc = dataGridView1.Rows[i].Cells[5].Value.ToString().Substring(0, 10) + "XX" +
+                                        dataGridView1.Rows[i].Cells[5].Value.ToString().Substring(10, 6);
+                                }
                                 texto = "update detacon set saldo=saldo-1 " +
                                     "where trim(contratoh)=@ptxcon and trim(item)=@ptxi";   //trim(insert(item,11,2,'')=@ptxi)
                                 micon = new MySqlCommand(texto, cn);
@@ -334,6 +346,33 @@ namespace iOMG
                                         row[8] = (int.Parse(row[8].ToString()) - 1).ToString();
                                     }
                                     break;
+                                }
+                                else
+                                {       // no son iguales, cod.contrato vs cod.almacen
+                                    if (row[5].ToString().Substring(1, 3) == "000")     // vemos si el item del contrato es A DISEÑO
+                                    {
+                                        if (row[5].ToString().Substring(0, 1) == dataGridView1.Rows[s].Cells[0].Value.ToString().Substring(0, 1) &&
+                                            row[5].ToString().Substring(4, 1) == dataGridView1.Rows[s].Cells[0].Value.ToString().Substring(4, 1))
+                                        {
+                                            // en este caso, el item del contrato es a diseño y el capitulo y madera son iguales
+                                            sino = "si";
+                                            //tx_comres.Text = row[8].ToString();
+                                            //tx_d_codi.Text = row[5].ToString();
+                                            if (row[8].ToString() == "0")
+                                            {
+                                                MessageBox.Show("El mueble " + dataGridView1.Rows[s].Cells[0].Value.ToString() + Environment.NewLine +
+                                                    "No tiene saldo en el contrato", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                                sino = "no";
+                                            }
+                                            else
+                                            {
+
+                                                row[8] = (int.Parse(row[8].ToString()) - 1).ToString();
+                                                dataGridView1.Rows[s].Cells[5].Value = row[5].ToString();
+                                            }
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                             if (sino == "no")

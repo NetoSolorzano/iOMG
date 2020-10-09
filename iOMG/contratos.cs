@@ -224,7 +224,7 @@ namespace iOMG
             // longitudes maximas de campos
             tx_ndc.MaxLength = 12;
             tx_nombre.MaxLength = 100;
-            tx_direc.MaxLength = 100;
+            tx_direc.MaxLength = 60;
             tx_dpto.MaxLength = 45;
             tx_prov.MaxLength = 20;
             tx_dist.MaxLength = 20;
