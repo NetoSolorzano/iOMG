@@ -167,61 +167,6 @@ namespace iOMG
             string consulta = "select idpagamenti,fecha,montosol,via,detalle,dv,serie,numero," +
                 "valor,acuenta,saldo,moneda,monto,space(1) as marca " +
                 "from pagamenti where contrato=@cont";
-            /*
-            dataGridView1.Rows.Clear();
-            dataGridView1.ColumnCount = 14;
-            dataGridView1.Columns[0].HeaderText = "ID";
-            dataGridView1.Columns[0].Name = "idpagamenti";
-            dataGridView1.Columns[0].Width = 60;
-            dataGridView1.Columns[0].ReadOnly = true;
-            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[1].HeaderText = "FECHA";
-            dataGridView1.Columns[1].Name = "fecha";
-            dataGridView1.Columns[1].Width = 100;
-            dataGridView1.Columns[1].ReadOnly = true;
-            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[2].HeaderText = "MONTO";
-            dataGridView1.Columns[2].Name = "montosol";
-            dataGridView1.Columns[2].Width = 100;
-            dataGridView1.Columns[2].ReadOnly = true;
-            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
-            dataGridView1.Columns[3].HeaderText = "MEDIO";
-            dataGridView1.Columns[3].Name = "via";
-            dataGridView1.Columns[3].Width = 100;
-            dataGridView1.Columns[3].ReadOnly = true;
-            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[4].Visible = false;
-            dataGridView1.Columns[4].HeaderText = "COMENT";
-            dataGridView1.Columns[4].Name = "detalle";
-            dataGridView1.Columns[4].Width = 170;
-            dataGridView1.Columns[4].ReadOnly = true;
-            dataGridView1.Columns[5].HeaderText = "DOCVTA";
-            dataGridView1.Columns[5].Name = "dv";
-            dataGridView1.Columns[5].Width = 100;
-            dataGridView1.Columns[5].ReadOnly = true;
-            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[6].HeaderText = "SERIE";
-            dataGridView1.Columns[6].Name = "serie";
-            dataGridView1.Columns[6].Width = 80;
-            dataGridView1.Columns[6].ReadOnly = true;
-            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[7].HeaderText = "NUMERO";
-            dataGridView1.Columns[7].Name = "numero";
-            dataGridView1.Columns[7].Width = 100;
-            dataGridView1.Columns[7].ReadOnly = true;
-            dataGridView1.Columns[8].Name = "valor";
-            dataGridView1.Columns[8].Visible = false;
-            dataGridView1.Columns[9].Name = "acuenta";
-            dataGridView1.Columns[9].Visible = false;
-            dataGridView1.Columns[10].Name = "saldo";
-            dataGridView1.Columns[10].Visible = false;
-            dataGridView1.Columns[11].Name = "moneda";
-            dataGridView1.Columns[11].Visible = false;
-            dataGridView1.Columns[12].Name = "monto";
-            dataGridView1.Columns[12].Visible = false;
-            dataGridView1.Columns[13].Visible = false;       // marca N=nuevo A=actualizado
-            dataGridView1.Columns[13].Name = "marca";
-            */
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
@@ -231,60 +176,51 @@ namespace iOMG
                 mdaDatos.Fill(dtDatos);
                 dataGridView1.DataSource = dtDatos;
                 dataGridView1.ReadOnly = true;
-                /*
-                int li = 0;   // idpagamenti,fecha,montosol,via,detalle,dv,serie,numero,
-                              // valor,acuenta,saldo,moneda,monto,space(1) as marca
-                for (li = 0; li < dtDatos.Rows.Count; li++) // 
-                {
-                    DataRow row = dtDatos.Rows[li];
-                    dataGridView1.Rows.Add(
-                                        row.ItemArray[0].ToString(),
-                                        row.ItemArray[1].ToString().Substring(0,10),
-                                        row.ItemArray[2].ToString(),
-                                        row.ItemArray[3].ToString(),
-                                        row.ItemArray[4].ToString(),
-                                        row.ItemArray[5].ToString(),
-                                        row.ItemArray[6].ToString(),
-                                        row.ItemArray[7].ToString(),
-                                        row.ItemArray[8].ToString(),
-                                        row.ItemArray[9].ToString(),
-                                        row.ItemArray[10].ToString(),
-                                        row.ItemArray[11].ToString(),
-                                        row.ItemArray[12].ToString(),
-                                        row.ItemArray[13].ToString()
-                                        );
-                }
-                */
+                //
+                dataGridView1.Columns[0].HeaderText = "ID";
+                dataGridView1.Columns[0].Width = 50;
+                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[1].HeaderText = "   FECHA";
+                dataGridView1.Columns[1].Width = 110;
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[2].HeaderText = "    MONTO";
+                dataGridView1.Columns[2].Width = 100;
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+                dataGridView1.Columns[3].HeaderText = "    MEDIO";
+                dataGridView1.Columns[3].Width = 120;
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[4].Visible = false;
+                dataGridView1.Columns[4].HeaderText = "COMENT";
+                dataGridView1.Columns[5].HeaderText = "    DOCVTA";
+                dataGridView1.Columns[5].Width = 80;
+                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[6].HeaderText = "  SERIE";
+                dataGridView1.Columns[6].Width = 70;
+                dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[7].HeaderText = " NUMERO";
+                dataGridView1.Columns[7].Width = 110;
+                dataGridView1.Columns[8].Visible = false;
+                dataGridView1.Columns[9].Visible = false;
+                dataGridView1.Columns[10].Visible = false;
+                dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[13].Visible = false;       // marca N=nuevo A=actualizado
             }
             calcula();
             conn.Close();
         }
         private void calcula()
         {
-            /*decimal toti = 0;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if(row.Cells[0].Value != null)
-                {
-                    toti = toti + decimal.Parse(row.Cells["montosol"].Value.ToString());
-                }
-            }
-            tx_total.Text = toti.ToString();
-            */
             decimal x = 0;
-            for (int i = 0; i < dtDatos.Rows.Count; i++)  // int i = 0; i < dataGridView1.Rows.Count - 1; i++
+            for (int i=0; i<dataGridView1.Rows.Count -1; i++)
             {
-                //decimal y;
-                if (decimal.TryParse(dtDatos.Rows[i]["montosol"].ToString(), out decimal y))
-                {
-                    x = x + y; //decimal.Parse(dtDatos.Rows[i]["montosol"].ToString()    // decimal.Parse(dataGridView1.Rows[i].Cells["montosol"].Value.ToString())
-                }
-                //MessageBox.Show("estoy calculando, x=" + x.ToString(),"i=" + i.ToString());
+                x = x + decimal.Parse(dataGridView1.Rows[i].Cells["montosol"].Value.ToString());
             }
             tx_total.Text = x.ToString();
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            calcula();
             if(tx_total.Text.Trim() != "")
             {
                 var aa = MessageBox.Show("Confirma que desea GRABAR?", "Atención confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -486,7 +422,6 @@ namespace iOMG
                 dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString(), "Pago borrado!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (aa == DialogResult.Yes)
             {
-                // dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "" && dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString() != "0"
                 if (e.Row.Index > -1)
                 {
                     MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -506,25 +441,7 @@ namespace iOMG
                         return;
                     }
                     conn.Close();
-                    //
-                    for (int i = 0; i < dtDatos.Rows.Count; i++)  // int i = dtDatos.Rows.Count - 1; i >= 0; i--
-                    {
-                        DataRow dr = dtDatos.Rows[i];
-                        if (dr["idpagamenti"].ToString() == e.Row.Cells["idpagamenti"].Value.ToString())   // dataGridView1.Rows[e.Row.Index].Cells["idpagamenti"].Value.ToString()
-                            dr.Delete();
-                        MessageBox.Show("acabo de borrar desde el datatable");
-                    }
-                    try
-                    {
-                        dtDatos.AcceptChanges();
-                        dtDatos.Rows.Add();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
                 }
-                calcula();
             }
             else
             {
@@ -541,6 +458,12 @@ namespace iOMG
             }
             tx_total.Text = x.ToString();
             //calcula();
+        }
+
+        private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            calcula();
+            tx_importe.Focus();
         }
     }
 }

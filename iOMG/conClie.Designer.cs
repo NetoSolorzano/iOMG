@@ -621,6 +621,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columntotadic;
             
+            private global::System.Data.DataColumn columntotbrut;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public cabeceraDataTable() {
@@ -904,6 +906,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn totbrutColumn {
+                get {
+                    return this.columntotbrut;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -970,7 +980,8 @@ namespace iOMG {
                         string contac, 
                         string drefer, 
                         string telcont, 
-                        string totadic) {
+                        string totadic, 
+                        string totbrut) {
                 cabeceraRow rowcabeceraRow = ((cabeceraRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -1003,7 +1014,8 @@ namespace iOMG {
                         contac,
                         drefer,
                         telcont,
-                        totadic};
+                        totadic,
+                        totbrut};
                 rowcabeceraRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcabeceraRow);
                 return rowcabeceraRow;
@@ -1057,6 +1069,7 @@ namespace iOMG {
                 this.columndrefer = base.Columns["drefer"];
                 this.columntelcont = base.Columns["telcont"];
                 this.columntotadic = base.Columns["totadic"];
+                this.columntotbrut = base.Columns["totbrut"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1124,6 +1137,8 @@ namespace iOMG {
                 base.Columns.Add(this.columntelcont);
                 this.columntotadic = new global::System.Data.DataColumn("totadic", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntotadic);
+                this.columntotbrut = new global::System.Data.DataColumn("totbrut", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntotbrut);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4939,6 +4954,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string totbrut {
+                get {
+                    try {
+                        return ((string)(this[this.tablecabecera.totbrutColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'totbrut\' de la tabla \'cabecera\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecabecera.totbrutColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecabecera.idColumn);
             }
@@ -5307,6 +5338,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SettotadicNull() {
                 this[this.tablecabecera.totadicColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IstotbrutNull() {
+                return this.IsNull(this.tablecabecera.totbrutColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SettotbrutNull() {
+                this[this.tablecabecera.totbrutColumn] = global::System.Convert.DBNull;
             }
         }
         

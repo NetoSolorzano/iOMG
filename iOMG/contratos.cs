@@ -797,6 +797,7 @@ namespace iOMG
                             da.Fill(dtm);
                             if (dtm.Rows.Count == 0)
                             {
+                                /*
                                 var aaa = MessageBox.Show("No existe en la base de items" + Environment.NewLine +
                                     "Busca en el stock?", "Atención - confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                                 if (aaa == DialogResult.Yes)
@@ -829,6 +830,11 @@ namespace iOMG
                                     conn.Close();
                                     return;
                                 }
+                                */
+                                MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                dtm.Dispose();
+                                conn.Close();
+                                return;
                             }
                             string gol = "";
                             for (int i = 0; i < dtm.Rows.Count; i++)
@@ -871,6 +877,7 @@ namespace iOMG
                             }
                             if (gol == "")
                             {
+                                /*
                                 var aa = MessageBox.Show("No existe en la base de datos de items!" + Environment.NewLine + 
                                     "Busca en el stock?", "Atención - Confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                                 if (aa == DialogResult.Yes)     // buscamos si existe en el stock
@@ -896,8 +903,14 @@ namespace iOMG
                                     tx_d_est.Text = "";
                                     conn.Close();
                                     return;
-                                }
+                                }*/
+                                MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                dtm.Dispose();
+                                conn.Close();
+                                return;
                             }
+                            dtm.Dispose();
+                            conn.Close();
                         }
                         else
                         {
@@ -2160,6 +2173,10 @@ namespace iOMG
             tx_valor.ReadOnly = true;
             tx_bruto.ReadOnly = true;
             //
+            tx_d_it.ReadOnly = true;
+            tx_d_id.ReadOnly = true;
+            tx_d_saldo.ReadOnly = true;
+            //
             tx_a_id.ReadOnly = true;
             tx_a_codig.ReadOnly = true;
             tx_a_total.ReadOnly = true;
@@ -2266,6 +2283,10 @@ namespace iOMG
             tx_saldo.ReadOnly = true;
             tx_valor.ReadOnly = true;
             tx_bruto.ReadOnly = true;
+            //
+            tx_d_it.ReadOnly = true;
+            tx_d_id.ReadOnly = true;
+            tx_d_saldo.ReadOnly = true;
             //
             tx_a_id.ReadOnly = true;
             tx_a_codig.ReadOnly = true;
@@ -3096,8 +3117,9 @@ namespace iOMG
             {
                 tx_d_total.Text = (Decimal.Parse(tx_d_can.Text) * Decimal.Parse(tx_d_prec.Text)).ToString("0.00");
             }
-            if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;
-            if (Tx_modo.Text == "EDITAR" && tx_d_id.Text.Trim() == "") tx_d_saldo.Text = tx_d_can.Text;
+            //if (Tx_modo.Text == "NUEVO") tx_d_saldo.Text = tx_d_can.Text;                                 ya no va desde la 
+            //if (Tx_modo.Text == "EDITAR" && tx_d_id.Text.Trim() == "") tx_d_saldo.Text = tx_d_can.Text;   reunión del 09/10/2020
+            tx_d_saldo.Text = tx_d_can.Text;    // no se modifica el saldo desde el 09/10/2020
         }
         private void tx_a_can_Leave(object sender, EventArgs e)
         {
@@ -3689,6 +3711,7 @@ namespace iOMG
             rowcabeza.drefer = tx_dirRef.Text;
             rowcabeza.telcont = tx_telcont.Text;
             rowcabeza.totadic = tx_totesp.Text;
+            rowcabeza.totbrut = tx_bruto.Text;
             repcontrato.cabecera.AddcabeceraRow(rowcabeza);
             //MessageBox.Show(chk_lugent.Checked.ToString(), "Valor lugent");
             foreach (DataGridViewRow row in dataGridView1.Rows)  //

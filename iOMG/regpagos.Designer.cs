@@ -96,6 +96,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(680, 179);
             this.dataGridView1.TabIndex = 9;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            this.dataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridView1_UserDeletedRow);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
             // bt_det
@@ -317,7 +318,7 @@
             this.cmb_fpago.Location = new System.Drawing.Point(359, 35);
             this.cmb_fpago.Name = "cmb_fpago";
             this.cmb_fpago.Size = new System.Drawing.Size(90, 21);
-            this.cmb_fpago.TabIndex = 3;
+            this.cmb_fpago.TabIndex = 6;
             this.cmb_fpago.SelectedIndexChanged += new System.EventHandler(this.cmb_fpago_SelectedIndexChanged);
             // 
             // tx_dat_fpago
@@ -338,7 +339,7 @@
             this.cmb_td.Location = new System.Drawing.Point(40, 35);
             this.cmb_td.Name = "cmb_td";
             this.cmb_td.Size = new System.Drawing.Size(42, 21);
-            this.cmb_td.TabIndex = 4;
+            this.cmb_td.TabIndex = 3;
             this.cmb_td.SelectedIndexChanged += new System.EventHandler(this.cmb_td_SelectedIndexChanged);
             // 
             // groupBox13
@@ -497,7 +498,7 @@
             this.tx_corre.Location = new System.Drawing.Point(198, 36);
             this.tx_corre.Name = "tx_corre";
             this.tx_corre.Size = new System.Drawing.Size(73, 20);
-            this.tx_corre.TabIndex = 6;
+            this.tx_corre.TabIndex = 5;
             // 
             // tx_serie
             // 
@@ -505,7 +506,7 @@
             this.tx_serie.Location = new System.Drawing.Point(122, 36);
             this.tx_serie.Name = "tx_serie";
             this.tx_serie.Size = new System.Drawing.Size(37, 20);
-            this.tx_serie.TabIndex = 5;
+            this.tx_serie.TabIndex = 4;
             // 
             // tx_importe
             // 

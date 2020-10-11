@@ -44,17 +44,24 @@ namespace iOMG
         private void impresor_Load(object sender, EventArgs e)
         {
             jaladatos();    // jalamos el nombre del acabado
-
-            PrinterSettings ps = new PrinterSettings();
-            IEnumerable<PaperSize> paperSizes = ps.PaperSizes.Cast<PaperSize>();
-            PaperSize sizeA5 = paperSizes.First<PaperSize>(size => size.Kind == PaperKind.A5);
-            ps.DefaultPageSettings.PaperSize = sizeA5;
-            ps.DefaultPageSettings.Landscape = true;   // false
-            //
-            printPreviewDialog1.Document = printDocument1;
-            printDocument1.PrinterSettings = ps;
-            printPreviewDialog1.ShowDialog();
-            this.Close();
+            try
+            {
+                PrinterSettings ps = new PrinterSettings();
+                IEnumerable<PaperSize> paperSizes = ps.PaperSizes.Cast<PaperSize>();
+                PaperSize sizeA5 = paperSizes.First<PaperSize>(size => size.Kind == PaperKind.A5);
+                ps.DefaultPageSettings.PaperSize = sizeA5;
+                ps.DefaultPageSettings.Landscape = true;   // false
+                                                           //
+                printPreviewDialog1.Document = printDocument1;
+                printDocument1.PrinterSettings = ps;
+                printPreviewDialog1.ShowDialog();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error con su impresora o papel A5", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
         private void jaladatos()
         {

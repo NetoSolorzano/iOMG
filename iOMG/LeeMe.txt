@@ -111,4 +111,6 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 ** MEJORAS EN USABILIDAD 30/09/2020
 - form repsventas, marcar por defecto radio botones .................................. ok 30/09/2020
 - form contratos, los anulados no se actualizan estado y borran de la grilla ......... ok 30/09/2020
-
+- form impresor, le agrege manejo de error en hoja A5 ................................ ok 10/10/2020
+- form repsalmac, agregé el codigo para exportar a excel rep historico ............... ok 10/10/2020
+- form regpagos, arreglos en funcionamiento general .................................. ok 11/10/2020

@@ -969,6 +969,21 @@ namespace iOMG
                     this.Close();
                 }
             }
+            if (tabControl1.SelectedTab == tabHist && dgv_hist.Rows.Count > 0)
+            {
+                nombre = "Reportes_historico_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_hist.DataSource;
+                    wb.Worksheets.Add(dt, "Historico");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
         }
         #endregion
 
