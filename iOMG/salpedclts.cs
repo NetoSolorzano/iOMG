@@ -268,7 +268,7 @@ namespace iOMG
             advancedDataGridView1.Columns[1].Tag = "validaNO";
             advancedDataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // tipo movimiento
-            advancedDataGridView1.Columns[2].Visible = true;            // columna visible o no
+            advancedDataGridView1.Columns[2].Visible = false;            // columna visible o no
             advancedDataGridView1.Columns[2].HeaderText = "Tipo";    // titulo de la columna
             advancedDataGridView1.Columns[2].Width = 60;                // ancho
             advancedDataGridView1.Columns[2].ReadOnly = true;           // lectura o no
@@ -303,21 +303,21 @@ namespace iOMG
             advancedDataGridView1.Columns[6].Tag = "validaNO";          // las celdas de esta columna se validan
             advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // comentarios
-            advancedDataGridView1.Columns[7].Visible = true;
+            advancedDataGridView1.Columns[7].Visible = false;
             advancedDataGridView1.Columns[7].HeaderText = "Comentarios";
             advancedDataGridView1.Columns[7].Width = 200;
             advancedDataGridView1.Columns[7].ReadOnly = true;
             advancedDataGridView1.Columns[7].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // item
-            advancedDataGridView1.Columns[8].Visible = false;
+            advancedDataGridView1.Columns[8].Visible = true;
             advancedDataGridView1.Columns[8].HeaderText = "Artículo";
-            advancedDataGridView1.Columns[8].Width = 40;
+            advancedDataGridView1.Columns[8].Width = 130;
             advancedDataGridView1.Columns[8].ReadOnly = true;
             // nombre
-            advancedDataGridView1.Columns[9].Visible = false;
-            advancedDataGridView1.Columns[9].HeaderText = "Nombre";
-            advancedDataGridView1.Columns[9].Width = 70;
+            advancedDataGridView1.Columns[9].Visible = true;
+            advancedDataGridView1.Columns[9].HeaderText = "Nombre artículo";
+            advancedDataGridView1.Columns[9].Width = 150;
             advancedDataGridView1.Columns[9].ReadOnly = true;
             // medidas
             advancedDataGridView1.Columns[10].Visible = false;
@@ -355,14 +355,14 @@ namespace iOMG
             advancedDataGridView1.Columns[16].Width = 60;
             advancedDataGridView1.Columns[16].ReadOnly = true;
             // cantidad
-            advancedDataGridView1.Columns[17].Visible = true;
+            advancedDataGridView1.Columns[17].Visible = false;
             advancedDataGridView1.Columns[17].HeaderText = "Cant";
             advancedDataGridView1.Columns[17].Width = 40;
             advancedDataGridView1.Columns[17].ReadOnly = true;
             //
             advancedDataGridView1.Columns[18].Visible = false;  // contrato
             //
-            advancedDataGridView1.Columns[19].Visible = true;   // taller
+            advancedDataGridView1.Columns[19].Visible = false;   // taller
             advancedDataGridView1.Columns[19].HeaderText = "Taller";
             advancedDataGridView1.Columns[19].Width = 60;
             advancedDataGridView1.Columns[19].ReadOnly = true;

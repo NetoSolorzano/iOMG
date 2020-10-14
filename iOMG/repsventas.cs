@@ -733,7 +733,7 @@ namespace iOMG
             }
             int situa = 1;                      // situacion del pedido, default todos=1
             if (rb_ped_xllegar.Checked == true) situa = 2;
-            if (rb_ped_xllegar.Checked == true) situa = 3;
+            if (rb_ped_ingresados.Checked == true) situa = 3;
             string ran = "";
             if (rb_ped_fped.Checked == true) ran = "P";
             if (rb_ped_fentrega.Checked == true) ran = "E";
@@ -1536,7 +1536,7 @@ namespace iOMG
                     rowdet.pedido = row.Cells["codped"].Value.ToString();
                     rowdet.cliente = row.Cells["cliente"].Value.ToString();
                     rowdet.codigo = row.Cells["item"].Value.ToString();
-                    rowdet.nombre = row.Cells["nombre"].Value.ToString().Trim() + " - " + row.Cells["coment"].Value.ToString().Trim();
+                    rowdet.nombre = row.Cells["nombre"].Value.ToString().Trim();    //  + " - " + row.Cells["coment"].Value.ToString().Trim()
                     rowdet.coment = "";
                     rowdet.medidas = row.Cells["medidas"].Value.ToString();
                     rowdet.madera = row.Cells["madera"].Value.ToString();
@@ -1548,6 +1548,7 @@ namespace iOMG
                     rowdet.fecsal = row.Cells["fecent"].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdet.fececon = row.Cells["feencon"].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdet.origen = row.Cells["origen"].Value.ToString();
+                    rowdet.precio = row.Cells["precio"].Value.ToString();
                     pedset.det_lispedidos.Adddet_lispedidosRow(rowdet);
                 }
             }

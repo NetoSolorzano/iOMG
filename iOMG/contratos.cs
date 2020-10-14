@@ -1051,10 +1051,13 @@ namespace iOMG
                 }
                 else
                 {
-                    MessageBox.Show("No se permite modificar", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No se permite modificar totalmente el contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     sololeepag(tabuser);
                     tx_acta.Enabled = true;
                     tx_acta.ReadOnly = true;
+                    dtp_entreg.Enabled = true;
+                    tx_coment.Enabled = true;
+                    tx_coment.ReadOnly = false;
                 }
             }
         }
@@ -2047,6 +2050,10 @@ namespace iOMG
                 {
                     oControls.Enabled = false;
                 }
+                if (oControls is CheckBox)
+                {
+                    oControls.Enabled = false;
+                }
             }
         }
         private void sololeepag(TabPage pag)
@@ -2077,6 +2084,10 @@ namespace iOMG
                 {
                     oControls.Enabled = false;
                 }
+                if (oControls is CheckBox)
+                {
+                    oControls.Enabled = false;
+                }
             }
             foreach (Control oControls in tabcodigo.Controls)
             {
@@ -2104,6 +2115,10 @@ namespace iOMG
                 {
                     oControls.Enabled = false;
                 }
+                if (oControls is CheckBox)
+                {
+                    oControls.Enabled = false;
+                }
             }
             foreach (Control oControls in tabadicion.Controls)
             {
@@ -2128,6 +2143,10 @@ namespace iOMG
                     oControls.Enabled = false;
                 }
                 if (oControls is GroupBox)
+                {
+                    oControls.Enabled = false;
+                }
+                if (oControls is CheckBox)
                 {
                     oControls.Enabled = false;
                 }
@@ -2211,6 +2230,10 @@ namespace iOMG
                 {
                     oControls.Enabled = true;
                 }
+                if (oControls is CheckBox)
+                {
+                    oControls.Enabled = true;
+                }
             }
             foreach (Control oControls in tabcodigo.Controls)
             {
@@ -2240,6 +2263,10 @@ namespace iOMG
                 {
                     oControls.Enabled = true;
                 }
+                if (oControls is CheckBox)
+                {
+                    oControls.Enabled = true;
+                }
             }
             foreach (Control oControls in tabadicion.Controls)
             {
@@ -2266,6 +2293,10 @@ namespace iOMG
                     oControls.Enabled = true;
                 }
                 if (oControls is GroupBox)
+                {
+                    oControls.Enabled = true;
+                }
+                if (oControls is CheckBox)
                 {
                     oControls.Enabled = true;
                 }
@@ -2699,6 +2730,7 @@ namespace iOMG
                 limpiapag(tabuser);
                 limpia_otros(tabuser);
                 limpia_combos(tabuser);
+                limpia_chk();
                 dtp_entreg.Value = DateTime.Now;
                 dtp_pedido.Value = DateTime.Now;
                 dataGridView1.DataSource = null;
@@ -3436,6 +3468,7 @@ namespace iOMG
                 limpiapag(tabuser);
                 limpia_otros(tabuser);
                 limpia_combos(tabuser);
+                limpia_chk();
                 //escribepag(tabuser);
                 //sololeepag(tabuser);
                 tx_idr.Text = idr;

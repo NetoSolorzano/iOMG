@@ -49,6 +49,8 @@ namespace iOMG
             tx_dat_mone.Text = timodef;
             cmb_mone.SelectedIndex = cmb_mone.FindString(tx_dat_mone.Text);
             cmb_mone.Enabled = false;
+            tx_serie.MaxLength = 4;
+            tx_corre.MaxLength = 8;
         }
 
         private void regpagos_KeyDown(object sender, KeyEventArgs e)
