@@ -103,7 +103,7 @@ namespace iOMG
         private void main_Load(object sender, EventArgs e)
         {
             jalainfo();                                         // jalamos los parametros 
-            Image logo1 = Image.FromFile(img_log1);
+            //Image logo1 = Image.FromFile(img_log1);
             Image solo1 = Image.FromFile(img_sol1);
             Image salir = Image.FromFile(img_sali);
             Image factu = Image.FromFile(img_fact);
@@ -112,7 +112,7 @@ namespace iOMG
             Image almac = Image.FromFile(img_alma);
             Image maest = Image.FromFile(img_maes);
             Image panel = Image.FromFile(img_pcon);
-            pictureBox1.Image = logo1;
+            //pictureBox1.Image = logo1;
             bt_solorsoft.Image = solo1;
             bt_salir.Image = salir;
             bt_facele.Image = factu;

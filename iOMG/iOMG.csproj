@@ -732,6 +732,8 @@
     <None Include="Resources\permiso_16.png" />
     <None Include="Resources\floppy_red.png" />
     <Content Include="leeme2.txt" />
+    <None Include="Resources\Artesanos Don Bosco logo_448.png" />
+    <None Include="Resources\Artesanos Don Bosco logo_248.png" />
     <Content Include="solorsoft.ico" />
   </ItemGroup>
   <ItemGroup>

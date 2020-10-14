@@ -31,11 +31,11 @@ namespace iOMG
             this.Text = this.Text + "- Versión " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
             lb_titulo.Text = Program.tituloF;
             lb_titulo.BackColor = System.Drawing.Color.Transparent;
-            lb_titulo.Parent = pictureBox1;
-            Image logo = Image.FromFile("recursos/logo_artesanos_omg_peru.jpeg");
+            //lb_titulo.Parent = pictureBox1;
+            //Image logo = Image.FromFile("recursos/logo_artesanos_omg_peru.jpeg");
             Image salir = Image.FromFile("recursos/exit48.png");
             Image entrar = Image.FromFile("recursos/ok.png");
-            pictureBox1.Image = logo;
+            //pictureBox1.Image = logo;
             Button2.Image = salir;
             Button1.Image = entrar;
             init();

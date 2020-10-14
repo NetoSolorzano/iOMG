@@ -56,7 +56,7 @@
             this.groupBox1.Controls.Add(this.Label3);
             this.groupBox1.Controls.Add(this.Label1);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.Location = new System.Drawing.Point(88, 207);
+            this.groupBox1.Location = new System.Drawing.Point(88, 240);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(284, 79);
             this.groupBox1.TabIndex = 27;
@@ -131,7 +131,7 @@
             // 
             this.panel1.Controls.Add(this.tx_newcon);
             this.panel1.Controls.Add(this.checkBox1);
-            this.panel1.Location = new System.Drawing.Point(88, 294);
+            this.panel1.Location = new System.Drawing.Point(88, 327);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(284, 26);
             this.panel1.TabIndex = 29;
@@ -141,9 +141,9 @@
             this.lb_titulo.BackColor = System.Drawing.Color.Transparent;
             this.lb_titulo.Font = new System.Drawing.Font("Palatino Linotype", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lb_titulo.ForeColor = System.Drawing.Color.DimGray;
-            this.lb_titulo.Location = new System.Drawing.Point(260, 2);
+            this.lb_titulo.Location = new System.Drawing.Point(12, 201);
             this.lb_titulo.Name = "lb_titulo";
-            this.lb_titulo.Size = new System.Drawing.Size(186, 188);
+            this.lb_titulo.Size = new System.Drawing.Size(421, 31);
             this.lb_titulo.TabIndex = 0;
             this.lb_titulo.Text = "titulo";
             this.lb_titulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -151,6 +151,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.Image = global::iOMG.Properties.Resources.Artesanos_Don_Bosco_logo_448;
             this.pictureBox1.Location = new System.Drawing.Point(1, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(446, 190);
@@ -159,7 +160,7 @@
             // 
             // Button2
             // 
-            this.Button2.Location = new System.Drawing.Point(105, 354);
+            this.Button2.Location = new System.Drawing.Point(105, 369);
             this.Button2.Name = "Button2";
             this.Button2.Size = new System.Drawing.Size(53, 52);
             this.Button2.TabIndex = 26;
@@ -168,7 +169,7 @@
             // 
             // Button1
             // 
-            this.Button1.Location = new System.Drawing.Point(304, 354);
+            this.Button1.Location = new System.Drawing.Point(304, 369);
             this.Button1.Name = "Button1";
             this.Button1.Size = new System.Drawing.Size(53, 52);
             this.Button1.TabIndex = 25;
@@ -181,12 +182,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(448, 441);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lb_titulo);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Button2);
             this.Controls.Add(this.Button1);
+            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

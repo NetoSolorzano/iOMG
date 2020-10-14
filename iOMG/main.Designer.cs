@@ -283,6 +283,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = global::iOMG.Properties.Resources.Artesanos_Don_Bosco_logo_248;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(188, 128);

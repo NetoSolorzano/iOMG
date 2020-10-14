@@ -1458,7 +1458,9 @@ namespace iOMG
                 string data9 = dgv_resumen.Rows[fila].Cells[12].Value.ToString();                     // cant ingre
                 string data10 = dgv_resumen.Rows[fila].Cells[13].Value.ToString();                    // saldo
                 string data11 = dgv_resumen.Rows[fila].Cells[14].Value.ToString();                    // acabado
-                string data12 = dgv_resumen.Rows[fila].Cells[20].Value.ToString().Substring(0, 10);   // fecha ingreso
+                string data12;
+                if (dgv_resumen.Rows[fila].Cells[20].Value == null) data12 = "";
+                else data12 = dgv_resumen.Rows[fila].Cells[20].Value.ToString().PadRight(10).Substring(0, 10);   // fecha ingreso
                 // 
                 ptoimp = new PointF(col0, posi);
                 e.Graphics.DrawString(data0, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
