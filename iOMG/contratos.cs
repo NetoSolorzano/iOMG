@@ -1289,7 +1289,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@cltr", (chk_lugent.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@ceem", (chk_serema.Checked.ToString() == "True") ? "1" : "0");
-                    micon.Parameters.AddWithValue("@pise", tx_piso.Text);
+                    micon.Parameters.AddWithValue("@pise", (tx_piso.Text.Trim() == "")? "0": tx_piso.Text);
                     micon.Parameters.AddWithValue("@asce", (chk_ascensor.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@pecon", tx_contac.Text);
                     micon.Parameters.AddWithValue("@drefe", tx_dirRef.Text);
@@ -1387,7 +1387,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@dscto", tx_dscto.Text);
                     micon.Parameters.AddWithValue("@cltr", (chk_lugent.Checked.ToString() == "True") ? "1":"0");
                     micon.Parameters.AddWithValue("@ceem", (chk_serema.Checked.ToString() == "True") ? "1" : "0");
-                    micon.Parameters.AddWithValue("@pise", tx_piso.Text);
+                    micon.Parameters.AddWithValue("@pise", (tx_piso.Text.Trim() == "") ? "0" : tx_piso.Text);
                     micon.Parameters.AddWithValue("@asce", (chk_ascensor.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@pecon", tx_contac.Text);
                     micon.Parameters.AddWithValue("@drefe", tx_dirRef.Text);
@@ -1905,6 +1905,7 @@ namespace iOMG
             tx_a_codig.ReadOnly = true;
             tx_a_salcan.ReadOnly = true;
             tx_acta.ReadOnly = true;
+            cmb_tipo.Enabled = false;
             if (tncont == "AUTOMA")
             {
                 tx_codped.ReadOnly = true;
@@ -1916,9 +1917,10 @@ namespace iOMG
             else
             {
                 tx_dat_orig.Text = iOMG.Program.tdauser;
-                cmb_taller.SelectedValue = tx_dat_orig.Text;
+                cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
+                cmb_taller_SelectionChangeCommitted(null,null);
                 cmb_taller.Enabled = false;
-                tx_codped.Focus();
+                cmb_tdoc.Focus();
             }
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -2240,6 +2242,9 @@ namespace iOMG
             tx_a_id.ReadOnly = true;
             tx_a_codig.ReadOnly = true;
             tx_a_total.ReadOnly = true;
+            //
+            tx_idr.ReadOnly = true;
+            tx_rind.ReadOnly = true;
         }
         private void escribepag(TabPage pag)
         {
@@ -2363,6 +2368,9 @@ namespace iOMG
             tx_a_id.ReadOnly = true;
             tx_a_codig.ReadOnly = true;
             tx_a_total.ReadOnly = true;
+            //
+            tx_idr.ReadOnly = true;
+            tx_rind.ReadOnly = true;
         }
         private static void limpiar(Form ofrm)
         {
@@ -2884,9 +2892,9 @@ namespace iOMG
                 tx_d_can.Focus();
                 return;
             }
-            /*if (tx_d_id.Text.Trim() == "")  // validamos que el codigo no se repita en la grilla
-            {
-                for(int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            if (tx_d_id.Text.Trim() == "")      //  .. NUEVO O EDICION, NO SE PERMITE REPETIR CODIGOS
+            {              // validamos que el codigo no se repita en la grilla, REUNIÓN 10-10-2020 CON GLORIA
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                 {
                     if (tx_d_codi.Text == dataGridView1.Rows[i].Cells[1].Value.ToString())
                     {
@@ -2895,7 +2903,7 @@ namespace iOMG
                         return;
                     }
                 }
-            }*/
+            }
             // fin de las validaciones de X
             if (Tx_modo.Text == "NUEVO")
             {
@@ -2946,6 +2954,16 @@ namespace iOMG
                 }
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                    {
+                        if (tx_d_codi.Text == dataGridView1.Rows[i].Cells[1].Value.ToString() && 
+                            tx_d_id.Text.Trim() != dataGridView1.Rows[i].Cells[0].Value.ToString().Trim())
+                        {
+                            MessageBox.Show("No se puede repetir el código!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            cmb_fam.Focus();
+                            return;
+                        }
+                    }
                     //a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment,
                     //piedra,codpie,na,tda_item
                     DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
