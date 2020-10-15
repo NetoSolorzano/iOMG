@@ -53,7 +53,7 @@ namespace iOMG
         string raz = "";                // razon social del contrato (vacio si es un solo contador para todos)
         string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
         int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
-        string tncont = "";             // tipo de numeracion: AUTOMA o MANUAL
+        string tncont = "";             // tipo de numeracion: AUTOMATICA o MANUAL
         string letgru = "";                 // letra identificado en campo "CAPIT" para ADICIONAL
         string talldef = "";                // taller por defecto en los contratos
         string madedef = "";                // maderas para adicionales
@@ -1209,6 +1209,56 @@ namespace iOMG
             }
             return retorna;
         }
+        private void correNum()                                                 // avanza la numeracion de contratos
+        {
+            //bool retorna = false;
+            if (tncont == "AUTOMA")  // modo automatico y el campo vacio    && tx_codped.Text.Trim() == ""
+            {
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    try
+                    {
+                        conn.Open();
+                    }
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error en obtener # de contrato");
+                        Application.Exit();
+                    }
+                    //string vamos = "UPDATE series SET actual=(CONCAT('0', CAST(actual AS SIGNED) + 1)) " +
+                    //    "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
+                    string vamos = "select CONCAT(serie,right(CONCAT('00000',CAST(actual AS SIGNED) + 1),5)) from series " +
+                        "WHERE tipdoc=@tdo AND sede=@sed";      //  AND rsocial=@raz
+                    MySqlCommand covam = new MySqlCommand(vamos, conn);
+                    covam.Parameters.AddWithValue("@tdo", tdc);
+                    covam.Parameters.AddWithValue("@sed", tx_dat_orig.Text);    // sdc
+                    //covam.Parameters.AddWithValue("@raz", raz);
+                    MySqlDataReader dr = covam.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_codped.Text = dr.GetString(0);
+                        //retorna = true;
+                    }
+                    /*
+                    vamos = "select actual from series " +
+                        "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
+                    covam = new MySqlCommand(vamos, conn);
+                    covam.Parameters.AddWithValue("@tdo", tdc);
+                    covam.Parameters.AddWithValue("@sed", sdc);
+                    covam.Parameters.AddWithValue("@raz", raz);
+                    MySqlDataReader dr = covam.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_codped.Text = dr.GetString(0);
+                        retorna = true;
+                    }
+                    */
+                    covam.Dispose();
+                    //dr.Close();
+                }
+            }
+            //return retorna;
+        }
         private bool graba()                                                    // graba cabecera y detalle
         {
             bool retorna = false;
@@ -1216,36 +1266,6 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                if (tncont == "AUTOMA" && tx_codped.Text.Trim() == "")  // modo automatico y el campo vacio
-                {
-                    try
-                    {
-                        string vamos = "UPDATE series SET actual=(CONCAT('0', CAST(actual AS SIGNED) + 1)) " +
-                            "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
-                        MySqlCommand covam = new MySqlCommand(vamos, conn);
-                        covam.Parameters.AddWithValue("@tdo", tdc);
-                        covam.Parameters.AddWithValue("@sed", sdc);
-                        covam.Parameters.AddWithValue("@raz", raz);
-                        covam.ExecuteNonQuery();
-                        vamos = "select actual from series " +
-                            "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
-                        covam = new MySqlCommand(vamos, conn);
-                        covam.Parameters.AddWithValue("@tdo", tdc);
-                        covam.Parameters.AddWithValue("@sed", sdc);
-                        covam.Parameters.AddWithValue("@raz", raz);
-                        MySqlDataReader dr = covam.ExecuteReader();
-                        if (dr.Read())
-                        {
-                            tx_codped.Text = dr.GetString(0);
-                        }
-                        dr.Close();
-                    }
-                    catch (MySqlException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error en obtener # de contrato");
-                        Application.Exit();
-                    }
-                }
                 try
                 {
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
@@ -1307,14 +1327,23 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@cref", dataGridView1.Rows[i].Cells[10].Value.ToString());
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[11].Value.ToString());
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[13].Value.ToString());
-                        micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // ME QUEDE ACA 02-10-2020
+                        micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());
+                        micon.ExecuteNonQuery();
+                    }
+                    if (tncont == "AUTOMA")
+                    {
+                        micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed AND rsocial=@raz", conn);
+                        micon.Parameters.AddWithValue("@act", tx_codped.Text.Substring(2,tx_codped.Text.Trim().Length - 2));
+                        micon.Parameters.AddWithValue("@tdo", tdc);
+                        micon.Parameters.AddWithValue("@sed", sdc);
+                        micon.Parameters.AddWithValue("@raz", raz);
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
                 }
                 catch (MySqlException ex)
                 {
-                    MessageBox.Show(ex.Message, "Error en conexión");
+                    MessageBox.Show(ex.Message, "Error en insertar contrato o detalle");
                     Application.Exit();
                 }
             }
@@ -1876,9 +1905,21 @@ namespace iOMG
             tx_a_codig.ReadOnly = true;
             tx_a_salcan.ReadOnly = true;
             tx_acta.ReadOnly = true;
-            if (tncont == "AUTOMA") tx_codped.ReadOnly = true;
+            if (tncont == "AUTOMA")
+            {
+                tx_codped.ReadOnly = true;
+                if (tx_dat_orig.Text != "") correNum();
+            }
             else tx_codped.ReadOnly = false;
-            cmb_taller.Focus();
+            //
+            if (int.Parse(iOMG.Program.nivuser) < 2) cmb_taller.Focus();
+            else
+            {
+                tx_dat_orig.Text = iOMG.Program.tdauser;
+                cmb_taller.SelectedValue = tx_dat_orig.Text;
+                cmb_taller.Enabled = false;
+                tx_codped.Focus();
+            }
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -2415,6 +2456,7 @@ namespace iOMG
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
             else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            if (tncont == "AUTOMA" && tx_dat_orig.Text != "") correNum();
         }
         private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2559,16 +2601,13 @@ namespace iOMG
                 var aa = MessageBox.Show("Confirma que desea crear el contrato?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    if (tncont == "MANUAL" && tx_codped.Text.Trim() != "")  // validar que no exista 
+                    if (valexist(tx_codped.Text.Trim()) == true)
                     {
-                        if (valexist(tx_codped.Text.Trim()) == true)
-                        {
-                            // true = documento existe
-                            // false = documento no existe
-                            MessageBox.Show("El identificador de contrato YA existe!", "Por favor corrija", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            tx_codped.Focus();
-                            return;
-                        }
+                        // true = documento existe
+                        // false = documento no existe
+                        MessageBox.Show("El identificador de contrato YA existe!", "Por favor corrija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        tx_codped.Focus();
+                        return;
                     }
                     if (graba() == true)
                     {
@@ -2592,9 +2631,9 @@ namespace iOMG
                         dr[12] = tx_acta.Text;
                         dr[13] = tx_saldo.Text;
                         dr[14] = tx_dscto.Text;
-                        dr[15] = (chk_lugent.Checked.ToString() == "True")? "1":"0";    // cliente recoje en tienda
-                        dr[16] = (chk_serema.Checked.ToString() == "true")? "1":"0";
-                        dr[17] = (tx_piso.Text.Trim().Length == 0) ? "0": tx_piso.Text;
+                        dr[15] = (chk_lugent.Checked.ToString() == "True") ? "1" : "0";    // cliente recoje en tienda
+                        dr[16] = (chk_serema.Checked.ToString() == "true") ? "1" : "0";
+                        dr[17] = (tx_piso.Text.Trim().Length == 0) ? "0" : tx_piso.Text;
                         dr[18] = (chk_ascensor.Checked.ToString() == "true") ? "1" : "0";
                         dr[19] = tx_contac.Text;
                         dr[20] = tx_dirRef.Text;

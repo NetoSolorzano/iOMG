@@ -84,7 +84,7 @@ namespace iOMG
                 cn.Open();
                 //validamos que el usuario y passw son los correctos
                 string query = "select a.bloqueado,a.local,trim(a.mod1),trim(a.mod2),trim(a.mod3),a.nombre," +
-                    "a.ruc,ifnull(b.descrizione,'- SIN ASIGNAR -') " +
+                    "a.ruc,ifnull(b.descrizione,'- SIN ASIGNAR -'),a.nivel,a.tienda " +
                     "from usuarios a " +
                     "left join desc_raz b on b.idcodice=a.ruc " +
                     "where a.nom_user=@usuario and a.pwd_user=@contra";
@@ -102,6 +102,8 @@ namespace iOMG
                             iOMG.Program.vg_user = Tx_user.Text;
                             iOMG.Program.vg_nuse = dr.GetString(5);
                             iOMG.Program.almuser = dr.GetString(1);
+                            iOMG.Program.nivuser = dr.GetString(8);
+                            iOMG.Program.tdauser = dr.GetString(9);
                             iOMG.Program.ruc = dr.GetString(6);
                             iOMG.Program.cliente = dr.GetString(7);
                             if (dr.GetString(2) == "M0" || dr.GetString(3) == "M0" || dr.GetString(4) == "M0")

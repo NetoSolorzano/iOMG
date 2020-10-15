@@ -10,6 +10,9 @@ namespace iOMG
         /// </summary>
         public static string vg_user = "";      // codigo de usuario
         public static string vg_nuse = "";      // nombre de usuario
+        public static string almuser = "";      // valor almacen del usuario
+        public static string tdauser = "";      // tienda del usuario
+        public static string nivuser = "";      // nivel acceso del usuario
         public static string bd = "";           // base de datos seleccionada
         public static string colbac = "";       // back color
         public static string colpag = "";       // pagaframe color
@@ -18,7 +21,6 @@ namespace iOMG
         public static string colpnc = "";       // panel cabecera color
         public static string m70 = "";          // acceso directo a modulo almacen fisico
         public static string cliente = "";      // cliente del sistema
-        public static string almuser = "";     // valor almacen del usuario
         public static string retorna1 = "";
         public static string ruc = "";          // ruc del cliente
         public static string tituloF = "Intregrador de Almacén y Ventas";      // titulo del sistema

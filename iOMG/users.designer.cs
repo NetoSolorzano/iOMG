@@ -56,6 +56,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.chk_permisos = new System.Windows.Forms.CheckBox();
             this.tx_rind = new System.Windows.Forms.TextBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -90,7 +91,11 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.chk_permisos = new System.Windows.Forms.CheckBox();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
@@ -102,6 +107,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox11.SuspendLayout();
+            this.groupBox13.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -376,6 +382,10 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.textBox7);
+            this.tabuser.Controls.Add(this.comboBox4);
+            this.tabuser.Controls.Add(this.label6);
+            this.tabuser.Controls.Add(this.groupBox13);
             this.tabuser.Controls.Add(this.chk_permisos);
             this.tabuser.Controls.Add(this.tx_rind);
             this.tabuser.Controls.Add(this.comboBox3);
@@ -412,6 +422,17 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
+            // 
+            // chk_permisos
+            // 
+            this.chk_permisos.AutoSize = true;
+            this.chk_permisos.ForeColor = System.Drawing.Color.Black;
+            this.chk_permisos.Location = new System.Drawing.Point(85, 232);
+            this.chk_permisos.Name = "chk_permisos";
+            this.chk_permisos.Size = new System.Drawing.Size(123, 17);
+            this.chk_permisos.TabIndex = 189;
+            this.chk_permisos.Text = "Reinicializa permisos";
+            this.chk_permisos.UseVisualStyleBackColor = true;
             // 
             // tx_rind
             // 
@@ -482,9 +503,9 @@
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label4.Location = new System.Drawing.Point(82, 151);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
+            this.label4.Size = new System.Drawing.Size(48, 13);
             this.label4.TabIndex = 182;
-            this.label4.Text = "Sede/Local";
+            this.label4.Text = "Almacén";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label5
@@ -670,7 +691,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.ForeColor = System.Drawing.Color.Black;
-            this.checkBox1.Location = new System.Drawing.Point(85, 195);
+            this.checkBox1.Location = new System.Drawing.Point(85, 209);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(132, 17);
             this.checkBox1.TabIndex = 167;
@@ -747,16 +768,56 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // chk_permisos
+            // comboBox4
             // 
-            this.chk_permisos.AutoSize = true;
-            this.chk_permisos.ForeColor = System.Drawing.Color.Black;
-            this.chk_permisos.Location = new System.Drawing.Point(85, 218);
-            this.chk_permisos.Name = "chk_permisos";
-            this.chk_permisos.Size = new System.Drawing.Size(123, 17);
-            this.chk_permisos.TabIndex = 189;
-            this.chk_permisos.Text = "Reinicializa permisos";
-            this.chk_permisos.UseVisualStyleBackColor = true;
+            this.comboBox4.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.ItemHeight = 13;
+            this.comboBox4.Location = new System.Drawing.Point(167, 173);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(144, 21);
+            this.comboBox4.TabIndex = 192;
+            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label6.Location = new System.Drawing.Point(82, 179);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(62, 13);
+            this.label6.TabIndex = 191;
+            this.label6.Text = "Tienda Vta.";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.BackColor = System.Drawing.Color.White;
+            this.groupBox13.Controls.Add(this.groupBox14);
+            this.groupBox13.Location = new System.Drawing.Point(81, 193);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(232, 1);
+            this.groupBox13.TabIndex = 190;
+            this.groupBox13.TabStop = false;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Location = new System.Drawing.Point(0, -26);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(164, 1);
+            this.groupBox14.TabIndex = 113;
+            this.groupBox14.TabStop = false;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(346, 176);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(50, 20);
+            this.textBox7.TabIndex = 193;
+            this.textBox7.Visible = false;
             // 
             // users
             // 
@@ -791,6 +852,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
+            this.groupBox13.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -858,5 +920,10 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.TextBox tx_rind;
         private System.Windows.Forms.CheckBox chk_permisos;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.TextBox textBox7;
     }
 }

@@ -256,9 +256,11 @@ namespace iOMG
                 textBox4.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();  // ruc
                 textBox5.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();  // nivel
                 textBox6.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[8].Value.ToString();  // local
+                textBox7.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString();  // tienda
                 comboBox1.SelectedValue = textBox4.Text;
                 comboBox2.SelectedValue = textBox5.Text;
                 comboBox3.SelectedValue = textBox6.Text;
+                comboBox4.SelectedValue = textBox7.Text;
             }
         }
         public void dataload()                  // jala datos para los combos y la grilla
@@ -308,6 +310,18 @@ namespace iOMG
             comboBox3.DataSource = dt3;
             comboBox3.DisplayMember = "descrizionerid";
             comboBox3.ValueMember = "idcodice";
+            // datos del cambobox4 tienda ventas
+            this.comboBox4.Items.Clear();
+            ComboItem citem_ven = new ComboItem();
+            const string consven = "select descrizionerid,idcodice from desc_ven " +
+                "where numero=1";
+            MySqlCommand cmd4 = new MySqlCommand(consven, conn);
+            DataTable dt4 = new DataTable();
+            MySqlDataAdapter da4 = new MySqlDataAdapter(cmd4);
+            da4.Fill(dt4);
+            comboBox4.DataSource = dt4;
+            comboBox4.DisplayMember = "descrizionerid";
+            comboBox4.ValueMember = "idcodice";
             // datos de usuarios
             string datgri = "select id,nom_user,nombre,pwd_user,bloqueado,nivel,tipuser,acceso,local,tienda,sede," +
                 "ruc,mod1,mod2,mod3,priv1,priv2,derecho,aoper,fecha,foto " +
@@ -448,6 +462,7 @@ namespace iOMG
             this.comboBox1.SelectedIndex = -1;
             this.comboBox2.SelectedIndex = -1;
             this.comboBox3.SelectedIndex = -1;
+            this.comboBox4.SelectedIndex = -1;
         }
         #endregion limpiadores_modos;
 
@@ -488,9 +503,9 @@ namespace iOMG
             if (modo == "NUEVO")
             {
                 string consulta = "insert into usuarios (" +
-                    "nom_user,pwd_user,nombre,nivel,bloqueado,fecha,local,ruc,verapp,userc,fechc)" +
+                    "nom_user,pwd_user,nombre,nivel,bloqueado,fecha,local,ruc,verapp,userc,fechc,tienda)" +
                     " values (" +
-                    "@usuario,@contra,@nombre,@niv,@bloq,date(now()),@loca,@ruc,@ver,@vguser,now())";
+                    "@usuario,@contra,@nombre,@niv,@bloq,date(now()),@loca,@ruc,@ver,@vguser,now(),@tda)";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
@@ -505,6 +520,7 @@ namespace iOMG
                     mycomand.Parameters.AddWithValue("@ruc", this.textBox4.Text);
                     mycomand.Parameters.AddWithValue("@ver", verapp);
                     mycomand.Parameters.AddWithValue("@vguser", asd);
+                    mycomand.Parameters.AddWithValue("@tda", textBox7.Text);
                     try
                     {
                         mycomand.ExecuteNonQuery();
@@ -533,6 +549,7 @@ namespace iOMG
                         nrow["local"] = textBox6.Text;
                         nrow["ruc"] = textBox4.Text;
                         nrow["fecha"] = DateTime.Now;
+                        nrow["tienda"] = textBox7.Text;
                         dtg.Rows.Add(nrow);
                     }
                     catch (MySqlException ex)
@@ -554,7 +571,7 @@ namespace iOMG
                 string parte = "";
                 if (chk_res.Checked == true) parte = "pwd_user=@contra,";
                 string consulta = "update usuarios set " + parte +
-                        "nombre=@nombre,nivel=@niv,bloqueado=@bloq,fecha=date(now()),local=@loca,ruc=@ruc,verapp=@ver " +
+                        "nombre=@nombre,nivel=@niv,bloqueado=@bloq,fecha=date(now()),local=@loca,ruc=@ruc,verapp=@ver,tienda=@tda " +
                         "where nom_user=@usuario";  // falta usuario actual que se logueo
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -568,6 +585,7 @@ namespace iOMG
                     mycom.Parameters.AddWithValue("@loca", textBox6.Text);
                     mycom.Parameters.AddWithValue("@ruc", textBox4.Text);
                     mycom.Parameters.AddWithValue("@ver", verapp);
+                    mycom.Parameters.AddWithValue("@tda", textBox7.Text);
                     mycom.Parameters.AddWithValue("@usuario", textBox1.Text);
                     try
                     {
@@ -607,6 +625,7 @@ namespace iOMG
                             dtg.Rows[int.Parse(tx_rind.Text)]["bloqueado"] = checkBox1.Checked;
                             dtg.Rows[int.Parse(tx_rind.Text)]["local"] = textBox6.Text;
                             dtg.Rows[int.Parse(tx_rind.Text)]["ruc"] = textBox4.Text;
+                            dtg.Rows[int.Parse(tx_rind.Text)]["tienda"] = textBox7.Text;
                         }
                         else
                         {
@@ -620,6 +639,7 @@ namespace iOMG
                                     dtg.Rows[i]["bloqueado"] = checkBox1.Checked;
                                     dtg.Rows[i]["local"] = textBox6.Text;
                                     dtg.Rows[i]["ruc"] = textBox4.Text;
+                                    dtg.Rows[i]["tienda"] = textBox7.Text;
                                 }
                             }
                         }
@@ -1242,6 +1262,15 @@ namespace iOMG
                 textBox6.Text = (string)row["idcodice"];
             }
         }
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox4.SelectedIndex > -1)
+            {
+                DataRow row = ((DataTable)comboBox4.DataSource).Rows[comboBox4.SelectedIndex];
+                textBox7.Text = (string)row["idcodice"];
+            }
+        }
+
         #endregion comboboxes
 
         #region advancedatagridview
