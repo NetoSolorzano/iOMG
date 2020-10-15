@@ -123,6 +123,7 @@ namespace iOMG
                             tx_idc.Text = ayu2.ReturnValue0;
                             tx_cont.Text = ayu2.ReturnValue1;
                             tx_cliente.Text = ayu2.ReturnValue2;
+                            tx_fecont.Text = ayu2.ReturnValueA[7];
                             //tx_ciudades.Text = ayu2.ReturnValueA[5];
                             cmb_destino.SelectedIndex = cmb_destino.FindString(ayu2.ReturnValueA[6]);
                             tx_dat_dest.Text = ayu2.ReturnValueA[6];
@@ -630,7 +631,7 @@ namespace iOMG
                     "left join contrat b on b.contrato=a.contrato " +
                     "left join desc_alm d on d.idcodice=b.tipoes " +
                     "left join desc_sta e on e.idcodice=a.status " +
-                    "where a.tipoes=@tip";
+                    "where a.tipoes=@tip and a.status<>'ANULAD' and b.status<>'ENTREG'";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", tipede);                // tipo pedidos catalogo clientes
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
@@ -1010,7 +1011,7 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial,c.descrizionerid,a.tipoes " +
+            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial,c.descrizionerid,a.tipoes,a.fecha " +
                 "from contrat a " +
                 "left join anag_cli b on b.idanagrafica=a.cliente " +
                 "left join desc_alm c on c.idcodice=a.tipoes " +
@@ -1027,6 +1028,7 @@ namespace iOMG
                     //tx_ciudades.Text = dr.GetString(4); //cmb_destino.Text.PadRight(15).Substring(9,15);
                     tx_dat_dest.Text = dr.GetString(5);
                     cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
+                    tx_fecont.Text = dr.GetString(6);
                     retorna = true;
                 }
                 else retorna = false;
@@ -2018,6 +2020,14 @@ namespace iOMG
                 {
                     MessageBox.Show("Ingrese el contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     tx_cont.Focus();
+                    return;
+                }
+                if (dtp_pedido.Value.Date < Convert.ToDateTime(tx_fecont.Text).Date)
+                {
+                    MessageBox.Show("La fecha del pedido no puede ser" + Environment.NewLine +
+                    "menor a la fecha del contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dtp_pedido.Value = DateTime.Now;
+                    dtp_pedido.Focus();
                     return;
                 }
                 tx_codped.Text = gencodp(tx_cont.Text);     // genramos el codigo del pedido

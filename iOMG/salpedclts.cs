@@ -93,6 +93,7 @@ namespace iOMG
                             tx_dat_aca.Text = ayu2.ReturnValueA[9].ToString();
                             tx_acabad.Text = ayu2.ReturnValueA[10].ToString();
                             tx_contrato.Text = ayu2.ReturnValueA[14].ToString();
+                            tx_fechin.Text = ayu2.ReturnValueA[15].ToString();
                         }
                     }
                 }
@@ -219,7 +220,8 @@ namespace iOMG
                     "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_alm d on d.idcodice=a.uantes " +
                     "left join desc_alm e on e.idcodice=a.uactual " +
-                    "order by iddetam";
+                    "left join contrat co on co.contrato=pe.contrato " +
+                    "where co.status not in ('ENTREG','ANULAD') order by a.iddetam";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tpe", tipedc);                    // codigo pedido cliente
                 //cdg.Parameters.AddWithValue("@tip", tipede);                  // "TPE001"
@@ -1264,6 +1266,19 @@ namespace iOMG
                 e.Cancel = true;
             }*/
         }
+        private void dtp_ingreso_Leave(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text == "NUEVO")
+            {
+                if (dtp_ingreso.Value.Date < Convert.ToDateTime(tx_fechin.Text).Date)
+                {
+                    MessageBox.Show("La fecha de salida no puede ser" + Environment.NewLine +
+                        "menor a la fecha del ingreso", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dtp_ingreso.Value = DateTime.Now;
+                    dtp_ingreso.Focus();
+                }
+            }
+        }
         #endregion leaves;
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
@@ -1362,5 +1377,6 @@ namespace iOMG
             e.Cancel = true;
         }
         #endregion
+
     }
 }

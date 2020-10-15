@@ -124,6 +124,7 @@
             this.tx_cant = new iOMG.NumericTextBox();
             this.tx_idr = new iOMG.NumericTextBox();
             this.tx_rind = new iOMG.NumericTextBox();
+            this.tx_fechin = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -582,6 +583,7 @@
             this.dtp_ingreso.Name = "dtp_ingreso";
             this.dtp_ingreso.Size = new System.Drawing.Size(95, 20);
             this.dtp_ingreso.TabIndex = 1;
+            this.dtp_ingreso.Leave += new System.EventHandler(this.dtp_ingreso_Leave);
             // 
             // tx_cliente
             // 
@@ -714,7 +716,7 @@
             // 
             // tx_origen
             // 
-            this.tx_origen.Location = new System.Drawing.Point(354, 57);
+            this.tx_origen.Location = new System.Drawing.Point(354, 58);
             this.tx_origen.Name = "tx_origen";
             this.tx_origen.ReadOnly = true;
             this.tx_origen.Size = new System.Drawing.Size(100, 20);
@@ -999,7 +1001,7 @@
             this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox5.Location = new System.Drawing.Point(111, 77);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(175, 1);
+            this.groupBox5.Size = new System.Drawing.Size(154, 1);
             this.groupBox5.TabIndex = 355;
             this.groupBox5.TabStop = false;
             // 
@@ -1022,7 +1024,7 @@
             // 
             // tx_contrato
             // 
-            this.tx_contrato.Location = new System.Drawing.Point(165, 57);
+            this.tx_contrato.Location = new System.Drawing.Point(165, 58);
             this.tx_contrato.Name = "tx_contrato";
             this.tx_contrato.ReadOnly = true;
             this.tx_contrato.Size = new System.Drawing.Size(100, 20);
@@ -1032,7 +1034,7 @@
             // 
             this.tx_cant.AllowSpace = false;
             this.tx_cant.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_cant.Location = new System.Drawing.Point(608, 57);
+            this.tx_cant.Location = new System.Drawing.Point(608, 58);
             this.tx_cant.Name = "tx_cant";
             this.tx_cant.Size = new System.Drawing.Size(40, 20);
             this.tx_cant.TabIndex = 3;
@@ -1061,12 +1063,22 @@
             this.tx_rind.TabIndex = 310;
             this.tx_rind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // tx_fechin
+            // 
+            this.tx_fechin.Location = new System.Drawing.Point(238, 4);
+            this.tx_fechin.Name = "tx_fechin";
+            this.tx_fechin.Size = new System.Drawing.Size(27, 20);
+            this.tx_fechin.TabIndex = 357;
+            this.tx_fechin.Tag = "id del reg. en movim";
+            this.tx_fechin.Visible = false;
+            // 
             // salpedclts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(747, 482);
+            this.Controls.Add(this.tx_fechin);
             this.Controls.Add(this.tx_contrato);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.label3);
@@ -1246,5 +1258,6 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tx_contrato;
+        private System.Windows.Forms.TextBox tx_fechin;
     }
 }

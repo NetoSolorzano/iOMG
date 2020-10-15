@@ -149,6 +149,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.tx_fecont = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -210,6 +211,7 @@
             // tabuser
             // 
             this.tabuser.BackColor = System.Drawing.Color.Gray;
+            this.tabuser.Controls.Add(this.tx_fecont);
             this.tabuser.Controls.Add(this.cmb_destino);
             this.tabuser.Controls.Add(this.tx_dat_adj2);
             this.tabuser.Controls.Add(this.tx_dat_adj1);
@@ -1425,6 +1427,14 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // tx_fecont
+            // 
+            this.tx_fecont.Location = new System.Drawing.Point(549, 35);
+            this.tx_fecont.Name = "tx_fecont";
+            this.tx_fecont.Size = new System.Drawing.Size(53, 20);
+            this.tx_fecont.TabIndex = 323;
+            this.tx_fecont.Visible = false;
+            // 
             // pedsclients
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1584,5 +1594,6 @@
         private System.Windows.Forms.TextBox tx_dat_adj1;
         private System.Windows.Forms.TextBox tx_d_est;
         private System.Windows.Forms.ComboBox cmb_destino;
+        private System.Windows.Forms.TextBox tx_fecont;
     }
 }

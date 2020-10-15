@@ -131,6 +131,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.tx_contrato = new System.Windows.Forms.TextBox();
             this.tx_saldo = new System.Windows.Forms.TextBox();
+            this.tx_dat_fechp = new System.Windows.Forms.TextBox();
             this.tx_total = new iOMG.NumericTextBox();
             this.tx_precio = new iOMG.NumericTextBox();
             this.tx_idr = new iOMG.NumericTextBox();
@@ -597,6 +598,7 @@
             this.dtp_ingreso.Name = "dtp_ingreso";
             this.dtp_ingreso.Size = new System.Drawing.Size(95, 20);
             this.dtp_ingreso.TabIndex = 1;
+            this.dtp_ingreso.Leave += new System.EventHandler(this.dtp_ingreso_Leave);
             // 
             // tx_cliente
             // 
@@ -1134,6 +1136,14 @@
             this.tx_saldo.TabIndex = 354;
             this.tx_saldo.Visible = false;
             // 
+            // tx_dat_fechp
+            // 
+            this.tx_dat_fechp.Location = new System.Drawing.Point(211, 6);
+            this.tx_dat_fechp.Name = "tx_dat_fechp";
+            this.tx_dat_fechp.Size = new System.Drawing.Size(54, 20);
+            this.tx_dat_fechp.TabIndex = 355;
+            this.tx_dat_fechp.Visible = false;
+            // 
             // tx_total
             // 
             this.tx_total.AllowSpace = false;
@@ -1189,6 +1199,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(747, 505);
+            this.Controls.Add(this.tx_dat_fechp);
             this.Controls.Add(this.tx_saldo);
             this.Controls.Add(this.groupBox33);
             this.Controls.Add(this.label17);
@@ -1391,5 +1402,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox tx_contrato;
         private System.Windows.Forms.TextBox tx_saldo;
+        private System.Windows.Forms.TextBox tx_dat_fechp;
     }
 }

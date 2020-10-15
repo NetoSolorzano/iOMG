@@ -79,8 +79,8 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
                             // ayu2.ReturnValue0;
-                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15,      16  
-                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin,contrato
+                            //       0,    1,      2,      3,   4,   5,     6,      7,     8,     9,    10,   11,   12,    13,     14,      15,      16   17
+                            // codped,origen,destino,cliente,cant,item,nombre,medidas,madera,estado,precio,total,nomad,acabado,nomorig,nomdestin,contrato,
                             // llenado de campos
                             tx_pedido.Text = ayu2.ReturnValueA[0].ToString();
                             tx_dat_ped.Text = ayu2.ReturnValueA[0].ToString();
@@ -101,6 +101,7 @@ namespace iOMG
                             tx_precio.Text = ayu2.ReturnValueA[10].ToString();
                             tx_total.Text = ayu2.ReturnValueA[11].ToString();
                             tx_contrato.Text = ayu2.ReturnValueA[16].ToString();
+                            tx_dat_fechp.Text = ayu2.ReturnValueA[17].ToString();
                             // saldo solo jala de ingresos existentes
                         }
                     }
@@ -215,12 +216,13 @@ namespace iOMG
                     "a.madera,a.estado,d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.nombre,pe.contrato,a.saldo " +
                     "from movim a left join desc_mad b on b.idcodice=a.madera " +
                     "left join desc_est c on c.idcodice=a.estado " +
-                    "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@tpe " +
-                    "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
                     "left join desc_loc d on d.idcodice=a.origen " +
                     "left join desc_alm e on e.idcodice=a.destino " +
                     "left join detaped dp on dp.pedidoh=a.pedido AND dp.item=a.articulo " +
-                    "order by idmovim";
+                    "left join pedidos pe on pe.codped=a.pedido and pe.tipoes=@tpe " +
+                    "left join contrat co ON co.contrato=pe.contrato " +
+                    "left join anag_cli cl on cl.idanagrafica=pe.cliente " +
+                    "WHERE co.status <> 'ENTREG' order by idmovim";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tpe", tipedc);                    // codigo pedido cliente
                 //cdg.Parameters.AddWithValue("@tip", tipede);                  // "TPE001"
@@ -1275,6 +1277,16 @@ namespace iOMG
                         tx_cant.Focus();
                     }
                 }
+            }
+        }
+        private void dtp_ingreso_Leave(object sender, EventArgs e)
+        {
+            if (dtp_ingreso.Value.Date < Convert.ToDateTime(tx_dat_fechp.Text).Date)
+            {
+                MessageBox.Show("La fecha de ingreso no puede ser" + Environment.NewLine +
+                    "menor a la fecha del pedido", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dtp_ingreso.Value = DateTime.Now;
+                dtp_ingreso.Focus();
             }
         }
         #endregion leaves;
