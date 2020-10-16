@@ -152,7 +152,7 @@ namespace iOMG
             }
             if (quien == "todos")
             {
-                // seleccion del local de ventas
+                /* seleccion del local de ventas
                 const string conlocven = "select descrizionerid,idcodice from desc_ven " +
                                        "where numero=1 order by idcodice";
                 MySqlCommand cmdlocven = new MySqlCommand(conlocven, conn);
@@ -163,7 +163,7 @@ namespace iOMG
                 {
                     cmb_karalm.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_karalm.ValueMember = row.ItemArray[1].ToString();
-                }
+                }*/
                 // seleccion del almacen
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
                                        "where numero=1 order by idcodice";
@@ -173,6 +173,9 @@ namespace iOMG
                 dadest.Fill(dtdest);
                 foreach (DataRow row in dtdest.Rows)
                 {
+                    cmb_karalm.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_karalm.ValueMember = row.ItemArray[1].ToString();
+                    //
                     cmb_hist_alm.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_hist_alm.ValueMember = row.ItemArray[1].ToString();
                     //
@@ -359,6 +362,7 @@ namespace iOMG
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
+            dgv_hist.Columns[0].Visible = false;
             dgv_hist.ReadOnly = true;
         }
         //
@@ -693,6 +697,16 @@ namespace iOMG
                 DataTable dt = (DataTable)dgv_kardex.DataSource;
                 dt.DefaultView.RowFilter = dgv_kardex.FilterString;
             }
+            if (tabControl1.SelectedTab.Name == "tabres")
+            {
+                DataTable dt = (DataTable)dgv_reserv.DataSource;
+                dt.DefaultView.RowFilter = dgv_reserv.FilterString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabSal")
+            {
+                DataTable dt = (DataTable)dgv_salidas.DataSource;
+                dt.DefaultView.RowFilter = dgv_salidas.FilterString;
+            }
         }
         private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)
         {
@@ -706,6 +720,16 @@ namespace iOMG
             {
                 DataTable dt = (DataTable)dgv_kardex.DataSource;
                 dt.DefaultView.Sort = dgv_kardex.SortString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabres")
+            {
+                DataTable dt = (DataTable)dgv_reserv.DataSource;
+                dt.DefaultView.Sort = dgv_reserv.SortString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabSal")
+            {
+                DataTable dt = (DataTable)dgv_salidas.DataSource;
+                dt.DefaultView.Sort = dgv_salidas.SortString;
             }
         }
         private void advancedDataGridView1_CellEnter_1(object sender, DataGridViewCellEventArgs e)

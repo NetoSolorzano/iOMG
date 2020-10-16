@@ -350,6 +350,42 @@ namespace iOMG
                 }
             }
         }
+        private void jalaped(string pedido)     // jalamos el pedido desde la base de datos
+        {
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                string consulta = "select id,tipoes,status,origen,destino,fecha,entrega,coment from pedidos " +
+                    "where tipoes='TPE001' and codped=@ped";
+                using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                {
+                    micon.Parameters.AddWithValue("@ped", pedido);
+                    using (MySqlDataReader dr = micon.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            tx_idr.Text = dr.GetString("id");
+                            tx_dat_tiped.Text = dr.GetString("tipoes");
+                            tx_dat_estad.Text = dr.GetString("status");
+                            tx_dat_orig.Text = dr.GetString("origen");
+                            tx_dat_dest.Text = dr.GetString("destino");
+                            dtp_pedido.Value = Convert.ToDateTime(dr.GetString("fecha"));
+                            dtp_entreg.Value = Convert.ToDateTime(dr.GetString("entrega"));
+                            tx_coment.Text = dr.GetString("coment");
+                            //
+                            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
+                            cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                            cmb_destino.SelectedIndex = cmb_destino.FindString(tx_dat_dest.Text);
+                            cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                        }
+                    }
+                }
+            }
+            if (tx_idr.Text != "")  // existe el pedido, jalamos detalle
+            {
+                jaladet(tx_codped.Text);
+            }
+        }
         private void jaladet(string pedido)                 // jala el detalle del pedido
         {
             // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
@@ -501,10 +537,11 @@ namespace iOMG
                 string datgri = "select a.id,a.codped,b.descrizionerid,a.origen,a.destino,date_format(date(a.fecha),'%Y-%m-%d') as fecha," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment,a.tipoes,a.status " +
                     "from pedidos a left join desc_stp b on b.idcodice=a.status " +
-                    "where a.tipoes=@tip and a.status<>@sta";
+                    "where a.tipoes=@tip and a.status not in (@sta,@sat)";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tip", tipede);                // "TPE001"
                 cdg.Parameters.AddWithValue("@sta", estanu);
+                cdg.Parameters.AddWithValue("@sat", estcomp);
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
                 dtg.Clear();
                 dag.Fill(dtg);
@@ -1729,6 +1766,14 @@ namespace iOMG
             if(Tx_modo.Text != "NUEVO" && tx_codped.Text != "")
             {
                 jalaoc("tx_codped");
+                if (tx_idr.Text == "")  // no existe en la grilla
+                {
+                    jalaped(tx_codped.Text);
+                    if (tx_idr.Text == "")
+                    {
+                        MessageBox.Show("No existe el pedido!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
             }
         }
         private void tx_d_can_Leave(object sender, EventArgs e)
@@ -2454,7 +2499,6 @@ namespace iOMG
             bt_prev.Enabled = true;
             bt_exc.Enabled = false;
         }
-
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             // +++++++++++++++++++ VARIABLES DE POSICIONAMIENTO GENERAL ++++++++++++++++++ //

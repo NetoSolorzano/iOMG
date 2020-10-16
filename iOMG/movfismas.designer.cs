@@ -49,24 +49,19 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Crimson;
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(2, 383);
+            this.panel1.Location = new System.Drawing.Point(2, 384);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(626, 26);
+            this.panel1.Size = new System.Drawing.Size(628, 26);
             this.panel1.TabIndex = 14;
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.Color.Red;
             this.button1.Location = new System.Drawing.Point(544, 1);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 24);
+            this.button1.Size = new System.Drawing.Size(82, 24);
             this.button1.TabIndex = 16;
             this.button1.Text = "Graba";
             this.button1.UseVisualStyleBackColor = true;
@@ -74,14 +69,12 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.Crimson;
             this.panel2.Controls.Add(this.lb_titulo);
             this.panel2.Controls.Add(this.bt_close);
             this.panel2.Location = new System.Drawing.Point(2, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(629, 23);
+            this.panel2.Size = new System.Drawing.Size(631, 23);
             this.panel2.TabIndex = 16;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             // 
@@ -98,36 +91,30 @@
             // 
             // bt_close
             // 
-            this.bt_close.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_close.FlatAppearance.BorderSize = 0;
             this.bt_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bt_close.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bt_close.ForeColor = System.Drawing.Color.White;
             this.bt_close.Image = global::iOMG.Properties.Resources.close_square;
             this.bt_close.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bt_close.Location = new System.Drawing.Point(594, 2);
+            this.bt_close.Location = new System.Drawing.Point(598, 2);
             this.bt_close.Name = "bt_close";
-            this.bt_close.Size = new System.Drawing.Size(28, 18);
+            this.bt_close.Size = new System.Drawing.Size(25, 18);
             this.bt_close.TabIndex = 14;
             this.bt_close.UseVisualStyleBackColor = true;
             this.bt_close.Click += new System.EventHandler(this.bt_close_Click);
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 82);
+            this.dataGridView1.Location = new System.Drawing.Point(2, 82);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(624, 301);
+            this.dataGridView1.Size = new System.Drawing.Size(626, 301);
             this.dataGridView1.TabIndex = 20;
             // 
             // panel4
             // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.Controls.Add(this.label1);
             this.panel4.Controls.Add(this.tx_idr);
             this.panel4.Controls.Add(this.dtp_fsal);
@@ -136,7 +123,7 @@
             this.panel4.Controls.Add(this.label7);
             this.panel4.Location = new System.Drawing.Point(2, 29);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(625, 49);
+            this.panel4.Size = new System.Drawing.Size(627, 49);
             this.panel4.TabIndex = 21;
             // 
             // label1
@@ -194,7 +181,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(630, 409);
+            this.ClientSize = new System.Drawing.Size(629, 414);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);

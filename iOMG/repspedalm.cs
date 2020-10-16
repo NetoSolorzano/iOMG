@@ -645,13 +645,27 @@ namespace iOMG
             {
                 parte2 = " and b.status=@sta";
             }   // ,''
-            string consulta = "SELECT a.fecha,b.descrizionerid,a.docum,a.item,i.nombr,a.cant,a.madera,a.coment,p.origen,a.almad " +
-                "FROM movalm a " +
-                "LEFT JOIN items i ON concat(i.capit, left(i.model, 3), i.mader, i.tipol, left(i.deta1, 2), i.acaba, i.talle, i.deta2) = " +
-                "concat(SUBSTRING(a.item, 1, 1), SUBSTRING(a.item, 2, 3), 'X', SUBSTRING(a.item, 6, 2), SUBSTRING(a.item, 8, 2), SUBSTRING(a.item, 10, 1), 'XX', SUBSTRING(a.item, 13, 3)) " +
-                "LEFT JOIN desc_alm b ON b.IDCodice = a.almad " +
-                "left join pedidos p on trim(upper(p.codped))=trim(upper(a.docum)) " +
-                parte + parte0 + parte1 + parte2 + " order by a.fecha,a.docum";
+            string consulta = "";
+            if (chk_resing.Checked == true)
+            {
+                consulta = "SELECT a.fecha,b.descrizionerid,a.docum,space(1) as item,space(1) as nombr,sum(a.cant) as cant,space(1 ) as madera,a.coment,p.origen,a.almad " +
+                    "FROM movalm a " +
+                    "LEFT JOIN items i ON concat(i.capit, left(i.model, 3), i.mader, i.tipol, left(i.deta1, 2), i.acaba, i.talle, i.deta2) = " +
+                    "concat(SUBSTRING(a.item, 1, 1), SUBSTRING(a.item, 2, 3), 'X', SUBSTRING(a.item, 6, 2), SUBSTRING(a.item, 8, 2), SUBSTRING(a.item, 10, 1), 'XX', SUBSTRING(a.item, 13, 3)) " +
+                    "LEFT JOIN desc_alm b ON b.IDCodice = a.almad " +
+                    "left join pedidos p on trim(upper(p.codped))=trim(upper(a.docum)) " +
+                    parte + parte0 + parte1 + parte2 + " GROUP BY a.docum order by a.fecha,a.docum";
+            }
+            else
+            {
+                consulta = "SELECT a.fecha,b.descrizionerid,a.docum,a.item,i.nombr,a.cant,a.madera,a.coment,p.origen,a.almad " +
+                    "FROM movalm a " +
+                    "LEFT JOIN items i ON concat(i.capit, left(i.model, 3), i.mader, i.tipol, left(i.deta1, 2), i.acaba, i.talle, i.deta2) = " +
+                    "concat(SUBSTRING(a.item, 1, 1), SUBSTRING(a.item, 2, 3), 'X', SUBSTRING(a.item, 6, 2), SUBSTRING(a.item, 8, 2), SUBSTRING(a.item, 10, 1), 'XX', SUBSTRING(a.item, 13, 3)) " +
+                    "LEFT JOIN desc_alm b ON b.IDCodice = a.almad " +
+                    "left join pedidos p on trim(upper(p.codped))=trim(upper(a.docum)) " +
+                    parte + parte0 + parte1 + parte2 + " order by a.fecha,a.docum";
+            }
             try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);

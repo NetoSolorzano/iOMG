@@ -247,6 +247,9 @@ namespace iOMG
                 {
                     cmb_vtasloc.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
                     cmb_vtasloc.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_convtas.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_convtas.ValueMember = row.ItemArray[1].ToString();
                 }
             }
             //
@@ -696,6 +699,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@fina", dtp_confina.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@estado", tx_dat_conestado.Text.Trim());
                     micon.Parameters.AddWithValue("@rango", ran);
+                    micon.Parameters.AddWithValue("@tienda", tx_dat_convtas.Text.Trim());
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -1008,6 +1012,11 @@ namespace iOMG
             if (cmb_conestado.SelectedValue != null) tx_dat_conestado.Text = cmb_conestado.SelectedValue.ToString();
             else tx_dat_conestado.Text = cmb_conestado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
+        private void cmb_convtas_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_convtas.SelectedValue != null) tx_dat_convtas.Text = cmb_convtas.SelectedValue.ToString();
+            else tx_dat_convtas.Text = cmb_convtas.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
         private void cmb_vtasloc_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_vtasloc.SelectedValue != null) tx_dat_vtasloc.Text = cmb_vtasloc.SelectedValue.ToString();
@@ -1076,6 +1085,14 @@ namespace iOMG
             {
                 cmb_conestado.SelectedIndex = -1;
                 tx_dat_conestado.Text = "";
+            }
+        }
+        private void cmb_convtas_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_convtas.SelectedIndex = -1;
+                tx_dat_convtas.Text = "";
             }
         }
         private void cmb_vtasloc_KeyDown(object sender, KeyEventArgs e)

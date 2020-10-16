@@ -1332,11 +1332,11 @@ namespace iOMG
                     }
                     if (tncont == "AUTOMA")
                     {
-                        micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed AND rsocial=@raz", conn);
+                        micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed AND id>0", conn);    //  AND rsocial=@raz
                         micon.Parameters.AddWithValue("@act", tx_codped.Text.Substring(2,tx_codped.Text.Trim().Length - 2));
                         micon.Parameters.AddWithValue("@tdo", tdc);
-                        micon.Parameters.AddWithValue("@sed", sdc);
-                        micon.Parameters.AddWithValue("@raz", raz);
+                        micon.Parameters.AddWithValue("@sed", tx_dat_orig.Text);
+                        //micon.Parameters.AddWithValue("@raz", raz);
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1869,7 +1869,7 @@ namespace iOMG
             Tx_modo.Text = "NUEVO";
             button1.Image = Image.FromFile(img_grab);
             dtp_pedido.Value = DateTime.Now;
-            dtp_entreg.Checked = false;
+            dtp_entreg.Checked = true;
             limpiar(this);
             limpiapag(tabuser);
             limpia_otros(tabuser);
@@ -2593,6 +2593,12 @@ namespace iOMG
                 {
                     MessageBox.Show("El saldo es negativo, el pago debe ser inferior o igual al valor del contrato","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     tx_acta.Focus();
+                    return;
+                }
+                if (MessageBox.Show("Confirma que la FECHA DE ENTREGA" + Environment.NewLine +
+                    "es la correcta?","Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    dtp_entreg.Focus();
                     return;
                 }
             }

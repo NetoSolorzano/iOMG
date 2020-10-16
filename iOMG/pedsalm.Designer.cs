@@ -36,6 +36,7 @@
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_saldo = new iOMG.NumericTextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -148,7 +149,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.tx_saldo = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -324,6 +324,14 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 104);
             this.panel1.TabIndex = 298;
+            // 
+            // tx_saldo
+            // 
+            this.tx_saldo.AllowSpace = false;
+            this.tx_saldo.Location = new System.Drawing.Point(645, 80);
+            this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.Size = new System.Drawing.Size(35, 20);
+            this.tx_saldo.TabIndex = 323;
             // 
             // label30
             // 
@@ -731,7 +739,7 @@
             // 
             // tx_dat_estad
             // 
-            this.tx_dat_estad.Location = new System.Drawing.Point(617, 6);
+            this.tx_dat_estad.Location = new System.Drawing.Point(643, 6);
             this.tx_dat_estad.Name = "tx_dat_estad";
             this.tx_dat_estad.Size = new System.Drawing.Size(50, 20);
             this.tx_dat_estad.TabIndex = 297;
@@ -1030,7 +1038,7 @@
             this.cmb_estado.FormattingEnabled = true;
             this.cmb_estado.Location = new System.Drawing.Point(529, 5);
             this.cmb_estado.Name = "cmb_estado";
-            this.cmb_estado.Size = new System.Drawing.Size(85, 21);
+            this.cmb_estado.Size = new System.Drawing.Size(105, 21);
             this.cmb_estado.TabIndex = 265;
             this.cmb_estado.SelectionChangeCommitted += new System.EventHandler(this.cmb_estado_SelectionChangeCommitted);
             this.cmb_estado.Click += new System.EventHandler(this.cmb_estado_Click);
@@ -1415,14 +1423,6 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
-            // 
-            // tx_saldo
-            // 
-            this.tx_saldo.AllowSpace = false;
-            this.tx_saldo.Location = new System.Drawing.Point(645, 80);
-            this.tx_saldo.Name = "tx_saldo";
-            this.tx_saldo.Size = new System.Drawing.Size(35, 20);
-            this.tx_saldo.TabIndex = 323;
             // 
             // Pedsalm
             // 

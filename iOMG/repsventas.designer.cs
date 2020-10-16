@@ -171,6 +171,11 @@
             this.bt_vtasfiltra = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
+            this.groupBox31 = new System.Windows.Forms.GroupBox();
+            this.groupBox32 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tx_dat_convtas = new System.Windows.Forms.TextBox();
+            this.cmb_convtas = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabcont.SuspendLayout();
@@ -204,6 +209,7 @@
             this.groupBox19.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox31.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -479,6 +485,10 @@
             // 
             // tabcont
             // 
+            this.tabcont.Controls.Add(this.groupBox31);
+            this.tabcont.Controls.Add(this.label4);
+            this.tabcont.Controls.Add(this.tx_dat_convtas);
+            this.tabcont.Controls.Add(this.cmb_convtas);
             this.tabcont.Controls.Add(this.panel2);
             this.tabcont.Controls.Add(this.button3);
             this.tabcont.Controls.Add(this.groupBox13);
@@ -534,7 +544,7 @@
             this.rb_fentrega.Location = new System.Drawing.Point(4, 30);
             this.rb_fentrega.Name = "rb_fentrega";
             this.rb_fentrega.Size = new System.Drawing.Size(110, 17);
-            this.rb_fentrega.TabIndex = 351;
+            this.rb_fentrega.TabIndex = 343;
             this.rb_fentrega.TabStop = true;
             this.rb_fentrega.Text = "Por fecha entrega";
             this.rb_fentrega.UseVisualStyleBackColor = true;
@@ -564,7 +574,7 @@
             this.rb_fcont.Location = new System.Drawing.Point(4, 7);
             this.rb_fcont.Name = "rb_fcont";
             this.rb_fcont.Size = new System.Drawing.Size(113, 17);
-            this.rb_fcont.TabIndex = 350;
+            this.rb_fcont.TabIndex = 342;
             this.rb_fcont.TabStop = true;
             this.rb_fcont.Text = "Por fecha contrato";
             this.rb_fcont.UseVisualStyleBackColor = true;
@@ -585,7 +595,7 @@
             this.dtp_confina.Location = new System.Drawing.Point(198, 28);
             this.dtp_confina.Name = "dtp_confina";
             this.dtp_confina.Size = new System.Drawing.Size(95, 20);
-            this.dtp_confina.TabIndex = 342;
+            this.dtp_confina.TabIndex = 345;
             // 
             // label19
             // 
@@ -603,7 +613,7 @@
             this.dtp_confini.Location = new System.Drawing.Point(198, 6);
             this.dtp_confini.Name = "dtp_confini";
             this.dtp_confini.Size = new System.Drawing.Size(95, 20);
-            this.dtp_confini.TabIndex = 341;
+            this.dtp_confini.TabIndex = 344;
             // 
             // button3
             // 
@@ -612,7 +622,7 @@
             this.button3.Location = new System.Drawing.Point(713, 11);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(50, 41);
-            this.button3.TabIndex = 349;
+            this.button3.TabIndex = 347;
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -650,14 +660,14 @@
             this.bt_confiltra.Location = new System.Drawing.Point(589, 16);
             this.bt_confiltra.Name = "bt_confiltra";
             this.bt_confiltra.Size = new System.Drawing.Size(59, 29);
-            this.bt_confiltra.TabIndex = 343;
+            this.bt_confiltra.TabIndex = 346;
             this.bt_confiltra.Text = "Filtra";
             this.bt_confiltra.UseVisualStyleBackColor = true;
             this.bt_confiltra.Click += new System.EventHandler(this.bt_confiltra_Click);
             // 
             // tx_dat_conestado
             // 
-            this.tx_dat_conestado.Location = new System.Drawing.Point(172, 39);
+            this.tx_dat_conestado.Location = new System.Drawing.Point(37, 12);
             this.tx_dat_conestado.Name = "tx_dat_conestado";
             this.tx_dat_conestado.Size = new System.Drawing.Size(27, 20);
             this.tx_dat_conestado.TabIndex = 347;
@@ -1698,6 +1708,56 @@
             this.label25.TabIndex = 353;
             this.label25.Text = "Fech Inicial";
             // 
+            // groupBox31
+            // 
+            this.groupBox31.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox31.Controls.Add(this.groupBox32);
+            this.groupBox31.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox31.Location = new System.Drawing.Point(70, 57);
+            this.groupBox31.Name = "groupBox31";
+            this.groupBox31.Size = new System.Drawing.Size(169, 1);
+            this.groupBox31.TabIndex = 365;
+            this.groupBox31.TabStop = false;
+            // 
+            // groupBox32
+            // 
+            this.groupBox32.Location = new System.Drawing.Point(0, -26);
+            this.groupBox32.Name = "groupBox32";
+            this.groupBox32.Size = new System.Drawing.Size(164, 1);
+            this.groupBox32.TabIndex = 113;
+            this.groupBox32.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(72, 42);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 13);
+            this.label4.TabIndex = 363;
+            this.label4.Text = "Local Ventas";
+            // 
+            // tx_dat_convtas
+            // 
+            this.tx_dat_convtas.Location = new System.Drawing.Point(37, 38);
+            this.tx_dat_convtas.Name = "tx_dat_convtas";
+            this.tx_dat_convtas.Size = new System.Drawing.Size(27, 20);
+            this.tx_dat_convtas.TabIndex = 364;
+            this.tx_dat_convtas.Visible = false;
+            // 
+            // cmb_convtas
+            // 
+            this.cmb_convtas.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_convtas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_convtas.DropDownWidth = 100;
+            this.cmb_convtas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_convtas.FormattingEnabled = true;
+            this.cmb_convtas.Location = new System.Drawing.Point(172, 37);
+            this.cmb_convtas.Name = "cmb_convtas";
+            this.cmb_convtas.Size = new System.Drawing.Size(85, 21);
+            this.cmb_convtas.TabIndex = 341;
+            this.cmb_convtas.SelectionChangeCommitted += new System.EventHandler(this.cmb_convtas_SelectionChangeCommitted);
+            this.cmb_convtas.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_convtas_KeyDown);
+            // 
             // repsventas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1755,6 +1815,7 @@
             this.groupBox17.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox31.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1904,5 +1965,10 @@
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.GroupBox groupBox31;
+        private System.Windows.Forms.GroupBox groupBox32;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox tx_dat_convtas;
+        private System.Windows.Forms.ComboBox cmb_convtas;
     }
 }
