@@ -1566,6 +1566,7 @@ namespace iOMG
                     rowdet.fececon = row.Cells["feencon"].Value.ToString().PadRight(10).Substring(0, 10);
                     rowdet.origen = row.Cells["origen"].Value.ToString();
                     rowdet.precio = row.Cells["precio"].Value.ToString();
+                    rowdet.fecont = row.Cells["fecont"].Value.ToString();
                     pedset.det_lispedidos.Adddet_lispedidosRow(rowdet);
                 }
             }
