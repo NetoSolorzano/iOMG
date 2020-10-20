@@ -189,6 +189,12 @@ namespace iOMG
                 {
                     cmb_pedtaller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
                     cmb_pedtaller.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_tingres.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
+                    cmb_tingres.ValueMember = row.ItemArray[1].ToString();
+                    //
+                    cmb_tsalida.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6) + " - " + row.ItemArray[0].ToString());
+                    cmb_tsalida.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del almacen de destino ... 
                 const string condest = "select descrizionerid,idcodice from desc_alm " +
@@ -318,6 +324,8 @@ namespace iOMG
                         if (s < dgv_salidas.Width) dgv_salidas.Width = s + 40;
                     }
                     dgv_salidas.ReadOnly = true;
+                    dgv_salidas.Columns["tipo"].Visible = false;
+                    dgv_salidas.Columns["uactual"].Visible = false;
                     break;
                 case "dgv_ingresos":
                     Font tipli = new Font("Arial", 7, FontStyle.Bold);
@@ -345,6 +353,7 @@ namespace iOMG
                         if (y < dgv_ingresos.Width) dgv_ingresos.Width = y + 40;
                     }
                     dgv_ingresos.ReadOnly = true;
+                    dgv_ingresos.Columns["tipo"].Visible = false;
                     break;
                 case "dgv_pedidos":
                     Font tiplp = new Font("Arial", 7, FontStyle.Bold);
@@ -616,6 +625,7 @@ namespace iOMG
                     micon.CommandType = CommandType.StoredProcedure;
                     micon.Parameters.AddWithValue("@fini", dtp_ingfini.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fina", dtp_ingfinal.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@taller", tx_dat_ting.Text);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -653,6 +663,7 @@ namespace iOMG
                     micon.CommandType = CommandType.StoredProcedure;
                     micon.Parameters.AddWithValue("@fini", dtp_fini_sal.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fina", dtp_final_sal.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@taller", tx_dat_tsal.Text);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -1022,7 +1033,17 @@ namespace iOMG
             if (cmb_vtasloc.SelectedValue != null) tx_dat_vtasloc.Text = cmb_vtasloc.SelectedValue.ToString();
             else tx_dat_vtasloc.Text = cmb_vtasloc.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
         }
-        // 
+        private void cmb_tingres_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_tingres.SelectedValue != null) tx_dat_ting.Text = cmb_tingres.SelectedValue.ToString();
+            else tx_dat_ting.Text = cmb_tingres.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        private void cmb_tsalida_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_tsalida.SelectedValue != null) tx_dat_tsal.Text = cmb_tsalida.SelectedValue.ToString();
+            else tx_dat_tsal.Text = cmb_tsalida.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+        }
+        //
         private void cmb_estado_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Delete)
@@ -1101,6 +1122,22 @@ namespace iOMG
             {
                 cmb_vtasloc.SelectedIndex = -1;
                 tx_dat_vtasloc.Text = "";
+            }
+        }
+        private void cmb_tingres_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_tingres.SelectedIndex = -1;
+                tx_dat_ting.Text = "";
+            }
+        }
+        private void cmb_tsalida_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_tsalida.SelectedIndex = -1;
+                tx_dat_tsal.Text = "";
             }
         }
         #endregion
@@ -1579,6 +1616,7 @@ namespace iOMG
             rowcab.id = "0";
             rowcab.fini = dtp_fini_sal.Value.ToString().Substring(0, 10);
             rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
+            rowcab.taller = (tx_dat_ting.Text == "")? "":cmb_tingres.Text.Substring(9,cmb_tingres.Text.Length-9);
             pedset.cab_reping.Addcab_repingRow(rowcab);
             //
             foreach (DataGridViewRow row in dgv_ingresos.Rows)
@@ -1613,6 +1651,7 @@ namespace iOMG
             rowcab.id = "0";
             rowcab.fini = dtp_fini_sal.Value.ToString().Substring(0, 10);
             rowcab.fina = dtp_final_sal.Value.ToString().Substring(0, 10);
+            rowcab.taller = (tx_dat_tsal.Text == "") ? "" : cmb_tsalida.Text;
             pedset.cab_repsal.Addcab_repsalRow(rowcab);
             //
             foreach (DataGridViewRow row in dgv_salidas.Rows)
@@ -1632,11 +1671,19 @@ namespace iOMG
                     rowdet.cant = row.Cells["cant"].Value.ToString();
                     rowdet.medidas = row.Cells["medidas"].Value.ToString();
                     rowdet.madera = row.Cells["madera"].Value.ToString();
+                    rowdet.nomitem = row.Cells["nombre"].Value.ToString();
+                    rowdet.origen = row.Cells["origen"].Value.ToString();
                     pedset.det_repsal.Adddet_repsalRow(rowdet);
                 }
             }
             return pedset;
         }
+
+        private void tabIng_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private conClie generaliscont()                             // procedimiento para generar los datos del listado de contratos en el dataset
         {
             conClie liscont = new conClie();

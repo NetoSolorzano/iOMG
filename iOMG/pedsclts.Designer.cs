@@ -2167,6 +2167,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnfina;
             
+            private global::System.Data.DataColumn columntaller;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public cab_repingDataTable() {
@@ -2226,6 +2228,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn tallerColumn {
+                get {
+                    return this.columntaller;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2261,12 +2271,13 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public cab_repingRow Addcab_repingRow(string id, string fini, string fina) {
+            public cab_repingRow Addcab_repingRow(string id, string fini, string fina, string taller) {
                 cab_repingRow rowcab_repingRow = ((cab_repingRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
                         fini,
-                        fina};
+                        fina,
+                        taller};
                 rowcab_repingRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcab_repingRow);
                 return rowcab_repingRow;
@@ -2292,6 +2303,7 @@ namespace iOMG {
                 this.columnid = base.Columns["id"];
                 this.columnfini = base.Columns["fini"];
                 this.columnfina = base.Columns["fina"];
+                this.columntaller = base.Columns["taller"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2303,6 +2315,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnfini);
                 this.columnfina = new global::System.Data.DataColumn("fina", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfina);
+                this.columntaller = new global::System.Data.DataColumn("taller", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntaller);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2871,6 +2885,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnfina;
             
+            private global::System.Data.DataColumn columntaller;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public cab_repsalDataTable() {
@@ -2930,6 +2946,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn tallerColumn {
+                get {
+                    return this.columntaller;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2965,12 +2989,13 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public cab_repsalRow Addcab_repsalRow(string id, string fini, string fina) {
+            public cab_repsalRow Addcab_repsalRow(string id, string fini, string fina, string taller) {
                 cab_repsalRow rowcab_repsalRow = ((cab_repsalRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
                         fini,
-                        fina};
+                        fina,
+                        taller};
                 rowcab_repsalRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcab_repsalRow);
                 return rowcab_repsalRow;
@@ -2996,6 +3021,7 @@ namespace iOMG {
                 this.columnid = base.Columns["id"];
                 this.columnfini = base.Columns["fini"];
                 this.columnfina = base.Columns["fina"];
+                this.columntaller = base.Columns["taller"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3007,6 +3033,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnfini);
                 this.columnfina = new global::System.Data.DataColumn("fina", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfina);
+                this.columntaller = new global::System.Data.DataColumn("taller", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntaller);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3164,6 +3192,10 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnmadera;
             
+            private global::System.Data.DataColumn columnorigen;
+            
+            private global::System.Data.DataColumn columnnomitem;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public det_repsalDataTable() {
@@ -3295,6 +3327,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn origenColumn {
+                get {
+                    return this.columnorigen;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn nomitemColumn {
+                get {
+                    return this.columnnomitem;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3330,7 +3378,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public det_repsalRow Adddet_repsalRow(string id, string fecha, string tipo, string pedido, string cliente, string uantes, string uactual, string coment, string item, string cant, string medidas, string madera) {
+            public det_repsalRow Adddet_repsalRow(string id, string fecha, string tipo, string pedido, string cliente, string uantes, string uactual, string coment, string item, string cant, string medidas, string madera, string origen, string nomitem) {
                 det_repsalRow rowdet_repsalRow = ((det_repsalRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -3344,7 +3392,9 @@ namespace iOMG {
                         item,
                         cant,
                         medidas,
-                        madera};
+                        madera,
+                        origen,
+                        nomitem};
                 rowdet_repsalRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_repsalRow);
                 return rowdet_repsalRow;
@@ -3379,6 +3429,8 @@ namespace iOMG {
                 this.columncant = base.Columns["cant"];
                 this.columnmedidas = base.Columns["medidas"];
                 this.columnmadera = base.Columns["madera"];
+                this.columnorigen = base.Columns["origen"];
+                this.columnnomitem = base.Columns["nomitem"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3408,6 +3460,10 @@ namespace iOMG {
                 base.Columns.Add(this.columnmedidas);
                 this.columnmadera = new global::System.Data.DataColumn("madera", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnmadera);
+                this.columnorigen = new global::System.Data.DataColumn("origen", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnorigen);
+                this.columnnomitem = new global::System.Data.DataColumn("nomitem", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnomitem);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5030,6 +5086,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string taller {
+                get {
+                    try {
+                        return ((string)(this[this.tablecab_reping.tallerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'taller\' de la tabla \'cab_reping\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecab_reping.tallerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecab_reping.idColumn);
             }
@@ -5062,6 +5134,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetfinaNull() {
                 this[this.tablecab_reping.finaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IstallerNull() {
+                return this.IsNull(this.tablecab_reping.tallerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SettallerNull() {
+                this[this.tablecab_reping.tallerColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -5536,6 +5620,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string taller {
+                get {
+                    try {
+                        return ((string)(this[this.tablecab_repsal.tallerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'taller\' de la tabla \'cab_repsal\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecab_repsal.tallerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecab_repsal.idColumn);
             }
@@ -5568,6 +5668,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetfinaNull() {
                 this[this.tablecab_repsal.finaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IstallerNull() {
+                return this.IsNull(this.tablecab_repsal.tallerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SettallerNull() {
+                this[this.tablecab_repsal.tallerColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -5779,6 +5891,38 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string origen {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_repsal.origenColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'origen\' de la tabla \'det_repsal\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_repsal.origenColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string nomitem {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_repsal.nomitemColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'nomitem\' de la tabla \'det_repsal\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_repsal.nomitemColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledet_repsal.idColumn);
             }
@@ -5919,6 +6063,30 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetmaderaNull() {
                 this[this.tabledet_repsal.maderaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsorigenNull() {
+                return this.IsNull(this.tabledet_repsal.origenColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetorigenNull() {
+                this[this.tabledet_repsal.origenColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsnomitemNull() {
+                return this.IsNull(this.tabledet_repsal.nomitemColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetnomitemNull() {
+                this[this.tabledet_repsal.nomitemColumn] = global::System.Convert.DBNull;
             }
         }
         
