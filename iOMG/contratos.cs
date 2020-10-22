@@ -1826,21 +1826,21 @@ namespace iOMG
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // imprimir
-                {
-                    this.Bt_print.Visible = true;
-                }
-                else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn4"]) == "S")               // anular
+                if (Convert.ToString(row["btn3"]) == "S")               // ANULAR
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                if (Convert.ToString(row["btn5"]) == "S")               // preview
+                if (Convert.ToString(row["btn4"]) == "S")               // VISUALIZAR
                 {
                     bt_prev.Visible = true;
                 }
-                else { bt_prev.Visible = false; }
+                else { this.bt_prev.Visible = false; }
+                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
+                {
+                    this.Bt_print.Visible = true;
+                }
+                else { Bt_print.Visible = false; }
                 if (Convert.ToString(row["btn6"]) == "S")               // salir del form
                 {
                     this.Bt_close.Visible = true;
