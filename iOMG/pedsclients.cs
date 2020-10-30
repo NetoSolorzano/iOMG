@@ -316,6 +316,7 @@ namespace iOMG
                 tx_status.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();     // estado
                 tx_adjun1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString();     // adjunto 1
                 tx_adjun2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString();     // adjunto 2
+                tx_fecont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[17].Value.ToString();     // fecha del contrato
                 jaladet(tx_codped.Text);
             }
             if (campo == "tx_codped" && tx_codped.Text != "" && tx_idr.Text.Trim() == "")
@@ -359,6 +360,7 @@ namespace iOMG
                         cmb_destino.SelectedIndex = cmb_destino.FindString(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString());
                         tx_adjun1.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString();     // adjunto 1
                         tx_adjun2.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[16].Value.ToString();     // adjunto 2
+                        tx_fecont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[17].Value.ToString();     // fecha del contrato
                         jaladet(tx_codped.Text);
                     }
                     cta = cta + 1;
@@ -507,6 +509,8 @@ namespace iOMG
             advancedDataGridView1.Columns[16].ReadOnly = true;
             advancedDataGridView1.Columns[16].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             advancedDataGridView1.Columns[16].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // fecha del contrato
+            advancedDataGridView1.Columns[17].Visible = false;
         }
         private void grilladet(string modo)                 // grilla detalle de pedido
         {   // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
@@ -625,7 +629,8 @@ namespace iOMG
                 // datos de los pedidos
                 string datgri = "select a.id,a.codped,a.contrato,a.cliente,c.razonsocial,e.descrizionerid as nomest,a.origen,a.destino," +
                     "date_format(date(a.fecha),'%Y-%m-%d') as fecha,date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.coment," +
-                    "a.tipoes,a.status,ifnull(b.tipoes,'') as coddes,ifnull(d.descrizionerid,'') as destino,a.nomimg1,a.nomimg2 " +
+                    "a.tipoes,a.status,ifnull(b.tipoes,'') as coddes,ifnull(d.descrizionerid,'') as destino,a.nomimg1,a.nomimg2," +
+                    "b.fecha as fecont " +
                     "from pedidos a " +
                     "left join anag_cli c on c.idanagrafica=a.cliente " +
                     "left join contrat b on b.contrato=a.contrato " +
@@ -1752,6 +1757,38 @@ namespace iOMG
                 }
             }
         }
+        private void dtp_entreg_Leave(object sender, EventArgs e)
+        {
+            if (dtp_entreg.Value.Date < dtp_pedido.Value.Date)
+            {
+                MessageBox.Show("La fecha de entrega no puede ser" + Environment.NewLine +
+                "menor a la fecha del pedido", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dtp_entreg.Focus();
+                return;
+            }
+        }
+        private void dtp_pedido_Leave(object sender, EventArgs e)
+        {
+            if (dtp_pedido.Value.Date > dtp_entreg.Value.Date)
+            {
+                MessageBox.Show("La fecha del pedido no puede ser" + Environment.NewLine +
+                "mayor a la fecha de entrega", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dtp_pedido.Focus();
+                return;
+            }
+            if (tx_fecont.Text.Trim() != "")
+            {
+                if (dtp_pedido.Value.Date < Convert.ToDateTime(tx_fecont.Text).Date)
+                {
+                    MessageBox.Show("La fecha del pedido no puede ser" + Environment.NewLine +
+                    "menor a la fecha del contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (Tx_modo.Text != "NUEVO") dtp_pedido.Value = Convert.ToDateTime(advancedDataGridView1.CurrentRow.Cells[17].Value.ToString());
+                    else dtp_pedido.Value = DateTime.Now;
+                    dtp_pedido.Focus();
+                    return;
+                }
+            }
+        }
         #endregion leaves;
         #region advancedatagridview
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
@@ -2026,7 +2063,6 @@ namespace iOMG
                 {
                     MessageBox.Show("La fecha del pedido no puede ser" + Environment.NewLine +
                     "menor a la fecha del contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    dtp_pedido.Value = DateTime.Now;
                     dtp_pedido.Focus();
                     return;
                 }
@@ -2051,6 +2087,7 @@ namespace iOMG
                     dr[10] = tx_coment.Text;
                     dr[11] = tx_dat_tiped.Text;
                     dr[12] = "";
+                    dr[17] = tx_fecont.Text;
                     dtg.Rows.Add(dr);
                     // vista previa
                     setParaCrystal();
@@ -2082,6 +2119,13 @@ namespace iOMG
                     tx_cont.Focus();
                     return;
                 }
+                if (dtp_pedido.Value.Date < Convert.ToDateTime(tx_fecont.Text).Date)
+                {
+                    MessageBox.Show("La fecha del pedido no puede ser" + Environment.NewLine +
+                    "menor a la fecha del contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dtp_pedido.Focus();
+                    return;
+                }
                 var aa = MessageBox.Show("Confirma que desea modificar?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
@@ -2105,6 +2149,7 @@ namespace iOMG
                                 dtg.Rows[i][10] = tx_coment.Text;
                                 dtg.Rows[i][11] = tx_dat_tiped.Text;
                                 dtg.Rows[i][12] = "";
+                                dtg.Rows[i][17] = tx_fecont.Text;
                             }
                         }
                     }

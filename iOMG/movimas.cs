@@ -344,6 +344,7 @@ namespace iOMG
                                     {
                                         
                                         row[8] = (int.Parse(row[8].ToString()) - 1).ToString();
+                                        dataGridView1.Rows[s].Cells[5].Value = row[5].ToString();   // 30/10/2020 lo acabo de poner
                                     }
                                     break;
                                 }

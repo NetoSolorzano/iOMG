@@ -213,7 +213,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.idmovim,date(a.fechain) as fechain,a.tipoes,a.origen,a.destino,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total," +
-                    "a.madera,a.estado,d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.nombre,pe.contrato,a.saldo " +
+                    "a.madera,a.estado,d.descrizionerid as nomorig,e.descrizionerid as nomdestin,dp.nombre,pe.contrato,a.saldo,pe.fecha " +
                     "from movim a left join desc_mad b on b.idcodice=a.madera " +
                     "left join desc_est c on c.idcodice=a.estado " +
                     "left join desc_loc d on d.idcodice=a.origen " +
@@ -253,7 +253,7 @@ namespace iOMG
         {
             // a.idmovim,a.fechain,a.tipoes,a.origen,a.destino,a.pedido,a.cliente,a.coment,
             // a.cant,a.articulo,a.med1,b.descrizionerid as nomad,c.descrizionerid as acabado,a.precio,a.total,
-            // a.madera,a.estado,nomorig,nomdestin,nombre,contrato,saldo    ==> 22 columnas
+            // a.madera,a.estado,nomorig,nomdestin,nombre,contrato,saldo,fecha    ==> 23 columnas
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -375,6 +375,7 @@ namespace iOMG
             //
             advancedDataGridView1.Columns[20].Visible = false;  // contrato
             advancedDataGridView1.Columns[21].Visible = false;  // saldo
+            advancedDataGridView1.Columns[22].Visible = false;  // fecha del pedido
         }
         private void jalaoc(string campo)                   // jala datos
         {
@@ -405,6 +406,7 @@ namespace iOMG
                 tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
                 tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
                 tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["saldo"].Value.ToString();
+                tx_dat_fechp.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fecha"].Value.ToString();
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
             }
@@ -438,6 +440,7 @@ namespace iOMG
                         tx_total.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["total"].Value.ToString();
                         tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
                         tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["saldo"].Value.ToString();
+                        tx_dat_fechp.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fecha"].Value.ToString();
                         //
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                     }
@@ -1109,6 +1112,7 @@ namespace iOMG
                         dr[17] = tx_origen.Text;
                         dr[18] = tx_dest.Text;
                         dr[19] = tx_nombre.Text;
+                        dr[22] = tx_dat_fechp.Text;
                         dtg.Rows.Add(dr);
                     }
                     else
@@ -1281,12 +1285,22 @@ namespace iOMG
         }
         private void dtp_ingreso_Leave(object sender, EventArgs e)
         {
-            if (dtp_ingreso.Value.Date < Convert.ToDateTime(tx_dat_fechp.Text).Date)
+            if (tx_dat_fechp.Text.Trim() == "")
             {
-                MessageBox.Show("La fecha de ingreso no puede ser" + Environment.NewLine +
-                    "menor a la fecha del pedido", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Primero debe seleccionar el pedido!","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                 dtp_ingreso.Value = DateTime.Now;
-                dtp_ingreso.Focus();
+                tx_pedido.Focus();
+                return;
+            }
+            else
+            {
+                if (dtp_ingreso.Value.Date < Convert.ToDateTime(tx_dat_fechp.Text).Date)
+                {
+                    MessageBox.Show("La fecha de ingreso no puede ser" + Environment.NewLine +
+                        "menor a la fecha del pedido", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dtp_ingreso.Value = DateTime.Now;
+                    dtp_ingreso.Focus();
+                }
             }
         }
         #endregion leaves;

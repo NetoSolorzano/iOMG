@@ -91,11 +91,11 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Crimson;
-            this.panel2.Controls.Add(this.lb_titulo);
             this.panel2.Controls.Add(this.bt_close);
+            this.panel2.Controls.Add(this.lb_titulo);
             this.panel2.Location = new System.Drawing.Point(1, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(418, 23);
+            this.panel2.Size = new System.Drawing.Size(414, 23);
             this.panel2.TabIndex = 16;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             // 
@@ -118,7 +118,7 @@
             this.bt_close.ForeColor = System.Drawing.Color.White;
             this.bt_close.Image = global::iOMG.Properties.Resources.close_square;
             this.bt_close.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bt_close.Location = new System.Drawing.Point(392, 2);
+            this.bt_close.Location = new System.Drawing.Point(389, 2);
             this.bt_close.Name = "bt_close";
             this.bt_close.Size = new System.Drawing.Size(20, 18);
             this.bt_close.TabIndex = 14;
@@ -397,7 +397,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(414, 397);
+            this.ClientSize = new System.Drawing.Size(418, 401);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);

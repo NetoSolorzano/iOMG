@@ -32,6 +32,7 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.tx_fecont = new System.Windows.Forms.TextBox();
             this.cmb_destino = new System.Windows.Forms.ComboBox();
             this.tx_dat_adj2 = new System.Windows.Forms.TextBox();
             this.tx_dat_adj1 = new System.Windows.Forms.TextBox();
@@ -149,7 +150,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.tx_fecont = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -267,6 +267,14 @@
             this.tabuser.TabIndex = 1;
             this.tabuser.Text = "Registro";
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // tx_fecont
+            // 
+            this.tx_fecont.Location = new System.Drawing.Point(549, 35);
+            this.tx_fecont.Name = "tx_fecont";
+            this.tx_fecont.Size = new System.Drawing.Size(110, 20);
+            this.tx_fecont.TabIndex = 323;
+            this.tx_fecont.Visible = false;
             // 
             // cmb_destino
             // 
@@ -529,6 +537,7 @@
             this.dtp_entreg.Name = "dtp_entreg";
             this.dtp_entreg.Size = new System.Drawing.Size(95, 20);
             this.dtp_entreg.TabIndex = 5;
+            this.dtp_entreg.Leave += new System.EventHandler(this.dtp_entreg_Leave);
             // 
             // dtp_pedido
             // 
@@ -538,6 +547,7 @@
             this.dtp_pedido.Name = "dtp_pedido";
             this.dtp_pedido.Size = new System.Drawing.Size(95, 20);
             this.dtp_pedido.TabIndex = 1;
+            this.dtp_pedido.Leave += new System.EventHandler(this.dtp_pedido_Leave);
             // 
             // label2
             // 
@@ -1426,14 +1436,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // tx_fecont
-            // 
-            this.tx_fecont.Location = new System.Drawing.Point(549, 35);
-            this.tx_fecont.Name = "tx_fecont";
-            this.tx_fecont.Size = new System.Drawing.Size(53, 20);
-            this.tx_fecont.TabIndex = 323;
-            this.tx_fecont.Visible = false;
             // 
             // pedsclients
             // 

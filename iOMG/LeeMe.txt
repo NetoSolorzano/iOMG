@@ -114,4 +114,7 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form impresor, le agrege manejo de error en hoja A5 ................................ ok 10/10/2020
 - form repsalmac, agregé el codigo para exportar a excel rep historico ............... ok 10/10/2020
 - form regpagos, arreglos en funcionamiento general .................................. ok 11/10/2020
-- ME QUEDE CAMBIANDO LOS LOGOS Y NOMBRES .... login, main .. ok, falta resto
+- CAMBIANDO LOS LOGOS Y NOMBRES .... login, main ..................................... ok
+** ARREGLOS DE ERRORES DE LA REU 29-10
+- form movimas, arreglo codigos item cont ............................................ ok 30/10
+- 
