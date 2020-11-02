@@ -1256,6 +1256,10 @@ namespace iOMG
                     covam.Dispose();
                     //dr.Close();
                 }
+                if (tx_codped.Text.Trim() == "")
+                {
+                    MessageBox.Show("Falta configurar numeración automática","Tabla series");
+                }
             }
             //return retorna;
         }
@@ -2583,7 +2587,7 @@ namespace iOMG
                     tx_mail.Focus();
                     return;
                 }
-                if (tncont == "MANUAL" && tx_codped.Text.Trim() == "")
+                if (tx_codped.Text.Trim() == "")    // tncont == "MANUAL" && 01/11/2020
                 {
                     MessageBox.Show("Ingrese el identificador del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     tx_codped.Focus();

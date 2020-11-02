@@ -117,4 +117,5 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - CAMBIANDO LOS LOGOS Y NOMBRES .... login, main ..................................... ok
 ** ARREGLOS DE ERRORES DE LA REU 29-10
 - form movimas, arreglo codigos item cont ............................................ ok 30/10
-- 
+- form salpedsclts, arreglar edicion fecha del ingreso ............................... ok 01/11/20
+

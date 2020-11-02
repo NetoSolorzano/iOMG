@@ -117,6 +117,8 @@ namespace iOMG
             Bt_close.Image = Image.FromFile(img_btq);
             bt_ingresos.Image = Image.FromFile(img_preview);
             bt_salidas.Image = Image.FromFile(img_preview);
+
+            tx_codped.MaxLength = 7;
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -354,6 +356,7 @@ namespace iOMG
                     }
                     dgv_ingresos.ReadOnly = true;
                     dgv_ingresos.Columns["tipo"].Visible = false;
+                    dgv_ingresos.Columns["tipoes"].Visible = false;
                     break;
                 case "dgv_pedidos":
                     Font tiplp = new Font("Arial", 7, FontStyle.Bold);

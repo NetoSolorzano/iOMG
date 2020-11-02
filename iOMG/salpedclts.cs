@@ -211,7 +211,7 @@ namespace iOMG
                 // dp.cant
                 string datgri = "select a.iddetam,date(a.fecha) as fecha,a.tipo,a.uantes,a.uactual,a.pedido,trim(cl.razonsocial) as cliente,a.coment," +
                     "dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,b.descrizionerid as nomad,c.descrizionerid as acabado," +
-                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,a.cant,pe.contrato,pe.origen,a.idmov " +
+                    "d.descrizionerid as nomorig,e.descrizionerid as nomdestin,a.cant,pe.contrato,pe.origen,a.idmov,m.fechain " +
                     "from detam a " +
                     "left join detaped dp on dp.pedidoh=a.pedido " +
                     "left join desc_mad b on b.idcodice=dp.madera " +
@@ -221,6 +221,7 @@ namespace iOMG
                     "left join desc_alm d on d.idcodice=a.uantes " +
                     "left join desc_alm e on e.idcodice=a.uactual " +
                     "left join contrat co on co.contrato=pe.contrato " +
+                    "left join movim m on m.pedido=a.pedido and m.articulo=a.item " +
                     "where co.status not in ('ENTREG','ANULAD') order by a.iddetam";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 cdg.Parameters.AddWithValue("@tpe", tipedc);                    // codigo pedido cliente
@@ -252,7 +253,7 @@ namespace iOMG
         {
             // a.iddetam,fecha,a.tipo,a.uantes,a.uactual,a.pedido,cliente,a.coment,
             // dp.item,dp.nombre,dp.medidas,dp.madera,dp.estado,nomad,acabado,
-            // nomorig,nomdestin,a.cant,pe.contrato,pe.origen,a.idmov
+            // nomorig,nomdestin,a.cant,pe.contrato,pe.origen,a.idmov,fechain
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
@@ -371,6 +372,8 @@ namespace iOMG
             // id movim
             advancedDataGridView1.Columns[20].Visible = false;
             advancedDataGridView1.Columns[20].HeaderText = "idmov";
+            // fecha ingreso
+            advancedDataGridView1.Columns[21].Visible = false;
         }
         private void jalaoc(string campo)                   // jala datos
         {
@@ -397,6 +400,7 @@ namespace iOMG
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                 tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
                 tx_dat_idm.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["idmov"].Value.ToString();
+                tx_fechin.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fechain"].Value.ToString();
             }
             if (campo == "tx_pedido" && tx_pedido.Text != "")
             {
@@ -426,6 +430,7 @@ namespace iOMG
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo ingreso
                         tx_contrato.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["contrato"].Value.ToString();
                         tx_dat_idm.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["idmov"].Value.ToString();
+                        tx_fechin.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells["fechain"].Value.ToString();
                     }
                     cta = cta + 1;
                 }
@@ -1097,6 +1102,7 @@ namespace iOMG
                         dr[12] = tx_dat_aca.Text;
                         dr[15] = tx_origen.Text;
                         dr[18] = tx_contrato.Text;
+                        dr[21] = tx_fechin.Text;
                         dtg.Rows.Add(dr);
                     }
                     else
@@ -1130,6 +1136,7 @@ namespace iOMG
                                 dtg.Rows[i][1] = dtp_ingreso.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][2] = tx_dat_tiped.Text;
                                 dtg.Rows[i][7] = tx_comen.Text.Trim();
+                                dtg.Rows[i][21] = tx_fechin.Text;
                             }
                         }
                     }
@@ -1268,7 +1275,7 @@ namespace iOMG
         }
         private void dtp_ingreso_Leave(object sender, EventArgs e)
         {
-            if (Tx_modo.Text == "NUEVO")
+            if (tx_fechin.Text.Trim() != "")   // Tx_modo.Text == "NUEVO"
             {
                 if (dtp_ingreso.Value.Date < Convert.ToDateTime(tx_fechin.Text).Date)
                 {
