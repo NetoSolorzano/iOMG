@@ -2355,7 +2355,7 @@
             this.Bt_add.Name = "Bt_add";
             this.Bt_add.Size = new System.Drawing.Size(32, 32);
             this.Bt_add.Text = "Bt_close";
-            this.Bt_add.ToolTipText = "Nuevo pedido";
+            this.Bt_add.ToolTipText = "Nuevo ";
             this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
             // 
             // toolStripSeparator6
@@ -2400,7 +2400,7 @@
             this.Bt_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Bt_edit.Name = "Bt_edit";
             this.Bt_edit.Size = new System.Drawing.Size(32, 32);
-            this.Bt_edit.ToolTipText = "Editar pedido";
+            this.Bt_edit.ToolTipText = "Editar ";
             this.Bt_edit.Click += new System.EventHandler(this.Bt_edit_Click);
             // 
             // toolStripSeparator15

@@ -845,8 +845,10 @@ namespace iOMG
                                 {
                                     tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                     tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                    if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
+                                    //if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
+                                    tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                     gol = "1";
+                                    tx_d_can.Focus();
                                     break;
                                 }
                             }
@@ -860,8 +862,10 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                        //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                        tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                         gol = "1";
+                                        tx_d_can.Focus();
                                         break;
                                     }
                                     if (mad != "X" &&
@@ -869,8 +873,10 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                        //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                        tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                         gol = "1";
+                                        tx_d_can.Focus();
                                         break;
                                     }
                                 }
@@ -1785,10 +1791,10 @@ namespace iOMG
             Bt_add.Visible = false;
             Bt_edit.Visible = false;
             Bt_anul.Visible = false;
+            bt_view.Visible = false;
+            Bt_print.Visible = false;
             bt_exc.Visible = false;
             bt_prev.Visible = false;
-            Bt_print.Visible = false;
-            bt_view.Visible = false;
             //
             DataTable mdtb = new DataTable();
             const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";
@@ -1837,9 +1843,9 @@ namespace iOMG
                 else { this.Bt_anul.Visible = false; }
                 if (Convert.ToString(row["btn4"]) == "S")               // VISUALIZAR
                 {
-                    bt_prev.Visible = true;
+                    this.bt_view.Visible = true;
                 }
-                else { this.bt_prev.Visible = false; }
+                else { this.bt_view.Visible = false; }
                 if (Convert.ToString(row["btn5"]) == "S")               // imprimir
                 {
                     this.Bt_print.Visible = true;
@@ -1852,9 +1858,9 @@ namespace iOMG
                 else { this.Bt_close.Visible = false; }
                 if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar
                 {
-                    this.bt_view.Visible = true;
+                    bt_prev.Visible = true;
                 }
-                else { this.bt_view.Visible = false; }
+                else { this.bt_prev.Visible = false; }
                 if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx
                 {
                     this.bt_exc.Visible = true;
@@ -2000,7 +2006,6 @@ namespace iOMG
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
-            /* POR REVISAR ESTE CODIGO, 06/07/2020, jalaoc si contrato esta en la grilla, sino jala de la base
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
@@ -2023,10 +2028,19 @@ namespace iOMG
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            tx_dat_tiped.Text = tipede;
-            jalaoc("tx_idr");
-            */
+            //cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            //tx_dat_tiped.Text = tipede;
+            //jalaoc("tx_idr");
+            tx_codped.Enabled = true;
+            tx_codped.ReadOnly = false;
+            tx_codped.Focus();
+            tabControl1.SelectedTab = tabuser;
+            //
+            pan_cli.Enabled = false;
+            chk_cliente.Enabled = false;
+            //
+            tx_codped.Enabled = true;
+            tx_codped.Focus();
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -3182,32 +3196,47 @@ namespace iOMG
         }
         private void tx_codped_Leave(object sender, EventArgs e)
         {
-            if (Tx_modo.Text != "NUEVO" && tx_codped.Text != "" && tx_idr.Text == "")
+            if (Tx_modo.Text != "NUEVO")
             {
-                jalaoc("tx_codped");                        // jalamos los datos
-                if(tx_idr.Text == "")
+                if (tx_codped.Text != "")   //  && tx_idr.Text == ""
                 {
-                    // jalamos desde la base de datos, debe ser un contrato entregado o anulado
-                    if (jalacont(tx_codped.Text) == false)
+                    string tcp = tx_codped.Text;
+                    limpiapag(tabuser);
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    tx_codped.Text = tcp;
+                    //
+                    jalaoc("tx_codped");                        // jalamos los datos
+                    if (tx_idr.Text == "")
                     {
-                        //MessageBox.Show("Error en obtener datos del contrato", "Error de conexión");
-                        MessageBox.Show("Error en obtener datos del contrato", "No existe el contrato",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                        tx_codped.Text = "";
-                        tx_codped.Focus();
-                        return;
+                        // jalamos desde la base de datos, debe ser un contrato entregado o anulado
+                        if (jalacont(tx_codped.Text) == false)
+                        {
+                            //MessageBox.Show("Error en obtener datos del contrato", "Error de conexión");
+                            MessageBox.Show("Error en obtener datos del contrato", "No existe el contrato", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            tx_codped.Text = "";
+                            tx_codped.Focus();
+                            return;
+                        }
+                        else
+                        {
+                            jaladet(tx_codped.Text);
+                            // verificar que jale los codigos adicionales
+                        }
                     }
-                    else
+                    if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
                     {
-                        jaladet(tx_codped.Text);
-                        // verificar que jale los codigos adicionales
+                        escribepag(tabuser);
+                        tx_a_codig.ReadOnly = true;
+                        tx_a_total.ReadOnly = true;
                     }
                 }
-                if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
+                /*else
                 {
-                    escribepag(tabuser);
-                    tx_a_codig.ReadOnly = true;
-                    tx_a_total.ReadOnly = true;
-                }
+                    limpiapag(tabuser);
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                }*/
             }
         }
         private void tx_d_can_Leave(object sender, EventArgs e)
@@ -3498,11 +3527,12 @@ namespace iOMG
         }
         private void dtp_entreg_ValueChanged(object sender, EventArgs e)
         {
-            if (dtp_entreg.Checked == true)
+            if (dtp_entreg.Checked == true && (Tx_modo.Text == "NUEVO") || Tx_modo.Text == "EDITAR")
             {
                 if (dtp_pedido.Value.Date > dtp_entreg.Value.Date)
                 {
-                    MessageBox.Show("La fecha de entrega debe ser mayor", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La fecha de entrega debe ser mayor" + Environment.NewLine +
+                        "a la fecha del contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     dtp_entreg.Value = dtp_pedido.Value;
                 }
             }
@@ -3542,6 +3572,7 @@ namespace iOMG
                 tx_rind.Text = rind;
                 tx_dat_tiped.Text = tipede;
                 jalaoc("tx_idr");
+                tx_coment.Focus();
             }
         }
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda

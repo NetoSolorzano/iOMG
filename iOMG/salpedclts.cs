@@ -1067,6 +1067,14 @@ namespace iOMG
                     tx_pedido.Focus();
                     return;
                 }
+                if (dtp_ingreso.Value.Date < Convert.ToDateTime(tx_fechin.Text).Date)
+                {
+                    MessageBox.Show("La fecha de salida no puede ser" + Environment.NewLine +
+                        "menor a la fecha del ingreso", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dtp_ingreso.Value = DateTime.Now;
+                    dtp_ingreso.Focus();
+                    return;
+                }
             }
             // grabamos, actualizamos, etc
             string modo = Tx_modo.Text;

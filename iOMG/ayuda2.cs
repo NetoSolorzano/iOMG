@@ -928,7 +928,11 @@ namespace iOMG
                     }
                 }
             }
-            else loadgrids();
+            else
+            {
+                dataGridView1.Rows.Clear();
+                loadgrids();
+            }
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
