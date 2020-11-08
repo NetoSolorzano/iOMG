@@ -52,6 +52,7 @@ namespace iOMG
 
         public void loadgrids()
         {
+            dtDatos.Clear();
             // DATOS DE LA GRILLA
             string consulta = "";
             if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra

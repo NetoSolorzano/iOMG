@@ -306,7 +306,7 @@ namespace iOMG
                     dgv_salidas.RowTemplate.Height = 15;
                     dgv_salidas.DefaultCellStyle.BackColor = Color.MediumAquamarine;
                     dgv_salidas.AllowUserToAddRows = false;
-                    dgv_salidas.Width = 1021;
+                    //dgv_salidas.Width = 1021;
                     if (dgv_salidas.Rows.Count > 0)
                     {
                         for (int i = 0; i < dgv_salidas.Columns.Count; i++)

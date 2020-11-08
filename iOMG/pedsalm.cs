@@ -927,11 +927,18 @@ namespace iOMG
                     MySqlCommand comlee = new MySqlCommand(lee, conn);
                     comlee.Parameters.AddWithValue("@tpe", tipede);
                     MySqlDataReader dr = comlee.ExecuteReader();
-                    if (dr.Read())
+                    if (dr.HasRows)
                     {
-                        int np = dr.GetInt16(0) + 1;
-                        ncp = "AL" + (np.ToString());
-                        tx_codped.Text = ncp;
+                        if (dr.Read())
+                        {
+                            int np = dr.GetInt16(0) + 1;
+                            ncp = "AL" + lib.Right("000000" + np.ToString(), 6);
+                            tx_codped.Text = ncp;
+                        }
+                    }
+                    else
+                    {
+                        tx_codped.Text = "AL000001";
                     }
                     dr.Close();
                 }
