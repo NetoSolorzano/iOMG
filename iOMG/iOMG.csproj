@@ -426,6 +426,12 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="resumen_termYcond.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>resumen_termYcond.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="res_cont1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -633,6 +639,10 @@
     <EmbeddedResource Include="rep_stock_sinvalor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rep_stock_sinvalor.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resumen_termYcond.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>resumen_termYcond.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="res_cont1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

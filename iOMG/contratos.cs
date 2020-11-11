@@ -2050,8 +2050,8 @@ namespace iOMG
                 PrinterSettings setPrintD = new PrinterSettings();
                 impDef = setPrintD.PrinterName;
             }
-            PrintReport(Application.StartupPath + "\\ContratoI.rpt", impDef, 1);  // "CutePDFWriter"
-            PrintReport(Application.StartupPath + "\\terminosYcondiciones.rpt", impDef, 2);  // "CutePDFWriter"
+            PrintReport(Application.StartupPath + "\\ContratoI.rpt", impDef, 1);  // "CutePDFWriter" 
+            PrintReport(Application.StartupPath + "\\resumen_termYcond.rpt", impDef, 2);  // \\terminosYcondiciones.rpt  "CutePDFWriter"
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
