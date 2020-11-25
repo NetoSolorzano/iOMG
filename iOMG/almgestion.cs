@@ -1018,7 +1018,7 @@ namespace iOMG
         }
         private void bt_etiq_Click(object sender, EventArgs e)                          // imprime etiqueta del mueble seleccionado
         {
-            if(advancedDataGridView1.Enabled == true && advancedDataGridView1.CurrentRow.Index > 0)
+            if(advancedDataGridView1.Enabled == true && advancedDataGridView1.CurrentRow.Index >= 0)
             {
                 if (advancedDataGridView1.CurrentRow.Index >= 0)
                 {

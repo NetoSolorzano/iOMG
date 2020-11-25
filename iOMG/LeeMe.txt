@@ -123,6 +123,8 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form contratos, modo edicion, debe actualizar precio al seleccionar item ........... ok 03/11/20
 - form salpedclts, validar fechas antes de grabar en nuevo y edicion ................. ok 03/11/20
 - form ayuda2, limpiar el datatable despues de cada busqueda ......................... ok 04/11/20
-
+****** CORRECCIONES DE ERRORES Y ARREGLOS POST SALIDA EN VIVO
+- form almgestion, no imprime etiqueta A5 el primero de la fila 23/11/2020 Nestor .... OK 24/11/20
+- form contratos, graba ordenando el detalle,NO DEBE ORDENAR 24/11 Gloria ............ 
 
 

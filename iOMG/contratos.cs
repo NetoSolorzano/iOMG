@@ -784,14 +784,14 @@ namespace iOMG
                         if (conn.State == ConnectionState.Open)
                         {
                             string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3 " +
-                                "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1"; // and deta3=@dt3
+                                "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1 and deta2=@dt2"; // se agrega detalle2 24/11/20 Gloria
                             MySqlCommand micon = new MySqlCommand(busca, conn);
                             //micon.Parameters.AddWithValue("@cod", codbs);
                             micon.Parameters.AddWithValue("@fam", fam);
                             micon.Parameters.AddWithValue("@mod", mod);
                             micon.Parameters.AddWithValue("@tip", tip);
                             micon.Parameters.AddWithValue("@dt1", de1);
-                            //micon.Parameters.AddWithValue("@dt3", de3);
+                            micon.Parameters.AddWithValue("@dt2", de2); // se agrega 24/11/20 solicitado por Gloria
                             MySqlDataAdapter da = new MySqlDataAdapter(micon);
                             DataTable dtm = new DataTable();
                             da.Fill(dtm);
@@ -1315,7 +1315,7 @@ namespace iOMG
                     }
                     rlid.Close();
                     // detalle 
-                    dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
+                    //dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Ascending);  // ya no va 24/11/20 Gloria
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string acabado = dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(9, 1);
