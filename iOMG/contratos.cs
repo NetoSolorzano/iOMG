@@ -1692,6 +1692,14 @@ namespace iOMG
             {
                 pan_cli.Enabled = false;
                 chk_cliente.Checked = false;
+                label13.ForeColor = Color.White;
+                chk_cliente.ForeColor = Color.White;
+                label14.ForeColor = Color.White;
+                label19.ForeColor = Color.White;
+                label18.ForeColor = Color.White;
+                label17.ForeColor = Color.White;
+                label15.ForeColor = Color.White;
+                label16.ForeColor = Color.White;
             }
         }
         private void tabgrilla_Enter(object sender, EventArgs e)
@@ -2037,6 +2045,14 @@ namespace iOMG
             tabControl1.SelectedTab = tabuser;
             //
             pan_cli.Enabled = false;
+            label13.ForeColor = Color.White;
+            chk_cliente.ForeColor = Color.White;
+            label14.ForeColor = Color.White;
+            label19.ForeColor = Color.White;
+            label18.ForeColor = Color.White;
+            label17.ForeColor = Color.White;
+            label15.ForeColor = Color.White;
+            label16.ForeColor = Color.White;
             chk_cliente.Enabled = false;
             //
             tx_codped.Enabled = true;

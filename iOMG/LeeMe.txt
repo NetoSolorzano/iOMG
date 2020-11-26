@@ -125,6 +125,9 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 - form ayuda2, limpiar el datatable despues de cada busqueda ......................... ok 04/11/20
 ****** CORRECCIONES DE ERRORES Y ARREGLOS POST SALIDA EN VIVO
 - form almgestion, no imprime etiqueta A5 el primero de la fila 23/11/2020 Nestor .... OK 24/11/20
-- form contratos, graba ordenando el detalle,NO DEBE ORDENAR 24/11 Gloria ............ 
-
+- form contratos:
+* graba ordenando el detalle,NO DEBE ORDENAR 24/11 Gloria ............................ ok 25/11/20
+* al cambiar de madera validar tambien el detalle2, caso mesita junin (Gloria) ....... ok 25/11/20
+* Cambiar el color de las letras en la parte de clientes y detalle, poner color 
+  blanco para que se vea bien en la pc de barranco recepcion (Gloria) ................ ok 26/11/20
 
