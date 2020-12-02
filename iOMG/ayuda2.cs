@@ -551,7 +551,7 @@ namespace iOMG
                     ReturnValueA[4] = (dataGridView1.CurrentRow.Cells[4].Value == null) ? "" : dataGridView1.CurrentRow.Cells[4].Value.ToString();
                     ReturnValueA[5] = (dataGridView1.CurrentRow.Cells[5].Value == null) ? "" : dataGridView1.CurrentRow.Cells[5].Value.ToString();
                     ReturnValueA[6] = (dataGridView1.CurrentRow.Cells[6].Value == null) ? "" : dataGridView1.CurrentRow.Cells[6].Value.ToString();
-                    ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                    ReturnValueA[7] = (dataGridView1.CurrentRow.Cells[7].Value == null) ? "" : dataGridView1.CurrentRow.Cells[7].Value.ToString();
                 }
                 if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")    // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
                 {
@@ -668,7 +668,7 @@ namespace iOMG
                 else ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // destino
                 if (dataGridView1.CurrentRow.Cells[6].Value == null) ReturnValueA[6] = "";
                 else ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // cod destino
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                ReturnValueA[7] = (dataGridView1.CurrentRow.Cells[7].Value == null)? "" : dataGridView1.CurrentRow.Cells[7].Value.ToString();
             }
             if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")        // // iddetacon,item,cant,nombre,medidas,madera,estado,saldo,coment,total,acabado
             {
@@ -976,7 +976,7 @@ namespace iOMG
                 else ReturnValueA[5] = dataGridView1.CurrentRow.Cells[5].Value.ToString();   // destino
                 if (dataGridView1.CurrentRow.Cells[6].Value == null) ReturnValueA[6] = "";
                 else ReturnValueA[6] = dataGridView1.CurrentRow.Cells[6].Value.ToString();   // cod destino
-                ReturnValueA[7] = dataGridView1.CurrentRow.Cells[7].Value.ToString();   // 
+                ReturnValueA[7] = (dataGridView1.CurrentRow.Cells[7].Value == null) ? "" : dataGridView1.CurrentRow.Cells[7].Value.ToString();   // 
             }
             if (para1 == "detacon" && para2 != "" && para3 == "" && para4 == "")
             {

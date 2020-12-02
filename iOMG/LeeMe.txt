@@ -130,4 +130,6 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 * al cambiar de madera validar tambien el detalle2, caso mesita junin (Gloria) ....... ok 25/11/20
 * Cambiar el color de las letras en la parte de clientes y detalle, poner color 
   blanco para que se vea bien en la pc de barranco recepcion (Gloria) ................ ok 26/11/20
+* error en modo edicion al borrar fila de detalle, arreglar (Gloria) ................. ok 01/12/20
+* error en pedidos clientes - F1 busqueda por nombre, arreglar (Gloria) .............. ok 02/12/20
 

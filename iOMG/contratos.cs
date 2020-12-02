@@ -68,6 +68,7 @@ namespace iOMG
         string impDef = "";                 // nombre de la impresora por defecto
         #endregion
         libreria lib = new libreria();
+        acciones acc = new acciones();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
         static string port = ConfigurationManager.AppSettings["port"].ToString();
@@ -3774,7 +3775,7 @@ namespace iOMG
                                 mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString());
                                 mion.ExecuteNonQuery();
                                 // estado del contrato
-                                string compa = "act_cont";
+                                /*string compa = "act_cont";
                                 mion = new MySqlCommand(compa, conn);
                                 mion.CommandType = CommandType.StoredProcedure;
                                 mion.CommandTimeout = 300;
@@ -3784,7 +3785,6 @@ namespace iOMG
                                 mion.Parameters.Add(estad);
                                 mion.ExecuteNonQuery();
                                 string newestad = mion.Parameters["@estad"].Value.ToString();
-                                conn.Close();
                                 tx_dat_estad.Text = newestad;
                                 cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                                 for (int i = 0; i < dtg.Rows.Count; i++)
@@ -3795,6 +3795,8 @@ namespace iOMG
                                         dtg.Rows[i][3] = cmb_estado.SelectedItem.ToString().Substring(9, 6);
                                     }
                                 }
+                                */
+                                conn.Close();
                             }
                             else
                             {
