@@ -1026,8 +1026,10 @@ namespace iOMG
                         tx_idcli.Text = row["cliente"].ToString();                          // id del cliente
                         jaladatclt(row["cliente"].ToString());                              // jala datos del cliente
                         //dtp_entreg.Value = Convert.ToDateTime(row["entrega"].ToString());   // fecha entrega
-                        if (advancedDataGridView1.Rows[cta].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
-                        else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[cta].Cells[9].Value.ToString());    // fecha entrega
+                        //if (advancedDataGridView1.Rows[cta].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
+                        //else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[cta].Cells[9].Value.ToString());    // fecha entrega
+                        if (row[9].ToString().Trim() == "") dtp_entreg.Checked = false;
+                        else dtp_entreg.Value = Convert.ToDateTime(row[9].ToString());
                         tx_coment.Text = row["coment"].ToString();                          // comentario
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
                         tx_valor.Text = row["valor"].ToString();                            // valor del contrato
@@ -1045,10 +1047,12 @@ namespace iOMG
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                        //
                         jaladet(tx_codped.Text);
                     }
                     cta = cta + 1;
                 }
+                tx_acta_Leave(null, null);
             }
             if (Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
             {

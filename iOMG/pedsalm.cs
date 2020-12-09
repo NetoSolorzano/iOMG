@@ -1043,7 +1043,7 @@ namespace iOMG
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
                         string insdet = "";
-                        if (Int16.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString()) < 100) // las filas deben ser < 100
+                        if (Int16.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString()) < 20) // las filas deben ser < 20
                         {
                             string tfingreso = "", tfing = "";
                             if (dtp_fingreso.Checked == true)
