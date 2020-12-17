@@ -136,3 +136,4 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 * Reporte de Stock, exportacion desde Crystal hacia PDF, la fecha sale mal ........... ok 03/12/20
 * Contratos, error al jalar desde la grilla FILTRADA un contrato ..................... ok 03/12/20
 * Pedidos de almacen, multiplica las lineas al editar pedido ......................... ok 09/12/20 error en el programa, se corrigió.
+- form movfismas, arreglo de error en vendalm.idajuste ............................... ok 16/12/20

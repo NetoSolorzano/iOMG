@@ -172,7 +172,7 @@ namespace iOMG
                     {
                         // graba en vendalm solo salidas por venta, osea con reserva
                         string acc2 = "insert into vendalm (ida,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,salida,evento,almdes,medid,idajuste,pedalm,fechSalR) " +
-                        "select id,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,@v_id,evento,almdes,medid,idajuste,pedalm,@fsr from almloc where id=@ida";
+                        "select id,codalm,fechop,tipop,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,juego,nombr,reserva,contrat,@v_id,evento,almdes,medid,if(idajuste='',0,idajuste),pedalm,@fsr from almloc where id=@ida";
                         micon = new MySqlCommand(acc2, cn);
                         micon.Parameters.AddWithValue("@ida", dataGridView1.Rows[i].Cells[4].Value.ToString());
                         micon.Parameters.AddWithValue("@v_id", tx_idr.Text);
