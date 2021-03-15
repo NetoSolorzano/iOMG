@@ -8,7 +8,7 @@
   <Shapes>
     <Shape ID="DesignTable:cabeza_pedclt" ZOrder="4" X="70" Y="70" Height="257" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="253" />
     <Shape ID="DesignTable:deta_pedclt" ZOrder="3" X="68" Y="349" Height="239" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="235" />
-    <Shape ID="DesignTable:det_lispedidos" ZOrder="5" X="259" Y="232" Height="372" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="368" />
+    <Shape ID="DesignTable:det_lispedidos" ZOrder="5" X="259" Y="232" Height="448" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="444" />
     <Shape ID="DesignTable:cab_lispedidos" ZOrder="8" X="259" Y="69" Height="143" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="139" />
     <Shape ID="DesignTable:cab_reping" ZOrder="2" X="490" Y="75" Height="105" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="101" />
     <Shape ID="DesignTable:det_reping" ZOrder="1" X="492" Y="203" Height="295" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="291" />

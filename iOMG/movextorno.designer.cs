@@ -58,9 +58,6 @@
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.Color.Red;
             this.button1.Location = new System.Drawing.Point(544, 1);
             this.button1.Name = "button1";
@@ -77,7 +74,7 @@
             this.panel2.Controls.Add(this.bt_close);
             this.panel2.Location = new System.Drawing.Point(2, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(629, 23);
+            this.panel2.Size = new System.Drawing.Size(622, 23);
             this.panel2.TabIndex = 16;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             // 
@@ -102,9 +99,9 @@
             this.bt_close.ForeColor = System.Drawing.Color.White;
             this.bt_close.Image = global::iOMG.Properties.Resources.close_square;
             this.bt_close.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bt_close.Location = new System.Drawing.Point(594, 2);
+            this.bt_close.Location = new System.Drawing.Point(597, 2);
             this.bt_close.Name = "bt_close";
-            this.bt_close.Size = new System.Drawing.Size(28, 18);
+            this.bt_close.Size = new System.Drawing.Size(21, 18);
             this.bt_close.TabIndex = 14;
             this.bt_close.UseVisualStyleBackColor = true;
             this.bt_close.Click += new System.EventHandler(this.bt_close_Click);
@@ -128,7 +125,7 @@
             this.panel4.Controls.Add(this.tx_idr);
             this.panel4.Location = new System.Drawing.Point(2, 29);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(625, 49);
+            this.panel4.Size = new System.Drawing.Size(623, 49);
             this.panel4.TabIndex = 21;
             // 
             // label3
@@ -187,7 +184,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(618, 217);
+            this.ClientSize = new System.Drawing.Size(626, 222);
             this.ControlBox = false;
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.dataGridView1);

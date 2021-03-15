@@ -518,9 +518,21 @@ namespace iOMG
                         grilla();       // pone las columnas al ancho de la data
                         da.Dispose();
                     }
+                    if (rb_liststock.Checked == true)
+                    {
+                        consulta = "pivot_stk_mad";  // pivot_stock1
+                        MySqlCommand micon = new MySqlCommand(consulta, conn);
+                        micon.CommandType = CommandType.StoredProcedure;
+                        micon.Parameters.AddWithValue("@vcap", (cmb_fam.Text.Length > 0) ? cmb_fam.Text.Substring(0, 1) : "");
+                        MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                        da.Fill(dtg);
+                        dgv_resumen.DataSource = dtg;
+                        grilla();       // pone las columnas al ancho de la data
+                        da.Dispose();
+                    }
                     else
                     {
-                        consulta = "rep_stock";
+                        consulta = "rep_stock";     // anterior reporte de stock, antes del pivot
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
                         micon.Parameters.AddWithValue("@calm", tx_dat_dest.Text);

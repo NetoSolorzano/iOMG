@@ -110,7 +110,7 @@ namespace iOMG
                 //    "where TRIM(b.contrato)=@vpcont and a.fventa is not null and left(a.articulo,1)<>'Z'";
                 texto = "SELECT ifnull(sum(a.cant),0) as cant from detam a " +
                     "LEFT JOIN pedidos b ON a.pedido = b.codped AND b.status <> 'ANULAD' " +
-                    "where TRIM(b.contrato)= @vpcont";
+                    "where TRIM(b.contrato)= @vpcont and left(a.item,1)<>'Z'";
                 micon = new MySqlCommand(texto,cn);
                 micon.Parameters.AddWithValue("@vpcont", numcon);
                 dr = micon.ExecuteReader();

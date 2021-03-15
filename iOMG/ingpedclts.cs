@@ -711,10 +711,10 @@ namespace iOMG
             Bt_add.Visible = false;
             Bt_edit.Visible = false;
             Bt_anul.Visible = false;
-            bt_exc.Visible = false;
-            bt_prev.Visible = false;
-            Bt_print.Visible = false;
             bt_view.Visible = false;
+            Bt_print.Visible = false;
+            bt_prev.Visible = false;
+            bt_exc.Visible = false;
             //
             DataTable mdtb = new DataTable();
             const string consbot = "select * from permisos where formulario=@nomform and usuario=@use";
@@ -756,17 +756,22 @@ namespace iOMG
                     this.Bt_edit.Visible = true;
                 }
                 else { this.Bt_edit.Visible = false; }
-                if (Convert.ToString(row["btn3"]) == "S")               // imprimir
-                {
-                    this.Bt_print.Visible = true;
-                }
-                else { this.Bt_print.Visible = false; }
-                if (Convert.ToString(row["btn4"]) == "S")               // anular
+                if (Convert.ToString(row["btn3"]) == "S")               // anular
                 {
                     this.Bt_anul.Visible = true;
                 }
                 else { this.Bt_anul.Visible = false; }
-                if (Convert.ToString(row["btn5"]) == "S")               // preview
+                if (Convert.ToString(row["btn4"]) == "S")               // visualizar
+                {
+                    bt_view.Visible = true;
+                }
+                else bt_view.Visible = false;
+                if (Convert.ToString(row["btn5"]) == "S")               // imprimir
+                {
+                    this.Bt_print.Visible = true;
+                }
+                else { this.Bt_print.Visible = false; }
+                if (Convert.ToString(row["btn7"]) == "S")               // preview
                 {
                     bt_prev.Visible = true;
                 }
@@ -776,11 +781,6 @@ namespace iOMG
                     this.Bt_close.Visible = true;
                 }
                 else { this.Bt_close.Visible = false; }
-                if (Convert.ToString(row["btn7"]) == "S")               // vista preliminar
-                {
-                    this.bt_view.Visible = true;
-                }
-                else { this.bt_view.Visible = false; }
                 if (Convert.ToString(row["btn8"]) == "S")               // exporta xlsx
                 {
                     this.bt_exc.Visible = true;
@@ -845,11 +845,11 @@ namespace iOMG
             advancedDataGridView1.ReadOnly = true;
             string codu = "";
             string idr = "";
-            if (advancedDataGridView1.CurrentRow.Index > -1)
-            {
-                codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
-                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-            }
+            //if (advancedDataGridView1.CurrentRow.Index > -1)
+            //{
+            //    codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
+            //    idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
+            //}
             sololee(this);
             Tx_modo.Text = "VISUALIZAR";
             button1.Image = null;    // Image.FromFile(img_grab);
@@ -857,7 +857,7 @@ namespace iOMG
             tx_pedido.Enabled = true;
             cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
             tx_dat_tiped.Text = tipede;
-            jalaoc("tx_idr");
+            //jalaoc("tx_idr");
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {

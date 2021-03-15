@@ -914,8 +914,16 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@esta", dataGridView1.Rows[i].Cells[9].Value.ToString());   // row.Cells[9].Value.ToString()
                             micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[11].Value.ToString());   // row.Cells["piedra"].Value.ToString()
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());   // row.Cells["coment"].Value.ToString()
-                            if (dataGridView1.Rows[i].Cells[12].Value.ToString() != "00/00/0000") micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
-                            else micon.Parameters.AddWithValue("@fing", DBNull.Value);
+                            if ((string.IsNullOrEmpty(dataGridView1.Rows[i].Cells[12].Value.ToString())) || (dataGridView1.Rows[i].Cells[12].Value.ToString() == "00/00/0000"))
+                            {
+                                micon.Parameters.AddWithValue("@fing", DBNull.Value);
+                            }
+                            else
+                            {
+                                micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                            }
+                            //if (dataGridView1.Rows[i].Cells[12].Value.ToString() != "00/00/0000") micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
+                            //else micon.Parameters.AddWithValue("@fing", DBNull.Value);
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());   // row.Cells["saldo"].Value.ToString()
                             micon.ExecuteNonQuery();
                             retorna = true;

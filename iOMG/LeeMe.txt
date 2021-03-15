@@ -137,3 +137,18 @@ FALTA AGREGAR LAS HOJAS DEL PDF MANUALMENTE EN EL FORMATO DEL CRYSTAL ... NO HAY
 * Contratos, error al jalar desde la grilla FILTRADA un contrato ..................... ok 03/12/20
 * Pedidos de almacen, multiplica las lineas al editar pedido ......................... ok 09/12/20 error en el programa, se corrigió.
 - form movfismas, arreglo de error en vendalm.idajuste ............................... ok 16/12/20
+- form sernum (series), locales no corresponden con locales en contratos
+* se cambio desc_ven a desc_alm ...................................................... ok 05/01/21
+REPARACIONES DE DEFECTOS:
+* FORM almgestion, al anular reservas no esta actualizando el estado del contrato 
+  incluso parece que no suma el saldo del contrato ................................... OK 20/01/21
+* FORM repspedalm, el numerador de paginas en Reportes pedidos de almacen 
+  imprime numerando desde el ultimo numero de la previsualizacion .................... OK 20/01/21
+* FORM ingpedclts, corregir los permisos (botones) en anular, 
+  el boton de ver es en realidad de Anular ........................................... OK 20/01/21
+* FORM pedsclients, error al grabar un pedido editado que aun no tiene f.ingreso ..... ok 27/01/21
+* FORM movextorno, error al grabar, tipmov data too long ............................. ok 27/01/21
+- form act_cont, no estaba considerando el código Z en items entregados, corregido ... ok 01/03/21
+- form repspedalm, adecuacion de formato y datos en rep. pedidos ..................... ok 15/03/21
+- form repsventas, adecuacion formato listado pedidos y datos adicionales ............ ok 15/03/21
+- form repsalmac, creacion de rep stock agrupado, seccionado por madera .............. 

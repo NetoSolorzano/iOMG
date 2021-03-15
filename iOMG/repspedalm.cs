@@ -566,7 +566,7 @@ namespace iOMG
             string consulta = "";
             if (chk_resu.Checked == true)
             {
-                consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
+                consulta = "select a.fecha,a.codped,b.descrizione,c.codigo,a.destino,a.entrega," +
                     "space(1) as item,space(1) as nombre,space(1) as madera, '' as piedra,'' as medidas,sum(d.cant) as cant,sum(d.saldo) as saldo," +
                     "space(1) as acabado,a.status,trim(a.origen),'' as estado,'' as cmadera,'' as cpiedra," +
                     "if(d.fingreso='0000-00-00',NULL,d.fingreso) AS fingreso,a.coment " +
@@ -574,7 +574,7 @@ namespace iOMG
                     "left join desc_stp b on b.idcodice=a.status " +
                     "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
                     "left join desc_est e on e.idcodice=d.estado " +
-                    parte + parte0 + parte1 + parte2 + " group by a.codped order by a.fecha,a.origen,a.codped";
+                    parte + parte0 + parte1 + parte2 + " group by a.codped order by a.fecha,a.origen,a.codped"; // c.descrizione
             }
             else
             {
@@ -1005,7 +1005,7 @@ namespace iOMG
             printDlg.Document = printDocument1;
             printDlg.AllowSomePages = true;
             printDlg.AllowSelection = true;
-            //
+            //printDlg.Document.PrinterSettings.
             pageCount = 1;
             printDocument1.DefaultPageSettings.Landscape = true;
             if (printDlg.ShowDialog() == DialogResult.OK) printDocument1.Print();
@@ -1015,6 +1015,7 @@ namespace iOMG
             pageCount = 1;
             printDocument1.DefaultPageSettings.Landscape = true;
             printPreviewDialog1.Document = printDocument1;
+            ((ToolStripButton)((ToolStrip)printPreviewDialog1.Controls[1]).Items[0]).Enabled = false;
             printPreviewDialog1.ShowDialog();
         }
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -1028,8 +1029,8 @@ namespace iOMG
                 float alin = 45.0F;     // alto inicial
                 float posi = 160.0F;     // posición de impresión
                 float coli = 30.0F;     // columna mas a la izquierda
-                // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-                if(chk_resu.Checked == false)
+                                        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+                if (chk_resu.Checked == false)
                 {
                     imprime(pix, piy, cliente, coli, alin, posi, alfi, e);
                 }
@@ -1068,15 +1069,15 @@ namespace iOMG
         {
             // columnas del reporte
             float col0 = coli;              // Fecha
-            float col1 = coli + 70.0F;      // Llegada
-            float col2 = coli + 150.0F;     // Pedido
-            float col3 = coli + 210.0F;     // Estado
+            float col1 = coli + 60.0F;      // Llegada  70
+            float col2 = coli + 120.0F;     // Pedido   150
+            float col3 = coli + 180.0F;     // Estado   210
             float col4 = coli + 300.0F;     // taller
-            float col5 = coli + 400.0F;     // destino - almacen
-            float col6 = coli + 500.0F;     // cant
-            float col7 = coli + 550.0F;     // saldo
-            float col8 = coli + 600.0F;     // ult fecha ingreso
-            float col9 = coli + 680.0F;     // comentario
+            float col5 = coli + 360.0F;     // destino - almacen  400
+            float col6 = coli + 460.0F;     // cant     500
+            float col7 = coli + 510.0F;     // saldo    550
+            float col8 = coli + 560.0F;     // ult fecha ingreso    600
+            float col9 = coli + 640.0F;     // comentario       680
             //
             //float col6 = coli + 700.0F;     // Madera
             //float col7 = coli + 760.0F;     // Detalle2
@@ -1088,6 +1089,7 @@ namespace iOMG
             SizeF espnom = new SizeF(250.0F, alfi);         // recuadro para el nombre y comentario
             Font lt_tit = new Font("Arial", 7);
             Font lt_quie = new Font("Arial", 8, FontStyle.Bold);
+            Font lt_peq = new Font("Arial", 6);
             PointF ptoimp;
             Pen blackPen = new Pen(Color.Black, 1);
             StringFormat sf = new StringFormat();
@@ -1147,7 +1149,7 @@ namespace iOMG
                 ptoimp = new PointF(col8, posi);
                 e.Graphics.DrawString(data8, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col9, posi);
-                e.Graphics.DrawString(data9, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+                e.Graphics.DrawString(data9, lt_peq, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 /*
                 e.Graphics.DrawString(data6, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 ptoimp = new PointF(col7, posi);
@@ -1159,8 +1161,8 @@ namespace iOMG
                 ptoimp = new PointF(co12, posi);
                 e.Graphics.DrawString(data12, lt_tit, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
                 */
-                //
-                posi = posi + alfi + 5;             // avance de fila
+                if (data9.Contains(Environment.NewLine)) posi = posi + alfi + 15;
+                else posi = posi + alfi + 5;             // avance de fila
                 e.Graphics.DrawLine(blackPen, coli - 1, posi, e.PageSettings.Bounds.Width - 20.0F, posi);
                 posi = posi + alfi - 5;             // avance de fila
                 cuenta = cuenta + 1;
@@ -1182,9 +1184,9 @@ namespace iOMG
         {
             // columnas del reporte
             float col0 = coli;              // Fecha
-            float col1 = coli + 70.0F;      // Llegada
-            float col2 = coli + 150.0F;     // Pedido
-            float col3 = coli + 210.0F;     // Estado
+            float col1 = coli + 60.0F;      // Llegada  70
+            float col2 = coli + 130.0F;     // Pedido   150
+            float col3 = coli + 180.0F;     // Estado   210
             float col4 = coli + 310.0F;     // Articulo
             float col5 = coli + 480.0F;     // Nombre
             float col6 = coli + 700.0F;     // Madera
@@ -1390,9 +1392,9 @@ namespace iOMG
             e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
             // titulo y filtros
             SizeF anctyf = new SizeF();
-            anctyf = e.Graphics.MeasureString(this.Text, lt_cliente);
+            anctyf = e.Graphics.MeasureString(this.Text + " - Resumido", lt_cliente);
             PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
-            e.Graphics.DrawString(this.Text, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            e.Graphics.DrawString(this.Text + " - Resumido", lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
             string ddd = "Del " + dtp_pedido.Value.ToString("dd/MM/yyyy") + " Al " + dtp_entreg.Value.ToString("dd/MM/yyyy");
             anctyf = e.Graphics.MeasureString(ddd, lt_tit);
             ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
@@ -1410,9 +1412,9 @@ namespace iOMG
             ptoimp = new PointF(col4, posi);
             e.Graphics.DrawString("Taller", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col5, posi);
-            e.Graphics.DrawString("", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
-            ptoimp = new PointF(col6, posi);
             e.Graphics.DrawString("Destino", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            ptoimp = new PointF(col6, posi);
+            e.Graphics.DrawString("Cant", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col7, posi);
             e.Graphics.DrawString("Saldo", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col8, posi);

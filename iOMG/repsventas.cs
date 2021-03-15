@@ -1576,8 +1576,8 @@ namespace iOMG
             pedsclts pedset = new pedsclts();
             pedsclts.cab_lispedidosRow rowcab = pedset.cab_lispedidos.Newcab_lispedidosRow();
             rowcab.id = "0";
-            rowcab.fecfin = dtp_pedfini.Value.ToString("dd/MM/yyyy");
-            rowcab.fecini = dtp_pedfina.Value.ToString("dd/MM/yyyy");
+            rowcab.fecini = dtp_pedfini.Value.ToString("dd/MM/yyyy");
+            rowcab.fecfin = dtp_pedfina.Value.ToString("dd/MM/yyyy");
             rowcab.taller = cmb_pedtaller.Text.Trim();
             rowcab.situacion = (rb_ped_todos.Checked == true)? "TODOS":(rb_ped_xllegar.Checked == true)? "X LLEGAR":"INGRESADOS";
             rowcab.tipofechas = (rb_ped_fped.Checked == true)? rb_ped_fped.Text:rb_ped_fentrega.Text;
@@ -1607,6 +1607,7 @@ namespace iOMG
                     rowdet.origen = row.Cells["origen"].Value.ToString();
                     rowdet.precio = row.Cells["precio"].Value.ToString();
                     rowdet.fecont = row.Cells["fecont"].Value.ToString();
+                    rowdet.feenped = row.Cells["fecenped"].Value.ToString();
                     pedset.det_lispedidos.Adddet_lispedidosRow(rowdet);
                 }
             }

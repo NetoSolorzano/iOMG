@@ -143,7 +143,7 @@ namespace iOMG
                 micon.ExecuteNonQuery();
                 // kardex
                 string accX = "insert into kardex (codalm,fecha,tipmov,item,cant_i,coment,idalm,USER,dias) " +
-                            "values (@ptxlle,@fech,'INGRESO',@codi,'1',concat('Extorno vta. salida ',@nsal),@ida,@asd,now())";
+                            "values (@ptxlle,@fech,'INGRES',@codi,'1',concat('Extorno vta. salida ',@nsal),@ida,@asd,now())";
                 micon = new MySqlCommand(accX, conn);
                 micon.Parameters.AddWithValue("@ptxlle", dataGridView1.Rows[0].Cells["codalm"].Value.ToString());
                 micon.Parameters.AddWithValue("@fech", DateTime.Now.ToString("yyyy-MM-dd"));

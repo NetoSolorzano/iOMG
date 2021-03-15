@@ -318,7 +318,7 @@ namespace iOMG
                 // DATOS DEL COMBOBOX3   
                 comboBox3.Items.Clear();
                 const string selcmb3 = "select idcodice,descrizione,codigo from descrittive " +
-                    "where idtabella='VEN' and numero=1 order by idcodice";
+                    "where idtabella='ALM' and numero=1 order by idcodice"; //where idtabella='VEN' and numero=1 order by idcodice"
                 MySqlCommand comcmb3 = new MySqlCommand(selcmb3, conn);
                 DataTable dtcmb3 = new DataTable();
                 MySqlDataAdapter dacmb3 = new MySqlDataAdapter(comcmb3);

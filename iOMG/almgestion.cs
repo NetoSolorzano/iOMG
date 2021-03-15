@@ -674,11 +674,12 @@ namespace iOMG
                 micon.ExecuteNonQuery();
                 //
                 actua = "UPDATE detacon SET saldo=saldo+@can " +
-                    "where contratoh=@ptxcon and item=@nar";
+                    "where contratoh=@ptxcon and item=(select itemCont from reservd where reservh=@ptxres)";    // where contratoh=@ptxcon and item=@nar
                 micon = new MySqlCommand(actua, cn);
                 micon.Parameters.AddWithValue("@can", 1);
                 micon.Parameters.AddWithValue("@ptxcon", contra);
-                micon.Parameters.AddWithValue("@nar", nar);
+                //micon.Parameters.AddWithValue("@nar", nar);
+                micon.Parameters.AddWithValue("@ptxres", idr);
                 micon.ExecuteNonQuery();
                 retorna = true;
             }
@@ -1909,6 +1910,9 @@ namespace iOMG
                                 advancedDataGridView1.Rows[e.RowIndex].Cells["contrat"].Value.ToString()
                                 ) == true)
                             {
+                                // actualiza estado del contrato
+                                acciones acc = new acciones();
+                                acc.act_cont(advancedDataGridView1.Rows[e.RowIndex].Cells["contrat"].Value.ToString(), "");
                                 // borra las marcas en la grilla
                                 advancedDataGridView1.CurrentRow.Cells["reserva"].Value = "";
                                 advancedDataGridView1.CurrentRow.Cells["contrat"].Value = "";

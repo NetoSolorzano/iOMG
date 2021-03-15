@@ -55,6 +55,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabres = new System.Windows.Forms.TabPage();
+            this.dgv_reserv = new ADGV.AdvancedDataGridView();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -71,6 +72,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabSal = new System.Windows.Forms.TabPage();
+            this.dgv_salidas = new ADGV.AdvancedDataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.rb_sal_ajust = new System.Windows.Forms.RadioButton();
             this.rb_sal_vtas = new System.Windows.Forms.RadioButton();
@@ -166,15 +168,15 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.dgv_reserv = new ADGV.AdvancedDataGridView();
-            this.dgv_salidas = new ADGV.AdvancedDataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabres.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).BeginInit();
             this.groupBox11.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tabSal.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.panel2.SuspendLayout();
             this.groupBox19.SuspendLayout();
             this.groupBox15.SuspendLayout();
@@ -198,8 +200,6 @@
             this.groupBox24.SuspendLayout();
             this.groupBox26.SuspendLayout();
             this.groupBox28.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -496,6 +496,20 @@
             this.tabres.Text = "Reservas";
             this.tabres.UseVisualStyleBackColor = true;
             // 
+            // dgv_reserv
+            // 
+            this.dgv_reserv.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.dgv_reserv.AutoGenerateContextFilters = true;
+            this.dgv_reserv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_reserv.DateWithTime = false;
+            this.dgv_reserv.Location = new System.Drawing.Point(3, 53);
+            this.dgv_reserv.Name = "dgv_reserv";
+            this.dgv_reserv.Size = new System.Drawing.Size(1023, 386);
+            this.dgv_reserv.TabIndex = 377;
+            this.dgv_reserv.TimeFilter = false;
+            this.dgv_reserv.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.dgv_reserv.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
+            // 
             // groupBox11
             // 
             this.groupBox11.BackColor = System.Drawing.Color.DimGray;
@@ -661,6 +675,20 @@
             this.tabSal.TabIndex = 1;
             this.tabSal.Text = "Salidas";
             this.tabSal.UseVisualStyleBackColor = true;
+            // 
+            // dgv_salidas
+            // 
+            this.dgv_salidas.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.dgv_salidas.AutoGenerateContextFilters = true;
+            this.dgv_salidas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_salidas.DateWithTime = false;
+            this.dgv_salidas.Location = new System.Drawing.Point(3, 56);
+            this.dgv_salidas.Name = "dgv_salidas";
+            this.dgv_salidas.Size = new System.Drawing.Size(1023, 386);
+            this.dgv_salidas.TabIndex = 378;
+            this.dgv_salidas.TimeFilter = false;
+            this.dgv_salidas.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
+            this.dgv_salidas.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
             // 
             // panel2
             // 
@@ -854,7 +882,7 @@
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.lay_almacenes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.lay_almacenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lay_almacenes.Location = new System.Drawing.Point(496, 21);
             this.lay_almacenes.Name = "lay_almacenes";
@@ -880,7 +908,7 @@
             // rb_resalm
             // 
             this.rb_resalm.AutoSize = true;
-            this.rb_resalm.Location = new System.Drawing.Point(6, 31);
+            this.rb_resalm.Location = new System.Drawing.Point(6, 44);
             this.rb_resalm.Name = "rb_resalm";
             this.rb_resalm.Size = new System.Drawing.Size(93, 17);
             this.rb_resalm.TabIndex = 1;
@@ -892,15 +920,13 @@
             // rb_liststock
             // 
             this.rb_liststock.AutoSize = true;
-            this.rb_liststock.Enabled = false;
-            this.rb_liststock.Location = new System.Drawing.Point(6, 8);
+            this.rb_liststock.Location = new System.Drawing.Point(6, 18);
             this.rb_liststock.Name = "rb_liststock";
-            this.rb_liststock.Size = new System.Drawing.Size(90, 17);
+            this.rb_liststock.Size = new System.Drawing.Size(106, 17);
             this.rb_liststock.TabIndex = 0;
             this.rb_liststock.TabStop = true;
-            this.rb_liststock.Text = "Listado Stock";
+            this.rb_liststock.Text = " Res. por madera";
             this.rb_liststock.UseVisualStyleBackColor = true;
-            this.rb_liststock.Visible = false;
             this.rb_liststock.CheckedChanged += new System.EventHandler(this.rb_liststock_CheckedChanged);
             // 
             // chk_stkval
@@ -1684,34 +1710,6 @@
             this.label14.TabIndex = 378;
             this.label14.Text = "Fech Inicial";
             // 
-            // dgv_reserv
-            // 
-            this.dgv_reserv.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.dgv_reserv.AutoGenerateContextFilters = true;
-            this.dgv_reserv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_reserv.DateWithTime = false;
-            this.dgv_reserv.Location = new System.Drawing.Point(3, 53);
-            this.dgv_reserv.Name = "dgv_reserv";
-            this.dgv_reserv.Size = new System.Drawing.Size(1023, 386);
-            this.dgv_reserv.TabIndex = 377;
-            this.dgv_reserv.TimeFilter = false;
-            this.dgv_reserv.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
-            this.dgv_reserv.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
-            // 
-            // dgv_salidas
-            // 
-            this.dgv_salidas.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.dgv_salidas.AutoGenerateContextFilters = true;
-            this.dgv_salidas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_salidas.DateWithTime = false;
-            this.dgv_salidas.Location = new System.Drawing.Point(3, 56);
-            this.dgv_salidas.Name = "dgv_salidas";
-            this.dgv_salidas.Size = new System.Drawing.Size(1023, 386);
-            this.dgv_salidas.TabIndex = 378;
-            this.dgv_salidas.TimeFilter = false;
-            this.dgv_salidas.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
-            this.dgv_salidas.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
-            // 
             // repsalmac
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1729,11 +1727,13 @@
             this.tabControl1.ResumeLayout(false);
             this.tabres.ResumeLayout(false);
             this.tabres.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).EndInit();
             this.groupBox11.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.tabSal.ResumeLayout(false);
             this.tabSal.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.groupBox19.ResumeLayout(false);
@@ -1764,8 +1764,6 @@
             this.groupBox24.ResumeLayout(false);
             this.groupBox26.ResumeLayout(false);
             this.groupBox28.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_reserv)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_salidas)).EndInit();
             this.ResumeLayout(false);
 
         }

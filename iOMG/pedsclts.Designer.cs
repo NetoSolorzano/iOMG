@@ -1364,6 +1364,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnfecont;
             
+            private global::System.Data.DataColumn columnfeenped;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public det_lispedidosDataTable() {
@@ -1551,6 +1553,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn feenpedColumn {
+                get {
+                    return this.columnfeenped;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1605,7 +1615,8 @@ namespace iOMG {
                         string fececon, 
                         string origen, 
                         string precio, 
-                        string fecont) {
+                        string fecont, 
+                        string feenped) {
                 det_lispedidosRow rowdet_lispedidosRow = ((det_lispedidosRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -1626,7 +1637,8 @@ namespace iOMG {
                         fececon,
                         origen,
                         precio,
-                        fecont};
+                        fecont,
+                        feenped};
                 rowdet_lispedidosRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_lispedidosRow);
                 return rowdet_lispedidosRow;
@@ -1668,6 +1680,7 @@ namespace iOMG {
                 this.columnorigen = base.Columns["origen"];
                 this.columnprecio = base.Columns["precio"];
                 this.columnfecont = base.Columns["fecont"];
+                this.columnfeenped = base.Columns["feenped"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1711,6 +1724,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnprecio);
                 this.columnfecont = new global::System.Data.DataColumn("fecont", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfecont);
+                this.columnfeenped = new global::System.Data.DataColumn("feenped", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnfeenped);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4612,6 +4627,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string feenped {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_lispedidos.feenpedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'feenped\' de la tabla \'det_lispedidos\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_lispedidos.feenpedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledet_lispedidos.idColumn);
             }
@@ -4836,6 +4867,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetfecontNull() {
                 this[this.tabledet_lispedidos.fecontColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsfeenpedNull() {
+                return this.IsNull(this.tabledet_lispedidos.feenpedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetfeenpedNull() {
+                this[this.tabledet_lispedidos.feenpedColumn] = global::System.Convert.DBNull;
             }
         }
         
