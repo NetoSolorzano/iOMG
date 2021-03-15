@@ -15,8 +15,8 @@
     <Shape ID="DesignTable:cab_salidas" ZOrder="5" X="640" Y="30" Height="105" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="101" />
     <Shape ID="DesignTable:det_salidas" ZOrder="4" X="643" Y="171" Height="372" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="368" />
     <Shape ID="DesignTable:etiq_mov1" ZOrder="3" X="834" Y="101" Height="181" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="177" />
-    <Shape ID="DesignTable:cab_restock" ZOrder="2" X="77" Y="456" Height="200" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="196" />
-    <Shape ID="DesignTable:det_restock" ZOrder="1" X="83" Y="664" Height="296" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="292" />
+    <Shape ID="DesignTable:cab_restock" ZOrder="2" X="74" Y="447" Height="219" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="215" />
+    <Shape ID="DesignTable:det_restock" ZOrder="1" X="77" Y="679" Height="296" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="292" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

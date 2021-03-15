@@ -899,9 +899,9 @@
             // 
             this.groupBox21.Controls.Add(this.rb_resalm);
             this.groupBox21.Controls.Add(this.rb_liststock);
-            this.groupBox21.Location = new System.Drawing.Point(22, 2);
+            this.groupBox21.Location = new System.Drawing.Point(6, 2);
             this.groupBox21.Name = "groupBox21";
-            this.groupBox21.Size = new System.Drawing.Size(146, 71);
+            this.groupBox21.Size = new System.Drawing.Size(161, 71);
             this.groupBox21.TabIndex = 368;
             this.groupBox21.TabStop = false;
             // 
@@ -922,10 +922,10 @@
             this.rb_liststock.AutoSize = true;
             this.rb_liststock.Location = new System.Drawing.Point(6, 18);
             this.rb_liststock.Name = "rb_liststock";
-            this.rb_liststock.Size = new System.Drawing.Size(106, 17);
+            this.rb_liststock.Size = new System.Drawing.Size(144, 17);
             this.rb_liststock.TabIndex = 0;
             this.rb_liststock.TabStop = true;
-            this.rb_liststock.Text = " Res. por madera";
+            this.rb_liststock.Text = "Res. x mad.(mesas/sillas)";
             this.rb_liststock.UseVisualStyleBackColor = true;
             this.rb_liststock.CheckedChanged += new System.EventHandler(this.rb_liststock_CheckedChanged);
             // 

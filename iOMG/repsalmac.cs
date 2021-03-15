@@ -520,10 +520,11 @@ namespace iOMG
                     }
                     if (rb_liststock.Checked == true)
                     {
-                        consulta = "pivot_stk_mad";  // pivot_stock1
+                        consulta = "pivot_stk_mad";  // CALL pivot_stk_mad("C","D");
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@vcap", (cmb_fam.Text.Length > 0) ? cmb_fam.Text.Substring(0, 1) : "");
+                        micon.Parameters.AddWithValue("@cap1", "C");
+                        micon.Parameters.AddWithValue("@cap2", "D");
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         da.Fill(dtg);
                         dgv_resumen.DataSource = dtg;
@@ -686,6 +687,7 @@ namespace iOMG
             tx_dat_dest.Text = "";
             chk_stkval.Enabled = false;
             chk_stkval.Checked = false;
+            cmb_fam.Enabled = true;
         }
         private void rb_liststock_CheckedChanged(object sender, EventArgs e)
         {
@@ -693,6 +695,8 @@ namespace iOMG
             tx_dat_dest.Text = "";
             chk_stkval.Enabled = true;
             chk_stkval.Checked = false;
+            cmb_fam.SelectedIndex = -1;
+            cmb_fam.Enabled = false;
         }
 
         #region advancedatagridview
@@ -1049,8 +1053,12 @@ namespace iOMG
                 lay_almacenes.Focus();
                 return;
             }
-            if(rb_resalm.Checked == true) setParaCrystal("restkalm");
-            else setParaCrystal("stock");
+            if (rb_resalm.Checked == true) setParaCrystal("restkalm");
+            else
+            {
+                if (rb_liststock.Checked == true) setParaCrystal("restkmad");
+                else setParaCrystal("stock");
+            }
         }
         private void button4_Click(object sender, EventArgs e)                  // reporte de kardex
         {
@@ -1067,6 +1075,12 @@ namespace iOMG
         private void setParaCrystal(string repo)                        // genera el set para el reporte de crystal
         {
             if(repo == "restkalm")
+            {
+                repsalmacen datos = generareprsa();
+                frmvizalm visualizador = new frmvizalm(datos);
+                visualizador.Show();
+            }
+            if (repo == "restkmad")
             {
                 repsalmacen datos = generareprsa();
                 frmvizalm visualizador = new frmvizalm(datos);
@@ -1277,6 +1291,7 @@ namespace iOMG
                     }
                 }
             }
+            rowcab.marca = (rb_liststock.Checked == true) ? "M" : "R";  // M=resumen x madera || R=resumen normal
             repstkres.cab_restock.Addcab_restockRow(rowcab);
             // detalle
             int cc = dgv_resumen.Columns.Count;               // cant columnas, desde la 4ta es almacen hasta la enesima
@@ -1306,6 +1321,7 @@ namespace iOMG
                         rowdet.cant3 = (nom_al3 != "") ? val3.ToString() : "";
                         rowdet.cant4 = (nom_al4 != "") ? val4.ToString() : "";
                         rowdet.cant5 = (nom_al5 != "") ? val5.ToString() : "";
+                        rowdet.nombMad = row.Cells["nomad"].Value.ToString();
                         repstkres.det_restock.Adddet_restockRow(rowdet);
                     }
                 }

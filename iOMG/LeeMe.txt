@@ -151,4 +151,5 @@ REPARACIONES DE DEFECTOS:
 - form act_cont, no estaba considerando el código Z en items entregados, corregido ... ok 01/03/21
 - form repspedalm, adecuacion de formato y datos en rep. pedidos ..................... ok 15/03/21
 - form repsventas, adecuacion formato listado pedidos y datos adicionales ............ ok 15/03/21
-- form repsalmac, creacion de rep stock agrupado, seccionado por madera .............. 
+- form repsalmac, creacion de rep stock agrupado, seccionado por madera .............. ok 15/03/21
+- form contratos, validar que codigos Z no se repitan ................................ ok 15/03/21

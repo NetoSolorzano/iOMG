@@ -414,6 +414,12 @@
       <DependentUpon>rep_stock.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="rep_stock_mad.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rep_stock_mad.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="rep_stock_res.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -631,6 +637,10 @@
     <EmbeddedResource Include="rep_stock.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rep_stock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rep_stock_mad.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rep_stock_mad.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="rep_stock_res.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

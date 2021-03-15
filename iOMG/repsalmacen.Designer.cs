@@ -3924,6 +3924,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columnalm5;
             
+            private global::System.Data.DataColumn columnmarca;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public cab_restockDataTable() {
@@ -4031,6 +4033,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn marcaColumn {
+                get {
+                    return this.columnmarca;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4066,7 +4076,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public cab_restockRow Addcab_restockRow(string id, string fecha, string capitulo, string valorizado, string alm1, string alm2, string alm3, string alm4, string alm5) {
+            public cab_restockRow Addcab_restockRow(string id, string fecha, string capitulo, string valorizado, string alm1, string alm2, string alm3, string alm4, string alm5, string marca) {
                 cab_restockRow rowcab_restockRow = ((cab_restockRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -4077,7 +4087,8 @@ namespace iOMG {
                         alm2,
                         alm3,
                         alm4,
-                        alm5};
+                        alm5,
+                        marca};
                 rowcab_restockRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowcab_restockRow);
                 return rowcab_restockRow;
@@ -4109,6 +4120,7 @@ namespace iOMG {
                 this.columnalm3 = base.Columns["alm3"];
                 this.columnalm4 = base.Columns["alm4"];
                 this.columnalm5 = base.Columns["alm5"];
+                this.columnmarca = base.Columns["marca"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4132,6 +4144,8 @@ namespace iOMG {
                 base.Columns.Add(this.columnalm4);
                 this.columnalm5 = new global::System.Data.DataColumn("alm5", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnalm5);
+                this.columnmarca = new global::System.Data.DataColumn("marca", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmarca);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4293,6 +4307,8 @@ namespace iOMG {
             
             private global::System.Data.DataColumn columncant5;
             
+            private global::System.Data.DataColumn columnnombMad;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public det_restockDataTable() {
@@ -4440,6 +4456,14 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn nombMadColumn {
+                get {
+                    return this.columnnombMad;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4475,7 +4499,7 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public det_restockRow Adddet_restockRow(string id, string idc, string item, string nombre, string madera, string acabado, string deta2, string medidas, string precio, string cant1, string cant2, string cant3, string cant4, string cant5) {
+            public det_restockRow Adddet_restockRow(string id, string idc, string item, string nombre, string madera, string acabado, string deta2, string medidas, string precio, string cant1, string cant2, string cant3, string cant4, string cant5, string nombMad) {
                 det_restockRow rowdet_restockRow = ((det_restockRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -4491,7 +4515,8 @@ namespace iOMG {
                         cant2,
                         cant3,
                         cant4,
-                        cant5};
+                        cant5,
+                        nombMad};
                 rowdet_restockRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdet_restockRow);
                 return rowdet_restockRow;
@@ -4528,6 +4553,7 @@ namespace iOMG {
                 this.columncant3 = base.Columns["cant3"];
                 this.columncant4 = base.Columns["cant4"];
                 this.columncant5 = base.Columns["cant5"];
+                this.columnnombMad = base.Columns["nombMad"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4561,6 +4587,8 @@ namespace iOMG {
                 base.Columns.Add(this.columncant4);
                 this.columncant5 = new global::System.Data.DataColumn("cant5", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncant5);
+                this.columnnombMad = new global::System.Data.DataColumn("nombMad", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnombMad);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7306,6 +7334,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string marca {
+                get {
+                    try {
+                        return ((string)(this[this.tablecab_restock.marcaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'marca\' de la tabla \'cab_restock\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablecab_restock.marcaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablecab_restock.idColumn);
             }
@@ -7410,6 +7454,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void Setalm5Null() {
                 this[this.tablecab_restock.alm5Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsmarcaNull() {
+                return this.IsNull(this.tablecab_restock.marcaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetmarcaNull() {
+                this[this.tablecab_restock.marcaColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -7653,6 +7709,22 @@ namespace iOMG {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string nombMad {
+                get {
+                    try {
+                        return ((string)(this[this.tabledet_restock.nombMadColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'nombMad\' de la tabla \'det_restock\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledet_restock.nombMadColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tabledet_restock.idColumn);
             }
@@ -7817,6 +7889,18 @@ namespace iOMG {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void Setcant5Null() {
                 this[this.tabledet_restock.cant5Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsnombMadNull() {
+                return this.IsNull(this.tabledet_restock.nombMadColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetnombMadNull() {
+                this[this.tabledet_restock.nombMadColumn] = global::System.Convert.DBNull;
             }
         }
         

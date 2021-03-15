@@ -3097,6 +3097,16 @@ namespace iOMG
                 tx_a_precio.Focus();
                 return;
             }
+            // validamos que el codigo no se repita en la grilla, REUNIÓN 09-03-2021 CON juan carlos, nestor y christian
+            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            {
+                if (tx_a_codig.Text == dataGridView1.Rows[i].Cells[1].Value.ToString())
+                {
+                    MessageBox.Show("Esta repitiendo el código adicional del artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_a_cant.Focus();
+                    return;
+                }
+            }
             if (Tx_modo.Text == "NUEVO")
             {
                 if (tx_a_id.Text.Trim() != "")

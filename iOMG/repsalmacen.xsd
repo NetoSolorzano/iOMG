@@ -161,6 +161,7 @@
               <xs:element name="alm3" msprop:Generator_ColumnVarNameInTable="columnalm3" msprop:Generator_ColumnPropNameInRow="alm3" msprop:Generator_ColumnPropNameInTable="alm3Column" msprop:Generator_UserColumnName="alm3" type="xs:string" minOccurs="0" />
               <xs:element name="alm4" msprop:Generator_ColumnVarNameInTable="columnalm4" msprop:Generator_ColumnPropNameInRow="alm4" msprop:Generator_ColumnPropNameInTable="alm4Column" msprop:Generator_UserColumnName="alm4" type="xs:string" minOccurs="0" />
               <xs:element name="alm5" msprop:Generator_ColumnVarNameInTable="columnalm5" msprop:Generator_ColumnPropNameInRow="alm5" msprop:Generator_ColumnPropNameInTable="alm5Column" msprop:Generator_UserColumnName="alm5" type="xs:string" minOccurs="0" />
+              <xs:element name="marca" msprop:Generator_ColumnVarNameInTable="columnmarca" msprop:Generator_ColumnPropNameInRow="marca" msprop:Generator_ColumnPropNameInTable="marcaColumn" msprop:Generator_UserColumnName="marca" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -181,6 +182,7 @@
               <xs:element name="cant3" msprop:Generator_ColumnVarNameInTable="columncant3" msprop:Generator_ColumnPropNameInRow="cant3" msprop:Generator_ColumnPropNameInTable="cant3Column" msprop:Generator_UserColumnName="cant3" type="xs:string" minOccurs="0" />
               <xs:element name="cant4" msprop:Generator_ColumnVarNameInTable="columncant4" msprop:Generator_ColumnPropNameInRow="cant4" msprop:Generator_ColumnPropNameInTable="cant4Column" msprop:Generator_UserColumnName="cant4" type="xs:string" minOccurs="0" />
               <xs:element name="cant5" msprop:Generator_ColumnVarNameInTable="columncant5" msprop:Generator_ColumnPropNameInRow="cant5" msprop:Generator_ColumnPropNameInTable="cant5Column" msprop:Generator_UserColumnName="cant5" type="xs:string" minOccurs="0" />
+              <xs:element name="nombMad" msprop:Generator_ColumnVarNameInTable="columnnombMad" msprop:Generator_ColumnPropNameInRow="nombMad" msprop:Generator_ColumnPropNameInTable="nombMadColumn" msprop:Generator_UserColumnName="nombMad" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
