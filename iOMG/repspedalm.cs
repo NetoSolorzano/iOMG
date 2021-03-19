@@ -545,8 +545,8 @@ namespace iOMG
         private void button1_Click(object sender, EventArgs e)      // filtra y muestra la info - PEDIDOS
         {
             // id,codped,tipoes,origen,destino,fecha,entrega,coment
-            string parte = "where a.tipoes=@tip and a.fecha between @fec1 and @fec2";
-            string parte0 = "", parte1 = "", parte2 = "";
+            string parte = "where a.tipoes=@tip ";  // and a.fecha between @fec1 and @fec2
+            string parte0 = "", parte1 = "", parte2 = "", parte3 = "", parte4 = "";
             if (tx_dat_orig.Text != "")          // taller
             {
                 parte0 = " and a.origen=@tal";
@@ -563,6 +563,16 @@ namespace iOMG
             {
                 parte2 = " and a.status<>@sta";
             }
+            if (rb_ped_fped.Checked == true)
+            {
+                parte3 = "and a.fecha between @fec1 and @fec2";
+                parte4 = " order by a.fecha,a.origen,a.codped";
+            }
+            if (rb_ped_fentrega.Checked == true)
+            {
+                parte3 = "and a.entrega between @fec1 and @fec2";
+                parte4 = " order by a.entrega,a.origen,a.codped";
+            }
             string consulta = "";
             if (chk_resu.Checked == true)
             {
@@ -574,7 +584,7 @@ namespace iOMG
                     "left join desc_stp b on b.idcodice=a.status " +
                     "left join desc_loc c on trim(c.idcodice)=trim(a.origen) " +
                     "left join desc_est e on e.idcodice=d.estado " +
-                    parte + parte0 + parte1 + parte2 + " group by a.codped order by a.fecha,a.origen,a.codped"; // c.descrizione
+                    parte + parte3 + parte0 + parte1 + parte2 + " group by a.codped" + parte4; // c.descrizione
             }
             else
             {
@@ -588,7 +598,7 @@ namespace iOMG
                     "left join desc_est e on e.idcodice=d.estado " +
                     "left join desc_mad f on f.idcodice=d.madera " +
                     "left join desc_dt2 g on g.idcodice=d.piedra " +
-                    parte + parte0 + parte1 + parte2 + " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
+                    parte + parte3 + parte0 + parte1 + parte2 + parte4; // " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
             }
             try
             {
@@ -950,6 +960,7 @@ namespace iOMG
             tabControl1.Enabled = true;
             cmb_tall_ing.Enabled = true;
             cmb_estad_ing.Enabled = false;
+            rb_ped_fped.Checked = true;
             /*
             pageCount = 1;
             printDocument1.DefaultPageSettings.Landscape = true;
@@ -1316,9 +1327,10 @@ namespace iOMG
             e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
             // titulo y filtros
             SizeF anctyf = new SizeF();
-            anctyf = e.Graphics.MeasureString(this.Text, lt_cliente);
+            string titrep = this.Text + " " + ((rb_ped_fped.Checked == true)? rb_ped_fped.Text : rb_ped_fentrega.Text);
+            anctyf = e.Graphics.MeasureString(titrep, lt_cliente);
             PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
-            e.Graphics.DrawString(this.Text, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            e.Graphics.DrawString(titrep, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
             string ddd = "Del " + dtp_pedido.Value.ToString("dd/MM/yyyy") + " Al " + dtp_entreg.Value.ToString("dd/MM/yyyy");
             anctyf = e.Graphics.MeasureString(ddd, lt_tit);
             ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
@@ -1330,7 +1342,7 @@ namespace iOMG
             PointF ptoimp = new PointF(col0, posi);
             e.Graphics.DrawString("Fecha", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col1, posi);
-            e.Graphics.DrawString("Llegada", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Entrega", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col2, posi);
             e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col3, posi);
@@ -1392,9 +1404,10 @@ namespace iOMG
             e.Graphics.DrawString(fecha, lt_fec, Brushes.Black, ptofec, StringFormat.GenericTypographic);
             // titulo y filtros
             SizeF anctyf = new SizeF();
-            anctyf = e.Graphics.MeasureString(this.Text + " - Resumido", lt_cliente);
+            string titrep = this.Text + " - Resumido" + " " + ((rb_ped_fped.Checked == true) ? rb_ped_fped.Text : rb_ped_fentrega.Text);
+            anctyf = e.Graphics.MeasureString(titrep, lt_cliente);
             PointF ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 30.0F);
-            e.Graphics.DrawString(this.Text + " - Resumido", lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
+            e.Graphics.DrawString(titrep, lt_cliente, Brushes.Black, ptotit, StringFormat.GenericTypographic);
             string ddd = "Del " + dtp_pedido.Value.ToString("dd/MM/yyyy") + " Al " + dtp_entreg.Value.ToString("dd/MM/yyyy");
             anctyf = e.Graphics.MeasureString(ddd, lt_tit);
             ptotit = new PointF((ancho_pag - anctyf.Width) / 2, piy + 60.0F);
@@ -1404,7 +1417,7 @@ namespace iOMG
             PointF ptoimp = new PointF(col0, posi);
             e.Graphics.DrawString("Fecha", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col1, posi);
-            e.Graphics.DrawString("Llegada", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
+            e.Graphics.DrawString("Entrega", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col2, posi);
             e.Graphics.DrawString("Pedido", lt_fec, Brushes.Black, ptoimp, StringFormat.GenericTypographic);
             ptoimp = new PointF(col3, posi);
