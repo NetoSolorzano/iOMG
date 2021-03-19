@@ -523,8 +523,8 @@ namespace iOMG
                         consulta = "pivot_stk_mad";  // CALL pivot_stk_mad("C","D");
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@cap1", "C");
-                        micon.Parameters.AddWithValue("@cap2", "D");
+                        micon.Parameters.AddWithValue("@cap1", "D");
+                        micon.Parameters.AddWithValue("@cap2", "E");
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         da.Fill(dtg);
                         dgv_resumen.DataSource = dtg;

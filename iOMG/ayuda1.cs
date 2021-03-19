@@ -80,7 +80,7 @@ namespace iOMG
             if (para1 == "items" && para2 == "parcial" && para3 == "")
             {
                 consulta = "select trim(codig),trim(nombr),concat(capit,model,mader,tipol,deta1,acaba,deta2) " +
-                    "from items group by capit,model,mader,tipol,deta1,acaba,deta2";
+                    "from items group by capit,model,mader,tipol,deta1,acaba,deta2,deta3";  // adicionado deta3 ... 18/03/2021 solicitado por Nestor
                 // Acomodamos la grilla
                 this.dataGridView1.Rows.Clear();
                 this.dataGridView1.ColumnCount = 3;

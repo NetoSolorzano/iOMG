@@ -153,3 +153,4 @@ REPARACIONES DE DEFECTOS:
 - form repsventas, adecuacion formato listado pedidos y datos adicionales ............ ok 15/03/21
 - form repsalmac, creacion de rep stock agrupado, seccionado por madera .............. ok 15/03/21
 - form contratos, validar que codigos Z no se repitan ................................ ok 15/03/21
+- form repsalmac, arreglo de rep.stock sillas y mesas x madera y juego ............... ok 18/03/21
