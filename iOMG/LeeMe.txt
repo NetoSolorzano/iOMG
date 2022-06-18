@@ -155,3 +155,4 @@ REPARACIONES DE DEFECTOS:
 - form contratos, validar que codigos Z no se repitan ................................ ok 15/03/21
 - form repsalmac, arreglo de rep.stock sillas y mesas x madera y juego ............... ok 18/03/21
 - form repspedalm, agregar opción de fecha de llegada de pedidos ..................... ok 19/03/21
+- form movim, reservas, agregar comparación de tipologia cuando el mueble es a diseño. ok 09/04/21

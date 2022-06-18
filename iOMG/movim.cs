@@ -349,9 +349,12 @@ namespace iOMG
                                 {
                                     if (parte1.Substring(1, 3) == "000")     // vemos si el item del contrato es A DISEÑO
                                     {
-                                        if (parte1.Substring(0, 1) == parte2.Substring(0, 1) && parte1.Substring(4, 1) == parte2.Substring(4, 1))
+                                        if (parte1.Substring(0, 1) == parte2.Substring(0, 1) 
+                                            && parte1.Substring(4, 1) == parte2.Substring(4, 1) 
+                                            && parte1.Substring(5, 2) == parte2.Substring(5, 2))
                                         {
                                             // en este caso, el item del contrato es a diseño y el capitulo y madera son iguales
+                                            // 09/04/2021 ... agregando la tipologia (5,2)
                                             sino = "si";
                                             tx_comres.Text = row[8].ToString();
                                             tx_d_codi.Text = row[5].ToString();
