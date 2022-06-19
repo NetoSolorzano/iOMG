@@ -156,3 +156,6 @@ REPARACIONES DE DEFECTOS:
 - form repsalmac, arreglo de rep.stock sillas y mesas x madera y juego ............... ok 18/03/21
 - form repspedalm, agregar opción de fecha de llegada de pedidos ..................... ok 19/03/21
 - form movim, reservas, agregar comparación de tipologia cuando el mueble es a diseño. ok 09/04/21
+- form contratos, el código del contrato debe debe generarse al final, al grabar ..... 
+FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
+- form docsvta, creación ............................................................. 
