@@ -190,12 +190,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="facelec.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="facelec.Designer.cs">
-      <DependentUpon>facelec.cs</DependentUpon>
-    </Compile>
     <Compile Include="almgestion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -527,9 +521,6 @@
     <EmbeddedResource Include="etiq_mov3.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>etiq_mov3.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="facelec.resx">
-      <DependentUpon>facelec.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="almgestion.resx">
       <DependentUpon>almgestion.cs</DependentUpon>

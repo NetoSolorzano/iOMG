@@ -408,17 +408,17 @@ namespace iOMG
             Image img_F5 = Image.FromFile(imgF5);
             //
             menuStrip1.Items.Clear();
-            menuStrip1.Items.Add("Libre (Rápida)",img_F1,fac_rapida_Click);           // F1
-            menuStrip1.Items.Add("de Contratos",img_F2,fac_clientes_Click);           // F2
-            menuStrip1.Items.Add("F. Anticipos",img_F3,fac_anticipos_Click);          // F3
-            menuStrip1.Items.Add("Anulaciones",img_F4,fac_anulac_Click);              // F4
-            menuStrip1.Items.Add("Reportes",img_F5,fac_reportes_Click);               // F5
+            menuStrip1.Items.Add("Fact/Boletas",img_F1,fac_rapida_Click);           // F1
+            menuStrip1.Items.Add("Notas de crédito",img_F2,not_credito_Click);      // F2
+            menuStrip1.Items.Add("Notas de débito",img_F3,not_debito_Click);        // F3
+            menuStrip1.Items.Add("Control de pagos",img_F4,control_pagos_Click);    // F4
+            menuStrip1.Items.Add("Reportes",img_F5,fac_reportes_Click);             // F5
             //
-            menuStrip1.Visible = false;
+            menuStrip1.Visible = true;
         }
-        private void fac_rapida_Click(object sender, EventArgs e)       // factura rapida
+        private void fac_rapida_Click(object sender, EventArgs e)       // facturación general
         {
-            facelec ffe1 = new iOMG.facelec();
+            docsvta ffe1 = new iOMG.docsvta();
             ffe1.TopLevel = false;
             ffe1.Parent = this;
             ffe1.Top = pn_phor.Top + pn_phor.Height + 1;
@@ -426,15 +426,15 @@ namespace iOMG
             pn_centro.Controls.Add(ffe1);
             ffe1.Show();
         }
-        private void fac_clientes_Click(object sender, EventArgs e)     // factura de clientes con contrato
+        private void not_credito_Click(object sender, EventArgs e)     // notas de credito
         {
             MessageBox.Show("Form de facturas de contratos de clientes");
         }
-        private void fac_anticipos_Click(object sender, EventArgs e)    // factura de anticipos
+        private void not_debito_Click(object sender, EventArgs e)    // notas de debito
         {
             MessageBox.Show("Form de facturas de anticipos");
         }
-        private void fac_anulac_Click(object sender, EventArgs e)       // anulaciones de facturas
+        private void control_pagos_Click(object sender, EventArgs e)       // control de pagos
         {
             MessageBox.Show("Form de anulaciones de facturas");
         }
