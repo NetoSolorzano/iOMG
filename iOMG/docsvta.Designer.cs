@@ -136,7 +136,7 @@
             this.rb_bienes = new System.Windows.Forms.RadioButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cmb_plazo = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tx_cuotas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.rb_credito = new System.Windows.Forms.RadioButton();
             this.rb_contado = new System.Windows.Forms.RadioButton();
@@ -153,12 +153,14 @@
             this.milinea2 = new iOMG.milinea();
             this.milinea1 = new iOMG.milinea();
             this.tx_bruto = new iOMG.NumericTextBox();
-            this.tx_dscto = new iOMG.NumericTextBox();
+            this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
             this.milinea4 = new iOMG.milinea();
             this.tx_telef2 = new iOMG.NumericTextBox();
             this.tx_telef1 = new iOMG.NumericTextBox();
             this.tx_ndc = new iOMG.NumericTextBox();
+            this.tx_d_antic = new System.Windows.Forms.TextBox();
+            this.tx_d_valAntic = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -932,6 +934,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_d_valAntic);
+            this.panel1.Controls.Add(this.tx_d_antic);
             this.panel1.Controls.Add(this.tx_dat_mad);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.tx_d_precio);
@@ -1122,6 +1126,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(4, 192);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView1.Size = new System.Drawing.Size(869, 165);
             this.dataGridView1.TabIndex = 369;
             // 
@@ -1201,6 +1206,7 @@
             this.rb_antic.TabStop = true;
             this.rb_antic.Text = "Anticipo";
             this.rb_antic.UseVisualStyleBackColor = true;
+            this.rb_antic.Click += new System.EventHandler(this.rb_antic_Click);
             // 
             // rb_bienes
             // 
@@ -1212,12 +1218,13 @@
             this.rb_bienes.TabStop = true;
             this.rb_bienes.Text = "Estandar";
             this.rb_bienes.UseVisualStyleBackColor = true;
+            this.rb_bienes.Click += new System.EventHandler(this.rb_bienes_Click);
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.milinea4);
             this.panel3.Controls.Add(this.cmb_plazo);
-            this.panel3.Controls.Add(this.textBox1);
+            this.panel3.Controls.Add(this.tx_cuotas);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.rb_credito);
             this.panel3.Controls.Add(this.rb_contado);
@@ -1238,13 +1245,13 @@
             this.cmb_plazo.Size = new System.Drawing.Size(98, 21);
             this.cmb_plazo.TabIndex = 394;
             // 
-            // textBox1
+            // tx_cuotas
             // 
-            this.textBox1.Location = new System.Drawing.Point(224, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(29, 20);
-            this.textBox1.TabIndex = 393;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_cuotas.Location = new System.Drawing.Point(224, 3);
+            this.tx_cuotas.Name = "tx_cuotas";
+            this.tx_cuotas.Size = new System.Drawing.Size(29, 20);
+            this.tx_cuotas.TabIndex = 393;
+            this.tx_cuotas.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 
@@ -1265,6 +1272,7 @@
             this.rb_credito.TabStop = true;
             this.rb_credito.Text = "CREDITO";
             this.rb_credito.UseVisualStyleBackColor = true;
+            this.rb_credito.Click += new System.EventHandler(this.rb_credito_Click);
             // 
             // rb_contado
             // 
@@ -1276,6 +1284,7 @@
             this.rb_contado.TabStop = true;
             this.rb_contado.Text = "CONTADO";
             this.rb_contado.UseVisualStyleBackColor = true;
+            this.rb_contado.Click += new System.EventHandler(this.rb_contado_Click);
             // 
             // label8
             // 
@@ -1395,14 +1404,14 @@
             this.tx_bruto.TabIndex = 400;
             this.tx_bruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tx_dscto
+            // tx_igv
             // 
-            this.tx_dscto.AllowSpace = false;
-            this.tx_dscto.Location = new System.Drawing.Point(670, 382);
-            this.tx_dscto.Name = "tx_dscto";
-            this.tx_dscto.Size = new System.Drawing.Size(73, 20);
-            this.tx_dscto.TabIndex = 395;
-            this.tx_dscto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_igv.AllowSpace = false;
+            this.tx_igv.Location = new System.Drawing.Point(670, 382);
+            this.tx_igv.Name = "tx_igv";
+            this.tx_igv.Size = new System.Drawing.Size(73, 20);
+            this.tx_igv.TabIndex = 395;
+            this.tx_igv.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tx_valor
             // 
@@ -1447,6 +1456,27 @@
             this.tx_ndc.Size = new System.Drawing.Size(90, 20);
             this.tx_ndc.TabIndex = 42;
             // 
+            // tx_d_antic
+            // 
+            this.tx_d_antic.Location = new System.Drawing.Point(254, 29);
+            this.tx_d_antic.Name = "tx_d_antic";
+            this.tx_d_antic.Size = new System.Drawing.Size(359, 20);
+            this.tx_d_antic.TabIndex = 317;
+            this.tx_d_antic.Tag = "Id";
+            this.tx_d_antic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_antic.Visible = false;
+            // 
+            // tx_d_valAntic
+            // 
+            this.tx_d_valAntic.Location = new System.Drawing.Point(728, 29);
+            this.tx_d_valAntic.Name = "tx_d_valAntic";
+            this.tx_d_valAntic.Size = new System.Drawing.Size(72, 20);
+            this.tx_d_valAntic.TabIndex = 318;
+            this.tx_d_valAntic.Tag = "Id";
+            this.tx_d_valAntic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_valAntic.Visible = false;
+            this.tx_d_valAntic.Leave += new System.EventHandler(this.tx_d_valAntic_Leave);
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1465,7 +1495,7 @@
             this.Controls.Add(this.tx_bruto);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.tx_dscto);
+            this.Controls.Add(this.tx_igv);
             this.Controls.Add(this.tx_valor);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -1628,7 +1658,7 @@
         private System.Windows.Forms.TextBox tx_cont;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ComboBox cmb_plazo;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tx_cuotas;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton rb_credito;
         private System.Windows.Forms.RadioButton rb_contado;
@@ -1636,7 +1666,7 @@
         private NumericTextBox tx_bruto;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label9;
-        private NumericTextBox tx_dscto;
+        private NumericTextBox tx_igv;
         private NumericTextBox tx_valor;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tx_nomVen;
@@ -1651,5 +1681,7 @@
         private milinea milinea5;
         private milinea milinea6;
         private milinea milinea7;
+        private System.Windows.Forms.TextBox tx_d_valAntic;
+        private System.Windows.Forms.TextBox tx_d_antic;
     }
 }
