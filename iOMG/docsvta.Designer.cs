@@ -62,6 +62,7 @@
             this.tx_serie = new System.Windows.Forms.TextBox();
             this.tx_status = new System.Windows.Forms.TextBox();
             this.pan_cli = new System.Windows.Forms.Panel();
+            this.tx_idc = new System.Windows.Forms.TextBox();
             this.tx_dat_distri = new System.Windows.Forms.TextBox();
             this.tx_dat_provin = new System.Windows.Forms.TextBox();
             this.tx_dat_dpto = new System.Windows.Forms.TextBox();
@@ -79,8 +80,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.tx_telef2 = new iOMG.NumericTextBox();
-            this.tx_telef1 = new iOMG.NumericTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_mail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -93,22 +92,11 @@
             this.tx_nombre = new System.Windows.Forms.TextBox();
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.tx_ndc = new iOMG.NumericTextBox();
-            this.groupBox25 = new System.Windows.Forms.GroupBox();
-            this.groupBox26 = new System.Windows.Forms.GroupBox();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.tx_dat_orig = new System.Windows.Forms.TextBox();
             this.tx_dat_tipdoc = new System.Windows.Forms.TextBox();
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label52 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tx_corre = new System.Windows.Forms.TextBox();
             this.label53 = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
@@ -140,6 +128,8 @@
             this.tx_coment = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label31 = new System.Windows.Forms.Label();
             this.tx_cont = new System.Windows.Forms.TextBox();
             this.rb_antic = new System.Windows.Forms.RadioButton();
@@ -151,17 +141,24 @@
             this.rb_credito = new System.Windows.Forms.RadioButton();
             this.rb_contado = new System.Windows.Forms.RadioButton();
             this.label8 = new System.Windows.Forms.Label();
-            this.tx_bruto = new iOMG.NumericTextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.tx_dscto = new iOMG.NumericTextBox();
-            this.tx_valor = new iOMG.NumericTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tx_nomVen = new System.Windows.Forms.TextBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.tx_idc = new System.Windows.Forms.TextBox();
+            this.milinea7 = new iOMG.milinea();
+            this.milinea6 = new iOMG.milinea();
+            this.milinea5 = new iOMG.milinea();
+            this.milinea3 = new iOMG.milinea();
+            this.milinea2 = new iOMG.milinea();
+            this.milinea1 = new iOMG.milinea();
+            this.tx_bruto = new iOMG.NumericTextBox();
+            this.tx_dscto = new iOMG.NumericTextBox();
+            this.tx_valor = new iOMG.NumericTextBox();
+            this.milinea4 = new iOMG.milinea();
+            this.tx_telef2 = new iOMG.NumericTextBox();
+            this.tx_telef1 = new iOMG.NumericTextBox();
+            this.tx_ndc = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -169,16 +166,11 @@
             this.groupBox33.SuspendLayout();
             this.groupBox31.SuspendLayout();
             this.groupBox29.SuspendLayout();
-            this.groupBox25.SuspendLayout();
-            this.groupBox15.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -539,8 +531,17 @@
             this.pan_cli.Controls.Add(this.tx_ndc);
             this.pan_cli.Location = new System.Drawing.Point(4, 58);
             this.pan_cli.Name = "pan_cli";
-            this.pan_cli.Size = new System.Drawing.Size(833, 73);
+            this.pan_cli.Size = new System.Drawing.Size(869, 73);
             this.pan_cli.TabIndex = 374;
+            // 
+            // tx_idc
+            // 
+            this.tx_idc.Location = new System.Drawing.Point(584, 4);
+            this.tx_idc.Name = "tx_idc";
+            this.tx_idc.Size = new System.Drawing.Size(31, 20);
+            this.tx_idc.TabIndex = 388;
+            this.tx_idc.Tag = "id de la tabla anagrafica";
+            this.tx_idc.Visible = false;
             // 
             // tx_dat_distri
             // 
@@ -694,22 +695,6 @@
             this.label5.TabIndex = 358;
             this.label5.Text = "Dist.";
             // 
-            // tx_telef2
-            // 
-            this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
-            this.tx_telef2.Name = "tx_telef2";
-            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef2.TabIndex = 50;
-            // 
-            // tx_telef1
-            // 
-            this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
-            this.tx_telef1.Name = "tx_telef1";
-            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef1.TabIndex = 49;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -806,6 +791,7 @@
             this.cmb_tdoc.Name = "cmb_tdoc";
             this.cmb_tdoc.Size = new System.Drawing.Size(48, 21);
             this.cmb_tdoc.TabIndex = 41;
+            this.cmb_tdoc.SelectionChangeCommitted += new System.EventHandler(this.cmb_tdoc_SelectionChangeCommitted);
             // 
             // label11
             // 
@@ -816,32 +802,6 @@
             this.label11.Size = new System.Drawing.Size(39, 13);
             this.label11.TabIndex = 345;
             this.label11.Text = "Cliente";
-            // 
-            // tx_ndc
-            // 
-            this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
-            this.tx_ndc.Name = "tx_ndc";
-            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
-            this.tx_ndc.TabIndex = 42;
-            // 
-            // groupBox25
-            // 
-            this.groupBox25.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox25.Controls.Add(this.groupBox26);
-            this.groupBox25.Location = new System.Drawing.Point(799, 53);
-            this.groupBox25.Name = "groupBox25";
-            this.groupBox25.Size = new System.Drawing.Size(74, 1);
-            this.groupBox25.TabIndex = 390;
-            this.groupBox25.TabStop = false;
-            // 
-            // groupBox26
-            // 
-            this.groupBox26.Location = new System.Drawing.Point(0, -26);
-            this.groupBox26.Name = "groupBox26";
-            this.groupBox26.Size = new System.Drawing.Size(164, 1);
-            this.groupBox26.TabIndex = 113;
-            this.groupBox26.TabStop = false;
             // 
             // dtp_pedido
             // 
@@ -876,42 +836,6 @@
             this.tx_dat_tipdoc.TabIndex = 387;
             this.tx_dat_tipdoc.Visible = false;
             // 
-            // groupBox15
-            // 
-            this.groupBox15.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox15.Controls.Add(this.groupBox16);
-            this.groupBox15.Location = new System.Drawing.Point(4, 25);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(202, 1);
-            this.groupBox15.TabIndex = 386;
-            this.groupBox15.TabStop = false;
-            // 
-            // groupBox16
-            // 
-            this.groupBox16.Location = new System.Drawing.Point(0, -26);
-            this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(164, 1);
-            this.groupBox16.TabIndex = 113;
-            this.groupBox16.TabStop = false;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox7.Controls.Add(this.groupBox8);
-            this.groupBox7.Location = new System.Drawing.Point(739, 25);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(134, 1);
-            this.groupBox7.TabIndex = 385;
-            this.groupBox7.TabStop = false;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Location = new System.Drawing.Point(0, -26);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(164, 1);
-            this.groupBox8.TabIndex = 113;
-            this.groupBox8.TabStop = false;
-            // 
             // label52
             // 
             this.label52.AutoSize = true;
@@ -920,42 +844,6 @@
             this.label52.Size = new System.Drawing.Size(33, 13);
             this.label52.TabIndex = 384;
             this.label52.Text = "Id int.";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox3.Controls.Add(this.groupBox4);
-            this.groupBox3.Location = new System.Drawing.Point(640, 53);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(144, 1);
-            this.groupBox3.TabIndex = 383;
-            this.groupBox3.TabStop = false;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Location = new System.Drawing.Point(0, -26);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(164, 1);
-            this.groupBox4.TabIndex = 113;
-            this.groupBox4.TabStop = false;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Location = new System.Drawing.Point(352, 53);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 1);
-            this.groupBox1.TabIndex = 382;
-            this.groupBox1.TabStop = false;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Location = new System.Drawing.Point(0, -26);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(164, 1);
-            this.groupBox2.TabIndex = 113;
-            this.groupBox2.TabStop = false;
             // 
             // tx_corre
             // 
@@ -1015,7 +903,7 @@
             this.cmb_taller.DropDownWidth = 100;
             this.cmb_taller.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_taller.FormattingEnabled = true;
-            this.cmb_taller.Location = new System.Drawing.Point(73, 4);
+            this.cmb_taller.Location = new System.Drawing.Point(73, 5);
             this.cmb_taller.Name = "cmb_taller";
             this.cmb_taller.Size = new System.Drawing.Size(132, 21);
             this.cmb_taller.TabIndex = 371;
@@ -1030,6 +918,7 @@
             this.cmb_tipo.Name = "cmb_tipo";
             this.cmb_tipo.Size = new System.Drawing.Size(50, 21);
             this.cmb_tipo.TabIndex = 375;
+            this.cmb_tipo.SelectionChangeCommitted += new System.EventHandler(this.cmb_cap_SelectionChangeCommitted);
             // 
             // tx_idr
             // 
@@ -1255,6 +1144,8 @@
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.LightGray;
+            this.panel2.Controls.Add(this.groupBox5);
             this.panel2.Controls.Add(this.label31);
             this.panel2.Controls.Add(this.tx_cont);
             this.panel2.Controls.Add(this.rb_antic);
@@ -1263,6 +1154,24 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(312, 24);
             this.panel2.TabIndex = 393;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.Location = new System.Drawing.Point(173, 21);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(134, 1);
+            this.groupBox5.TabIndex = 367;
+            this.groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(0, -26);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(164, 1);
+            this.groupBox6.TabIndex = 113;
+            this.groupBox6.TabStop = false;
             // 
             // label31
             // 
@@ -1280,6 +1189,7 @@
             this.tx_cont.Size = new System.Drawing.Size(80, 20);
             this.tx_cont.TabIndex = 305;
             this.tx_cont.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_cont.Leave += new System.EventHandler(this.tx_cont_Leave);
             // 
             // rb_antic
             // 
@@ -1305,6 +1215,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.milinea4);
             this.panel3.Controls.Add(this.cmb_plazo);
             this.panel3.Controls.Add(this.textBox1);
             this.panel3.Controls.Add(this.label2);
@@ -1312,8 +1223,9 @@
             this.panel3.Controls.Add(this.rb_contado);
             this.panel3.Location = new System.Drawing.Point(4, 363);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(362, 24);
+            this.panel3.Size = new System.Drawing.Size(362, 26);
             this.panel3.TabIndex = 394;
+            this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
             // cmb_plazo
             // 
@@ -1374,16 +1286,6 @@
             this.label8.TabIndex = 399;
             this.label8.Text = "VALOR S/";
             // 
-            // tx_bruto
-            // 
-            this.tx_bruto.AllowSpace = false;
-            this.tx_bruto.Location = new System.Drawing.Point(670, 360);
-            this.tx_bruto.Name = "tx_bruto";
-            this.tx_bruto.ReadOnly = true;
-            this.tx_bruto.Size = new System.Drawing.Size(73, 20);
-            this.tx_bruto.TabIndex = 400;
-            this.tx_bruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // label21
             // 
             this.label21.AutoSize = true;
@@ -1401,6 +1303,97 @@
             this.label9.Size = new System.Drawing.Size(57, 13);
             this.label9.TabIndex = 396;
             this.label9.Text = "TOTAL S/";
+            // 
+            // button1
+            // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button1.Location = new System.Drawing.Point(786, 367);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(62, 50);
+            this.button1.TabIndex = 401;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // tx_nomVen
+            // 
+            this.tx_nomVen.Location = new System.Drawing.Point(330, 6);
+            this.tx_nomVen.Name = "tx_nomVen";
+            this.tx_nomVen.ReadOnly = true;
+            this.tx_nomVen.Size = new System.Drawing.Size(360, 20);
+            this.tx_nomVen.TabIndex = 405;
+            this.tx_nomVen.Tag = "Id";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(271, 10);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 13);
+            this.label12.TabIndex = 402;
+            this.label12.Text = "Vendedor";
+            // 
+            // milinea7
+            // 
+            this.milinea7.Location = new System.Drawing.Point(601, 423);
+            this.milinea7.Name = "milinea7";
+            this.milinea7.Size = new System.Drawing.Size(142, 1);
+            this.milinea7.TabIndex = 411;
+            this.milinea7.TabStop = false;
+            this.milinea7.Text = "milinea7";
+            // 
+            // milinea6
+            // 
+            this.milinea6.Location = new System.Drawing.Point(601, 402);
+            this.milinea6.Name = "milinea6";
+            this.milinea6.Size = new System.Drawing.Size(142, 1);
+            this.milinea6.TabIndex = 410;
+            this.milinea6.TabStop = false;
+            this.milinea6.Text = "milinea6";
+            // 
+            // milinea5
+            // 
+            this.milinea5.Location = new System.Drawing.Point(601, 379);
+            this.milinea5.Name = "milinea5";
+            this.milinea5.Size = new System.Drawing.Size(142, 1);
+            this.milinea5.TabIndex = 409;
+            this.milinea5.TabStop = false;
+            this.milinea5.Text = "milinea5";
+            // 
+            // milinea3
+            // 
+            this.milinea3.Location = new System.Drawing.Point(639, 53);
+            this.milinea3.Name = "milinea3";
+            this.milinea3.Size = new System.Drawing.Size(234, 1);
+            this.milinea3.TabIndex = 408;
+            this.milinea3.TabStop = false;
+            this.milinea3.Text = "milinea3";
+            // 
+            // milinea2
+            // 
+            this.milinea2.Location = new System.Drawing.Point(347, 53);
+            this.milinea2.Name = "milinea2";
+            this.milinea2.Size = new System.Drawing.Size(261, 1);
+            this.milinea2.TabIndex = 407;
+            this.milinea2.TabStop = false;
+            this.milinea2.Text = "milinea2";
+            // 
+            // milinea1
+            // 
+            this.milinea1.Location = new System.Drawing.Point(0, 25);
+            this.milinea1.Name = "milinea1";
+            this.milinea1.Size = new System.Drawing.Size(875, 1);
+            this.milinea1.TabIndex = 406;
+            this.milinea1.TabStop = false;
+            this.milinea1.Text = "milinea1";
+            // 
+            // tx_bruto
+            // 
+            this.tx_bruto.AllowSpace = false;
+            this.tx_bruto.Location = new System.Drawing.Point(670, 360);
+            this.tx_bruto.Name = "tx_bruto";
+            this.tx_bruto.ReadOnly = true;
+            this.tx_bruto.Size = new System.Drawing.Size(73, 20);
+            this.tx_bruto.TabIndex = 400;
+            this.tx_bruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tx_dscto
             // 
@@ -1421,67 +1414,51 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // button1
+            // milinea4
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(786, 367);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(62, 50);
-            this.button1.TabIndex = 401;
-            this.button1.UseVisualStyleBackColor = true;
+            this.milinea4.Location = new System.Drawing.Point(3, 22);
+            this.milinea4.Name = "milinea4";
+            this.milinea4.Size = new System.Drawing.Size(355, 1);
+            this.milinea4.TabIndex = 395;
+            this.milinea4.TabStop = false;
+            this.milinea4.Text = "milinea4";
             // 
-            // tx_nomVen
+            // tx_telef2
             // 
-            this.tx_nomVen.Location = new System.Drawing.Point(330, 6);
-            this.tx_nomVen.Name = "tx_nomVen";
-            this.tx_nomVen.ReadOnly = true;
-            this.tx_nomVen.Size = new System.Drawing.Size(360, 20);
-            this.tx_nomVen.TabIndex = 405;
-            this.tx_nomVen.Tag = "Id";
+            this.tx_telef2.AllowSpace = false;
+            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
+            this.tx_telef2.Name = "tx_telef2";
+            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef2.TabIndex = 50;
             // 
-            // groupBox5
+            // tx_telef1
             // 
-            this.groupBox5.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox5.Controls.Add(this.groupBox6);
-            this.groupBox5.Location = new System.Drawing.Point(267, 25);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(424, 1);
-            this.groupBox5.TabIndex = 403;
-            this.groupBox5.TabStop = false;
+            this.tx_telef1.AllowSpace = false;
+            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
+            this.tx_telef1.Name = "tx_telef1";
+            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef1.TabIndex = 49;
             // 
-            // groupBox6
+            // tx_ndc
             // 
-            this.groupBox6.Location = new System.Drawing.Point(0, -26);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(164, 1);
-            this.groupBox6.TabIndex = 113;
-            this.groupBox6.TabStop = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(271, 10);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 13);
-            this.label12.TabIndex = 402;
-            this.label12.Text = "Vendedor";
-            // 
-            // tx_idc
-            // 
-            this.tx_idc.Location = new System.Drawing.Point(584, 4);
-            this.tx_idc.Name = "tx_idc";
-            this.tx_idc.Size = new System.Drawing.Size(31, 20);
-            this.tx_idc.TabIndex = 388;
-            this.tx_idc.Tag = "id de la tabla anagrafica";
-            this.tx_idc.Visible = false;
+            this.tx_ndc.AllowSpace = false;
+            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
+            this.tx_ndc.Name = "tx_ndc";
+            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
+            this.tx_ndc.TabIndex = 42;
             // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.milinea7);
+            this.Controls.Add(this.milinea6);
+            this.Controls.Add(this.milinea5);
+            this.Controls.Add(this.milinea3);
+            this.Controls.Add(this.milinea2);
+            this.Controls.Add(this.milinea1);
             this.Controls.Add(this.tx_nomVen);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
@@ -1495,16 +1472,11 @@
             this.Controls.Add(this.tx_serie);
             this.Controls.Add(this.tx_status);
             this.Controls.Add(this.pan_cli);
-            this.Controls.Add(this.groupBox25);
             this.Controls.Add(this.dtp_pedido);
             this.Controls.Add(this.tx_dat_estad);
             this.Controls.Add(this.tx_dat_orig);
             this.Controls.Add(this.tx_dat_tipdoc);
-            this.Controls.Add(this.groupBox15);
-            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.label52);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tx_corre);
             this.Controls.Add(this.label53);
             this.Controls.Add(this.label54);
@@ -1534,19 +1506,14 @@
             this.groupBox33.ResumeLayout(false);
             this.groupBox31.ResumeLayout(false);
             this.groupBox29.ResumeLayout(false);
-            this.groupBox25.ResumeLayout(false);
-            this.groupBox15.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1619,21 +1586,11 @@
         private System.Windows.Forms.ComboBox cmb_tdoc;
         private System.Windows.Forms.Label label11;
         private NumericTextBox tx_ndc;
-        private System.Windows.Forms.GroupBox groupBox25;
-        private System.Windows.Forms.GroupBox groupBox26;
         private System.Windows.Forms.DateTimePicker dtp_pedido;
         private System.Windows.Forms.TextBox tx_dat_estad;
         private System.Windows.Forms.TextBox tx_dat_orig;
         private System.Windows.Forms.TextBox tx_dat_tipdoc;
-        private System.Windows.Forms.GroupBox groupBox15;
-        private System.Windows.Forms.GroupBox groupBox16;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label52;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tx_corre;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label54;
@@ -1683,9 +1640,16 @@
         private NumericTextBox tx_valor;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tx_nomVen;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tx_idc;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private milinea milinea1;
+        private milinea milinea2;
+        private milinea milinea3;
+        private milinea milinea4;
+        private milinea milinea5;
+        private milinea milinea6;
+        private milinea milinea7;
     }
 }

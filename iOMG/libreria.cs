@@ -91,6 +91,23 @@ namespace iOMG
         }
     }
 
+    public class mipanel : Panel
+    {
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            // aca van lo mio
+        }
+    }
+    public class milinea : GroupBox 
+    {
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            
+        }
+    }
+
     class libreria
     {
         //public Mysql conn = new Mysql();
