@@ -107,6 +107,8 @@
             this.cmb_tipo = new System.Windows.Forms.ComboBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_d_valAntic = new System.Windows.Forms.TextBox();
+            this.tx_d_antic = new System.Windows.Forms.TextBox();
             this.tx_dat_mad = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tx_d_precio = new System.Windows.Forms.TextBox();
@@ -159,8 +161,6 @@
             this.tx_telef2 = new iOMG.NumericTextBox();
             this.tx_telef1 = new iOMG.NumericTextBox();
             this.tx_ndc = new iOMG.NumericTextBox();
-            this.tx_d_antic = new System.Windows.Forms.TextBox();
-            this.tx_d_valAntic = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -958,6 +958,27 @@
             this.panel1.Size = new System.Drawing.Size(869, 54);
             this.panel1.TabIndex = 367;
             // 
+            // tx_d_valAntic
+            // 
+            this.tx_d_valAntic.Location = new System.Drawing.Point(728, 29);
+            this.tx_d_valAntic.Name = "tx_d_valAntic";
+            this.tx_d_valAntic.Size = new System.Drawing.Size(72, 20);
+            this.tx_d_valAntic.TabIndex = 318;
+            this.tx_d_valAntic.Tag = "Id";
+            this.tx_d_valAntic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_valAntic.Visible = false;
+            this.tx_d_valAntic.Leave += new System.EventHandler(this.tx_d_valAntic_Leave);
+            // 
+            // tx_d_antic
+            // 
+            this.tx_d_antic.Location = new System.Drawing.Point(254, 29);
+            this.tx_d_antic.Name = "tx_d_antic";
+            this.tx_d_antic.Size = new System.Drawing.Size(359, 20);
+            this.tx_d_antic.TabIndex = 317;
+            this.tx_d_antic.Tag = "Id";
+            this.tx_d_antic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_antic.Visible = false;
+            // 
             // tx_dat_mad
             // 
             this.tx_dat_mad.Location = new System.Drawing.Point(575, -1);
@@ -1051,6 +1072,7 @@
             this.bt_det.TabIndex = 22;
             this.bt_det.Text = "Agrega / Actualiza";
             this.bt_det.UseVisualStyleBackColor = true;
+            this.bt_det.Click += new System.EventHandler(this.bt_det_Click);
             // 
             // tx_d_mad
             // 
@@ -1192,7 +1214,7 @@
             this.tx_cont.Location = new System.Drawing.Point(229, 2);
             this.tx_cont.Name = "tx_cont";
             this.tx_cont.Size = new System.Drawing.Size(80, 20);
-            this.tx_cont.TabIndex = 305;
+            this.tx_cont.TabIndex = 2;
             this.tx_cont.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_cont.Leave += new System.EventHandler(this.tx_cont_Leave);
             // 
@@ -1455,27 +1477,6 @@
             this.tx_ndc.Name = "tx_ndc";
             this.tx_ndc.Size = new System.Drawing.Size(90, 20);
             this.tx_ndc.TabIndex = 42;
-            // 
-            // tx_d_antic
-            // 
-            this.tx_d_antic.Location = new System.Drawing.Point(254, 29);
-            this.tx_d_antic.Name = "tx_d_antic";
-            this.tx_d_antic.Size = new System.Drawing.Size(359, 20);
-            this.tx_d_antic.TabIndex = 317;
-            this.tx_d_antic.Tag = "Id";
-            this.tx_d_antic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_antic.Visible = false;
-            // 
-            // tx_d_valAntic
-            // 
-            this.tx_d_valAntic.Location = new System.Drawing.Point(728, 29);
-            this.tx_d_valAntic.Name = "tx_d_valAntic";
-            this.tx_d_valAntic.Size = new System.Drawing.Size(72, 20);
-            this.tx_d_valAntic.TabIndex = 318;
-            this.tx_d_valAntic.Tag = "Id";
-            this.tx_d_valAntic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_d_valAntic.Visible = false;
-            this.tx_d_valAntic.Leave += new System.EventHandler(this.tx_d_valAntic_Leave);
             // 
             // docsvta
             // 

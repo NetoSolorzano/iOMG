@@ -526,12 +526,13 @@ namespace iOMG
         }
         private void limpia_ini()                           // limpia e inicializa datos antes y despues de leer y grabar registro
         {
-            
             string modo = Tx_modo.Text;
             limpiar(this);
             limpia_chk();
             limpia_combos();
             limpia_otros();
+            limpia_panel(pan_cli);
+            limpia_panel(panel2);
             Tx_modo.Text = modo;
             //cmb_taller.Enabled = false;
             if (modo != "NUEVO")
@@ -554,6 +555,87 @@ namespace iOMG
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
                 tx_serie.Text = row[0].ItemArray[3].ToString();
+            }
+        }
+        private void jala_cont(string conti)                // jala datos del contrato
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dataGridView1.Rows.Clear();
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    conn.Open();
+                    string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
+                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail " +
+                        "FROM detacon a " +
+                        "LEFT JOIN desc_est de ON de.IDCodice = a.estado " +
+                        "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
+                        "LEFT JOIN anag_cli ac ON ac.IDAnagrafica = c.cliente " +
+                        "WHERE a.contratoh = @cont";
+                    using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                    {
+                        micon.Parameters.AddWithValue("@cont", conti);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                        {
+                            da.Fill(dt);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    tx_idc.Text = dt.Rows[0].ItemArray[10].ToString();
+                    tx_dat_tdoc.Text = dt.Rows[0].ItemArray[11].ToString();
+                    string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                    DataRow[] row = dtdoc.Select(axs);
+                    cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+                    tx_ndc.Text = dt.Rows[0].ItemArray[12].ToString();
+                    tx_nombre.Text = dt.Rows[0].ItemArray[13].ToString();
+                    tx_direc.Text = dt.Rows[0].ItemArray[14].ToString() + " " + dt.Rows[0].ItemArray[15].ToString();
+                    tx_dpto.Text = dt.Rows[0].ItemArray[18].ToString();
+                    tx_prov.Text = dt.Rows[0].ItemArray[17].ToString();
+                    tx_dist.Text = dt.Rows[0].ItemArray[16].ToString();
+                    tx_mail.Text = dt.Rows[0].ItemArray[21].ToString();
+                    tx_telef1.Text = dt.Rows[0].ItemArray[19].ToString();
+                    tx_telef2.Text = dt.Rows[0].ItemArray[20].ToString();
+                    // detalle
+                    grilladet(Tx_modo.Text);
+                    int cnt = 1;
+                    double toti = 0;
+                    foreach (DataRow data in dt.Rows)
+                    {
+                        dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
+                            data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
+                            data.ItemArray[8].ToString(), data.ItemArray[9].ToString());
+                        cnt += 1;
+                        toti = toti + double.Parse(data.ItemArray[9].ToString());
+                    }
+                    tx_valor.Text = toti.ToString("#0.00");
+                    tx_bruto.Text = (toti / 1.18).ToString("#0.00");
+                    tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
+                    //
+                    if (rb_antic.Checked == true)
+                    {
+                        toti = 0;
+                        tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
+                        tx_valor.Text = toti.ToString("#0.00");
+                        tx_bruto.Text = (toti / 1.18).ToString("#0.00");
+                        tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
+                        tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No existe el contrato!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_cont.Text = "";
+                    return;
+                }
+                dt.Dispose();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en ejecución de código", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -1087,100 +1169,14 @@ namespace iOMG
                 }
                 if (tx_cont.Text.Trim() != "")
                 {
-                    try
-                    {
-                        DataTable dt = new DataTable();
-                        using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
-                        {
-                            conn.Open();
-                            string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
-                                "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail " +
-                                "FROM detacon a " +
-                                "LEFT JOIN desc_est de ON de.IDCodice = a.estado " +
-                                "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
-                                "LEFT JOIN anag_cli ac ON ac.IDAnagrafica = c.cliente " +
-                                "WHERE a.contratoh = @cont";
-                            using (MySqlCommand micon = new MySqlCommand(consulta, conn))
-                            {
-                                micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                                using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
-                                {
-                                    da.Fill(dt);
-                                }
-                            }
-                        }
-                        if (dt.Rows.Count > 0)
-                        {
-                            tx_idc.Text = dt.Rows[0].ItemArray[10].ToString();
-                            tx_dat_tdoc.Text = dt.Rows[0].ItemArray[11].ToString();
-                            string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
-                            DataRow[] row = dtdoc.Select(axs);
-                            cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
-                            tx_ndc.Text = dt.Rows[0].ItemArray[12].ToString();
-                            tx_nombre.Text = dt.Rows[0].ItemArray[13].ToString();
-                            tx_direc.Text = dt.Rows[0].ItemArray[14].ToString() + " " + dt.Rows[0].ItemArray[15].ToString();
-                            tx_dpto.Text = dt.Rows[0].ItemArray[18].ToString();
-                            tx_prov.Text = dt.Rows[0].ItemArray[17].ToString();
-                            tx_dist.Text = dt.Rows[0].ItemArray[16].ToString();
-                            tx_mail.Text = dt.Rows[0].ItemArray[21].ToString();
-                            tx_telef1.Text = dt.Rows[0].ItemArray[19].ToString();
-                            tx_telef2.Text = dt.Rows[0].ItemArray[20].ToString();
-                            // detalle
-                            grilladet(Tx_modo.Text);
-                            int cnt = 1;
-                            double toti = 0;
-                            foreach (DataRow data in dt.Rows)
-                            {
-                                dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
-                                    data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
-                                    data.ItemArray[8].ToString(), data.ItemArray[9].ToString());
-                                cnt += 1;
-                                toti = toti + double.Parse(data.ItemArray[9].ToString());
-                            }
-                            tx_valor.Text = toti.ToString("#0.00");
-                            tx_bruto.Text = (toti / 1.18).ToString("#0.00");
-                            tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
-                            //
-                            if (rb_antic.Checked == true)
-                            {
-                                toti = 0;
-                                tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
-                                tx_d_valAntic.Focus();
-                                tx_valor.Text = toti.ToString("#0.00");
-                                tx_bruto.Text = (toti / 1.18).ToString("#0.00");
-                                tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
-                                tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("No existe el contrato!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            tx_cont.Text = "";
-                            return;
-                        }
-                        dt.Dispose();
-                    }
-                    catch (MySqlException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error en ejecución de código", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    jala_cont(tx_cont.Text);
+                    //if (rb_antic.Checked == true) tx_d_valAntic.Focus();
                 }
             }
         }
         private void tx_d_valAntic_Leave(object sender, EventArgs e)
         {
-            if (Tx_modo.Text == "NUEVO" && tx_d_valAntic.Text != "")
-            {
-                double ntoti = 0;
-                double.TryParse(tx_d_valAntic.Text, out ntoti);
-                if (ntoti > 0)
-                {
-                    tx_valor.Text = ntoti.ToString("#0.00");
-                    tx_bruto.Text = (ntoti / 1.18).ToString("#0.00");
-                    tx_igv.Text = (ntoti - (ntoti / 1.18)).ToString("#0.00");
-                }
-            }
+
         }
         #endregion leaves;
 
@@ -1299,41 +1295,28 @@ namespace iOMG
         #region botones de grabar y agregar
         private void bt_det_Click(object sender, EventArgs e)
         {
-            // validaciones
-            if(tx_d_can.Text.Trim() == "")
+            if (Tx_modo.Text == "NUEVO" && rb_antic.Checked == true)
             {
-                MessageBox.Show("Ingrese la cantidad", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                tx_d_can.Focus();
-                return;
-            }
-            if (int.Parse(tx_d_can.Text) <= 0)
-            {
-                MessageBox.Show("La cantidad debe ser mayor a cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                tx_d_can.Focus();
-                return;
-            }
-            if (tx_d_codi.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el código del artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                tx_d_codi.Focus();
-                return;
-            }
-            if (tx_d_id.Text.Trim() == "")  // validamos que el codigo no se repita en la grilla
-            {
-                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                if (tx_d_valAntic.Text != "")
                 {
-                    if (tx_d_codi.Text == dataGridView1.Rows[i].Cells[2].Value.ToString())
+                    double ntoti = 0;
+                    double.TryParse(tx_d_valAntic.Text, out ntoti);
+                    if (ntoti > 0)
                     {
-                        MessageBox.Show("Esta repitiendo el código del artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        tx_d_can.Focus();
-                        return;
+                        tx_valor.Text = ntoti.ToString("#0.00");
+                        tx_bruto.Text = (ntoti / 1.18).ToString("#0.00");
+                        tx_igv.Text = (ntoti - (ntoti / 1.18)).ToString("#0.00");
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Ingrese el valor del anticipo","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    rb_antic.Focus();
+                    return;
+                }
             }
-            if (Tx_modo.Text == "NUEVO")
+            if (Tx_modo.Text == "NUEVO" && rb_bienes.Checked == true)   // TODA ESTA PARTE FALTA TRABAJAR ... 26/06/2022
             {
-                // POR DEFECTO, SOLO SE PERMITE UN ITEM POR PEDIDO 18/09/2020 a menos que sea silla kandinski
-                // validamos que solo sea un 1 item en detalle a menos que variable [codVar] sea para varios
                 if (dataGridView1.Rows.Count != 1)
                 {
                     if (tx_d_codi.Text.Substring(0, 4) != codVar || (tx_d_codi.Text.Substring(0, 4) != dataGridView1.Rows[0].Cells[2].Value.ToString().Substring(0, 4)))
@@ -1445,6 +1428,5 @@ namespace iOMG
         {
 
         }
-
     }
 }
