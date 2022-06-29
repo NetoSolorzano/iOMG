@@ -75,6 +75,7 @@ namespace iOMG
         DataTable dtu = new DataTable();        // dtg primario, original con la carga del 
         DataTable dttaller = new DataTable();   // combo local de ventas
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
+        DataTable dtfp = new DataTable();       // combo para tipo de pago
 
         public docsvta()
         {
@@ -128,19 +129,17 @@ namespace iOMG
                 }
                 if (tx_d_nom.Focused == true || tx_d_codi.Focused == true)
                 {
-                    para1 = "detacon";
-                    para2 = tx_cont.Text;
-                    para3 = "";
+                    para1 = "items";
+                    para2 = "todos";
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
                     {
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
-                            tx_d_can.Text = ayu2.ReturnValueA[7].ToString();
-                            tx_d_nom.Text = ayu2.ReturnValueA[3].ToString();
-                            tx_d_med.Text = ayu2.ReturnValueA[4].ToString();
-                            tx_d_mad.Text = ayu2.ReturnValueA[5].ToString();
+                            tx_d_codi.Text = ayu2.ReturnValue1.ToString();
+                            tx_d_nom.Text = ayu2.ReturnValue2.ToString();
+                            tx_d_id.Text = ayu2.ReturnValue0.ToString();
                         }
                     }
                 }
@@ -327,7 +326,7 @@ namespace iOMG
             dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[1].Name = "cant";
             // articulo
-            dataGridView1.Columns[2].Visible = true;            // columna visible o no
+            dataGridView1.Columns[2].Visible = false;            // columna visible o no
             dataGridView1.Columns[2].HeaderText = "Artículo";    // titulo de la columna
             dataGridView1.Columns[2].Width = 70;                // ancho
             dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
@@ -336,7 +335,7 @@ namespace iOMG
             // nombre del articulo
             dataGridView1.Columns[3].Visible = true;            // columna visible o no
             dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
-            dataGridView1.Columns[3].Width = 200;                // ancho
+            dataGridView1.Columns[3].Width = 400;                // ancho
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[3].Name = "nombre";
             // medidas 
@@ -373,6 +372,7 @@ namespace iOMG
             dataGridView1.Columns[8].Width = 60;                // ancho
             dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[8].Name = "precio";
             // total
             dataGridView1.Columns[9].Visible = false;
@@ -419,7 +419,7 @@ namespace iOMG
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del tipo documento cliente
-                const string condoc = "select descrizionerid,idcodice from desc_doc " +
+                const string condoc = "select descrizionerid,idcodice,codigo from desc_doc " +
                                        "where numero=1";
                 MySqlCommand cmddoc = new MySqlCommand(condoc, conn);
                 MySqlDataAdapter dadoc = new MySqlDataAdapter(cmddoc);
@@ -427,7 +427,20 @@ namespace iOMG
                 foreach (DataRow row in dtdoc.Rows)
                 {
                     cmb_tdoc.Items.Add(row.ItemArray[0].ToString());
-                    cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
+                    //cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
+                }
+                // seleccion de forma de pago
+                const string confpa = "select descrizionerid,idcodice from desc_mpa where numero=1";
+                using (MySqlCommand my = new MySqlCommand(confpa, conn))
+                {
+                    using (MySqlDataAdapter dafp = new MySqlDataAdapter(my))
+                    {
+                        dafp.Fill(dtfp);
+                        foreach (DataRow row in dtfp.Rows)
+                        {
+                            cmb_plazo.Items.Add(row.ItemArray[0].ToString());
+                        }
+                    }
                 }
             }
             conn.Close();
@@ -490,7 +503,7 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private bool buscont(string cont)                   // busqueda de contrato
+        private bool busclte(string doc, string num)        // busqueda de cliente
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -501,21 +514,25 @@ namespace iOMG
                 Application.Exit();
                 return retorna;
             }
-            string consulta = "select a.id,a.contrato,b.idanagrafica,b.razonsocial,c.descrizionerid,a.tipoes,a.fecha " +
-                "from contrat a " +
-                "left join anag_cli b on b.idanagrafica=a.cliente " +
-                "left join desc_alm c on c.idcodice=a.tipoes " +
-                "where a.contrato=@cont and a.status<>'ANULAD'";
+            string consulta = "SELECT idanagrafica,razonsocial,direcc1,direcc2,localidad,provincia,depart,numerotel1,numerotel2,email " +
+                "FROM anag_cli WHERE tipdoc=@doc and ruc=@num";
             MySqlCommand micon = new MySqlCommand(consulta, conn);
-            micon.Parameters.AddWithValue("@cont", cont);
+            micon.Parameters.AddWithValue("@doc", doc);
+            micon.Parameters.AddWithValue("@num", num);
             MySqlDataReader dr = micon.ExecuteReader();
             if (dr.Read())
             {
                 if (dr.GetInt16(0) > 0)
                 {
-                    tx_idc.Text = dr.GetString(2);
-                    tx_nombre.Text = dr.GetString(3);
-                    // aca va el resto ...
+                    tx_idc.Text = dr.GetString(0);
+                    tx_nombre.Text = dr.GetString(1);
+                    tx_direc.Text = dr.GetString(2);
+                    tx_dpto.Text = dr.GetString(6);
+                    tx_prov.Text = dr.GetString(5);
+                    tx_dist.Text = dr.GetString(4);
+                    tx_mail.Text = dr.GetString(9);
+                    tx_telef1.Text = dr.GetString(7);
+                    tx_telef2.Text = dr.GetString(8);
                     retorna = true;
                 }
                 else retorna = false;
@@ -550,7 +567,8 @@ namespace iOMG
                 string axs = string.Format("idcodice='{0}'",tx_dat_orig.Text);
                 DataRow[] row = dttaller.Select(axs);
                 cmb_taller.SelectedItem = row[0].ItemArray[1].ToString();
-                tx_nomVen.Text = Program.vg_nuse;
+                tx_nomVen.Text = asd; // Program.vg_nuse;
+                tx_nomVen.ReadOnly = false;
                 dtp_pedido.Value = DateTime.Now;
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
@@ -733,8 +751,8 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
             rb_bienes.Checked = true;
+            rb_bienes.PerformClick();         // rb_contado_Click(null, null);
             rb_contado.Checked = true;
-            rb_contado_Click(null, null);
             cmb_tipo.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1126,8 +1144,16 @@ namespace iOMG
         }
         private void cmb_tdoc_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (cmb_tdoc.SelectedValue != null) tx_dat_tdoc.Text = cmb_tdoc.SelectedValue.ToString();
-            else tx_dat_tdoc.Text = cmb_tdoc.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+            if (cmb_tdoc.SelectedIndex > -1)
+            {
+                string axs = string.Format("descrizionerid='{0}'", cmb_tdoc.Text);
+                DataRow[] row = dtdoc.Select(axs);
+                tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
+            }
+        }
+        private void cmb_plazo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+
         }
         #endregion comboboxes
 
@@ -1157,7 +1183,7 @@ namespace iOMG
                 return;
             }
         }
-        private void tx_cont_Leave(object sender, EventArgs e)          // valida contrato y jala los datos
+        private void tx_cont_Leave(object sender, EventArgs e)                // valida contrato y jala los datos
         {
             if (Tx_modo.Text == "NUEVO")
             {
@@ -1171,6 +1197,117 @@ namespace iOMG
                 {
                     jala_cont(tx_cont.Text);
                     //if (rb_antic.Checked == true) tx_d_valAntic.Focus();
+                }
+            }
+        }
+        private void valDocClte_Leave(object sender, EventArgs e)             // validamos el documento del cliente
+        {
+            // según que tipo de comprobante vamos a generar .. actuamos
+            if (Tx_modo.Text == "NUEVO" && tx_ndc.Text.Trim() != "")
+            {
+                // validaciones básicas por tipo de documento 
+                string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                DataRow[] row = dtdoc.Select(axs);
+                if (row[0].ItemArray[2].ToString() != tx_ndc.Text.Trim().Length.ToString())
+                {
+                    MessageBox.Show("Cantidad de dígitos incorrecto","Atención",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    tx_ndc.Focus();
+                    return;
+                }
+                if (rb_bienes.Checked == true)  // pago total vta directa o anticipo de vta con contrato
+                {
+                    // Aca no hay F1  ... acá vamos defrente con el número
+                    if (tx_ndc.Text.Trim() != "" && tx_dat_tdoc.Text != "")
+                    {
+                        // primero buscamos en la base de clientes del sistema
+                        if (busclte(tx_dat_tdoc.Text,tx_ndc.Text) == false)
+                        {
+                            // si no hay Y SI DOCUMENTO ES RUC O DNI, vamos al conector a buscarlo por ahí
+                            string[] biene = lib.conectorSolorsoft(cmb_tdoc.Text.ToUpper().Trim(), tx_ndc.Text);
+                            if (biene[0] == "")
+                            {
+                                var aa = MessageBox.Show(" No encontramos el documento en ningún registro. " + Environment.NewLine +
+                                    " Deberá ingresarlo manualmente si esta seguro(a) " + Environment.NewLine + 
+                                    " de la validez del número y documento. " + Environment.NewLine +
+                                    "" + Environment.NewLine +
+                                    "Confirma que desea ingresarlo manualmente?","Atención",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                if (aa == DialogResult.No)
+                                {
+                                    tx_ndc.Text = "";
+                                    tx_ndc.Focus();
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                tx_nombre.Text = biene[0];   // razon social
+                                //biene[1];                    // ubigeo
+                                tx_direc.Text = biene[2];    // direccion
+                                tx_dpto.Text = biene[3];     // departamento
+                                tx_prov.Text = biene[4];     // provincia
+                                tx_dist.Text = biene[5];     // distrito
+                                //biene[6]                      // estado del contrib.
+                                //biene[7]
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Seleccione un tipo de documento y" + Environment.NewLine +
+                            "escriba el número correspondiente","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        cmb_tdoc.Focus();
+                        return;
+                    }
+                }
+                if (rb_antic.Checked == true)   // 2do pago parcial o cancelatorio de un contrato
+                {
+                    if (tx_ndc.Text.Trim() != "" && tx_dat_tdoc.Text != "")
+                    {
+                        if (busclte(tx_dat_tdoc.Text, tx_ndc.Text) == false)
+                        {
+                            var aaa = MessageBox.Show("No encontramos el documento en la B.D." + Environment.NewLine +
+                                "Confirma que desea generar el comprobante?","Atención",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                            if (aaa == DialogResult.Yes)
+                            {
+                                string[] biene = lib.conectorSolorsoft(cmb_tdoc.Text.ToUpper().Trim(), tx_ndc.Text);
+                                if (biene[0] == "")
+                                {
+                                    var aa = MessageBox.Show(" No encontramos los datos en ningún registro. " + Environment.NewLine +
+                                        " Deberá ingresarlo manualmente si esta seguro(a) " + Environment.NewLine +
+                                        " de la validez del número y documento. " + Environment.NewLine +
+                                        "" + Environment.NewLine +
+                                        "Confirma que desea ingresarlo manualmente?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    if (aa == DialogResult.No)
+                                    {
+                                        tx_ndc.Text = "";
+                                        tx_ndc.Focus();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    tx_nombre.Text = biene[0];   // razon social
+                                    //biene[1];                    // ubigeo
+                                    tx_direc.Text = biene[2];    // direccion
+                                    tx_dpto.Text = biene[3];     // departamento
+                                    tx_prov.Text = biene[4];     // provincia
+                                    tx_dist.Text = biene[5];     // distrito
+                                }
+                            }
+                            else
+                            {
+                                tx_ndc.Text = "";
+                                tx_ndc.Focus();
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Seleccione un tipo de documento", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cmb_tdoc.Focus();
+                        return;
+                    }
                 }
             }
         }
@@ -1197,7 +1334,8 @@ namespace iOMG
                 tx_d_mad.Visible = true;
                 tx_d_precio.Visible = true;
                 //
-
+                lb_cont.Visible = false;
+                tx_cont.Visible = false;
             }
         }
         private void rb_antic_Click(object sender, EventArgs e)
@@ -1228,6 +1366,8 @@ namespace iOMG
                 //
                 if (Tx_modo.Text == "NUEVO")
                 {
+                    lb_cont.Visible = true;
+                    tx_cont.Visible = true;
                     tx_cont.Focus();
                 }
             }
@@ -1289,6 +1429,26 @@ namespace iOMG
             {
                 e.Cancel = true;
             }
+            else
+            {
+                var aa = MessageBox.Show("Confirma que desea borrar el artículo?","Atención",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                if (aa == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    int i = e.Row.Index;
+                    double vb = double.Parse(dataGridView1.Rows[i].Cells["total"].Value.ToString());
+
+                    double tv = 0;
+                    double.TryParse(tx_valor.Text, out tv);
+
+                    tx_valor.Text = (tv - vb).ToString("#0.00");
+                    tx_bruto.Text = ((tv - vb) / 1.18).ToString("#0.00");
+                    tx_igv.Text = ((tv - vb) - ((tv - vb) / 1.18)).ToString("#0.00");
+                }
+            }
         }
         #endregion
 
@@ -1315,77 +1475,39 @@ namespace iOMG
                     return;
                 }
             }
-            if (Tx_modo.Text == "NUEVO" && rb_bienes.Checked == true)   // TODA ESTA PARTE FALTA TRABAJAR ... 26/06/2022
+            if (Tx_modo.Text == "NUEVO" && rb_bienes.Checked == true)
             {
-                if (dataGridView1.Rows.Count != 1)
+                if (tx_d_precio.Text != "")
                 {
-                    if (tx_d_codi.Text.Substring(0, 4) != codVar || (tx_d_codi.Text.Substring(0, 4) != dataGridView1.Rows[0].Cells[2].Value.ToString().Substring(0, 4)))
+                    double tv = 0;
+                    double.TryParse(tx_valor.Text, out tv);
+
+                    double ntoti = double.Parse(tx_d_precio.Text);
+                    if (ntoti > 0)
                     {
-                        MessageBox.Show("No se permite mas items", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                }
-                // validamos cant item  validar que la cantidad no sea > cantidad del contrato
-                bool pasa = false;
-                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
-                {
-                    conn.Open();
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        string busca = "select cant,saldo from detacon where contratoh=@cont and item=@item";
-                        using (MySqlCommand micon = new MySqlCommand(busca, conn))
-                        {
-                            string cod = tx_d_codi.Text.Substring(0, 10) + "XX" + tx_d_codi.Text.Substring(12, 6);
-                            micon.Parameters.AddWithValue("@cont", tx_cont.Text.Trim());
-                            micon.Parameters.AddWithValue("@item", cod);
-                            using (MySqlDataReader dr = micon.ExecuteReader())
-                            {
-                                int vs = 0;
-                                if (dr.Read())
-                                {
-                                    vs = dr.GetInt32(1);
-                                    if (int.Parse(tx_d_can.Text) > vs)
-                                    {
-                                        MessageBox.Show("La cantidad pedida es mayor al saldo del contrato!", "Error - corrija",
-                                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        tx_d_can.Focus();
-                                        pasa = false;
-                                    }
-                                    else
-                                    {
-                                        pasa = true;
-                                    }
-                                }
-                            }
-                        }
+                        _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "N");
+
+                        tx_valor.Text = (ntoti + tv).ToString("#0.00");
+                        tx_bruto.Text = ((ntoti + tv) / 1.18).ToString("#0.00");
+                        tx_igv.Text = ((double.Parse(tx_valor.Text)) - ((double.Parse(tx_valor.Text)) / 1.18)).ToString("#0.00");
+
+                        limpia_panel(panel1);
                     }
                     else
                     {
-                        MessageBox.Show("No se puede validar con el contrato", "Imposible conectarse al servidor",
-                            MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                        MessageBox.Show("El precio debe ser mayor a cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        tx_d_precio.Focus();
+                        return;
                     }
                 }
-                if (pasa == true)
+                else 
                 {
-                    dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                tx_d_mad.Text, tx_dat_mad.Text, "", "", tx_d_precio.Text, "N");
+                    MessageBox.Show("Ingrese el precio de venta", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_d_precio.Focus();
+                    return;
                 }
-            }
-            if (Tx_modo.Text == "EDITAR")   // SOLO SE PERMITE EDITAR COMENTARIO DE ITEM 01/10/2020
-            {
-                if (tx_d_id.Text.Trim() != "")  // iddetaped,cant,item,nombre,medidas,madera,piedra,descrizionerid,coment,estado,madera,piedra,fingreso,saldo,total,ne,iddetc
-                {
-                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;    // cant editada > cant grilla? -> saldo=saldo+(dif cant edit - cant grilla)
 
-                    obj.Cells[15].Value = "A";  // registro actualizado
-                }
-                else
-                {
-                    MessageBox.Show("No es posible agregar en este modo", "Modo Edición");
-                }
-                //dtp_fingreso.Checked = false;
-                //dtp_fingreso.Value = DateTime.Now;
-                limpia_panel(panel1);               // limpia panel1
             }
         }
         private void button1_Click(object sender, EventArgs e)      // graba 
@@ -1428,5 +1550,6 @@ namespace iOMG
         {
 
         }
+
     }
 }
