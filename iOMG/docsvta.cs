@@ -53,6 +53,7 @@ namespace iOMG
         string MonDeft = "";            // moneda por defecto para los comprobantes
         string v_igv = Program.v_igv;   // porentaje en numero del igv
         string codCanc = "";            // codigo estado cancelado
+        string lps = "";                // listado de productos que tienen stock
 
         //string canovald2 = "";          // captitulos donde no se valida det2
         //string conovald2 = "";          // valor por defecto al no validar det2
@@ -80,6 +81,7 @@ namespace iOMG
         DataTable dttaller = new DataTable();   // combo local de ventas
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
         DataTable dtfp = new DataTable();       // combo para tipo de pago
+        DataTable dtpedido = new DataTable();   // tipos documento de venta
 
         public docsvta()
         {
@@ -144,6 +146,7 @@ namespace iOMG
                             tx_d_codi.Text = ayu2.ReturnValue1.ToString();
                             tx_d_nom.Text = ayu2.ReturnValue2.ToString();
                             tx_d_id.Text = ayu2.ReturnValue0.ToString();
+                            tx_d_precio.Text = ayu2.ReturnValueA[3];
                         }
                     }
                 }
@@ -254,6 +257,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "Anulado") nomanu = row["valor"].ToString().Trim();        // nombre estado anulado
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "cancelado") codCanc = row["valor"].ToString().Trim();        // codigo estado cancelado
                         if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "default") MonDeft = row["valor"].ToString().Trim();          // moneda por defecto
+                        if (row["campo"].ToString() == "items" && row["param"].ToString() == "stock") lps = row["valor"].ToString().Trim();                 // tipos de muebles que se hacen contrato
                     }
                 }
                 da.Dispose();
@@ -428,12 +432,11 @@ namespace iOMG
                 const string conpedido = "select descrizionerid,idcodice from desc_tdv " +
                                        "where numero=1";
                 MySqlCommand cmdpedido = new MySqlCommand(conpedido, conn);
-                DataTable dtpedido = new DataTable();
                 MySqlDataAdapter dapedido = new MySqlDataAdapter(cmdpedido);
                 dapedido.Fill(dtpedido);
                 foreach (DataRow row in dtpedido.Rows)
                 {
-                    cmb_tipo.Items.Add(row.ItemArray[1].ToString() + " - " + row.ItemArray[0].ToString());
+                    cmb_tipo.Items.Add(row.ItemArray[0].ToString());
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del tipo documento cliente
@@ -495,12 +498,12 @@ namespace iOMG
                     "fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
                     "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
                     "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-                    "referen1,ubipdest,conPago,contrato," +
+                    "referen1,ubipdest,conPago,contrato,vendedor,muebles," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
                     "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
                     "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
                     "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
-                    "@refer,@updest,@conpag,@cont," +
+                    "@refer,@updest,@conpag,@cont,@vende,@mueb," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
@@ -539,7 +542,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
                     micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
                     micon.Parameters.AddWithValue("@m1clte", "");
-                    micon.Parameters.AddWithValue("@tipacc", "");                   // pago del documento x defecto si nace la fact pagada
+                    micon.Parameters.AddWithValue("@tipacc", tx_dat_plazo.Text);                   // pago del documento x defecto si nace la fact pagada
                     micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
                     micon.Parameters.AddWithValue("@codMN", MonDeft);               // codigo moneda local
                     micon.Parameters.AddWithValue("@subMN", subtMN);
@@ -553,8 +556,10 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@valdesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
                     micon.Parameters.AddWithValue("@refer", tx_numOpe.Text);
                     micon.Parameters.AddWithValue("@updest", "");
-                    micon.Parameters.AddWithValue("@conpag", tx_dat_plazo.Text);
+                    micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
                     micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                    micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
+                    micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
                     micon.Parameters.AddWithValue("@verApp", "");
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@iplan", lib.iplan());
@@ -564,9 +569,9 @@ namespace iOMG
                 }
                 // detalle
                 int fila = 1;
-                foreach (DataRow row in dataGridView1.Rows)
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if (row.ItemArray[0].ToString() != "")
+                    if (row.Cells[0].Value.ToString() != "")
                     {
                         string inserd2 = "update detfactu set " +
                             "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
@@ -580,19 +585,19 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@cdv", tx_corre.Text);
                             micon.Parameters.AddWithValue("@fila", fila);
                             micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                            micon.Parameters.AddWithValue("@bult", row.ItemArray[1].ToString());
-                            micon.Parameters.AddWithValue("@citem", row.ItemArray[2].ToString());
+                            micon.Parameters.AddWithValue("@bult", row.Cells[1].Value.ToString());
+                            micon.Parameters.AddWithValue("@citem", row.Cells[2].Value.ToString());
                             micon.Parameters.AddWithValue("@unim", "");
-                            micon.Parameters.AddWithValue("@desc", row.ItemArray[3].ToString());
+                            micon.Parameters.AddWithValue("@desc", row.Cells[3].Value.ToString());
                             micon.Parameters.AddWithValue("@peso", "0");
-                            micon.Parameters.AddWithValue("@medid", row.ItemArray[4].ToString());
-                            micon.Parameters.AddWithValue("@mader", row.ItemArray[5].ToString().Substring(0,1));
-                            micon.Parameters.AddWithValue("@acaba", row.ItemArray[7].ToString());
-                            micon.Parameters.AddWithValue("@codm", row.ItemArray[5].ToString());
-                            micon.Parameters.AddWithValue("@detp", row.ItemArray[6].ToString());
+                            micon.Parameters.AddWithValue("@medid", row.Cells[4].Value.ToString());
+                            micon.Parameters.AddWithValue("@mader", row.Cells[5].Value.ToString().PadRight(2).Substring(0,1));
+                            micon.Parameters.AddWithValue("@acaba", row.Cells[7].Value.ToString());
+                            micon.Parameters.AddWithValue("@codm", row.Cells[5].Value.ToString());
+                            micon.Parameters.AddWithValue("@detp", row.Cells[6].Value.ToString());
                             micon.Parameters.AddWithValue("@cmnn", MonDeft);
-                            micon.Parameters.AddWithValue("@pret", row.ItemArray[8].ToString());
-                            micon.Parameters.AddWithValue("@tgrmn", row.ItemArray[9].ToString());
+                            micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
+                            micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
                             micon.Parameters.AddWithValue("@pagaut", "S");
                             micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
                             micon.ExecuteNonQuery();
@@ -715,15 +720,12 @@ namespace iOMG
             else
             {
                 tx_dat_orig.Text = Program.tdauser;
-                string axs = string.Format("idcodice='{0}'",tx_dat_orig.Text);
-                DataRow[] row = dttaller.Select(axs);
-                cmb_taller.SelectedItem = row[0].ItemArray[1].ToString();
+                cmb_taller_SelectionChangeCommitted(null,null);
                 tx_nomVen.Text = asd; // Program.vg_nuse;
                 tx_nomVen.ReadOnly = false;
                 dtp_pedido.Value = DateTime.Now;
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
-                tx_serie.Text = row[0].ItemArray[3].ToString();
             }
         }
         private void jala_cont(string conti)                // jala datos del contrato
@@ -806,6 +808,21 @@ namespace iOMG
                 MessageBox.Show(ex.Message, "Error en ejecución de código", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+        private bool valProdCont()                          // busca productos de stock, grandes que puedan tener contrato
+        {
+            bool retorna = false;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                {
+                    if (lps.Contains(row.Cells[2].Value.ToString().Substring(0, 1)))
+                    {
+                        retorna = true;
+                    }
+                }
+            }
+            return retorna;
         }
 
         #region botones_de_comando_y_permisos  
@@ -1300,7 +1317,6 @@ namespace iOMG
                 string axs = string.Format("descrizionerid='{0}'", cmb_tdoc.Text);
                 DataRow[] row = dtdoc.Select(axs);
                 tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
-                tx_dir_pe.Text = row[0].ItemArray[4].ToString();
             }
         }
         private void cmb_plazo_SelectionChangeCommitted(object sender, EventArgs e)
@@ -1310,6 +1326,17 @@ namespace iOMG
                 string axs = string.Format("descrizionerid='{0}'", cmb_plazo.Text);
                 DataRow[] row = dtfp.Select(axs);
                 tx_dat_plazo.Text = row[0].ItemArray[1].ToString();
+            }
+        }
+        private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (true)   // cmb_taller.SelectedIndex > -1
+            {
+                string axs = string.Format("idcodice='{0}'", tx_dat_orig.Text);
+                DataRow[] row = dttaller.Select(axs);
+                cmb_taller.SelectedItem = row[0].ItemArray[1].ToString();
+                tx_dir_pe.Text = row[0].ItemArray[4].ToString();
+                tx_serie.Text = row[0].ItemArray[3].ToString();
             }
         }
         #endregion comboboxes
@@ -1670,9 +1697,77 @@ namespace iOMG
             }
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
         }
-        private void button1_Click(object sender, EventArgs e)      // graba 
+        private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
+            // validaciones generales
+            if (tx_dat_tipdoc.Text.Trim() == "")
+            {
+                MessageBox.Show("Seleccione el tipo de documento","Atención",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                cmb_tipo.Focus();
+                return;
+            }
+            if (tx_dat_tdoc.Text.Trim() == "")
+            {
+                MessageBox.Show("Seleccione un cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmb_tdoc.Focus();
+                return;
+            }
+            if (tx_ndc.Text.Trim() == "")
+            {
+                MessageBox.Show("Seleccione un cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_ndc.Focus();
+                return;
+            }
+            if (dataGridView1.Rows.Count < 2)
+            {
+                MessageBox.Show("Ingrese al menos un producto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_d_can.Focus();
+                return;
+            }
+            if (tx_dat_plazo.Text.Trim() == "")
+            {
+                MessageBox.Show("Seleccione el tipo de pago", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmb_plazo.Focus();
+                return;
+            }
 
+            if (Tx_modo.Text == "NUEVO")
+            {
+                // validaciones antes de grabar nuevo
+                // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
+                if (valProdCont() == true) tx_prdsCont.Text = "S";
+                else tx_prdsCont.Text = "N";
+
+                var aa = MessageBox.Show(" Confirma que desea CREAR " + Environment.NewLine +
+                    "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    graba();
+                    if (tx_prdsCont.Text == "S")
+                    {
+                        aa = MessageBox.Show("Desea generar contrato relacionado al" + Environment.NewLine +
+                            "presente comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                        if (aa == DialogResult.Yes)
+                        {
+                            contratos ncont = new contratos();
+                            ncont.Show();
+                        }
+                    }
+                }
+                else return;
+            }
+            if (Tx_modo.Text == "ANULAR")
+            {
+                // validaciones antes de anular
+
+                var aa = MessageBox.Show(" Confirma que desea ANULAR " + Environment.NewLine +
+                    "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    anula();
+                }
+                else return;
+            }
         }
         #endregion
 

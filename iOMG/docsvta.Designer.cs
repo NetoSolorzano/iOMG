@@ -62,6 +62,7 @@
             this.tx_serie = new System.Windows.Forms.TextBox();
             this.tx_status = new System.Windows.Forms.TextBox();
             this.pan_cli = new System.Windows.Forms.Panel();
+            this.tx_dir_pe = new System.Windows.Forms.TextBox();
             this.tx_idc = new System.Windows.Forms.TextBox();
             this.tx_dat_distri = new System.Windows.Forms.TextBox();
             this.tx_dat_provin = new System.Windows.Forms.TextBox();
@@ -150,6 +151,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tx_nomVen = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.tx_dat_plazo = new System.Windows.Forms.TextBox();
+            this.tx_dat_mone = new System.Windows.Forms.TextBox();
+            this.tx_tfil = new System.Windows.Forms.TextBox();
+            this.tx_prdsCont = new System.Windows.Forms.TextBox();
             this.milinea7 = new iOMG.milinea();
             this.milinea6 = new iOMG.milinea();
             this.milinea5 = new iOMG.milinea();
@@ -159,10 +164,6 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_dat_plazo = new System.Windows.Forms.TextBox();
-            this.tx_dat_mone = new System.Windows.Forms.TextBox();
-            this.tx_dir_pe = new System.Windows.Forms.TextBox();
-            this.tx_tfil = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -537,6 +538,15 @@
             this.pan_cli.Size = new System.Drawing.Size(869, 73);
             this.pan_cli.TabIndex = 4;
             // 
+            // tx_dir_pe
+            // 
+            this.tx_dir_pe.Location = new System.Drawing.Point(621, 3);
+            this.tx_dir_pe.Name = "tx_dir_pe";
+            this.tx_dir_pe.Size = new System.Drawing.Size(61, 20);
+            this.tx_dir_pe.TabIndex = 411;
+            this.tx_dir_pe.Tag = "direccion del pto de emision";
+            this.tx_dir_pe.Visible = false;
+            // 
             // tx_idc
             // 
             this.tx_idc.Location = new System.Drawing.Point(584, 4);
@@ -854,7 +864,6 @@
             this.tx_dat_tipdoc.Name = "tx_dat_tipdoc";
             this.tx_dat_tipdoc.Size = new System.Drawing.Size(31, 20);
             this.tx_dat_tipdoc.TabIndex = 407;
-            this.tx_dat_tipdoc.Visible = false;
             // 
             // label52
             // 
@@ -927,6 +936,7 @@
             this.cmb_taller.Name = "cmb_taller";
             this.cmb_taller.Size = new System.Drawing.Size(132, 21);
             this.cmb_taller.TabIndex = 371;
+            this.cmb_taller.SelectionChangeCommitted += new System.EventHandler(this.cmb_taller_SelectionChangeCommitted);
             // 
             // cmb_tipo
             // 
@@ -1364,6 +1374,7 @@
             this.button1.Size = new System.Drawing.Size(62, 50);
             this.button1.TabIndex = 17;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tx_nomVen
             // 
@@ -1382,6 +1393,41 @@
             this.label12.Size = new System.Drawing.Size(53, 13);
             this.label12.TabIndex = 402;
             this.label12.Text = "Vendedor";
+            // 
+            // tx_dat_plazo
+            // 
+            this.tx_dat_plazo.Location = new System.Drawing.Point(374, 366);
+            this.tx_dat_plazo.Name = "tx_dat_plazo";
+            this.tx_dat_plazo.Size = new System.Drawing.Size(64, 20);
+            this.tx_dat_plazo.TabIndex = 412;
+            this.tx_dat_plazo.Visible = false;
+            // 
+            // tx_dat_mone
+            // 
+            this.tx_dat_mone.Location = new System.Drawing.Point(750, 361);
+            this.tx_dat_mone.Name = "tx_dat_mone";
+            this.tx_dat_mone.Size = new System.Drawing.Size(31, 20);
+            this.tx_dat_mone.TabIndex = 413;
+            this.tx_dat_mone.Visible = false;
+            // 
+            // tx_tfil
+            // 
+            this.tx_tfil.Location = new System.Drawing.Point(515, 357);
+            this.tx_tfil.Name = "tx_tfil";
+            this.tx_tfil.ReadOnly = true;
+            this.tx_tfil.Size = new System.Drawing.Size(31, 20);
+            this.tx_tfil.TabIndex = 414;
+            this.tx_tfil.Visible = false;
+            // 
+            // tx_prdsCont
+            // 
+            this.tx_prdsCont.Location = new System.Drawing.Point(471, 357);
+            this.tx_prdsCont.Name = "tx_prdsCont";
+            this.tx_prdsCont.ReadOnly = true;
+            this.tx_prdsCont.Size = new System.Drawing.Size(31, 20);
+            this.tx_prdsCont.TabIndex = 415;
+            this.tx_prdsCont.Tag = "marca S si hay productos grandes p contrat";
+            this.tx_prdsCont.Visible = false;
             // 
             // milinea7
             // 
@@ -1450,7 +1496,7 @@
             // tx_igv
             // 
             this.tx_igv.AllowSpace = false;
-            this.tx_igv.Location = new System.Drawing.Point(670, 382);
+            this.tx_igv.Location = new System.Drawing.Point(670, 383);
             this.tx_igv.Name = "tx_igv";
             this.tx_igv.Size = new System.Drawing.Size(73, 20);
             this.tx_igv.TabIndex = 395;
@@ -1466,49 +1512,17 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tx_dat_plazo
-            // 
-            this.tx_dat_plazo.Location = new System.Drawing.Point(374, 366);
-            this.tx_dat_plazo.Name = "tx_dat_plazo";
-            this.tx_dat_plazo.Size = new System.Drawing.Size(64, 20);
-            this.tx_dat_plazo.TabIndex = 412;
-            this.tx_dat_plazo.Visible = false;
-            // 
-            // tx_dat_mone
-            // 
-            this.tx_dat_mone.Location = new System.Drawing.Point(750, 361);
-            this.tx_dat_mone.Name = "tx_dat_mone";
-            this.tx_dat_mone.Size = new System.Drawing.Size(31, 20);
-            this.tx_dat_mone.TabIndex = 413;
-            this.tx_dat_mone.Visible = false;
-            // 
-            // tx_dir_pe
-            // 
-            this.tx_dir_pe.Location = new System.Drawing.Point(621, 3);
-            this.tx_dir_pe.Name = "tx_dir_pe";
-            this.tx_dir_pe.Size = new System.Drawing.Size(61, 20);
-            this.tx_dir_pe.TabIndex = 411;
-            this.tx_dir_pe.Tag = "direccion del pto de emision";
-            this.tx_dir_pe.Visible = false;
-            // 
-            // tx_tfil
-            // 
-            this.tx_tfil.Location = new System.Drawing.Point(515, 357);
-            this.tx_tfil.Name = "tx_tfil";
-            this.tx_tfil.ReadOnly = true;
-            this.tx_tfil.Size = new System.Drawing.Size(31, 20);
-            this.tx_tfil.TabIndex = 414;
-            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.milinea6);
+            this.Controls.Add(this.tx_prdsCont);
             this.Controls.Add(this.tx_tfil);
             this.Controls.Add(this.tx_dat_mone);
             this.Controls.Add(this.tx_dat_plazo);
             this.Controls.Add(this.milinea7);
-            this.Controls.Add(this.milinea6);
             this.Controls.Add(this.milinea5);
             this.Controls.Add(this.milinea3);
             this.Controls.Add(this.milinea2);
@@ -1709,5 +1723,6 @@
         private System.Windows.Forms.TextBox tx_dat_mone;
         private System.Windows.Forms.TextBox tx_dir_pe;
         private System.Windows.Forms.TextBox tx_tfil;
+        private System.Windows.Forms.TextBox tx_prdsCont;
     }
 }

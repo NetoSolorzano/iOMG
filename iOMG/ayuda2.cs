@@ -76,6 +76,8 @@ namespace iOMG
                 dataGridView1.Columns[3].ReadOnly = true;
                 //
                 this.Width = dataGridView1.Width + 5;
+                //
+                ReturnValueA = new string[4] { "", "", "", ""};
             }
             if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
             {
@@ -542,6 +544,13 @@ namespace iOMG
                 ReturnValue0 = tx_id.Text;
                 ReturnValue1 = tx_codigo.Text;
                 ReturnValue2 = tx_nombre.Text;
+                if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                }
                 if (para1 == "contrat" && para3 == "" && para4 == "")
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -637,6 +646,10 @@ namespace iOMG
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = cellva;
                 tx_id.Text = "";
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // codigo
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // nombre
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // precio
             }
             if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")
             {
@@ -747,6 +760,13 @@ namespace iOMG
                 ReturnValue1 = tx_codigo.Text;
                 ReturnValue0 = tx_id.Text;
                 ReturnValue2 = tx_nombre.Text;
+                if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                }
                 if (para1 == "contrat" && para3 == "" && para4 == "")
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -945,6 +965,10 @@ namespace iOMG
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = cellva;
                 tx_id.Text = "";
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // codigo
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // nombre
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // precio
             }
             if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")
             {
