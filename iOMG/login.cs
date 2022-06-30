@@ -301,6 +301,7 @@ namespace iOMG
                     if (dr.Read())
                     {
                         Program.cliente = dr.GetString(0);
+                        Program.v_igv = dr.GetString(1);
                     }
                     dr.Close();
                 }
