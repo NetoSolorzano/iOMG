@@ -273,51 +273,107 @@ namespace iOMG
         }
         private void jalaoc(string campo)                   // jala datos 
         {
+            string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
+            "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
+            "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
+            "referen1,ubipdest,conPago,contrato,vendedor,muebles from cabfactu where ";
+            string parte = "";
             if (campo == "tx_idr" && tx_idr.Text != "" && tx_corre.Text.Trim() == "")
             {
                 if (Tx_modo.Text != "NUEVO")
                 {
-
+                    parte = "id=@idr";
                 }
-                jaladet(tx_corre.Text);
             }
-            if (campo == "tx_codped" && tx_corre.Text != "" && tx_idr.Text.Trim() == "")
+            if (campo == "tx_corre" && tx_corre.Text != "" && tx_idr.Text.Trim() == "")
             {
                 if (Tx_modo.Text != "NUEVO")
                 {
-
-                }
-                int cta = 0;
-                foreach (DataRow row in dtg.Rows)
-                {
-                    if (row["codped"].ToString().Trim() == tx_corre.Text.Trim())
-                    {
-                        // ...
-                        jaladet(tx_corre.Text);
-                    }
-                    cta = cta + 1;
+                    parte = "tipdvta=@tdv and serdvta=@sdv and numdvta=@ndv";
                 }
             }
+            jala = jala + parte;
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    using (MySqlCommand micon = new MySqlCommand(jala, conn))
+                    {
+                        if (parte == "id=@idr") micon.Parameters.AddWithValue("@idr", tx_idr.Text);
+                        else
+                        {
+                            micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                            micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                            micon.Parameters.AddWithValue("@ndv", tx_corre.Text);
+                        }
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            tx_idr.Text = dr.GetString("id");
+                            dtp_pedido.Value = dr.GetDateTime("fechope");
+                            tx_dat_tipdoc.Text = dr.GetString("tipdvta");
+                            tx_serie.Text = dr.GetString("serdvta");
+                            tx_corre.Text = dr.GetString("numdvta");
+                            tx_dat_tdoc.Text = dr.GetString("tidoclt");
+                            tx_ndc.Text = dr.GetString("nudoclt");
+                            tx_nombre.Text = dr.GetString("nombclt");
+                            tx_direc.Text = dr.GetString("direclt");
+                            tx_dpto.Text = dr.GetString("dptoclt");
+                            tx_prov.Text = dr.GetString("provclt");
+                            tx_dist.Text = dr.GetString("distclt");
+                            tx_mail.Text = dr.GetString("corrclt");
+                            tx_telef1.Text = dr.GetString("teleclt");
+                            tx_telef2.Text = dr.GetString("telemsg");
+                            tx_dat_orig.Text = dr.GetString("locorig");
+                            tx_dir_pe.Text = dr.GetString("dirorig");
+                            tx_coment.Text = dr.GetString("obsdvta");
+                            tx_tfil.Text = dr.GetString("canfidt");
+                            tx_dat_mone.Text = dr.GetString("mondvta");
+                            tx_bruto.Text = dr.GetString("subtota");
+                            tx_igv.Text = dr.GetString("igvtota");
+                            tx_valor.Text = dr.GetString("totdvta");
+                            tx_dat_estad.Text = dr.GetString("estdvta");
+                            tx_dat_plazo.Text = dr.GetString("tippago");
+                            tx_numOpe.Text = dr.GetString("referen1");
+                            tx_cont.Text = dr.GetString("contrato");
+                            tx_nomVen.Text = dr.GetString("vendedor");
+                            tx_prdsCont.Text = dr.GetString("muebles");
+                        }
+                        dr.Dispose();
+                        cmb_taller.SelectedItem = tx_dat_orig.Text;     // local de ventas
+                        // tipo doc cliente
+                        string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                        DataRow[] row = dtdoc.Select(axs);
+                        cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+                        // boton contado
+                        rb_contado.PerformClick();
+                    }
+                }
+            }
+            jaladet(tx_idr.Text);
         }
-        private void jaladet(string pedido)                 // jala el detalle 
+        private void jaladet(string idr)                 // jala el detalle 
         {
-            string jalad = "";
+            string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,madera,detpied,acabado,precio,totalMN " +
+                "FROM detfactu where idc=@idr";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                MySqlCommand micon = new MySqlCommand(jalad, conn);
-                micon.Parameters.AddWithValue("@pedi", pedido);
-                MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
-                dataGridView1.Columns.Clear();
-                dataGridView1.DataSource = dt;
+                using (MySqlCommand micon = new MySqlCommand(jalad, conn))
+                {
+                    micon.Parameters.AddWithValue("@idr", idr);
+                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.DataSource = dt;
+                    da.Dispose();
+                }
                 grilladet("edita");     // obtiene contenido de grilla con DT
-                dt.Dispose();
-                da.Dispose();
             }
             conn.Close();
         }
@@ -327,7 +383,7 @@ namespace iOMG
             // 
         }
         private void grilladet(string modo)                 // grilla detalle del doc. venta
-        {   // a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total
+        {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
@@ -436,7 +492,7 @@ namespace iOMG
                 dapedido.Fill(dtpedido);
                 foreach (DataRow row in dtpedido.Rows)
                 {
-                    cmb_tipo.Items.Add(row.ItemArray[0].ToString());
+                    cmb_tipo.Items.Add(row.ItemArray[1].ToString());
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del tipo documento cliente
@@ -571,7 +627,7 @@ namespace iOMG
                 int fila = 1;
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if (row.Cells[0].Value.ToString() != "")
+                    if (row.Cells[0].Value != null)
                     {
                         string inserd2 = "update detfactu set " +
                             "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
@@ -925,14 +981,18 @@ namespace iOMG
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
-            escribe(this);
+            sololee(this);
             Tx_modo.Text = "EDITAR";
             button1.Image = Image.FromFile(img_grab);
-            limpiar(this);
+            limpia_ini();
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            jalaoc("tx_idr");
+            //cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
+            //jalaoc("tx_idr");
+            cmb_tipo.Enabled = true;
+            tx_serie.Enabled = true;
+            tx_serie.ReadOnly = false;
+            tx_corre.Enabled = true;
             tx_corre.ReadOnly = false;
             //  solo se modifica comentarios
             tx_d_can.ReadOnly = true;
@@ -941,6 +1001,7 @@ namespace iOMG
             tx_coment.Enabled = true;
             tx_coment.ReadOnly = false;
             //
+            cmb_tipo.Focus();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1498,6 +1559,13 @@ namespace iOMG
         private void tx_d_valAntic_Leave(object sender, EventArgs e)
         {
 
+        }
+        private void tx_corre_Leave(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text != "NUEVO" && tx_corre.Text != "")
+            {
+                jalaoc("tx_corre");
+            }
         }
         #endregion leaves;
 

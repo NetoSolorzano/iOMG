@@ -2922,8 +2922,8 @@ namespace iOMG
                         retorna[1] = datos[4];                          // ubigeo
                         retorna[2] = datos[5];                          // direccion
                         retorna[3] = datos[8];                          // departamento
-                        retorna[4] = datos[7];                          // provincia
-                        retorna[5] = datos[6];                          // distrito
+                        retorna[4] = (datos[7].Length > 20)? datos[7].Substring(0,20) : datos[7];       // provincia
+                        retorna[5] = (datos[6].Length > 20)? datos[6].Substring(0,20) : datos[6];       // distrito
                         retorna[6] = datos[2];                          // estado del contrib.
                         retorna[7] = datos[3];                          // condicion domicilio
                     }
