@@ -348,6 +348,12 @@ namespace iOMG
                         cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
                         // boton contado
                         rb_contado.PerformClick();
+                        // nombre de estado
+                        tx_status.Text = tx_dat_estad.Text;
+                        // medio de pago
+                        axs = string.Format("idcodice='{0}'", tx_dat_plazo.Text);
+                        row = dtfp.Select(axs);
+                        cmb_plazo.SelectedItem = row[0].ItemArray[0].ToString();
                     }
                 }
             }
@@ -389,7 +395,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 10;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 11;
             // it
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -455,9 +461,9 @@ namespace iOMG
             // total
             dataGridView1.Columns[9].Visible = false;
             dataGridView1.Columns[9].Name = "total";
-            // tipo nuevo o modif
-            //dataGridView1.Columns[15].Visible = false;
-            //dataGridView1.Columns[15].Name = "NE";
+            // tipo Normal o Anticipo
+            dataGridView1.Columns[10].Visible = false;
+            dataGridView1.Columns[10].Name = "NA";
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
@@ -531,7 +537,8 @@ namespace iOMG
             {
                 // conexion a rapifact para leer el correlativo del comprobante
                 //
-                tx_corre.Text = "99004144";
+                tx_corre.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
+
                 //
 
                 //if (tx_tipcam.Text == "") tx_tipcam.Text = "0";
@@ -782,6 +789,7 @@ namespace iOMG
                 dtp_pedido.Value = DateTime.Now;
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
+                tx_dat_mone.Text = MonDeft;                 // en este momento todo es soles
             }
         }
         private void jala_cont(string conti)                // jala datos del contrato
@@ -982,6 +990,10 @@ namespace iOMG
         private void Bt_edit_Click(object sender, EventArgs e)
         {
             sololee(this);
+            sololeepan(panel1);
+            sololeepan(panel2);
+            sololeepan(panel3);
+            sololeepan(pan_cli);
             Tx_modo.Text = "EDITAR";
             button1.Image = Image.FromFile(img_grab);
             limpia_ini();
@@ -1001,31 +1013,49 @@ namespace iOMG
             tx_coment.Enabled = true;
             tx_coment.ReadOnly = false;
             //
-            cmb_tipo.Focus();
+            tx_coment.Focus();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
+            sololee(this);
+            sololeepan(panel1);
+            sololeepan(panel2);
+            sololeepan(panel3);
+            sololeepan(pan_cli);
             Tx_modo.Text = "ANULAR";
             button1.Image = Image.FromFile(img_anul);
-            limpiar(this);
+            limpia_ini();
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            jalaoc("tx_idr");
-            tx_corre.ReadOnly = false;
+            cmb_tipo.Enabled = true;
+            tx_serie.Enabled = true;
+            tx_serie.ReadOnly = false;
             tx_corre.Enabled = true;
+            tx_corre.ReadOnly = false;
+            //  solo se modifica comentarios
+            tx_d_can.ReadOnly = true;
+            tx_d_nom.ReadOnly = true;
+            tx_d_med.ReadOnly = true;
+            tx_coment.Enabled = true;
+            tx_coment.ReadOnly = false;
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
             sololee(this);
+            sololeepan(panel1);
+            sololeepan(panel2);
+            sololeepan(panel3);
+            sololeepan(pan_cli);
             Tx_modo.Text = "VISUALIZAR";
             button1.Image = null;
-            limpiar(this);
-            tx_corre.Enabled = true;
+            limpia_ini();
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            cmb_tipo.SelectedIndex = cmb_tipo.FindString(tipede);
-            jalaoc("tx_idr");
+            cmb_tipo.Enabled = true;
+            tx_serie.Enabled = true;
+            tx_serie.ReadOnly = false;
+            tx_corre.Enabled = true;
+            tx_corre.ReadOnly = false;
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -1150,9 +1180,9 @@ namespace iOMG
                 }
             }
         }
-        private void sololeepag(TabPage pag)
+        private void sololeepan(Panel pan)
         {
-            foreach (Control oControls in pag.Controls)
+            foreach (Control oControls in pan.Controls)
             {
                 if (oControls is TextBox)
                 {
@@ -1588,6 +1618,19 @@ namespace iOMG
                 //
                 lb_cont.Visible = false;
                 tx_cont.Visible = false;
+                //
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    if (item.Cells[10].Value != null && item.Cells[10].Value.ToString() == "A") dataGridView1.Rows.RemoveAt(item.Index);
+                }
+                double ntoti = 0;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    if (item.Cells[8].Value != null) ntoti = ntoti + double.Parse(item.Cells[8].Value.ToString());
+                }
+                tx_valor.Text = (ntoti).ToString("#0.00");
+                tx_bruto.Text = ((ntoti) / 1.18).ToString("#0.00");
+                tx_igv.Text = ((double.Parse(tx_valor.Text)) - ((double.Parse(tx_valor.Text)) / 1.18)).ToString("#0.00");
             }
         }
         private void rb_antic_Click(object sender, EventArgs e)
@@ -1618,6 +1661,10 @@ namespace iOMG
                 //
                 if (Tx_modo.Text == "NUEVO")
                 {
+                    tx_valor.Text = "";
+                    tx_bruto.Text = "";
+                    tx_igv.Text = "";
+                    //
                     lb_cont.Visible = true;
                     tx_cont.Visible = true;
                     tx_cont.Focus();
@@ -1717,6 +1764,9 @@ namespace iOMG
                     double.TryParse(tx_d_valAntic.Text, out ntoti);
                     if (ntoti > 0)
                     {
+                        dataGridView1.Rows.Insert(0,dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_antic.Text, tx_d_med.Text,
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A");
+
                         tx_valor.Text = ntoti.ToString("#0.00");
                         tx_bruto.Text = (ntoti / 1.18).ToString("#0.00");
                         tx_igv.Text = (ntoti - (ntoti / 1.18)).ToString("#0.00");

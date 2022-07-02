@@ -440,7 +440,13 @@ namespace iOMG
         }
         private void fac_reportes_Click(object sender, EventArgs e)     // reportes de facturas
         {
-            MessageBox.Show("Form de reportes de facturas");
+            repsfact frf = new repsfact();
+            frf.TopLevel = false;
+            frf.Parent = this;
+            frf.Top = pn_phor.Top + pn_phor.Height + 1;
+            frf.Left = pn_pver.Left + pn_pver.Width + 1;
+            pn_centro.Controls.Add(frf);
+            frf.Show();
         }
         //
         private void bt_ventas_Click(object sender, EventArgs e)        // ventas clientes con contrato

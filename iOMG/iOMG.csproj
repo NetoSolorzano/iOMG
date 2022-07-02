@@ -366,6 +366,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>repsalmacen.xsd</DependentUpon>
     </Compile>
+    <Compile Include="repsfact.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="repsfact.designer.cs">
+      <DependentUpon>repsfact.cs</DependentUpon>
+    </Compile>
     <Compile Include="repspedalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -607,6 +613,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="repsalmac.resx">
       <DependentUpon>repsalmac.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="repsfact.resx">
+      <DependentUpon>repsfact.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="repspedalm.resx">
       <DependentUpon>repspedalm.cs</DependentUpon>
