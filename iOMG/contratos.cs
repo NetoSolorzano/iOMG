@@ -199,6 +199,87 @@ namespace iOMG
             tx_d_nom.Enabled = false;
         }
 
+        #region Fact_Elec
+        private void jalaDatFact()
+        {
+            string FB = tx_mc.Text;
+            string serF = tx_serie.Text;
+            string corF = tx_corre.Text;
+            //
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            grilladet("NUEVO");
+            //
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    string idc = "";
+                    string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg " +
+                        "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
+                    using (MySqlCommand micon = new MySqlCommand(accion, conn))
+                    {
+                        micon.Parameters.AddWithValue("@mar", FB);
+                        micon.Parameters.AddWithValue("@ser", serF);
+                        micon.Parameters.AddWithValue("@num", corF);
+                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                idc = dr.GetString("id");
+                                tx_idcli.Text = dr.GetString("idanagrafica");      // id del cliente
+                                tx_valor.Text = "0";     // valor del contrato, se calcula en base al detalle
+                                tx_dscto.Text = "0";     // descuento final, se calcula en base al detalle
+                                tx_bruto.Text = "0";     // total bruto, se calcula en base al detalle
+                                tx_acta.Text = dr.GetDouble("totdvMN").ToString("#0.00");     // pago a cuenta
+                                tx_saldo.Text = "0";     // saldo del contrato ..... ummmm no se cuando se jala
+                                                         // jala datos del cliente
+                                tx_ndc.Text = dr.GetString("nudoclt");
+                                tx_nombre.Text = dr.GetString("nombclt");
+                                tx_direc.Text = dr.GetString("direclt");
+                                tx_dpto.Text = dr.GetString("dptoclt");
+                                tx_prov.Text = dr.GetString("provclt");
+                                tx_dist.Text = dr.GetString("distclt");
+                                tx_mail.Text = dr.GetString("corrclt");
+                                tx_telef1.Text = dr.GetString("teleclt");
+                                tx_telef2.Text = dr.GetString("telemsg");
+                                //
+                                tx_dat_tdoc.Text = dr.GetString("tidoclt");
+                                cmb_tdoc.SelectedItem = tx_dat_tdoc.Text;
+                            }
+                        }
+                    }
+                    //
+                    string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
+                        "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item' " + 
+                        "from detfactu a where a.idc=@idc and a.codprod<>''";
+                    using (MySqlCommand midet = new MySqlCommand(jadet, conn))
+                    {
+                        midet.Parameters.AddWithValue("@idc", idc);
+                        MySqlDataAdapter da = new MySqlDataAdapter(midet);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dataGridView1.DataSource = null;
+                        dataGridView1.Rows.Clear();
+                        dataGridView1.Columns.Clear();
+                        dataGridView1.DataSource = dt;
+                        grilladet("edita");     // obtiene contenido de grilla con DT
+                        dt.Dispose();
+                        da.Dispose();
+                    }
+                    conn.Close();
+                    tx_coment.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo abrir conexión con el servidor", "Error de comunicación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+        }
+        #endregion
+
         #region resto del mundo
         private void init()
         {
@@ -1945,6 +2026,10 @@ namespace iOMG
                 cmb_taller.Enabled = false;
                 cmb_tdoc.Focus();
             }
+            // 
+            tx_mc.Visible = true;
+            tx_serie.Visible = true;
+            tx_corre.Visible = true;
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1989,6 +2074,10 @@ namespace iOMG
             tx_a_codig.ReadOnly = true;
             tx_a_salcan.ReadOnly = true;
             tx_codped.Focus();
+            // 
+            tx_mc.Visible = false;
+            tx_serie.Visible = false;
+            tx_corre.Visible = false;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -2016,6 +2105,10 @@ namespace iOMG
             //
             tx_codped.Enabled = true;
             tx_codped.Focus();
+            // 
+            tx_mc.Visible = false;
+            tx_serie.Visible = false;
+            tx_corre.Visible = false;
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -2062,6 +2155,10 @@ namespace iOMG
             //
             tx_codped.Enabled = true;
             tx_codped.Focus();
+            // 
+            tx_mc.Visible = false;
+            tx_serie.Visible = false;
+            tx_corre.Visible = false;
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -3566,6 +3663,23 @@ namespace iOMG
                         "a la fecha del contrato", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     dtp_entreg.Value = dtp_pedido.Value;
                 }
+            }
+        }
+        private void tx_corre_Leave(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text == "NUEVO")
+            {
+                if (tx_mc.Text == "")
+                {
+                    tx_mc.Focus();
+                    return;
+                } 
+                if (tx_serie.Text == "")
+                {
+                    tx_serie.Focus();
+                    return;
+                }
+                jalaDatFact();
             }
         }
         #endregion leaves;

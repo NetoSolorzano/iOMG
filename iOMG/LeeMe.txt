@@ -162,4 +162,4 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form ayuda2, adecuaciones de codigo para items ..................................... ok 30/06/22
 - form docsvta, creación ............................................................. ok 01/07/22
 - form repsfact, creacion ............................................................ ok 01/07/22
-- 
+- form contratos, adeciaciones para jalar datos desde comprobante, si es nuevo .......   codigo en boton NUEVO

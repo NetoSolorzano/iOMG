@@ -254,6 +254,9 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tx_serie = new System.Windows.Forms.TextBox();
+            this.tx_corre = new System.Windows.Forms.TextBox();
+            this.tx_mc = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -334,6 +337,9 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_mc);
+            this.tabuser.Controls.Add(this.tx_serie);
+            this.tabuser.Controls.Add(this.tx_corre);
             this.tabuser.Controls.Add(this.tx_totesp);
             this.tabuser.Controls.Add(this.groupBox49);
             this.tabuser.Controls.Add(this.tx_telcont);
@@ -1772,7 +1778,7 @@
             // 
             this.groupBox27.BackColor = System.Drawing.Color.DimGray;
             this.groupBox27.Controls.Add(this.groupBox28);
-            this.groupBox27.Location = new System.Drawing.Point(4, 82);
+            this.groupBox27.Location = new System.Drawing.Point(4, 73);
             this.groupBox27.Name = "groupBox27";
             this.groupBox27.Size = new System.Drawing.Size(74, 1);
             this.groupBox27.TabIndex = 338;
@@ -1790,7 +1796,7 @@
             // 
             this.groupBox25.BackColor = System.Drawing.Color.DimGray;
             this.groupBox25.Controls.Add(this.groupBox26);
-            this.groupBox25.Location = new System.Drawing.Point(4, 59);
+            this.groupBox25.Location = new System.Drawing.Point(4, 50);
             this.groupBox25.Name = "groupBox25";
             this.groupBox25.Size = new System.Drawing.Size(74, 1);
             this.groupBox25.TabIndex = 337;
@@ -2082,7 +2088,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 66);
+            this.label5.Location = new System.Drawing.Point(7, 57);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 287;
@@ -2091,7 +2097,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 43);
+            this.label4.Location = new System.Drawing.Point(7, 34);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 13);
             this.label4.TabIndex = 286;
@@ -2260,7 +2266,7 @@
             // 
             // tx_rind
             // 
-            this.tx_rind.Location = new System.Drawing.Point(42, 63);
+            this.tx_rind.Location = new System.Drawing.Point(42, 54);
             this.tx_rind.Name = "tx_rind";
             this.tx_rind.ReadOnly = true;
             this.tx_rind.Size = new System.Drawing.Size(36, 20);
@@ -2268,7 +2274,7 @@
             // 
             // tx_idr
             // 
-            this.tx_idr.Location = new System.Drawing.Point(42, 40);
+            this.tx_idr.Location = new System.Drawing.Point(42, 31);
             this.tx_idr.Name = "tx_idr";
             this.tx_idr.ReadOnly = true;
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
@@ -2336,10 +2342,10 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSeparator2,
             this.Bt_add,
-            this.toolStripSeparator6,
             this.toolStripSeparator5,
             this.Bt_close,
             this.toolStripSeparator7,
+            this.toolStripSeparator6,
             this.Bt_edit,
             this.toolStripSeparator15,
             this.Bt_anul,
@@ -2628,6 +2634,33 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // tx_serie
+            // 
+            this.tx_serie.Location = new System.Drawing.Point(33, 78);
+            this.tx_serie.Name = "tx_serie";
+            this.tx_serie.Size = new System.Drawing.Size(32, 20);
+            this.tx_serie.TabIndex = 390;
+            this.tx_serie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_corre
+            // 
+            this.tx_corre.Location = new System.Drawing.Point(65, 78);
+            this.tx_corre.Name = "tx_corre";
+            this.tx_corre.Size = new System.Drawing.Size(66, 20);
+            this.tx_corre.TabIndex = 391;
+            this.tx_corre.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_corre.Leave += new System.EventHandler(this.tx_corre_Leave);
+            // 
+            // tx_mc
+            // 
+            this.tx_mc.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tx_mc.Location = new System.Drawing.Point(11, 78);
+            this.tx_mc.MaxLength = 1;
+            this.tx_mc.Name = "tx_mc";
+            this.tx_mc.Size = new System.Drawing.Size(22, 20);
+            this.tx_mc.TabIndex = 392;
+            this.tx_mc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2852,7 +2885,6 @@
         private NumericTextBox tx_valor;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton Bt_add;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton Bt_close;
@@ -2910,5 +2942,9 @@
         private System.Windows.Forms.Label label57;
         private NumericTextBox tx_totesp;
         private System.Windows.Forms.ToolTip toolTip1;
+        internal System.Windows.Forms.ToolStripButton Bt_add;
+        private System.Windows.Forms.TextBox tx_serie;
+        private System.Windows.Forms.TextBox tx_corre;
+        private System.Windows.Forms.TextBox tx_mc;
     }
 }
