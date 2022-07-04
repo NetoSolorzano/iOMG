@@ -124,21 +124,28 @@ namespace iOMG
                 //
                 this.Width = dataGridView1.Width + 5;
             }
-            if (para1 == "contrat" && para3 == "" && para4 == "")
+            if (para1 == "contrat" && para4 == "")
             {
-                if (para2 != "")
+                if (para2 != "" && para3 == "" && para4 == "")
                 {
                     consulta = "select a.id,a.cliente,a.contrato,b.razonsocial,a.status,ifnull(c.descrizionerid,''),a.tipoes,a.fecha " +
                         "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                         "left join desc_alm c on c.idcodice=a.tipoes " +
                         "where b.idanagrafica = @para2";
                 }
-                else
+                if (para2 == "" && para3 == "" && para4 == "")
                 {
                     consulta = "select a.id,a.cliente,a.contrato,b.razonsocial,a.status,ifnull(c.descrizionerid,''),a.tipoes,a.fecha " +
                         "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                         "left join desc_alm c on c.idcodice=a.tipoes " +
                         "where a.status not in ('ANULAD', 'ENTREG') order by b.razonsocial";
+                }
+                if (para2 == "" && para3 == "saldo" && para4 == "")     // solo muestra contratos con saldo por pagar
+                {
+                    consulta = "select a.id,a.cliente,a.contrato,b.razonsocial,a.status,ifnull(c.descrizionerid,''),a.tipoes,a.fecha " +
+                        "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
+                        "left join desc_alm c on c.idcodice=a.tipoes " +
+                        "where a.status not in ('ANULAD', 'ENTREG') and a.saldo>0 order by b.razonsocial";
                 }
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 8;
@@ -414,7 +421,7 @@ namespace iOMG
                                                 );
                         }
                     }
-                    if (para1 == "contrat" && para3 == "" && para4 == "")
+                    if (para1 == "contrat" && para4 == "")  // 
                     {
                         MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
                         if(para2 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@para2", para2);
@@ -551,7 +558,7 @@ namespace iOMG
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 }
-                if (para1 == "contrat" && para3 == "" && para4 == "")
+                if (para1 == "contrat" && para4 == "")
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                     ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
@@ -665,7 +672,7 @@ namespace iOMG
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             }
-            if (para1 == "contrat" && para3 == "" && para4 == "")
+            if (para1 == "contrat" && para4 == "")
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();    // nombre del cliente
                 cellva = dataGridView1.CurrentRow.Cells[1].Value.ToString();            // id del cliente
@@ -767,7 +774,7 @@ namespace iOMG
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 }
-                if (para1 == "contrat" && para3 == "" && para4 == "")
+                if (para1 == "contrat" && para4 == "")
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                     ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
@@ -984,7 +991,7 @@ namespace iOMG
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             }
-            if (para1 == "contrat" && para3 == "" && para4 == "")
+            if (para1 == "contrat" && para4 == "")
             {
                 tx_nombre.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();    // nombre del cliente
                 cellva = dataGridView1.CurrentRow.Cells[1].Value.ToString();            // id del cliente

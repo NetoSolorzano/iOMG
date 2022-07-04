@@ -121,11 +121,6 @@ namespace iOMG
             dataload("todos");
             grilla();
             this.KeyPreview = true;
-            Bt_add.Enabled = true;
-            Bt_anul.Enabled = true;     // borra si no tiene enlaces, anula si ya tiene relacionados
-            Bt_print.Enabled = false;
-            bt_prev.Enabled = false;
-            tabControl1.Enabled = false;
         }
 
         #region resto del mundo
@@ -137,7 +132,6 @@ namespace iOMG
             this.tabuser.BackColor = Color.FromName(iOMG.Program.colgri);
 
             jalainfo();
-            //autodptos();                              // porque solo dptos y el resto?
             Bt_add.Image = Image.FromFile(img_btN);
             Bt_edit.Image = Image.FromFile(img_btE);
             Bt_anul.Image = Image.FromFile(img_anul);
@@ -264,14 +258,15 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
-                string datgri = "SELECT * FROM (" +
-                    "SELECT a.idpagamenti,a.fecha,a.contrato,b.status AS estado,a.valor,a.saldo,a.moneda,a.montosol,a.via,a.detalle,a.dv,a.serie,a.numero " +
-                    "FROM pagamenti a LEFT JOIN contrat b ON b.contrato = a.contrato AND b.status is NOT NULL)X WHERE estado NOT IN('ENTREG', 'ANULAD')";
-                MySqlCommand cdg = new MySqlCommand(datgri, conn);
-                MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
-                dtg.Clear();
-                dag.Fill(dtg);
-                dag.Dispose();
+                string datgri = "cont_pagos";
+                using (MySqlCommand cdg = new MySqlCommand(datgri, conn))
+                {
+                    cdg.CommandType = CommandType.StoredProcedure;
+                    MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
+                    dtg.Clear();
+                    dag.Fill(dtg);
+                    dag.Dispose();
+                }
             }
             //  datos para el combobox de tipo de documento
             if (quien == "todos")
@@ -289,6 +284,26 @@ namespace iOMG
             advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             advancedDataGridView1.DataSource = dtg;
             //
+            if (advancedDataGridView1.Rows.Count > 0)
+            {
+                for (int i = 0; i < advancedDataGridView1.Columns.Count; i++)
+                {
+                    advancedDataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    _ = decimal.TryParse(advancedDataGridView1.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                    if (vd != 0) advancedDataGridView1.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+                int b = 0;
+                for (int i = 0; i < advancedDataGridView1.Columns.Count; i++)
+                {
+                    int a = advancedDataGridView1.Columns[i].Width;
+                    b += a;
+                    advancedDataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    advancedDataGridView1.Columns[i].Width = a;
+                }
+                if (b < advancedDataGridView1.Width) advancedDataGridView1.Width = b - 20;  // b + 60;
+            }
+            //
+            advancedDataGridView1.ReadOnly = true;
         }
         private void jalaoc(string campo)                                       // jala datos del contrato
         {
@@ -610,8 +625,7 @@ namespace iOMG
         {
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = false;
-            tabControl1.SelectedTab = tabuser;
+            advancedDataGridView1.ReadOnly = true;
             Tx_modo.Text = "EDITAR";
             sololee(this);
             sololeepag(tabuser);
@@ -622,7 +636,6 @@ namespace iOMG
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            tabControl1.SelectedTab = tabuser;
             //
         }
         private void Bt_anul_Click(object sender, EventArgs e)
@@ -647,14 +660,6 @@ namespace iOMG
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
-            string codu = "";
-            string idr = "";
-            if (advancedDataGridView1.CurrentRow.Index > -1)
-            {
-                codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
-                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-            }
-            tabControl1.SelectedTab = tabgrilla;
             sololee(this);
             Tx_modo.Text = "VISUALIZAR";
             button1.Image = null;    // Image.FromFile(img_grab);
@@ -1020,67 +1025,7 @@ namespace iOMG
         }
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
         {
-            if (e.RowIndex > -1 && e.ColumnIndex > 0
-                && advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != e.FormattedValue.ToString()
-                && Tx_modo.Text == "EDITAR")
-            {
-                string campo = advancedDataGridView1.Columns[e.ColumnIndex].Name.ToString();
-                //string[] noeta = equivinter(advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString());    // retorna la tabla segun el titulo de la columna
-
-                var aaa = MessageBox.Show("Confirma que desea cambiar el valor?",
-                    "Columna: " + advancedDataGridView1.Columns[e.ColumnIndex].HeaderText.ToString(),
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (aaa == DialogResult.Yes)
-                {
-                    if (advancedDataGridView1.Columns[e.ColumnIndex].Tag.ToString() == "validaSI")   // la columna se valida?
-                    {
-                        // id,codped,status,origen,destino,fecha,entrega,coment,tipoes
-                        // valida si el dato ingresado es valido en la columna
-                        if (e.ColumnIndex == 4)                         // valida almacen destino
-                        {
-                            if (lib.validac("desc_alm", "idcodice", e.FormattedValue.ToString()) == true)
-                            {
-                                // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                                lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                            }
-                            else
-                            {
-                                MessageBox.Show("El valor no es válido para almacen", "Atención - Corrija");
-                                e.Cancel = true;
-                            }
-                        }
-                        if (e.ColumnIndex == 5)           // fecha
-                        {
-                            // no se valida
-                        }
-                        if (e.ColumnIndex == 6)           // fecha entrega
-                        {
-                            // no se valida
-                        }
-                        if (e.ColumnIndex == 7)          // comentario
-                        {
-                            // no se valida
-                        }
-                        if (e.ColumnIndex == 8)          // 
-                        {
-                            // no se valida
-                        }
-                    }
-                    else
-                    {
-                        // llama a libreria con los datos para el update - tabla,id,campo,nuevo valor
-                        lib.actuac(nomtab, campo, e.FormattedValue.ToString(), advancedDataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                    }
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                //if(Tx_modo.Text == "NUEVO" || Tx_modo.Text == "VISUALIZAR") e.Cancel = true;
-            }
+            // ACA NO VAMOS A CAMBIAR NADA
         }
         private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {

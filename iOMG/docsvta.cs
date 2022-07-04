@@ -117,10 +117,11 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_cont.Focused == true)
+                if (tx_cont.Focused == true)        // solo debe mostrar contratos con SALDO
                 {
                     para1 = "contrat";
-                    para2 = "";    // tx_idc.Text
+                    para2 = "";
+                    para3 = "saldo";
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -829,6 +830,8 @@ namespace iOMG
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
+                    string continua = "N";
+                    string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
                         "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail " +
                         "FROM detacon a " +
@@ -836,64 +839,104 @@ namespace iOMG
                         "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
                         "LEFT JOIN anag_cli ac ON ac.IDAnagrafica = c.cliente " +
                         "WHERE a.contratoh = @cont";
-                    using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                    using (MySqlCommand micon = new MySqlCommand(consin, conn))
                     {
                         micon.Parameters.AddWithValue("@cont", conti);
-                        using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                        MySqlDataReader dr = micon.ExecuteReader();
+                        if (dr.Read())
                         {
-                            da.Fill(dt);
+                            if (dr.GetDouble(0) <= 0)
+                            {
+                                MessageBox.Show("El contrato no tiene saldo!" + Environment.NewLine +
+                                    "No se puede generar comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                tx_cont.Text = "";
+                                tx_cont.Focus();
+                            }
+                            else
+                            {
+                                if (dr.GetString(1) == "ANULAD")
+                                {
+                                    MessageBox.Show("El contrato esta ANULADO!" + Environment.NewLine +
+                                        "No se puede generar comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    tx_cont.Text = "";
+                                    tx_cont.Focus();
+                                }
+                                else
+                                {
+                                    continua = "S";
+                                }
+                            }
                         }
+                        else
+                        {
+                            MessageBox.Show("No se tienen datos del contrato!","Error en contrato",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                            tx_cont.Text = "";
+                            tx_cont.Focus();
+                            return;
+                        }
+                        dr.Dispose();
                     }
-                }
-                if (dt.Rows.Count > 0)
-                {
-                    tx_idc.Text = dt.Rows[0].ItemArray[10].ToString();
-                    tx_dat_tdoc.Text = dt.Rows[0].ItemArray[11].ToString();
-                    string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
-                    DataRow[] row = dtdoc.Select(axs);
-                    cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
-                    tx_ndc.Text = dt.Rows[0].ItemArray[12].ToString();
-                    tx_nombre.Text = dt.Rows[0].ItemArray[13].ToString();
-                    tx_direc.Text = dt.Rows[0].ItemArray[14].ToString() + " " + dt.Rows[0].ItemArray[15].ToString();
-                    tx_dpto.Text = dt.Rows[0].ItemArray[18].ToString();
-                    tx_prov.Text = dt.Rows[0].ItemArray[17].ToString();
-                    tx_dist.Text = dt.Rows[0].ItemArray[16].ToString();
-                    tx_mail.Text = dt.Rows[0].ItemArray[21].ToString();
-                    tx_telef1.Text = dt.Rows[0].ItemArray[19].ToString();
-                    tx_telef2.Text = dt.Rows[0].ItemArray[20].ToString();
-                    // detalle
-                    grilladet(Tx_modo.Text);
-                    int cnt = 1;
-                    double toti = 0;
-                    foreach (DataRow data in dt.Rows)
+                    if (continua == "S")
                     {
-                        dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
-                            data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
-                            data.ItemArray[8].ToString(), data.ItemArray[9].ToString());
-                        cnt += 1;
-                        toti = toti + double.Parse(data.ItemArray[9].ToString());
-                    }
-                    tx_valor.Text = toti.ToString("#0.00");
-                    tx_bruto.Text = (toti / 1.18).ToString("#0.00");
-                    tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
-                    //
-                    if (rb_antic.Checked == true)
-                    {
-                        toti = 0;
-                        tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
-                        tx_valor.Text = toti.ToString("#0.00");
-                        tx_bruto.Text = (toti / 1.18).ToString("#0.00");
-                        tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
-                        tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
+                        using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                        {
+                            micon.Parameters.AddWithValue("@cont", conti);
+                            using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                            {
+                                da.Fill(dt);
+                            }
+                        }
+                        if (dt.Rows.Count > 0)
+                        {
+                            tx_idc.Text = dt.Rows[0].ItemArray[10].ToString();
+                            tx_dat_tdoc.Text = dt.Rows[0].ItemArray[11].ToString();
+                            string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                            DataRow[] row = dtdoc.Select(axs);
+                            cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+                            tx_ndc.Text = dt.Rows[0].ItemArray[12].ToString();
+                            tx_nombre.Text = dt.Rows[0].ItemArray[13].ToString();
+                            tx_direc.Text = dt.Rows[0].ItemArray[14].ToString() + " " + dt.Rows[0].ItemArray[15].ToString();
+                            tx_dpto.Text = dt.Rows[0].ItemArray[18].ToString();
+                            tx_prov.Text = dt.Rows[0].ItemArray[17].ToString();
+                            tx_dist.Text = dt.Rows[0].ItemArray[16].ToString();
+                            tx_mail.Text = dt.Rows[0].ItemArray[21].ToString();
+                            tx_telef1.Text = dt.Rows[0].ItemArray[19].ToString();
+                            tx_telef2.Text = dt.Rows[0].ItemArray[20].ToString();
+                            // detalle
+                            grilladet(Tx_modo.Text);
+                            int cnt = 1;
+                            double toti = 0;
+                            foreach (DataRow data in dt.Rows)
+                            {
+                                dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
+                                    data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
+                                    data.ItemArray[8].ToString(), data.ItemArray[9].ToString());
+                                cnt += 1;
+                                toti = toti + double.Parse(data.ItemArray[9].ToString());
+                            }
+                            tx_valor.Text = toti.ToString("#0.00");
+                            tx_bruto.Text = (toti / 1.18).ToString("#0.00");
+                            tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
+                            //
+                            if (rb_antic.Checked == true)
+                            {
+                                toti = 0;
+                                tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
+                                tx_valor.Text = toti.ToString("#0.00");
+                                tx_bruto.Text = (toti / 1.18).ToString("#0.00");
+                                tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
+                                tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("No existe el contrato!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            tx_cont.Text = "";
+                            return;
+                        }
+                        dt.Dispose();
                     }
                 }
-                else
-                {
-                    MessageBox.Show("No existe el contrato!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    tx_cont.Text = "";
-                    return;
-                }
-                dt.Dispose();
             }
             catch (MySqlException ex)
             {
