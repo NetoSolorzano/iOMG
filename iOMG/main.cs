@@ -436,7 +436,13 @@ namespace iOMG
         }
         private void control_pagos_Click(object sender, EventArgs e)       // control de pagos
         {
-            MessageBox.Show("Form de anulaciones de facturas");
+            cpagos fcp = new cpagos();
+            fcp.TopLevel = false;
+            fcp.Parent = this;
+            fcp.Top = pn_phor.Top + pn_phor.Height + 1;
+            fcp.Left = pn_pver.Left + pn_pver.Width + 1;
+            pn_centro.Controls.Add(fcp);
+            fcp.Show();
         }
         private void fac_reportes_Click(object sender, EventArgs e)     // reportes de facturas
         {

@@ -166,6 +166,12 @@
     <Compile Include="contratos.Designer.cs">
       <DependentUpon>contratos.cs</DependentUpon>
     </Compile>
+    <Compile Include="cpagos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cpagos.designer.cs">
+      <DependentUpon>cpagos.cs</DependentUpon>
+    </Compile>
     <Compile Include="defs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -514,6 +520,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="contratos.resx">
       <DependentUpon>contratos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cpagos.resx">
+      <DependentUpon>cpagos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="defs.resx">
       <DependentUpon>defs.cs</DependentUpon>
