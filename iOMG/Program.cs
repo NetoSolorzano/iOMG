@@ -23,6 +23,8 @@ namespace iOMG
         public static string cliente = "";      // cliente del sistema
         public static string retorna1 = "";
         public static string ruc = "";          // ruc del cliente
+        public static string direClte = "";     // direccion del cliente sin distrito, prov y dpto
+        public static string disProDpto = "";   // distrito provincia y departamento
         public static string tituloF = "Intregrador de Almacén y Ventas";      // titulo del sistema
         public static bool vg_conSol = false;   // usa conector solorsoft para ruc y dni
         public static string v_igv = "";        // % del igv en numeros

@@ -138,8 +138,10 @@
             this.rb_antic = new System.Windows.Forms.RadioButton();
             this.rb_bienes = new System.Windows.Forms.RadioButton();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label16 = new System.Windows.Forms.Label();
             this.tx_numOpe = new System.Windows.Forms.TextBox();
             this.milinea4 = new iOMG.milinea();
+            this.milinea8 = new iOMG.milinea();
             this.cmb_plazo = new System.Windows.Forms.ComboBox();
             this.tx_cuotas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -164,6 +166,7 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -175,6 +178,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.milinea4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -1139,6 +1143,7 @@
             this.tx_d_codi.TabIndex = 1;
             this.tx_d_codi.Tag = "Id";
             this.tx_d_codi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_codi.Leave += new System.EventHandler(this.tx_d_codi_Leave);
             // 
             // tx_d_can
             // 
@@ -1255,6 +1260,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label16);
             this.panel3.Controls.Add(this.tx_numOpe);
             this.panel3.Controls.Add(this.milinea4);
             this.panel3.Controls.Add(this.cmb_plazo);
@@ -1264,12 +1270,21 @@
             this.panel3.Controls.Add(this.rb_contado);
             this.panel3.Location = new System.Drawing.Point(4, 363);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(362, 26);
+            this.panel3.Size = new System.Drawing.Size(431, 26);
             this.panel3.TabIndex = 15;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(225, 8);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(57, 13);
+            this.label16.TabIndex = 410;
+            this.label16.Text = "Nro.OPER";
             // 
             // tx_numOpe
             // 
-            this.tx_numOpe.Location = new System.Drawing.Point(213, 3);
+            this.tx_numOpe.Location = new System.Drawing.Point(282, 3);
             this.tx_numOpe.Name = "tx_numOpe";
             this.tx_numOpe.Size = new System.Drawing.Size(146, 20);
             this.tx_numOpe.TabIndex = 396;
@@ -1277,12 +1292,22 @@
             // 
             // milinea4
             // 
+            this.milinea4.Controls.Add(this.milinea8);
             this.milinea4.Location = new System.Drawing.Point(3, 22);
             this.milinea4.Name = "milinea4";
             this.milinea4.Size = new System.Drawing.Size(355, 1);
             this.milinea4.TabIndex = 395;
             this.milinea4.TabStop = false;
             this.milinea4.Text = "milinea4";
+            // 
+            // milinea8
+            // 
+            this.milinea8.Location = new System.Drawing.Point(212, 0);
+            this.milinea8.Name = "milinea8";
+            this.milinea8.Size = new System.Drawing.Size(212, 1);
+            this.milinea8.TabIndex = 411;
+            this.milinea8.TabStop = false;
+            this.milinea8.Text = "milinea8";
             // 
             // cmb_plazo
             // 
@@ -1397,7 +1422,7 @@
             // 
             // tx_dat_plazo
             // 
-            this.tx_dat_plazo.Location = new System.Drawing.Point(374, 366);
+            this.tx_dat_plazo.Location = new System.Drawing.Point(471, 369);
             this.tx_dat_plazo.Name = "tx_dat_plazo";
             this.tx_dat_plazo.Size = new System.Drawing.Size(64, 20);
             this.tx_dat_plazo.TabIndex = 412;
@@ -1583,6 +1608,7 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.milinea4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1725,5 +1751,8 @@
         private System.Windows.Forms.TextBox tx_dir_pe;
         private System.Windows.Forms.TextBox tx_tfil;
         private System.Windows.Forms.TextBox tx_prdsCont;
+        private System.Windows.Forms.Label label16;
+        private milinea milinea8;
+        private System.Drawing.Printing.PrintDocument printDocument1;
     }
 }
