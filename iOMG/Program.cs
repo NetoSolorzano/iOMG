@@ -28,6 +28,8 @@ namespace iOMG
         public static string tituloF = "Intregrador de Almacén y Ventas";      // titulo del sistema
         public static bool vg_conSol = false;   // usa conector solorsoft para ruc y dni
         public static string v_igv = "";        // % del igv en numeros
+        public static string valdetra = "";     // monto valor en soles detraccion
+        public static string ctadetra = "";     // cta detraccion en BN
 
         [STAThread]
         static void Main()

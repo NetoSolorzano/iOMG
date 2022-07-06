@@ -65,6 +65,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gma.QrCodeNet.0.4.1.2\lib\net40\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>E:\almacen_excel\packages\Mysql\MySql.Data.dll</HintPath>
     </Reference>
@@ -301,6 +304,7 @@
     <Compile Include="movimas.designer.cs">
       <DependentUpon>movimas.cs</DependentUpon>
     </Compile>
+    <Compile Include="NumLetra.cs" />
     <Compile Include="pedsclients.cs">
       <SubType>Form</SubType>
     </Compile>

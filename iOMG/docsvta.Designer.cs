@@ -167,6 +167,7 @@
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.cmb_mon = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1538,11 +1539,23 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // cmb_mon
+            // 
+            this.cmb_mon.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_mon.DropDownWidth = 100;
+            this.cmb_mon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_mon.FormattingEnabled = true;
+            this.cmb_mon.Location = new System.Drawing.Point(545, 369);
+            this.cmb_mon.Name = "cmb_mon";
+            this.cmb_mon.Size = new System.Drawing.Size(50, 21);
+            this.cmb_mon.TabIndex = 416;
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.cmb_mon);
             this.Controls.Add(this.milinea6);
             this.Controls.Add(this.tx_prdsCont);
             this.Controls.Add(this.tx_tfil);
@@ -1754,5 +1767,6 @@
         private System.Windows.Forms.Label label16;
         private milinea milinea8;
         private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.ComboBox cmb_mon;
     }
 }
