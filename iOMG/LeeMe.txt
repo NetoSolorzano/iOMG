@@ -164,4 +164,4 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form repsfact, creacion ............................................................ ok 01/07/22
 - form contratos, adeciaciones para jalar datos desde comprobante, si es nuevo .......   codigo en campos marca,serie y corre de comprobante
 - form cpagos, creacion .............................................................. ok 04/07/22
-- form docsvta, agregando codigo para la impresión ...................................
+- form docsvta, agregando codigo para la impresión ...................................   formato impresion TK
