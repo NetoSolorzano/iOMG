@@ -713,6 +713,10 @@ namespace iOMG
             string verapp = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
             if (modo == "NUEVO")
             {
+                if (tx_precio.Text.Trim() == "")
+                {
+                    tx_precio.Text = "0";
+                }
                 var aa = MessageBox.Show("Confirma que desea crear el artículo?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(aa == DialogResult.Yes)
                 {

@@ -61,6 +61,7 @@ namespace iOMG
         string otro = "";               // ruta y nombre del png código QR
         string logoclt = "";            // 
         string codfact = "";            // codigo de tipo de documento Factura
+        string codbole = "";            // codigo de tipo de documento boleta
         string vtc_dni = "";            // codigo tipo documento dni
         string vtc_ruc = "";            // codigo tipo documento ruc
         string tipdo = "";              // CODIGO SUNAT tipo de documento de venta
@@ -70,7 +71,7 @@ namespace iOMG
         string restexto = "xxx";        // texto resolucion sunat autorizando prov. fact electronica
         string autoriz = "";            // resolucion de autorizacion sunat
         string despe2 = "";             // texto despedida en la impresion
-
+        string valdirec = "";           // valor limite maximo para tener boletas sin direccion
         string estman = "";             // estados que se pueden seleccionar manualmente
         int indant = -1;                // indice anterior al cambio en el combobox de estado
         string cliente = Program.cliente;    // razon social para los reportes
@@ -86,7 +87,6 @@ namespace iOMG
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";" +
             "ConnectionLifeTime=" + ctl + ";default command timeout=120";
         DataTable dtg = new DataTable();
-        DataTable dtu = new DataTable();        // dtg primario, original con la carga del 
         DataTable dttaller = new DataTable();   // combo local de ventas
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
         DataTable dtfp = new DataTable();       // combo para tipo de pago
@@ -279,11 +279,13 @@ namespace iOMG
                         if (row["campo"].ToString() == "items" && row["param"].ToString() == "stock") lps = row["valor"].ToString().Trim();                 // tipos de muebles que se hacen contrato
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "nomImTK") v_impTK = row["valor"].ToString().Trim();       // nombre de la impresora de tickets
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "factura") codfact = row["valor"].ToString().Trim();       // codigo tipo doc factura
-                        if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen1") leydet1 = row["valor"].ToString().Trim();       // 
-                        if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen2") leydet2 = row["valor"].ToString().Trim();       // 
-                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "restex") restexto = row["valor"].ToString().Trim();      // texto resolucion sunat autorizando prov. fact electronica
-                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "resAut") autoriz = row["valor"].ToString().Trim();       //
-                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();       //
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "boleta") codbole = row["valor"].ToString().Trim();       // codigo tipo doc boleta
+                        if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen1") leydet1 = row["valor"].ToString().Trim();           // 
+                        if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen2") leydet2 = row["valor"].ToString().Trim();           // 
+                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "restex") restexto = row["valor"].ToString().Trim();       // texto resolucion sunat autorizando prov. fact electronica
+                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "resAut") autoriz = row["valor"].ToString().Trim();        //
+                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "valdirec") valdirec = row["valor"].ToString().Trim();     // monto limite para obligar a tener direcion en boleta
                     }
                 }
                 da.Dispose();
@@ -311,7 +313,7 @@ namespace iOMG
                     parte = "id=@idr";
                 }
             }
-            if (campo == "tx_corre" && tx_corre.Text != "" && tx_idr.Text.Trim() == "")
+            if (campo == "tx_corre" && tx_corre.Text != "")
             {
                 if (Tx_modo.Text != "NUEVO")
                 {
@@ -381,9 +383,12 @@ namespace iOMG
                             // nombre de estado
                             tx_status.Text = tx_dat_estad.Text;
                             // medio de pago
-                            axs = string.Format("idcodice='{0}'", tx_dat_plazo.Text);
-                            row = dtfp.Select(axs);
-                            cmb_plazo.SelectedItem = row[0].ItemArray[0].ToString();
+                            if (tx_dat_plazo.Text.Trim() != "")
+                            {
+                                axs = string.Format("idcodice='{0}'", tx_dat_plazo.Text);
+                                row = dtfp.Select(axs);
+                                cmb_plazo.SelectedItem = (row.Length > 0)? row[0].ItemArray[0].ToString() : "";
+                            }
                         }
                         else
                         {
@@ -397,7 +402,7 @@ namespace iOMG
             }
             jaladet(tx_idr.Text);
         }
-        private void jaladet(string idr)                 // jala el detalle 
+        private void jaladet(string idr)                    // jala el detalle 
         {
             string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,madera,detpied,acabado,precio,totalMN,space(1) " +
                 "FROM detfactu where idc=@idr";
@@ -560,228 +565,6 @@ namespace iOMG
                 }
             }
             conn.Close();
-        }
-        private bool graba()                                // graba cabecera del comprobante
-        {
-            bool retorna = false;
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {
-                // conexion a rapifact para leer el correlativo del comprobante
-                //
-                tx_corre.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
-
-                //
-
-                //if (tx_tipcam.Text == "") tx_tipcam.Text = "0";
-                decimal fletMN = 0;
-                decimal subtMN = 0;
-                decimal igvtMN = 0;
-                if (tx_dat_mone.Text != MonDeft)
-                {
-                    // falta ver tema de dolares .... 29/09/2022
-                }
-                else
-                {
-                    fletMN = Math.Round(decimal.Parse(tx_valor.Text), 3);
-                    subtMN = Math.Round(decimal.Parse(tx_bruto.Text), 3);
-                    igvtMN = Math.Round(decimal.Parse(tx_igv.Text), 3);
-                }
-                // ACTUALIZAMOS LOS DTOS DEL CLIENTE (anagrafiche) CADA VEZ QUE SE GRABA UN REGISTRO .. triger
-                //
-                string inserta = "insert into cabfactu (" +
-                    "fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
-                    "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
-                    "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-                    "referen1,ubipdest,conPago,contrato,vendedor,muebles," +
-                    "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
-                    "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
-                    "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
-                    "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
-                    "@refer,@updest,@conpag,@cont,@vende,@mueb," +
-                    "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
-                using (MySqlCommand micon = new MySqlCommand(inserta, conn))
-                {
-                    micon.Parameters.AddWithValue("@fechop", dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2));
-                    micon.Parameters.AddWithValue("@mtdvta", cmb_tipo.Text.Substring(0, 1));
-                    micon.Parameters.AddWithValue("@ctdvta", tx_dat_tipdoc.Text);
-                    micon.Parameters.AddWithValue("@serdv", tx_serie.Text);
-                    micon.Parameters.AddWithValue("@numdv", tx_corre.Text);
-                    micon.Parameters.AddWithValue("@tcdvta", (tx_cont.Text.Trim() == "") ? "2" : "1");  // comprob. sin contrato=2 | con contrato=1
-                    micon.Parameters.AddWithValue("@tdcrem", tx_dat_tdoc.Text);
-                    micon.Parameters.AddWithValue("@ndcrem", tx_ndc.Text);
-                    micon.Parameters.AddWithValue("@nomrem", tx_nombre.Text);
-                    micon.Parameters.AddWithValue("@dircre", tx_direc.Text);
-                    micon.Parameters.AddWithValue("@dptocl", tx_dpto.Text);
-                    micon.Parameters.AddWithValue("@provcl", tx_prov.Text);
-                    micon.Parameters.AddWithValue("@distcl", tx_dist.Text);
-                    micon.Parameters.AddWithValue("@ubicre", "");
-                    micon.Parameters.AddWithValue("@mailcl", tx_mail.Text);
-                    micon.Parameters.AddWithValue("@telec1", tx_telef1.Text);
-                    micon.Parameters.AddWithValue("@telec2", tx_telef2.Text);
-                    micon.Parameters.AddWithValue("@ldcpgr", tx_dat_orig.Text);
-                    micon.Parameters.AddWithValue("@didegr", tx_dir_pe.Text);                   // direccion local de ventas
-                    micon.Parameters.AddWithValue("@ubdegr", "");                               // ubigeo origen
-                    micon.Parameters.AddWithValue("@obsprg", tx_coment.Text);
-                    micon.Parameters.AddWithValue("@canfil", tx_tfil.Text);                     // cantidad de filas de detalle
-                    micon.Parameters.AddWithValue("@totcpr", "0");                              // total bultos
-                    micon.Parameters.AddWithValue("@monppr", tx_dat_mone.Text);
-                    micon.Parameters.AddWithValue("@tcoper", "0");                              // TIPO DE CAMBIO
-                    micon.Parameters.AddWithValue("@subpgr", tx_bruto.Text);                     // sub total
-                    micon.Parameters.AddWithValue("@igvpgr", tx_igv.Text);                      // igv
-                    micon.Parameters.AddWithValue("@porcigv", v_igv);                           // porcentaje en numeros de IGV
-                    micon.Parameters.AddWithValue("@totpgr", tx_valor.Text);                    // total inc. igv
-                    micon.Parameters.AddWithValue("@pagpgr", "0");      // todos los comprobantes se emiten contado
-                    micon.Parameters.AddWithValue("@salxpa", "0");      // y con la plata en mano ... asi que los comprobantes nacen cancelados
-                    micon.Parameters.AddWithValue("@estpgr", codCanc);                          // estado del comprobante
-                    micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
-                    micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
-                    micon.Parameters.AddWithValue("@m1clte", "");
-                    micon.Parameters.AddWithValue("@tipacc", tx_dat_plazo.Text);                   // pago del documento x defecto si nace la fact pagada
-                    micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
-                    micon.Parameters.AddWithValue("@codMN", MonDeft);               // codigo moneda local
-                    micon.Parameters.AddWithValue("@subMN", subtMN);
-                    micon.Parameters.AddWithValue("@igvMN", igvtMN);
-                    micon.Parameters.AddWithValue("@totMN", fletMN);
-                    micon.Parameters.AddWithValue("@pagaut", "S");                  // todos los comprobantes nacen pagados
-                    micon.Parameters.AddWithValue("@tipdco", "");
-                    micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
-                    micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
-                    micon.Parameters.AddWithValue("@pordesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
-                    micon.Parameters.AddWithValue("@valdesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
-                    micon.Parameters.AddWithValue("@refer", tx_numOpe.Text);
-                    micon.Parameters.AddWithValue("@updest", "");
-                    micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
-                    micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                    micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
-                    micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
-                    micon.Parameters.AddWithValue("@verApp", "");
-                    micon.Parameters.AddWithValue("@asd", asd);
-                    micon.Parameters.AddWithValue("@iplan", lib.iplan());
-                    micon.Parameters.AddWithValue("@ipwan", "");
-                    micon.Parameters.AddWithValue("@nbnam", Environment.MachineName);
-                    micon.ExecuteNonQuery();
-                }
-                // detalle
-                int fila = 1;
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (row.Cells[0].Value != null)
-                    {
-                        if (row.Cells[2].Value != null && row.Cells[2].Value.ToString() == "")      // anticipo
-                        {
-                            string inserd2 = "update detfactu set " +
-                                "contrato=@cont,descpro=@desc,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta " +
-                                "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
-                            using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
-                            {
-                                micon.CommandTimeout = 60;
-                                micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
-                                micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
-                                micon.Parameters.AddWithValue("@cdv", tx_corre.Text);
-                                micon.Parameters.AddWithValue("@fila", fila);
-                                micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                                micon.Parameters.AddWithValue("@desc", row.Cells[3].Value.ToString());
-                                micon.Parameters.AddWithValue("@cmnn", MonDeft);
-                                micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
-                                micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
-                                micon.Parameters.AddWithValue("@pagaut", "S");
-                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
-                                micon.ExecuteNonQuery();
-                                fila += 1;
-                                //
-                                retorna = true;         // no hubo errores!
-                            }
-                        }
-                        else
-                        {
-                            string inserd2 = "update detfactu set " +
-                                "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
-                                "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta " +
-                                "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
-                            using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
-                            {
-                                micon.CommandTimeout = 60;
-                                micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
-                                micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
-                                micon.Parameters.AddWithValue("@cdv", tx_corre.Text);
-                                micon.Parameters.AddWithValue("@fila", fila);
-                                micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                                micon.Parameters.AddWithValue("@bult", row.Cells[1].Value.ToString());
-                                micon.Parameters.AddWithValue("@citem", row.Cells[2].Value.ToString());
-                                micon.Parameters.AddWithValue("@unim", "");
-                                micon.Parameters.AddWithValue("@desc", row.Cells[3].Value.ToString());
-                                micon.Parameters.AddWithValue("@peso", "0");
-                                micon.Parameters.AddWithValue("@medid", row.Cells[4].Value.ToString());
-                                micon.Parameters.AddWithValue("@mader", row.Cells[5].Value.ToString().PadRight(2).Substring(0, 1));
-                                micon.Parameters.AddWithValue("@acaba", row.Cells[7].Value.ToString());
-                                micon.Parameters.AddWithValue("@codm", row.Cells[5].Value.ToString());
-                                micon.Parameters.AddWithValue("@detp", row.Cells[6].Value.ToString());
-                                micon.Parameters.AddWithValue("@cmnn", MonDeft);
-                                micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
-                                micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
-                                micon.Parameters.AddWithValue("@pagaut", "S");
-                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
-                                micon.ExecuteNonQuery();
-                                fila += 1;
-                                //
-                                retorna = true;         // no hubo errores!
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("No fue posible conectarse al servidor de datos");
-                Application.Exit();
-                return retorna;
-            }
-            conn.Close();
-            return retorna;
-        }
-        private bool edita()                                // modifica 
-        {
-            bool retorna = false;
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {
-                try
-                {
-                    retorna = true;
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "Error en edicion");
-                    Application.Exit();
-                }
-            }
-            else
-            {
-                MessageBox.Show("No fue posible conectarse al servidor de datos");
-                Application.Exit();
-                return retorna;
-            }
-            conn.Close();
-            return retorna;
-        }
-        private bool anula()                                // anula 
-        {
-            bool retorna = false;
-            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-            conn.Open();
-            if(conn.State == ConnectionState.Open)
-            {
-                retorna = true;
-            }
-            else
-            {
-                MessageBox.Show("Se perdió conexión al servidor", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            conn.Close();
-            return retorna;
         }
         private bool busclte(string doc, string num)        // busqueda de cliente
         {
@@ -1541,11 +1324,26 @@ namespace iOMG
         {
             tx_d_nom.ReadOnly = true;
             tx_d_med.ReadOnly = true;
-            if (Tx_modo.Text == "NUEVO") {
-                if (tx_d_codi.Text.Substring(1, 3) == "000")
+            tx_d_mad.ReadOnly = false;
+            if (Tx_modo.Text == "NUEVO") 
+            {
+                if (tx_d_codi.Text.Trim() != "")
                 {
-                    tx_d_nom.ReadOnly = false;
-                    tx_d_med.ReadOnly = false;
+                    if (tx_d_codi.Text.Substring(0, 1) == "_")   // articulos varios que no tienen stock
+                    {
+                        tx_d_nom.ReadOnly = false;
+                        tx_d_med.ReadOnly = true;
+                        tx_d_mad.ReadOnly = true;
+                    }
+                    else
+                    {
+                        if (tx_d_codi.Text.Substring(1, 3) == "000")
+                        {
+                            tx_d_nom.ReadOnly = false;
+                            tx_d_med.ReadOnly = false;
+                            tx_d_mad.ReadOnly = false;
+                        }
+                    }
                 }
             }
         }
@@ -1685,6 +1483,16 @@ namespace iOMG
         {
             if (Tx_modo.Text != "NUEVO" && tx_corre.Text != "")
             {
+                string td = tx_dat_tipdoc.Text;
+                string sd = tx_serie.Text;
+                string nd = tx_corre.Text;
+                limpia_ini();
+                tx_dat_tipdoc.Text = td;
+                string axs = string.Format("idcodice='{0}'", tx_dat_tipdoc.Text);
+                DataRow[] row = dtpedido.Select(axs);
+                cmb_tipo.SelectedItem = row[0].ItemArray[1].ToString();
+                tx_serie.Text = sd;
+                tx_corre.Text = nd;
                 jalaoc("tx_corre");
             }
         }
@@ -1847,11 +1655,27 @@ namespace iOMG
         #region botones de grabar y agregar
         private void bt_det_Click(object sender, EventArgs e)
         {
+            // validaciones
+            if (tx_d_can.Text.Trim() == "")
+            {
+                MessageBox.Show("Ingrese la cantidad","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                tx_d_can.Focus();
+                return;
+            }
+            if (tx_d_codi.Text.Trim() == "")
+            {
+                MessageBox.Show("Seleccione un artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                tx_d_codi.Focus();
+                return;
+            }
+
+            double ntoti = 0;
+            double ncant = 0;
+            double.TryParse(tx_valor.Text, out double tv);
             if (Tx_modo.Text == "NUEVO" && rb_antic.Checked == true)
             {
                 if (tx_d_valAntic.Text != "")
                 {
-                    double ntoti = 0;
                     double.TryParse(tx_d_valAntic.Text, out ntoti);
                     if (ntoti > 0)
                     {
@@ -1872,29 +1696,25 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO" && rb_bienes.Checked == true)
             {
-                if (tx_d_precio.Text != "")
+                ntoti = double.Parse(tx_d_precio.Text);
+                ncant = double.Parse(tx_d_can.Text);
+                if (ntoti > 0)
                 {
-                    double tv = 0;
-                    double.TryParse(tx_valor.Text, out tv);
-
-                    double ntoti = double.Parse(tx_d_precio.Text);
-                    if (ntoti > 0)
+                    if (tx_d_codi.Text.Substring(0, 1) == "_")  // articulos varios
                     {
                         _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "N");
-
-                        tx_valor.Text = (ntoti + tv).ToString("#0.00");
-                        tx_bruto.Text = ((ntoti + tv) / 1.18).ToString("#0.00");
-                        tx_igv.Text = ((double.Parse(tx_valor.Text)) - ((double.Parse(tx_valor.Text)) / 1.18)).ToString("#0.00");
-
-                        limpia_panel(panel1);
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti/ncant).ToString("#0.00")), ntoti.ToString("#0.00"), "N");
                     }
-                    else
+                    else 
                     {
-                        MessageBox.Show("El precio debe ser mayor a cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        tx_d_precio.Focus();
-                        return;
+                        _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N");
                     }
+                    tx_valor.Text = (ntoti + tv).ToString("#0.00");
+                    tx_bruto.Text = ((ntoti + tv) / 1.18).ToString("#0.00");
+                    tx_igv.Text = ((double.Parse(tx_valor.Text)) - ((double.Parse(tx_valor.Text)) / 1.18)).ToString("#0.00");
+
+                    limpia_panel(panel1);
                 }
                 else 
                 {
@@ -1902,7 +1722,6 @@ namespace iOMG
                     tx_d_precio.Focus();
                     return;
                 }
-
             }
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
         }
@@ -1939,7 +1758,18 @@ namespace iOMG
                 cmb_plazo.Focus();
                 return;
             }
-
+            if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codfact)
+            {
+                MessageBox.Show("Es obligatorio registrar la dirección","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                tx_direc.Focus();
+                return;
+            }
+            if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codbole && double.Parse(tx_valor.Text) > double.Parse(valdirec))
+            {
+                MessageBox.Show("Es obligatorio registrar la dirección", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                tx_direc.Focus();
+                return;
+            }
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones antes de grabar nuevo
@@ -1990,6 +1820,229 @@ namespace iOMG
                 else return;
             }
         }
+        private bool graba()                                // graba cabecera del comprobante
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                // conexion a rapifact para leer el correlativo del comprobante
+                //
+                tx_corre.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
+
+                //
+
+                //if (tx_tipcam.Text == "") tx_tipcam.Text = "0";
+                decimal fletMN = 0;
+                decimal subtMN = 0;
+                decimal igvtMN = 0;
+                if (tx_dat_mone.Text != MonDeft)
+                {
+                    // falta ver tema de dolares .... 29/09/2022
+                }
+                else
+                {
+                    fletMN = Math.Round(decimal.Parse(tx_valor.Text), 3);
+                    subtMN = Math.Round(decimal.Parse(tx_bruto.Text), 3);
+                    igvtMN = Math.Round(decimal.Parse(tx_igv.Text), 3);
+                }
+                // ACTUALIZAMOS LOS DTOS DEL CLIENTE (anagrafiche) CADA VEZ QUE SE GRABA UN REGISTRO .. triger
+                //
+                string inserta = "insert into cabfactu (" +
+                    "fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
+                    "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
+                    "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
+                    "referen1,ubipdest,conPago,contrato,vendedor,muebles," +
+                    "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
+                    "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
+                    "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
+                    "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
+                    "@refer,@updest,@conpag,@cont,@vende,@mueb," +
+                    "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
+                using (MySqlCommand micon = new MySqlCommand(inserta, conn))
+                {
+                    micon.Parameters.AddWithValue("@fechop", dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2));
+                    micon.Parameters.AddWithValue("@mtdvta", cmb_tipo.Text.Substring(0, 1));
+                    micon.Parameters.AddWithValue("@ctdvta", tx_dat_tipdoc.Text);
+                    micon.Parameters.AddWithValue("@serdv", tx_serie.Text);
+                    micon.Parameters.AddWithValue("@numdv", tx_corre.Text);
+                    micon.Parameters.AddWithValue("@tcdvta", (tx_cont.Text.Trim() == "") ? "2" : "1");  // comprob. sin contrato=2 | con contrato=1
+                    micon.Parameters.AddWithValue("@tdcrem", tx_dat_tdoc.Text);
+                    micon.Parameters.AddWithValue("@ndcrem", tx_ndc.Text);
+                    micon.Parameters.AddWithValue("@nomrem", tx_nombre.Text);
+                    micon.Parameters.AddWithValue("@dircre", tx_direc.Text);
+                    micon.Parameters.AddWithValue("@dptocl", tx_dpto.Text);
+                    micon.Parameters.AddWithValue("@provcl", tx_prov.Text);
+                    micon.Parameters.AddWithValue("@distcl", tx_dist.Text);
+                    micon.Parameters.AddWithValue("@ubicre", "");
+                    micon.Parameters.AddWithValue("@mailcl", tx_mail.Text);
+                    micon.Parameters.AddWithValue("@telec1", tx_telef1.Text);
+                    micon.Parameters.AddWithValue("@telec2", tx_telef2.Text);
+                    micon.Parameters.AddWithValue("@ldcpgr", tx_dat_orig.Text);
+                    micon.Parameters.AddWithValue("@didegr", tx_dir_pe.Text);                   // direccion local de ventas
+                    micon.Parameters.AddWithValue("@ubdegr", "");                               // ubigeo origen
+                    micon.Parameters.AddWithValue("@obsprg", tx_coment.Text);
+                    micon.Parameters.AddWithValue("@canfil", tx_tfil.Text);                     // cantidad de filas de detalle
+                    micon.Parameters.AddWithValue("@totcpr", "0");                              // total bultos
+                    micon.Parameters.AddWithValue("@monppr", tx_dat_mone.Text);
+                    micon.Parameters.AddWithValue("@tcoper", "0");                              // TIPO DE CAMBIO
+                    micon.Parameters.AddWithValue("@subpgr", tx_bruto.Text);                     // sub total
+                    micon.Parameters.AddWithValue("@igvpgr", tx_igv.Text);                      // igv
+                    micon.Parameters.AddWithValue("@porcigv", v_igv);                           // porcentaje en numeros de IGV
+                    micon.Parameters.AddWithValue("@totpgr", tx_valor.Text);                    // total inc. igv
+                    micon.Parameters.AddWithValue("@pagpgr", "0");      // todos los comprobantes se emiten contado
+                    micon.Parameters.AddWithValue("@salxpa", "0");      // y con la plata en mano ... asi que los comprobantes nacen cancelados
+                    micon.Parameters.AddWithValue("@estpgr", codCanc);                          // estado del comprobante
+                    micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
+                    micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
+                    micon.Parameters.AddWithValue("@m1clte", "");
+                    micon.Parameters.AddWithValue("@tipacc", tx_dat_plazo.Text);                   // pago del documento x defecto si nace la fact pagada
+                    micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
+                    micon.Parameters.AddWithValue("@codMN", MonDeft);               // codigo moneda local
+                    micon.Parameters.AddWithValue("@subMN", subtMN);
+                    micon.Parameters.AddWithValue("@igvMN", igvtMN);
+                    micon.Parameters.AddWithValue("@totMN", fletMN);
+                    micon.Parameters.AddWithValue("@pagaut", "S");                  // todos los comprobantes nacen pagados
+                    micon.Parameters.AddWithValue("@tipdco", (rb_antic.Checked == true)? "A" : "B");
+                    micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
+                    micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
+                    micon.Parameters.AddWithValue("@pordesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
+                    micon.Parameters.AddWithValue("@valdesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
+                    micon.Parameters.AddWithValue("@refer", tx_numOpe.Text);
+                    micon.Parameters.AddWithValue("@updest", "");
+                    micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
+                    micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                    micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
+                    micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
+                    micon.Parameters.AddWithValue("@verApp", "");
+                    micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@iplan", lib.iplan());
+                    micon.Parameters.AddWithValue("@ipwan", "");
+                    micon.Parameters.AddWithValue("@nbnam", Environment.MachineName);
+                    micon.ExecuteNonQuery();
+                }
+                // detalle
+                int fila = 1;
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells[0].Value != null)
+                    {
+                        if (row.Cells[2].Value != null && row.Cells[2].Value.ToString() == "")      // anticipo
+                        {
+                            string inserd2 = "update detfactu set " +
+                                "contrato=@cont,descpro=@desc,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta " +
+                                "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
+                            using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
+                            {
+                                micon.CommandTimeout = 60;
+                                micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                                micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                                micon.Parameters.AddWithValue("@cdv", tx_corre.Text);
+                                micon.Parameters.AddWithValue("@fila", fila);
+                                micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                                micon.Parameters.AddWithValue("@desc", row.Cells[3].Value.ToString());
+                                micon.Parameters.AddWithValue("@cmnn", MonDeft);
+                                micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
+                                micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
+                                micon.Parameters.AddWithValue("@pagaut", "S");
+                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                micon.ExecuteNonQuery();
+                                fila += 1;
+                                //
+                                retorna = true;         // no hubo errores!
+                            }
+                        }
+                        else
+                        {
+                            string inserd2 = "update detfactu set " +
+                                "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
+                                "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta " +
+                                "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
+                            using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
+                            {
+                                micon.CommandTimeout = 60;
+                                micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                                micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                                micon.Parameters.AddWithValue("@cdv", tx_corre.Text);
+                                micon.Parameters.AddWithValue("@fila", fila);
+                                micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                                micon.Parameters.AddWithValue("@bult", row.Cells[1].Value.ToString());
+                                micon.Parameters.AddWithValue("@citem", row.Cells[2].Value.ToString());
+                                micon.Parameters.AddWithValue("@unim", "");
+                                micon.Parameters.AddWithValue("@desc", row.Cells[3].Value.ToString());
+                                micon.Parameters.AddWithValue("@peso", "0");
+                                micon.Parameters.AddWithValue("@medid", row.Cells[4].Value.ToString());
+                                micon.Parameters.AddWithValue("@mader", row.Cells[5].Value.ToString().PadRight(2).Substring(0, 1));
+                                micon.Parameters.AddWithValue("@acaba", row.Cells[7].Value.ToString());
+                                micon.Parameters.AddWithValue("@codm", row.Cells[5].Value.ToString());
+                                micon.Parameters.AddWithValue("@detp", row.Cells[6].Value.ToString());
+                                micon.Parameters.AddWithValue("@cmnn", MonDeft);
+                                micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
+                                micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
+                                micon.Parameters.AddWithValue("@pagaut", "S");
+                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                micon.ExecuteNonQuery();
+                                fila += 1;
+                                //
+                                retorna = true;         // no hubo errores!
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No fue posible conectarse al servidor de datos");
+                Application.Exit();
+                return retorna;
+            }
+            conn.Close();
+            return retorna;
+        }
+        private bool edita()                                // modifica 
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                try
+                {
+                    retorna = true;
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error en edicion");
+                    Application.Exit();
+                }
+            }
+            else
+            {
+                MessageBox.Show("No fue posible conectarse al servidor de datos");
+                Application.Exit();
+                return retorna;
+            }
+            conn.Close();
+            return retorna;
+        }
+        private bool anula()                                // anula 
+        {
+            bool retorna = false;
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                retorna = true;
+            }
+            else
+            {
+                MessageBox.Show("Se perdió conexión al servidor", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            conn.Close();
+            return retorna;
+        }
+
         #endregion
 
         #region crystal
@@ -2198,7 +2251,7 @@ namespace iOMG
                     puntoF = new PointF(coli, posi);
                     e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
-                    if (tx_tipComp.Text == "N") // ventas directas
+                    if (tx_tipComp.Text == "B") // ventas directas
                     {
                         for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
                         {
@@ -2212,6 +2265,7 @@ namespace iOMG
                                 puntoF = new PointF(coli + 90.0F, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 190, posi);
+                                recto = new RectangleF(puntoF, siz);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
                                 posi = posi + alfi;
                             }
@@ -2221,9 +2275,10 @@ namespace iOMG
                     {
                         puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 90.0F, posi);
-                        e.Graphics.DrawString(dataGridView1.Rows[0].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        //puntoF = new PointF(coli + 90.0F, posi);
+                        //e.Graphics.DrawString(dataGridView1.Rows[0].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                         puntoF = new PointF(coli + 190, posi);
+                        recto = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString(dataGridView1.Rows[0].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
                         posi = posi + alfi;
                         for (int l = 1; l < dataGridView1.Rows.Count - 1; l++)

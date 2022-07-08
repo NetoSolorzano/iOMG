@@ -202,6 +202,10 @@ namespace iOMG
                 cmb_sede_plan.DataSource = dttaller;
                 cmb_sede_plan.DisplayMember = "descrizionerid"; ;
                 cmb_sede_plan.ValueMember = "idcodice";
+                // PANEL FACT. DETALLE
+                cmb_loc_det.DataSource = dttaller;
+                cmb_loc_det.DisplayMember = "descrizionerid";
+                cmb_loc_det.ValueMember = "idcodice";
                 // ***************** seleccion de estado de servicios
                 string conestad = "select descrizionerid,idcodice,codigo from desc_est " +
                                        "where numero=1 order by idcodice";
@@ -216,7 +220,9 @@ namespace iOMG
                 cmb_estad_plan.DataSource = dtestad;
                 cmb_estad_plan.DisplayMember = "descrizionerid";
                 cmb_estad_plan.ValueMember = "idcodice";
-                //
+                // *************** seleccion de segmento de ventas
+                // aca falta ....
+
             }
             conn.Close();
         }
@@ -281,6 +287,13 @@ namespace iOMG
                         dgv_notcre.ReadOnly = true;
                     }
                     suma_grilla("dgv_notcre");
+                    break;
+                case "dgv_detfact":
+                    dgv_detfact.Font = tiplg;
+                    dgv_detfact.DefaultCellStyle.Font = tiplg;
+                    dgv_detfact.RowTemplate.Height = 15;
+                    dgv_detfact.AllowUserToAddRows = false;
+                    dgv_detfact.Width = Parent.Width - 70; // 1015;
                     break;
             }
         }
@@ -380,6 +393,36 @@ namespace iOMG
             }
 
         }
+        private void bt_det_Click(object sender, EventArgs e)       // facturacion detallada
+        {
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                string consulta = "rep_vtas_factDet1";
+                using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                {
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@loca", (tx_dat_locDet.Text != "") ? tx_dat_locDet.Text : "");
+                    micon.Parameters.AddWithValue("@fecini", dtp_ini_det.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fecfin", dtp_fin_det.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@segm", (tx_dat_segDet.Text != "") ? tx_dat_segDet.Text : "");
+                    micon.Parameters.AddWithValue("@excl", (chk_seg_det.Checked == true) ? "1" : "0");
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                    {
+                        dgv_detfact.DataSource = null;
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_detfact.DataSource = dt;
+                        grilla("dgv_detfact");
+                    }
+                    string resulta = lib.ult_mov(nomform, nomtab, asd);
+                    if (resulta != "OK")                                        // actualizamos la tabla usuarios
+                    {
+                        MessageBox.Show(resulta, "Error en actualización de tabla usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
         private void suma_grilla(string dgv)
         {
             //DataRow[] row = dtestad.Select("idcodice='" + codAnul + "'");   // dtestad
@@ -430,12 +473,12 @@ namespace iOMG
         }
 
         #region combos
-        private void cmb_sede_plan_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cmb_sede_plan_SelectionChangeCommitted(object sender, EventArgs e) // ok
         {
             if (cmb_sede_plan.SelectedValue != null) tx_dat_sede_plan.Text = cmb_sede_plan.SelectedValue.ToString();
             else tx_dat_sede_plan.Text = "";
         }
-        private void cmb_sede_plan_KeyDown(object sender, KeyEventArgs e)
+        private void cmb_sede_plan_KeyDown(object sender, KeyEventArgs e)               // ok
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -443,12 +486,12 @@ namespace iOMG
                 tx_dat_sede_plan.Text = "";
             }
         }
-        private void cmb_estad_plan_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cmb_estad_plan_SelectionChangeCommitted(object sender, EventArgs e)    // ok
         {
             if (cmb_estad_plan.SelectedValue != null) tx_dat_estad_plan.Text = cmb_estad_plan.SelectedValue.ToString();
             else tx_dat_estad_plan.Text = "";
         }
-        private void cmb_estad_plan_KeyDown(object sender, KeyEventArgs e)
+        private void cmb_estad_plan_KeyDown(object sender, KeyEventArgs e)                  // ok
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -456,12 +499,12 @@ namespace iOMG
                 tx_dat_estad_plan.Text = "";
             }
         }
-        private void cmb_sede_guias_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cmb_sede_guias_SelectionChangeCommitted(object sender, EventArgs e)    // ok
         {
             if (cmb_sede_guias.SelectedValue != null) tx_sede_guias.Text = cmb_sede_guias.SelectedValue.ToString();
             else tx_sede_guias.Text = "";
         }
-        private void cmb_sede_guias_KeyDown(object sender, KeyEventArgs e)
+        private void cmb_sede_guias_KeyDown(object sender, KeyEventArgs e)                  // ok
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -469,17 +512,30 @@ namespace iOMG
                 tx_sede_guias.Text = "";
             }
         }
-        private void cmb_estad_guias_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cmb_estad_guias_SelectionChangeCommitted(object sender, EventArgs e)   // ok
         {
             if (cmb_estad_guias.SelectedValue != null) tx_estad_guias.Text = cmb_estad_guias.SelectedValue.ToString();
             else tx_estad_guias.Text = "";
         }
-        private void cmb_estad_guias_KeyDown(object sender, KeyEventArgs e)
+        private void cmb_estad_guias_KeyDown(object sender, KeyEventArgs e)                 // ok
         {
             if (e.KeyCode == Keys.Delete)
             {
                 cmb_estad_guias.SelectedIndex = -1;
                 tx_estad_guias.Text = "";
+            }
+        }
+        private void cmb_loc_det_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_loc_det.SelectedValue != null) tx_dat_locDet.Text = cmb_loc_det.SelectedValue.ToString();
+            else tx_dat_locDet.Text = "";
+        }
+        private void cmb_loc_det_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_loc_det.SelectedIndex = -1;
+                tx_dat_locDet.Text = "";
             }
         }
         #endregion

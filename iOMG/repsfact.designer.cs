@@ -125,6 +125,29 @@
             this.dtp_mes = new System.Windows.Forms.DateTimePicker();
             this.dtp_yea = new System.Windows.Forms.DateTimePicker();
             this.dgv_regvtas = new ADGV.AdvancedDataGridView();
+            this.tabdeta = new System.Windows.Forms.TabPage();
+            this.chk_seg_det = new System.Windows.Forms.CheckBox();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.tx_dat_segDet = new System.Windows.Forms.TextBox();
+            this.cmb_seg_det = new System.Windows.Forms.ComboBox();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.groupBox27 = new System.Windows.Forms.GroupBox();
+            this.groupBox28 = new System.Windows.Forms.GroupBox();
+            this.dgv_detfact = new ADGV.AdvancedDataGridView();
+            this.label14 = new System.Windows.Forms.Label();
+            this.groupBox29 = new System.Windows.Forms.GroupBox();
+            this.groupBox30 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tx_dat_locDet = new System.Windows.Forms.TextBox();
+            this.cmb_loc_det = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.dtp_fin_det = new System.Windows.Forms.DateTimePicker();
+            this.dtp_ini_det = new System.Windows.Forms.DateTimePicker();
+            this.bt_det = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabfacts.SuspendLayout();
@@ -144,6 +167,12 @@
             this.tabregvtas.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_regvtas)).BeginInit();
+            this.tabdeta.SuspendLayout();
+            this.groupBox17.SuspendLayout();
+            this.groupBox19.SuspendLayout();
+            this.groupBox27.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_detfact)).BeginInit();
+            this.groupBox29.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -407,6 +436,7 @@
             this.tabControl1.Controls.Add(this.tabfacts);
             this.tabControl1.Controls.Add(this.tabnotas);
             this.tabControl1.Controls.Add(this.tabregvtas);
+            this.tabControl1.Controls.Add(this.tabdeta);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -1212,6 +1242,254 @@
             this.dgv_regvtas.SortStringChanged += new System.EventHandler(this.advancedDataGridView1_SortStringChanged);
             this.dgv_regvtas.FilterStringChanged += new System.EventHandler(this.advancedDataGridView1_FilterStringChanged);
             // 
+            // tabdeta
+            // 
+            this.tabdeta.Controls.Add(this.chk_seg_det);
+            this.tabdeta.Controls.Add(this.groupBox17);
+            this.tabdeta.Controls.Add(this.tx_dat_segDet);
+            this.tabdeta.Controls.Add(this.cmb_seg_det);
+            this.tabdeta.Controls.Add(this.groupBox19);
+            this.tabdeta.Controls.Add(this.groupBox27);
+            this.tabdeta.Controls.Add(this.dgv_detfact);
+            this.tabdeta.Controls.Add(this.label14);
+            this.tabdeta.Controls.Add(this.groupBox29);
+            this.tabdeta.Controls.Add(this.label15);
+            this.tabdeta.Controls.Add(this.tx_dat_locDet);
+            this.tabdeta.Controls.Add(this.cmb_loc_det);
+            this.tabdeta.Controls.Add(this.button2);
+            this.tabdeta.Controls.Add(this.dtp_fin_det);
+            this.tabdeta.Controls.Add(this.dtp_ini_det);
+            this.tabdeta.Controls.Add(this.bt_det);
+            this.tabdeta.Controls.Add(this.label18);
+            this.tabdeta.Controls.Add(this.label19);
+            this.tabdeta.Location = new System.Drawing.Point(4, 22);
+            this.tabdeta.Name = "tabdeta";
+            this.tabdeta.Size = new System.Drawing.Size(1026, 377);
+            this.tabdeta.TabIndex = 10;
+            this.tabdeta.Text = "Fact.Detallado";
+            this.tabdeta.UseVisualStyleBackColor = true;
+            // 
+            // chk_seg_det
+            // 
+            this.chk_seg_det.AutoSize = true;
+            this.chk_seg_det.Location = new System.Drawing.Point(369, 31);
+            this.chk_seg_det.Name = "chk_seg_det";
+            this.chk_seg_det.Size = new System.Drawing.Size(63, 17);
+            this.chk_seg_det.TabIndex = 408;
+            this.chk_seg_det.Text = "Excluye";
+            this.chk_seg_det.UseVisualStyleBackColor = true;
+            this.chk_seg_det.Visible = false;
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox17.Controls.Add(this.groupBox18);
+            this.groupBox17.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox17.Location = new System.Drawing.Point(173, 48);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(189, 1);
+            this.groupBox17.TabIndex = 402;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Visible = false;
+            // 
+            // groupBox18
+            // 
+            this.groupBox18.Location = new System.Drawing.Point(0, -26);
+            this.groupBox18.Name = "groupBox18";
+            this.groupBox18.Size = new System.Drawing.Size(164, 1);
+            this.groupBox18.TabIndex = 113;
+            this.groupBox18.TabStop = false;
+            // 
+            // tx_dat_segDet
+            // 
+            this.tx_dat_segDet.Location = new System.Drawing.Point(153, 31);
+            this.tx_dat_segDet.Name = "tx_dat_segDet";
+            this.tx_dat_segDet.Size = new System.Drawing.Size(17, 20);
+            this.tx_dat_segDet.TabIndex = 407;
+            this.tx_dat_segDet.Visible = false;
+            // 
+            // cmb_seg_det
+            // 
+            this.cmb_seg_det.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_seg_det.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_seg_det.DropDownWidth = 100;
+            this.cmb_seg_det.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_seg_det.FormattingEnabled = true;
+            this.cmb_seg_det.Location = new System.Drawing.Point(260, 28);
+            this.cmb_seg_det.Name = "cmb_seg_det";
+            this.cmb_seg_det.Size = new System.Drawing.Size(103, 21);
+            this.cmb_seg_det.TabIndex = 406;
+            this.cmb_seg_det.Visible = false;
+            // 
+            // groupBox19
+            // 
+            this.groupBox19.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox19.Controls.Add(this.groupBox20);
+            this.groupBox19.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox19.Location = new System.Drawing.Point(476, 48);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Size = new System.Drawing.Size(161, 1);
+            this.groupBox19.TabIndex = 405;
+            this.groupBox19.TabStop = false;
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Location = new System.Drawing.Point(0, -26);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(164, 1);
+            this.groupBox20.TabIndex = 113;
+            this.groupBox20.TabStop = false;
+            // 
+            // groupBox27
+            // 
+            this.groupBox27.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox27.Controls.Add(this.groupBox28);
+            this.groupBox27.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox27.Location = new System.Drawing.Point(476, 26);
+            this.groupBox27.Name = "groupBox27";
+            this.groupBox27.Size = new System.Drawing.Size(161, 1);
+            this.groupBox27.TabIndex = 404;
+            this.groupBox27.TabStop = false;
+            // 
+            // groupBox28
+            // 
+            this.groupBox28.Location = new System.Drawing.Point(0, -26);
+            this.groupBox28.Name = "groupBox28";
+            this.groupBox28.Size = new System.Drawing.Size(164, 1);
+            this.groupBox28.TabIndex = 113;
+            this.groupBox28.TabStop = false;
+            // 
+            // dgv_detfact
+            // 
+            this.dgv_detfact.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_detfact.AutoGenerateContextFilters = true;
+            this.dgv_detfact.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_detfact.DateWithTime = false;
+            this.dgv_detfact.Location = new System.Drawing.Point(3, 55);
+            this.dgv_detfact.Name = "dgv_detfact";
+            this.dgv_detfact.Size = new System.Drawing.Size(1020, 295);
+            this.dgv_detfact.TabIndex = 403;
+            this.dgv_detfact.TimeFilter = false;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(175, 33);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(92, 13);
+            this.label14.TabIndex = 401;
+            this.label14.Text = "Segmento de Vta.";
+            this.label14.Visible = false;
+            // 
+            // groupBox29
+            // 
+            this.groupBox29.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox29.Controls.Add(this.groupBox30);
+            this.groupBox29.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox29.Location = new System.Drawing.Point(173, 26);
+            this.groupBox29.Name = "groupBox29";
+            this.groupBox29.Size = new System.Drawing.Size(171, 1);
+            this.groupBox29.TabIndex = 400;
+            this.groupBox29.TabStop = false;
+            // 
+            // groupBox30
+            // 
+            this.groupBox30.Location = new System.Drawing.Point(0, -26);
+            this.groupBox30.Name = "groupBox30";
+            this.groupBox30.Size = new System.Drawing.Size(164, 1);
+            this.groupBox30.TabIndex = 113;
+            this.groupBox30.TabStop = false;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(175, 11);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(69, 13);
+            this.label15.TabIndex = 398;
+            this.label15.Text = "Local Ventas";
+            // 
+            // tx_dat_locDet
+            // 
+            this.tx_dat_locDet.Location = new System.Drawing.Point(153, 7);
+            this.tx_dat_locDet.Name = "tx_dat_locDet";
+            this.tx_dat_locDet.Size = new System.Drawing.Size(20, 20);
+            this.tx_dat_locDet.TabIndex = 399;
+            this.tx_dat_locDet.Visible = false;
+            // 
+            // cmb_loc_det
+            // 
+            this.cmb_loc_det.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_loc_det.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_loc_det.DropDownWidth = 100;
+            this.cmb_loc_det.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_loc_det.FormattingEnabled = true;
+            this.cmb_loc_det.Location = new System.Drawing.Point(243, 6);
+            this.cmb_loc_det.Name = "cmb_loc_det";
+            this.cmb_loc_det.Size = new System.Drawing.Size(119, 21);
+            this.cmb_loc_det.TabIndex = 397;
+            this.cmb_loc_det.SelectionChangeCommitted += new System.EventHandler(this.cmb_loc_det_SelectionChangeCommitted);
+            this.cmb_loc_det.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_loc_det_KeyDown);
+            // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.Enabled = false;
+            this.button2.Location = new System.Drawing.Point(753, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(50, 41);
+            this.button2.TabIndex = 396;
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // dtp_fin_det
+            // 
+            this.dtp_fin_det.Checked = false;
+            this.dtp_fin_det.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_fin_det.Location = new System.Drawing.Point(542, 29);
+            this.dtp_fin_det.Name = "dtp_fin_det";
+            this.dtp_fin_det.Size = new System.Drawing.Size(95, 20);
+            this.dtp_fin_det.TabIndex = 392;
+            // 
+            // dtp_ini_det
+            // 
+            this.dtp_ini_det.Checked = false;
+            this.dtp_ini_det.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_ini_det.Location = new System.Drawing.Point(542, 7);
+            this.dtp_ini_det.Name = "dtp_ini_det";
+            this.dtp_ini_det.Size = new System.Drawing.Size(95, 20);
+            this.dtp_ini_det.TabIndex = 391;
+            // 
+            // bt_det
+            // 
+            this.bt_det.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.bt_det.Location = new System.Drawing.Point(664, 13);
+            this.bt_det.Name = "bt_det";
+            this.bt_det.Size = new System.Drawing.Size(59, 29);
+            this.bt_det.TabIndex = 393;
+            this.bt_det.Text = "Filtra";
+            this.bt_det.UseVisualStyleBackColor = true;
+            this.bt_det.Click += new System.EventHandler(this.bt_det_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(486, 34);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(53, 13);
+            this.label18.TabIndex = 395;
+            this.label18.Text = "Fech final";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(478, 11);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(61, 13);
+            this.label19.TabIndex = 394;
+            this.label19.Text = "Fech Inicial";
+            // 
             // repsfact
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1248,6 +1526,13 @@
             this.tabregvtas.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_regvtas)).EndInit();
+            this.tabdeta.ResumeLayout(false);
+            this.tabdeta.PerformLayout();
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox19.ResumeLayout(false);
+            this.groupBox27.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_detfact)).EndInit();
+            this.groupBox29.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1351,5 +1636,28 @@
         private System.Windows.Forms.Label label16;
         private NumericTextBox tx_totval_n;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TabPage tabdeta;
+        private System.Windows.Forms.CheckBox chk_seg_det;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.GroupBox groupBox18;
+        private System.Windows.Forms.TextBox tx_dat_segDet;
+        private System.Windows.Forms.ComboBox cmb_seg_det;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.GroupBox groupBox27;
+        private System.Windows.Forms.GroupBox groupBox28;
+        private ADGV.AdvancedDataGridView dgv_detfact;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.GroupBox groupBox29;
+        private System.Windows.Forms.GroupBox groupBox30;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tx_dat_locDet;
+        private System.Windows.Forms.ComboBox cmb_loc_det;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DateTimePicker dtp_fin_det;
+        private System.Windows.Forms.DateTimePicker dtp_ini_det;
+        private System.Windows.Forms.Button bt_det;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
     }
 }

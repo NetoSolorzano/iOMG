@@ -293,7 +293,7 @@ namespace iOMG
             cn.Open();
             try
             {
-                string consulta = "select cliente,igv,direcc,concat(distrit,' - ',provin,' - ',depart),ruc from baseconf limit 1";
+                string consulta = "select cliente,igv,direcc,concat(distrit,' - ',provin,' - ',depart),ruc,valdetra from baseconf limit 1";
                 MySqlCommand micon = new MySqlCommand(consulta, cn);
                 try
                 {
@@ -305,6 +305,7 @@ namespace iOMG
                         Program.v_igv = dr.GetString(1);
                         Program.direClte = dr.GetString(2);
                         Program.disProDpto = dr.GetString(3);
+                        Program.valdetra = dr.GetString(5);
                     }
                     dr.Close();
                 }
