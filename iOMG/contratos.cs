@@ -62,10 +62,12 @@ namespace iOMG
         string dets3 = "";                  // detalles3 para adicionales
         string acadef = "";                 // acabados para adicionales
         string vpaisdef = "";               // pais por defecto para los clientes y proveedores
-        string docDni = "";             // codigo documento dni
-        string docRuc = "";             // codigo documento RUC
-        string cliente = Program.cliente;    // razon social para los reportes
+        string docDni = "";                 // codigo documento dni
+        string docRuc = "";                 // codigo documento RUC
+        string cliente = Program.cliente;   // razon social para los reportes
         string impDef = "";                 // nombre de la impresora por defecto
+        string docBol = "";                 // codigo boletas
+        string docFac = "";                 // codigo facturas
         #endregion
         libreria lib = new libreria();
         acciones acc = new acciones();
@@ -152,6 +154,7 @@ namespace iOMG
                 }
                 if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text))
                 {
+                    /*
                     para1 = "PAGCON";
                     para2 = tx_codped.Text.Trim();
                     para3 = tx_saldo.Text.Trim();
@@ -174,6 +177,7 @@ namespace iOMG
                             }
                         }
                     }
+                    */
                 }
                 return true;    // indicate that you handled this keystroke
             }
@@ -229,12 +233,7 @@ namespace iOMG
                             {
                                 idc = dr.GetString("id");
                                 tx_idcli.Text = dr.GetString("idanagrafica");      // id del cliente
-                                tx_valor.Text = "0";     // valor del contrato, se calcula en base al detalle
-                                tx_dscto.Text = "0";     // descuento final, se calcula en base al detalle
-                                tx_bruto.Text = "0";     // total bruto, se calcula en base al detalle
-                                tx_acta.Text = dr.GetDouble("totdvMN").ToString("#0.00");     // pago a cuenta
-                                tx_saldo.Text = "0";     // saldo del contrato ..... ummmm no se cuando se jala
-                                                         // jala datos del cliente
+                                // jala datos del cliente
                                 tx_ndc.Text = dr.GetString("nudoclt");
                                 tx_nombre.Text = dr.GetString("nombclt");
                                 tx_direc.Text = dr.GetString("direclt");
@@ -246,7 +245,16 @@ namespace iOMG
                                 tx_telef2.Text = dr.GetString("telemsg");
                                 //
                                 tx_dat_tdoc.Text = dr.GetString("tidoclt");
-                                cmb_tdoc.SelectedItem = tx_dat_tdoc.Text;
+                                foreach (DataRow row in dtdest.Rows)
+                                {
+                                    if (row["idcodice"].ToString() == tx_dat_tdoc.Text)
+                                    {
+                                        //cmb_tdoc.SelectedValue = row["descrizionerid"].ToString();
+                                        cmb_tdoc.SelectedItem = row["descrizionerid"].ToString();
+                                    }
+                                }
+                                //
+                                tx_acta.Text = dr.GetDouble("totdvMN").ToString("#0.00");     // pago a cuenta
                             }
                         }
                     }
@@ -269,6 +277,8 @@ namespace iOMG
                         da.Dispose();
                     }
                     conn.Close();
+                    calculos();
+
                     tx_coment.Focus();
                 }
                 else
@@ -329,12 +339,13 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi,@cli)";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi,@cli,@dvt)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
                 micon.Parameters.AddWithValue("@ped", "contratos");
                 micon.Parameters.AddWithValue("@adi", "adicionals");
                 micon.Parameters.AddWithValue("@cli", "clients");
+                micon.Parameters.AddWithValue("@dvt", "docsvta");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -390,6 +401,11 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "dni") docDni = row["valor"].ToString().Trim();
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ruc") docRuc = row["valor"].ToString().Trim();
+                    }
+                    if (row["formulario"].ToString() == "docsvta")
+                    {
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "boleta") docBol = row["valor"].ToString().Trim();
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "factura") docFac = row["valor"].ToString().Trim();
                     }
                 }
                 da.Dispose();
@@ -1301,59 +1317,36 @@ namespace iOMG
             }
             return retorna;
         }
-        private void correNum()                                                 // avanza la numeracion de contratos
+        private void correNum(MySqlConnection conn)                             // avanza la numeracion de contratos
         {
-            //bool retorna = false;
-            if (tncont == "AUTOMA")  // modo automatico y el campo vacio    && tx_codped.Text.Trim() == ""
+            if (tncont == "AUTOMA")  // modo automatico y el campo vacio
             {
-                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
-                    try
-                    {
-                        conn.Open();
-                    }
-                    catch (MySqlException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error en obtener # de contrato");
-                        Application.Exit();
-                    }
-                    //string vamos = "UPDATE series SET actual=(CONCAT('0', CAST(actual AS SIGNED) + 1)) " +
-                    //    "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
                     string vamos = "select CONCAT(serie,right(CONCAT('00000',CAST(actual AS SIGNED) + 1),5)) from series " +
-                        "WHERE tipdoc=@tdo AND sede=@sed";      //  AND rsocial=@raz
+                        "WHERE tipdoc=@tdo AND sede=@sed"; 
                     MySqlCommand covam = new MySqlCommand(vamos, conn);
                     covam.Parameters.AddWithValue("@tdo", tdc);
-                    covam.Parameters.AddWithValue("@sed", tx_dat_orig.Text);    // sdc
-                    //covam.Parameters.AddWithValue("@raz", raz);
+                    covam.Parameters.AddWithValue("@sed", tx_dat_orig.Text);
                     MySqlDataReader dr = covam.ExecuteReader();
                     if (dr.Read())
                     {
                         tx_codped.Text = dr.GetString(0);
-                        //retorna = true;
                     }
-                    /*
-                    vamos = "select actual from series " +
-                        "WHERE tipdoc=@tdo AND sede=@sed AND rsocial=@raz";
-                    covam = new MySqlCommand(vamos, conn);
-                    covam.Parameters.AddWithValue("@tdo", tdc);
-                    covam.Parameters.AddWithValue("@sed", sdc);
-                    covam.Parameters.AddWithValue("@raz", raz);
-                    MySqlDataReader dr = covam.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        tx_codped.Text = dr.GetString(0);
-                        retorna = true;
-                    }
-                    */
+                    dr.Dispose();
                     covam.Dispose();
-                    //dr.Close();
+                    using (MySqlCommand micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed AND id>0", conn)) 
+                    {
+                        micon.Parameters.AddWithValue("@act", tx_codped.Text);   // tx_codped.Text.Substring(2, tx_codped.Text.Trim().Length - 2)
+                        micon.Parameters.AddWithValue("@tdo", tdc);
+                        micon.Parameters.AddWithValue("@sed", tx_dat_orig.Text);
+                        micon.ExecuteNonQuery();
+                    }
                 }
                 if (tx_codped.Text.Trim() == "")
                 {
                     MessageBox.Show("Falta configurar numeración automática","Tabla series");
                 }
             }
-            //return retorna;
         }
         private bool graba()                                                    // graba cabecera y detalle
         {
@@ -1364,6 +1357,8 @@ namespace iOMG
             {
                 try
                 {
+                    correNum(conn);
+                    //
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
                         "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad) " +
                         "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
@@ -1400,6 +1395,17 @@ namespace iOMG
                         tx_idr.Text = rlid.GetString(0);
                     }
                     rlid.Close();
+                    using(MySqlCommand mic = new MySqlCommand("update pagamenti set contrato=@con,valor=@calc,acuenta=@acta,saldo=@sald where dv=@dv and serie=@ser and numero=@num and idpagamenti>0",conn))
+                    {
+                        mic.Parameters.AddWithValue("@con", tx_codped.Text);
+                        mic.Parameters.AddWithValue("@calc", tx_valor.Text);
+                        mic.Parameters.AddWithValue("@acta", tx_acta.Text);
+                        mic.Parameters.AddWithValue("@sald", tx_saldo.Text);
+                        mic.Parameters.AddWithValue("@dv", (tx_mc.Text == "F")? docFac : docBol);
+                        mic.Parameters.AddWithValue("@ser", tx_serie.Text);
+                        mic.Parameters.AddWithValue("@num", tx_corre.Text);
+                        mic.ExecuteNonQuery();
+                    }
                     // detalle 
                     //dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Ascending);  // ya no va 24/11/20 Gloria
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1426,7 +1432,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
-                    if (tncont == "AUTOMA")
+                    /* if (tncont == "AUTOMA")
                     {
                         micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed AND id>0", conn);    //  AND rsocial=@raz
                         micon.Parameters.AddWithValue("@act", tx_codped.Text.Substring(2,tx_codped.Text.Trim().Length - 2));
@@ -1435,6 +1441,7 @@ namespace iOMG
                         //micon.Parameters.AddWithValue("@raz", raz);
                         micon.ExecuteNonQuery();
                     }
+                    */
                     retorna = true;
                 }
                 catch (MySqlException ex)
@@ -2010,13 +2017,15 @@ namespace iOMG
             tx_a_salcan.ReadOnly = true;
             tx_acta.ReadOnly = true;
             cmb_tipo.Enabled = false;
+            /*
             if (tncont == "AUTOMA")
             {
                 tx_codped.ReadOnly = true;
                 if (tx_dat_orig.Text != "") correNum();
             }
             else tx_codped.ReadOnly = false;
-            //
+            */
+            tx_codped.ReadOnly = true;
             if (int.Parse(iOMG.Program.nivuser) < 2) cmb_taller.Focus();
             else
             {
@@ -2600,14 +2609,13 @@ namespace iOMG
         {
             if (cmb_taller.SelectedValue != null) tx_dat_orig.Text = cmb_taller.SelectedValue.ToString();
             else tx_dat_orig.Text = cmb_taller.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-            if (tncont == "AUTOMA" && tx_dat_orig.Text != "") correNum();
+            //if (tncont == "AUTOMA" && tx_dat_orig.Text != "") correNum();
         }
         private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmb_tdoc.SelectedIndex == -1) tx_dat_tdoc.Text = "";
             else
             {
-
                 foreach (DataRow row in dtdest.Rows)
                 {
                     if (row["descrizionerid"].ToString() == cmb_tdoc.Text)   // tx_dat_tdoc.Text
@@ -2719,12 +2727,14 @@ namespace iOMG
                     tx_mail.Focus();
                     return;
                 }
+                /*  NUm contratos automáticos al momento de grabar
                 if (tx_codped.Text.Trim() == "")    // tncont == "MANUAL" && 01/11/2020
                 {
                     MessageBox.Show("Ingrese el identificador del contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     tx_codped.Focus();
                     return;
                 }
+                */
                 if (decimal.Parse(tx_saldo.Text.ToString()) < 0)
                 {
                     MessageBox.Show("El saldo es negativo, el pago debe ser inferior o igual al valor del contrato","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);

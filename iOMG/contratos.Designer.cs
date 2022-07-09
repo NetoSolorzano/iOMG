@@ -33,6 +33,9 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.tx_mc = new System.Windows.Forms.TextBox();
+            this.tx_serie = new System.Windows.Forms.TextBox();
+            this.tx_corre = new System.Windows.Forms.TextBox();
             this.tx_totesp = new iOMG.NumericTextBox();
             this.groupBox49 = new System.Windows.Forms.GroupBox();
             this.groupBox50 = new System.Windows.Forms.GroupBox();
@@ -163,10 +166,10 @@
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tx_ndc = new iOMG.NumericTextBox();
-            this.groupBox27 = new System.Windows.Forms.GroupBox();
-            this.groupBox28 = new System.Windows.Forms.GroupBox();
             this.groupBox25 = new System.Windows.Forms.GroupBox();
             this.groupBox26 = new System.Windows.Forms.GroupBox();
+            this.groupBox27 = new System.Windows.Forms.GroupBox();
+            this.groupBox28 = new System.Windows.Forms.GroupBox();
             this.groupBox23 = new System.Windows.Forms.GroupBox();
             this.groupBox24 = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -224,13 +227,14 @@
             this.tx_saldo = new iOMG.NumericTextBox();
             this.tx_acta = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.groupBox51 = new System.Windows.Forms.GroupBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_add = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_close = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_edit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             this.Bt_anul = new System.Windows.Forms.ToolStripButton();
@@ -254,9 +258,6 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tx_serie = new System.Windows.Forms.TextBox();
-            this.tx_corre = new System.Windows.Forms.TextBox();
-            this.tx_mc = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -276,8 +277,8 @@
             this.groupBox33.SuspendLayout();
             this.groupBox31.SuspendLayout();
             this.groupBox29.SuspendLayout();
-            this.groupBox27.SuspendLayout();
             this.groupBox25.SuspendLayout();
+            this.groupBox27.SuspendLayout();
             this.groupBox23.SuspendLayout();
             this.groupBox21.SuspendLayout();
             this.groupBox19.SuspendLayout();
@@ -362,7 +363,6 @@
             this.tabuser.Controls.Add(this.tx_bruto);
             this.tabuser.Controls.Add(this.tabControl2);
             this.tabuser.Controls.Add(this.pan_cli);
-            this.tabuser.Controls.Add(this.groupBox27);
             this.tabuser.Controls.Add(this.groupBox25);
             this.tabuser.Controls.Add(this.groupBox23);
             this.tabuser.Controls.Add(this.label21);
@@ -409,6 +409,7 @@
             this.tabuser.Controls.Add(this.tx_saldo);
             this.tabuser.Controls.Add(this.tx_acta);
             this.tabuser.Controls.Add(this.tx_valor);
+            this.tabuser.Controls.Add(this.groupBox51);
             this.tabuser.Location = new System.Drawing.Point(4, 22);
             this.tabuser.Name = "tabuser";
             this.tabuser.Padding = new System.Windows.Forms.Padding(3);
@@ -417,6 +418,34 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // tx_mc
+            // 
+            this.tx_mc.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tx_mc.Location = new System.Drawing.Point(18, 78);
+            this.tx_mc.MaxLength = 1;
+            this.tx_mc.Name = "tx_mc";
+            this.tx_mc.Size = new System.Drawing.Size(22, 20);
+            this.tx_mc.TabIndex = 390;
+            this.tx_mc.Tag = "F=fact | B=Bole";
+            this.tx_mc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_serie
+            // 
+            this.tx_serie.Location = new System.Drawing.Point(40, 78);
+            this.tx_serie.Name = "tx_serie";
+            this.tx_serie.Size = new System.Drawing.Size(32, 20);
+            this.tx_serie.TabIndex = 391;
+            this.tx_serie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_corre
+            // 
+            this.tx_corre.Location = new System.Drawing.Point(72, 78);
+            this.tx_corre.Name = "tx_corre";
+            this.tx_corre.Size = new System.Drawing.Size(66, 20);
+            this.tx_corre.TabIndex = 392;
+            this.tx_corre.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_corre.Leave += new System.EventHandler(this.tx_corre_Leave);
             // 
             // tx_totesp
             // 
@@ -1467,14 +1496,14 @@
             this.pan_cli.Controls.Add(this.cmb_tdoc);
             this.pan_cli.Controls.Add(this.label13);
             this.pan_cli.Controls.Add(this.tx_ndc);
-            this.pan_cli.Location = new System.Drawing.Point(139, 28);
+            this.pan_cli.Location = new System.Drawing.Point(153, 28);
             this.pan_cli.Name = "pan_cli";
-            this.pan_cli.Size = new System.Drawing.Size(833, 73);
+            this.pan_cli.Size = new System.Drawing.Size(818, 73);
             this.pan_cli.TabIndex = 4;
             // 
             // tx_dat_distri
             // 
-            this.tx_dat_distri.Location = new System.Drawing.Point(720, 50);
+            this.tx_dat_distri.Location = new System.Drawing.Point(716, 50);
             this.tx_dat_distri.Name = "tx_dat_distri";
             this.tx_dat_distri.Size = new System.Drawing.Size(22, 20);
             this.tx_dat_distri.TabIndex = 370;
@@ -1482,7 +1511,7 @@
             // 
             // tx_dat_provin
             // 
-            this.tx_dat_provin.Location = new System.Drawing.Point(698, 50);
+            this.tx_dat_provin.Location = new System.Drawing.Point(694, 50);
             this.tx_dat_provin.Name = "tx_dat_provin";
             this.tx_dat_provin.Size = new System.Drawing.Size(22, 20);
             this.tx_dat_provin.TabIndex = 369;
@@ -1490,7 +1519,7 @@
             // 
             // tx_dat_dpto
             // 
-            this.tx_dat_dpto.Location = new System.Drawing.Point(676, 50);
+            this.tx_dat_dpto.Location = new System.Drawing.Point(672, 50);
             this.tx_dat_dpto.Name = "tx_dat_dpto";
             this.tx_dat_dpto.Size = new System.Drawing.Size(22, 20);
             this.tx_dat_dpto.TabIndex = 368;
@@ -1500,7 +1529,7 @@
             // 
             this.groupBox37.BackColor = System.Drawing.Color.DimGray;
             this.groupBox37.Controls.Add(this.groupBox38);
-            this.groupBox37.Location = new System.Drawing.Point(431, 46);
+            this.groupBox37.Location = new System.Drawing.Point(427, 46);
             this.groupBox37.Name = "groupBox37";
             this.groupBox37.Size = new System.Drawing.Size(382, 1);
             this.groupBox37.TabIndex = 367;
@@ -1518,7 +1547,7 @@
             // 
             this.groupBox35.BackColor = System.Drawing.Color.DimGray;
             this.groupBox35.Controls.Add(this.groupBox36);
-            this.groupBox35.Location = new System.Drawing.Point(348, 69);
+            this.groupBox35.Location = new System.Drawing.Point(344, 69);
             this.groupBox35.Name = "groupBox35";
             this.groupBox35.Size = new System.Drawing.Size(224, 1);
             this.groupBox35.TabIndex = 366;
@@ -1536,7 +1565,7 @@
             // 
             this.groupBox33.BackColor = System.Drawing.Color.DimGray;
             this.groupBox33.Controls.Add(this.groupBox34);
-            this.groupBox33.Location = new System.Drawing.Point(11, 69);
+            this.groupBox33.Location = new System.Drawing.Point(7, 69);
             this.groupBox33.Name = "groupBox33";
             this.groupBox33.Size = new System.Drawing.Size(326, 1);
             this.groupBox33.TabIndex = 365;
@@ -1554,7 +1583,7 @@
             // 
             this.groupBox31.BackColor = System.Drawing.Color.DimGray;
             this.groupBox31.Controls.Add(this.groupBox32);
-            this.groupBox31.Location = new System.Drawing.Point(11, 46);
+            this.groupBox31.Location = new System.Drawing.Point(7, 46);
             this.groupBox31.Name = "groupBox31";
             this.groupBox31.Size = new System.Drawing.Size(174, 1);
             this.groupBox31.TabIndex = 364;
@@ -1572,7 +1601,7 @@
             // 
             this.groupBox29.BackColor = System.Drawing.Color.DimGray;
             this.groupBox29.Controls.Add(this.groupBox30);
-            this.groupBox29.Location = new System.Drawing.Point(11, 23);
+            this.groupBox29.Location = new System.Drawing.Point(7, 23);
             this.groupBox29.Name = "groupBox29";
             this.groupBox29.Size = new System.Drawing.Size(564, 1);
             this.groupBox29.TabIndex = 363;
@@ -1588,7 +1617,7 @@
             // 
             // tx_idcli
             // 
-            this.tx_idcli.Location = new System.Drawing.Point(584, 51);
+            this.tx_idcli.Location = new System.Drawing.Point(580, 51);
             this.tx_idcli.Name = "tx_idcli";
             this.tx_idcli.Size = new System.Drawing.Size(20, 20);
             this.tx_idcli.TabIndex = 362;
@@ -1598,7 +1627,7 @@
             // 
             this.chk_cliente.AutoSize = true;
             this.chk_cliente.ForeColor = System.Drawing.Color.White;
-            this.chk_cliente.Location = new System.Drawing.Point(666, 5);
+            this.chk_cliente.Location = new System.Drawing.Point(662, 5);
             this.chk_cliente.Name = "chk_cliente";
             this.chk_cliente.Size = new System.Drawing.Size(95, 17);
             this.chk_cliente.TabIndex = 361;
@@ -1610,7 +1639,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.ForeColor = System.Drawing.Color.White;
-            this.label19.Location = new System.Drawing.Point(445, 31);
+            this.label19.Location = new System.Drawing.Point(441, 31);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(33, 13);
             this.label19.TabIndex = 360;
@@ -1620,7 +1649,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.ForeColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(574, 31);
+            this.label18.Location = new System.Drawing.Point(570, 31);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(32, 13);
             this.label18.TabIndex = 359;
@@ -1630,7 +1659,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(700, 31);
+            this.label17.Location = new System.Drawing.Point(696, 31);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(28, 13);
             this.label17.TabIndex = 358;
@@ -1639,7 +1668,7 @@
             // tx_telef2
             // 
             this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
+            this.tx_telef2.Location = new System.Drawing.Point(486, 50);
             this.tx_telef2.Name = "tx_telef2";
             this.tx_telef2.Size = new System.Drawing.Size(82, 20);
             this.tx_telef2.TabIndex = 50;
@@ -1647,7 +1676,7 @@
             // tx_telef1
             // 
             this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
+            this.tx_telef1.Location = new System.Drawing.Point(401, 50);
             this.tx_telef1.Name = "tx_telef1";
             this.tx_telef1.Size = new System.Drawing.Size(82, 20);
             this.tx_telef1.TabIndex = 49;
@@ -1656,7 +1685,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.ForeColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(348, 54);
+            this.label16.Location = new System.Drawing.Point(344, 54);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(54, 13);
             this.label16.TabIndex = 355;
@@ -1664,7 +1693,7 @@
             // 
             // tx_mail
             // 
-            this.tx_mail.Location = new System.Drawing.Point(75, 50);
+            this.tx_mail.Location = new System.Drawing.Point(71, 50);
             this.tx_mail.Name = "tx_mail";
             this.tx_mail.Size = new System.Drawing.Size(262, 20);
             this.tx_mail.TabIndex = 48;
@@ -1675,7 +1704,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(12, 54);
+            this.label15.Location = new System.Drawing.Point(8, 54);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(51, 13);
             this.label15.TabIndex = 353;
@@ -1683,7 +1712,7 @@
             // 
             // tx_dat_tdoc
             // 
-            this.tx_dat_tdoc.Location = new System.Drawing.Point(606, 51);
+            this.tx_dat_tdoc.Location = new System.Drawing.Point(602, 51);
             this.tx_dat_tdoc.Name = "tx_dat_tdoc";
             this.tx_dat_tdoc.Size = new System.Drawing.Size(64, 20);
             this.tx_dat_tdoc.TabIndex = 322;
@@ -1691,7 +1720,7 @@
             // 
             // tx_dpto
             // 
-            this.tx_dpto.Location = new System.Drawing.Point(478, 27);
+            this.tx_dpto.Location = new System.Drawing.Point(474, 27);
             this.tx_dpto.Name = "tx_dpto";
             this.tx_dpto.Size = new System.Drawing.Size(83, 20);
             this.tx_dpto.TabIndex = 45;
@@ -1700,7 +1729,7 @@
             // 
             // tx_prov
             // 
-            this.tx_prov.Location = new System.Drawing.Point(606, 27);
+            this.tx_prov.Location = new System.Drawing.Point(602, 27);
             this.tx_prov.Name = "tx_prov";
             this.tx_prov.Size = new System.Drawing.Size(83, 20);
             this.tx_prov.TabIndex = 46;
@@ -1709,7 +1738,7 @@
             // 
             // tx_direc
             // 
-            this.tx_direc.Location = new System.Drawing.Point(75, 27);
+            this.tx_direc.Location = new System.Drawing.Point(71, 27);
             this.tx_direc.Name = "tx_direc";
             this.tx_direc.Size = new System.Drawing.Size(356, 20);
             this.tx_direc.TabIndex = 44;
@@ -1719,7 +1748,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.ForeColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(12, 31);
+            this.label14.Location = new System.Drawing.Point(8, 31);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(52, 13);
             this.label14.TabIndex = 348;
@@ -1727,7 +1756,7 @@
             // 
             // tx_dist
             // 
-            this.tx_dist.Location = new System.Drawing.Point(730, 27);
+            this.tx_dist.Location = new System.Drawing.Point(726, 27);
             this.tx_dist.Name = "tx_dist";
             this.tx_dist.Size = new System.Drawing.Size(83, 20);
             this.tx_dist.TabIndex = 47;
@@ -1736,7 +1765,7 @@
             // 
             // tx_nombre
             // 
-            this.tx_nombre.Location = new System.Drawing.Point(191, 4);
+            this.tx_nombre.Location = new System.Drawing.Point(187, 4);
             this.tx_nombre.Name = "tx_nombre";
             this.tx_nombre.Size = new System.Drawing.Size(384, 20);
             this.tx_nombre.TabIndex = 43;
@@ -1748,7 +1777,7 @@
             this.cmb_tdoc.DropDownWidth = 100;
             this.cmb_tdoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_tdoc.FormattingEnabled = true;
-            this.cmb_tdoc.Location = new System.Drawing.Point(53, 3);
+            this.cmb_tdoc.Location = new System.Drawing.Point(49, 3);
             this.cmb_tdoc.Name = "cmb_tdoc";
             this.cmb_tdoc.Size = new System.Drawing.Size(48, 21);
             this.cmb_tdoc.TabIndex = 41;
@@ -1758,7 +1787,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(12, 8);
+            this.label13.Location = new System.Drawing.Point(8, 8);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(39, 13);
             this.label13.TabIndex = 345;
@@ -1767,18 +1796,37 @@
             // tx_ndc
             // 
             this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
+            this.tx_ndc.Location = new System.Drawing.Point(97, 4);
             this.tx_ndc.Name = "tx_ndc";
             this.tx_ndc.Size = new System.Drawing.Size(90, 20);
             this.tx_ndc.TabIndex = 42;
             this.tx_ndc.Leave += new System.EventHandler(this.tx_ndc_Leave);
             this.tx_ndc.Validating += new System.ComponentModel.CancelEventHandler(this.tx_ndc_Validating);
             // 
+            // groupBox25
+            // 
+            this.groupBox25.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox25.Controls.Add(this.groupBox26);
+            this.groupBox25.Controls.Add(this.groupBox27);
+            this.groupBox25.Location = new System.Drawing.Point(4, 50);
+            this.groupBox25.Name = "groupBox25";
+            this.groupBox25.Size = new System.Drawing.Size(144, 1);
+            this.groupBox25.TabIndex = 337;
+            this.groupBox25.TabStop = false;
+            // 
+            // groupBox26
+            // 
+            this.groupBox26.Location = new System.Drawing.Point(0, -26);
+            this.groupBox26.Name = "groupBox26";
+            this.groupBox26.Size = new System.Drawing.Size(164, 1);
+            this.groupBox26.TabIndex = 113;
+            this.groupBox26.TabStop = false;
+            // 
             // groupBox27
             // 
             this.groupBox27.BackColor = System.Drawing.Color.DimGray;
             this.groupBox27.Controls.Add(this.groupBox28);
-            this.groupBox27.Location = new System.Drawing.Point(4, 73);
+            this.groupBox27.Location = new System.Drawing.Point(71, 0);
             this.groupBox27.Name = "groupBox27";
             this.groupBox27.Size = new System.Drawing.Size(74, 1);
             this.groupBox27.TabIndex = 338;
@@ -1791,24 +1839,6 @@
             this.groupBox28.Size = new System.Drawing.Size(164, 1);
             this.groupBox28.TabIndex = 113;
             this.groupBox28.TabStop = false;
-            // 
-            // groupBox25
-            // 
-            this.groupBox25.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox25.Controls.Add(this.groupBox26);
-            this.groupBox25.Location = new System.Drawing.Point(4, 50);
-            this.groupBox25.Name = "groupBox25";
-            this.groupBox25.Size = new System.Drawing.Size(74, 1);
-            this.groupBox25.TabIndex = 337;
-            this.groupBox25.TabStop = false;
-            // 
-            // groupBox26
-            // 
-            this.groupBox26.Location = new System.Drawing.Point(0, -26);
-            this.groupBox26.Name = "groupBox26";
-            this.groupBox26.Size = new System.Drawing.Size(164, 1);
-            this.groupBox26.TabIndex = 113;
-            this.groupBox26.TabStop = false;
             // 
             // groupBox23
             // 
@@ -2088,7 +2118,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 57);
+            this.label5.Location = new System.Drawing.Point(79, 35);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 287;
@@ -2266,7 +2296,7 @@
             // 
             // tx_rind
             // 
-            this.tx_rind.Location = new System.Drawing.Point(42, 54);
+            this.tx_rind.Location = new System.Drawing.Point(112, 31);
             this.tx_rind.Name = "tx_rind";
             this.tx_rind.ReadOnly = true;
             this.tx_rind.Size = new System.Drawing.Size(36, 20);
@@ -2274,7 +2304,7 @@
             // 
             // tx_idr
             // 
-            this.tx_idr.Location = new System.Drawing.Point(42, 31);
+            this.tx_idr.Location = new System.Drawing.Point(40, 31);
             this.tx_idr.Name = "tx_idr";
             this.tx_idr.ReadOnly = true;
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
@@ -2332,6 +2362,15 @@
             this.tx_valor.TabIndex = 327;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_valor.Enter += new System.EventHandler(this.tx_valor_Enter);
+            // 
+            // groupBox51
+            // 
+            this.groupBox51.Location = new System.Drawing.Point(7, 59);
+            this.groupBox51.Name = "groupBox51";
+            this.groupBox51.Size = new System.Drawing.Size(144, 42);
+            this.groupBox51.TabIndex = 393;
+            this.groupBox51.TabStop = false;
+            this.groupBox51.Text = "Doc.Vta. Relacionado";
             // 
             // toolStrip1
             // 
@@ -2394,14 +2433,6 @@
             this.Bt_add.ToolTipText = "Nuevo ";
             this.Bt_add.Click += new System.EventHandler(this.Bt_add_Click);
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.AutoSize = false;
-            this.toolStripSeparator6.BackColor = System.Drawing.Color.Black;
-            this.toolStripSeparator6.ForeColor = System.Drawing.Color.Black;
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(3, 45);
-            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -2427,6 +2458,14 @@
             this.toolStripSeparator7.AutoSize = false;
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(3, 45);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.AutoSize = false;
+            this.toolStripSeparator6.BackColor = System.Drawing.Color.Black;
+            this.toolStripSeparator6.ForeColor = System.Drawing.Color.Black;
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(3, 45);
             // 
             // Bt_edit
             // 
@@ -2634,33 +2673,6 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // tx_serie
-            // 
-            this.tx_serie.Location = new System.Drawing.Point(33, 78);
-            this.tx_serie.Name = "tx_serie";
-            this.tx_serie.Size = new System.Drawing.Size(32, 20);
-            this.tx_serie.TabIndex = 390;
-            this.tx_serie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_corre
-            // 
-            this.tx_corre.Location = new System.Drawing.Point(65, 78);
-            this.tx_corre.Name = "tx_corre";
-            this.tx_corre.Size = new System.Drawing.Size(66, 20);
-            this.tx_corre.TabIndex = 391;
-            this.tx_corre.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_corre.Leave += new System.EventHandler(this.tx_corre_Leave);
-            // 
-            // tx_mc
-            // 
-            this.tx_mc.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tx_mc.Location = new System.Drawing.Point(11, 78);
-            this.tx_mc.MaxLength = 1;
-            this.tx_mc.Name = "tx_mc";
-            this.tx_mc.Size = new System.Drawing.Size(22, 20);
-            this.tx_mc.TabIndex = 392;
-            this.tx_mc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2695,8 +2707,8 @@
             this.groupBox33.ResumeLayout(false);
             this.groupBox31.ResumeLayout(false);
             this.groupBox29.ResumeLayout(false);
-            this.groupBox27.ResumeLayout(false);
             this.groupBox25.ResumeLayout(false);
+            this.groupBox27.ResumeLayout(false);
             this.groupBox23.ResumeLayout(false);
             this.groupBox21.ResumeLayout(false);
             this.groupBox19.ResumeLayout(false);
@@ -2946,5 +2958,6 @@
         private System.Windows.Forms.TextBox tx_serie;
         private System.Windows.Forms.TextBox tx_corre;
         private System.Windows.Forms.TextBox tx_mc;
+        private System.Windows.Forms.GroupBox groupBox51;
     }
 }

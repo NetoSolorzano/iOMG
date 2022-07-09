@@ -20,7 +20,7 @@ namespace iOMG
         string colpage = iOMG.Program.colpag;       // color de los pageframes
         string colgrid = iOMG.Program.colgri;       // color de las grillas
         string colstrp = iOMG.Program.colstr;       // color del strip
-        static string nomtab = "????";
+        static string nomtab = "cabfactu";
         libreria lib = new libreria();
        
         #region variables
@@ -43,7 +43,7 @@ namespace iOMG
         string img_pre = "";            // imagen del boton vista preliminar
         string img_ver = "";            // imagen del boton visualizacion (solo ver)
         string tipede = "";             // tipo de pedido de clientes por defecto
-        string letiden = "";            // letra inicial identificadora de pedidos de clientes
+        string letiden = "";            // glosa de anticipos
         string tiesta = "";             // estado inicial por defecto del pedido de clientes
         string escambio = "";           // estados de pedido de clientes que admiten modificar el pedido
         string estpend = "";            // estado de pedido de clientes con articulos pendientes de recibir
@@ -737,11 +737,11 @@ namespace iOMG
                             if (rb_antic.Checked == true)
                             {
                                 toti = 0;
-                                tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
+                                //tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
                                 tx_valor.Text = toti.ToString("#0.00");
                                 tx_bruto.Text = (toti / 1.18).ToString("#0.00");
                                 tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
-                                tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
+                                //tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
                             }
                         }
                         else
@@ -1503,6 +1503,7 @@ namespace iOMG
         {
             if (rb_bienes.Checked == true)
             {
+                tx_tipComp.Text = "B";
                 // ocultamos objetos del panel1, menos el boton
                 tx_d_antic.Visible = false;
                 tx_d_valAntic.Visible = false;
@@ -1536,6 +1537,7 @@ namespace iOMG
         {
             if (rb_antic.Checked == true)
             {
+                tx_tipComp.Text = "A";
                 // ocultamos objetos del panel1, menos el boton 
                 tx_d_it.Visible = false;
                 tx_d_can.Visible = false;
@@ -1551,6 +1553,7 @@ namespace iOMG
                 tx_d_antic.Height = 40;
                 tx_d_antic.Multiline = true;
                 tx_d_antic.Visible = true;
+                tx_d_antic.Text = letiden;
                 //
                 tx_d_valAntic.Left = 728;
                 tx_d_valAntic.Top = 5;
@@ -1564,6 +1567,7 @@ namespace iOMG
                     tx_bruto.Text = "";
                     tx_igv.Text = "";
                     //
+                    tx_coment.Text = "*** Comprobante por antipo ***";
                     lb_cont.Visible = true;
                     tx_cont.Visible = true;
                     tx_cont.Focus();
@@ -1655,20 +1659,6 @@ namespace iOMG
         #region botones de grabar y agregar
         private void bt_det_Click(object sender, EventArgs e)
         {
-            // validaciones
-            if (tx_d_can.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese la cantidad","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                tx_d_can.Focus();
-                return;
-            }
-            if (tx_d_codi.Text.Trim() == "")
-            {
-                MessageBox.Show("Seleccione un artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                tx_d_codi.Focus();
-                return;
-            }
-
             double ntoti = 0;
             double ncant = 0;
             double.TryParse(tx_valor.Text, out double tv);
@@ -1696,6 +1686,20 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO" && rb_bienes.Checked == true)
             {
+                // validaciones
+                if (tx_d_can.Text.Trim() == "")
+                {
+                    MessageBox.Show("Ingrese la cantidad", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_d_can.Focus();
+                    return;
+                }
+                if (tx_d_codi.Text.Trim() == "")
+                {
+                    MessageBox.Show("Seleccione un artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_d_codi.Focus();
+                    return;
+                }
+
                 ntoti = double.Parse(tx_d_precio.Text);
                 ncant = double.Parse(tx_d_can.Text);
                 if (ntoti > 0)

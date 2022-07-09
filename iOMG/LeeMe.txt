@@ -156,13 +156,13 @@ REPARACIONES DE DEFECTOS:
 - form repsalmac, arreglo de rep.stock sillas y mesas x madera y juego ............... ok 18/03/21
 - form repspedalm, agregar opción de fecha de llegada de pedidos ..................... ok 19/03/21
 - form movim, reservas, agregar comparación de tipologia cuando el mueble es a diseño. ok 09/04/21
-- form contratos, el código del contrato debe debe generarse al final, al grabar ..... 
+- form contratos, el código del contrato debe debe generarse al final, al grabar ..... ok 08/07/22
 FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - CREACION DE TABLAS cabfactu, detfactu y triggers ................................... ok 30/06/22
 - form ayuda2, adecuaciones de codigo para items ..................................... ok 30/06/22
 - form docsvta, creación ............................................................. ok 01/07/22
 - form repsfact, creacion ............................................................ ok 01/07/22
-- form contratos, adeciaciones para jalar datos desde comprobante, si es nuevo .......   codigo en campos marca,serie y corre de comprobante
+- form contratos, adeciaciones para jalar datos desde comprobante, si es nuevo ....... ok 08/07/22  codigo en campos marca,serie y corre de comprobante
 - form cpagos, creacion .............................................................. ok 04/07/22
 - form docsvta, agregando codigo para la impresión ................................... ok 07/07/22  formato impresion TK
 - form repsfact, agregando reporte fact detallado .................................... 
