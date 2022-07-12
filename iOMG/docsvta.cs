@@ -72,6 +72,7 @@ namespace iOMG
         string autoriz = "";            // resolucion de autorizacion sunat
         string despe2 = "";             // texto despedida en la impresion
         string valdirec = "";           // valor limite maximo para tener boletas sin direccion
+        string tpcontad = "";           // codigo tipo de pago contado efectivo
         string estman = "";             // estados que se pueden seleccionar manualmente
         int indant = -1;                // indice anterior al cambio en el combobox de estado
         string cliente = Program.cliente;    // razon social para los reportes
@@ -91,6 +92,8 @@ namespace iOMG
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
         DataTable dtfp = new DataTable();       // combo para tipo de pago
         DataTable dtpedido = new DataTable();   // tipos documento de venta
+                                                
+        string vpago = "";                      // pago anticipo o cancelatorio
 
         public docsvta()
         {
@@ -286,6 +289,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "resAut") autoriz = row["valor"].ToString().Trim();        //
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "valdirec") valdirec = row["valor"].ToString().Trim();     // monto limite para obligar a tener direcion en boleta
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
                     }
                 }
                 da.Dispose();
@@ -647,9 +651,10 @@ namespace iOMG
                 {
                     conn.Open();
                     string continua = "N";
+                    string conpag = "SELECT concat('ANTICIPO DE CONTRATO ',contrato,' *** ',dv,'-',serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
-                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail " +
+                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor " +
                         "FROM detacon a " +
                         "LEFT JOIN desc_est de ON de.IDCodice = a.estado " +
                         "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
@@ -679,6 +684,24 @@ namespace iOMG
                                 }
                                 else
                                 {
+                                    var asd = MessageBox.Show("El saldo del contrato es: " + dr.GetString(0) + Environment.NewLine +
+                                        "Desea registrar un pago cancelatorio?","confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                                    if (asd == DialogResult.Yes)    // cancela el contrato
+                                    {
+                                        // ponemos todos los anticipos linea por linea, con su numero de factura
+                                        // luego todas las filas del detalle
+                                        // EN LA SECCION DE TOTALES
+                                        // Sub total   = valor total de la venta (sin igv)    monto que falta pagar sin igv
+                                        // Anticipos   = sumatoria de totales anticipos (inc igv)
+                                        // Valor Venta = Sub total - anticipos
+                                        // Igv         = 18% 
+                                        // Importe Tot = valor venta + igv
+                                        vpago = "cancelacion";
+                                    }
+                                    else
+                                    {                               // hace un pago a cuenta
+                                        vpago = "anticipo";
+                                    }
                                     continua = "S";
                                 }
                             }
@@ -694,6 +717,28 @@ namespace iOMG
                     }
                     if (continua == "S")
                     {
+                        int cnt = 1;
+                        double valCont, valAnti = 0;
+                        if (vpago == "cancelacion")
+                        {
+                            using (MySqlCommand micon = new MySqlCommand(conpag, conn))
+                            {
+                                micon.Parameters.AddWithValue("@cont", conti);
+                                using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                                {
+                                    DataTable pdt = new DataTable();
+                                    da.Fill(pdt);
+                                    foreach (DataRow data in pdt.Rows)  //  deta,moneda,monto,montosol
+                                    {
+                                        dataGridView1.Rows.Add(cnt, "0", "", data.ItemArray[0].ToString(),
+                                            "", "", "", "",data.ItemArray[2].ToString(), data.ItemArray[3].ToString());
+                                        cnt += 1;
+                                        //toti = toti + double.Parse(data.ItemArray[9].ToString());
+                                        valAnti = valAnti + double.Parse(data.ItemArray[3].ToString());
+                                    }
+                                }
+                            }
+                        }
                         using (MySqlCommand micon = new MySqlCommand(consulta, conn))
                         {
                             micon.Parameters.AddWithValue("@cont", conti);
@@ -718,9 +763,9 @@ namespace iOMG
                             tx_mail.Text = dt.Rows[0].ItemArray[21].ToString();
                             tx_telef1.Text = dt.Rows[0].ItemArray[19].ToString();
                             tx_telef2.Text = dt.Rows[0].ItemArray[20].ToString();
+                            valCont = double.Parse(dt.Rows[0].ItemArray[22].ToString());
                             // detalle
                             grilladet(Tx_modo.Text);
-                            int cnt = 1;
                             double toti = 0;
                             foreach (DataRow data in dt.Rows)
                             {
@@ -734,7 +779,7 @@ namespace iOMG
                             tx_bruto.Text = (toti / 1.18).ToString("#0.00");
                             tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
                             //
-                            if (rb_antic.Checked == true)
+                            if (rb_antic.Checked == true && vpago != "cancelacion")
                             {
                                 toti = 0;
                                 //tx_d_antic.Text = tx_d_antic.Text + " " + tx_cont.Text;
@@ -742,6 +787,13 @@ namespace iOMG
                                 tx_bruto.Text = (toti / 1.18).ToString("#0.00");
                                 tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
                                 //tx_coment.Text = "*** Comprobante por antipo ***" + tx_coment.Text.Trim();
+                            }
+                            if (rb_antic.Checked == true && vpago == "cancelacion")
+                            {
+                                toti = valCont - valAnti;
+                                tx_valor.Text = toti.ToString("#0.00");
+                                tx_bruto.Text = (toti / 1.18).ToString("#0.00");
+                                tx_igv.Text = (toti - (toti / 1.18)).ToString("#0.00");
                             }
                         }
                         else
@@ -1351,16 +1403,16 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO")
             {
-                if (rb_antic.Checked == true && tx_cont.Text.Trim() == "")
+                if (rb_antic.Checked == true && tx_cont.Text.Trim() != "")
                 {
-                    //MessageBox.Show("Si es anticipo, debe seleccionar un contrarto","Atención",MessageBoxButtons.OK,MessageBoxIcon.Warning);
-                    //rb_antic.Checked = false;
-                    return;
-                }
-                if (tx_cont.Text.Trim() != "")
-                {
-                    jala_cont(tx_cont.Text);
-                    //if (rb_antic.Checked == true) tx_d_valAntic.Focus();
+                    // mostramos una ventana alertando del saldo del contrato y preguntando si se desea cancelar todo
+                    jala_cont(tx_cont.Text);    // segun pague todo o parcial hacemos algo 
+                    if (vpago == "cancelacion")
+                    {
+                        tx_d_antic.Visible = false;
+                        tx_d_valAntic.Visible = false;
+                        tx_coment.Text = "*** Comprobante de Cancelación ***";
+                    }
                 }
             }
         }
@@ -1777,7 +1829,7 @@ namespace iOMG
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones antes de grabar nuevo
-                if (tx_numOpe.Text.Trim() == "" || tx_numOpe.Text.Trim().Length < 4)
+                if (tx_dat_plazo.Text != tpcontad && (tx_numOpe.Text.Trim() == "" || tx_numOpe.Text.Trim().Length < 4))
                 {
                     MessageBox.Show("Ingrese el número de operación","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     tx_numOpe.Focus();
@@ -1796,7 +1848,7 @@ namespace iOMG
                     {
                         Bt_print.PerformClick();
                         //
-                        if (tx_prdsCont.Text == "S")
+                        if (tx_prdsCont.Text == "S" && tx_cont.Text.Trim() == "")
                         {
                             aa = MessageBox.Show("Desea generar contrato relacionado al" + Environment.NewLine +
                                 "presente comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -1823,6 +1875,8 @@ namespace iOMG
                 }
                 else return;
             }
+            limpia_ini();
+            tx_serie.Focus();
         }
         private bool graba()                                // graba cabecera del comprobante
         {
@@ -2275,7 +2329,7 @@ namespace iOMG
                             }
                         }
                     }
-                    if (tx_tipComp.Text == "A") // anticipo
+                    if (tx_tipComp.Text == "A" && vpago != "cancelacion") // anticipo
                     {
                         puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
@@ -2293,6 +2347,26 @@ namespace iOMG
                             e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             posi = posi + alfi;
                         }
+                    }
+                    if (tx_tipComp.Text == "A" && vpago == "cancelacion")
+                    {
+                        for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
+                        {
+                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0")
+                            {
+                                puntoF = new PointF(coli + 30.0F, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            }
+                            else
+                            {
+                                puntoF = new PointF(coli, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                puntoF = new PointF(coli + 30.0F, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            }
+                            posi = posi + alfi;
+                        }
+
                     }
                     puntoF = new PointF(coli, posi);
                     e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
