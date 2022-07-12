@@ -618,6 +618,8 @@ namespace iOMG
             limpia_panel(pan_cli);
             limpia_panel(panel2);
             limpia_panel(panel1);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
             Tx_modo.Text = modo;
             //cmb_taller.Enabled = false;
             if (modo != "NUEVO")
@@ -2354,14 +2356,14 @@ namespace iOMG
                         {
                             if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0")
                             {
+                                puntoF = new PointF(coli, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 30.0F, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             }
                             else
                             {
                                 puntoF = new PointF(coli, posi);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                puntoF = new PointF(coli + 30.0F, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             }
                             posi = posi + alfi;

@@ -121,6 +121,7 @@ namespace iOMG
             dataload("todos");
             grilla();
             this.KeyPreview = true;
+            tabControl1.Enabled = false;
         }
 
         #region resto del mundo
@@ -299,6 +300,7 @@ namespace iOMG
                     b += a;
                     advancedDataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     advancedDataGridView1.Columns[i].Width = a;
+                    if (i + 1 == advancedDataGridView1.Columns.Count) advancedDataGridView1.Columns[i].Visible = false; // ultima columna invisible
                 }
                 if (b < advancedDataGridView1.Width) advancedDataGridView1.Width = b - 20;  // b + 60;
             }
@@ -307,10 +309,24 @@ namespace iOMG
         }
         private void jalaoc(string campo)                                       // jala datos del contrato
         {
-            if (campo == "tx_idr" && tx_rind.Text != "") // tx_idr.Text
+            if (campo == "codigo")
             {
-                // 
-                //jaladet(tx_codped.Text);
+                string datgri = "cont_pagos_clte";
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    conn.Open();
+                    using (MySqlCommand cdg = new MySqlCommand(datgri, conn))
+                    {
+                        cdg.Parameters.AddWithValue("@v_doc", tx_idr.Text);
+                        cdg.Parameters.AddWithValue("@v_num", tx_rind.Text);
+                        cdg.CommandType = CommandType.StoredProcedure;
+                        MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
+                        DataTable dt = new DataTable();
+                        dag.Fill(dt);
+                        dag.Dispose();
+                        dataGridView1.DataSource = dt;
+                    }
+                }
             }
         }
         private void jaladatclt(string id)                                      // jala datos del cliente
@@ -339,41 +355,23 @@ namespace iOMG
                 conn.Close();
             }
         }
-        private void jaladet(string pedido)                                     // jala el detalle del contrato
+        private void jaladet(int idc)                                     // jala datos del grid principal
         {
-            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
-                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na,tda_item " +
-                "FROM detacon a " +
-                "left join desc_dt2 b on b.idcodice=a.piedra " +
-                "left join desc_mad c on c.idcodice=a.madera " +
-                "WHERE a.contratoh = @cont ";
-            try
-            {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    MySqlCommand micon = new MySqlCommand(jalad, conn);
-                    micon.Parameters.AddWithValue("@cont", pedido);
-                    MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dataGridView1.DataSource = null;
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Columns.Clear();
-                    dataGridView1.DataSource = dt;
-                    //grilladet("edita");     // obtiene contenido de grilla con DT
-                    dt.Dispose();
-                    da.Dispose();
-                }
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener detalle del contrato");
-                Application.Exit();
-                return;
-            }
+            //ID,FPAGO,CONT,DOC,NUM_DOC,CLIENTE,ESTADO,VAL_CONT,SALDO,MON,VAL_SOLES,MED_PAGO,N_OPER,DOC_VENTA,TDC
+            string tdoc, ndoc = "";
+            tdoc = advancedDataGridView1.Rows[idc].Cells[14].Value.ToString();
+            ndoc = advancedDataGridView1.Rows[idc].Cells[4].Value.ToString();
+            //tabControl1.SelectedTab = tabuser;
+            limpiar(this);
+            limpiapag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            limpia_chk();
+            //escribepag(tabuser);
+            //sololeepag(tabuser);
+            tx_idr.Text = tdoc;
+            tx_rind.Text = ndoc;
+            jalaoc("codigo");
         }
         private bool graba()                                                    // graba cabecera y detalle
         {
@@ -604,56 +602,15 @@ namespace iOMG
         }
         private void Bt_add_Click(object sender, EventArgs e)
         {
-            tabControl1.Enabled = true;
-            advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = true;
-            tabControl1.SelectedTab = tabuser;
-            escribe(this);
-            escribepag(tabuser);
-            Tx_modo.Text = "NUEVO";
-            button1.Image = Image.FromFile(img_grab);
-            limpiar(this);
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            tabControl1.SelectedTab = tabuser;
             //
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
-            tabControl1.Enabled = true;
-            advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = true;
-            Tx_modo.Text = "EDITAR";
-            sololee(this);
-            sololeepag(tabuser);
-            button1.Image = Image.FromFile(img_grab);
-            limpiar(this);
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
             //
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
-            tabControl1.Enabled = true;
-            advancedDataGridView1.Enabled = true;
-            advancedDataGridView1.ReadOnly = false;
-            tabControl1.SelectedTab = tabuser;
-            Tx_modo.Text = "ANULAR";
-            sololee(this);
-            sololeepag(tabuser);
-            button1.Image = Image.FromFile(img_anul);
-            limpiar(this);
-            limpiapag(tabuser);
-            limpia_otros(tabuser);
-            limpia_combos(tabuser);
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
+            //
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -662,7 +619,7 @@ namespace iOMG
             advancedDataGridView1.ReadOnly = true;
             sololee(this);
             Tx_modo.Text = "VISUALIZAR";
-            button1.Image = null;    // Image.FromFile(img_grab);
+            //button1.Image = null;    // Image.FromFile(img_grab);
             limpiar(this);
             limpiapag(tabuser);
             sololeepag(tabuser);
@@ -1000,36 +957,14 @@ namespace iOMG
         }
         private void advancedDataGridView1_CellEnter_1(object sender, DataGridViewCellEventArgs e)
         {
-            advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = advancedDataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            //jaladet(e.RowIndex);
         }
         private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2 && Tx_modo.Text != "NUEVO")
+            if (Tx_modo.Text != "NUEVO")
             {
-                //string codu = "";
-                string idr, rind = "";
-                idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
-                rind = advancedDataGridView1.CurrentRow.Index.ToString();
-                tabControl1.SelectedTab = tabuser;
-                limpiar(this);
-                limpiapag(tabuser);
-                limpia_otros(tabuser);
-                limpia_combos(tabuser);
-                limpia_chk();
-                //escribepag(tabuser);
-                //sololeepag(tabuser);
-                tx_idr.Text = idr;
-                tx_rind.Text = rind;
-                jalaoc("tx_idr");
+                jaladet(e.RowIndex);
             }
-        }
-        private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e) // valida cambios en valor de la celda
-        {
-            // ACA NO VAMOS A CAMBIAR NADA
-        }
-        private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            e.Cancel = true;
         }
         #endregion
     }
