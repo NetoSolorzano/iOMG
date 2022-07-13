@@ -384,13 +384,13 @@ namespace iOMG
                     using (MySqlCommand cdg = new MySqlCommand(datgri, conn))
                     {
                         cdg.Parameters.AddWithValue("@v_doc", tx_idr.Text);
-                        cdg.Parameters.AddWithValue("@v_num", tx_rind.Text);
+                        cdg.Parameters.AddWithValue("@v_num", tx_rind.Text.Trim());
                         cdg.CommandType = CommandType.StoredProcedure;
                         MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
-                        DataTable dt = new DataTable();
-                        dag.Fill(dt);
+                        DataTable dtz = new DataTable();
+                        dag.Fill(dtz);
                         dag.Dispose();
-                        dataGridView1.DataSource = dt;
+                        dataGridView1.DataSource = dtz;
                     }
                     grilladet();
                 }
@@ -403,9 +403,9 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            dataGridView1.DataSource = dtg;
+            //dataGridView1.DataSource = dtg;
             //
-            if (dataGridView1.Rows.Count > 0)
+            if (dataGridView1.Rows.Count > 1)
             {
                 for (int i = 0; i < dataGridView1.Columns.Count; i++)
                 {
@@ -426,7 +426,7 @@ namespace iOMG
             }
             //
             dataGridView1.ReadOnly = true;
-            suma_grilla();
+            suma_grilla(dataGridView1.Name);
         }
         private void jaladet(int idc)                                           // jala datos del grid principal
         {
@@ -588,7 +588,7 @@ namespace iOMG
             double tvv = 0, tva = 0;
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                if (dataGridView1.Rows[i].Cells["ESTADO"].Value.ToString() == "ANULAD")
+                if (dataGridView1.Rows[i].Cells["ESTADO"].Value != null && dataGridView1.Rows[i].Cells["ESTADO"].Value.ToString() == "ANULAD")
                 {
                     dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
                     ca = ca + 1;
@@ -597,7 +597,8 @@ namespace iOMG
                 else
                 {
                     cr = cr + 1;
-                    tvv = tvv + Convert.ToDouble(dataGridView1.Rows[i].Cells["SALDO"].Value);
+                    if (dataGridView1.Rows[i].Cells["SALDO"].Value != null && 
+                        dataGridView1.Rows[i].Cells["SALDO"].Value.ToString().Trim() != "") tvv = tvv + Convert.ToDouble(dataGridView1.Rows[i].Cells["SALDO"].Value.ToString());
                 }
             }
             tx_totSaldo.Text = tvv.ToString("#0.00");
@@ -958,89 +959,7 @@ namespace iOMG
         #region boton_form GRABA EDITA ANULA - agrega detalle
         private void button1_Click(object sender, EventArgs e)
         {
-            // validamos que los campos no esten vacíos
-            string modos = "NUEVO,EDITAR";
-            if (modos.Contains(Tx_modo.Text))
-            {
 
-            }
-            // grabamos, actualizamos, etc
-            string modo = Tx_modo.Text;
-            string iserror = "no";
-            string asd = iOMG.Program.vg_user;
-            string verapp = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
-            //
-            if (modo == "NUEVO")
-            {
-                var aa = MessageBox.Show("Confirma que desea crear el contrato?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (aa == DialogResult.Yes)
-                {
-                    if (graba() == true)
-                    {
-                        // insertamos en el datatable
-                        DataRow dr = dtg.NewRow();
-                        // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-                        // a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor,a.pcontacto,a.dreferen,telcont,totsad
-                        string cid = tx_idr.Text;
-                        dr[0] = cid;
-                        // ...
-                        dtg.Rows.Add(dr);
-                    }
-                    else
-                    {
-                        MessageBox.Show("No se pudo grabar el contrato", "Error en crear", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Application.Exit();
-                        return;
-                    }
-                    // vista previa   setParaCrystal();
-                    Bt_print.PerformClick();
-                }
-                else
-                {
-                    return;
-                }
-            }
-            if (modo == "EDITAR")
-            {
-                var aa = MessageBox.Show("Confirma que desea MODIFICAR el contrato?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (aa == DialogResult.Yes)
-                {
-                    if (edita() == true)
-                    {
-                        // actualizamos el datatable
-                        for (int i = 0; i < dtg.Rows.Count; i++)
-                        {
-                            DataRow row = dtg.Rows[i];
-                            if (row[0].ToString() == tx_idr.Text)
-                            {
-                                // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
-                                // a.valor,a.acuenta,a.saldo,a.dscto,a.pcontacto,a.dreferen
-                                // dtg.Rows[i][3] = tx_dat_estad.Text; // cmb_estado.SelectedText.ToString();
-                                //dtg.Rows[i][4] = tx_dat_orig.Text;  // cmb_taller.SelectedText.ToString();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
-            if (modo == "ANULAR")       // opción para borrar o anular, NO ESTA HABILITADO, SE USA EDICION
-            {
-
-            }
-            if (iserror == "no")
-            {
-                // debe limpiar los campos y actualizar la grilla
-                limpiar(this);
-                limpiapag(tabuser);
-                limpia_otros(tabuser);
-                limpia_combos(tabuser);
-                limpia_chk();
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
-            }
         }
         #endregion boton_form;
 
