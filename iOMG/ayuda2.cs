@@ -123,6 +123,8 @@ namespace iOMG
                 dataGridView1.Columns[6].Visible = false;
                 //
                 this.Width = dataGridView1.Width + 5;
+                //
+                ReturnValueA = new string[4] { "", "", "", "" };
             }
             if (para1 == "contrat" && para4 == "")
             {
@@ -558,6 +560,13 @@ namespace iOMG
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 }
+                if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // tipo doc
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // num doc
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
+                }
                 if (para1 == "contrat" && para4 == "")
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -671,6 +680,10 @@ namespace iOMG
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // tipo doc
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // num doc
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
             }
             if (para1 == "contrat" && para4 == "")
             {
@@ -773,6 +786,13 @@ namespace iOMG
                     ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                }
+                if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // tipo doc
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // num doc
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
                 }
                 if (para1 == "contrat" && para4 == "")
                 {
@@ -990,6 +1010,10 @@ namespace iOMG
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 tx_id.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();   // tipo doc
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();   // num doc
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();   // nombre
             }
             if (para1 == "contrat" && para4 == "")
             {

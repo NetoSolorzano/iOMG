@@ -33,6 +33,36 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.pan_cli = new System.Windows.Forms.Panel();
+            this.tx_dat_distri = new System.Windows.Forms.TextBox();
+            this.tx_dat_provin = new System.Windows.Forms.TextBox();
+            this.tx_dat_dpto = new System.Windows.Forms.TextBox();
+            this.groupBox37 = new System.Windows.Forms.GroupBox();
+            this.groupBox38 = new System.Windows.Forms.GroupBox();
+            this.groupBox35 = new System.Windows.Forms.GroupBox();
+            this.groupBox36 = new System.Windows.Forms.GroupBox();
+            this.groupBox33 = new System.Windows.Forms.GroupBox();
+            this.groupBox34 = new System.Windows.Forms.GroupBox();
+            this.groupBox31 = new System.Windows.Forms.GroupBox();
+            this.groupBox32 = new System.Windows.Forms.GroupBox();
+            this.groupBox29 = new System.Windows.Forms.GroupBox();
+            this.groupBox30 = new System.Windows.Forms.GroupBox();
+            this.tx_idcli = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tx_mail = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tx_dat_tdoc = new System.Windows.Forms.TextBox();
+            this.tx_dpto = new System.Windows.Forms.TextBox();
+            this.tx_prov = new System.Windows.Forms.TextBox();
+            this.tx_direc = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tx_dist = new System.Windows.Forms.TextBox();
+            this.tx_nombre = new System.Windows.Forms.TextBox();
+            this.cmb_tdoc = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox27 = new System.Windows.Forms.GroupBox();
             this.groupBox28 = new System.Windows.Forms.GroupBox();
             this.groupBox25 = new System.Windows.Forms.GroupBox();
@@ -72,53 +102,28 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pan_cli = new System.Windows.Forms.Panel();
-            this.tx_dat_distri = new System.Windows.Forms.TextBox();
-            this.tx_dat_provin = new System.Windows.Forms.TextBox();
-            this.tx_dat_dpto = new System.Windows.Forms.TextBox();
-            this.groupBox37 = new System.Windows.Forms.GroupBox();
-            this.groupBox38 = new System.Windows.Forms.GroupBox();
-            this.groupBox35 = new System.Windows.Forms.GroupBox();
-            this.groupBox36 = new System.Windows.Forms.GroupBox();
-            this.groupBox33 = new System.Windows.Forms.GroupBox();
-            this.groupBox34 = new System.Windows.Forms.GroupBox();
-            this.groupBox31 = new System.Windows.Forms.GroupBox();
-            this.groupBox32 = new System.Windows.Forms.GroupBox();
-            this.groupBox29 = new System.Windows.Forms.GroupBox();
-            this.groupBox30 = new System.Windows.Forms.GroupBox();
-            this.tx_idcli = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tx_totSaldo = new iOMG.NumericTextBox();
             this.tx_telef2 = new iOMG.NumericTextBox();
             this.tx_telef1 = new iOMG.NumericTextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.tx_mail = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.tx_dat_tdoc = new System.Windows.Forms.TextBox();
-            this.tx_dpto = new System.Windows.Forms.TextBox();
-            this.tx_prov = new System.Windows.Forms.TextBox();
-            this.tx_direc = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.tx_dist = new System.Windows.Forms.TextBox();
-            this.tx_nombre = new System.Windows.Forms.TextBox();
-            this.cmb_tdoc = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.tx_ndc = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
-            this.groupBox27.SuspendLayout();
-            this.groupBox25.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
             this.groupBox35.SuspendLayout();
             this.groupBox33.SuspendLayout();
             this.groupBox31.SuspendLayout();
             this.groupBox29.SuspendLayout();
+            this.groupBox27.SuspendLayout();
+            this.groupBox25.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.toolStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -162,6 +167,9 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_totSaldo);
+            this.tabuser.Controls.Add(this.groupBox1);
+            this.tabuser.Controls.Add(this.label1);
             this.tabuser.Controls.Add(this.pan_cli);
             this.tabuser.Controls.Add(this.groupBox27);
             this.tabuser.Controls.Add(this.groupBox25);
@@ -179,6 +187,301 @@
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
             // 
+            // pan_cli
+            // 
+            this.pan_cli.BackColor = System.Drawing.Color.DimGray;
+            this.pan_cli.Controls.Add(this.tx_dat_distri);
+            this.pan_cli.Controls.Add(this.tx_dat_provin);
+            this.pan_cli.Controls.Add(this.tx_dat_dpto);
+            this.pan_cli.Controls.Add(this.groupBox37);
+            this.pan_cli.Controls.Add(this.groupBox35);
+            this.pan_cli.Controls.Add(this.groupBox33);
+            this.pan_cli.Controls.Add(this.groupBox31);
+            this.pan_cli.Controls.Add(this.groupBox29);
+            this.pan_cli.Controls.Add(this.tx_idcli);
+            this.pan_cli.Controls.Add(this.label19);
+            this.pan_cli.Controls.Add(this.label18);
+            this.pan_cli.Controls.Add(this.label17);
+            this.pan_cli.Controls.Add(this.tx_telef2);
+            this.pan_cli.Controls.Add(this.tx_telef1);
+            this.pan_cli.Controls.Add(this.label16);
+            this.pan_cli.Controls.Add(this.tx_mail);
+            this.pan_cli.Controls.Add(this.label15);
+            this.pan_cli.Controls.Add(this.tx_dat_tdoc);
+            this.pan_cli.Controls.Add(this.tx_dpto);
+            this.pan_cli.Controls.Add(this.tx_prov);
+            this.pan_cli.Controls.Add(this.tx_direc);
+            this.pan_cli.Controls.Add(this.label14);
+            this.pan_cli.Controls.Add(this.tx_dist);
+            this.pan_cli.Controls.Add(this.tx_nombre);
+            this.pan_cli.Controls.Add(this.cmb_tdoc);
+            this.pan_cli.Controls.Add(this.label13);
+            this.pan_cli.Controls.Add(this.tx_ndc);
+            this.pan_cli.Location = new System.Drawing.Point(89, 6);
+            this.pan_cli.Name = "pan_cli";
+            this.pan_cli.Size = new System.Drawing.Size(818, 73);
+            this.pan_cli.TabIndex = 339;
+            // 
+            // tx_dat_distri
+            // 
+            this.tx_dat_distri.Location = new System.Drawing.Point(716, 51);
+            this.tx_dat_distri.Name = "tx_dat_distri";
+            this.tx_dat_distri.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_distri.TabIndex = 370;
+            this.tx_dat_distri.Visible = false;
+            // 
+            // tx_dat_provin
+            // 
+            this.tx_dat_provin.Location = new System.Drawing.Point(694, 50);
+            this.tx_dat_provin.Name = "tx_dat_provin";
+            this.tx_dat_provin.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_provin.TabIndex = 369;
+            this.tx_dat_provin.Visible = false;
+            // 
+            // tx_dat_dpto
+            // 
+            this.tx_dat_dpto.Location = new System.Drawing.Point(672, 50);
+            this.tx_dat_dpto.Name = "tx_dat_dpto";
+            this.tx_dat_dpto.Size = new System.Drawing.Size(22, 20);
+            this.tx_dat_dpto.TabIndex = 368;
+            this.tx_dat_dpto.Visible = false;
+            // 
+            // groupBox37
+            // 
+            this.groupBox37.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox37.Controls.Add(this.groupBox38);
+            this.groupBox37.Location = new System.Drawing.Point(427, 46);
+            this.groupBox37.Name = "groupBox37";
+            this.groupBox37.Size = new System.Drawing.Size(382, 1);
+            this.groupBox37.TabIndex = 367;
+            this.groupBox37.TabStop = false;
+            // 
+            // groupBox38
+            // 
+            this.groupBox38.Location = new System.Drawing.Point(0, -26);
+            this.groupBox38.Name = "groupBox38";
+            this.groupBox38.Size = new System.Drawing.Size(164, 1);
+            this.groupBox38.TabIndex = 113;
+            this.groupBox38.TabStop = false;
+            // 
+            // groupBox35
+            // 
+            this.groupBox35.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox35.Controls.Add(this.groupBox36);
+            this.groupBox35.Location = new System.Drawing.Point(344, 69);
+            this.groupBox35.Name = "groupBox35";
+            this.groupBox35.Size = new System.Drawing.Size(224, 1);
+            this.groupBox35.TabIndex = 366;
+            this.groupBox35.TabStop = false;
+            // 
+            // groupBox36
+            // 
+            this.groupBox36.Location = new System.Drawing.Point(0, -26);
+            this.groupBox36.Name = "groupBox36";
+            this.groupBox36.Size = new System.Drawing.Size(164, 1);
+            this.groupBox36.TabIndex = 113;
+            this.groupBox36.TabStop = false;
+            // 
+            // groupBox33
+            // 
+            this.groupBox33.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox33.Controls.Add(this.groupBox34);
+            this.groupBox33.Location = new System.Drawing.Point(7, 69);
+            this.groupBox33.Name = "groupBox33";
+            this.groupBox33.Size = new System.Drawing.Size(326, 1);
+            this.groupBox33.TabIndex = 365;
+            this.groupBox33.TabStop = false;
+            // 
+            // groupBox34
+            // 
+            this.groupBox34.Location = new System.Drawing.Point(0, -26);
+            this.groupBox34.Name = "groupBox34";
+            this.groupBox34.Size = new System.Drawing.Size(164, 1);
+            this.groupBox34.TabIndex = 113;
+            this.groupBox34.TabStop = false;
+            // 
+            // groupBox31
+            // 
+            this.groupBox31.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox31.Controls.Add(this.groupBox32);
+            this.groupBox31.Location = new System.Drawing.Point(7, 46);
+            this.groupBox31.Name = "groupBox31";
+            this.groupBox31.Size = new System.Drawing.Size(174, 1);
+            this.groupBox31.TabIndex = 364;
+            this.groupBox31.TabStop = false;
+            // 
+            // groupBox32
+            // 
+            this.groupBox32.Location = new System.Drawing.Point(0, -26);
+            this.groupBox32.Name = "groupBox32";
+            this.groupBox32.Size = new System.Drawing.Size(164, 1);
+            this.groupBox32.TabIndex = 113;
+            this.groupBox32.TabStop = false;
+            // 
+            // groupBox29
+            // 
+            this.groupBox29.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox29.Controls.Add(this.groupBox30);
+            this.groupBox29.Location = new System.Drawing.Point(7, 23);
+            this.groupBox29.Name = "groupBox29";
+            this.groupBox29.Size = new System.Drawing.Size(564, 1);
+            this.groupBox29.TabIndex = 363;
+            this.groupBox29.TabStop = false;
+            // 
+            // groupBox30
+            // 
+            this.groupBox30.Location = new System.Drawing.Point(0, -26);
+            this.groupBox30.Name = "groupBox30";
+            this.groupBox30.Size = new System.Drawing.Size(164, 1);
+            this.groupBox30.TabIndex = 113;
+            this.groupBox30.TabStop = false;
+            // 
+            // tx_idcli
+            // 
+            this.tx_idcli.Location = new System.Drawing.Point(580, 51);
+            this.tx_idcli.Name = "tx_idcli";
+            this.tx_idcli.Size = new System.Drawing.Size(20, 20);
+            this.tx_idcli.TabIndex = 362;
+            this.tx_idcli.Visible = false;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.ForeColor = System.Drawing.Color.White;
+            this.label19.Location = new System.Drawing.Point(441, 31);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(33, 13);
+            this.label19.TabIndex = 360;
+            this.label19.Text = "Dpto.";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.ForeColor = System.Drawing.Color.White;
+            this.label18.Location = new System.Drawing.Point(570, 31);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(32, 13);
+            this.label18.TabIndex = 359;
+            this.label18.Text = "Prov.";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.ForeColor = System.Drawing.Color.White;
+            this.label17.Location = new System.Drawing.Point(696, 31);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(28, 13);
+            this.label17.TabIndex = 358;
+            this.label17.Text = "Dist.";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.ForeColor = System.Drawing.Color.White;
+            this.label16.Location = new System.Drawing.Point(344, 54);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 13);
+            this.label16.TabIndex = 355;
+            this.label16.Text = "Teléfonos";
+            // 
+            // tx_mail
+            // 
+            this.tx_mail.Location = new System.Drawing.Point(71, 50);
+            this.tx_mail.Name = "tx_mail";
+            this.tx_mail.Size = new System.Drawing.Size(262, 20);
+            this.tx_mail.TabIndex = 48;
+            this.tx_mail.Tag = "Id";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.ForeColor = System.Drawing.Color.White;
+            this.label15.Location = new System.Drawing.Point(8, 54);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(51, 13);
+            this.label15.TabIndex = 353;
+            this.label15.Text = "Correo E.";
+            // 
+            // tx_dat_tdoc
+            // 
+            this.tx_dat_tdoc.Location = new System.Drawing.Point(602, 51);
+            this.tx_dat_tdoc.Name = "tx_dat_tdoc";
+            this.tx_dat_tdoc.Size = new System.Drawing.Size(64, 20);
+            this.tx_dat_tdoc.TabIndex = 322;
+            this.tx_dat_tdoc.Visible = false;
+            // 
+            // tx_dpto
+            // 
+            this.tx_dpto.Location = new System.Drawing.Point(474, 27);
+            this.tx_dpto.Name = "tx_dpto";
+            this.tx_dpto.Size = new System.Drawing.Size(83, 20);
+            this.tx_dpto.TabIndex = 45;
+            this.tx_dpto.Tag = "Id";
+            // 
+            // tx_prov
+            // 
+            this.tx_prov.Location = new System.Drawing.Point(602, 27);
+            this.tx_prov.Name = "tx_prov";
+            this.tx_prov.Size = new System.Drawing.Size(83, 20);
+            this.tx_prov.TabIndex = 46;
+            this.tx_prov.Tag = "Id";
+            // 
+            // tx_direc
+            // 
+            this.tx_direc.Location = new System.Drawing.Point(71, 27);
+            this.tx_direc.Name = "tx_direc";
+            this.tx_direc.Size = new System.Drawing.Size(356, 20);
+            this.tx_direc.TabIndex = 44;
+            this.tx_direc.Tag = "Id";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.ForeColor = System.Drawing.Color.White;
+            this.label14.Location = new System.Drawing.Point(8, 31);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(52, 13);
+            this.label14.TabIndex = 348;
+            this.label14.Text = "Dirección";
+            // 
+            // tx_dist
+            // 
+            this.tx_dist.Location = new System.Drawing.Point(726, 27);
+            this.tx_dist.Name = "tx_dist";
+            this.tx_dist.Size = new System.Drawing.Size(83, 20);
+            this.tx_dist.TabIndex = 47;
+            this.tx_dist.Tag = "Id";
+            // 
+            // tx_nombre
+            // 
+            this.tx_nombre.Location = new System.Drawing.Point(187, 4);
+            this.tx_nombre.Name = "tx_nombre";
+            this.tx_nombre.Size = new System.Drawing.Size(384, 20);
+            this.tx_nombre.TabIndex = 43;
+            this.tx_nombre.Tag = "Id";
+            // 
+            // cmb_tdoc
+            // 
+            this.cmb_tdoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_tdoc.DropDownWidth = 100;
+            this.cmb_tdoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_tdoc.FormattingEnabled = true;
+            this.cmb_tdoc.Location = new System.Drawing.Point(49, 3);
+            this.cmb_tdoc.Name = "cmb_tdoc";
+            this.cmb_tdoc.Size = new System.Drawing.Size(48, 21);
+            this.cmb_tdoc.TabIndex = 41;
+            this.cmb_tdoc.SelectionChangeCommitted += new System.EventHandler(this.cmb_tdoc_SelectionChangeCommitted);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(8, 8);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(39, 13);
+            this.label13.TabIndex = 345;
+            this.label13.Text = "Cliente";
+            // 
             // groupBox27
             // 
             this.groupBox27.BackColor = System.Drawing.Color.DimGray;
@@ -188,6 +491,7 @@
             this.groupBox27.Size = new System.Drawing.Size(74, 1);
             this.groupBox27.TabIndex = 338;
             this.groupBox27.TabStop = false;
+            this.groupBox27.Visible = false;
             // 
             // groupBox28
             // 
@@ -206,6 +510,7 @@
             this.groupBox25.Size = new System.Drawing.Size(74, 1);
             this.groupBox25.TabIndex = 337;
             this.groupBox25.TabStop = false;
+            this.groupBox25.Visible = false;
             // 
             // groupBox26
             // 
@@ -220,7 +525,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(3, 85);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(905, 282);
+            this.dataGridView1.Size = new System.Drawing.Size(905, 263);
             this.dataGridView1.TabIndex = 273;
             // 
             // label5
@@ -231,6 +536,7 @@
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 287;
             this.label5.Text = "Id fila";
+            this.label5.Visible = false;
             // 
             // label4
             // 
@@ -240,6 +546,7 @@
             this.label4.Size = new System.Drawing.Size(33, 13);
             this.label4.TabIndex = 286;
             this.label4.Text = "Id int.";
+            this.label4.Visible = false;
             // 
             // tx_rind
             // 
@@ -248,6 +555,7 @@
             this.tx_rind.ReadOnly = true;
             this.tx_rind.Size = new System.Drawing.Size(36, 20);
             this.tx_rind.TabIndex = 275;
+            this.tx_rind.Visible = false;
             // 
             // tx_idr
             // 
@@ -256,6 +564,7 @@
             this.tx_idr.ReadOnly = true;
             this.tx_idr.Size = new System.Drawing.Size(36, 20);
             this.tx_idr.TabIndex = 274;
+            this.tx_idr.Visible = false;
             this.tx_idr.Leave += new System.EventHandler(this.tx_idr_Leave);
             // 
             // toolStrip1
@@ -559,192 +868,40 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // pan_cli
+            // groupBox1
             // 
-            this.pan_cli.BackColor = System.Drawing.Color.DimGray;
-            this.pan_cli.Controls.Add(this.tx_dat_distri);
-            this.pan_cli.Controls.Add(this.tx_dat_provin);
-            this.pan_cli.Controls.Add(this.tx_dat_dpto);
-            this.pan_cli.Controls.Add(this.groupBox37);
-            this.pan_cli.Controls.Add(this.groupBox35);
-            this.pan_cli.Controls.Add(this.groupBox33);
-            this.pan_cli.Controls.Add(this.groupBox31);
-            this.pan_cli.Controls.Add(this.groupBox29);
-            this.pan_cli.Controls.Add(this.tx_idcli);
-            this.pan_cli.Controls.Add(this.label19);
-            this.pan_cli.Controls.Add(this.label18);
-            this.pan_cli.Controls.Add(this.label17);
-            this.pan_cli.Controls.Add(this.tx_telef2);
-            this.pan_cli.Controls.Add(this.tx_telef1);
-            this.pan_cli.Controls.Add(this.label16);
-            this.pan_cli.Controls.Add(this.tx_mail);
-            this.pan_cli.Controls.Add(this.label15);
-            this.pan_cli.Controls.Add(this.tx_dat_tdoc);
-            this.pan_cli.Controls.Add(this.tx_dpto);
-            this.pan_cli.Controls.Add(this.tx_prov);
-            this.pan_cli.Controls.Add(this.tx_direc);
-            this.pan_cli.Controls.Add(this.label14);
-            this.pan_cli.Controls.Add(this.tx_dist);
-            this.pan_cli.Controls.Add(this.tx_nombre);
-            this.pan_cli.Controls.Add(this.cmb_tdoc);
-            this.pan_cli.Controls.Add(this.label13);
-            this.pan_cli.Controls.Add(this.tx_ndc);
-            this.pan_cli.Location = new System.Drawing.Point(89, 6);
-            this.pan_cli.Name = "pan_cli";
-            this.pan_cli.Size = new System.Drawing.Size(818, 73);
-            this.pan_cli.TabIndex = 339;
+            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.Location = new System.Drawing.Point(601, 371);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(175, 1);
+            this.groupBox1.TabIndex = 341;
+            this.groupBox1.TabStop = false;
             // 
-            // tx_dat_distri
+            // groupBox2
             // 
-            this.tx_dat_distri.Location = new System.Drawing.Point(716, 51);
-            this.tx_dat_distri.Name = "tx_dat_distri";
-            this.tx_dat_distri.Size = new System.Drawing.Size(22, 20);
-            this.tx_dat_distri.TabIndex = 370;
-            this.tx_dat_distri.Visible = false;
+            this.groupBox2.Location = new System.Drawing.Point(0, -26);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(164, 1);
+            this.groupBox2.TabIndex = 113;
+            this.groupBox2.TabStop = false;
             // 
-            // tx_dat_provin
+            // label1
             // 
-            this.tx_dat_provin.Location = new System.Drawing.Point(694, 50);
-            this.tx_dat_provin.Name = "tx_dat_provin";
-            this.tx_dat_provin.Size = new System.Drawing.Size(22, 20);
-            this.tx_dat_provin.TabIndex = 369;
-            this.tx_dat_provin.Visible = false;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(604, 355);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 13);
+            this.label1.TabIndex = 340;
+            this.label1.Text = "Saldo Total S/";
             // 
-            // tx_dat_dpto
+            // tx_totSaldo
             // 
-            this.tx_dat_dpto.Location = new System.Drawing.Point(672, 50);
-            this.tx_dat_dpto.Name = "tx_dat_dpto";
-            this.tx_dat_dpto.Size = new System.Drawing.Size(22, 20);
-            this.tx_dat_dpto.TabIndex = 368;
-            this.tx_dat_dpto.Visible = false;
-            // 
-            // groupBox37
-            // 
-            this.groupBox37.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox37.Controls.Add(this.groupBox38);
-            this.groupBox37.Location = new System.Drawing.Point(427, 46);
-            this.groupBox37.Name = "groupBox37";
-            this.groupBox37.Size = new System.Drawing.Size(382, 1);
-            this.groupBox37.TabIndex = 367;
-            this.groupBox37.TabStop = false;
-            // 
-            // groupBox38
-            // 
-            this.groupBox38.Location = new System.Drawing.Point(0, -26);
-            this.groupBox38.Name = "groupBox38";
-            this.groupBox38.Size = new System.Drawing.Size(164, 1);
-            this.groupBox38.TabIndex = 113;
-            this.groupBox38.TabStop = false;
-            // 
-            // groupBox35
-            // 
-            this.groupBox35.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox35.Controls.Add(this.groupBox36);
-            this.groupBox35.Location = new System.Drawing.Point(344, 69);
-            this.groupBox35.Name = "groupBox35";
-            this.groupBox35.Size = new System.Drawing.Size(224, 1);
-            this.groupBox35.TabIndex = 366;
-            this.groupBox35.TabStop = false;
-            // 
-            // groupBox36
-            // 
-            this.groupBox36.Location = new System.Drawing.Point(0, -26);
-            this.groupBox36.Name = "groupBox36";
-            this.groupBox36.Size = new System.Drawing.Size(164, 1);
-            this.groupBox36.TabIndex = 113;
-            this.groupBox36.TabStop = false;
-            // 
-            // groupBox33
-            // 
-            this.groupBox33.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox33.Controls.Add(this.groupBox34);
-            this.groupBox33.Location = new System.Drawing.Point(7, 69);
-            this.groupBox33.Name = "groupBox33";
-            this.groupBox33.Size = new System.Drawing.Size(326, 1);
-            this.groupBox33.TabIndex = 365;
-            this.groupBox33.TabStop = false;
-            // 
-            // groupBox34
-            // 
-            this.groupBox34.Location = new System.Drawing.Point(0, -26);
-            this.groupBox34.Name = "groupBox34";
-            this.groupBox34.Size = new System.Drawing.Size(164, 1);
-            this.groupBox34.TabIndex = 113;
-            this.groupBox34.TabStop = false;
-            // 
-            // groupBox31
-            // 
-            this.groupBox31.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox31.Controls.Add(this.groupBox32);
-            this.groupBox31.Location = new System.Drawing.Point(7, 46);
-            this.groupBox31.Name = "groupBox31";
-            this.groupBox31.Size = new System.Drawing.Size(174, 1);
-            this.groupBox31.TabIndex = 364;
-            this.groupBox31.TabStop = false;
-            // 
-            // groupBox32
-            // 
-            this.groupBox32.Location = new System.Drawing.Point(0, -26);
-            this.groupBox32.Name = "groupBox32";
-            this.groupBox32.Size = new System.Drawing.Size(164, 1);
-            this.groupBox32.TabIndex = 113;
-            this.groupBox32.TabStop = false;
-            // 
-            // groupBox29
-            // 
-            this.groupBox29.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox29.Controls.Add(this.groupBox30);
-            this.groupBox29.Location = new System.Drawing.Point(7, 23);
-            this.groupBox29.Name = "groupBox29";
-            this.groupBox29.Size = new System.Drawing.Size(564, 1);
-            this.groupBox29.TabIndex = 363;
-            this.groupBox29.TabStop = false;
-            // 
-            // groupBox30
-            // 
-            this.groupBox30.Location = new System.Drawing.Point(0, -26);
-            this.groupBox30.Name = "groupBox30";
-            this.groupBox30.Size = new System.Drawing.Size(164, 1);
-            this.groupBox30.TabIndex = 113;
-            this.groupBox30.TabStop = false;
-            // 
-            // tx_idcli
-            // 
-            this.tx_idcli.Location = new System.Drawing.Point(580, 51);
-            this.tx_idcli.Name = "tx_idcli";
-            this.tx_idcli.Size = new System.Drawing.Size(20, 20);
-            this.tx_idcli.TabIndex = 362;
-            this.tx_idcli.Visible = false;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.ForeColor = System.Drawing.Color.White;
-            this.label19.Location = new System.Drawing.Point(441, 31);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(33, 13);
-            this.label19.TabIndex = 360;
-            this.label19.Text = "Dpto.";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.ForeColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(570, 31);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(32, 13);
-            this.label18.TabIndex = 359;
-            this.label18.Text = "Prov.";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(696, 31);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(28, 13);
-            this.label17.TabIndex = 358;
-            this.label17.Text = "Dist.";
+            this.tx_totSaldo.AllowSpace = false;
+            this.tx_totSaldo.Location = new System.Drawing.Point(681, 352);
+            this.tx_totSaldo.Name = "tx_totSaldo";
+            this.tx_totSaldo.Size = new System.Drawing.Size(95, 20);
+            this.tx_totSaldo.TabIndex = 342;
             // 
             // tx_telef2
             // 
@@ -762,113 +919,6 @@
             this.tx_telef1.Size = new System.Drawing.Size(82, 20);
             this.tx_telef1.TabIndex = 49;
             // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.ForeColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(344, 54);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(54, 13);
-            this.label16.TabIndex = 355;
-            this.label16.Text = "Teléfonos";
-            // 
-            // tx_mail
-            // 
-            this.tx_mail.Location = new System.Drawing.Point(71, 50);
-            this.tx_mail.Name = "tx_mail";
-            this.tx_mail.Size = new System.Drawing.Size(262, 20);
-            this.tx_mail.TabIndex = 48;
-            this.tx_mail.Tag = "Id";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(8, 54);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(51, 13);
-            this.label15.TabIndex = 353;
-            this.label15.Text = "Correo E.";
-            // 
-            // tx_dat_tdoc
-            // 
-            this.tx_dat_tdoc.Location = new System.Drawing.Point(602, 51);
-            this.tx_dat_tdoc.Name = "tx_dat_tdoc";
-            this.tx_dat_tdoc.Size = new System.Drawing.Size(64, 20);
-            this.tx_dat_tdoc.TabIndex = 322;
-            this.tx_dat_tdoc.Visible = false;
-            // 
-            // tx_dpto
-            // 
-            this.tx_dpto.Location = new System.Drawing.Point(474, 27);
-            this.tx_dpto.Name = "tx_dpto";
-            this.tx_dpto.Size = new System.Drawing.Size(83, 20);
-            this.tx_dpto.TabIndex = 45;
-            this.tx_dpto.Tag = "Id";
-            // 
-            // tx_prov
-            // 
-            this.tx_prov.Location = new System.Drawing.Point(602, 27);
-            this.tx_prov.Name = "tx_prov";
-            this.tx_prov.Size = new System.Drawing.Size(83, 20);
-            this.tx_prov.TabIndex = 46;
-            this.tx_prov.Tag = "Id";
-            // 
-            // tx_direc
-            // 
-            this.tx_direc.Location = new System.Drawing.Point(71, 27);
-            this.tx_direc.Name = "tx_direc";
-            this.tx_direc.Size = new System.Drawing.Size(356, 20);
-            this.tx_direc.TabIndex = 44;
-            this.tx_direc.Tag = "Id";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.ForeColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(8, 31);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(52, 13);
-            this.label14.TabIndex = 348;
-            this.label14.Text = "Dirección";
-            // 
-            // tx_dist
-            // 
-            this.tx_dist.Location = new System.Drawing.Point(726, 27);
-            this.tx_dist.Name = "tx_dist";
-            this.tx_dist.Size = new System.Drawing.Size(83, 20);
-            this.tx_dist.TabIndex = 47;
-            this.tx_dist.Tag = "Id";
-            // 
-            // tx_nombre
-            // 
-            this.tx_nombre.Location = new System.Drawing.Point(187, 4);
-            this.tx_nombre.Name = "tx_nombre";
-            this.tx_nombre.Size = new System.Drawing.Size(384, 20);
-            this.tx_nombre.TabIndex = 43;
-            this.tx_nombre.Tag = "Id";
-            // 
-            // cmb_tdoc
-            // 
-            this.cmb_tdoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_tdoc.DropDownWidth = 100;
-            this.cmb_tdoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_tdoc.FormattingEnabled = true;
-            this.cmb_tdoc.Location = new System.Drawing.Point(49, 3);
-            this.cmb_tdoc.Name = "cmb_tdoc";
-            this.cmb_tdoc.Size = new System.Drawing.Size(48, 21);
-            this.cmb_tdoc.TabIndex = 41;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(8, 8);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(39, 13);
-            this.label13.TabIndex = 345;
-            this.label13.Text = "Cliente";
-            // 
             // tx_ndc
             // 
             this.tx_ndc.AllowSpace = false;
@@ -876,6 +926,7 @@
             this.tx_ndc.Name = "tx_ndc";
             this.tx_ndc.Size = new System.Drawing.Size(90, 20);
             this.tx_ndc.TabIndex = 42;
+            this.tx_ndc.Leave += new System.EventHandler(this.tx_ndc_Leave);
             // 
             // cpagos
             // 
@@ -893,11 +944,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
-            this.groupBox27.ResumeLayout(false);
-            this.groupBox25.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.pan_cli.ResumeLayout(false);
             this.pan_cli.PerformLayout();
             this.groupBox37.ResumeLayout(false);
@@ -905,6 +951,12 @@
             this.groupBox33.ResumeLayout(false);
             this.groupBox31.ResumeLayout(false);
             this.groupBox29.ResumeLayout(false);
+            this.groupBox27.ResumeLayout(false);
+            this.groupBox25.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -987,5 +1039,9 @@
         private System.Windows.Forms.ComboBox cmb_tdoc;
         private System.Windows.Forms.Label label13;
         private NumericTextBox tx_ndc;
+        private NumericTextBox tx_totSaldo;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label1;
     }
 }

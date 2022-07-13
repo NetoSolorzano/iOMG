@@ -104,8 +104,26 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1) //  && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"
+            if (keyData == Keys.F1 && tx_ndc.Focused == true) //  && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"
             {
+                para1 = "anag_cli";   // maestra clientes
+                para2 = "todos";   // 
+                ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
+                var result = ayu2.ShowDialog();
+                if (result == DialogResult.Cancel)
+                {
+                    if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
+                    {
+                        //tx_nombre.Text = ayu2.ReturnValueA[3];
+                        tx_dat_tdoc.Text = ayu2.ReturnValueA[1];
+
+                        string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                        DataRow[] row = dtdest.Select(axs);
+                        cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+
+                        tx_ndc.Text = ayu2.ReturnValueA[2];
+                    }
+                }
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class
@@ -272,7 +290,18 @@ namespace iOMG
             //  datos para el combobox de tipo de documento
             if (quien == "todos")
             {
-
+                // seleccion del tipo documento cliente
+                cmb_tdoc.Items.Clear();
+                const string condest = "select descrizionerid,idcodice,codigo from desc_doc " +
+                                       "where numero=1 order by idcodice";
+                MySqlCommand cmddest = new MySqlCommand(condest, conn);
+                MySqlDataAdapter dadest = new MySqlDataAdapter(cmddest);
+                dadest.Fill(dtdest);
+                foreach (DataRow row in dtdest.Rows)
+                {
+                    cmb_tdoc.Items.Add(row.ItemArray[0].ToString());
+                    cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
+                }
             }
             conn.Close();
         }
@@ -311,10 +340,47 @@ namespace iOMG
         {
             if (campo == "codigo")
             {
+                string datclt = "SELECT idanagrafica,razonsocial,direcc1,direcc2,localidad,provincia,depart,numerotel1,numerotel2,email " +
+                    "FROM anag_cli WHERE tipdoc=@doc and ruc=@num";
                 string datgri = "cont_pagos_clte";
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
+                    using (MySqlCommand cdg = new MySqlCommand(datclt, conn))
+                    {
+                        cdg.Parameters.AddWithValue("@doc", tx_idr.Text);
+                        cdg.Parameters.AddWithValue("@num", tx_rind.Text);
+                        MySqlDataReader dr = cdg.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            if (dr.GetInt16(0) > 0)
+                            {
+                                tx_ndc.Text = tx_rind.Text;
+                                tx_nombre.Text = dr.GetString(1);
+                                tx_nombre.ReadOnly = true;
+                                tx_direc.Text = dr.GetString(2);
+                                tx_direc.ReadOnly = true;
+                                tx_dpto.Text = dr.GetString(6);
+                                tx_dpto.ReadOnly = true;
+                                tx_prov.Text = dr.GetString(5);
+                                tx_prov.ReadOnly = true;
+                                tx_dist.Text = dr.GetString(4);
+                                tx_dist.ReadOnly = true;
+                                tx_mail.Text = dr.GetString(9);
+                                tx_mail.ReadOnly = true;
+                                tx_telef1.Text = dr.GetString(7);
+                                tx_telef1.ReadOnly = true;
+                                tx_telef2.Text = dr.GetString(8);
+                                tx_telef2.ReadOnly = true;
+                                tx_dat_tdoc.Text = tx_idr.Text;
+                                //
+                                string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                                DataRow[] row = dtdest.Select(axs);
+                                cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+                            }
+                        }
+                        dr.Dispose();
+                    }
                     using (MySqlCommand cdg = new MySqlCommand(datgri, conn))
                     {
                         cdg.Parameters.AddWithValue("@v_doc", tx_idr.Text);
@@ -326,36 +392,43 @@ namespace iOMG
                         dag.Dispose();
                         dataGridView1.DataSource = dt;
                     }
+                    grilladet();
                 }
             }
         }
-        private void jaladatclt(string id)                                      // jala datos del cliente
+        private void grilladet()                                                // jala datos del cliente
         {
-            Int32 vi = -1;
-            string consulta = "select ifnull(razonsocial,''),ifnull(direcc1,''),ifnull(direcc2,''),ifnull(localidad,''),ifnull(provincia,'')," +
-                "ifnull(depart,''),ifnull(tipdoc,''),ifnull(ruc,''),ifnull(numerotel1,''),ifnull(numerotel2,''),ifnull(email,''),ifnull(desc_doc.cnt,'') " +
-                "from anag_cli left join desc_doc on desc_doc.idcodice=anag_cli.tipdoc " +
-                "where idanagrafica=@idc";
-            //try
+            Font tiplg = new Font("Arial", 7, FontStyle.Bold);
+            dataGridView1.Font = tiplg;
+            dataGridView1.DefaultCellStyle.Font = tiplg;
+            dataGridView1.RowTemplate.Height = 15;
+            dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            dataGridView1.DataSource = dtg;
+            //
+            if (dataGridView1.Rows.Count > 0)
             {
-                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
+                for (int i = 0; i < dataGridView1.Columns.Count; i++)
                 {
-                    MySqlCommand micon = new MySqlCommand(consulta, conn);
-                    micon.Parameters.AddWithValue("@idc", id);
-                    MySqlDataReader dr = micon.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        //
-                    }
-                    dr.Close();
-                    //cmb_tdoc.SelectedIndex = vi;    //cmb_tdoc.FindString(tx_dat_tdoc.Text);
+                    dataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    _ = decimal.TryParse(dataGridView1.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                    if (vd != 0) dataGridView1.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
-                conn.Close();
+                int b = 0;
+                for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                {
+                    int a = dataGridView1.Columns[i].Width;
+                    b += a;
+                    dataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    dataGridView1.Columns[i].Width = a;
+                    if (i + 1 == dataGridView1.Columns.Count) dataGridView1.Columns[i].Visible = false; // ultima columna invisible
+                }
+                if (b < dataGridView1.Width) dataGridView1.Width = b - 20;  // b + 60;
             }
+            //
+            dataGridView1.ReadOnly = true;
+            suma_grilla();
         }
-        private void jaladet(int idc)                                     // jala datos del grid principal
+        private void jaladet(int idc)                                           // jala datos del grid principal
         {
             //ID,FPAGO,CONT,DOC,NUM_DOC,CLIENTE,ESTADO,VAL_CONT,SALDO,MON,VAL_SOLES,MED_PAGO,N_OPER,DOC_VENTA,TDC
             string tdoc, ndoc = "";
@@ -491,12 +564,6 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
-        private bool anula()                                                    // anula el contrato
-        {
-            bool retorna = false;
-            //
-            return retorna;
-        }
         private void tabuser_Enter(object sender, EventArgs e)
         {
             Bt_anul.Enabled = false;
@@ -514,6 +581,28 @@ namespace iOMG
             Bt_print.Enabled = false;
             bt_prev.Enabled = false;
             bt_exc.Enabled = true;
+        }
+        private void suma_grilla(string dgv)
+        {
+            int cr = 0, ca = 0;
+            double tvv = 0, tva = 0;
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (dataGridView1.Rows[i].Cells["ESTADO"].Value.ToString() == "ANULAD")
+                {
+                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                    ca = ca + 1;
+                    tva = tva + Convert.ToDouble(dataGridView1.Rows[i].Cells["???"].Value);
+                }
+                else
+                {
+                    cr = cr + 1;
+                    tvv = tvv + Convert.ToDouble(dataGridView1.Rows[i].Cells["SALDO"].Value);
+                }
+            }
+            tx_totSaldo.Text = tvv.ToString("#0.00");
+            //tx_tfi_f.Text = cr.ToString();
+            
         }
         #endregion
 
@@ -627,7 +716,8 @@ namespace iOMG
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            //
+            limpia_panel(pan_cli);
+            cmb_tdoc.SelectedIndex = -1;
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -841,10 +931,28 @@ namespace iOMG
         {
             //tabControl1.SelectedTab = pag;
         }
+        private void limpia_panel(Panel pan)            // limpia los cuadros de texto solo del panel pasado como parametro
+        {
+            foreach (Control oControls in pan.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
+        }
         #endregion limpiadores_modos;
 
         #region comboboxes
-
+        private void cmb_tdoc_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_tdoc.SelectedIndex > -1)
+            {
+                string axs = string.Format("descrizionerid='{0}'", cmb_tdoc.Text);
+                DataRow[] row = dtdest.Select(axs);
+                tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
+            }
+        }
         #endregion comboboxes
 
         #region boton_form GRABA EDITA ANULA - agrega detalle
@@ -942,6 +1050,15 @@ namespace iOMG
             if (Tx_modo.Text != "NUEVO")    //  && tx_idr.Text != ""
             {
                 jalaoc("tx_idr");               // jalamos los datos del registro
+            }
+        }
+        private void tx_ndc_Leave(object sender, EventArgs e)
+        {
+            if (Tx_modo.Text != "NUEVO")
+            {
+                tx_idr.Text = tx_dat_tdoc.Text;
+                tx_rind.Text = tx_ndc.Text;
+                jalaoc("codigo");               // jalamos los datos del registro
             }
         }
         #endregion leaves;
