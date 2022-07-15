@@ -75,6 +75,8 @@ namespace iOMG
         string tpcontad = "";           // codigo tipo de pago contado efectivo
         string estman = "";             // estados que se pueden seleccionar manualmente
         int indant = -1;                // indice anterior al cambio en el combobox de estado
+        string v_liav = "";             // letra o caracter inicial indicativo de articulos varios vta directa sin stock
+        string v_cnprd = "";            // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
 
@@ -290,6 +292,8 @@ namespace iOMG
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "valdirec") valdirec = row["valor"].ToString().Trim();     // monto limite para obligar a tener direcion en boleta
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ciavss") v_liav = row["valor"].ToString().Trim();         // letra o caracter inicial indicativo de articulos varios vta directa sin stock
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "camnomb") v_cnprd = row["valor"].ToString().Trim();       // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
                     }
                 }
                 da.Dispose();
@@ -479,14 +483,14 @@ namespace iOMG
             dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[5].Name = "madera";
             // piedra
-            dataGridView1.Columns[6].Visible = true;            // columna visible o no
+            dataGridView1.Columns[6].Visible = false;            // columna visible o no
             dataGridView1.Columns[6].HeaderText = "Deta2";    // titulo de la columna
             dataGridView1.Columns[6].Width = 70;                // ancho
             dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[6].Name = "piedra";
             // acabado 
-            dataGridView1.Columns[7].Visible = true;            // columna visible o no
+            dataGridView1.Columns[7].Visible = false;            // columna visible o no
             dataGridView1.Columns[7].HeaderText = "Acabado";    // titulo de la columna
             dataGridView1.Columns[7].Width = 70;                // ancho
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
@@ -494,14 +498,19 @@ namespace iOMG
             dataGridView1.Columns[7].Name = "descrizionerid";
             // precio
             dataGridView1.Columns[8].Visible = true;            // columna visible o no
-            dataGridView1.Columns[8].HeaderText = "Precio"; // titulo de la columna
+            dataGridView1.Columns[8].HeaderText = "Precio Unit"; // titulo de la columna
             dataGridView1.Columns[8].Width = 60;                // ancho
             dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[8].Name = "precio";
             // total
-            dataGridView1.Columns[9].Visible = false;
+            dataGridView1.Columns[9].Visible = true;
+            dataGridView1.Columns[9].HeaderText = "Total"; // titulo de la columna
+            dataGridView1.Columns[9].Width = 60;                // ancho
+            dataGridView1.Columns[9].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[9].Name = "total";
             // tipo Normal o Anticipo
             dataGridView1.Columns[10].Visible = false;
@@ -1383,7 +1392,7 @@ namespace iOMG
             {
                 if (tx_d_codi.Text.Trim() != "")
                 {
-                    if (tx_d_codi.Text.Substring(0, 1) == "_")   // articulos varios que no tienen stock
+                    if (tx_d_codi.Text.Substring(0, 1) == v_liav)   // articulos varios que no tienen stock
                     {
                         tx_d_nom.ReadOnly = false;
                         tx_d_med.ReadOnly = true;
@@ -1396,6 +1405,15 @@ namespace iOMG
                             tx_d_nom.ReadOnly = false;
                             tx_d_med.ReadOnly = false;
                             tx_d_mad.ReadOnly = false;
+                        }
+                        else
+                        {
+                            if (v_cnprd == "S") // ser permite cambiar nombres para efecto del comprobante? S=si | N=no
+                            {
+                                tx_d_nom.ReadOnly = false;
+                                tx_d_med.ReadOnly = false;
+                                tx_d_mad.ReadOnly = false;
+                            }
                         }
                     }
                 }
@@ -1754,22 +1772,22 @@ namespace iOMG
                     return;
                 }
 
-                ntoti = double.Parse(tx_d_precio.Text);
+                ntoti = double.Parse(tx_d_precio.Text); // precio individual
                 ncant = double.Parse(tx_d_can.Text);
                 if (ntoti > 0)
                 {
-                    if (tx_d_codi.Text.Substring(0, 1) == "_")  // articulos varios
+                    if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
                     {
                         _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti/ncant).ToString("#0.00")), ntoti.ToString("#0.00"), "N");
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti*ncant).ToString("#0.00"), "N");
                     }
                     else 
                     {
                         _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
                                     tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N");
                     }
-                    tx_valor.Text = (ntoti + tv).ToString("#0.00");
-                    tx_bruto.Text = ((ntoti + tv) / 1.18).ToString("#0.00");
+                    tx_valor.Text = ((ntoti * ncant) + tv).ToString("#0.00");
+                    tx_bruto.Text = (((ntoti *ncant) + tv) / 1.18).ToString("#0.00");
                     tx_igv.Text = ((double.Parse(tx_valor.Text)) - ((double.Parse(tx_valor.Text)) / 1.18)).ToString("#0.00");
 
                     limpia_panel(panel1);
@@ -1859,6 +1877,11 @@ namespace iOMG
                                 contratos ncont = new contratos();
                                 ncont.Show(this);
                                 ncont.Bt_add.PerformClick();
+                                ncont.tx_mc.Text = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
+                                ncont.tx_serie.Text = tx_serie.Text;
+                                ncont.tx_corre.Text = tx_corre.Text;
+                                //ncont.tx_corre.Leave(null,null);
+                                // aca falta que ponga el resto de datos en el form, datos como el detalle y el cliente
                             }
                         }
                     }
@@ -2033,7 +2056,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@desc", row.Cells[3].Value.ToString());
                                 micon.Parameters.AddWithValue("@peso", "0");
                                 micon.Parameters.AddWithValue("@medid", row.Cells[4].Value.ToString());
-                                micon.Parameters.AddWithValue("@mader", row.Cells[5].Value.ToString().PadRight(2).Substring(0, 1));
+                                micon.Parameters.AddWithValue("@mader", "");    // la madera verdadera debe seleccionarse en el contrato
                                 micon.Parameters.AddWithValue("@acaba", row.Cells[7].Value.ToString());
                                 micon.Parameters.AddWithValue("@codm", row.Cells[5].Value.ToString());
                                 micon.Parameters.AddWithValue("@detp", row.Cells[6].Value.ToString());

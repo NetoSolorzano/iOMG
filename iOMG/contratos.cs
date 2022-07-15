@@ -258,10 +258,10 @@ namespace iOMG
                             }
                         }
                     }
-                    //
+                    //select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                     string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
-                        "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item' " + 
-                        "from detfactu a where a.idc=@idc and a.codprod<>''";
+                        "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item',i.soles2018*a.cantbul as totCat " +
+                        "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''";
                     using (MySqlCommand midet = new MySqlCommand(jadet, conn))
                     {
                         midet.Parameters.AddWithValue("@idc", idc);
@@ -277,8 +277,21 @@ namespace iOMG
                         da.Dispose();
                     }
                     conn.Close();
-                    calculos();
-
+                    //
+                    int v_ifm = 0;
+                    decimal val = 0, dscto = 0;
+                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                    {
+                        val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                        if (dataGridView1.Rows[i].Cells[16].Value != null && dataGridView1.Rows[i].Cells[16].Value.ToString().Trim() != "")
+                        {
+                            dscto = dscto + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());
+                        }
+                        // buscamos que la madera este seleccionada
+                        if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
+                            dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
+                    }
+                    tx_dscto.Text = (dscto - val).ToString("#0.00");
                     tx_coment.Focus();
                 }
                 else
@@ -1695,6 +1708,7 @@ namespace iOMG
         }
         private void calculos()                                                 // calculos de total, y saldo
         {
+            int v_ifm = 0;
             decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
@@ -1703,6 +1717,12 @@ namespace iOMG
                 if(dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0,1) == letgru)
                 {
                     espe = espe + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                }
+                else
+                {
+                    // buscamos que la madera este seleccionada
+                    if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
+                        dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
                 }
             }
             tx_totesp.Text = espe.ToString("0.00");
@@ -1714,6 +1734,7 @@ namespace iOMG
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
             //if (tx_totesp.Text.Trim() == "") tx_totesp.Text = "0.00";
+            tx_cifm.Text = v_ifm.ToString();
         }
         private bool valexist(String docu)                                      // valida existencia de documento
         {
@@ -2735,6 +2756,13 @@ namespace iOMG
                     return;
                 }
                 */
+                // falta validar que tengan madera y demas cada fila
+                if (tx_cifm.Text.Trim() != "0")
+                {
+                    MessageBox.Show("Falta detallar madera", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dataGridView1.Focus();
+                    return;
+                }
                 if (decimal.Parse(tx_saldo.Text.ToString()) < 0)
                 {
                     MessageBox.Show("El saldo es negativo, el pago debe ser inferior o igual al valor del contrato","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
