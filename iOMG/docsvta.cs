@@ -436,6 +436,28 @@ namespace iOMG
                             return;
                         }
                     }
+                    using (MySqlCommand micon = new MySqlCommand("select * from adifactpag where tdvta=@tdv and sdvta=@sdv and ndvta=@ndv", conn))
+                    {
+                        micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                        micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                        micon.Parameters.AddWithValue("@ndv", tx_corre.Text);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                        {
+                            DataTable kll = new DataTable();
+                            da.Fill(kll);
+                            int i = 0;
+                            foreach (DataRow row in kll.Rows)
+                            {
+                                dtpagos[i, 0] = row[1].ToString();
+                                dtpagos[i, 1] = (i + 1).ToString();
+                                dtpagos[i, 2] = row[6].ToString();
+                                dtpagos[i, 3] = row[7].ToString();
+                                dtpagos[i, 4] = row[8].ToString();
+                                dtpagos[i, 5] = row[9].ToString();
+                            }
+                            kll.Dispose();
+                        }
+                    }
                 }
             }
             jaladet(tx_idr.Text);
@@ -2011,7 +2033,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
                     micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
                     micon.Parameters.AddWithValue("@m1clte", "");
-                    micon.Parameters.AddWithValue("@tipacc", tx_dat_plazo.Text);                   // pago del documento x defecto si nace la fact pagada
+                    micon.Parameters.AddWithValue("@tipacc", ""); // tx_dat_plazo.Text                  // pago del documento x defecto si nace la fact pagada
                     micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
                     micon.Parameters.AddWithValue("@codMN", MonDeft);               // codigo moneda local
                     micon.Parameters.AddWithValue("@subMN", subtMN);
@@ -2023,7 +2045,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
                     micon.Parameters.AddWithValue("@pordesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
                     micon.Parameters.AddWithValue("@valdesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
-                    micon.Parameters.AddWithValue("@refer", tx_numOpe.Text);
+                    micon.Parameters.AddWithValue("@refer", "");    // tx_dat_plazo.Text
                     micon.Parameters.AddWithValue("@updest", "");
                     micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
                     micon.Parameters.AddWithValue("@cont", tx_cont.Text);
@@ -2101,6 +2123,28 @@ namespace iOMG
                                 //
                                 retorna = true;         // no hubo errores!
                             }
+                        }
+                    }
+                }
+                // medios de pago
+                for (int i=0; i < 5; i++)
+                {
+                    if (dtpagos[i, 2].ToString() != "")
+                    {
+                        string inpag = "insert into adifactpag (idc,tdvta,sdvta,ndvta,it,medio,operac,importe,codpag) values (" +
+                            "@idc,@tdv,@sdv,@ndv,@it,@med,@ope,@imp,@cpa)";
+                        using (MySqlCommand micon = new MySqlCommand(inpag, conn))
+                        {
+                            micon.Parameters.AddWithValue("@idc", 0);
+                            micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                            micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                            micon.Parameters.AddWithValue("@ndv", tx_corre.Text);
+                            micon.Parameters.AddWithValue("@it", (i + 1).ToString());
+                            micon.Parameters.AddWithValue("@med", dtpagos[i, 2].ToString());
+                            micon.Parameters.AddWithValue("@ope", dtpagos[i, 3].ToString());
+                            micon.Parameters.AddWithValue("@imp,", dtpagos[i, 4].ToString());
+                            micon.Parameters.AddWithValue("@cpa", dtpagos[i, 5].ToString());
+                            micon.ExecuteNonQuery();
                         }
                     }
                 }
