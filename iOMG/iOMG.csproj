@@ -205,6 +205,12 @@
     <Compile Include="almgestion.Designer.cs">
       <DependentUpon>almgestion.cs</DependentUpon>
     </Compile>
+    <Compile Include="forpagos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forpagos.designer.cs">
+      <DependentUpon>forpagos.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmvizalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -543,6 +549,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="almgestion.resx">
       <DependentUpon>almgestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forpagos.resx">
+      <DependentUpon>forpagos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmvizalm.resx">
       <DependentUpon>frmvizalm.cs</DependentUpon>

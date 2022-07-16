@@ -94,7 +94,7 @@ namespace iOMG
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
         DataTable dtfp = new DataTable();       // combo para tipo de pago
         DataTable dtpedido = new DataTable();   // tipos documento de venta
-                                                
+        DataTable dtpagos = new DataTable();      // tabla para almacenar los medios de pago del comprobante    
         string vpago = "";                      // pago anticipo o cancelatorio
 
         public docsvta()
@@ -166,6 +166,22 @@ namespace iOMG
                         }
                     }
                 }
+                if (tx_impMedios.Focused == true)
+                {
+                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos);
+                    var resu = pagos.ShowDialog();
+                    if (resu == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(pagos.ReturnValue1))
+                        {
+                            tx_impMedios.Text = pagos.ReturnValue1.ToString();
+                            dtpagos.Clear();
+                            dtpagos = pagos.ReturnTable;
+                            MessageBox.Show(pagos.ReturnTable.Rows.Count.ToString());
+                            MessageBox.Show(dtpagos.Rows.Count.ToString());
+                        }
+                    }
+                }
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class
@@ -173,6 +189,19 @@ namespace iOMG
         }
         private void docsvta_Load(object sender, EventArgs e)
         {
+            DataColumn dc = new DataColumn("IDC", typeof(String));
+            dtpagos.Columns.Add(dc);
+            dc = new DataColumn("It", typeof(String));
+            dtpagos.Columns.Add(dc);
+            dc = new DataColumn("MEDIO", typeof(String));
+            dtpagos.Columns.Add(dc);
+            dc = new DataColumn("operac", typeof(String));
+            dtpagos.Columns.Add(dc);
+            dc = new DataColumn("importe", typeof(String));
+            dtpagos.Columns.Add(dc);
+            dc = new DataColumn("codpag", typeof(String));
+            dtpagos.Columns.Add(dc);
+
             init();
             toolboton();
             limpiar(this);
@@ -2565,6 +2594,5 @@ namespace iOMG
             if (e.ToString().Trim() == "") tx_status.Visible = false;
             else tx_status.Visible = true;
         }
-
     }
 }

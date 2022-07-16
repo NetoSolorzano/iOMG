@@ -80,8 +80,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.tx_telef2 = new iOMG.NumericTextBox();
-            this.tx_telef1 = new iOMG.NumericTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_mail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -94,7 +92,6 @@
             this.tx_nombre = new System.Windows.Forms.TextBox();
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.tx_ndc = new iOMG.NumericTextBox();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.tx_dat_orig = new System.Windows.Forms.TextBox();
@@ -140,8 +137,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label16 = new System.Windows.Forms.Label();
             this.tx_numOpe = new System.Windows.Forms.TextBox();
-            this.milinea4 = new iOMG.milinea();
-            this.milinea8 = new iOMG.milinea();
             this.cmb_plazo = new System.Windows.Forms.ComboBox();
             this.tx_cuotas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -159,6 +154,8 @@
             this.tx_prdsCont = new System.Windows.Forms.TextBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.cmb_mon = new System.Windows.Forms.ComboBox();
+            this.tx_tipComp = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.milinea6 = new iOMG.milinea();
             this.milinea7 = new iOMG.milinea();
             this.milinea5 = new iOMG.milinea();
@@ -168,7 +165,12 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_tipComp = new System.Windows.Forms.TextBox();
+            this.tx_impMedios = new iOMG.NumericTextBox();
+            this.milinea4 = new iOMG.milinea();
+            this.milinea8 = new iOMG.milinea();
+            this.tx_telef2 = new iOMG.NumericTextBox();
+            this.tx_telef1 = new iOMG.NumericTextBox();
+            this.tx_ndc = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -706,22 +708,6 @@
             this.label5.TabIndex = 358;
             this.label5.Text = "Dist.";
             // 
-            // tx_telef2
-            // 
-            this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
-            this.tx_telef2.Name = "tx_telef2";
-            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef2.TabIndex = 13;
-            // 
-            // tx_telef1
-            // 
-            this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
-            this.tx_telef1.Name = "tx_telef1";
-            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef1.TabIndex = 12;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -829,15 +815,6 @@
             this.label11.Size = new System.Drawing.Size(39, 13);
             this.label11.TabIndex = 345;
             this.label11.Text = "Cliente";
-            // 
-            // tx_ndc
-            // 
-            this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
-            this.tx_ndc.Name = "tx_ndc";
-            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
-            this.tx_ndc.TabIndex = 5;
-            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
             // 
             // dtp_pedido
             // 
@@ -1262,54 +1239,36 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.label16);
-            this.panel3.Controls.Add(this.tx_numOpe);
+            this.panel3.Controls.Add(this.label20);
+            this.panel3.Controls.Add(this.tx_impMedios);
             this.panel3.Controls.Add(this.milinea4);
-            this.panel3.Controls.Add(this.cmb_plazo);
             this.panel3.Controls.Add(this.tx_cuotas);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.rb_credito);
             this.panel3.Controls.Add(this.rb_contado);
             this.panel3.Location = new System.Drawing.Point(4, 363);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(431, 26);
+            this.panel3.Size = new System.Drawing.Size(305, 26);
             this.panel3.TabIndex = 15;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(225, 8);
+            this.label16.Location = new System.Drawing.Point(221, 397);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(57, 13);
             this.label16.TabIndex = 410;
             this.label16.Text = "Nro.OPER";
+            this.label16.Visible = false;
             // 
             // tx_numOpe
             // 
-            this.tx_numOpe.Location = new System.Drawing.Point(282, 3);
+            this.tx_numOpe.Location = new System.Drawing.Point(278, 392);
             this.tx_numOpe.Name = "tx_numOpe";
             this.tx_numOpe.Size = new System.Drawing.Size(146, 20);
             this.tx_numOpe.TabIndex = 396;
             this.tx_numOpe.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // milinea4
-            // 
-            this.milinea4.Controls.Add(this.milinea8);
-            this.milinea4.Location = new System.Drawing.Point(3, 22);
-            this.milinea4.Name = "milinea4";
-            this.milinea4.Size = new System.Drawing.Size(355, 1);
-            this.milinea4.TabIndex = 395;
-            this.milinea4.TabStop = false;
-            this.milinea4.Text = "milinea4";
-            // 
-            // milinea8
-            // 
-            this.milinea8.Location = new System.Drawing.Point(212, 0);
-            this.milinea8.Name = "milinea8";
-            this.milinea8.Size = new System.Drawing.Size(212, 1);
-            this.milinea8.TabIndex = 411;
-            this.milinea8.TabStop = false;
-            this.milinea8.Text = "milinea8";
+            this.tx_numOpe.Visible = false;
             // 
             // cmb_plazo
             // 
@@ -1317,15 +1276,16 @@
             this.cmb_plazo.DropDownWidth = 100;
             this.cmb_plazo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_plazo.FormattingEnabled = true;
-            this.cmb_plazo.Location = new System.Drawing.Point(111, 1);
+            this.cmb_plazo.Location = new System.Drawing.Point(16, 408);
             this.cmb_plazo.Name = "cmb_plazo";
             this.cmb_plazo.Size = new System.Drawing.Size(98, 21);
             this.cmb_plazo.TabIndex = 1;
+            this.cmb_plazo.Visible = false;
             this.cmb_plazo.SelectionChangeCommitted += new System.EventHandler(this.cmb_plazo_SelectionChangeCommitted);
             // 
             // tx_cuotas
             // 
-            this.tx_cuotas.Location = new System.Drawing.Point(151, 3);
+            this.tx_cuotas.Location = new System.Drawing.Point(165, 3);
             this.tx_cuotas.Name = "tx_cuotas";
             this.tx_cuotas.Size = new System.Drawing.Size(16, 20);
             this.tx_cuotas.TabIndex = 393;
@@ -1358,7 +1318,7 @@
             // rb_contado
             // 
             this.rb_contado.AutoSize = true;
-            this.rb_contado.Location = new System.Drawing.Point(5, 4);
+            this.rb_contado.Location = new System.Drawing.Point(18, 4);
             this.rb_contado.Name = "rb_contado";
             this.rb_contado.Size = new System.Drawing.Size(78, 17);
             this.rb_contado.TabIndex = 0;
@@ -1472,6 +1432,23 @@
             this.cmb_mon.Size = new System.Drawing.Size(50, 21);
             this.cmb_mon.TabIndex = 416;
             // 
+            // tx_tipComp
+            // 
+            this.tx_tipComp.Location = new System.Drawing.Point(322, 30);
+            this.tx_tipComp.Name = "tx_tipComp";
+            this.tx_tipComp.Size = new System.Drawing.Size(31, 20);
+            this.tx_tipComp.TabIndex = 417;
+            this.tx_tipComp.Visible = false;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(134, 6);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(93, 13);
+            this.label20.TabIndex = 411;
+            this.label20.Text = "Importe en medios";
+            // 
             // milinea6
             // 
             this.milinea6.Location = new System.Drawing.Point(601, 401);
@@ -1555,22 +1532,71 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tx_tipComp
+            // tx_impMedios
             // 
-            this.tx_tipComp.Location = new System.Drawing.Point(322, 30);
-            this.tx_tipComp.Name = "tx_tipComp";
-            this.tx_tipComp.Size = new System.Drawing.Size(31, 20);
-            this.tx_tipComp.TabIndex = 417;
-            this.tx_tipComp.Visible = false;
+            this.tx_impMedios.AllowSpace = false;
+            this.tx_impMedios.Location = new System.Drawing.Point(229, 3);
+            this.tx_impMedios.Name = "tx_impMedios";
+            this.tx_impMedios.ReadOnly = true;
+            this.tx_impMedios.Size = new System.Drawing.Size(73, 20);
+            this.tx_impMedios.TabIndex = 401;
+            this.tx_impMedios.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // milinea4
+            // 
+            this.milinea4.Controls.Add(this.milinea8);
+            this.milinea4.Location = new System.Drawing.Point(3, 22);
+            this.milinea4.Name = "milinea4";
+            this.milinea4.Size = new System.Drawing.Size(355, 1);
+            this.milinea4.TabIndex = 395;
+            this.milinea4.TabStop = false;
+            this.milinea4.Text = "milinea4";
+            // 
+            // milinea8
+            // 
+            this.milinea8.Location = new System.Drawing.Point(212, 0);
+            this.milinea8.Name = "milinea8";
+            this.milinea8.Size = new System.Drawing.Size(212, 1);
+            this.milinea8.TabIndex = 411;
+            this.milinea8.TabStop = false;
+            this.milinea8.Text = "milinea8";
+            // 
+            // tx_telef2
+            // 
+            this.tx_telef2.AllowSpace = false;
+            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
+            this.tx_telef2.Name = "tx_telef2";
+            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef2.TabIndex = 13;
+            // 
+            // tx_telef1
+            // 
+            this.tx_telef1.AllowSpace = false;
+            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
+            this.tx_telef1.Name = "tx_telef1";
+            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef1.TabIndex = 12;
+            // 
+            // tx_ndc
+            // 
+            this.tx_ndc.AllowSpace = false;
+            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
+            this.tx_ndc.Name = "tx_ndc";
+            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
+            this.tx_ndc.TabIndex = 5;
+            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
             // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.tx_tipComp);
+            this.Controls.Add(this.tx_numOpe);
             this.Controls.Add(this.cmb_mon);
             this.Controls.Add(this.milinea6);
+            this.Controls.Add(this.cmb_plazo);
             this.Controls.Add(this.tx_prdsCont);
             this.Controls.Add(this.tx_tfil);
             this.Controls.Add(this.tx_dat_mone);
@@ -1783,5 +1809,7 @@
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ComboBox cmb_mon;
         private System.Windows.Forms.TextBox tx_tipComp;
+        private System.Windows.Forms.Label label20;
+        private NumericTextBox tx_impMedios;
     }
 }
