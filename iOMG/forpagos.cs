@@ -8,32 +8,32 @@ namespace iOMG
     {
         DataTable dt;           // medios de pago
         string _mpefec = "";    // variable tipo de pago efectivo
-        DataTable contenido;
-        public forpagos(DataTable dtmp, string mpefec, DataTable idavuelta)
+
+        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta)
         {
             dt = dtmp;
             _mpefec = mpefec;
-            contenido = idavuelta;
             InitializeComponent();
+            if (idavuelta[0, 2].ToString() != "")
+            {
+                for (int i=0; i<5; i++)
+                {
+                    if (idavuelta[i, 2] != null)
+                    {
+                        if (idavuelta[i, 2].ToString() != "")
+                        {
+                            dataGridView1.Rows.Add(0, i + 1, idavuelta[i, 2].ToString(), idavuelta[i, 3].ToString(), idavuelta[i, 4].ToString(), idavuelta[i, 5].ToString());
+                        }
+                    }
+                }
+            }
         }
         private void forpagos_Load(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
-            //dataGridView1.DataSource = null;
-            //dataGridView1.DataSource = contenido;
             foreach (DataRow row in dt.Rows)
             {
                 cmb_plazo.Items.Add(row.ItemArray[0].ToString());
             }
-            foreach (DataRow rc in contenido.Rows)
-            {
-                double tv = 0;
-                dataGridView1.Rows.Add(0, dataGridView1.Rows.Count - 1, rc.ItemArray[2].ToString(), rc.ItemArray[3].ToString(), rc.ItemArray[4].ToString(), rc.ItemArray[5].ToString());
-                tv = tv + double.Parse(rc.ItemArray[4].ToString());
-                tx_total.Text = (tv).ToString("#0.00");
-                tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
-            }
-            //return contenido;
         }
         private void forpagos_KeyDown(object sender, KeyEventArgs e)
         {
@@ -44,28 +44,25 @@ namespace iOMG
         }
 
         public string ReturnValue1 { get; set; }
-        public DataTable ReturnTable { get; set; }
+        public string[,] ReturnValue = new string[5, 6];
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ReturnValue1 = tx_importe.Text;
-
+            ReturnValue1 = tx_total.Text;
+            int i = 0;
             foreach(DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Cells[2].Value != null)
                 {
-                    DataRow dr = contenido.NewRow();
-                    dr[0] = "0";
-                    dr[1] = "1";
-                    dr[2] = row.Cells[2].Value.ToString();
-                    dr[3] = row.Cells[3].Value.ToString();
-                    dr[4] = row.Cells[4].Value.ToString();
-                    dr[5] = row.Cells[5].Value.ToString();
-                    contenido.Rows.Add(dr);
+                    ReturnValue[i, 0] = "0";
+                    ReturnValue[i, 1] = (i + 1).ToString();
+                    ReturnValue[i, 2] = row.Cells[2].Value.ToString();
+                    ReturnValue[i, 3] = row.Cells[3].Value.ToString();
+                    ReturnValue[i, 4] = row.Cells[4].Value.ToString();
+                    ReturnValue[i, 5] = row.Cells[5].Value.ToString();
                 }
+                i = i + 1;
             }
-
-            ReturnTable = contenido;
             this.Close();
         }
         private void bt_mas_Click(object sender, EventArgs e)
@@ -91,7 +88,6 @@ namespace iOMG
                 return;
             }
             dataGridView1.Rows.Add(0,dataGridView1.Rows.Count-1,cmb_plazo.Text,tx_numOpe.Text,tx_importe.Text,tx_dat_mp.Text);
-            //contenido.Rows.Add(0, dataGridView1.Rows.Count - 1, cmb_plazo.Text, tx_numOpe.Text, tx_importe.Text, tx_dat_mp.Text);
             double tv = 0;
             double.TryParse(tx_total.Text, out tv);
             tx_total.Text = (tv + vi).ToString("#0.00");

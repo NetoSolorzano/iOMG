@@ -94,12 +94,21 @@ namespace iOMG
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
         DataTable dtfp = new DataTable();       // combo para tipo de pago
         DataTable dtpedido = new DataTable();   // tipos documento de venta
-        DataTable dtpagos = new DataTable();      // tabla para almacenar los medios de pago del comprobante    
         string vpago = "";                      // pago anticipo o cancelatorio
+        string[,] dtpagos = new string[5, 6];
 
         public docsvta()
         {
             InitializeComponent();
+            for(int i=0; i<5; i++)
+            {
+                dtpagos[i, 0] = "0";
+                dtpagos[i, 1] = i.ToString();
+                dtpagos[i, 2] = "";
+                dtpagos[i, 3] = "";
+                dtpagos[i, 4] = "";
+                dtpagos[i, 5] = "";
+            }
         }
         private void docsvta_KeyDown(object sender, KeyEventArgs e)
         {
@@ -175,10 +184,15 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(pagos.ReturnValue1))
                         {
                             tx_impMedios.Text = pagos.ReturnValue1.ToString();
-                            dtpagos.Clear();
-                            dtpagos = pagos.ReturnTable;
-                            MessageBox.Show(pagos.ReturnTable.Rows.Count.ToString());
-                            MessageBox.Show(dtpagos.Rows.Count.ToString());
+                            for (int i=0; i < 5; i++)
+                            {
+                                dtpagos[i, 0] = pagos.ReturnValue[i, 0];
+                                dtpagos[i, 1] = pagos.ReturnValue[i, 1];
+                                dtpagos[i, 2] = pagos.ReturnValue[i, 2];
+                                dtpagos[i, 3] = pagos.ReturnValue[i, 3];
+                                dtpagos[i, 4] = pagos.ReturnValue[i, 4];
+                                dtpagos[i, 5] = pagos.ReturnValue[i, 5];
+                            }
                         }
                     }
                 }
@@ -189,19 +203,6 @@ namespace iOMG
         }
         private void docsvta_Load(object sender, EventArgs e)
         {
-            DataColumn dc = new DataColumn("IDC", typeof(String));
-            dtpagos.Columns.Add(dc);
-            dc = new DataColumn("It", typeof(String));
-            dtpagos.Columns.Add(dc);
-            dc = new DataColumn("MEDIO", typeof(String));
-            dtpagos.Columns.Add(dc);
-            dc = new DataColumn("operac", typeof(String));
-            dtpagos.Columns.Add(dc);
-            dc = new DataColumn("importe", typeof(String));
-            dtpagos.Columns.Add(dc);
-            dc = new DataColumn("codpag", typeof(String));
-            dtpagos.Columns.Add(dc);
-
             init();
             toolboton();
             limpiar(this);
@@ -1857,10 +1858,11 @@ namespace iOMG
                 tx_d_can.Focus();
                 return;
             }
-            if (tx_dat_plazo.Text.Trim() == "")
+            if (tx_impMedios.Text != tx_valor.Text)
             {
-                MessageBox.Show("Seleccione el tipo de pago", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cmb_plazo.Focus();
+                MessageBox.Show("El importe en medios de pago debe" + Environment.NewLine +
+                    "ser igual al valor del comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_impMedios.Focus();
                 return;
             }
             if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codfact)

@@ -238,6 +238,7 @@
             this.tx_tfil.Size = new System.Drawing.Size(31, 21);
             this.tx_tfil.TabIndex = 419;
             this.tx_tfil.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_tfil.Visible = false;
             // 
             // tx_dat_mp
             // 
@@ -246,6 +247,7 @@
             this.tx_dat_mp.Size = new System.Drawing.Size(40, 20);
             this.tx_dat_mp.TabIndex = 420;
             this.tx_dat_mp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_dat_mp.Visible = false;
             // 
             // forpagos
             // 
