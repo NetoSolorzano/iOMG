@@ -100,15 +100,7 @@ namespace iOMG
         public docsvta()
         {
             InitializeComponent();
-            for(int i=0; i<5; i++)
-            {
-                dtpagos[i, 0] = "0";
-                dtpagos[i, 1] = i.ToString();
-                dtpagos[i, 2] = "";
-                dtpagos[i, 3] = "";
-                dtpagos[i, 4] = "";
-                dtpagos[i, 5] = "";
-            }
+            ini_pagos();
         }
         private void docsvta_KeyDown(object sender, KeyEventArgs e)
         {
@@ -120,9 +112,9 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
-            if (keyData == Keys.F1 && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            if (keyData == Keys.F1)
             {
-                if (tx_ndc.Focused == true)
+                if (tx_ndc.Focused == true && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
                 {
                     para1 = "anag_cli";   // maestra clientes
                     para2 = "todos";   // 
@@ -140,7 +132,7 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_cont.Focused == true)        // solo debe mostrar contratos con SALDO
+                if (tx_cont.Focused == true && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))        // solo debe mostrar contratos con SALDO
                 {
                     para1 = "contrat";
                     para2 = "";
@@ -157,7 +149,7 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_d_nom.Focused == true || tx_d_codi.Focused == true)
+                if (tx_d_nom.Focused == true || tx_d_codi.Focused == true && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
                 {
                     para1 = "items";
                     para2 = "todos";
@@ -184,7 +176,7 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(pagos.ReturnValue1))
                         {
                             tx_impMedios.Text = pagos.ReturnValue1.ToString();
-                            for (int i=0; i < 5; i++)
+                            for (int i = 0; i < 5; i++)
                             {
                                 dtpagos[i, 0] = pagos.ReturnValue[i, 0];
                                 dtpagos[i, 1] = pagos.ReturnValue[i, 1];
@@ -454,6 +446,7 @@ namespace iOMG
                                 dtpagos[i, 3] = row[7].ToString();
                                 dtpagos[i, 4] = row[8].ToString();
                                 dtpagos[i, 5] = row[9].ToString();
+                                i = i + 1;
                             }
                             kll.Dispose();
                         }
@@ -702,6 +695,7 @@ namespace iOMG
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
                 tx_dat_mone.Text = MonDeft;                 // en este momento todo es soles
+                ini_pagos();
             }
         }
         private void jala_cont(string conti)                // jala datos del contrato
@@ -890,6 +884,18 @@ namespace iOMG
             }
             return retorna;
         }
+        private void ini_pagos()                            // inicializa la matris de pagos
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                dtpagos[i, 0] = "0";
+                dtpagos[i, 1] = i.ToString();
+                dtpagos[i, 2] = "";
+                dtpagos[i, 3] = "";
+                dtpagos[i, 4] = "";
+                dtpagos[i, 5] = "";
+            }
+        }
 
         #region botones_de_comando_y_permisos  
         private void toolboton()
@@ -1063,6 +1069,9 @@ namespace iOMG
             tx_serie.ReadOnly = false;
             tx_corre.Enabled = true;
             tx_corre.ReadOnly = false;
+            tx_impMedios.ReadOnly = false;
+            tx_impMedios.Enabled = true;
+            cmb_tipo.Focus();
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -1901,14 +1910,14 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO")
             {
-                // validaciones antes de grabar nuevo
+                /* validaciones antes de grabar nuevo
                 if (tx_dat_plazo.Text != tpcontad && (tx_numOpe.Text.Trim() == "" || tx_numOpe.Text.Trim().Length < 4))
                 {
                     MessageBox.Show("Ingrese el número de operación","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     tx_numOpe.Focus();
                     return;
                 }
-
+                */
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
                 if (valProdCont() == true) tx_prdsCont.Text = "S";
                 else tx_prdsCont.Text = "N";
@@ -2129,7 +2138,7 @@ namespace iOMG
                 // medios de pago
                 for (int i=0; i < 5; i++)
                 {
-                    if (dtpagos[i, 2].ToString() != "")
+                    if (dtpagos[i, 0] != null && dtpagos[i, 2].ToString() != "")
                     {
                         string inpag = "insert into adifactpag (idc,tdvta,sdvta,ndvta,it,medio,operac,importe,codpag) values (" +
                             "@idc,@tdv,@sdv,@ndv,@it,@med,@ope,@imp,@cpa)";
@@ -2142,7 +2151,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@it", (i + 1).ToString());
                             micon.Parameters.AddWithValue("@med", dtpagos[i, 2].ToString());
                             micon.Parameters.AddWithValue("@ope", dtpagos[i, 3].ToString());
-                            micon.Parameters.AddWithValue("@imp,", dtpagos[i, 4].ToString());
+                            micon.Parameters.AddWithValue("@imp", dtpagos[i, 4].ToString());
                             micon.Parameters.AddWithValue("@cpa", dtpagos[i, 5].ToString());
                             micon.ExecuteNonQuery();
                         }
