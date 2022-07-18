@@ -2559,10 +2559,13 @@ namespace iOMG
                     {
                         for (int x=0; x < 5; x++)
                         {
-                            puntoF = new PointF(coli, posi);
-                            //e.Graphics.DrawString(cmb_plazo.Text + " " + cmb_mon.Text + tx_valor.Text + " # Operación " + tx_numOpe.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                            e.Graphics.DrawString(dtpagos[x, 2].ToString() + " " + cmb_mon.Text + " " + dtpagos[x, 4].ToString() + " Num.Oper. " + dtpagos[x, 3].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                            posi = posi + alfi;
+                            if (dtpagos[x, 2] != null && dtpagos[x, 2].ToString().Trim() != "")
+                            {
+                                puntoF = new PointF(coli, posi);
+                                //e.Graphics.DrawString(cmb_plazo.Text + " " + cmb_mon.Text + tx_valor.Text + " # Operación " + tx_numOpe.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                e.Graphics.DrawString(dtpagos[x, 2].ToString() + " " + cmb_mon.Text + " " + dtpagos[x, 4].ToString() + " Num.Oper. " + dtpagos[x, 3].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                posi = posi + alfi;
+                            }
                         }
                     }
                     else
