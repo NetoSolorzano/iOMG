@@ -2413,7 +2413,7 @@ namespace iOMG
                     e.Graphics.DrawString("Descripción", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
                     puntoF = new PointF(coli, posi);
-                    e.Graphics.DrawString("Cantidad                    Precio                          Importe", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                    e.Graphics.DrawString("Cantidad                    Precio                             Importe", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
                     puntoF = new PointF(coli, posi);
                     e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
@@ -2429,9 +2429,9 @@ namespace iOMG
                                 posi = posi + alfi;
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                puntoF = new PointF(coli + 90.0F, posi);
+                                puntoF = new PointF(coli + 100.0F, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                puntoF = new PointF(coli + 190, posi);
+                                puntoF = new PointF(coli + 199, posi);// coli + 190
                                 recto = new RectangleF(puntoF, siz);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
                                 posi = posi + alfi;
@@ -2444,7 +2444,7 @@ namespace iOMG
                         e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                         //puntoF = new PointF(coli + 90.0F, posi);
                         //e.Graphics.DrawString(dataGridView1.Rows[0].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 190, posi);
+                        puntoF = new PointF(coli + 199, posi);
                         recto = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString(dataGridView1.Rows[0].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
                         posi = posi + alfi;
@@ -2471,7 +2471,8 @@ namespace iOMG
                             else
                             {
                                 puntoF = new PointF(coli, posi);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                //e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                e.Graphics.DrawString("CANCELACION DE CONTRATO " + tx_cont.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             }
                             posi = posi + alfi;
                         }
@@ -2479,26 +2480,67 @@ namespace iOMG
                     }
                     puntoF = new PointF(coli, posi);
                     e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-
-                    // pie del documento ;
+                    // pie del documento
+                    if (tx_tipComp.Text == "A" && vpago == "cancelacion")
                     {
                         siz = new SizeF(70, 15);
                         posi = posi + alfi;
                         puntoF = new PointF(coli, posi);
-                        e.Graphics.DrawString("OP. GRAVADA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 190, posi);
+                        e.Graphics.DrawString("VALOR TOTAL CONTRATO", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
                         RectangleF recst = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString("??.XX", lt_peq, Brushes.Black, recst, alder);
+                        posi = posi + alfi;
+                        // LISTA DE ANTICIPOS CON SIMBOLO NEGATIVO
+                        for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
+                        {
+                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() == "0")
+                            {
+                                puntoF = new PointF(coli, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                posi = posi + alfi;
+                            }
+                        }
+                        // A PARTIR DE ACA LOS VALORES DEL PAGO ACTUAL
+                        posi = posi + alfi;
+                        puntoF = new PointF(coli, posi);
+                        e.Graphics.DrawString("OP. GRAVADA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
+                        recst = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString(tx_bruto.Text, lt_peq, Brushes.Black, recst, alder);
                         posi = posi + alfi;
                         puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString("IGV", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 190, posi);
+                        puntoF = new PointF(coli + 199, posi);
                         RectangleF recgv = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString(tx_igv.Text, lt_peq, Brushes.Black, recgv, alder);
                         posi = posi + alfi;
                         puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString("IMPORTE TOTAL " + cmb_mon.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 190, posi);
+                        puntoF = new PointF(coli + 199, posi);
+                        siz = new SizeF(70, 15);
+                        recto = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString(tx_valor.Text, lt_peq, Brushes.Black, recto, alder);
+                    }
+                    else
+                    {
+                        siz = new SizeF(70, 15);
+                        posi = posi + alfi;
+                        puntoF = new PointF(coli, posi);
+                        e.Graphics.DrawString("OP. GRAVADA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
+                        RectangleF recst = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString(tx_bruto.Text, lt_peq, Brushes.Black, recst, alder);
+                        posi = posi + alfi;
+                        puntoF = new PointF(coli, posi);
+                        e.Graphics.DrawString("IGV", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
+                        RectangleF recgv = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString(tx_igv.Text, lt_peq, Brushes.Black, recgv, alder);
+                        posi = posi + alfi;
+                        puntoF = new PointF(coli, posi);
+                        e.Graphics.DrawString("IMPORTE TOTAL " + cmb_mon.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
                         siz = new SizeF(70, 15);
                         recto = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString(tx_valor.Text, lt_peq, Brushes.Black, recto, alder);
@@ -2515,15 +2557,19 @@ namespace iOMG
                     else posi = posi + alfi + alfi;
                     if (rb_contado.Checked == true)
                     {
-                        puntoF = new PointF(coli, posi);
-                        e.Graphics.DrawString(cmb_plazo.Text + " " + cmb_mon.Text + tx_valor.Text + " # Operación " + tx_numOpe.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        posi = posi + alfi * 1.5F;
+                        for (int x=0; x < 5; x++)
+                        {
+                            puntoF = new PointF(coli, posi);
+                            //e.Graphics.DrawString(cmb_plazo.Text + " " + cmb_mon.Text + tx_valor.Text + " # Operación " + tx_numOpe.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            e.Graphics.DrawString(dtpagos[x, 2].ToString() + " " + cmb_mon.Text + " " + dtpagos[x, 4].ToString() + " Num.Oper. " + dtpagos[x, 3].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            posi = posi + alfi;
+                        }
                     }
                     else
                     {
                         if (rb_credito.Checked == true)
                         {
-                            //
+                            // no hay ventas al credito 18/07/2022
                         }
                     }
 
