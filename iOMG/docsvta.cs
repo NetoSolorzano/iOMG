@@ -695,11 +695,12 @@ namespace iOMG
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
                 tx_dat_mone.Text = MonDeft;                 // en este momento todo es soles
-                ini_pagos();
             }
+            ini_pagos();
         }
-        private void jala_cont(string conti)                // jala datos del contrato
+        private double jala_cont(string conti)                // jala datos del contrato
         {
+            double retorna = 0;
             try
             {
                 DataTable dt = new DataTable();
@@ -708,7 +709,7 @@ namespace iOMG
                 {
                     conn.Open();
                     string continua = "N";
-                    string conpag = "SELECT concat('ANTICIPO DE CONTRATO ',contrato,' *** ',dv,'-',serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
+                    string conpag = "SELECT concat('ANTICIPO DE CONTRATO # ',contrato,'  ',dv,'-',serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
                         "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor " +
@@ -754,6 +755,7 @@ namespace iOMG
                                         // Igv         = 18% 
                                         // Importe Tot = valor venta + igv
                                         vpago = "cancelacion";
+                                        retorna = double.Parse(dr.GetString(0));
                                     }
                                     else
                                     {                               // hace un pago a cuenta
@@ -768,7 +770,7 @@ namespace iOMG
                             MessageBox.Show("No se tienen datos del contrato!","Error en contrato",MessageBoxButtons.OK,MessageBoxIcon.Error);
                             tx_cont.Text = "";
                             tx_cont.Focus();
-                            return;
+                            return retorna;
                         }
                         dr.Dispose();
                     }
@@ -857,7 +859,7 @@ namespace iOMG
                         {
                             MessageBox.Show("No existe el contrato!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             tx_cont.Text = "";
-                            return;
+                            return retorna;
                         }
                         dt.Dispose();
                     }
@@ -866,8 +868,9 @@ namespace iOMG
             catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message, "Error en ejecución de código", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                return retorna;
             }
+            return retorna;
         }
         private bool valProdCont()                          // busca productos de stock, grandes que puedan tener contrato
         {
@@ -1487,12 +1490,27 @@ namespace iOMG
                 if (rb_antic.Checked == true && tx_cont.Text.Trim() != "")
                 {
                     // mostramos una ventana alertando del saldo del contrato y preguntando si se desea cancelar todo
-                    jala_cont(tx_cont.Text);    // segun pague todo o parcial hacemos algo 
+                    double aja = jala_cont(tx_cont.Text);    // segun pague todo o parcial hacemos algo 
                     if (vpago == "cancelacion")
                     {
+                        double ntoti = aja;
                         tx_d_antic.Visible = false;
                         tx_d_valAntic.Visible = false;
                         tx_coment.Text = "*** Comprobante de Cancelación ***";
+                        tx_tipComp.Text = "C";
+                        tx_d_antic.Text = "CANCELACION ";
+                        tx_d_valAntic.Text = ntoti.ToString("#0.00");
+                        //
+                        if (ntoti > 0)
+                        {
+                            dataGridView1.Rows.Insert(0, dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_antic.Text, tx_d_med.Text,
+                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A");
+
+                            tx_valor.Text = ntoti.ToString("#0.00");
+                            tx_bruto.Text = (ntoti / 1.18).ToString("#0.00");
+                            tx_igv.Text = (ntoti - (ntoti / 1.18)).ToString("#0.00");
+                        }
+                        tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
                     }
                 }
             }
@@ -2413,11 +2431,12 @@ namespace iOMG
                     e.Graphics.DrawString("Descripción", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
                     puntoF = new PointF(coli, posi);
-                    e.Graphics.DrawString("Cantidad                    Precio                             Importe", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                    e.Graphics.DrawString("Cantidad                    Precio                                Importe", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
                     puntoF = new PointF(coli, posi);
                     e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
+                    double valcont = 0;             // total importes de items para casos de cancelacion 
                     if (tx_tipComp.Text == "B") // ventas directas
                     {
                         for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
@@ -2425,82 +2444,154 @@ namespace iOMG
                             if (!string.IsNullOrEmpty(dataGridView1.Rows[l].Cells[0].Value.ToString()))
                             {
                                 puntoF = new PointF(coli, posi);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                posi = posi + alfi;
+                                var kk = e.Graphics.MeasureString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq);
+                                if (kk.Width > lib.CentimeterToPixel(anchTik))
+                                {
+                                    siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
+                                    recto = new RectangleF(puntoF, siz);
+                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                                    posi = posi + alfi * 2;
+                                }
+                                else
+                                {
+                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                    posi = posi + alfi;
+                                }
+                                //puntoF = new PointF(coli, posi);
+                                //e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                //posi = posi + alfi;
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 100.0F, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 199, posi);// coli + 190
+                                siz = new SizeF(70, 30);
                                 recto = new RectangleF(puntoF, siz);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
                                 posi = posi + alfi;
                             }
                         }
                     }
-                    if (tx_tipComp.Text == "A" && vpago != "cancelacion") // anticipo
+                    if (tx_tipComp.Text == "A") //  && vpago != "cancelacion" // anticipo
                     {
                         puntoF = new PointF(coli, posi);
-                        e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        //puntoF = new PointF(coli + 90.0F, posi);
-                        //e.Graphics.DrawString(dataGridView1.Rows[0].Cells[8].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 199, posi);
-                        recto = new RectangleF(puntoF, siz);
-                        e.Graphics.DrawString(dataGridView1.Rows[0].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
-                        posi = posi + alfi;
+                        var kk = e.Graphics.MeasureString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq);
+                        if (kk.Width > lib.CentimeterToPixel(anchTik))
+                        {
+                            siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
+                            recto = new RectangleF(puntoF, siz);
+                            e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic); e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                            puntoF = new PointF(coli + 199, posi);
+                            siz = new SizeF(70, 30);
+                            recto = new RectangleF(puntoF, siz);
+                            e.Graphics.DrawString(dataGridView1.Rows[0].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                            posi = posi + alfi * 2;
+                        }
+                        else
+                        {
+                            e.Graphics.DrawString(dataGridView1.Rows[0].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            puntoF = new PointF(coli + 199, posi);
+                            siz = new SizeF(70, 30);
+                            recto = new RectangleF(puntoF, siz);
+                            e.Graphics.DrawString(dataGridView1.Rows[0].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                            posi = posi + alfi;
+                        }
                         for (int l = 1; l < dataGridView1.Rows.Count - 1; l++)
                         {
                             puntoF = new PointF(coli, posi);
                             e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             puntoF = new PointF(coli + 30.0F, posi);
-                            e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                            posi = posi + alfi;
-                        }
-                    }
-                    if (tx_tipComp.Text == "A" && vpago == "cancelacion")
-                    {
-                        for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
-                        {
-                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0")
+                            kk = e.Graphics.MeasureString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq);
+                            if (kk.Width > lib.CentimeterToPixel(anchTik))
                             {
-                                puntoF = new PointF(coli, posi);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                puntoF = new PointF(coli + 30.0F, posi);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
+                                recto = new RectangleF(puntoF, siz);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                                posi = posi + alfi * 2;
                             }
                             else
                             {
-                                puntoF = new PointF(coli, posi);
-                                //e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                e.Graphics.DrawString("CANCELACION DE CONTRATO " + tx_cont.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                            }
-                            posi = posi + alfi;
-                        }
-
-                    }
-                    puntoF = new PointF(coli, posi);
-                    e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                    // pie del documento
-                    if (tx_tipComp.Text == "A" && vpago == "cancelacion")
-                    {
-                        siz = new SizeF(70, 15);
-                        posi = posi + alfi;
-                        puntoF = new PointF(coli, posi);
-                        e.Graphics.DrawString("VALOR TOTAL CONTRATO", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                        puntoF = new PointF(coli + 199, posi);
-                        RectangleF recst = new RectangleF(puntoF, siz);
-                        e.Graphics.DrawString("??.XX", lt_peq, Brushes.Black, recst, alder);
-                        posi = posi + alfi;
-                        // LISTA DE ANTICIPOS CON SIMBOLO NEGATIVO
-                        for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
-                        {
-                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() == "0")
-                            {
-                                puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 posi = posi + alfi;
                             }
                         }
+                    }
+                    if (tx_tipComp.Text == "C") //  && vpago == "cancelacion"
+                    {
+                        puntoF = new PointF(coli, posi);
+                        e.Graphics.DrawString("CANCELACION DE CONTRATO " + tx_cont.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        posi = posi + alfi;
+                        for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
+                        {
+                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0" && dataGridView1.Rows[l].Cells[1].Value.ToString().Trim() != "")
+                            {
+                                puntoF = new PointF(coli, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                puntoF = new PointF(coli + 30.0F, posi);
+                                var kk = e.Graphics.MeasureString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq);
+                                if (kk.Width > lib.CentimeterToPixel(anchTik) - 30.0F)
+                                {
+                                    siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
+                                    recto = new RectangleF(puntoF, siz);
+                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                                    puntoF = new PointF(coli + 199, posi);
+                                    siz = new SizeF(70, 30);
+                                    recto = new RectangleF(puntoF, siz);
+                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                                    posi = posi + alfi * 2;
+                                }
+                                else
+                                {
+                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                    puntoF = new PointF(coli + 199, posi);
+                                    siz = new SizeF(70, 30);
+                                    recto = new RectangleF(puntoF, siz);
+                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                                    posi = posi + alfi;
+                                }
+                                valcont = valcont + double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
+                            }
+                            else
+                            {
+                                // no imprimes nada porque son las filas de anticipos
+                            }
+                            //posi = posi + alfi;
+                        }
+                    }
+                    puntoF = new PointF(coli, posi);
+                    e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                    // pie del documento
+                    if (tx_tipComp.Text == "C") //  && vpago == "cancelacion"
+                    {
+                        double valant = 0;
+                        siz = new SizeF(70, 15);
+                        posi = posi + alfi;
+                        puntoF = new PointF(coli, posi);
+                        e.Graphics.DrawString("TOTAL VENTA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
+                        RectangleF recst = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString(valcont.ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
+                        posi = posi + alfi;
+                        // LISTA DE ANTICIPOS CON SIMBOLO NEGATIVO
+                        for (int l = 1; l < dataGridView1.Rows.Count - 1; l++)  // la primera fila es la cancelacion
+                        {                                                       // solo ponemos aca los anticipos
+                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() == "0")
+                            {
+                                puntoF = new PointF(coli, posi);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                siz = new SizeF(70, 30);
+                                recto = new RectangleF(puntoF, siz);
+                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                                posi = posi + alfi;
+                                valant = valant + double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
+                            }
+                        }
+                        //
+                        e.Graphics.DrawString("SUB TOTAL VENTA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                        puntoF = new PointF(coli + 199, posi);
+                        recst = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString((valcont - valant).ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
+                        posi = posi + alfi * 2;
                         // A PARTIR DE ACA LOS VALORES DEL PAGO ACTUAL
                         posi = posi + alfi;
                         puntoF = new PointF(coli, posi);
@@ -2562,7 +2653,6 @@ namespace iOMG
                             if (dtpagos[x, 2] != null && dtpagos[x, 2].ToString().Trim() != "")
                             {
                                 puntoF = new PointF(coli, posi);
-                                //e.Graphics.DrawString(cmb_plazo.Text + " " + cmb_mon.Text + tx_valor.Text + " # Operación " + tx_numOpe.Text, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 e.Graphics.DrawString(dtpagos[x, 2].ToString() + " " + cmb_mon.Text + " " + dtpagos[x, 4].ToString() + " Num.Oper. " + dtpagos[x, 3].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 posi = posi + alfi;
                             }
@@ -2578,7 +2668,7 @@ namespace iOMG
 
                     if (tx_dat_tipdoc.Text == codfact)
                     {
-                        if (double.Parse(tx_valor.Text) > double.Parse(Program.valdetra))
+                        if (double.Parse(tx_valor.Text) > double.Parse(Program.valdetra))   // poner un valor muy alto para no entrar
                         {
                             posi = posi + alfi * 1.5F;
                             siz = new SizeF(lib.CentimeterToPixel(anchTik), 15 * 4);
@@ -2592,6 +2682,7 @@ namespace iOMG
                             posi = posi + alfi;
                         }
                     }
+                    posi = posi + alfi;
                     puntoF = new PointF(coli, posi);
                     string repre = "Representación impresa de la";
                     lt = (lib.CentimeterToPixel(anchTik) - e.Graphics.MeasureString(repre, lt_med).Width) / 2;
