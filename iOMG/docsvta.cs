@@ -2525,6 +2525,7 @@ namespace iOMG
                         {
                             if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0" && dataGridView1.Rows[l].Cells[1].Value.ToString().Trim() != "")
                             {
+                                double ventu = double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 30.0F, posi);
@@ -2537,7 +2538,7 @@ namespace iOMG
                                     puntoF = new PointF(coli + 199, posi);
                                     siz = new SizeF(70, 30);
                                     recto = new RectangleF(puntoF, siz);
-                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                                    e.Graphics.DrawString(ventu.ToString("#0.00"), lt_peq, Brushes.Black, recto, alder);
                                     posi = posi + alfi * 2;
                                 }
                                 else
@@ -2546,10 +2547,10 @@ namespace iOMG
                                     puntoF = new PointF(coli + 199, posi);
                                     siz = new SizeF(70, 30);
                                     recto = new RectangleF(puntoF, siz);
-                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                                    e.Graphics.DrawString(ventu.ToString("#0.00"), lt_peq, Brushes.Black, recto, alder);
                                     posi = posi + alfi;
                                 }
-                                valcont = valcont + double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
+                                valcont = valcont + ventu;
                             }
                             else
                             {
@@ -2577,21 +2578,24 @@ namespace iOMG
                         {                                                       // solo ponemos aca los anticipos
                             if (dataGridView1.Rows[l].Cells[1].Value.ToString() == "0")
                             {
+                                double venga = double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                puntoF = new PointF(coli + 199, posi);
                                 siz = new SizeF(70, 30);
                                 recto = new RectangleF(puntoF, siz);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[9].Value.ToString(), lt_peq, Brushes.Black, recto, alder);
+                                e.Graphics.DrawString(venga.ToString("#0.00") + "- ", lt_peq, Brushes.Black, recto, alder);
                                 posi = posi + alfi;
-                                valant = valant + double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
+                                valant = valant + venga;
                             }
                         }
                         //
+                        puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString("SUB TOTAL VENTA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                         puntoF = new PointF(coli + 199, posi);
                         recst = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString((valcont - valant).ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
-                        posi = posi + alfi * 2;
+                        posi = posi + alfi;
                         // A PARTIR DE ACA LOS VALORES DEL PAGO ACTUAL
                         posi = posi + alfi;
                         puntoF = new PointF(coli, posi);
