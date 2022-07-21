@@ -211,6 +211,12 @@
     <Compile Include="forpagos.designer.cs">
       <DependentUpon>forpagos.cs</DependentUpon>
     </Compile>
+    <Compile Include="forselcomp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forselcomp.designer.cs">
+      <DependentUpon>forselcomp.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmvizalm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -552,6 +558,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forpagos.resx">
       <DependentUpon>forpagos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forselcomp.resx">
+      <DependentUpon>forselcomp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmvizalm.resx">
       <DependentUpon>frmvizalm.cs</DependentUpon>

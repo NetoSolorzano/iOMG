@@ -182,7 +182,18 @@ namespace iOMG
                 if (tx_corre.Focused == true || tx_serie.Focused == true || tx_mc.Focused == true)
                 {
                     // aca va la llamada a la ventana donde seleccionamos los comprobantes
-
+                    forselcomp pagos = new forselcomp(tx_dat_orig.Text, tiesan);
+                    var resu = pagos.ShowDialog();
+                    if (resu == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(pagos.ReturnValue1))
+                        {
+                            foreach (DataRow row in pagos.ReturnValueT.Rows)
+                            {
+                                MessageBox.Show(row[0].ToString());
+                            }
+                        }
+                    }
                 }
                 return true;    // indicate that you handled this keystroke
             }
