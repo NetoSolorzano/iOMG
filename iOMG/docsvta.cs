@@ -332,7 +332,7 @@ namespace iOMG
         private void jalaoc(string campo)                   // jala datos 
         {
             string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
-            "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
+            "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,round(totdvta,2) as totdvta,totpags,saldvta,estdvta,frase01," +
             "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
             "referen1,ubipdest,conPago,contrato,vendedor,muebles from cabfactu where ";
             string parte = "";
@@ -672,6 +672,7 @@ namespace iOMG
             limpia_panel(pan_cli);
             limpia_panel(panel2);
             limpia_panel(panel1);
+            limpia_panel(panel3);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             Tx_modo.Text = modo;
@@ -709,7 +710,7 @@ namespace iOMG
                 {
                     conn.Open();
                     string continua = "N";
-                    string conpag = "SELECT concat('ANTICIPO DE CONTRATO # ',contrato,'  ',dv,'-',serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
+                    string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
                         "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor " +
@@ -2669,10 +2670,10 @@ namespace iOMG
                             // no hay ventas al credito 18/07/2022
                         }
                     }
-
+                    /*
                     if (tx_dat_tipdoc.Text == codfact)
                     {
-                        if (double.Parse(tx_valor.Text) > double.Parse(Program.valdetra))   // poner un valor muy alto para no entrar
+                        if (double.Parse(tx_valor.Text) > double.Parse(Program.valdetra))   // de momento no vamos 20/07/2022
                         {
                             posi = posi + alfi * 1.5F;
                             siz = new SizeF(lib.CentimeterToPixel(anchTik), 15 * 4);
@@ -2686,6 +2687,7 @@ namespace iOMG
                             posi = posi + alfi;
                         }
                     }
+                    */
                     posi = posi + alfi;
                     puntoF = new PointF(coli, posi);
                     string repre = "Representación impresa de la";

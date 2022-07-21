@@ -179,6 +179,11 @@ namespace iOMG
                     }
                     */
                 }
+                if (tx_corre.Focused == true || tx_serie.Focused == true || tx_mc.Focused == true)
+                {
+                    // aca va la llamada a la ventana donde seleccionamos los comprobantes
+
+                }
                 return true;    // indicate that you handled this keystroke
             }
             // Call the base class

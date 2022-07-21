@@ -88,10 +88,11 @@ namespace iOMG
                 return;
             }
             dataGridView1.Rows.Add(0,dataGridView1.Rows.Count-1,cmb_plazo.Text,tx_numOpe.Text,tx_importe.Text,tx_dat_mp.Text);
-            double tv = 0;
+            /*  double tv = 0;
             double.TryParse(tx_total.Text, out tv);
             tx_total.Text = (tv + vi).ToString("#0.00");
-            tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+            tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString(); */
+            totalizagrid();
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
@@ -103,14 +104,12 @@ namespace iOMG
                 }
                 else
                 {
-                    double vb = double.Parse(dataGridView1.Rows[e.Row.Index].Cells["importe"].Value.ToString());
-
+                    totalizagrid();
+                    /* double vb = double.Parse(dataGridView1.Rows[e.Row.Index].Cells["importe"].Value.ToString());
                     double tv = 0;
                     double.TryParse(tx_total.Text, out tv);
-
                     tx_total.Text = (tv - vb).ToString("#0.00");
-
-                    tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+                    tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString(); */
                 }
             }
         }
@@ -122,6 +121,19 @@ namespace iOMG
                 DataRow[] row = dt.Select(axs);
                 tx_dat_mp.Text = row[0].ItemArray[1].ToString();
             }
+        }
+        private void totalizagrid()
+        {
+            double vb = 0;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[1].Value != null && row.Cells[1].Value.ToString().Trim() != "")
+                {
+                    vb = vb + double.Parse(row.Cells[4].Value.ToString());
+                }
+            }
+            tx_total.Text = vb.ToString("#0.00");
+            tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
         }
     }
 }

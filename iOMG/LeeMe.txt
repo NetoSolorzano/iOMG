@@ -167,4 +167,6 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, agregando codigo para la impresión ................................... ok 07/07/22  formato impresion TK
 - form repsfact, agregando reporte fact detallado .................................... 
 - form docsvta, agregando multiples tipos de pago para un comprobante ................	ellos dicen que maximo tuvieron 4 pagos para una factura, 1 efec + 3 tarjetas
-- form forpagos, desarrollo del form para registrar distintos pagos en un comprobante. ok 
+- form forpagos, desarrollo del form para registrar distintos pagos en un comprobante. ok 20/07/22
+- form docsvta, conclusion parcial de impresiones y demas operaciones ................ ok 20/07/22
+- form contratos, agregar F1 en comprobante y seleccionar con checks ................. 
