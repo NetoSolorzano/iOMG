@@ -68,6 +68,7 @@ namespace iOMG
         string impDef = "";                 // nombre de la impresora por defecto
         string docBol = "";                 // codigo boletas
         string docFac = "";                 // codigo facturas
+        int intfec = 1;                     // intervalo de días para busqueda de comprobantes sin contrato
         #endregion
         libreria lib = new libreria();
         acciones acc = new acciones();
@@ -182,15 +183,20 @@ namespace iOMG
                 if (tx_corre.Focused == true || tx_serie.Focused == true || tx_mc.Focused == true)
                 {
                     // aca va la llamada a la ventana donde seleccionamos los comprobantes
-                    forselcomp pagos = new forselcomp(tx_dat_orig.Text, tiesan);
+                    forselcomp pagos = new forselcomp(tx_dat_orig.Text, tiesan, intfec);
                     var resu = pagos.ShowDialog();
                     if (resu == DialogResult.Cancel)
                     {
                         if (!string.IsNullOrEmpty(pagos.ReturnValue1))
                         {
+                            dataGridView1.DataSource = null;
+                            dataGridView1.Rows.Clear();
+                            dataGridView1.Columns.Clear();
+                            tx_acta.Text = "";
                             foreach (DataRow row in pagos.ReturnValueT.Rows)
                             {
-                                MessageBox.Show(row[0].ToString());
+                                //MessageBox.Show(row[1].ToString() + "|" + row[2].ToString() + "|" + row[3].ToString());
+                                jalaDatFact("T", row[1].ToString().Substring(0,1), row[2].ToString(), row[3].ToString());
                             }
                         }
                     }
@@ -220,15 +226,11 @@ namespace iOMG
         }
 
         #region Fact_Elec
-        private void jalaDatFact()
+        private void jalaDatFact(string modo,string FB, string serF, string corF)   // modo: T=jala todos, C=jala cliente, D=jala detalle
         {
-            string FB = tx_mc.Text;
-            string serF = tx_serie.Text;
-            string corF = tx_corre.Text;
-            //
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            grilladet("NUEVO");
+            //dataGridView1.DataSource = null;
+            //dataGridView1.Rows.Clear();
+            //grilladet("NUEVO");
             //
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
@@ -236,66 +238,104 @@ namespace iOMG
                 if (conn.State == ConnectionState.Open)
                 {
                     string idc = "";
-                    string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg " +
-                        "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
-                    using (MySqlCommand micon = new MySqlCommand(accion, conn))
+                    if (modo == "T")    //  || modo == "C"
                     {
-                        micon.Parameters.AddWithValue("@mar", FB);
-                        micon.Parameters.AddWithValue("@ser", serF);
-                        micon.Parameters.AddWithValue("@num", corF);
-                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg " +
+                            "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
+                        using (MySqlCommand micon = new MySqlCommand(accion, conn))
                         {
-                            if (dr.Read())
+                            micon.Parameters.AddWithValue("@mar", FB);
+                            micon.Parameters.AddWithValue("@ser", serF);
+                            micon.Parameters.AddWithValue("@num", corF);
+                            using (MySqlDataReader dr = micon.ExecuteReader())
                             {
-                                idc = dr.GetString("id");
-                                tx_idcli.Text = dr.GetString("idanagrafica");      // id del cliente
-                                // jala datos del cliente
-                                tx_ndc.Text = dr.GetString("nudoclt");
-                                tx_nombre.Text = dr.GetString("nombclt");
-                                tx_direc.Text = dr.GetString("direclt");
-                                tx_dpto.Text = dr.GetString("dptoclt");
-                                tx_prov.Text = dr.GetString("provclt");
-                                tx_dist.Text = dr.GetString("distclt");
-                                tx_mail.Text = dr.GetString("corrclt");
-                                tx_telef1.Text = dr.GetString("teleclt");
-                                tx_telef2.Text = dr.GetString("telemsg");
-                                //
-                                tx_dat_tdoc.Text = dr.GetString("tidoclt");
-                                foreach (DataRow row in dtdest.Rows)
+                                if (dr.Read())
                                 {
-                                    if (row["idcodice"].ToString() == tx_dat_tdoc.Text)
+                                    idc = dr.GetString("id");
+                                    tx_idcli.Text = dr.GetString("idanagrafica");      // id del cliente
+                                                                                       // jala datos del cliente
+                                    tx_ndc.Text = dr.GetString("nudoclt");
+                                    tx_nombre.Text = dr.GetString("nombclt");
+                                    tx_direc.Text = dr.GetString("direclt");
+                                    tx_dpto.Text = dr.GetString("dptoclt");
+                                    tx_prov.Text = dr.GetString("provclt");
+                                    tx_dist.Text = dr.GetString("distclt");
+                                    tx_mail.Text = dr.GetString("corrclt");
+                                    tx_telef1.Text = dr.GetString("teleclt");
+                                    tx_telef2.Text = dr.GetString("telemsg");
+                                    //
+                                    tx_dat_tdoc.Text = dr.GetString("tidoclt");
+                                    foreach (DataRow row in dtdest.Rows)
                                     {
-                                        //cmb_tdoc.SelectedValue = row["descrizionerid"].ToString();
-                                        cmb_tdoc.SelectedItem = row["descrizionerid"].ToString();
+                                        if (row["idcodice"].ToString() == tx_dat_tdoc.Text)
+                                        {
+                                            cmb_tdoc.SelectedItem = row["descrizionerid"].ToString();
+                                        }
                                     }
+                                    double ff = 0;
+                                    double.TryParse(tx_acta.Text, out ff);
+                                    tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
                                 }
-                                //
-                                tx_acta.Text = dr.GetDouble("totdvMN").ToString("#0.00");     // pago a cuenta
                             }
                         }
                     }
-                    //select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
-                    string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
-                        "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item',i.soles2018*a.cantbul as totCat " +
-                        "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''";
-                    using (MySqlCommand midet = new MySqlCommand(jadet, conn))
+                    if (modo == "T")    //  || modo == "D"
                     {
-                        midet.Parameters.AddWithValue("@idc", idc);
-                        MySqlDataAdapter da = new MySqlDataAdapter(midet);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        dataGridView1.DataSource = null;
-                        dataGridView1.Rows.Clear();
-                        dataGridView1.Columns.Clear();
-                        dataGridView1.DataSource = dt;
-                        grilladet("edita");     // obtiene contenido de grilla con DT
-                        dt.Dispose();
-                        da.Dispose();
+                        string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
+                            "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item',i.soles2018*a.cantbul as totCat " +
+                            "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''";
+                        using (MySqlCommand midet = new MySqlCommand(jadet, conn))
+                        {
+                            midet.Parameters.AddWithValue("@idc", idc);
+                            MySqlDataAdapter da = new MySqlDataAdapter(midet);
+                            if (dataGridView1.Rows.Count <= 1)
+                            {
+                                DataTable dt = new DataTable();
+                                da.Fill(dt);
+                                dataGridView1.Rows.Clear();
+                                dataGridView1.Columns.Clear();
+                                dataGridView1.DataSource = null;
+                                dataGridView1.DataSource = dt;
+                            }
+                            else
+                            {
+                                // dataAdapter.Update((DataTable)bindingSource1.DataSource);
+                                DataRow dtr = ((DataTable)dataGridView1.DataSource).NewRow();
+                                //DataRow dtr = dt.NewRow();
+                                DataTable dd = new DataTable();
+                                da.Fill(dd);
+                                foreach (DataRow rw in dd.Rows)
+                                {
+                                    dtr[0] = rw.ItemArray[0].ToString();
+                                    dtr[1] = rw.ItemArray[1].ToString();
+                                    dtr[2] = rw.ItemArray[2].ToString();
+                                    dtr[3] = rw.ItemArray[3].ToString();
+                                    dtr[4] = rw.ItemArray[4].ToString();
+                                    dtr[5] = rw.ItemArray[5].ToString();
+                                    dtr[6] = rw.ItemArray[6].ToString();
+                                    dtr[7] = rw.ItemArray[7].ToString();
+                                    dtr[8] = rw.ItemArray[8].ToString();
+                                    dtr[9] = rw.ItemArray[9].ToString();
+                                    dtr[10] = rw.ItemArray[10].ToString();
+                                    dtr[11] = rw.ItemArray[11].ToString();
+                                    dtr[12] = rw.ItemArray[12].ToString();
+                                    dtr[13] = rw.ItemArray[13].ToString();
+                                    dtr[14] = rw.ItemArray[14].ToString();
+                                    dtr[15] = rw.ItemArray[15].ToString();
+                                    dtr[16] = rw.ItemArray[16].ToString();
+                                    ((DataTable)dataGridView1.DataSource).Rows.Add(dtr);
+                                }
+                            }
+                            grilladet("edita");     // obtiene contenido de grilla con DT
+                            //dt.Dispose();
+                            da.Dispose();
+                        }
                     }
                     conn.Close();
                     //
                     int v_ifm = 0;
                     decimal val = 0, dscto = 0;
+
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
                         val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
@@ -309,6 +349,7 @@ namespace iOMG
                     }
                     tx_dscto.Text = (dscto - val).ToString("#0.00");
                     tx_coment.Focus();
+                    //
                 }
                 else
                 {
@@ -435,6 +476,7 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "boleta") docBol = row["valor"].ToString().Trim();
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "factura") docFac = row["valor"].ToString().Trim();
+                        if (row["campo"].ToString() == "intervalo" && row["param"].ToString() == "diasFec") intfec = int.Parse(row["valor"].ToString());
                     }
                 }
                 da.Dispose();
@@ -3723,6 +3765,7 @@ namespace iOMG
         {
             if (Tx_modo.Text == "NUEVO")
             {
+                /*
                 if (tx_mc.Text == "")
                 {
                     tx_mc.Focus();
@@ -3733,7 +3776,8 @@ namespace iOMG
                     tx_serie.Focus();
                     return;
                 }
-                jalaDatFact();
+                */
+                if (tx_mc.Text != "" && tx_serie.Text != "" && tx_corre.Text != "") jalaDatFact("T", tx_mc.Text, tx_serie.Text, tx_corre.Text);
             }
         }
         #endregion leaves;

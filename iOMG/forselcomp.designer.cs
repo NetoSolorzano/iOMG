@@ -42,6 +42,9 @@
             this.ndoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipdv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serdv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cordv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,7 +84,10 @@
             this.fecha,
             this.ndoc,
             this.cliente,
-            this.importe});
+            this.importe,
+            this.tipdv,
+            this.serdv,
+            this.cordv});
             this.dataGridView1.Location = new System.Drawing.Point(3, 4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 15;
@@ -173,6 +179,27 @@
             this.importe.Name = "importe";
             this.importe.ReadOnly = true;
             // 
+            // tipdv
+            // 
+            this.tipdv.HeaderText = "tipdv";
+            this.tipdv.Name = "tipdv";
+            this.tipdv.ReadOnly = true;
+            this.tipdv.Visible = false;
+            // 
+            // serdv
+            // 
+            this.serdv.HeaderText = "serdv";
+            this.serdv.Name = "serdv";
+            this.serdv.ReadOnly = true;
+            this.serdv.Visible = false;
+            // 
+            // cordv
+            // 
+            this.cordv.HeaderText = "cordv";
+            this.cordv.Name = "cordv";
+            this.cordv.ReadOnly = true;
+            this.cordv.Visible = false;
+            // 
             // forselcomp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,5 +242,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ndoc;
         private System.Windows.Forms.DataGridViewTextBoxColumn cliente;
         private System.Windows.Forms.DataGridViewTextBoxColumn importe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tipdv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn serdv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cordv;
     }
 }

@@ -20,11 +20,12 @@ namespace iOMG
         DataTable dt;           // medios de pago
         string _vlocal = "";    // local del usuario
         string _vanul = "";     // estado doc.venta anulado
-
-        public forselcomp(string vlocal, string vanul)
+        int _intfec = 1;        // intervalo de días atras para la consulta de comprobantes
+        public forselcomp(string vlocal, string vanul, int intfec)
         {
             _vlocal = vlocal;
             _vanul = vanul;
+            _intfec = intfec;
             InitializeComponent();
         }
         private void forselcomp_Load(object sender, EventArgs e)
@@ -44,8 +45,14 @@ namespace iOMG
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DataColumn dc = new DataColumn("comprob", typeof(String));
-            ReturnValueT.Columns.Add(dc);
+            DataColumn dc0 = new DataColumn("comprob", typeof(String));
+            DataColumn dc1 = new DataColumn("tipdv", typeof(String));
+            DataColumn dc2 = new DataColumn("serdv", typeof(String));
+            DataColumn dc3 = new DataColumn("cordv", typeof(String));
+            ReturnValueT.Columns.Add(dc0);
+            ReturnValueT.Columns.Add(dc1);
+            ReturnValueT.Columns.Add(dc2);
+            ReturnValueT.Columns.Add(dc3);
 
             ReturnValue1 = tx_total.Text;
             int i = 0;
@@ -55,6 +62,9 @@ namespace iOMG
                 {
                     DataRow dr = ReturnValueT.NewRow();
                     dr[0] = row.Cells[1].Value.ToString();
+                    dr[1] = row.Cells[6].Value.ToString();
+                    dr[2] = row.Cells[7].Value.ToString();
+                    dr[3] = row.Cells[8].Value.ToString();
                     ReturnValueT.Rows.InsertAt(dr, i);
                 }
                 i = i + 1;
@@ -109,12 +119,12 @@ namespace iOMG
                 if (conn.State == ConnectionState.Open)
                 {
                     string consu = "SELECT CONCAT(martdve,serdvta,'-',numdvta) AS comprob,fechope,nudoclt,nombclt,mondvta,totdvta,tipdvta,serdvta,numdvta " +
-                        "FROM cabfactu WHERE contrato='' AND estdvta<>@esanu AND locorig=@loca";
+                        "FROM cabfactu WHERE contrato='' AND estdvta<>@esanu AND locorig=@loca AND fechope >= NOW() - INTERVAL @da DAY";
                     using (MySqlCommand micon = new MySqlCommand(consu, conn))
                     {
                         micon.Parameters.AddWithValue("@esanu", _vanul);     // codigo estado anulado
                         micon.Parameters.AddWithValue("@loca", _vlocal);     // codigo local usuario
-                        //micon.Parameters.AddWithValue("", );
+                        micon.Parameters.AddWithValue("@da", _intfec);       // intervalo días atras
                         using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
                         {
                             DataTable dt = new DataTable();
@@ -124,7 +134,7 @@ namespace iOMG
                                 if (row.ItemArray[0] != null)
                                 {
                                     dataGridView1.Rows.Add(0,row.ItemArray[0].ToString(),row.ItemArray[1].ToString().Substring(0,10),row.ItemArray[2].ToString(),
-                                        row.ItemArray[3].ToString(),row.ItemArray[5].ToString());
+                                        row.ItemArray[3].ToString(),row.ItemArray[5].ToString(),row.ItemArray[6].ToString(),row.ItemArray[7].ToString(),row.ItemArray[8].ToString());
                                 }
                             }
                         }
