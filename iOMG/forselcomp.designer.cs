@@ -32,10 +32,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tx_total = new iOMG.NumericTextBox();
-            this.tx_tfil = new iOMG.NumericTextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.marca = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.docvta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,6 +41,10 @@
             this.tipdv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serdv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cordv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tx_total = new iOMG.NumericTextBox();
+            this.tx_tfil = new iOMG.NumericTextBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,46 +96,6 @@
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 179);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
-            this.label1.TabIndex = 418;
-            this.label1.Text = "Importe seleccionado";
-            // 
-            // tx_total
-            // 
-            this.tx_total.AllowSpace = false;
-            this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_total.Location = new System.Drawing.Point(122, 174);
-            this.tx_total.Name = "tx_total";
-            this.tx_total.ReadOnly = true;
-            this.tx_total.Size = new System.Drawing.Size(82, 21);
-            this.tx_total.TabIndex = 417;
-            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_tfil
-            // 
-            this.tx_tfil.AllowSpace = false;
-            this.tx_tfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_tfil.Location = new System.Drawing.Point(375, 174);
-            this.tx_tfil.Name = "tx_tfil";
-            this.tx_tfil.ReadOnly = true;
-            this.tx_tfil.Size = new System.Drawing.Size(31, 21);
-            this.tx_tfil.TabIndex = 419;
-            this.tx_tfil.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(228, 179);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(146, 13);
-            this.label2.TabIndex = 420;
-            this.label2.Text = "Comprobantes seleccionados";
             // 
             // marca
             // 
@@ -200,6 +160,46 @@
             this.cordv.ReadOnly = true;
             this.cordv.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 179);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.TabIndex = 418;
+            this.label1.Text = "Importe seleccionado";
+            // 
+            // tx_total
+            // 
+            this.tx_total.AllowSpace = false;
+            this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_total.Location = new System.Drawing.Point(122, 174);
+            this.tx_total.Name = "tx_total";
+            this.tx_total.ReadOnly = true;
+            this.tx_total.Size = new System.Drawing.Size(82, 21);
+            this.tx_total.TabIndex = 417;
+            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_tfil
+            // 
+            this.tx_tfil.AllowSpace = false;
+            this.tx_tfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_tfil.Location = new System.Drawing.Point(375, 174);
+            this.tx_tfil.Name = "tx_tfil";
+            this.tx_tfil.ReadOnly = true;
+            this.tx_tfil.Size = new System.Drawing.Size(31, 21);
+            this.tx_tfil.TabIndex = 419;
+            this.tx_tfil.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(228, 179);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(146, 13);
+            this.label2.TabIndex = 420;
+            this.label2.Text = "Comprobantes seleccionados";
+            // 
             // forselcomp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -214,6 +214,7 @@
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "forselcomp";

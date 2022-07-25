@@ -169,4 +169,8 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, agregando multiples tipos de pago para un comprobante ................	ellos dicen que maximo tuvieron 4 pagos para una factura, 1 efec + 3 tarjetas
 - form forpagos, desarrollo del form para registrar distintos pagos en un comprobante. ok 20/07/22
 - form docsvta, conclusion parcial de impresiones y demas operaciones ................ ok 20/07/22
-- form contratos, agregar F1 en comprobante y seleccionar con checks ................. 
+- form contratos, agregar F1 en comprobante y seleccionar con checks ................. ok 22/07/22
+- form forselcomp, creacion y adecuacion del form .................................... ok 22/07/22
+- form docsvta, aumentar a 10 los medios de pago por comprobante ..................... ok 23/07/22
+- form forpagos, aumentar a 10 los medios de pago por comprobante .................... ok 3/07/22
+- form 

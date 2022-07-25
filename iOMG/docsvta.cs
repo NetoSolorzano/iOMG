@@ -95,7 +95,7 @@ namespace iOMG
         DataTable dtfp = new DataTable();       // combo para tipo de pago
         DataTable dtpedido = new DataTable();   // tipos documento de venta
         string vpago = "";                      // pago anticipo o cancelatorio
-        string[,] dtpagos = new string[5, 6];
+        string[,] dtpagos = new string[10, 6];  // 10 filas, 6 columnas para los medios de pago por comprobante
 
         public docsvta()
         {
@@ -124,11 +124,16 @@ namespace iOMG
                     {
                         if (!string.IsNullOrEmpty(ayu2.ReturnValue1))
                         {
-                            //ayu2.ReturnValue1;    // tipdoc y numero
-                            //ayu2.ReturnValue0;    // id del cliente
-                            //ayu3.ReturnValue2;    // nombre
-                            tx_nombre.Text = ayu2.ReturnValue2;
-                            tx_idc.Text = ayu2.ReturnValue0;
+                            tx_dat_tdoc.Text = ayu2.ReturnValueA[1];
+                            tx_ndc.Text = ayu2.ReturnValueA[2];
+                            tx_nombre.Text = ayu2.ReturnValueA[3];
+                            tx_idc.Text = ayu2.ReturnValueA[0];
+                            //
+                            string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
+                            DataRow[] row = dtdoc.Select(axs);
+                            cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+                            //
+                            valDocClte_Leave(null, null);
                         }
                     }
                 }
@@ -176,7 +181,7 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(pagos.ReturnValue1))
                         {
                             tx_impMedios.Text = pagos.ReturnValue1.ToString();
-                            for (int i = 0; i < 5; i++)
+                            for (int i = 0; i < 9; i++)
                             {
                                 dtpagos[i, 0] = pagos.ReturnValue[i, 0];
                                 dtpagos[i, 1] = pagos.ReturnValue[i, 1];
@@ -890,7 +895,7 @@ namespace iOMG
         }
         private void ini_pagos()                            // inicializa la matris de pagos
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 9; i++)
             {
                 dtpagos[i, 0] = "0";
                 dtpagos[i, 1] = i.ToString();
@@ -2155,7 +2160,7 @@ namespace iOMG
                     }
                 }
                 // medios de pago
-                for (int i=0; i < 5; i++)
+                for (int i=0; i < 9; i++)
                 {
                     if (dtpagos[i, 0] != null && dtpagos[i, 2].ToString() != "")
                     {
@@ -2653,7 +2658,7 @@ namespace iOMG
                     else posi = posi + alfi + alfi;
                     if (rb_contado.Checked == true)
                     {
-                        for (int x=0; x < 5; x++)
+                        for (int x=0; x < 9; x++)
                         {
                             if (dtpagos[x, 2] != null && dtpagos[x, 2].ToString().Trim() != "")
                             {

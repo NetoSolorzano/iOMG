@@ -16,7 +16,7 @@ namespace iOMG
             InitializeComponent();
             if (idavuelta[0, 2].ToString() != "")
             {
-                for (int i=0; i<5; i++)
+                for (int i=0; i<9; i++)
                 {
                     if (idavuelta[i, 2] != null)
                     {
@@ -33,6 +33,7 @@ namespace iOMG
             foreach (DataRow row in dt.Rows)
             {
                 cmb_plazo.Items.Add(row.ItemArray[0].ToString());
+                totalizagrid();
             }
         }
         private void forpagos_KeyDown(object sender, KeyEventArgs e)
@@ -44,7 +45,7 @@ namespace iOMG
         }
 
         public string ReturnValue1 { get; set; }
-        public string[,] ReturnValue = new string[5, 6];
+        public string[,] ReturnValue = new string[10, 6];
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -63,10 +64,16 @@ namespace iOMG
                 }
                 i = i + 1;
             }
+            totalizagrid();
             this.Close();
         }
         private void bt_mas_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.Rows.Count > 9)
+            {
+                MessageBox.Show("No se puede ingresar mas medios de pago", "Limite de medios excedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             if (tx_dat_mp.Text.Trim() == "")
             {
                 MessageBox.Show("Seleccione el medio de pago","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
@@ -104,7 +111,7 @@ namespace iOMG
                 }
                 else
                 {
-                    totalizagrid();
+
                     /* double vb = double.Parse(dataGridView1.Rows[e.Row.Index].Cells["importe"].Value.ToString());
                     double tv = 0;
                     double.TryParse(tx_total.Text, out tv);
@@ -124,16 +131,23 @@ namespace iOMG
         }
         private void totalizagrid()
         {
+            int i = 0;
             double vb = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Cells[1].Value != null && row.Cells[1].Value.ToString().Trim() != "")
                 {
+                    row.Cells[1].Value = (i + 1).ToString();
                     vb = vb + double.Parse(row.Cells[4].Value.ToString());
+                    i += 1;
                 }
             }
             tx_total.Text = vb.ToString("#0.00");
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+        }
+        private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            totalizagrid();
         }
     }
 }
