@@ -77,6 +77,7 @@ namespace iOMG
         int indant = -1;                // indice anterior al cambio en el combobox de estado
         string v_liav = "";             // letra o caracter inicial indicativo de articulos varios vta directa sin stock
         string v_cnprd = "";            // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
+        string itemSer = "";            // items (capit) de comprobantes de servicios
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
 
@@ -158,6 +159,12 @@ namespace iOMG
                 {
                     para1 = "items";
                     para2 = "todos";
+                    if (rb_tserv.Checked == true)
+                    {
+                        para1 = "items_adic";
+                        para3 = "";
+                        //para4 = itemSer;    // este parametro  no sirve porque itemsadic son solo Z
+                    }
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
                     if (result == DialogResult.Cancel)
@@ -167,8 +174,12 @@ namespace iOMG
                             tx_d_codi.Text = ayu2.ReturnValue1.ToString();
                             tx_d_nom.Text = ayu2.ReturnValue2.ToString();
                             tx_d_id.Text = ayu2.ReturnValue0.ToString();
-                            tx_d_precio.Text = ayu2.ReturnValueA[3];
-                            tx_d_med.Text = ayu2.ReturnValueA[2];
+
+                            if (ayu2.ReturnValueA != null)
+                            {
+                                tx_d_precio.Text = ayu2.ReturnValueA[3];
+                                tx_d_med.Text = ayu2.ReturnValueA[2];
+                            }
                         }
                     }
                 }
@@ -321,6 +332,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ciavss") v_liav = row["valor"].ToString().Trim();         // letra o caracter inicial indicativo de articulos varios vta directa sin stock
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "camnomb") v_cnprd = row["valor"].ToString().Trim();       // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
+                        if (row["campo"].ToString() == "servicios" && row["param"].ToString() == "items") itemSer = row["valor"].ToString().Trim();       // Items para comprobantes de servicios
                     }
                 }
                 da.Dispose();
@@ -678,6 +690,7 @@ namespace iOMG
             limpia_panel(panel2);
             limpia_panel(panel1);
             limpia_panel(panel3);
+            limpia_panel(pan_tipo);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             Tx_modo.Text = modo;
@@ -997,6 +1010,7 @@ namespace iOMG
             escribepan(panel2);
             escribepan(panel3);
             escribepan(pan_cli);
+            escribepan(pan_tipo);
             cmb_taller.Enabled = false;
             limpia_ini();
             button1.Image = Image.FromFile(img_grab);
@@ -1007,6 +1021,7 @@ namespace iOMG
             rb_bienes.PerformClick();         // rb_contado_Click(null, null);
             rb_contado.Checked = true;
             tx_d_med.ReadOnly = true;
+            rb_tbienes.Checked = true;
             cmb_tipo.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1016,6 +1031,7 @@ namespace iOMG
             sololeepan(panel2);
             sololeepan(panel3);
             sololeepan(pan_cli);
+            sololeepan(pan_tipo);
             Tx_modo.Text = "EDITAR";
             button1.Image = Image.FromFile(img_grab);
             limpia_ini();
@@ -1044,6 +1060,7 @@ namespace iOMG
             sololeepan(panel2);
             sololeepan(panel3);
             sololeepan(pan_cli);
+            sololeepan(pan_tipo);
             Tx_modo.Text = "ANULAR";
             button1.Image = Image.FromFile(img_anul);
             limpia_ini();
@@ -1068,6 +1085,7 @@ namespace iOMG
             sololeepan(panel2);
             sololeepan(panel3);
             sololeepan(pan_cli);
+            sololeepan(pan_tipo);
             Tx_modo.Text = "VISUALIZAR";
             button1.Image = null;
             limpia_ini();
@@ -1143,6 +1161,7 @@ namespace iOMG
             limpia_panel(panel2);
             limpia_panel(panel3);
             limpia_panel(pan_cli);
+            limpia_panel(pan_tipo);
             tx_idr_Leave(null, null);
         }
         private void Bt_back_Click(object sender, EventArgs e)
@@ -1156,6 +1175,7 @@ namespace iOMG
             limpia_panel(panel2);
             limpia_panel(panel3);
             limpia_panel(pan_cli);
+            limpia_panel(pan_tipo);
             tx_idr.Text = lib.goback(nomtab, aca);
             tx_idr_Leave(null, null);
         }
@@ -1170,6 +1190,7 @@ namespace iOMG
             limpia_panel(panel2);
             limpia_panel(panel3);
             limpia_panel(pan_cli);
+            limpia_panel(pan_tipo);
             tx_idr.Text = lib.gonext(nomtab, aca);
             tx_idr_Leave(null, null);
         }
@@ -1183,6 +1204,7 @@ namespace iOMG
             limpia_panel(panel2);
             limpia_panel(panel3);
             limpia_panel(pan_cli);
+            limpia_panel(pan_tipo);
             tx_idr.Text = lib.golast(nomtab);
             tx_idr_Leave(null, null);
         }
@@ -1384,6 +1406,8 @@ namespace iOMG
             rb_bienes.Checked = false;
             rb_contado.Checked = false;
             rb_credito.Checked = false;
+            rb_tbienes.Checked = false;
+            rb_tserv.Checked = false;
         }
         private void limpia_otros()
         {

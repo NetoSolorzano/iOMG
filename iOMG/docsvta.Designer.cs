@@ -80,8 +80,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.tx_telef2 = new iOMG.NumericTextBox();
-            this.tx_telef1 = new iOMG.NumericTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_mail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -94,7 +92,6 @@
             this.tx_nombre = new System.Windows.Forms.TextBox();
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.tx_ndc = new iOMG.NumericTextBox();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.tx_dat_orig = new System.Windows.Forms.TextBox();
@@ -139,9 +136,6 @@
             this.rb_bienes = new System.Windows.Forms.RadioButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
-            this.tx_impMedios = new iOMG.NumericTextBox();
-            this.milinea4 = new iOMG.milinea();
-            this.milinea8 = new iOMG.milinea();
             this.tx_cuotas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.rb_credito = new System.Windows.Forms.RadioButton();
@@ -162,6 +156,9 @@
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.cmb_mon = new System.Windows.Forms.ComboBox();
             this.tx_tipComp = new System.Windows.Forms.TextBox();
+            this.pan_tipo = new System.Windows.Forms.Panel();
+            this.rb_tserv = new System.Windows.Forms.RadioButton();
+            this.rb_tbienes = new System.Windows.Forms.RadioButton();
             this.milinea6 = new iOMG.milinea();
             this.milinea7 = new iOMG.milinea();
             this.milinea5 = new iOMG.milinea();
@@ -171,9 +168,12 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.tx_impMedios = new iOMG.NumericTextBox();
+            this.milinea4 = new iOMG.milinea();
+            this.milinea8 = new iOMG.milinea();
+            this.tx_telef2 = new iOMG.NumericTextBox();
+            this.tx_telef1 = new iOMG.NumericTextBox();
+            this.tx_ndc = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -185,8 +185,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.pan_tipo.SuspendLayout();
             this.milinea4.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -500,7 +500,7 @@
             // 
             // tx_serie
             // 
-            this.tx_serie.Location = new System.Drawing.Point(514, 36);
+            this.tx_serie.Location = new System.Drawing.Point(519, 36);
             this.tx_serie.Name = "tx_serie";
             this.tx_serie.Size = new System.Drawing.Size(44, 20);
             this.tx_serie.TabIndex = 2;
@@ -545,7 +545,7 @@
             this.pan_cli.Controls.Add(this.cmb_tdoc);
             this.pan_cli.Controls.Add(this.label11);
             this.pan_cli.Controls.Add(this.tx_ndc);
-            this.pan_cli.Location = new System.Drawing.Point(4, 63);
+            this.pan_cli.Location = new System.Drawing.Point(4, 65);
             this.pan_cli.Name = "pan_cli";
             this.pan_cli.Size = new System.Drawing.Size(869, 73);
             this.pan_cli.TabIndex = 4;
@@ -712,22 +712,6 @@
             this.label5.TabIndex = 358;
             this.label5.Text = "Dist.";
             // 
-            // tx_telef2
-            // 
-            this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
-            this.tx_telef2.Name = "tx_telef2";
-            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef2.TabIndex = 13;
-            // 
-            // tx_telef1
-            // 
-            this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
-            this.tx_telef1.Name = "tx_telef1";
-            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef1.TabIndex = 12;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -836,20 +820,11 @@
             this.label11.TabIndex = 345;
             this.label11.Text = "Cliente";
             // 
-            // tx_ndc
-            // 
-            this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
-            this.tx_ndc.Name = "tx_ndc";
-            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
-            this.tx_ndc.TabIndex = 5;
-            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
-            // 
             // dtp_pedido
             // 
             this.dtp_pedido.Checked = false;
             this.dtp_pedido.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_pedido.Location = new System.Drawing.Point(699, 36);
+            this.dtp_pedido.Location = new System.Drawing.Point(701, 36);
             this.dtp_pedido.Name = "dtp_pedido";
             this.dtp_pedido.Size = new System.Drawing.Size(85, 20);
             this.dtp_pedido.TabIndex = 408;
@@ -872,7 +847,7 @@
             // 
             // tx_dat_tipdoc
             // 
-            this.tx_dat_tipdoc.Location = new System.Drawing.Point(534, 29);
+            this.tx_dat_tipdoc.Location = new System.Drawing.Point(539, 29);
             this.tx_dat_tipdoc.Name = "tx_dat_tipdoc";
             this.tx_dat_tipdoc.Size = new System.Drawing.Size(31, 20);
             this.tx_dat_tipdoc.TabIndex = 407;
@@ -889,7 +864,7 @@
             // 
             // tx_corre
             // 
-            this.tx_corre.Location = new System.Drawing.Point(558, 36);
+            this.tx_corre.Location = new System.Drawing.Point(563, 36);
             this.tx_corre.Name = "tx_corre";
             this.tx_corre.Size = new System.Drawing.Size(79, 20);
             this.tx_corre.TabIndex = 3;
@@ -899,7 +874,7 @@
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(496, 40);
+            this.label53.Location = new System.Drawing.Point(501, 40);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(0, 13);
             this.label53.TabIndex = 381;
@@ -925,7 +900,7 @@
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(398, 40);
+            this.label57.Location = new System.Drawing.Point(403, 40);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(62, 13);
             this.label57.TabIndex = 378;
@@ -934,7 +909,7 @@
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(653, 40);
+            this.label58.Location = new System.Drawing.Point(655, 40);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(43, 13);
             this.label58.TabIndex = 377;
@@ -958,7 +933,7 @@
             this.cmb_tipo.DropDownWidth = 100;
             this.cmb_tipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_tipo.FormattingEnabled = true;
-            this.cmb_tipo.Location = new System.Drawing.Point(463, 34);
+            this.cmb_tipo.Location = new System.Drawing.Point(468, 34);
             this.cmb_tipo.Name = "cmb_tipo";
             this.cmb_tipo.Size = new System.Drawing.Size(50, 21);
             this.cmb_tipo.TabIndex = 1;
@@ -995,7 +970,7 @@
             this.panel1.Controls.Add(this.tx_d_can);
             this.panel1.Controls.Add(this.tx_d_id);
             this.panel1.Controls.Add(this.tx_d_it);
-            this.panel1.Location = new System.Drawing.Point(4, 138);
+            this.panel1.Location = new System.Drawing.Point(4, 140);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(869, 54);
             this.panel1.TabIndex = 14;
@@ -1187,10 +1162,10 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(4, 193);
+            this.dataGridView1.Location = new System.Drawing.Point(4, 196);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView1.Size = new System.Drawing.Size(869, 163);
+            this.dataGridView1.Size = new System.Drawing.Size(869, 161);
             this.dataGridView1.TabIndex = 369;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
@@ -1219,7 +1194,7 @@
             this.panel2.Controls.Add(this.tx_cont);
             this.panel2.Controls.Add(this.rb_antic);
             this.panel2.Controls.Add(this.rb_bienes);
-            this.panel2.Location = new System.Drawing.Point(94, 33);
+            this.panel2.Location = new System.Drawing.Point(101, 34);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(294, 24);
             this.panel2.TabIndex = 0;
@@ -1288,35 +1263,6 @@
             this.label20.Size = new System.Drawing.Size(93, 13);
             this.label20.TabIndex = 411;
             this.label20.Text = "Importe en medios";
-            // 
-            // tx_impMedios
-            // 
-            this.tx_impMedios.AllowSpace = false;
-            this.tx_impMedios.Location = new System.Drawing.Point(229, 3);
-            this.tx_impMedios.Name = "tx_impMedios";
-            this.tx_impMedios.ReadOnly = true;
-            this.tx_impMedios.Size = new System.Drawing.Size(73, 20);
-            this.tx_impMedios.TabIndex = 401;
-            this.tx_impMedios.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // milinea4
-            // 
-            this.milinea4.Controls.Add(this.milinea8);
-            this.milinea4.Location = new System.Drawing.Point(3, 22);
-            this.milinea4.Name = "milinea4";
-            this.milinea4.Size = new System.Drawing.Size(355, 1);
-            this.milinea4.TabIndex = 395;
-            this.milinea4.TabStop = false;
-            this.milinea4.Text = "milinea4";
-            // 
-            // milinea8
-            // 
-            this.milinea8.Location = new System.Drawing.Point(212, 0);
-            this.milinea8.Name = "milinea8";
-            this.milinea8.Size = new System.Drawing.Size(212, 1);
-            this.milinea8.TabIndex = 411;
-            this.milinea8.TabStop = false;
-            this.milinea8.Text = "milinea8";
             // 
             // tx_cuotas
             // 
@@ -1494,7 +1440,7 @@
             this.cmb_mon.DropDownWidth = 100;
             this.cmb_mon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_mon.FormattingEnabled = true;
-            this.cmb_mon.Location = new System.Drawing.Point(545, 369);
+            this.cmb_mon.Location = new System.Drawing.Point(550, 359);
             this.cmb_mon.Name = "cmb_mon";
             this.cmb_mon.Size = new System.Drawing.Size(50, 21);
             this.cmb_mon.TabIndex = 416;
@@ -1507,6 +1453,39 @@
             this.tx_tipComp.TabIndex = 417;
             this.tx_tipComp.Tag = "C=cancel, A=anticipo, B=bienes normal";
             this.tx_tipComp.Visible = false;
+            // 
+            // pan_tipo
+            // 
+            this.pan_tipo.Controls.Add(this.rb_tserv);
+            this.pan_tipo.Controls.Add(this.rb_tbienes);
+            this.pan_tipo.Location = new System.Drawing.Point(3, 27);
+            this.pan_tipo.Name = "pan_tipo";
+            this.pan_tipo.Size = new System.Drawing.Size(96, 37);
+            this.pan_tipo.TabIndex = 418;
+            // 
+            // rb_tserv
+            // 
+            this.rb_tserv.AutoSize = true;
+            this.rb_tserv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rb_tserv.Location = new System.Drawing.Point(3, 18);
+            this.rb_tserv.Name = "rb_tserv";
+            this.rb_tserv.Size = new System.Drawing.Size(77, 17);
+            this.rb_tserv.TabIndex = 421;
+            this.rb_tserv.TabStop = true;
+            this.rb_tserv.Text = "Servicios";
+            this.rb_tserv.UseVisualStyleBackColor = true;
+            // 
+            // rb_tbienes
+            // 
+            this.rb_tbienes.AutoSize = true;
+            this.rb_tbienes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rb_tbienes.Location = new System.Drawing.Point(3, 1);
+            this.rb_tbienes.Name = "rb_tbienes";
+            this.rb_tbienes.Size = new System.Drawing.Size(86, 17);
+            this.rb_tbienes.TabIndex = 420;
+            this.rb_tbienes.TabStop = true;
+            this.rb_tbienes.Text = "Vta.Bienes";
+            this.rb_tbienes.UseVisualStyleBackColor = true;
             // 
             // milinea6
             // 
@@ -1537,7 +1516,7 @@
             // 
             // milinea3
             // 
-            this.milinea3.Location = new System.Drawing.Point(649, 55);
+            this.milinea3.Location = new System.Drawing.Point(651, 55);
             this.milinea3.Name = "milinea3";
             this.milinea3.Size = new System.Drawing.Size(224, 1);
             this.milinea3.TabIndex = 408;
@@ -1546,7 +1525,7 @@
             // 
             // milinea2
             // 
-            this.milinea2.Location = new System.Drawing.Point(390, 55);
+            this.milinea2.Location = new System.Drawing.Point(395, 55);
             this.milinea2.Name = "milinea2";
             this.milinea2.Size = new System.Drawing.Size(247, 1);
             this.milinea2.TabIndex = 407;
@@ -1591,43 +1570,66 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // panel4
+            // tx_impMedios
             // 
-            this.panel4.Controls.Add(this.radioButton2);
-            this.panel4.Controls.Add(this.radioButton1);
-            this.panel4.Location = new System.Drawing.Point(3, 27);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(88, 36);
-            this.panel4.TabIndex = 418;
+            this.tx_impMedios.AllowSpace = false;
+            this.tx_impMedios.Location = new System.Drawing.Point(229, 3);
+            this.tx_impMedios.Name = "tx_impMedios";
+            this.tx_impMedios.ReadOnly = true;
+            this.tx_impMedios.Size = new System.Drawing.Size(73, 20);
+            this.tx_impMedios.TabIndex = 401;
+            this.tx_impMedios.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // radioButton1
+            // milinea4
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(8, 1);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(76, 17);
-            this.radioButton1.TabIndex = 420;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Vta.Bienes";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.milinea4.Controls.Add(this.milinea8);
+            this.milinea4.Location = new System.Drawing.Point(3, 22);
+            this.milinea4.Name = "milinea4";
+            this.milinea4.Size = new System.Drawing.Size(355, 1);
+            this.milinea4.TabIndex = 395;
+            this.milinea4.TabStop = false;
+            this.milinea4.Text = "milinea4";
             // 
-            // radioButton2
+            // milinea8
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(8, 17);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(68, 17);
-            this.radioButton2.TabIndex = 421;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Servicios";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.milinea8.Location = new System.Drawing.Point(212, 0);
+            this.milinea8.Name = "milinea8";
+            this.milinea8.Size = new System.Drawing.Size(212, 1);
+            this.milinea8.TabIndex = 411;
+            this.milinea8.TabStop = false;
+            this.milinea8.Text = "milinea8";
+            // 
+            // tx_telef2
+            // 
+            this.tx_telef2.AllowSpace = false;
+            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
+            this.tx_telef2.Name = "tx_telef2";
+            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef2.TabIndex = 13;
+            // 
+            // tx_telef1
+            // 
+            this.tx_telef1.AllowSpace = false;
+            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
+            this.tx_telef1.Name = "tx_telef1";
+            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef1.TabIndex = 12;
+            // 
+            // tx_ndc
+            // 
+            this.tx_ndc.AllowSpace = false;
+            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
+            this.tx_ndc.Name = "tx_ndc";
+            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
+            this.tx_ndc.TabIndex = 5;
+            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
             // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
-            this.Controls.Add(this.panel4);
+            this.Controls.Add(this.pan_tipo);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.tx_tipComp);
             this.Controls.Add(this.tx_numOpe);
@@ -1698,9 +1700,9 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.pan_tipo.ResumeLayout(false);
+            this.pan_tipo.PerformLayout();
             this.milinea4.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1850,8 +1852,8 @@
         private System.Windows.Forms.TextBox tx_tipComp;
         private System.Windows.Forms.Label label20;
         private NumericTextBox tx_impMedios;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Panel pan_tipo;
+        private System.Windows.Forms.RadioButton rb_tserv;
+        private System.Windows.Forms.RadioButton rb_tbienes;
     }
 }

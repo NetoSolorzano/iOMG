@@ -57,8 +57,11 @@ namespace iOMG
             string consulta = "";
             if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
             {
-                consulta = "select codig,nombr,medid,soles2018 " +
+                consulta = "";
+                {
+                    consulta = "select codig,nombr,medid,soles2018 " +
                     "from items order by codig";
+                }
                 // Acomodamos la grilla 891
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 4;
@@ -371,8 +374,17 @@ namespace iOMG
                     if (para1 == "items" && para2 == "todos" && para3 == "" && para4 == "")
                     {
                         MySqlDataAdapter mdaDatos = new MySqlDataAdapter(consulta, conn);
-                        if (para3 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@ser", para1);
-                        if (para4 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@cor", int.Parse(para2));
+                        if (para3 == "serv")
+                        {
+                            if (para3 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@ser", para1);
+                            if (para4 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@cor", int.Parse(para2));
+                            if (para4 == "") mdaDatos.SelectCommand.Parameters.AddWithValue("@lser", para4);
+                        }
+                        else
+                        {
+                            if (para3 != "serv") mdaDatos.SelectCommand.Parameters.AddWithValue("@ser", para1);
+                            if (para4 != "") mdaDatos.SelectCommand.Parameters.AddWithValue("@cor", int.Parse(para2));
+                        }
                         mdaDatos.Fill(dtDatos);
                         int li = 0;   // contador de las lineas a llenar el datagrid
                         for (li = 0; li < dtDatos.Rows.Count; li++) // 
