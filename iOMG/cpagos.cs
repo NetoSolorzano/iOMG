@@ -430,10 +430,10 @@ namespace iOMG
         }
         private void jaladet(int idc)                                           // jala datos del grid principal
         {
-            //ID,FPAGO,CONT,DOC,NUM_DOC,CLIENTE,ESTADO,VAL_CONT,SALDO,MON,VAL_SOLES,MED_PAGO,N_OPER,DOC_VENTA,TDC
+            //ID,FPAGO,DOC_VENTA,CONT,DOC,NUM_DOC,CLIENTE,ESTADO,VAL_CONT,SALDO,MON,VAL_SOLES,MED_PAGO,N_OPER,TDC
             string tdoc, ndoc = "";
             tdoc = advancedDataGridView1.Rows[idc].Cells[14].Value.ToString();
-            ndoc = advancedDataGridView1.Rows[idc].Cells[4].Value.ToString();
+            ndoc = advancedDataGridView1.Rows[idc].Cells[5].Value.ToString();
             //tabControl1.SelectedTab = tabuser;
             limpiar(this);
             limpiapag(tabuser);

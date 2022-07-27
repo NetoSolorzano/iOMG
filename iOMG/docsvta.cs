@@ -918,6 +918,16 @@ namespace iOMG
                 dtpagos[i, 5] = "";
             }
         }
+        private void ini_deta()                             // limpia el detalle y totales
+        {
+            limpia_panel(panel1);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            tx_valor.Text = "";
+            tx_bruto.Text = "";
+            tx_igv.Text = "";
+            tx_tfil.Text = "";
+        }
 
         #region botones_de_comando_y_permisos  
         private void toolboton()
@@ -1486,7 +1496,7 @@ namespace iOMG
             {
                 if (tx_d_codi.Text.Trim() != "")
                 {
-                    if (tx_d_codi.Text.Substring(0, 1) == v_liav)   // articulos varios que no tienen stock
+                    if (tx_d_codi.Text.Substring(0, 1) == v_liav || tx_d_codi.Text.Substring(0, 1) == itemSer)   // articulos varios que no tienen stock
                     {
                         tx_d_nom.ReadOnly = false;
                         tx_d_med.ReadOnly = true;
@@ -1776,6 +1786,14 @@ namespace iOMG
                     cmb_plazo.Enabled = true;
                 }
             }
+        }
+        private void rb_tbienes_Click(object sender, EventArgs e)
+        {
+            ini_deta();
+        }
+        private void rb_tserv_Click(object sender, EventArgs e)
+        {
+            ini_deta();
         }
         #endregion
 
