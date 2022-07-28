@@ -175,3 +175,5 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form forpagos, aumentar a 10 los medios de pago por comprobante .................... ok 23/07/22
 - form docsvta, codigos adicionales (Z) .............................................. ok 27/07/22
 - form ayuda2, agregar codigo para listar items solo de servicio ..................... ok 26/07/22
+- form cpagos, mejoras y agregados de codigo para mostrar contratos y docs.vtas ...... 
+- form contratos, adecuaciones al codigo para mostrarse llamando desde otro form ..... ok 28/07/22

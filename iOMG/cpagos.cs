@@ -420,7 +420,7 @@ namespace iOMG
                     b += a;
                     dataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     dataGridView1.Columns[i].Width = a;
-                    if (i + 1 == dataGridView1.Columns.Count) dataGridView1.Columns[i].Visible = false; // ultima columna invisible
+                    if (i + 1 == dataGridView1.Columns.Count) dataGridView1.Columns[i].Visible = true; // Visible = false  ultima columna invisible
                 }
                 if (b < dataGridView1.Width) dataGridView1.Width = b - 20;  // b + 60;
             }
@@ -1002,6 +1002,39 @@ namespace iOMG
                 jaladet(e.RowIndex);
             }
         }
+        #endregion
+
+        #region datagridview
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            // nada
+        }
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Tx_modo.Text != "")
+            {
+                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                {
+                    if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT")
+                    {
+                        contratos ncont = new contratos();
+                        ncont.Show(this);
+                        ncont.bt_view.PerformClick();
+                        ncont.tx_codped.Text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                        ncont.tx_codped_Leave(null, null);
+                    }
+                    if (dataGridView1.Columns[e.ColumnIndex].Name == "DOC_VENTA")
+                    {
+                        String[] partes = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Split('-');
+                        //MessageBox.Show(partes[0] + "|" + partes[1] + "|" + partes[2]);
+                        docsvta ndv = new docsvta();
+                        ndv.Show(this);
+
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }

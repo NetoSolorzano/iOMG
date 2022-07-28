@@ -2203,6 +2203,7 @@ namespace iOMG
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
+            /*
             string codu = "";
             string idr = "";
             if (advancedDataGridView1.CurrentRow.Index > -1)
@@ -2210,6 +2211,7 @@ namespace iOMG
                 codu = advancedDataGridView1.CurrentRow.Cells[1].Value.ToString();
                 idr = advancedDataGridView1.CurrentRow.Cells[0].Value.ToString();
             }
+            */
             tabControl1.SelectedTab = tabgrilla;
             sololee(this);
             Tx_modo.Text = "VISUALIZAR";
@@ -3418,7 +3420,7 @@ namespace iOMG
                 jalaoc("tx_idr");               // jalamos los datos del registro
             }
         }
-        private void tx_codped_Leave(object sender, EventArgs e)
+        internal void tx_codped_Leave(object sender, EventArgs e)       // cambie de private a internal el 28/07/2022
         {
             if (Tx_modo.Text != "NUEVO")
             {
