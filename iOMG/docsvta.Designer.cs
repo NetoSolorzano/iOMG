@@ -1722,7 +1722,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
         private System.Windows.Forms.ToolStripButton Bt_anul;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
-        private System.Windows.Forms.ToolStripButton bt_view;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripButton Bt_print;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
@@ -1742,7 +1741,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.TextBox tx_serie;
         private System.Windows.Forms.TextBox tx_status;
         private System.Windows.Forms.Panel pan_cli;
         private System.Windows.Forms.TextBox tx_dat_distri;
@@ -1779,16 +1777,13 @@
         private System.Windows.Forms.DateTimePicker dtp_pedido;
         private System.Windows.Forms.TextBox tx_dat_estad;
         private System.Windows.Forms.TextBox tx_dat_orig;
-        private System.Windows.Forms.TextBox tx_dat_tipdoc;
         private System.Windows.Forms.Label label52;
-        private System.Windows.Forms.TextBox tx_corre;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label55;
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.Label label58;
         private System.Windows.Forms.ComboBox cmb_taller;
-        private System.Windows.Forms.ComboBox cmb_tipo;
         private System.Windows.Forms.TextBox tx_idr;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox tx_dat_mad;
@@ -1857,5 +1852,10 @@
         private System.Windows.Forms.Panel pan_tipo;
         private System.Windows.Forms.RadioButton rb_tserv;
         private System.Windows.Forms.RadioButton rb_tbienes;
+        internal System.Windows.Forms.ToolStripButton bt_view;
+        internal System.Windows.Forms.TextBox tx_serie;
+        internal System.Windows.Forms.TextBox tx_dat_tipdoc;
+        internal System.Windows.Forms.TextBox tx_corre;
+        internal System.Windows.Forms.ComboBox cmb_tipo;
     }
 }

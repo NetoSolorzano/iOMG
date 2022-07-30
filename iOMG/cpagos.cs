@@ -1026,10 +1026,14 @@ namespace iOMG
                     if (dataGridView1.Columns[e.ColumnIndex].Name == "DOC_VENTA")
                     {
                         String[] partes = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Split('-');
-                        //MessageBox.Show(partes[0] + "|" + partes[1] + "|" + partes[2]);
                         docsvta ndv = new docsvta();
                         ndv.Show(this);
-
+                        ndv.bt_view.PerformClick();
+                        ndv.tx_dat_tipdoc.Text = partes[0];
+                        ndv.cmb_tipo.SelectedItem = partes[0];
+                        ndv.tx_serie.Text = partes[1];
+                        ndv.tx_corre.Text = partes[2];
+                        ndv.tx_corre_Leave(null, null);
                     }
                 }
             }

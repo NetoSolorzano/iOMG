@@ -1670,7 +1670,7 @@ namespace iOMG
         {
 
         }
-        private void tx_corre_Leave(object sender, EventArgs e)
+        internal void tx_corre_Leave(object sender, EventArgs e)
         {
             if (Tx_modo.Text != "NUEVO" && tx_corre.Text != "")
             {

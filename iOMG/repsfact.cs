@@ -100,6 +100,8 @@ namespace iOMG
             toolStrip1.BackColor = Color.FromName(colstrp);
             //
             dgv_facts.DefaultCellStyle.BackColor = Color.FromName(colgrid);
+            dgv_detfact.DefaultCellStyle.BackColor = Color.FromName(colgrid);
+            dgv_vtabar.DefaultCellStyle.BackColor = Color.FromName(colgrid);
             dgv_notcre.DefaultCellStyle.BackColor = Color.FromName(colgrid);
             //
             Bt_add.Image = Image.FromFile(img_btN);
@@ -206,6 +208,10 @@ namespace iOMG
                 cmb_loc_det.DataSource = dttaller;
                 cmb_loc_det.DisplayMember = "descrizionerid";
                 cmb_loc_det.ValueMember = "idcodice";
+                // panel rep. ventas estilo barranco
+                cmb_vtabar.DataSource = dttaller;
+                cmb_vtabar.DisplayMember = "descrizionerid";
+                cmb_vtabar.ValueMember = "idcodice";
                 // ***************** seleccion de estado de servicios
                 string conestad = "select descrizionerid,idcodice,codigo from desc_est " +
                                        "where numero=1 order by idcodice";
@@ -295,6 +301,13 @@ namespace iOMG
                     dgv_detfact.AllowUserToAddRows = false;
                     dgv_detfact.Width = Parent.Width - 70; // 1015;
                     break;
+                case "dgv_vtabar":
+                    dgv_vtabar.Font = tiplg;
+                    dgv_vtabar.DefaultCellStyle.Font = tiplg;
+                    dgv_vtabar.RowTemplate.Height = 15;
+                    dgv_vtabar.AllowUserToAddRows = false;
+                    dgv_vtabar.Width = Parent.Width - 70; // 1015;
+                    break;
             }
         }
         private void bt_guias_Click(object sender, EventArgs e)         // genera reporte facturacion
@@ -357,7 +370,7 @@ namespace iOMG
                 }
             }
         }
-        private void bt_regvtas_Click(object sender, EventArgs e)
+        private void bt_regvtas_Click(object sender, EventArgs e)       // genera reporte registro de ventas
         {
             string consulta = "rep_vtas_regvtas1";
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
@@ -393,7 +406,7 @@ namespace iOMG
             }
 
         }
-        private void bt_det_Click(object sender, EventArgs e)       // facturacion detallada
+        private void bt_det_Click(object sender, EventArgs e)           // facturacion detallada
         {
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
@@ -423,9 +436,36 @@ namespace iOMG
                 }
             }
         }
+        private void btn_vtabar_Click(object sender, EventArgs e)       // Reporte ventas estilo barranco
+        {
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                string consulta = "rep_vtas_barran";
+                using (MySqlCommand micon = new MySqlCommand(consulta, conn))
+                {
+                    micon.CommandType = CommandType.StoredProcedure;
+                    micon.Parameters.AddWithValue("@loca", (tx_dat_vtabar.Text != "") ? tx_dat_vtabar.Text : "");
+                    micon.Parameters.AddWithValue("@fecini", dtp_ini_vtabar.Value.ToString("yyyy-MM-dd"));
+                    micon.Parameters.AddWithValue("@fecfin", dtp_fin_vtabar.Value.ToString("yyyy-MM-dd"));
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                    {
+                        dgv_vtabar.DataSource = null;
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        dgv_vtabar.DataSource = dt;
+                        grilla("dgv_vtabar");
+                    }
+                    string resulta = lib.ult_mov(nomform, nomtab, asd);
+                    if (resulta != "OK")                                        // actualizamos la tabla usuarios
+                    {
+                        MessageBox.Show(resulta, "Error en actualización de tabla usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
         private void suma_grilla(string dgv)
         {
-            //DataRow[] row = dtestad.Select("idcodice='" + codAnul + "'");   // dtestad
             string etiq_anulado = nomAnul;
             int cr = 0, ca = 0; // dgv_facts.Rows.Count;
             double tvv = 0, tva = 0;
@@ -538,6 +578,19 @@ namespace iOMG
                 tx_dat_locDet.Text = "";
             }
         }
+        private void cmb_vtabar_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_vtabar.SelectedValue != null) tx_dat_vtabar.Text = cmb_vtabar.SelectedValue.ToString();
+            else tx_dat_vtabar.Text = "";
+        }
+        private void cmb_vtabar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_vtabar.SelectedIndex = -1;
+                tx_dat_vtabar.Text = "";
+            }
+        }
         #endregion
 
         #region botones de comando
@@ -644,6 +697,11 @@ namespace iOMG
             //
             cmb_sede_guias.SelectedIndex = -1;
             cmb_estad_guias.SelectedIndex = -1;
+            cmb_estad_plan.SelectedIndex = -1;
+            cmb_loc_det.SelectedIndex = -1;
+            cmb_sede_plan.SelectedIndex = -1;
+            cmb_seg_det.SelectedIndex = -1;
+            cmb_vtabar.SelectedIndex = -1;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -694,6 +752,21 @@ namespace iOMG
                     var wb = new XLWorkbook();
                     DataTable dt = (DataTable)dgv_regvtas.DataSource;
                     wb.Worksheets.Add(dt, "RegVtas");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+            if (tabControl1.SelectedTab == tabBarran && dgv_vtabar.Rows.Count > 0)
+            {
+                nombre = "Reporte_Ventas_" + dtp_yea.Value.Year.ToString() + "-" + dtp_mes.Value.Month.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_regvtas.DataSource;
+                    wb.Worksheets.Add(dt, "RepVtas");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
                     this.Close();
@@ -798,7 +871,7 @@ namespace iOMG
         #endregion
 
         #region advancedatagridview
-        private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)
+        private void advancedDataGridView1_SortStringChanged(object sender, EventArgs e)                    // ordenamiento
         {
             if (tabControl1.SelectedTab.Name == "tabfacts")
             {
@@ -814,6 +887,11 @@ namespace iOMG
             {
                 DataTable dtg = (DataTable)dgv_regvtas.DataSource;
                 dtg.DefaultView.Sort = dgv_regvtas.SortString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabBarran")
+            {
+                DataTable dtg = (DataTable)dgv_vtabar.DataSource;
+                dtg.DefaultView.RowFilter = dgv_vtabar.SortString;
             }
         }
         private void advancedDataGridView1_FilterStringChanged(object sender, EventArgs e)                  // filtro de las columnas
@@ -834,6 +912,11 @@ namespace iOMG
             {
                 DataTable dtg = (DataTable)dgv_regvtas.DataSource;
                 dtg.DefaultView.RowFilter = dgv_regvtas.FilterString;
+            }
+            if (tabControl1.SelectedTab.Name == "tabBarran")
+            {
+                DataTable dtg = (DataTable)dgv_vtabar.DataSource;
+                dtg.DefaultView.RowFilter = dgv_vtabar.FilterString;
             }
         }
         private void advancedDataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)            // no usamos
