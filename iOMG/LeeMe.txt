@@ -177,4 +177,6 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form cpagos, mejoras y agregados de codigo para mostrar contratos y docs.vtas ...... ok 28/07/22
 - form contratos, adecuaciones al codigo para mostrarse llamando desde otro form ..... ok 28/07/22
 - form docsvta, adecuaciones al codigo para mostrarse llamando desde otro form ....... ok 28/07/22
-- form repsfact, agregando reporte fact detallado .................................... 
+- form repsfact, agregando reporte fact detallado .................................... ok 30/07/22
+- form docsvta, adecuaciones para impresion TK nombre + madera ....................... ok 01/08/22
+- form contratos, correcciones varias 

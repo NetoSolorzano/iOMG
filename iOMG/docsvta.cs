@@ -474,7 +474,7 @@ namespace iOMG
         }
         private void jaladet(string idr)                    // jala el detalle 
         {
-            string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,madera,detpied,acabado,precio,totalMN,space(1) " +
+            string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1) " +
                 "FROM detfactu where idc=@idr";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -2489,25 +2489,23 @@ namespace iOMG
                     {
                         for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
                         {
+                            string nomprod = dataGridView1.Rows[l].Cells[3].Value.ToString().Trim() + " " + dataGridView1.Rows[l].Cells[5].Value.ToString().Trim();
                             if (!string.IsNullOrEmpty(dataGridView1.Rows[l].Cells[0].Value.ToString()))
                             {
                                 puntoF = new PointF(coli, posi);
-                                var kk = e.Graphics.MeasureString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq);
+                                var kk = e.Graphics.MeasureString(nomprod, lt_peq);
                                 if (kk.Width > lib.CentimeterToPixel(anchTik))
                                 {
                                     siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
                                     recto = new RectangleF(puntoF, siz);
-                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                                    e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
                                     posi = posi + alfi * 2;
                                 }
                                 else
                                 {
-                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                    e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                     posi = posi + alfi;
                                 }
-                                //puntoF = new PointF(coli, posi);
-                                //e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
-                                //posi = posi + alfi;
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 100.0F, posi);
@@ -2546,20 +2544,21 @@ namespace iOMG
                         }
                         for (int l = 1; l < dataGridView1.Rows.Count - 1; l++)
                         {
+                            string nomprod = dataGridView1.Rows[l].Cells[3].Value.ToString().Trim() + " " + dataGridView1.Rows[l].Cells[5].Value.ToString().Trim();
                             puntoF = new PointF(coli, posi);
                             e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             puntoF = new PointF(coli + 30.0F, posi);
-                            kk = e.Graphics.MeasureString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq);
+                            kk = e.Graphics.MeasureString(nomprod, lt_peq);
                             if (kk.Width > lib.CentimeterToPixel(anchTik))
                             {
                                 siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
                                 recto = new RectangleF(puntoF, siz);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                                e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
                                 posi = posi + alfi * 2;
                             }
                             else
                             {
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 posi = posi + alfi;
                             }
                         }
@@ -2571,18 +2570,19 @@ namespace iOMG
                         posi = posi + alfi;
                         for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
                         {
+                            string nomprod = dataGridView1.Rows[l].Cells[3].Value.ToString().Trim() + " " + dataGridView1.Rows[l].Cells[5].Value.ToString().Trim();
                             if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0" && dataGridView1.Rows[l].Cells[1].Value.ToString().Trim() != "")
                             {
                                 double ventu = double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 30.0F, posi);
-                                var kk = e.Graphics.MeasureString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq);
+                                var kk = e.Graphics.MeasureString(nomprod, lt_peq);
                                 if (kk.Width > lib.CentimeterToPixel(anchTik) - 30.0F)
                                 {
                                     siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
                                     recto = new RectangleF(puntoF, siz);
-                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                                    e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
                                     puntoF = new PointF(coli + 199, posi);
                                     siz = new SizeF(70, 30);
                                     recto = new RectangleF(puntoF, siz);
@@ -2591,7 +2591,7 @@ namespace iOMG
                                 }
                                 else
                                 {
-                                    e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                    e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                     puntoF = new PointF(coli + 199, posi);
                                     siz = new SizeF(70, 30);
                                     recto = new RectangleF(puntoF, siz);

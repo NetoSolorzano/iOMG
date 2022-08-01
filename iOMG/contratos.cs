@@ -238,7 +238,7 @@ namespace iOMG
                 if (conn.State == ConnectionState.Open)
                 {
                     string idc = "";
-                    if (modo == "T")    //  || modo == "C"
+                    if (modo == "T")    //  || modo == "T"
                     {
                         string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg " +
                             "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
@@ -279,22 +279,22 @@ namespace iOMG
                             }
                         }
                     }
-                    if (modo == "T")    //  || modo == "D"
+                    if (modo == "T")    //  || modo == "T"
                     {
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item',i.soles2018*a.cantbul as totCat " +
                             "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''";
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
                         {
-                            midet.Parameters.AddWithValue("@idc", idc);
+                            midet.Parameters.AddWithValue("@idc", idc); //
                             MySqlDataAdapter da = new MySqlDataAdapter(midet);
-                            if (dataGridView1.Rows.Count <= 1)
+                            if (dataGridView1.Rows.Count <= 2)  // 1
                             {
                                 DataTable dt = new DataTable();
                                 da.Fill(dt);
+                                dataGridView1.DataSource = null;
                                 dataGridView1.Rows.Clear();
                                 dataGridView1.Columns.Clear();
-                                dataGridView1.DataSource = null;
                                 dataGridView1.DataSource = dt;
                             }
                             else
@@ -338,14 +338,17 @@ namespace iOMG
 
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {
-                        val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                        if (dataGridView1.Rows[i].Cells[7].Value != null) val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
                         if (dataGridView1.Rows[i].Cells[16].Value != null && dataGridView1.Rows[i].Cells[16].Value.ToString().Trim() != "")
                         {
                             dscto = dscto + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());
                         }
                         // buscamos que la madera este seleccionada
-                        if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
-                            dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
+                        if (dataGridView1.Rows[i].Cells[5].Value != null)
+                        {
+                            if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
+                                dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
+                        }
                     }
                     tx_dscto.Text = (dscto - val).ToString("#0.00");
                     tx_coment.Focus();
@@ -3780,6 +3783,8 @@ namespace iOMG
                 }
                 */
                 if (tx_mc.Text != "" && tx_serie.Text != "" && tx_corre.Text != "") jalaDatFact("T", tx_mc.Text, tx_serie.Text, tx_corre.Text);
+                //tx_mc.Text = ""; tx_serie.Text = ""; tx_corre.Text = "";
+                tx_coment.Focus();
             }
         }
         #endregion leaves;
