@@ -189,14 +189,20 @@ namespace iOMG
                     {
                         if (!string.IsNullOrEmpty(pagos.ReturnValue1))
                         {
+                            /*
+                            DataTable drt = new DataTable();
                             dataGridView1.DataSource = null;
                             dataGridView1.Rows.Clear();
                             dataGridView1.Columns.Clear();
+                            dataGridView1.DataSource = drt;
+                            grilladet("NUEVO");
+                            */
+                            int i = 1;
                             tx_acta.Text = "";
                             foreach (DataRow row in pagos.ReturnValueT.Rows)
                             {
-                                //MessageBox.Show(row[1].ToString() + "|" + row[2].ToString() + "|" + row[3].ToString());
-                                jalaDatFact("T", row[1].ToString().Substring(0,1), row[2].ToString(), row[3].ToString());
+                                jalaDatFact("T", row[1].ToString().Substring(0,1), row[2].ToString(), row[3].ToString(), i.ToString());
+                                i = i + 1;
                             }
                         }
                     }
@@ -226,12 +232,8 @@ namespace iOMG
         }
 
         #region Fact_Elec
-        private void jalaDatFact(string modo,string FB, string serF, string corF)   // modo: T=jala todos, C=jala cliente, D=jala detalle
+        private void jalaDatFact(string modo,string FB, string serF, string corF, string kk)   // modo: T=jala todos, C=jala cliente, D=jala detalle
         {
-            //dataGridView1.DataSource = null;
-            //dataGridView1.Rows.Clear();
-            //grilladet("NUEVO");
-            //
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
                 conn.Open();
@@ -282,13 +284,14 @@ namespace iOMG
                     if (modo == "T")    //  || modo == "T"
                     {
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
-                            "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item',i.soles2018*a.cantbul as totCat " +
+                            "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
+                            "ifnull(if(i.soles2018*a.cantbul=0,a.precio*a.cantbul,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat " +
                             "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''";
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
                         {
                             midet.Parameters.AddWithValue("@idc", idc); //
                             MySqlDataAdapter da = new MySqlDataAdapter(midet);
-                            if (dataGridView1.Rows.Count <= 2)  // 1
+                            if (kk == "1")  // dataGridView1.Rows.Count <= 2
                             {
                                 DataTable dt = new DataTable();
                                 da.Fill(dt);
@@ -300,12 +303,12 @@ namespace iOMG
                             else
                             {
                                 // dataAdapter.Update((DataTable)bindingSource1.DataSource);
-                                DataRow dtr = ((DataTable)dataGridView1.DataSource).NewRow();
                                 //DataRow dtr = dt.NewRow();
                                 DataTable dd = new DataTable();
                                 da.Fill(dd);
                                 foreach (DataRow rw in dd.Rows)
                                 {
+                                    DataRow dtr = ((DataTable)dataGridView1.DataSource).NewRow();
                                     dtr[0] = rw.ItemArray[0].ToString();
                                     dtr[1] = rw.ItemArray[1].ToString();
                                     dtr[2] = rw.ItemArray[2].ToString();
@@ -323,7 +326,14 @@ namespace iOMG
                                     dtr[14] = rw.ItemArray[14].ToString();
                                     dtr[15] = rw.ItemArray[15].ToString();
                                     dtr[16] = rw.ItemArray[16].ToString();
-                                    ((DataTable)dataGridView1.DataSource).Rows.Add(dtr);
+                                    try
+                                    {
+                                        ((DataTable)dataGridView1.DataSource).Rows.Add(dtr);
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        MessageBox.Show(ex.ToString());
+                                    }
                                 }
                             }
                             grilladet("edita");     // obtiene contenido de grilla con DT
@@ -824,13 +834,13 @@ namespace iOMG
             advancedDataGridView1.Columns[22].Visible = false;
         }
         private void grilladet(string modo)                                     // grilla detalle
-        {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,codpie,space(1) as na,tda_item
+        {   // iddetacon,a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,saldo,pedido,codref,coment,a.detpied,codpie,na,tda_item,totCat
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 16;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 17;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -858,7 +868,7 @@ namespace iOMG
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[3].Name = "nombre";
             dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // medidas 
+            // medidas  a.medidas,a.madera,a.precio,a.totalMN,saldo,
             dataGridView1.Columns[4].Visible = true;            // columna visible o no
             dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
             dataGridView1.Columns[4].Width = 100;                // ancho
@@ -893,7 +903,7 @@ namespace iOMG
             dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[8].Name = "saldo";
-            // pedido
+            // pedido   pedido,codref,coment,a.detpied,codpie,na,tda_item,
             dataGridView1.Columns[9].Visible = true;            // columna visible o no
             dataGridView1.Columns[9].HeaderText = "Pedido";      // titulo de la columna
             dataGridView1.Columns[9].Width = 60;                 // ancho
@@ -932,6 +942,12 @@ namespace iOMG
             dataGridView1.Columns[15].Width = 60;                 // ancho
             dataGridView1.Columns[15].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[15].Name = "tda_item";
+            // total 
+            dataGridView1.Columns[16].Visible = false;
+            dataGridView1.Columns[16].HeaderText = "totCat";      // titulo de la columna
+            dataGridView1.Columns[16].Width = 60;                 // ancho
+            dataGridView1.Columns[16].ReadOnly = true;            // lectura o no
+            dataGridView1.Columns[16].Name = "totCat";
         }
         private void armani()                                                   // arma el codigo y busca en la maestra
         {
@@ -3782,7 +3798,7 @@ namespace iOMG
                     return;
                 }
                 */
-                if (tx_mc.Text != "" && tx_serie.Text != "" && tx_corre.Text != "") jalaDatFact("T", tx_mc.Text, tx_serie.Text, tx_corre.Text);
+                if (tx_mc.Text != "" && tx_serie.Text != "" && tx_corre.Text != "") jalaDatFact("T", tx_mc.Text, tx_serie.Text, tx_corre.Text, "1");
                 //tx_mc.Text = ""; tx_serie.Text = ""; tx_corre.Text = "";
                 tx_coment.Focus();
             }
