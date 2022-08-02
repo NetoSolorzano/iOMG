@@ -179,4 +179,6 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, adecuaciones al codigo para mostrarse llamando desde otro form ....... ok 28/07/22
 - form repsfact, agregando reporte fact detallado .................................... ok 30/07/22
 - form docsvta, adecuaciones para impresion TK nombre + madera ....................... ok 01/08/22
-- form contratos, correcciones varias 
+- form contratos, correcciones varias ................................................ ok 01/08/22
+- form repsfact, agregar P.A. de registro de ventas .................................. ok 02/08/22
+

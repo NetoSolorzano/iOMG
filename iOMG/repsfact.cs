@@ -113,14 +113,6 @@ namespace iOMG
             bt_exc.Image = Image.FromFile(img_btexc);
             Bt_close.Image = Image.FromFile(img_btq);
             // 
-            dtp_yea.Format = DateTimePickerFormat.Custom;
-            dtp_yea.CustomFormat = "yyyy";
-            dtp_yea.ShowUpDown = true;
-            //
-            dtp_mes.Format = DateTimePickerFormat.Custom;
-            dtp_mes.CustomFormat = "MM";
-            dtp_mes.ShowUpDown = true;
-
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {
@@ -190,9 +182,14 @@ namespace iOMG
             }
             if (quien == "todos")
             {
+                string filtro = "";
                 // ***************** seleccion de la tienda de ventas
+                if (int.Parse(Program.nivuser) > 1)
+                {
+                    filtro = "and idcodice='" + Program.tdauser + "' ";
+                }
                 string contaller = "select descrizionerid,idcodice,codigo from desc_ven " +
-                                       "where numero=1 order by idcodice";
+                                       "where numero=1 " + filtro + "order by idcodice";
                 MySqlCommand cmd = new MySqlCommand(contaller, conn);
                 MySqlDataAdapter dataller = new MySqlDataAdapter(cmd);
                 dataller.Fill(dttaller);
@@ -212,6 +209,11 @@ namespace iOMG
                 cmb_vtabar.DataSource = dttaller;
                 cmb_vtabar.DisplayMember = "descrizionerid";
                 cmb_vtabar.ValueMember = "idcodice";
+                // panel reg.ventas
+                cmb_rvtas_sede.DataSource = dttaller;
+                cmb_rvtas_sede.DisplayMember = "descrizionerid";
+                cmb_rvtas_sede.ValueMember = "idcodice";
+
                 // ***************** seleccion de estado de servicios
                 string conestad = "select descrizionerid,idcodice,codigo from desc_est " +
                                        "where numero=1 order by idcodice";
@@ -308,6 +310,33 @@ namespace iOMG
                     dgv_vtabar.AllowUserToAddRows = false;
                     dgv_vtabar.Width = Parent.Width - 70; // 1015;
                     break;
+                case "dgv_regvtas":
+                    dgv_regvtas.Font = tiplg;
+                    dgv_regvtas.DefaultCellStyle.Font = tiplg;
+                    dgv_regvtas.RowTemplate.Height = 15;
+                    dgv_regvtas.AllowUserToAddRows = false;
+                    dgv_regvtas.Width = Parent.Width - 70; // 1015;
+                    if (dgv_regvtas.DataSource == null) dgv_regvtas.ColumnCount = 17;
+                    if (dgv_regvtas.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dgv_regvtas.Columns.Count; i++)
+                        {
+                            dgv_regvtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                            _ = decimal.TryParse(dgv_regvtas.Rows[0].Cells[i].Value.ToString(), out decimal vd);
+                            if (vd != 0) dgv_regvtas.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        }
+                        b = 0;
+                        for (int i = 0; i < dgv_regvtas.Columns.Count; i++)
+                        {
+                            int a = dgv_regvtas.Columns[i].Width;
+                            b += a;
+                            dgv_regvtas.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                            dgv_regvtas.Columns[i].Width = a;
+                        }
+                        if (b < dgv_regvtas.Width) dgv_regvtas.Width = b - 20;    // b + 60 ;
+                        dgv_regvtas.ReadOnly = true;
+                    }
+                    break;
             }
         }
         private void bt_guias_Click(object sender, EventArgs e)         // genera reporte facturacion
@@ -372,6 +401,18 @@ namespace iOMG
         }
         private void bt_regvtas_Click(object sender, EventArgs e)       // genera reporte registro de ventas
         {
+            if (tx_dat_rvtas_Sede.Text == "")
+            {
+                if (Program.nivuser == "1" || Program.nivuser == "0")
+                {
+                    // puede proceder
+                }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar su local","Error de nivel",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    return;
+                }
+            }
             string consulta = "rep_vtas_regvtas1";
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
@@ -381,13 +422,9 @@ namespace iOMG
                     using (MySqlCommand micon = new MySqlCommand(consulta, conn))
                     {
                         micon.CommandType = CommandType.StoredProcedure;
-                        micon.Parameters.AddWithValue("@fini", dtp_yea.Value.Year);
-                        micon.Parameters.AddWithValue("@fter", dtp_mes.Value.Month);
-                        micon.Parameters.AddWithValue("@vanu", codAnul);
-                        micon.Parameters.AddWithValue("@vfac", codfact);
-                        micon.Parameters.AddWithValue("@vruc", coddni);
-                        micon.Parameters.AddWithValue("@vdni", codruc);
-                        micon.Parameters.AddWithValue("@vmon", codmon);
+                        micon.Parameters.AddWithValue("@fini", dtp_rvtas_fini.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@fter", dtp_rvtas_fter.Value.ToString("yyyy-MM-dd"));
+                        micon.Parameters.AddWithValue("@vsede", tx_dat_rvtas_Sede.Text);
                         using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
                         {
                             dgv_regvtas.DataSource = null;
@@ -591,6 +628,19 @@ namespace iOMG
                 tx_dat_vtabar.Text = "";
             }
         }
+        private void cmb_rvtas_sede_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_rvtas_sede.SelectedValue != null) tx_dat_rvtas_Sede.Text = cmb_rvtas_sede.SelectedValue.ToString();
+            else tx_dat_rvtas_Sede.Text = "";
+        }
+        private void cmb_rvtas_sede_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                cmb_rvtas_sede.SelectedIndex = -1;
+                tx_dat_rvtas_Sede.Text = "";
+            }
+        }
         #endregion
 
         #region botones de comando
@@ -702,6 +752,7 @@ namespace iOMG
             cmb_sede_plan.SelectedIndex = -1;
             cmb_seg_det.SelectedIndex = -1;
             cmb_vtabar.SelectedIndex = -1;
+            cmb_rvtas_sede.SelectedIndex = -1;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -744,22 +795,7 @@ namespace iOMG
             }
             if (tabControl1.SelectedTab == tabregvtas && dgv_regvtas.Rows.Count > 0)
             {
-                nombre = "Registro_Ventas_" + dtp_yea.Value.Year.ToString() + "-" + dtp_mes.Value.Month.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
-                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
-                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (aa == DialogResult.Yes)
-                {
-                    var wb = new XLWorkbook();
-                    DataTable dt = (DataTable)dgv_regvtas.DataSource;
-                    wb.Worksheets.Add(dt, "RegVtas");
-                    wb.SaveAs(nombre);
-                    MessageBox.Show("Archivo generado con exito!");
-                    this.Close();
-                }
-            }
-            if (tabControl1.SelectedTab == tabBarran && dgv_vtabar.Rows.Count > 0)
-            {
-                nombre = "Reporte_Ventas_" + dtp_yea.Value.Year.ToString() + "-" + dtp_mes.Value.Month.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                nombre = "Registro_Ventas_" + dtp_ini_vtabar.Value.Date.ToString() + "-" + dtp_fin_vtabar.Value.Date.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                     "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
@@ -767,6 +803,21 @@ namespace iOMG
                     var wb = new XLWorkbook();
                     DataTable dt = (DataTable)dgv_regvtas.DataSource;
                     wb.Worksheets.Add(dt, "RepVtas");
+                    wb.SaveAs(nombre);
+                    MessageBox.Show("Archivo generado con exito!");
+                    this.Close();
+                }
+            }
+            if (tabControl1.SelectedTab == tabBarran && dgv_vtabar.Rows.Count > 0)
+            {
+                nombre = "Registro_de_Ventas_" + dtp_rvtas_fini.Value.Date.ToString() + "-" + dtp_rvtas_fter.Value.Date.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
+                    "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aa == DialogResult.Yes)
+                {
+                    var wb = new XLWorkbook();
+                    DataTable dt = (DataTable)dgv_regvtas.DataSource;
+                    wb.Worksheets.Add(dt, "RegVtas");
                     wb.SaveAs(nombre);
                     MessageBox.Show("Archivo generado con exito!");
                     this.Close();
