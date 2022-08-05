@@ -9,6 +9,10 @@ using ClosedXML.Excel;
 using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;
 using System.Drawing.Imaging;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace iOMG
 {
@@ -592,7 +596,7 @@ namespace iOMG
             if (quien == "todos")
             {
                 // seleccion de local de ventas ... ok
-                const string contaller = "select a.descrizionerid,a.idcodice,a.codigo,b.serie,b.dir_pe,b.ubigeo from desc_ven a " +
+                const string contaller = "select a.descrizionerid,a.idcodice,a.codigo,b.serie,b.dir_pe,b.ubigeo,a.sunat from desc_ven a " +
                     "left JOIN (select serie,sede,dir_pe,ubigeo from series WHERE tipdoc IN ('FT','BV')) b on b.sede=a.idcodice " +
                     "where a.numero=1 AND a.codigo<>'' order by a.idcodice";
                 MySqlCommand cmdtaller = new MySqlCommand(contaller, conn);
@@ -1930,6 +1934,8 @@ namespace iOMG
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
+            if (conex_Rapifac() == false) return;
+
             // validaciones generales
             if (tx_dat_tipdoc.Text.Trim() == "")
             {
@@ -1976,14 +1982,6 @@ namespace iOMG
             }
             if (Tx_modo.Text == "NUEVO")
             {
-                /* validaciones antes de grabar nuevo
-                if (tx_dat_plazo.Text != tpcontad && (tx_numOpe.Text.Trim() == "" || tx_numOpe.Text.Trim().Length < 4))
-                {
-                    MessageBox.Show("Ingrese el número de operación","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-                    tx_numOpe.Focus();
-                    return;
-                }
-                */
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
                 if (valProdCont() == true) tx_prdsCont.Text = "S";
                 else tx_prdsCont.Text = "N";
@@ -1992,6 +1990,16 @@ namespace iOMG
                     "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
+                    // validaciones de conex con Rapifac
+                    if (conex_Rapifac() == false)
+                    {
+                        MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
+                            "con el proveedor OSE/PSE. Confirme que tenga internet." + Environment.NewLine +
+                            "No se puede grabar el comprobante.",
+                            "Falla en Facturación Electrónica", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
                         Bt_print.PerformClick();
@@ -2275,7 +2283,80 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
+        #endregion
 
+        #region Fact-Electrónica RAPIFAC
+        private string conex_token()
+        {
+            string retorna = "";
+            string usuaRuc = "20463339342";
+            string usuaDni = "12121212";
+            string clave = "Hola1234@";
+            string id_clte = "5fd9f7e7-b36a-48e6-aa41-be6586439e98";
+
+            string host = "http://wsoauth-exp.rapifac.com/oauth2/token";
+
+            // create a request
+            //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+            httpWebRequest.Method = "POST"; 
+            string postData = "grant_type=password&username=" + usuaDni + usuaRuc + "&password=" + clave + "&client_id=" + id_clte;
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] bytes = encoding.GetBytes(postData);
+            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+            httpWebRequest.ContentLength = bytes.Length;
+            Stream newStream = httpWebRequest.GetRequestStream();
+            newStream.Write(bytes, 0, bytes.Length);
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                var masticado = JObject.Parse(result);
+                retorna = masticado["access_token"].ToString();
+            }
+
+            return retorna;
+        }
+        private bool conex_Rapifac()
+        {
+            bool retorna = false;
+            string token = conex_token();
+            if (token != "")
+            {
+                // datos variables para la emisión
+                string axs = string.Format("idcodice='{0}'", tx_dat_orig.Text);
+                DataRow[] row = dttaller.Select(axs);
+                string codSuc = row[0].ItemArray[6].ToString();                     // codigo de sucursal
+
+                // obtiene el correlativo para la sede y serie
+
+                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + codSuc;
+
+                //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "GET";
+                httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    var masticado = JObject.Parse(result);
+                    MessageBox.Show(result.ToString());
+                }
+            }
+
+
+            // actualiza el correlativo que va a usar en rapifac
+
+            // emite el comprobante
+
+
+            return retorna;
+        }
         #endregion
 
         #region crystal

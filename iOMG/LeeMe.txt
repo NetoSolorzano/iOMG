@@ -181,4 +181,4 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, adecuaciones para impresion TK nombre + madera ....................... ok 01/08/22
 - form contratos, correcciones varias ................................................ ok 01/08/22
 - form repsfact, agregar P.A. de registro de ventas .................................. ok 02/08/22
-
+- form docsvta, adecuaciones para fact elect con rapifac via web services ............ 
