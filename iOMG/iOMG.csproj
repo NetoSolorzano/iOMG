@@ -128,6 +128,7 @@
       <DependentUpon>etiq_mov2.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="_rapifac.cs" />
     <Compile Include="clients.cs">
       <SubType>Form</SubType>
     </Compile>

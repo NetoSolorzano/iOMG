@@ -165,6 +165,7 @@
             this.pan_tipo = new System.Windows.Forms.Panel();
             this.rb_tserv = new System.Windows.Forms.RadioButton();
             this.rb_tbienes = new System.Windows.Forms.RadioButton();
+            this.tx_dat_tipdoc_s = new System.Windows.Forms.TextBox();
             this.milinea6 = new iOMG.milinea();
             this.milinea7 = new iOMG.milinea();
             this.milinea5 = new iOMG.milinea();
@@ -174,6 +175,7 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.tx_dir_ubigpe = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -517,6 +519,7 @@
             // pan_cli
             // 
             this.pan_cli.BackColor = System.Drawing.Color.DimGray;
+            this.pan_cli.Controls.Add(this.tx_dir_ubigpe);
             this.pan_cli.Controls.Add(this.tx_dir_pe);
             this.pan_cli.Controls.Add(this.tx_idc);
             this.pan_cli.Controls.Add(this.tx_dat_distri);
@@ -1543,6 +1546,15 @@
             this.rb_tbienes.UseVisualStyleBackColor = true;
             this.rb_tbienes.Click += new System.EventHandler(this.rb_tbienes_Click);
             // 
+            // tx_dat_tipdoc_s
+            // 
+            this.tx_dat_tipdoc_s.Location = new System.Drawing.Point(420, 28);
+            this.tx_dat_tipdoc_s.Name = "tx_dat_tipdoc_s";
+            this.tx_dat_tipdoc_s.Size = new System.Drawing.Size(31, 20);
+            this.tx_dat_tipdoc_s.TabIndex = 419;
+            this.tx_dat_tipdoc_s.Tag = "Codigo sunat del tipo de documento";
+            this.tx_dat_tipdoc_s.Visible = false;
+            // 
             // milinea6
             // 
             this.milinea6.Location = new System.Drawing.Point(601, 401);
@@ -1626,11 +1638,21 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // tx_dir_ubigpe
+            // 
+            this.tx_dir_ubigpe.Location = new System.Drawing.Point(697, 3);
+            this.tx_dir_ubigpe.Name = "tx_dir_ubigpe";
+            this.tx_dir_ubigpe.Size = new System.Drawing.Size(61, 20);
+            this.tx_dir_ubigpe.TabIndex = 412;
+            this.tx_dir_ubigpe.Tag = "direccion del pto de emision";
+            this.tx_dir_ubigpe.Visible = false;
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.tx_dat_tipdoc_s);
             this.Controls.Add(this.pan_tipo);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.tx_tipComp);
@@ -1857,5 +1879,7 @@
         internal System.Windows.Forms.TextBox tx_dat_tipdoc;
         internal System.Windows.Forms.TextBox tx_corre;
         internal System.Windows.Forms.ComboBox cmb_tipo;
+        internal System.Windows.Forms.TextBox tx_dat_tipdoc_s;
+        private System.Windows.Forms.TextBox tx_dir_ubigpe;
     }
 }
