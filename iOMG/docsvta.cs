@@ -2399,8 +2399,8 @@ namespace iOMG
                     var result = streamReader.ReadToEnd();
                     JArray v = JArray.Parse(result);
                     var items = v.Where(x => x["TipoDocumento"].ToString() == tx_dat_tipdoc_s.Text).ToList();
-                    serComp = items[0]..ToString();
-                    numComp = items[3].ToString();
+                    serComp = items[0].SelectToken("Serie").ToString();
+                    numComp = items[0].SelectToken("Correlativo").ToString();
                     tx_serie.Text = serComp;
                     //tx_corre.Text = numComp;
                 }
@@ -2465,7 +2465,107 @@ namespace iOMG
                     TransportistaNumeroDocIdentidad = "",
                     TransportistaNombreRazonSocial = "",
                     PlacaVehiculo = "",
-                    ConductorNumeroDocIdentidad = ""
+                    ConductorNumeroDocIdentidad = "",
+
+                    ListaDetalles = { },
+
+                    ExoneradaXML = 0,
+                    InafectoXML = 0,
+                    ExportacionXML = 0,
+                    ImporteTotalTexto = "CIENTO DIECIOCHO CON 00/100 SOLES",
+                    Detraccion = 0,
+                    Percepcion = 0,
+                    PercepcionBaseImponible = 0,
+                    Retencion = 0,
+                    DescuentoGlobalMontoBase = 100,
+                    DescuentoGlobalNGMonto = 0,
+                    DescuentoGlobalNGMontoBase = 0,
+                    DescuentoNGMonto = 0,
+                    AnticiposGravado = 0,
+                    AnticiposExonerado = 0,
+                    AnticiposInafecto = 0,
+                    CargoGlobalMonto = 0,
+                    CargoGlobalMontoBase = 100,
+                    ISCBase = 100,
+                    GratuitoGravado = 0,
+                    TotalPrecioVenta = 118,
+                    TotalValorVenta = 100,
+                    Peso = 0,
+                    Bultos = 0,
+                    CreditoTotal = 0,
+                    PercepcionRegimen = "",
+                    PercepcionFactor = 0,
+
+                    ListaMovimientos = { },
+                    ListaGuias = { },
+                    ListaCuotas = { },
+
+                    EstadoContingencia = false,
+                    EstadoAnticipo = false,
+                    EstadoOtroSistema = false,
+                    ClasePrecioCodigo = 1,
+                    TipoPrecio = "0",
+                    FormatoPDF = "0",
+                    TipoDocumentoCodigo = "01",
+                    Serie = "F001",
+                    Correlativo = 2480,
+                    MonedaCodigo = "PEN",
+                    FechaEmision = "22/02/2022",
+                    TipoDocumentoCodigoModificado = "01",
+                    SerieModificado = "",
+                    CorrelativoModificado = "",
+                    TipoNotaCreditoCodigo = "01",
+                    TipoNotaDebitoCodigo = "01",
+                    TipoOperacionCodigo = "0101",
+                    MotivoTrasladoCodigo = "01",
+                    ClienteNombreRazonSocial = "YAÑEZ SANZ ANTHONY JOSEPH",
+                    ClienteDireccion = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
+                    UbigeoPartida = "080108",
+                    DireccionPartida = "AV. LA CULTURA 666 - WANCHAQ - CUSCO - CUSCO",
+                    UbigeoLlegada = "080105",
+                    DireccionLlegada = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
+                    TipoBusquedaProductoCodigo = 0,
+                    DescuentoGlobalPorcentaje = 0,
+                    DescuentoGlobalValor = 0,
+                    CorreoElectronicoPrincipal = "no-send@rapifac.com",
+                    Observacion = "",
+                    Gravado = 100,
+                    Exonerada = 0,
+                    Inafecto = 0,
+                    Exportacion = 0,
+                    OperacionNoGravada = 0,
+                    Gratuito = 0,
+                    TotalDescuentos = 0,
+                    DescuentoGlobal = 0,
+                    TotalAnticipos = 0,
+                    ISC = 0,
+                    IGV = 18,
+                    ICBPER = 0,
+                    ImpuestoTotal = 18,
+                    ImpuestoVarios = 0,
+                    TotalOtrosCargos = 0,
+                    TotalImporteVenta = 118,
+                    PercepcionTotal = 0,
+                    TotalPago = 118,
+                    PesoTotal = 0,
+                    Leyenda = 0,
+                    BienServicioCodigo = "001",
+                    DetraccionPorcentaje = 10,
+                    RetencionPorcentaje = 3,
+                    DetraccionCuenta = "12-123466-7",
+                    DocAdicionalCodigo = 0,
+                    TotalRetencion = 118,
+                    MontoRetencion = 3.54,
+                    PendientePago = 118.00,
+                    PermitirCuotas = 1,
+                    AlojamientoPaisDocEmisor = "AF",
+                    PaisResidencia = "AF",
+                    FechaIngresoPais = "22/02/2022",
+                    FechaIngresoEstablecimiento = "22/02/2022",
+                    FechaSalidaEstablecimiento = "22/02/2022",
+                    AlojamientoNumeroDocIdentidad = "",
+                    AlojamientoNombreRazonSocial = "",
+                    AlojamientoTipoDocIdentidadCodigo = ""
                 };
                 // "ListaDetalles": [ // Lista de detalles del comprobante
                 var oDetalle = new detalle_rapifac
@@ -2531,10 +2631,17 @@ namespace iOMG
                     PesoTotal = 0
                 };
 
-                string cabeza = JsonConvert.SerializeObject(obj);
-                string detalles = JsonConvert.SerializeObject(oDetalle);
-
-
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string cabeza = JsonConvert.SerializeObject(obj);
+                    string detalles = JsonConvert.SerializeObject(oDetalle);
+                    streamWriter.Write(cabeza);
+                    string json = "{\"ListaDetalles\":\"[\"}";
+                    streamWriter.Write(json);
+                    streamWriter.Write(detalles);
+                    json = "{\"ListaDetalles\":\"[\"}";
+                    streamWriter.Write(json);
+                }
 
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
