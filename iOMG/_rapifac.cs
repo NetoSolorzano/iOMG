@@ -62,7 +62,7 @@ namespace iOMG
         public string TransportistaNombreRazonSocial;       //
         public string PlacaVehiculo;                        //
         public string ConductorNumeroDocIdentidad;          // 
-        public string[] ListaDetalles;                      // detalles del comprobante
+        public detalle_rapifac ListaDetalles;
         public double ExoneradaXML;
         public double InafectoXML;
         public double ExportacionXML;
@@ -89,7 +89,7 @@ namespace iOMG
         public double CreditoTotal;
         public string PercepcionRegimen;
         public double PercepcionFactor;
-        public string[] ListaMovimientos;
+        public medios_pagos ListaMovimientos;
         public string[] ListaGuias;
         public string[] ListaCuotas;
         public bool EstadoContingencia;
@@ -221,5 +221,29 @@ namespace iOMG
         public double IGVNeto;
         public double ImporteTotal;
         public double PesoTotal;
+    }
+
+    public class medios_pagos
+    {
+        public string TipoDocumentoCodigo;
+        public string Serie;
+        public string Correlativo;
+        public string Condicion;
+        public int TipoCuentaCodigo;
+        public string CuentaNumero;
+        public string Usuario;
+        public string MonedaCodigo;
+        public string SucursalId;
+        public string TipoDocIdentidadCodigo;
+        public string NumeroDocIdentidad;
+        public string Observacion;
+        public string[] Extension;              // que va acá?
+        public string CuentaValor;
+        public double Pago;
+        public double Vuelto;
+        public string FechaPago;
+        public string NumeroOperacion;
+        public string FechaVencimiento;
+        public int PlazoDias;
     }
 }

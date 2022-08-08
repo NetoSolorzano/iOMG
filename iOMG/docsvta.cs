@@ -621,7 +621,7 @@ namespace iOMG
                     cmb_tipo.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del tipo documento cliente
-                const string condoc = "select descrizionerid,idcodice,codigo from desc_doc " +
+                const string condoc = "select descrizionerid,idcodice,codigo,sunat from desc_doc " +
                                        "where numero=1";
                 MySqlCommand cmddoc = new MySqlCommand(condoc, conn);
                 MySqlDataAdapter dadoc = new MySqlDataAdapter(cmddoc);
@@ -1479,6 +1479,7 @@ namespace iOMG
                 string axs = string.Format("descrizionerid='{0}'", cmb_tdoc.Text);
                 DataRow[] row = dtdoc.Select(axs);
                 tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
+                tx_dat_tdoc_s.Text = row[0].ItemArray[3].ToString();
             }
         }
         private void cmb_plazo_SelectionChangeCommitted(object sender, EventArgs e)
@@ -2451,7 +2452,7 @@ namespace iOMG
                     Ubigeo = tx_dir_ubigpe.Text,
                     Anticipo = "",
                     TipoCambio = "0",
-                    ClienteTipoDocIdentidadCodigo = "",                 // aca falta!
+                    ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
                     ClienteNumeroDocIdentidad = tx_ndc.Text,
                     OrdenNumero = "",
                     GuiaNumero = "",
@@ -2467,7 +2468,68 @@ namespace iOMG
                     PlacaVehiculo = "",
                     ConductorNumeroDocIdentidad = "",
 
-                    ListaDetalles = { },
+                    ListaDetalles = new detalle_rapifac
+                    {
+                        ID = 0,
+                        ComprobanteID = 0,
+                        Item = 1,
+                        TipoProductoCodigo = "",
+                        ProductoCodigo = "Prod00005",
+                        ProductoCodigoSUNAT = "39121321",
+                        TipoSistemaISCCodigo = "00",
+                        UnidadMedidaCodigo = "NIU",
+                        PrecioUnitarioSugerido = 0,
+                        PrecioUnitarioItem = 118,
+                        PrecioVentaCodigo = "01",
+                        ICBPER = 0,
+                        CargoIndicador = 0,
+                        DescuentoIndicador = false,
+                        DescuentoCargoCodigo = "00",
+                        PercepcionCantidadUmbral = 0,
+                        PercepcionMontoUmbral = 0,
+                        PercepcionPorcentaje = 0,
+                        Control = "0",
+                        PrecioCompra = 100.005,
+                        Cargo = 0,
+                        DescuentoGlobal = 0,
+                        Descuento = 0,
+                        ValorUnitario = 100,
+                        ValorVenta = 100,
+                        ValorVentaItem = 100,
+                        ValorVentaItemXML = 100,
+                        ValorVentaNeto = 100,
+                        ValorVentaNetoXML = 0,
+                        ISCUnitario = 0,
+                        ISCNeto = 0,
+                        ISC = 0,
+                        IGV = 18,
+                        ICBPERItem = 0,
+                        ICBPERSubTotal = 0,
+                        DescuentoBase = 100,
+                        DescuentoCargo = 0,
+                        DescuentoCargoGravado = 0,
+                        CargoItem = 0,
+                        CargoTotal = 0,
+                        CargoNeto = 0,
+                        PrecioVenta = 118,
+                        MontoTributo = 18,
+                        ISCPorcentaje = 0,
+                        ISCMonto = 0,
+                        CargoPorcentaje = 0,
+                        Extension = { },
+                        Descripcion = "00 PRODUCTO GRAVADO",
+                        Observacion = "",
+                        Cantidad = 1,
+                        PrecioCodigo = 7,
+                        PrecioUnitario = 118,
+                        Peso = 0,
+                        DescuentoMonto = 0,
+                        DescuentoPorcentaje = 0,
+                        TipoAfectacionIGVCodigo = "10",
+                        IGVNeto = 18,
+                        ImporteTotal = 118,
+                        PesoTotal = 0
+                    },
 
                     ExoneradaXML = 0,
                     InafectoXML = 0,
@@ -2496,7 +2558,30 @@ namespace iOMG
                     PercepcionRegimen = "",
                     PercepcionFactor = 0,
 
-                    ListaMovimientos = { },
+                    ListaMovimientos = new medios_pagos
+                    {
+                        TipoDocumentoCodigo =  "01",
+                        Serie = "F001",
+                        Correlativo = "2480",
+                        Condicion = "Contado",
+                        TipoCuentaCodigo = 1,
+                        CuentaNumero = "30303030",
+                        Usuario = "30303030",
+                        MonedaCodigo = "PEN",
+                        SucursalId = "50",
+                        TipoDocIdentidadCodigo = "",
+                        NumeroDocIdentidad = "",
+                        Observacion = "",
+                        Extension = { },
+                        CuentaValor = "1-30303030",
+                        Pago = 118,
+                        Vuelto = 0,
+                        FechaPago = "22/02/2022",
+                        NumeroOperacion = "",
+                        FechaVencimiento = "23/02/2022",
+                        PlazoDias = 1
+                    },
+
                     ListaGuias = { },
                     ListaCuotas = { },
 
@@ -2567,80 +2652,11 @@ namespace iOMG
                     AlojamientoNombreRazonSocial = "",
                     AlojamientoTipoDocIdentidadCodigo = ""
                 };
-                // "ListaDetalles": [ // Lista de detalles del comprobante
-                var oDetalle = new detalle_rapifac
-                {
-                    ID = 0,
-                    ComprobanteID = 0,
-                    Item = 1,
-                    TipoProductoCodigo = "",
-                    ProductoCodigo = "Prod00005",
-                    ProductoCodigoSUNAT = "39121321",
-                    TipoSistemaISCCodigo = "00",
-                    UnidadMedidaCodigo = "NIU",
-                    PrecioUnitarioSugerido = 0,
-                    PrecioUnitarioItem = 118,
-                    PrecioVentaCodigo = "01",
-                    ICBPER = 0,
-                    CargoIndicador = 0,
-                    DescuentoIndicador = false,
-                    DescuentoCargoCodigo = "00",
-                    PercepcionCantidadUmbral = 0,
-                    PercepcionMontoUmbral =  0,
-                    PercepcionPorcentaje = 0,
-                    Control = "0",
-                    PrecioCompra = 100.005,
-                    Cargo = 0,
-                    DescuentoGlobal = 0,
-                    Descuento = 0,
-                    ValorUnitario = 100,
-                    ValorVenta = 100,
-                    ValorVentaItem = 100,
-                    ValorVentaItemXML = 100,
-                    ValorVentaNeto = 100,
-                    ValorVentaNetoXML = 0,
-                    ISCUnitario = 0,
-                    ISCNeto = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    ICBPERItem = 0,
-                    ICBPERSubTotal = 0,
-                    DescuentoBase = 100,
-                    DescuentoCargo = 0,
-                    DescuentoCargoGravado = 0,
-                    CargoItem = 0,
-                    CargoTotal = 0,
-                    CargoNeto  = 0,
-                    PrecioVenta = 118,
-                    MontoTributo = 18,
-                    ISCPorcentaje = 0,
-                    ISCMonto = 0,
-                    CargoPorcentaje = 0,
-                    Extension = { },
-                    Descripcion = "00 PRODUCTO GRAVADO",
-                    Observacion = "",
-                    Cantidad = 1,
-                    PrecioCodigo = 7,
-                    PrecioUnitario = 118,
-                    Peso = 0,
-                    DescuentoMonto = 0,
-                    DescuentoPorcentaje = 0,
-                    TipoAfectacionIGVCodigo = "10",
-                    IGVNeto = 18,
-                    ImporteTotal = 118,
-                    PesoTotal = 0
-                };
 
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     string cabeza = JsonConvert.SerializeObject(obj);
-                    string detalles = JsonConvert.SerializeObject(oDetalle);
                     streamWriter.Write(cabeza);
-                    string json = "{\"ListaDetalles\":\"[\"}";
-                    streamWriter.Write(json);
-                    streamWriter.Write(detalles);
-                    json = "{\"ListaDetalles\":\"[\"}";
-                    streamWriter.Write(json);
                 }
 
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();

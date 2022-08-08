@@ -62,6 +62,7 @@
             this.tx_serie = new System.Windows.Forms.TextBox();
             this.tx_status = new System.Windows.Forms.TextBox();
             this.pan_cli = new System.Windows.Forms.Panel();
+            this.tx_dir_ubigpe = new System.Windows.Forms.TextBox();
             this.tx_dir_pe = new System.Windows.Forms.TextBox();
             this.tx_idc = new System.Windows.Forms.TextBox();
             this.tx_dat_distri = new System.Windows.Forms.TextBox();
@@ -175,7 +176,7 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_dir_ubigpe = new System.Windows.Forms.TextBox();
+            this.tx_dat_tdoc_s = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -519,6 +520,7 @@
             // pan_cli
             // 
             this.pan_cli.BackColor = System.Drawing.Color.DimGray;
+            this.pan_cli.Controls.Add(this.tx_dat_tdoc_s);
             this.pan_cli.Controls.Add(this.tx_dir_ubigpe);
             this.pan_cli.Controls.Add(this.tx_dir_pe);
             this.pan_cli.Controls.Add(this.tx_idc);
@@ -552,6 +554,15 @@
             this.pan_cli.Name = "pan_cli";
             this.pan_cli.Size = new System.Drawing.Size(869, 73);
             this.pan_cli.TabIndex = 4;
+            // 
+            // tx_dir_ubigpe
+            // 
+            this.tx_dir_ubigpe.Location = new System.Drawing.Point(697, 3);
+            this.tx_dir_ubigpe.Name = "tx_dir_ubigpe";
+            this.tx_dir_ubigpe.Size = new System.Drawing.Size(61, 20);
+            this.tx_dir_ubigpe.TabIndex = 412;
+            this.tx_dir_ubigpe.Tag = "direccion del pto de emision";
+            this.tx_dir_ubigpe.Visible = false;
             // 
             // tx_dir_pe
             // 
@@ -1638,14 +1649,14 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tx_dir_ubigpe
+            // tx_dat_tdoc_s
             // 
-            this.tx_dir_ubigpe.Location = new System.Drawing.Point(697, 3);
-            this.tx_dir_ubigpe.Name = "tx_dir_ubigpe";
-            this.tx_dir_ubigpe.Size = new System.Drawing.Size(61, 20);
-            this.tx_dir_ubigpe.TabIndex = 412;
-            this.tx_dir_ubigpe.Tag = "direccion del pto de emision";
-            this.tx_dir_ubigpe.Visible = false;
+            this.tx_dat_tdoc_s.Location = new System.Drawing.Point(748, 50);
+            this.tx_dat_tdoc_s.Name = "tx_dat_tdoc_s";
+            this.tx_dat_tdoc_s.Size = new System.Drawing.Size(31, 20);
+            this.tx_dat_tdoc_s.TabIndex = 420;
+            this.tx_dat_tdoc_s.Tag = "Codigo sunat del tipo de documento";
+            this.tx_dat_tdoc_s.Visible = false;
             // 
             // docsvta
             // 
@@ -1881,5 +1892,6 @@
         internal System.Windows.Forms.ComboBox cmb_tipo;
         internal System.Windows.Forms.TextBox tx_dat_tipdoc_s;
         private System.Windows.Forms.TextBox tx_dir_ubigpe;
+        internal System.Windows.Forms.TextBox tx_dat_tdoc_s;
     }
 }
