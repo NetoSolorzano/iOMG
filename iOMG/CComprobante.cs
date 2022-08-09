@@ -230,7 +230,7 @@ namespace iOMG
         public CComprobante()
         {
             ID = 0;
-            //EsBorrador = false;
+            EsBorrador = false;
             IdRepositorio = 0;
             DocumentoID = "";
             TipoDocumentoCodigo = "";

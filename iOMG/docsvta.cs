@@ -1964,7 +1964,7 @@ namespace iOMG
                 return;
             }
 
-            if (conex_Rapifac() == false) return;   //// **************
+/*            if (conex_Rapifac() == false) return;   //// **************
 
             if (tx_dat_tdoc.Text.Trim() == "")
             {
@@ -2003,6 +2003,7 @@ namespace iOMG
                 tx_direc.Focus();
                 return;
             }
+            */
             if (Tx_modo.Text == "NUEVO")
             {
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
@@ -2055,7 +2056,21 @@ namespace iOMG
                     "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    anula();
+                    // validaciones de conex con Rapifac
+                    if (anula_Rapifac() == false)
+                    {
+                        MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
+                            "con el proveedor OSE/PSE. Confirme que tenga internet." + Environment.NewLine +
+                            "No se puede grabar el comprobante.",
+                            "Falla en Facturación Electrónica", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    // despues de terminado todo en rapifac, grabamos en nuestra base de datos
+                    if (anula() == false)
+                    {
+                        MessageBox.Show("No se pudo anular comprobante internamente","Error en integrador",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        Application.Exit();
+                    }
                 }
                 else return;
             }
@@ -2297,6 +2312,7 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
+                // aca falta codificar ...
                 retorna = true;
             }
             else
@@ -2412,322 +2428,6 @@ namespace iOMG
                 httpWebRequest.Method = "POST";
                 httpWebRequest.Headers.Add("Authorization", "bearer " + token);
 
-                #region codigo anterior
-                /*
-                var ListaDet = new detalle_rapifac 
-                {
-                    ID = 0,
-                    ComprobanteID = 0,
-                    Item = 1,
-                    TipoProductoCodigo = "",
-                    ProductoCodigo = "Prod00005",
-                    ProductoCodigoSUNAT = "39121321",
-                    TipoSistemaISCCodigo = "00",
-                    UnidadMedidaCodigo = "NIU",
-                    PrecioUnitarioSugerido = 0,
-                    PrecioUnitarioItem = 118,
-                    PrecioVentaCodigo = "01",
-                    ICBPER = 0,
-                    CargoIndicador = 0,
-                    DescuentoIndicador = false,
-                    DescuentoCargoCodigo = "00",
-                    PercepcionCantidadUmbral = 0,
-                    PercepcionMontoUmbral = 0,
-                    PercepcionPorcentaje = 0,
-                    Control = "0",
-                    PrecioCompra = 100.005,
-                    Cargo = 0,
-                    DescuentoGlobal = 0,
-                    Descuento = 0,
-                    ValorUnitario = 100,
-                    ValorVenta = 100,
-                    ValorVentaItem = 100,
-                    ValorVentaItemXML = 100,
-                    ValorVentaNeto = 100,
-                    ValorVentaNetoXML = 0,
-                    ISCUnitario = 0,
-                    ISCNeto = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    ICBPERItem = 0,
-                    ICBPERSubTotal = 0,
-                    DescuentoBase = 100,
-                    DescuentoCargo = 0,
-                    DescuentoCargoGravado = 0,
-                    CargoItem = 0,
-                    CargoTotal = 0,
-                    CargoNeto = 0,
-                    PrecioVenta = 118,
-                    MontoTributo = 18,
-                    ISCPorcentaje = 0,
-                    ISCMonto = 0,
-                    CargoPorcentaje = 0,
-                    Extension = { },
-                    Descripcion = "00 PRODUCTO GRAVADO",
-                    Observacion = "",
-                    Cantidad = 1,
-                    PrecioCodigo = 7,
-                    PrecioUnitario = 118,
-                    Peso = 0,
-                    DescuentoMonto = 0,
-                    DescuentoPorcentaje = 0,
-                    TipoAfectacionIGVCodigo = "10",
-                    IGVNeto = 18,
-                    ImporteTotal = 118,
-                    PesoTotal = 0
-                };
-                var obj = new _rapifac
-                {
-                    ID = "0",
-                    IdRepositorio = "0",
-                    AplicaContingencia = true,
-                    AplicaAnticipo = true,
-                    AplicaOtroSistema = true,
-                    AplicaStockNegativo = true,
-                    ModificacionDePrecio = true,
-                    Sucursal = codSuc,
-                    IGVPorcentaje = Program.v_igv,
-                    DescuentoGlobalMonto = "0",
-                    DescuentoGlobalIndicadorDescuento = "0",
-                    DescuentoGlobalCodigoMotivo = "00",
-                    DescuentoGlobalNGPorcentaje = "0",
-                    DescuentoGlobalNGIndicadorDescuento = "00",
-                    DescuentoGlobalNGCodigoMotivo = "00",
-                    CargoGlobalPorcentaje = "0",
-                    DetraccionTipoOperacion = "01",
-                    CargoGlobalIndicadorCargos = "0",
-                    CargoGlobalCodigoMotivo = "0",
-                    CantidadDecimales = 2,
-                    AgentePercepcion = false,
-                    PermisoProductoSerie = true,
-                    PagosMultiples = false,
-                    EnviarCorreo = false,
-                    OrigenSistema = 7,
-                    TipoGuiaRemisionCodigo = "",
-                    ModalidadTrasladoCodigo = "02",
-                    TransportistaTipoDocIdentidadCodigo = "",
-                    ConductorTipoDocIdentidadCodigo = "1",
-                    CanalVenta = 2,
-                    Vendedor = tx_nomVen.Text,
-                    CondicionEstado = "",
-                    CondicionPago = rb_contado.Text,
-                    SituacionPagoCodigo = 2,
-                    DescuentoIndicador = 1,
-                    Ubigeo = tx_dir_ubigpe.Text,
-                    Anticipo = "",
-                    TipoCambio = "0",
-                    ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
-                    ClienteNumeroDocIdentidad = tx_ndc.Text,
-                    OrdenNumero = "",
-                    GuiaNumero = "",
-                    ReferenciaNumeroDocumento = "",
-                    ReferenciaTipoDocumento = "",
-                    DocAdicionalDetalle = "",
-                    DiasPermanencia = 0,
-                    FechaConsumo = dtp_pedido.Value.ToString("dd/MM/yyyy"),
-                    MotivoTrasladoDescripcion = "",
-                    FechaTraslado = "",
-                    TransportistaNumeroDocIdentidad = "",
-                    TransportistaNombreRazonSocial = "",
-                    PlacaVehiculo = "",
-                    ConductorNumeroDocIdentidad = "",
-
-                    //ListaDetalles = new detalle_rapifac   
-                    
-                    //ListaDetalles = JsonConvert.DeserializeObject<JArray>(array),
-                
-                {
-                    ID = 0,
-                    ComprobanteID = 0,
-                    Item = 1,
-                    TipoProductoCodigo = "",
-                    ProductoCodigo = "Prod00005",
-                    ProductoCodigoSUNAT = "39121321",
-                    TipoSistemaISCCodigo = "00",
-                    UnidadMedidaCodigo = "NIU",
-                    PrecioUnitarioSugerido = 0,
-                    PrecioUnitarioItem = 118,
-                    PrecioVentaCodigo = "01",
-                    ICBPER = 0,
-                    CargoIndicador = 0,
-                    DescuentoIndicador = false,
-                    DescuentoCargoCodigo = "00",
-                    PercepcionCantidadUmbral = 0,
-                    PercepcionMontoUmbral = 0,
-                    PercepcionPorcentaje = 0,
-                    Control = "0",
-                    PrecioCompra = 100.005,
-                    Cargo = 0,
-                    DescuentoGlobal = 0,
-                    Descuento = 0,
-                    ValorUnitario = 100,
-                    ValorVenta = 100,
-                    ValorVentaItem = 100,
-                    ValorVentaItemXML = 100,
-                    ValorVentaNeto = 100,
-                    ValorVentaNetoXML = 0,
-                    ISCUnitario = 0,
-                    ISCNeto = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    ICBPERItem = 0,
-                    ICBPERSubTotal = 0,
-                    DescuentoBase = 100,
-                    DescuentoCargo = 0,
-                    DescuentoCargoGravado = 0,
-                    CargoItem = 0,
-                    CargoTotal = 0,
-                    CargoNeto = 0,
-                    PrecioVenta = 118,
-                    MontoTributo = 18,
-                    ISCPorcentaje = 0,
-                    ISCMonto = 0,
-                    CargoPorcentaje = 0,
-                    Extension = { },
-                    Descripcion = "00 PRODUCTO GRAVADO",
-                    Observacion = "",
-                    Cantidad = 1,
-                    PrecioCodigo = 7,
-                    PrecioUnitario = 118,
-                    Peso = 0,
-                    DescuentoMonto = 0,
-                    DescuentoPorcentaje = 0,
-                    TipoAfectacionIGVCodigo = "10",
-                    IGVNeto = 18,
-                    ImporteTotal = 118,
-                    PesoTotal = 0
-                },
-                
-                ExoneradaXML = 0,
-                    InafectoXML = 0,
-                    ExportacionXML = 0,
-                    ImporteTotalTexto = "CIENTO DIECIOCHO CON 00/100 SOLES",
-                    Detraccion = 0,
-                    Percepcion = 0,
-                    PercepcionBaseImponible = 0,
-                    Retencion = 0,
-                    DescuentoGlobalMontoBase = 100,
-                    DescuentoGlobalNGMonto = 0,
-                    DescuentoGlobalNGMontoBase = 0,
-                    DescuentoNGMonto = 0,
-                    AnticiposGravado = 0,
-                    AnticiposExonerado = 0,
-                    AnticiposInafecto = 0,
-                    CargoGlobalMonto = 0,
-                    CargoGlobalMontoBase = 100,
-                    ISCBase = 100,
-                    GratuitoGravado = 0,
-                    TotalPrecioVenta = 118,
-                    TotalValorVenta = 100,
-                    Peso = 0,
-                    Bultos = 0,
-                    CreditoTotal = 0,
-                    PercepcionRegimen = "",
-                    PercepcionFactor = 0,
-
-                    ListaMovimientos = new medios_pagos
-                    {
-                        TipoDocumentoCodigo =  "01",
-                        Serie = "F001",
-                        Correlativo = "2480",
-                        Condicion = "Contado",
-                        TipoCuentaCodigo = 1,
-                        CuentaNumero = "30303030",
-                        Usuario = "30303030",
-                        MonedaCodigo = "PEN",
-                        SucursalId = "50",
-                        TipoDocIdentidadCodigo = "",
-                        NumeroDocIdentidad = "",
-                        Observacion = "",
-                        Extension = { },
-                        CuentaValor = "1-30303030",
-                        Pago = 118,
-                        Vuelto = 0,
-                        FechaPago = "22/02/2022",
-                        NumeroOperacion = "",
-                        FechaVencimiento = "23/02/2022",
-                        PlazoDias = 1
-                    },
-
-                    ListaGuias = { },
-                    ListaCuotas = { },
-
-                    EstadoContingencia = false,
-                    EstadoAnticipo = false,
-                    EstadoOtroSistema = false,
-                    ClasePrecioCodigo = 1,
-                    TipoPrecio = "0",
-                    FormatoPDF = "0",
-                    TipoDocumentoCodigo = "01",
-                    Serie = "F001",
-                    Correlativo = 2480,
-                    MonedaCodigo = "PEN",
-                    FechaEmision = "22/02/2022",
-                    TipoDocumentoCodigoModificado = "01",
-                    SerieModificado = "",
-                    CorrelativoModificado = "",
-                    TipoNotaCreditoCodigo = "01",
-                    TipoNotaDebitoCodigo = "01",
-                    TipoOperacionCodigo = "0101",
-                    MotivoTrasladoCodigo = "01",
-                    ClienteNombreRazonSocial = "YAÑEZ SANZ ANTHONY JOSEPH",
-                    ClienteDireccion = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
-                    UbigeoPartida = "080108",
-                    DireccionPartida = "AV. LA CULTURA 666 - WANCHAQ - CUSCO - CUSCO",
-                    UbigeoLlegada = "080105",
-                    DireccionLlegada = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
-                    TipoBusquedaProductoCodigo = 0,
-                    DescuentoGlobalPorcentaje = 0,
-                    DescuentoGlobalValor = 0,
-                    CorreoElectronicoPrincipal = "no-send@rapifac.com",
-                    Observacion = "",
-                    Gravado = 100,
-                    Exonerada = 0,
-                    Inafecto = 0,
-                    Exportacion = 0,
-                    OperacionNoGravada = 0,
-                    Gratuito = 0,
-                    TotalDescuentos = 0,
-                    DescuentoGlobal = 0,
-                    TotalAnticipos = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    ICBPER = 0,
-                    ImpuestoTotal = 18,
-                    ImpuestoVarios = 0,
-                    TotalOtrosCargos = 0,
-                    TotalImporteVenta = 118,
-                    PercepcionTotal = 0,
-                    TotalPago = 118,
-                    PesoTotal = 0,
-                    Leyenda = 0,
-                    BienServicioCodigo = "001",
-                    DetraccionPorcentaje = 10,
-                    RetencionPorcentaje = 3,
-                    DetraccionCuenta = "12-123466-7",
-                    DocAdicionalCodigo = 0,
-                    TotalRetencion = 118,
-                    MontoRetencion = 3.54,
-                    PendientePago = 118.00,
-                    PermitirCuotas = 1,
-                    AlojamientoPaisDocEmisor = "AF",
-                    PaisResidencia = "AF",
-                    FechaIngresoPais = "22/02/2022",
-                    FechaIngresoEstablecimiento = "22/02/2022",
-                    FechaSalidaEstablecimiento = "22/02/2022",
-                    AlojamientoNumeroDocIdentidad = "",
-                    AlojamientoNombreRazonSocial = "",
-                    AlojamientoTipoDocIdentidadCodigo = ""
-                };
-                List<detalle_rapifac> ListaDetalles = new List<detalle_rapifac>();
-                ListaDetalles.Add(ListaDet);
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    string cabeza = JsonConvert.SerializeObject(new { obj, ListaDetalles });
-                    streamWriter.Write(cabeza);
-                }
-                */
-                #endregion
                 CComprobanteDetalle det = new CComprobanteDetalle
                 {
                     ID = 0,
@@ -2789,7 +2489,7 @@ namespace iOMG
                     //IGVNeto = 18,
                     ImporteTotal = 118,
                     PesoTotal = 0
-                };
+                };                  // detalles
                 List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
                 aaa.Add(det);
                 CMovimientoCuenta cta = new CMovimientoCuenta
@@ -2810,11 +2510,11 @@ namespace iOMG
                     //CuentaValor = "1-30303030",
                     Pago = 118,
                     Vuelto = 0,
-                    FechaPago = "22/02/2022",
+                    FechaPago = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
                     NumeroOperacion = "",
-                    FechaVencimiento = "23/02/2022",
+                    FechaVencimiento = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
                     PlazoDias = 1
-                };
+                };                      // movimientos
                 List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
                 bbb.Add(cta);
 
@@ -2847,7 +2547,7 @@ namespace iOMG
                     DescuentoIndicador = false,
                     Ubigeo = tx_dir_ubigpe.Text,
                     Anticipo = false,
-                    TipoCambio = 0,
+                    TipoCambio = 1.0M,
                     ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
                     ClienteNumeroDocIdentidad = tx_ndc.Text,
                     GuiaNumero = "",
@@ -2902,7 +2602,7 @@ namespace iOMG
                     Serie = "F001",
                     Correlativo = 2480,
                     MonedaCodigo = "PEN",
-                    FechaEmision = "22/02/2022",
+                    FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),    // "22/02/2022",
                     TipoDocumentoCodigoModificado = "01",
                     SerieModificado = "",
                     CorrelativoModificado = "",
@@ -2952,9 +2652,9 @@ namespace iOMG
                     //PermitirCuotas = 1,
                     AlojamientoPaisDocEmisor = "AF",
                     PaisResidencia = "AF",
-                    FechaIngresoPais = "22/02/2022",
-                    FechaIngresoEstablecimiento = "22/02/2022",
-                    FechaSalidaEstablecimiento = "22/02/2022",
+                    //FechaIngresoPais = "22/02/2022",
+                    //FechaIngresoEstablecimiento = "22/02/2022",
+                    //FechaSalidaEstablecimiento = "22/02/2022",
                     AlojamientoNumeroDocIdentidad = "",
                     AlojamientoNombreRazonSocial = "",
                     AlojamientoTipoDocIdentidadCodigo = "1"
@@ -2975,6 +2675,79 @@ namespace iOMG
                 
 
             }
+            return retorna;
+        }
+        private bool anula_Rapifac()                                                // damos de baja el comprobante
+        {
+            bool retorna = false;
+            string token = conex_token();
+            // datos variables para la emisión
+            string axs = string.Format("idcodice='{0}'", tx_dat_orig.Text);
+            DataRow[] row = dttaller.Select(axs);
+            string codSuc = row[0].ItemArray[6].ToString();                     // codigo de sucursal
+
+            // ANULA el comprobante
+            string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/anular";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+            httpWebRequest.ContentType = "application/json";        // , text/javascript, */*; q=0.01
+            httpWebRequest.Method = "PUT";
+            httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+            
+            CComprobanteAnula obj_anu = new CComprobanteAnula
+            {
+                IdMovimiento = 0,               // id rapifac del comprobante a anular
+                TipoCuentaCodigo = 1,                                   // que significa esto
+                CuentaNumero = "10101010",                              // que significa esto
+                CuentaNombre = "",
+                TipoIngresoEgreso = 1,                                  // que significa esto
+                MontoPagar = decimal.Parse(tx_valor.Text),
+                MonedaCodigo = tx_dat_mon_s.Text,
+                Observacion = "",
+                NumeroOperacion = "",
+                TipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
+                NumeroDocIdentidad = tx_ndc.Text,
+                Origen = "VENTAS",                                      // que significa esto
+                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
+                Correlativo = int.Parse(tx_corre.Text),
+                Usuario = Program.vg_nuse,
+                IdOrigen = 1,                                           // que significa esto
+                Estado = 1,                                             // que significa esto
+                FechaPago = dtp_pedido.Value.Date.ToString("yyyy-MM-dd"),    // que formato va aca?
+                SucursalId = int.Parse(codSuc),
+                Pago = decimal.Parse(tx_valor.Text),                    // valor del comprobante?
+                Pagado = 0,                                             // que va aca?
+                Saldo = 0,                                              // que va aca?
+                FechaVencimiento = "",                                  // vencimiento de quien?
+                PlazoDias = 0,
+                CondicionComprobante = rb_contado.Text,
+                Condicion = rb_contado.Text,
+                Vuelto = 0,
+                CondicionPagoModificado = "",
+                CuentaNumeroModificado = "",
+                CuentaTipoModificado = "",
+            };
+            List<CComprobanteAnula> ccc = new List<CComprobanteAnula>();
+            ccc.Add(obj_anu);
+            string cabeza = "[";
+            cabeza = cabeza + JsonConvert.SerializeObject(obj_anu) + "]";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(cabeza);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                MessageBox.Show(result.ToString());
+            }
+
+            return retorna;
+        }
+        private bool Jala_oc_Rapifac()                                              // jala comprobante de rapifac
+        {
+            bool retorna = false;
+
             return retorna;
         }
         #endregion
