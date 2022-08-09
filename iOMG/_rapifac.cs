@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,7 +63,9 @@ namespace iOMG
         public string TransportistaNombreRazonSocial;       //
         public string PlacaVehiculo;                        //
         public string ConductorNumeroDocIdentidad;          // 
-        public detalle_rapifac ListaDetalles;
+        //public detalle_rapifac ListaDetalles;
+        //public JArray ListaDetalles;
+        //public List<detalle_rapifac> ListaDetalles;
         public double ExoneradaXML;
         public double InafectoXML;
         public double ExportacionXML;
@@ -245,5 +248,10 @@ namespace iOMG
         public string NumeroOperacion;
         public string FechaVencimiento;
         public int PlazoDias;
+    }
+
+    public class FormatoFechaPersonalizado
+    {
+
     }
 }

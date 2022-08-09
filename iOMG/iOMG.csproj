@@ -128,6 +128,15 @@
       <DependentUpon>etiq_mov2.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CAnticipo.cs" />
+    <Compile Include="CComprobante.cs" />
+    <Compile Include="CComprobanteDetalle.cs" />
+    <Compile Include="CCondicionComercial.cs" />
+    <Compile Include="CCreditoCuota.cs" />
+    <Compile Include="CDocumentoRelacionado.cs" />
+    <Compile Include="CGuiasComprobante.cs" />
+    <Compile Include="CMovimientoCuenta.cs" />
+    <Compile Include="CProductoCodigoSerie.cs" />
     <Compile Include="_rapifac.cs" />
     <Compile Include="clients.cs">
       <SubType>Form</SubType>
