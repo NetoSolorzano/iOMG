@@ -178,6 +178,8 @@
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
             this.tx_dat_mon_s = new System.Windows.Forms.TextBox();
+            this.tx_codSuc = new System.Windows.Forms.TextBox();
+            this.tx_id_rapifac = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1667,11 +1669,30 @@
             this.tx_dat_mon_s.TabIndex = 420;
             this.tx_dat_mon_s.Visible = false;
             // 
+            // tx_codSuc
+            // 
+            this.tx_codSuc.Location = new System.Drawing.Point(211, -1);
+            this.tx_codSuc.Name = "tx_codSuc";
+            this.tx_codSuc.Size = new System.Drawing.Size(24, 20);
+            this.tx_codSuc.TabIndex = 421;
+            this.tx_codSuc.Visible = false;
+            // 
+            // tx_id_rapifac
+            // 
+            this.tx_id_rapifac.Location = new System.Drawing.Point(790, 29);
+            this.tx_id_rapifac.Name = "tx_id_rapifac";
+            this.tx_id_rapifac.ReadOnly = true;
+            this.tx_id_rapifac.Size = new System.Drawing.Size(36, 20);
+            this.tx_id_rapifac.TabIndex = 422;
+            this.tx_id_rapifac.Visible = false;
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.tx_id_rapifac);
+            this.Controls.Add(this.tx_codSuc);
             this.Controls.Add(this.tx_dat_mon_s);
             this.Controls.Add(this.tx_dat_tipdoc_s);
             this.Controls.Add(this.pan_tipo);
@@ -1904,5 +1925,7 @@
         private System.Windows.Forms.TextBox tx_dir_ubigpe;
         internal System.Windows.Forms.TextBox tx_dat_tdoc_s;
         private System.Windows.Forms.TextBox tx_dat_mon_s;
+        private System.Windows.Forms.TextBox tx_codSuc;
+        private System.Windows.Forms.TextBox tx_id_rapifac;
     }
 }

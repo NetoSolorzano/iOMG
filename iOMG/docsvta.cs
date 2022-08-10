@@ -357,7 +357,7 @@ namespace iOMG
             string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
             "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,round(totdvta,2) as totdvta,totpags,saldvta,estdvta,frase01," +
             "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-            "referen1,ubipdest,conPago,contrato,vendedor,muebles from cabfactu where ";
+            "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose from cabfactu where ";
             string parte = "";
             if (campo == "tx_idr" && tx_idr.Text != "" && tx_corre.Text.Trim() == "")
             {
@@ -422,6 +422,7 @@ namespace iOMG
                             tx_prdsCont.Text = dr.GetString("muebles");
                             rb_contado.Checked = (dr.GetString("conPago") == "1") ? true : false;
                             tx_tipComp.Text = dr.GetString("tipdcob");
+                            tx_id_rapifac.Text = dr.GetString("idpse_ose");
                         }
                         dr.Dispose();
                         if (tx_idr.Text != "")
@@ -1501,6 +1502,7 @@ namespace iOMG
                 tx_dir_pe.Text = row[0].ItemArray[4].ToString();
                 tx_dir_ubigpe.Text = row[0].ItemArray[5].ToString();
                 tx_serie.Text = row[0].ItemArray[3].ToString();
+                tx_codSuc.Text = row[0].ItemArray[6].ToString();          // codigo de sucursal fact. elect
             }
         }
         #endregion comboboxes
@@ -2015,13 +2017,22 @@ namespace iOMG
                 if (aa == DialogResult.Yes)
                 {
                     // validaciones de conex con Rapifac
-                    if (conex_Rapifac() == false)
+                    string resultado = conex_Rapifac();
+                    if (resultado == "")
                     {
                         MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
                             "con el proveedor OSE/PSE. Confirme que tenga internet." + Environment.NewLine +
                             "No se puede grabar el comprobante.",
                             "Falla en Facturación Electrónica", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
+                    }
+                    else
+                    {
+                        JArray v = JArray.Parse(resultado);
+                        var items = v.Where(x => x["cdr"].ToString() == tx_dat_tipdoc_s.Text).ToList();
+                        //serComp = items[0].SelectToken("Serie").ToString();
+                        //numComp = items[0].SelectToken("Correlativo").ToString();
+                        tx_id_rapifac.Text = items[0].SelectToken("IDComprobante").ToString();    // esto debemos grabarlo en nuestra tabla cabfactu
                     }
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
@@ -2051,7 +2062,11 @@ namespace iOMG
             if (Tx_modo.Text == "ANULAR")
             {
                 // validaciones antes de anular
-
+                if (dtp_pedido.Value.Date != DateTime.Now.Date)     // Rapifac solo permite anular comprobantes del día   10/08/2022
+                {
+                    MessageBox.Show("No se permite anular fuera del día","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    return;
+                }
                 var aa = MessageBox.Show(" Confirma que desea ANULAR " + Environment.NewLine +
                     "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
@@ -2110,12 +2125,12 @@ namespace iOMG
                     "fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
                     "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
                     "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-                    "referen1,ubipdest,conPago,contrato,vendedor,muebles," +
+                    "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
                     "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
                     "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
                     "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
-                    "@refer,@updest,@conpag,@cont,@vende,@mueb," +
+                    "@refer,@updest,@conpag,@cont,@vende,@mueb,@idpse," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
@@ -2172,6 +2187,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@cont", tx_cont.Text);
                     micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
                     micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
+                    micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text); 
                     micon.Parameters.AddWithValue("@verApp", "");
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@iplan", lib.iplan());
@@ -2388,18 +2404,14 @@ namespace iOMG
             }
             return retorna;
         }
-        private bool conex_Rapifac()                                                // obtemos la serie y correlativo, actualizmos el correlativo a usar
+        private string conex_Rapifac()                                                // obtemos la serie y correlativo, actualizmos el correlativo a usar
         {
-            bool retorna = false;
+            string retorna = "";
             string token = conex_token();
             if (token != "")
             {
                 // datos variables para la emisión
-                string axs = string.Format("idcodice='{0}'", tx_dat_orig.Text);
-                DataRow[] row = dttaller.Select(axs);
-                string codSuc = row[0].ItemArray[6].ToString();                     // codigo de sucursal
-
-                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + codSuc;
+                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc;
 
                 //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
@@ -2522,7 +2534,7 @@ namespace iOMG
                 {
                     ID = 0,
                     IdRepositorio = 0,
-                    Sucursal = int.Parse(codSuc),
+                    Sucursal = int.Parse(tx_codSuc.Text),
                     IGVPorcentaje = decimal.Parse(Program.v_igv),
                     DescuentoGlobalMonto = 0,
                     DescuentoGlobalIndicadorDescuento = "0",
@@ -2671,6 +2683,7 @@ namespace iOMG
                 {
                     var result = streamReader.ReadToEnd();
                     MessageBox.Show(result.ToString());
+                    retorna = result.ToString();
                 }
                 
 
@@ -2681,11 +2694,6 @@ namespace iOMG
         {
             bool retorna = false;
             string token = conex_token();
-            // datos variables para la emisión
-            string axs = string.Format("idcodice='{0}'", tx_dat_orig.Text);
-            DataRow[] row = dttaller.Select(axs);
-            string codSuc = row[0].ItemArray[6].ToString();                     // codigo de sucursal
-
             // ANULA el comprobante
             string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/anular";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
@@ -2695,7 +2703,7 @@ namespace iOMG
             
             CComprobanteAnula obj_anu = new CComprobanteAnula
             {
-                IdMovimiento = 0,               // id rapifac del comprobante a anular
+                IdMovimiento = int.Parse(tx_id_rapifac.Text),           // id rapifac del comprobante a anular
                 TipoCuentaCodigo = 1,                                   // que significa esto
                 CuentaNumero = "10101010",                              // que significa esto
                 CuentaNombre = "",
@@ -2714,7 +2722,7 @@ namespace iOMG
                 IdOrigen = 1,                                           // que significa esto
                 Estado = 1,                                             // que significa esto
                 FechaPago = dtp_pedido.Value.Date.ToString("yyyy-MM-dd"),    // que formato va aca?
-                SucursalId = int.Parse(codSuc),
+                SucursalId = int.Parse(tx_codSuc.Text),
                 Pago = decimal.Parse(tx_valor.Text),                    // valor del comprobante?
                 Pagado = 0,                                             // que va aca?
                 Saldo = 0,                                              // que va aca?
@@ -2747,7 +2755,17 @@ namespace iOMG
         private bool Jala_oc_Rapifac()                                              // jala comprobante de rapifac
         {
             bool retorna = false;
-
+            /*      // NO NECESITAMOS ESTO ... 10/08/2022
+            string token = conex_token();
+            // obtiene el comprobante desde rapifac
+            string host = "http://wsventas-exp.rapifac.com/v0/comprobantes";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+            httpWebRequest.ContentType = "application/json";        // , text/javascript, 
+            httpWebRequest.Method = "GET";
+            httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+            // me quede acá .... para jalar es necesario el ID y ademas serie y numero?
+            // no se podría jalar solo con la serie y numero ??
+            */
             return retorna;
         }
         #endregion
