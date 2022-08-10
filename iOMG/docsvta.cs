@@ -60,6 +60,7 @@ namespace iOMG
         string estcer = "";             // estado de pedido de clientes cerrado tal como esta, ya no se atiende
         string codVar = "";             // 4 caracteres de inicio que permiten varios items por pedido
         string MonDeft = "";            // moneda por defecto para los comprobantes
+        string MonTodas = "";           // variable para determinar si van todas las monedas o solo soles, S=soles, T=todas
         string v_igv = Program.v_igv;   // porentaje en numero del igv
         string codCanc = "";            // codigo estado cancelado
         string lps = "";                // listado de productos que tienen stock
@@ -101,6 +102,7 @@ namespace iOMG
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
         DataTable dtfp = new DataTable();       // combo para tipo de pago
         DataTable dtpedido = new DataTable();   // tipos documento de venta
+        DataTable dtmon = new DataTable();      // monedas
         string vpago = "";                      // pago anticipo o cancelatorio
         string[,] dtpagos = new string[10, 6];  // 10 filas, 6 columnas para los medios de pago por comprobante
 
@@ -325,6 +327,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "Anulado") nomanu = row["valor"].ToString().Trim();        // nombre estado anulado
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "cancelado") codCanc = row["valor"].ToString().Trim();     // codigo estado cancelado
                         if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "default") MonDeft = row["valor"].ToString().Trim();          // moneda por defecto
+                        if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "todas") MonTodas = row["valor"].ToString().Trim();          // moneda por defecto
                         if (row["campo"].ToString() == "items" && row["param"].ToString() == "stock") lps = row["valor"].ToString().Trim();                 // tipos de muebles que se hacen contrato
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "nomImTK") v_impTK = row["valor"].ToString().Trim();       // nombre de la impresora de tickets
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "factura") codfact = row["valor"].ToString().Trim();       // codigo tipo doc factura
@@ -443,6 +446,8 @@ namespace iOMG
                                 row = dtfp.Select(axs);
                                 cmb_plazo.SelectedItem = (row.Length > 0)? row[0].ItemArray[0].ToString() : "";
                             }
+                            // moneda
+                            cmb_mon.SelectedItem = tx_dat_mone.Text;
                         }
                         else
                         {
@@ -645,6 +650,19 @@ namespace iOMG
                         }
                     }
                 }
+                // seleccion de moneda
+                const string conmon = "select descrizionerid,idcodice,codigo from desc_mon where numero=1";
+                using (MySqlCommand my = new MySqlCommand(conmon, conn))
+                {
+                    using (MySqlDataAdapter dafp = new MySqlDataAdapter(my))
+                    {
+                        dafp.Fill(dtmon);
+                        foreach (DataRow row in dtmon.Rows)
+                        {
+                            cmb_mon.Items.Add(row.ItemArray[1].ToString());
+                        }
+                    }
+                }
             }
             conn.Close();
         }
@@ -701,7 +719,6 @@ namespace iOMG
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             Tx_modo.Text = modo;
-            //cmb_taller.Enabled = false;
             if (modo != "NUEVO")
             {
                 tx_dat_orig.Text = "";
@@ -720,7 +737,9 @@ namespace iOMG
                 dtp_pedido.Value = DateTime.Now;
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
-                tx_dat_mone.Text = MonDeft;                 // en este momento todo es soles
+                cmb_mon.SelectedItem = MonDeft;               // por defecto moneda nacional
+                if (MonTodas == "S") cmb_mon.Enabled = false;
+                else cmb_mon.Enabled = true;
             }
             ini_pagos();
         }
@@ -1505,6 +1524,23 @@ namespace iOMG
                 tx_codSuc.Text = row[0].ItemArray[6].ToString();          // codigo de sucursal fact. elect
             }
         }
+        private void cmb_mon_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmb_mon.SelectedIndex > -1)
+            {
+                string axs = string.Format("idcodice='{0}'", cmb_mon.Text);
+                DataRow[] row = dtmon.Select(axs);
+                tx_dat_mone.Text = row[0].ItemArray[1].ToString();
+                tx_dat_mon_s.Text = row[0].ItemArray[2].ToString();
+            }
+        }
+        private void cmb_mon_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string axs = string.Format("idcodice='{0}'", cmb_mon.Text);
+            DataRow[] row = dtmon.Select(axs);
+            tx_dat_mone.Text = row[0].ItemArray[1].ToString();
+            tx_dat_mon_s.Text = row[0].ItemArray[2].ToString();
+        }
         #endregion comboboxes
 
         #region leaves
@@ -1966,48 +2002,50 @@ namespace iOMG
                 return;
             }
 
-/*            if (conex_Rapifac() == false) return;   //// **************
+/*            if (conex_Rapifac() == false) return;   //// **************/
 
             if (tx_dat_tdoc.Text.Trim() == "")
             {
-                MessageBox.Show("Seleccione un cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione el tipo de documento del cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmb_tdoc.Focus();
                 return;
             }
             if (tx_ndc.Text.Trim() == "")
             {
-                MessageBox.Show("Seleccione un cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Ingrese el documento del cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 tx_ndc.Focus();
                 return;
             }
-            if (dataGridView1.Rows.Count < 2)
-            {
-                MessageBox.Show("Ingrese al menos un producto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tx_d_can.Focus();
-                return;
-            }
-            if (tx_impMedios.Text != tx_valor.Text)
-            {
-                MessageBox.Show("El importe en medios de pago debe" + Environment.NewLine +
-                    "ser igual al valor del comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tx_impMedios.Focus();
-                return;
-            }
-            if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codfact)
-            {
-                MessageBox.Show("Es obligatorio registrar la dirección","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                tx_direc.Focus();
-                return;
-            }
-            if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codbole && double.Parse(tx_valor.Text) > double.Parse(valdirec))
-            {
-                MessageBox.Show("Es obligatorio registrar la dirección", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                tx_direc.Focus();
-                return;
-            }
-            */
+            
             if (Tx_modo.Text == "NUEVO")
             {
+                // validaciones 
+                if (dataGridView1.Rows.Count < 2)
+                {
+                    MessageBox.Show("Ingrese al menos un producto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tx_d_can.Focus();
+                    return;
+                }
+                if (tx_impMedios.Text != tx_valor.Text)
+                {
+                    MessageBox.Show("El importe en medios de pago debe" + Environment.NewLine +
+                        "ser igual al valor del comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tx_impMedios.Focus();
+                    return;
+                }
+                if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codfact)
+                {
+                    MessageBox.Show("Es obligatorio registrar la dirección", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_direc.Focus();
+                    return;
+                }
+                if (tx_direc.Text.Trim().Length < 8 && tx_dat_tipdoc.Text == codbole && double.Parse(tx_valor.Text) > double.Parse(valdirec))
+                {
+                    MessageBox.Show("Es obligatorio registrar la dirección", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_direc.Focus();
+                    return;
+                }
+
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
                 if (valProdCont() == true) tx_prdsCont.Text = "S";
                 else tx_prdsCont.Text = "N";
@@ -2016,7 +2054,7 @@ namespace iOMG
                     "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    // validaciones de conex con Rapifac
+                    /* validaciones de conex con Rapifac
                     string resultado = conex_Rapifac();
                     if (resultado == "")
                     {
@@ -2030,10 +2068,10 @@ namespace iOMG
                     {
                         JArray v = JArray.Parse(resultado);
                         var items = v.Where(x => x["cdr"].ToString() == tx_dat_tipdoc_s.Text).ToList();
-                        //serComp = items[0].SelectToken("Serie").ToString();
-                        //numComp = items[0].SelectToken("Correlativo").ToString();
+                        tx_serie.Text = items[0].SelectToken("Serie").ToString();
+                        tx_corre.Text = items[0].SelectToken("Correlativo").ToString();
                         tx_id_rapifac.Text = items[0].SelectToken("IDComprobante").ToString();    // esto debemos grabarlo en nuestra tabla cabfactu
-                    }
+                    } */
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
@@ -2071,7 +2109,7 @@ namespace iOMG
                     "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    // validaciones de conex con Rapifac
+                    /* validaciones de conex con Rapifac
                     if (anula_Rapifac() == false)
                     {
                         MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
@@ -2080,6 +2118,7 @@ namespace iOMG
                             "Falla en Facturación Electrónica", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+                    */
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (anula() == false)
                     {
@@ -2171,7 +2210,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@m1clte", "");
                     micon.Parameters.AddWithValue("@tipacc", ""); // tx_dat_plazo.Text                  // pago del documento x defecto si nace la fact pagada
                     micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
-                    micon.Parameters.AddWithValue("@codMN", MonDeft);               // codigo moneda local
+                    micon.Parameters.AddWithValue("@codMN", MonDeft);                  // codigo moneda local
                     micon.Parameters.AddWithValue("@subMN", subtMN);
                     micon.Parameters.AddWithValue("@igvMN", igvtMN);
                     micon.Parameters.AddWithValue("@totMN", fletMN);
@@ -2328,7 +2367,22 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                // aca falta codificar ...
+                string canul = "update cabfactu set estdvta=@estser,obsdvta=@obse,usera=@asd,fecha=now()," +
+                            "verApp=@veap,diriplan4=@dil4,diripwan4=@diw4,netbname=@nbnp,estintreg=@eiar " +
+                            "where id=@idr";
+                using (MySqlCommand micon = new MySqlCommand(canul, conn))
+                {
+                    micon.Parameters.AddWithValue("@idr", tx_idr.Text);
+                    micon.Parameters.AddWithValue("@estser", estanu);
+                    micon.Parameters.AddWithValue("@obse", tx_coment.Text);
+                    micon.Parameters.AddWithValue("@asd", asd);
+                    micon.Parameters.AddWithValue("@dil4", lib.iplan());
+                    micon.Parameters.AddWithValue("@diw4", "");   // Program.vg_ipwan
+                    micon.Parameters.AddWithValue("@nbnp", Environment.MachineName);
+                    micon.Parameters.AddWithValue("@veap", "");     // verapp
+                    micon.Parameters.AddWithValue("@eiar", "A0");  // codigo anulacion interna en DB A0
+                    micon.ExecuteNonQuery();
+                }
                 retorna = true;
             }
             else
@@ -3334,5 +3388,6 @@ namespace iOMG
             if (e.ToString().Trim() == "") tx_status.Visible = false;
             else tx_status.Visible = true;
         }
+
     }
 }
