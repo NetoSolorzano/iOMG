@@ -183,4 +183,6 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form repsfact, agregar P.A. de registro de ventas .................................. ok 02/08/22
 - form docsvta, adecuaciones para fact elect con rapifac via web services ............ ok 10/08/22
 - form docsvta, no esta imprimiendo en TK cancelacion, el importe de anticipos .......
+- form contratos, "error en obtener detalle de contrato" ............................. ok 11/08/22
+- OJO, el contrato 0101104, tiene anticipo y cancelacion, el anticipo no esta actualizado el contrato y debería estarlo.
 

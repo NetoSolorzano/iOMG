@@ -943,11 +943,14 @@ namespace iOMG
             dataGridView1.Columns[15].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[15].Name = "tda_item";
             // total 
-            dataGridView1.Columns[16].Visible = false;
-            dataGridView1.Columns[16].HeaderText = "totCat";      // titulo de la columna
-            dataGridView1.Columns[16].Width = 60;                 // ancho
-            dataGridView1.Columns[16].ReadOnly = true;            // lectura o no
-            dataGridView1.Columns[16].Name = "totCat";
+            if (int.Parse(dataGridView1.Columns.Count.ToString()) > 16)
+            {
+                dataGridView1.Columns[16].Visible = false;
+                dataGridView1.Columns[16].HeaderText = "totCat";      // titulo de la columna
+                dataGridView1.Columns[16].Width = 60;                 // ancho
+                dataGridView1.Columns[16].ReadOnly = true;            // lectura o no
+                dataGridView1.Columns[16].Name = "totCat";
+            }
         }
         private void armani()                                                   // arma el codigo y busca en la maestra
         {
@@ -1313,7 +1316,7 @@ namespace iOMG
                 "left join desc_dt2 b on b.idcodice=a.piedra " +
                 "left join desc_mad c on c.idcodice=a.madera " +
                 "WHERE a.contratoh = @cont ";
-            try
+            //try
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -1334,12 +1337,12 @@ namespace iOMG
                 }
                 conn.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error en obtener detalle del contrato");
-                Application.Exit();
-                return;
-            }
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Error en obtener detalle del contrato");
+            //    Application.Exit();
+            //    return;
+            //}
         }
         private bool jalacont(string ctrato)                                    // jala contrato desde la base de datos
         {
