@@ -3797,9 +3797,9 @@ namespace iOMG
                     tx_serie.Focus();
                     return;
                 }
-                */
-                if (tx_mc.Text != "" && tx_serie.Text != "" && tx_corre.Text != "") jalaDatFact("T", tx_mc.Text, tx_serie.Text, tx_corre.Text, "1");
-                //tx_mc.Text = ""; tx_serie.Text = ""; tx_corre.Text = "";
+                COMENTAMOS ESTA PARTE DE LA LLAMADA A jalaDatFact porque esta duplicando valor a cuenta 10/08/2022 */ 
+                //if (tx_mc.Text != "" && tx_serie.Text != "" && tx_corre.Text != "") jalaDatFact("T", tx_mc.Text, tx_serie.Text, tx_corre.Text, "1");
+                //tx_mc.Text = ""; tx_serie.Text = ""; tx_corre.Text = "";      // 10/08/2022 no esta funcando esto .. esta duplicando el a cuenta
                 tx_coment.Focus();
             }
         }

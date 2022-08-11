@@ -448,6 +448,7 @@ namespace iOMG
                             }
                             // moneda
                             cmb_mon.SelectedItem = tx_dat_mone.Text;
+                            cmb_mon_SelectionChangeCommitted(null, null);
                         }
                         else
                         {
@@ -737,7 +738,9 @@ namespace iOMG
                 dtp_pedido.Value = DateTime.Now;
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
-                cmb_mon.SelectedItem = MonDeft;               // por defecto moneda nacional
+                tx_dat_mone.Text = MonDeft;
+                cmb_mon_SelectionChangeCommitted(null, null);
+                cmb_mon.SelectedItem = tx_dat_mone.Text;
                 if (MonTodas == "S") cmb_mon.Enabled = false;
                 else cmb_mon.Enabled = true;
             }
@@ -749,7 +752,7 @@ namespace iOMG
             try
             {
                 DataTable dt = new DataTable();
-                dataGridView1.Rows.Clear();
+                //dataGridView1.Rows.Clear();
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
@@ -825,6 +828,7 @@ namespace iOMG
                         double valCont, valAnti = 0;
                         if (vpago == "cancelacion")
                         {
+                            dataGridView1.Rows.Clear();
                             using (MySqlCommand micon = new MySqlCommand(conpag, conn))
                             {
                                 micon.Parameters.AddWithValue("@cont", conti);
@@ -853,6 +857,8 @@ namespace iOMG
                         }
                         if (dt.Rows.Count > 0)
                         {
+                            dataGridView1.Rows.Clear();
+
                             tx_idc.Text = dt.Rows[0].ItemArray[10].ToString();
                             tx_dat_tdoc.Text = dt.Rows[0].ItemArray[11].ToString();
                             string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
@@ -1526,9 +1532,11 @@ namespace iOMG
         }
         private void cmb_mon_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (cmb_mon.SelectedIndex > -1)
+            if (true) // cmb_mon.SelectedIndex > -1
             {
-                string axs = string.Format("idcodice='{0}'", cmb_mon.Text);
+                string axs = "";
+                if (cmb_mon.Text == "") axs = string.Format("idcodice='{0}'", tx_dat_mone.Text);
+                else axs = string.Format("idcodice='{0}'", cmb_mon.Text);
                 DataRow[] row = dtmon.Select(axs);
                 tx_dat_mone.Text = row[0].ItemArray[1].ToString();
                 tx_dat_mon_s.Text = row[0].ItemArray[2].ToString();
@@ -1633,6 +1641,8 @@ namespace iOMG
                     tx_ndc.Focus();
                     return;
                 }
+                if (rb_tbienes.Checked == false && rb_tserv.Checked == false) rb_tbienes.Checked = true;
+                if (rb_bienes.Checked == false && rb_antic.Checked == false) rb_bienes.Checked = true; 
                 if (rb_bienes.Checked == true)  // pago total vta directa o anticipo de vta con contrato
                 {
                     // Aca no hay F1  ... acá vamos defrente con el número
