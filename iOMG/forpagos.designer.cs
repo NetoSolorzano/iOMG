@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(forpagos));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -44,11 +46,14 @@
             this.noper = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.codpag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fpago = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.tx_total = new iOMG.NumericTextBox();
             this.bt_mas = new System.Windows.Forms.Button();
             this.tx_tfil = new iOMG.NumericTextBox();
             this.tx_dat_mp = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tx_fpago = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,10 +72,10 @@
             // 
             this.button2.Image = global::iOMG.Properties.Resources.floppy_red;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.Location = new System.Drawing.Point(239, 166);
+            this.button2.Location = new System.Drawing.Point(272, 166);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(99, 38);
-            this.button2.TabIndex = 5;
+            this.button2.TabIndex = 6;
             this.button2.Text = "GRABA";
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.UseVisualStyleBackColor = true;
@@ -109,7 +114,7 @@
             // 
             this.tx_importe.AllowSpace = false;
             this.tx_importe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_importe.Location = new System.Drawing.Point(218, 23);
+            this.tx_importe.Location = new System.Drawing.Point(216, 24);
             this.tx_importe.Name = "tx_importe";
             this.tx_importe.Size = new System.Drawing.Size(82, 21);
             this.tx_importe.TabIndex = 2;
@@ -119,7 +124,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(233, 8);
+            this.label2.Location = new System.Drawing.Point(231, 8);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 414;
@@ -143,13 +148,14 @@
             this.nompag,
             this.noper,
             this.importe,
-            this.codpag});
+            this.codpag,
+            this.fpago});
             this.dataGridView1.Location = new System.Drawing.Point(6, 50);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 15;
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView1.Size = new System.Drawing.Size(332, 111);
-            this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.Size = new System.Drawing.Size(415, 111);
+            this.dataGridView1.TabIndex = 5;
             this.dataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridView1_UserDeletedRow);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
@@ -187,9 +193,12 @@
             // 
             // importe
             // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.importe.DefaultCellStyle = dataGridViewCellStyle1;
             this.importe.HeaderText = "Imp.S/";
             this.importe.Name = "importe";
             this.importe.ReadOnly = true;
+            this.importe.Width = 90;
             // 
             // codpag
             // 
@@ -198,10 +207,19 @@
             this.codpag.ReadOnly = true;
             this.codpag.Visible = false;
             // 
+            // fpago
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.fpago.DefaultCellStyle = dataGridViewCellStyle2;
+            this.fpago.HeaderText = "F_PAGO";
+            this.fpago.Name = "fpago";
+            this.fpago.ReadOnly = true;
+            this.fpago.Width = 90;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 179);
+            this.label1.Location = new System.Drawing.Point(44, 179);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 418;
@@ -211,7 +229,7 @@
             // 
             this.tx_total.AllowSpace = false;
             this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_total.Location = new System.Drawing.Point(82, 174);
+            this.tx_total.Location = new System.Drawing.Point(115, 174);
             this.tx_total.Name = "tx_total";
             this.tx_total.ReadOnly = true;
             this.tx_total.Size = new System.Drawing.Size(82, 21);
@@ -221,10 +239,10 @@
             // bt_mas
             // 
             this.bt_mas.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bt_mas.Location = new System.Drawing.Point(309, 18);
+            this.bt_mas.Location = new System.Drawing.Point(392, 18);
             this.bt_mas.Name = "bt_mas";
             this.bt_mas.Size = new System.Drawing.Size(29, 28);
-            this.bt_mas.TabIndex = 3;
+            this.bt_mas.TabIndex = 4;
             this.bt_mas.Text = "+";
             this.bt_mas.UseVisualStyleBackColor = true;
             this.bt_mas.Click += new System.EventHandler(this.bt_mas_Click);
@@ -233,7 +251,7 @@
             // 
             this.tx_tfil.AllowSpace = false;
             this.tx_tfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_tfil.Location = new System.Drawing.Point(186, 174);
+            this.tx_tfil.Location = new System.Drawing.Point(219, 174);
             this.tx_tfil.Name = "tx_tfil";
             this.tx_tfil.ReadOnly = true;
             this.tx_tfil.Size = new System.Drawing.Size(31, 21);
@@ -250,11 +268,31 @@
             this.tx_dat_mp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_dat_mp.Visible = false;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(315, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 13);
+            this.label4.TabIndex = 422;
+            this.label4.Text = "Fecha Pago";
+            // 
+            // tx_fpago
+            // 
+            this.tx_fpago.Checked = false;
+            this.tx_fpago.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.tx_fpago.Location = new System.Drawing.Point(304, 24);
+            this.tx_fpago.Name = "tx_fpago";
+            this.tx_fpago.Size = new System.Drawing.Size(82, 20);
+            this.tx_fpago.TabIndex = 3;
+            // 
             // forpagos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 209);
+            this.ClientSize = new System.Drawing.Size(428, 209);
+            this.Controls.Add(this.tx_fpago);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.tx_dat_mp);
             this.Controls.Add(this.tx_tfil);
             this.Controls.Add(this.bt_mas);
@@ -300,12 +338,15 @@
         private NumericTextBox tx_total;
         private System.Windows.Forms.Button bt_mas;
         private NumericTextBox tx_tfil;
+        private System.Windows.Forms.TextBox tx_dat_mp;
         private System.Windows.Forms.DataGridViewTextBoxColumn idc;
         private System.Windows.Forms.DataGridViewTextBoxColumn it;
         private System.Windows.Forms.DataGridViewTextBoxColumn nompag;
         private System.Windows.Forms.DataGridViewTextBoxColumn noper;
         private System.Windows.Forms.DataGridViewTextBoxColumn importe;
         private System.Windows.Forms.DataGridViewTextBoxColumn codpag;
-        private System.Windows.Forms.TextBox tx_dat_mp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fpago;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker tx_fpago;
     }
 }

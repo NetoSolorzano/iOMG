@@ -22,7 +22,7 @@ namespace iOMG
                     {
                         if (idavuelta[i, 2].ToString() != "")
                         {
-                            dataGridView1.Rows.Add(0, i + 1, idavuelta[i, 2].ToString(), idavuelta[i, 3].ToString(), idavuelta[i, 4].ToString(), idavuelta[i, 5].ToString());
+                            dataGridView1.Rows.Add(0, i + 1, idavuelta[i, 2].ToString(), idavuelta[i, 3].ToString(), idavuelta[i, 4].ToString(), idavuelta[i, 5].ToString(), idavuelta[i, 6].ToString());
                         }
                     }
                 }
@@ -45,7 +45,7 @@ namespace iOMG
         }
 
         public string ReturnValue1 { get; set; }
-        public string[,] ReturnValue = new string[10, 6];
+        public string[,] ReturnValue = new string[10, 7];
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -61,6 +61,7 @@ namespace iOMG
                     ReturnValue[i, 3] = row.Cells[3].Value.ToString();
                     ReturnValue[i, 4] = row.Cells[4].Value.ToString();
                     ReturnValue[i, 5] = row.Cells[5].Value.ToString();
+                    ReturnValue[i, 6] = row.Cells[6].Value.ToString().Substring(0,10);
                 }
                 i = i + 1;
             }
@@ -86,6 +87,7 @@ namespace iOMG
                 tx_numOpe.Focus();
                 return;
             }
+            // la fecha de pago por defecto es la fecha del día
             double vi = 0;
             double.TryParse(tx_importe.Text, out vi);
             if (tx_importe.Text.Trim() == "" || vi <= 0)
@@ -94,12 +96,13 @@ namespace iOMG
                 tx_importe.Focus();
                 return;
             }
-            dataGridView1.Rows.Add(0,dataGridView1.Rows.Count-1,cmb_plazo.Text,tx_numOpe.Text,tx_importe.Text,tx_dat_mp.Text);
-            /*  double tv = 0;
-            double.TryParse(tx_total.Text, out tv);
-            tx_total.Text = (tv + vi).ToString("#0.00");
-            tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString(); */
+            dataGridView1.Rows.Add(0,dataGridView1.Rows.Count-1,cmb_plazo.Text,tx_numOpe.Text,tx_importe.Text,tx_dat_mp.Text,tx_fpago.Text);
             totalizagrid();
+            //
+            cmb_plazo.SelectedIndex = -1;
+            tx_numOpe.Text = "";
+            tx_importe.Text = "";
+            dataGridView1.Focus();
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
@@ -127,6 +130,8 @@ namespace iOMG
                 string axs = string.Format("descrizionerid='{0}'", cmb_plazo.Text);
                 DataRow[] row = dt.Select(axs);
                 tx_dat_mp.Text = row[0].ItemArray[1].ToString();
+                //
+                tx_fpago.Text = DateTime.Now.Date.ToString("dd/MM/yyyy");
             }
         }
         private void totalizagrid()
@@ -148,6 +153,11 @@ namespace iOMG
         private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             totalizagrid();
+        }
+
+        private void tx_fpago_Leave(object sender, EventArgs e)
+        {
+            bt_mas.Focus();
         }
     }
 }

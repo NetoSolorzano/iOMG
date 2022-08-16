@@ -104,7 +104,7 @@ namespace iOMG
         DataTable dtpedido = new DataTable();   // tipos documento de venta
         DataTable dtmon = new DataTable();      // monedas
         string vpago = "";                      // pago anticipo o cancelatorio
-        string[,] dtpagos = new string[10, 6];  // 10 filas, 6 columnas para los medios de pago por comprobante
+        string[,] dtpagos = new string[10, 7];  // 10 filas, 6 columnas para los medios de pago por comprobante
 
         public docsvta()
         {
@@ -208,6 +208,7 @@ namespace iOMG
                                 dtpagos[i, 3] = pagos.ReturnValue[i, 3];
                                 dtpagos[i, 4] = pagos.ReturnValue[i, 4];
                                 dtpagos[i, 5] = pagos.ReturnValue[i, 5];
+                                dtpagos[i, 6] = pagos.ReturnValue[i, 6];
                             }
                         }
                     }
@@ -476,6 +477,7 @@ namespace iOMG
                                 dtpagos[i, 3] = row[7].ToString();
                                 dtpagos[i, 4] = row[8].ToString();
                                 dtpagos[i, 5] = row[9].ToString();
+                                dtpagos[i, 6] = row[10].ToString().Substring(0, 10);
                                 i = i + 1;
                             }
                             kll.Dispose();
@@ -948,6 +950,7 @@ namespace iOMG
                 dtpagos[i, 3] = "";
                 dtpagos[i, 4] = "";
                 dtpagos[i, 5] = "";
+                dtpagos[i, 6] = "";
             }
         }
         private void ini_deta()                             // limpia el detalle y totales
@@ -2317,8 +2320,8 @@ namespace iOMG
                 {
                     if (dtpagos[i, 0] != null && dtpagos[i, 2].ToString() != "")
                     {
-                        string inpag = "insert into adifactpag (idc,tdvta,sdvta,ndvta,it,medio,operac,importe,codpag) values (" +
-                            "@idc,@tdv,@sdv,@ndv,@it,@med,@ope,@imp,@cpa)";
+                        string inpag = "insert into adifactpag (idc,tdvta,sdvta,ndvta,it,medio,operac,importe,codpag,fpago) values (" +
+                            "@idc,@tdv,@sdv,@ndv,@it,@med,@ope,@imp,@cpa,@fpa)";
                         using (MySqlCommand micon = new MySqlCommand(inpag, conn))
                         {
                             micon.Parameters.AddWithValue("@idc", 0);
@@ -2330,6 +2333,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@ope", dtpagos[i, 3].ToString());
                             micon.Parameters.AddWithValue("@imp", dtpagos[i, 4].ToString());
                             micon.Parameters.AddWithValue("@cpa", dtpagos[i, 5].ToString());
+                            micon.Parameters.AddWithValue("@fpa", dtpagos[i, 6].ToString().Substring(6, 4) + "-" + dtpagos[i, 6].ToString().Substring(3, 2) + "-" + dtpagos[i, 6].ToString().Substring(0, 2));    // dd/mm/aaaa
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -3261,7 +3265,7 @@ namespace iOMG
                             if (dtpagos[x, 2] != null && dtpagos[x, 2].ToString().Trim() != "")
                             {
                                 puntoF = new PointF(coli, posi);
-                                e.Graphics.DrawString(dtpagos[x, 2].ToString() + " " + cmb_mon.Text + " " + dtpagos[x, 4].ToString() + " Num.Oper. " + dtpagos[x, 3].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                e.Graphics.DrawString(dtpagos[x, 2].ToString() + " " + cmb_mon.Text + " " + dtpagos[x, 4].ToString() + " #.Op. " + dtpagos[x, 3].ToString() + " " + dtpagos[x, 6].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 posi = posi + alfi;
                             }
                         }

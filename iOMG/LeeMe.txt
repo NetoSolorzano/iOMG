@@ -185,4 +185,4 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, no esta imprimiendo en TK cancelacion, el importe de anticipos .......
 - form contratos, "error en obtener detalle de contrato" ............................. ok 11/08/22
 - OJO, el contrato 0101104, tiene anticipo y cancelacion, el anticipo no esta actualizado el contrato y debería estarlo.
-
+- form forpagos, adecuaciones en form y tablas, agregar fecha de pago ................ ok 15/08/22

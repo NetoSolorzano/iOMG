@@ -69,6 +69,7 @@ namespace iOMG
         string docBol = "";                 // codigo boletas
         string docFac = "";                 // codigo facturas
         int intfec = 1;                     // intervalo de días para busqueda de comprobantes sin contrato
+        string vtasc = "";                  // tipo de articulo (capitulo) que no se hace contrato
         #endregion
         libreria lib = new libreria();
         acciones acc = new acciones();
@@ -182,27 +183,26 @@ namespace iOMG
                 }
                 if (tx_corre.Focused == true || tx_serie.Focused == true || tx_mc.Focused == true)
                 {
-                    // aca va la llamada a la ventana donde seleccionamos los comprobantes
-                    forselcomp pagos = new forselcomp(tx_dat_orig.Text, tiesan, intfec);
-                    var resu = pagos.ShowDialog();
-                    if (resu == DialogResult.Cancel)
+                    if (tx_dat_orig.Text == "")
                     {
-                        if (!string.IsNullOrEmpty(pagos.ReturnValue1))
+                        MessageBox.Show("Seleccione un lugar de ventas!","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        // aca va la llamada a la ventana donde seleccionamos los comprobantes
+                        forselcomp pagos = new forselcomp(tx_dat_orig.Text, tiesan, intfec);
+                        var resu = pagos.ShowDialog();
+                        if (resu == DialogResult.Cancel)
                         {
-                            /*
-                            DataTable drt = new DataTable();
-                            dataGridView1.DataSource = null;
-                            dataGridView1.Rows.Clear();
-                            dataGridView1.Columns.Clear();
-                            dataGridView1.DataSource = drt;
-                            grilladet("NUEVO");
-                            */
-                            int i = 1;
-                            tx_acta.Text = "";
-                            foreach (DataRow row in pagos.ReturnValueT.Rows)
+                            if (!string.IsNullOrEmpty(pagos.ReturnValue1))
                             {
-                                jalaDatFact("T", row[1].ToString().Substring(0,1), row[2].ToString(), row[3].ToString(), i.ToString());
-                                i = i + 1;
+                                int i = 1;
+                                tx_acta.Text = "";
+                                foreach (DataRow row in pagos.ReturnValueT.Rows)
+                                {
+                                    jalaDatFact("T", row[1].ToString().Substring(0, 1), row[2].ToString(), row[3].ToString(), i.ToString());
+                                    i = i + 1;
+                                }
                             }
                         }
                     }
@@ -234,6 +234,10 @@ namespace iOMG
         #region Fact_Elec
         private void jalaDatFact(string modo,string FB, string serF, string corF, string kk)   // modo: T=jala todos, C=jala cliente, D=jala detalle
         {
+            string excluye = "";
+            var xx = MessageBox.Show("Excluye los artículos del capítulo: " + vtasc + Environment.NewLine +
+                "en el detalle del contrato?","Confirme por favor", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (xx == DialogResult.Yes) excluye = " and left(a.codprod,1) <> '" + vtasc + "'";
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
                 conn.Open();
@@ -286,7 +290,7 @@ namespace iOMG
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
                             "ifnull(if(i.soles2018*a.cantbul=0,a.precio*a.cantbul,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat " +
-                            "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''";
+                            "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''" + excluye;
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
                         {
                             midet.Parameters.AddWithValue("@idc", idc); //
@@ -469,6 +473,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();                // codigo de estado anulado
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "nogrilla") cnojal = row["valor"].ToString().Trim();              // estados de contratos que no se jalan a la grilla
                         if (row["campo"].ToString() == "impresora" && row["param"].ToString() == "default") impDef = row["valor"].ToString().Trim();            // nombre de la impresora por defecto
+                        if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos que no hace contrato
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
