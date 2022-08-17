@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using ClosedXML.Excel;
 using CrystalDecisions.Shared;
 using PaperSize = CrystalDecisions.Shared.PaperSize;
+using System.Collections.Generic;
 
 namespace iOMG
 {
@@ -21,6 +22,7 @@ namespace iOMG
         string colstrp = iOMG.Program.colstr;   // color del strip
         bool conSol = iOMG.Program.vg_conSol;   // usa conector solorsoft ?
         static string nomtab = "contrat";
+
         #region variables 
         public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion sin crystal, con crystal ya no se usan
         public string perAg = "";
@@ -70,7 +72,10 @@ namespace iOMG
         string docFac = "";                 // codigo facturas
         int intfec = 1;                     // intervalo de días para busqueda de comprobantes sin contrato
         string vtasc = "";                  // tipo de articulo (capitulo) que no se hace contrato
+
+        List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
+
         libreria lib = new libreria();
         acciones acc = new acciones();
         // string de conexion
@@ -202,6 +207,7 @@ namespace iOMG
                                 {
                                     jalaDatFact("T", row[1].ToString().Substring(0, 1), row[2].ToString(), row[3].ToString(), i.ToString());
                                     i = i + 1;
+                                    _comprobantes.Add(row[1].ToString().Substring(0, 1) + "-" + row[2].ToString() + "-" + row[3].ToString());
                                 }
                             }
                         }
@@ -232,9 +238,10 @@ namespace iOMG
         }
 
         #region Fact_Elec
-        private void jalaDatFact(string modo,string FB, string serF, string corF, string kk)   // modo: T=jala todos, C=jala cliente, D=jala detalle
+        internal void jalaDatFact(string modo,string FB, string serF, string corF, string kk)   // modo: T=jala todos, C=jala cliente, D=jala detalle
         {
             string excluye = "";
+            decimal valexc = 0;
             var xx = MessageBox.Show("Excluye los artículos del capítulo: " + vtasc + Environment.NewLine +
                 "en el detalle del contrato?","Confirme por favor", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (xx == DialogResult.Yes) excluye = " and left(a.codprod,1) <> '" + vtasc + "'";
@@ -287,6 +294,26 @@ namespace iOMG
                     }
                     if (modo == "T")    //  || modo == "T"
                     {
+                        if (excluye != "")
+                        {
+                            string conexc = "select sum(totalMN) from detfactu where idc=@idc and left(codprod,1) = '" + vtasc + "'";
+                            using (MySqlCommand conexcl = new MySqlCommand(conexc, conn))
+                            {
+                                conexcl.Parameters.AddWithValue("@idc", idc);
+                                using (MySqlDataReader dr = conexcl.ExecuteReader())
+                                {
+                                    if (dr.Read())
+                                    {
+                                        if (dr.HasRows == true && dr[0] != null) valexc = dr.GetDecimal(0);
+                                    }
+                                }
+                            }
+                        }
+                        decimal ff = 0;
+                        decimal.TryParse(tx_acta.Text, out ff);
+                        decimal nueActa = ff - valexc;
+                        tx_acta.Text = nueActa.ToString("#0.00");     // pago a cuenta - menos valor excluido
+
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
                             "ifnull(if(i.soles2018*a.cantbul=0,a.precio*a.cantbul,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat " +
@@ -1493,16 +1520,20 @@ namespace iOMG
                         tx_idr.Text = rlid.GetString(0);
                     }
                     rlid.Close();
-                    using(MySqlCommand mic = new MySqlCommand("update pagamenti set contrato=@con,valor=@calc,acuenta=@acta,saldo=@sald where dv=@dv and serie=@ser and numero=@num and idpagamenti>0",conn))
+                    foreach (string item in _comprobantes)
                     {
-                        mic.Parameters.AddWithValue("@con", tx_codped.Text);
-                        mic.Parameters.AddWithValue("@calc", tx_valor.Text);
-                        mic.Parameters.AddWithValue("@acta", tx_acta.Text);
-                        mic.Parameters.AddWithValue("@sald", tx_saldo.Text);
-                        mic.Parameters.AddWithValue("@dv", (tx_mc.Text == "F")? docFac : docBol);
-                        mic.Parameters.AddWithValue("@ser", tx_serie.Text);
-                        mic.Parameters.AddWithValue("@num", tx_corre.Text);
-                        mic.ExecuteNonQuery();
+                        string[] partes = item.Split('-');
+                        using (MySqlCommand mic = new MySqlCommand("update pagamenti set contrato=@con,valor=@calc,acuenta=@acta,saldo=@sald where dv=@dv and serie=@ser and numero=@num and idpagamenti>0", conn))
+                        {
+                            mic.Parameters.AddWithValue("@con", tx_codped.Text);
+                            mic.Parameters.AddWithValue("@calc", tx_valor.Text);
+                            mic.Parameters.AddWithValue("@acta", tx_acta.Text);
+                            mic.Parameters.AddWithValue("@sald", tx_saldo.Text);
+                            mic.Parameters.AddWithValue("@dv", (partes[0].Substring(0, 1) == "F") ? docFac : docBol);   // (tx_mc.Text == "F") ? docFac : docBol
+                            mic.Parameters.AddWithValue("@ser", partes[1]);      // tx_serie.Text
+                            mic.Parameters.AddWithValue("@num", partes[2]);      // tx_corre.Text
+                            mic.ExecuteNonQuery();
+                        }
                     }
                     // detalle 
                     //dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Ascending);  // ya no va 24/11/20 Gloria
@@ -2145,6 +2176,8 @@ namespace iOMG
             tx_mc.Visible = true;
             tx_serie.Visible = true;
             tx_corre.Visible = true;
+            //
+            _comprobantes.Clear();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -2193,6 +2226,8 @@ namespace iOMG
             tx_mc.Visible = false;
             tx_serie.Visible = false;
             tx_corre.Visible = false;
+            //
+            _comprobantes.Clear();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -2224,6 +2259,8 @@ namespace iOMG
             tx_mc.Visible = false;
             tx_serie.Visible = false;
             tx_corre.Visible = false;
+            //
+            _comprobantes.Clear();
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -2276,6 +2313,8 @@ namespace iOMG
             tx_mc.Visible = false;
             tx_serie.Visible = false;
             tx_corre.Visible = false;
+            //
+            _comprobantes.Clear();
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -3360,7 +3399,10 @@ namespace iOMG
                 {
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
-                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
+                        //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
+                        //     "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
+                        DataTable ndtg = (DataTable)dataGridView1.DataSource;
+                        ndtg.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
                              "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
                     }
                     else

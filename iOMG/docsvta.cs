@@ -2099,11 +2099,10 @@ namespace iOMG
                                 contratos ncont = new contratos();
                                 ncont.Show(this);
                                 ncont.Bt_add.PerformClick();
+                                ncont.jalaDatFact("T", (tx_dat_tipdoc.Text == codfact) ? "F" : "B", tx_serie.Text, tx_corre.Text,"1");
                                 ncont.tx_mc.Text = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont.tx_serie.Text = tx_serie.Text;
                                 ncont.tx_corre.Text = tx_corre.Text;
-                                //ncont.tx_corre.Leave(null,null);
-                                // aca falta que ponga el resto de datos en el form, datos como el detalle y el cliente
                             }
                         }
                     }

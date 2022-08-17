@@ -795,7 +795,7 @@ namespace iOMG
             }
             if (tabControl1.SelectedTab == tabregvtas && dgv_regvtas.Rows.Count > 0)
             {
-                nombre = "Registro_Ventas_" + dtp_ini_vtabar.Value.Date.ToString() + "-" + dtp_fin_vtabar.Value.Date.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                nombre = "Registro_Ventas_" + dtp_ini_vtabar.Value.Date.ToString("dd-MM-yyyy") + "_" + dtp_fin_vtabar.Value.Date.ToString("dd-MM-yyyy") + "_.xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                     "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
@@ -810,7 +810,7 @@ namespace iOMG
             }
             if (tabControl1.SelectedTab == tabBarran && dgv_vtabar.Rows.Count > 0)
             {
-                nombre = "Registro_de_Ventas_" + dtp_rvtas_fini.Value.Date.ToString() + "-" + dtp_rvtas_fter.Value.Date.ToString() + "_" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
+                nombre = "Registro_de_Ventas_" + dtp_rvtas_fini.Value.Date.ToString("dd-MM-yyyy") + "_" + dtp_rvtas_fter.Value.Date.ToString("dd-MM-yyyy") + "_.xlsx";
                 var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
                     "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
