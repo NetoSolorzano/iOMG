@@ -18,6 +18,12 @@ using System.Collections.Generic;
 
 namespace iOMG
 {
+    public class docsAnticip
+    {
+        public string comprob { get; set; }
+        public string valor { get; set; }
+    };
+
     public partial class docsvta : Form
     {
         static string nomform = "docsvta";      // nombre del formulario
@@ -28,7 +34,7 @@ namespace iOMG
         string colstrp = iOMG.Program.colstr;       // color del strip
         static string nomtab = "cabfactu";
         libreria lib = new libreria();
-       
+
         #region variables
         //public string perAg = "";             // permisos agregar
         //public string perMo = "";             // permisos modificar
@@ -87,6 +93,7 @@ namespace iOMG
         string itemSer = "";            // items (capit) de comprobantes de servicios
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
+        List<docsAnticip> _docsAnticip = new List<docsAnticip>();
 
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -620,7 +627,7 @@ namespace iOMG
                 }
                 // seleccion de tipo de doc. venta ... ok
                 const string conpedido = "select descrizionerid,idcodice,sunat from desc_tdv " +
-                                       "where numero=1";
+                                       "where numero=1 and codigo='DV'";            // filtramos solo los documentos de venta
                 MySqlCommand cmdpedido = new MySqlCommand(conpedido, conn);
                 MySqlDataAdapter dapedido = new MySqlDataAdapter(cmdpedido);
                 dapedido.Fill(dtpedido);
@@ -747,6 +754,7 @@ namespace iOMG
                 else cmb_mon.Enabled = true;
             }
             ini_pagos();
+            _docsAnticip.Clear();
         }
         private double jala_cont(string conti)                // jala datos del contrato
         {
@@ -2088,6 +2096,37 @@ namespace iOMG
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
+                        if (tx_tipComp.Text == "C")
+                        {
+                            string consu = "SELECT dv,serie,numero,montosol FROM pagamenti WHERE contrato=@cont AND saldo>0";
+                            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                            {
+                                conn.Open();
+                                if (conn.State == ConnectionState.Open)
+                                {
+                                    using (MySqlCommand micon = new MySqlCommand(consu, conn))
+                                    {
+                                        micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                                        using (MySqlDataReader dr = micon.ExecuteReader())
+                                        {
+                                            while (dr.Read())
+                                            {
+                                                docsAnticip item = new docsAnticip();
+                                                item.comprob = dr.GetString(0);
+                                                item.valor = dr.GetString(1);
+                                                _docsAnticip.Add(item);
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("No se completo los datos para" + Environment.NewLine + 
+                                        "la impresión del comprobante de cancelación","Error de conexión",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                    Application.Exit();
+                                }
+                            }
+                        }
                         Bt_print.PerformClick();
                         //
                         if (tx_prdsCont.Text == "S" && tx_cont.Text.Trim() == "")
@@ -3181,13 +3220,13 @@ namespace iOMG
                         e.Graphics.DrawString(valcont.ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
                         posi = posi + alfi;
                         // LISTA DE ANTICIPOS CON SIMBOLO NEGATIVO
-                        for (int l = 1; l < dataGridView1.Rows.Count - 1; l++)  // la primera fila es la cancelacion
-                        {                                                       // solo ponemos aca los anticipos
-                            if (dataGridView1.Rows[l].Cells[1].Value.ToString() == "0")
+                        for (int l = 1; l < _docsAnticip.Count; l++)  // la primera fila es la cancelacion    ACA ESTA EL ASUNTO ...  
+                        {                                                       // solo ponemos los anticipos, PARA ESTO TENDREMOS UNA LISTA CON LOS COMPROBRANTES Y SUS VALORES
+                            if (true)   // dataGridView1.Rows[l].Cells[1].Value.ToString() == "0"
                             {
-                                double venga = double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
-                                puntoF = new PointF(coli, posi);
-                                e.Graphics.DrawString(dataGridView1.Rows[l].Cells[3].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                double venga = double.Parse(_docsAnticip[l].valor);  // dataGridView1.Rows[l].Cells[9].Value.ToString()
+                                puntoF = new PointF(coli, posi);    // dataGridView1.Rows[l].Cells[3].Value.ToString()
+                                e.Graphics.DrawString(_docsAnticip[l].comprob, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 199, posi);
                                 siz = new SizeF(70, 30);
                                 recto = new RectangleF(puntoF, siz);

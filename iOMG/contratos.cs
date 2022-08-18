@@ -296,7 +296,7 @@ namespace iOMG
                     {
                         if (excluye != "")
                         {
-                            string conexc = "select sum(totalMN) from detfactu where idc=@idc and left(codprod,1) = '" + vtasc + "'";
+                            string conexc = "select sum(totalMN) from detfactu where idc=@idc and codprod<>'' and left(codprod,1) = '" + vtasc + "'";
                             using (MySqlCommand conexcl = new MySqlCommand(conexc, conn))
                             {
                                 conexcl.Parameters.AddWithValue("@idc", idc);
@@ -304,7 +304,7 @@ namespace iOMG
                                 {
                                     if (dr.Read())
                                     {
-                                        if (dr.HasRows == true && dr[0] != null) valexc = dr.GetDecimal(0);
+                                        if (dr.HasRows == true && dr[0] != DBNull.Value) valexc = dr.GetDecimal(0);
                                     }
                                 }
                             }
