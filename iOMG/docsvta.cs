@@ -2035,7 +2035,7 @@ namespace iOMG
                 }
 
                 ntoti = double.Parse(tx_d_precio.Text);                         // precio individual incluyendo descuento
-                double vdscto = (tx_d_preSinDscto.Text == "0.00") ? 0 : double.Parse(tx_d_preSinDscto.Text) - ntoti;    // valor del descuento
+                double vdscto = (tx_d_preSinDscto.Text == "0.00" || tx_d_preSinDscto.Text == "") ? 0 : double.Parse(tx_d_preSinDscto.Text) - ntoti;    // valor del descuento
                 ncant = double.Parse(tx_d_can.Text);
                 if (ntoti > 0)
                 {
@@ -2163,7 +2163,9 @@ namespace iOMG
                                 ncont.tx_mc.Text = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont.tx_serie.Text = tx_serie.Text;
                                 ncont.tx_corre.Text = tx_corre.Text;
-                                ncont._comprobantes.Add((tx_dat_tipdoc.Text == codfact) ? "F" : "B" + "-" + tx_serie.Text + "-" + tx_corre.Text);
+                                string xxx = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
+                                ncont._comprobantes.Add(xxx + "-" + tx_serie.Text + "-" + tx_corre.Text);
+                                // row[1].ToString().Substring(0, 1) + "-" + row[2].ToString() + "-" + row[3].ToString()
                             }
                         }
                     }
