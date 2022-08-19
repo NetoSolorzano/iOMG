@@ -112,6 +112,7 @@
             this.cmb_tipo = new System.Windows.Forms.ComboBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_d_preSinDscto = new System.Windows.Forms.TextBox();
             this.tx_d_valAntic = new System.Windows.Forms.TextBox();
             this.tx_d_antic = new System.Windows.Forms.TextBox();
             this.tx_dat_mad = new System.Windows.Forms.TextBox();
@@ -1002,6 +1003,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_d_preSinDscto);
             this.panel1.Controls.Add(this.tx_d_valAntic);
             this.panel1.Controls.Add(this.tx_d_antic);
             this.panel1.Controls.Add(this.tx_dat_mad);
@@ -1025,6 +1027,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(869, 54);
             this.panel1.TabIndex = 14;
+            // 
+            // tx_d_preSinDscto
+            // 
+            this.tx_d_preSinDscto.Location = new System.Drawing.Point(665, 30);
+            this.tx_d_preSinDscto.Name = "tx_d_preSinDscto";
+            this.tx_d_preSinDscto.Size = new System.Drawing.Size(56, 20);
+            this.tx_d_preSinDscto.TabIndex = 317;
+            this.tx_d_preSinDscto.Tag = "Id";
+            this.tx_d_preSinDscto.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_valAntic
             // 
@@ -1929,5 +1940,6 @@
         private System.Windows.Forms.TextBox tx_dat_mon_s;
         private System.Windows.Forms.TextBox tx_codSuc;
         private System.Windows.Forms.TextBox tx_id_rapifac;
+        private System.Windows.Forms.TextBox tx_d_preSinDscto;
     }
 }

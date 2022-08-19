@@ -18,12 +18,6 @@ using System.Collections.Generic;
 
 namespace iOMG
 {
-    public class docsAnticip
-    {
-        public string comprob { get; set; }
-        public string valor { get; set; }
-    };
-
     public partial class docsvta : Form
     {
         static string nomform = "docsvta";      // nombre del formulario
@@ -193,6 +187,7 @@ namespace iOMG
                             if (ayu2.ReturnValueA != null)
                             {
                                 tx_d_precio.Text = ayu2.ReturnValueA[3];
+                                tx_d_preSinDscto.Text = ayu2.ReturnValueA[3];
                                 tx_d_med.Text = ayu2.ReturnValueA[2];
                             }
                         }
@@ -493,10 +488,11 @@ namespace iOMG
                 }
             }
             jaladet(tx_idr.Text);
+            cosas_pagamenti();                              // llenamos lista de pagos si es cancelacion
         }
         private void jaladet(string idr)                    // jala el detalle 
         {
-            string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1) " +
+            string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto " +
                 "FROM detfactu where idc=@idr";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -525,10 +521,10 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 11;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 13;
             // it
             dataGridView1.Columns[0].Visible = true;
-            dataGridView1.Columns[0].Width = 30;                // ancho
+            dataGridView1.Columns[0].Width = 30;                // ancho                
             dataGridView1.Columns[0].HeaderText = "It";         // titulo de la columna
             dataGridView1.Columns[0].Name = "it";
             dataGridView1.Columns[0].ReadOnly = true;
@@ -560,7 +556,7 @@ namespace iOMG
             dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[4].Name = "medidas";
             // madera
-            dataGridView1.Columns[5].Visible = true;            // columna visible o no
+            dataGridView1.Columns[5].Visible = true;            // columna visible o no     
             dataGridView1.Columns[5].HeaderText = "Madera";    // titulo de la columna
             dataGridView1.Columns[5].Width = 60;                // ancho
             dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
@@ -599,6 +595,22 @@ namespace iOMG
             // tipo Normal o Anticipo
             dataGridView1.Columns[10].Visible = false;
             dataGridView1.Columns[10].Name = "NA";
+            // valor descuento unitario
+            dataGridView1.Columns[11].Visible = true;
+            dataGridView1.Columns[11].HeaderText = "DSCTO"; // titulo de la columna
+            dataGridView1.Columns[11].Width = 60;                // ancho
+            dataGridView1.Columns[11].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[11].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[11].Name = "DSCTO";
+            // valor unitario sin descuento
+            dataGridView1.Columns[12].Visible = true;
+            dataGridView1.Columns[12].HeaderText = "Val.Unit"; // titulo de la columna
+            dataGridView1.Columns[12].Width = 60;                // ancho
+            dataGridView1.Columns[12].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[12].Name = "VAL_SIN_DSCTO";
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
@@ -770,7 +782,7 @@ namespace iOMG
                     string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
-                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor " +
+                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto " +
                         "FROM detacon a " +
                         "LEFT JOIN desc_est de ON de.IDCodice = a.estado " +
                         "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
@@ -891,9 +903,10 @@ namespace iOMG
                             {
                                 dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
                                     data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
-                                    data.ItemArray[8].ToString(), data.ItemArray[9].ToString());
+                                    (double.Parse(data.ItemArray[8].ToString()) - double.Parse(data.ItemArray[23].ToString()) / double.Parse(data.ItemArray[3].ToString())).ToString("#0.00"),
+                                    (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString())).ToString("#0.00"));
                                 cnt += 1;
-                                toti = toti + double.Parse(data.ItemArray[9].ToString());
+                                toti = toti + (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString()));
                             }
                             tx_valor.Text = toti.ToString("#0.00");
                             tx_bruto.Text = (toti / 1.18).ToString("#0.00");
@@ -970,6 +983,43 @@ namespace iOMG
             tx_bruto.Text = "";
             tx_igv.Text = "";
             tx_tfil.Text = "";
+        }
+        private void cosas_pagamenti()                      // llena lista de pagos si el comprobante es de cancelacion
+        {
+            if (tx_tipComp.Text == "C")
+            {
+                string consu = "SELECT dv,serie,numero,montosol FROM pagamenti WHERE contrato=@cont";   //  AND saldo>0
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        using (MySqlCommand micon = new MySqlCommand(consu, conn))
+                        {
+                            micon.Parameters.AddWithValue("@cont", tx_cont.Text);
+                            using (MySqlDataReader dr = micon.ExecuteReader())
+                            {
+                                while (dr.Read())
+                                {
+                                    if (dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2) != cmb_tipo.Text.Substring(0, 1) + tx_serie.Text + "-" + tx_corre.Text)
+                                    {
+                                        docsAnticip item = new docsAnticip();
+                                        item.comprob = dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);
+                                        item.valor = dr.GetString(3);
+                                        _docsAnticip.Add(item);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se completo los datos para" + Environment.NewLine +
+                            "la impresión del comprobante de cancelación", "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Application.Exit();
+                    }
+                }
+            }
         }
 
         #region botones_de_comando_y_permisos  
@@ -1954,7 +2004,7 @@ namespace iOMG
                     if (ntoti > 0)
                     {
                         dataGridView1.Rows.Insert(0,dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_antic.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A");
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A", "0", "0");
 
                         tx_valor.Text = ntoti.ToString("#0.00");
                         tx_bruto.Text = (ntoti / 1.18).ToString("#0.00");
@@ -1984,19 +2034,20 @@ namespace iOMG
                     return;
                 }
 
-                ntoti = double.Parse(tx_d_precio.Text); // precio individual
+                ntoti = double.Parse(tx_d_precio.Text);                         // precio individual incluyendo descuento
+                double vdscto = (tx_d_preSinDscto.Text == "0.00") ? 0 : double.Parse(tx_d_preSinDscto.Text) - ntoti;    // valor del descuento
                 ncant = double.Parse(tx_d_can.Text);
                 if (ntoti > 0)
                 {
                     if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
                     {
                         _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti*ncant).ToString("#0.00"), "N");
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti*ncant).ToString("#0.00"), "N", vdscto.ToString(), (ntoti+vdscto).ToString());
                     }
                     else 
                     {
                         _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N");
+                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), (ntoti + vdscto).ToString());
                     }
                     tx_valor.Text = ((ntoti * ncant) + tv).ToString("#0.00");
                     tx_bruto.Text = (((ntoti *ncant) + tv) / 1.18).ToString("#0.00");
@@ -2096,37 +2147,7 @@ namespace iOMG
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
-                        if (tx_tipComp.Text == "C")
-                        {
-                            string consu = "SELECT dv,serie,numero,montosol FROM pagamenti WHERE contrato=@cont AND saldo>0";
-                            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
-                            {
-                                conn.Open();
-                                if (conn.State == ConnectionState.Open)
-                                {
-                                    using (MySqlCommand micon = new MySqlCommand(consu, conn))
-                                    {
-                                        micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                                        using (MySqlDataReader dr = micon.ExecuteReader())
-                                        {
-                                            while (dr.Read())
-                                            {
-                                                docsAnticip item = new docsAnticip();
-                                                item.comprob = dr.GetString(0);
-                                                item.valor = dr.GetString(1);
-                                                _docsAnticip.Add(item);
-                                            }
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    MessageBox.Show("No se completo los datos para" + Environment.NewLine + 
-                                        "la impresión del comprobante de cancelación","Error de conexión",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                                    Application.Exit();
-                                }
-                            }
-                        }
+                        cosas_pagamenti();                  // vemos si es cancelacion para llenar la lista de pagos
                         Bt_print.PerformClick();
                         //
                         if (tx_prdsCont.Text == "S" && tx_cont.Text.Trim() == "")
@@ -2142,6 +2163,7 @@ namespace iOMG
                                 ncont.tx_mc.Text = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont.tx_serie.Text = tx_serie.Text;
                                 ncont.tx_corre.Text = tx_corre.Text;
+                                ncont._comprobantes.Add((tx_dat_tipdoc.Text == codfact) ? "F" : "B" + "-" + tx_serie.Text + "-" + tx_corre.Text);
                             }
                         }
                     }
@@ -2266,7 +2288,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@igvMN", igvtMN);
                     micon.Parameters.AddWithValue("@totMN", fletMN);
                     micon.Parameters.AddWithValue("@pagaut", "S");                  // todos los comprobantes nacen pagados
-                    micon.Parameters.AddWithValue("@tipdco", (rb_antic.Checked == true)? "A" : "B");
+                    micon.Parameters.AddWithValue("@tipdco", tx_tipComp.Text);    // (rb_antic.Checked == true)? "A" : "B"
                     micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
                     micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
                     micon.Parameters.AddWithValue("@pordesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
@@ -2320,7 +2342,7 @@ namespace iOMG
                         {
                             string inserd2 = "update detfactu set " +
                                 "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
-                                "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta " +
+                                "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@vesta,totSinDscto=totalMN+dscto " +
                                 "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
                             using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
                             {
@@ -2345,6 +2367,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
                                 micon.Parameters.AddWithValue("@pagaut", "S");
                                 micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                micon.Parameters.AddWithValue("@vesta", (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString()));
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
@@ -3171,14 +3194,14 @@ namespace iOMG
                             string nomprod = dataGridView1.Rows[l].Cells[3].Value.ToString().Trim() + " " + dataGridView1.Rows[l].Cells[5].Value.ToString().Trim();
                             if (dataGridView1.Rows[l].Cells[1].Value.ToString() != "0" && dataGridView1.Rows[l].Cells[1].Value.ToString().Trim() != "")
                             {
-                                double ventu = double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());
+                                double ventu = double.Parse(dataGridView1.Rows[l].Cells[9].Value.ToString());   // - double.Parse(dataGridView1.Rows[l].Cells[11].Value.ToString());
                                 puntoF = new PointF(coli, posi);
                                 e.Graphics.DrawString(dataGridView1.Rows[l].Cells[1].Value.ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 30.0F, posi);
                                 var kk = e.Graphics.MeasureString(nomprod, lt_peq);
-                                if (kk.Width > lib.CentimeterToPixel(anchTik) - 30.0F)
+                                if (kk.Width > lib.CentimeterToPixel(anchTik) - 100.0F)
                                 {
-                                    siz = new SizeF(lib.CentimeterToPixel(anchTik) - 10.0F, 30);
+                                    siz = new SizeF(lib.CentimeterToPixel(anchTik) - 100.0F, 30);
                                     recto = new RectangleF(puntoF, siz);
                                     e.Graphics.DrawString(nomprod, lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
                                     puntoF = new PointF(coli + 199, posi);
@@ -3220,13 +3243,13 @@ namespace iOMG
                         e.Graphics.DrawString(valcont.ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
                         posi = posi + alfi;
                         // LISTA DE ANTICIPOS CON SIMBOLO NEGATIVO
-                        for (int l = 1; l < _docsAnticip.Count; l++)  // la primera fila es la cancelacion    ACA ESTA EL ASUNTO ...  
+                        for (int l = 0; l < _docsAnticip.Count; l++)  // la primera fila es la cancelacion    ACA ESTA EL ASUNTO ...  
                         {                                                       // solo ponemos los anticipos, PARA ESTO TENDREMOS UNA LISTA CON LOS COMPROBRANTES Y SUS VALORES
                             if (true)   // dataGridView1.Rows[l].Cells[1].Value.ToString() == "0"
                             {
                                 double venga = double.Parse(_docsAnticip[l].valor);  // dataGridView1.Rows[l].Cells[9].Value.ToString()
                                 puntoF = new PointF(coli, posi);    // dataGridView1.Rows[l].Cells[3].Value.ToString()
-                                e.Graphics.DrawString(_docsAnticip[l].comprob, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                e.Graphics.DrawString("Anticipo " + (l + 1).ToString() + ": " + _docsAnticip[l].comprob, lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                                 puntoF = new PointF(coli + 199, posi);
                                 siz = new SizeF(70, 30);
                                 recto = new RectangleF(puntoF, siz);
@@ -3442,4 +3465,11 @@ namespace iOMG
         }
 
     }
+    public class docsAnticip
+    {
+        public string comprob { get; set; }
+        public string valor { get; set; }
+    };
+
+
 }
