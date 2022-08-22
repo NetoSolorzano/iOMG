@@ -428,7 +428,13 @@ namespace iOMG
         }
         private void not_credito_Click(object sender, EventArgs e)     // notas de credito
         {
-            MessageBox.Show("Form de facturas de contratos de clientes");
+            notcred fnc1 = new notcred();
+            fnc1.TopLevel = false;
+            fnc1.Parent = this;
+            fnc1.Top = pn_phor.Top + pn_phor.Height + 1;
+            fnc1.Left = pn_pver.Left + pn_pver.Width + 1;
+            pn_centro.Controls.Add(fnc1);
+            fnc1.Show();
         }
         private void not_debito_Click(object sender, EventArgs e)    // notas de debito
         {

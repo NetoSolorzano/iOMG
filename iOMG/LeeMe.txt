@@ -184,5 +184,6 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, adecuaciones para fact elect con rapifac via web services ............ ok 10/08/22
 - form contratos, "error en obtener detalle de contrato" ............................. ok 11/08/22
 - form forpagos, adecuaciones en form y tablas, agregar fecha de pago ................ ok 15/08/22
-- form docsvta, no esta imprimiendo en TK cancelacion, el importe de anticipos ....... 
+- form docsvta, no esta imprimiendo en TK cancelacion, el importe de anticipos ....... ok 19/08/22
 - form docsvta, solo mostrar en el combo F y B en combo tipo de documento ............ ok 17/08/22
+- form notcred, creacion del formulario .............................................. 
