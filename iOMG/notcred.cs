@@ -720,12 +720,11 @@ namespace iOMG
             limpia_ini();
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            cmb_tipo.Enabled = true;
-            tx_serdvta.Enabled = true;
-            tx_serdvta.ReadOnly = false;
-            tx_numdvta.Enabled = true;
-            tx_numdvta.ReadOnly = false;
-            cmb_tipo.Focus();
+            tx_sernot.Enabled = true;
+            tx_sernot.ReadOnly = false;
+            tx_numnot.Enabled = true;
+            tx_numnot.ReadOnly = false;
+            tx_sernot.Focus();
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -1069,6 +1068,7 @@ namespace iOMG
                 jalaoc("tx_corre");
             }
         }
+
         #endregion leaves;
 
         #region radio_buttons
@@ -1268,22 +1268,24 @@ namespace iOMG
 
                 //
                 string inserta = "insert into cabnotascd (" +
-                    "id,fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
-                    "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta,subtMN," +
-                    "igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred," +
+                    "fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
+                    "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta," +
+                    "subtMN,igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred,vendedor,idpse_ose," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
-                    "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
-                    "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
-                    "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
-                    "@refer,@updest,@conpag,@cont,@vende,@mueb,@idpse," +
+                    "@fechop,@mtdvta,@ctnota,@sernot,@numnot,@tcdvta,@serdvta,@numdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl," +
+                    "@ubicre,@mailcl,@telec1,@ldcpgr,@didegr,@ubdegr,@obsprg,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@totpgr,@saldvta," +
+                    "@subMN,@igvMN,@totMN,@codMN,@estpgr,@frase1,@impSN,@canfil,@tinocr,@vende,@idpse," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
                     micon.Parameters.AddWithValue("@fechop", dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2));
-                    micon.Parameters.AddWithValue("@mtdvta", cmb_tipo.Text.Substring(0, 1));
-                    micon.Parameters.AddWithValue("@ctdvta", tx_dat_tipdoc.Text);
-                    micon.Parameters.AddWithValue("@serdv", tx_serdvta.Text);
-                    micon.Parameters.AddWithValue("@numdv", tx_numdvta.Text);
+                    micon.Parameters.AddWithValue("@mtdvta", "");     // cmb_tipo.Text.Substring(0, 1)
+                    micon.Parameters.AddWithValue("@ctnota", tx_dat_tipnot.Text);
+                    micon.Parameters.AddWithValue("@sernot", tx_sernot.Text);
+                    micon.Parameters.AddWithValue("@numnot", tx_numnot.Text);
+                    micon.Parameters.AddWithValue("@tcdvta", tx_dat_tipdoc.Text);
+                    micon.Parameters.AddWithValue("@serdvta", tx_serdvta.Text);
+                    micon.Parameters.AddWithValue("@numdvta", tx_numdvta.Text);
                     micon.Parameters.AddWithValue("@tdcrem", tx_dat_tdoc.Text);
                     micon.Parameters.AddWithValue("@ndcrem", tx_ndc.Text);
                     micon.Parameters.AddWithValue("@nomrem", tx_nombre.Text);
@@ -1294,39 +1296,26 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@ubicre", "");
                     micon.Parameters.AddWithValue("@mailcl", tx_mail.Text);
                     micon.Parameters.AddWithValue("@telec1", tx_telef1.Text);
-                    micon.Parameters.AddWithValue("@telec2", tx_telef2.Text);
                     micon.Parameters.AddWithValue("@ldcpgr", tx_dat_orig.Text);
                     micon.Parameters.AddWithValue("@didegr", tx_dir_pe.Text);                   // direccion local de ventas
                     micon.Parameters.AddWithValue("@ubdegr", "");                               // ubigeo origen
                     micon.Parameters.AddWithValue("@obsprg", tx_coment.Text);
-                    micon.Parameters.AddWithValue("@canfil", tx_tfil.Text);                     // cantidad de filas de detalle
-                    micon.Parameters.AddWithValue("@totcpr", "0");                              // total bultos
                     micon.Parameters.AddWithValue("@monppr", tx_dat_mone.Text);
                     micon.Parameters.AddWithValue("@tcoper", "0");                              // TIPO DE CAMBIO
                     micon.Parameters.AddWithValue("@subpgr", tx_bruto.Text);                     // sub total
                     micon.Parameters.AddWithValue("@igvpgr", tx_igv.Text);                      // igv
                     micon.Parameters.AddWithValue("@porcigv", v_igv);                           // porcentaje en numeros de IGV
                     micon.Parameters.AddWithValue("@totpgr", tx_valor.Text);                    // total inc. igv
-                    micon.Parameters.AddWithValue("@pagpgr", "0");      // todos los comprobantes se emiten contado
-                    micon.Parameters.AddWithValue("@salxpa", "0");      // y con la plata en mano ... asi que los comprobantes nacen cancelados
-                    micon.Parameters.AddWithValue("@estpgr", codCanc);                          // estado del comprobante
-                    micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
-                    micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
-                    micon.Parameters.AddWithValue("@m1clte", "");
-                    micon.Parameters.AddWithValue("@tipacc", ""); // tx_dat_plazo.Text                  // pago del documento x defecto si nace la fact pagada
-                    micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
-                    micon.Parameters.AddWithValue("@codMN", MonDeft);                  // codigo moneda local
-                    //micon.Parameters.AddWithValue("@subMN", subtMN);
-                    //micon.Parameters.AddWithValue("@igvMN", igvtMN);
-                    //micon.Parameters.AddWithValue("@totMN", fletMN);
-                    micon.Parameters.AddWithValue("@pagaut", "S");                  // todos los comprobantes nacen pagados
-                    micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
-                    micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
-                    micon.Parameters.AddWithValue("@pordesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
-                    micon.Parameters.AddWithValue("@valdesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
-                    micon.Parameters.AddWithValue("@refer", "");    // tx_dat_plazo.Text
-                    micon.Parameters.AddWithValue("@updest", "");
-                    micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
+                    micon.Parameters.AddWithValue("@saldvta", 0);                               // SALDO DEL DOC.VTA.
+                    micon.Parameters.AddWithValue("@subMN", tx_bruto.Text);      // subtMN
+                    micon.Parameters.AddWithValue("@igvMN", tx_igv.Text);        // igvtMN
+                    micon.Parameters.AddWithValue("@totMN", tx_valor.Text);      // fletMN
+                    micon.Parameters.AddWithValue("@codMN", MonDeft);                           // codigo moneda local
+                    micon.Parameters.AddWithValue("@estpgr", "");                          // estado de la nota
+                    micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner
+                    micon.Parameters.AddWithValue("@impSN", "N");                               // impreso? S, N ==> no se imprimen las notas 23/08/2022
+                    micon.Parameters.AddWithValue("@canfil", tx_tfil.Text);                     // cantidad de filas de detalle
+                    micon.Parameters.AddWithValue("@tinocr", tx_dat_tipnot.Text);               // tipo de cliente credito o contado => TODOS SON CONTADO=1
                     micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
                     micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text); 
                     micon.Parameters.AddWithValue("@verApp", "");
@@ -1344,15 +1333,16 @@ namespace iOMG
                     {
                         {
                             string inserd2 = "update detnotcred set " +
-                                "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
-                                "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@vesta,totSinDscto=totalMN+dscto " +
-                                "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
+                                "cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader," +
+                                "acabado=@acaba,codmad=@codm,detpied=@detp,codMN=@cmnn " +
+                                "where tipnota=@tnot and sernota=@snot and numnota=@nnot and filadet=@fila";
                             using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
                             {
                                 micon.CommandTimeout = 60;
-                                micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
-                                micon.Parameters.AddWithValue("@sdv", tx_serdvta.Text);
-                                micon.Parameters.AddWithValue("@cdv", tx_numdvta.Text);
+                                // me quede ac'a
+                                micon.Parameters.AddWithValue("@tnot", tx_dat_tipnot.Text);
+                                micon.Parameters.AddWithValue("@snot", tx_sernot.Text);
+                                micon.Parameters.AddWithValue("@nnot", tx_numnot.Text);
                                 micon.Parameters.AddWithValue("@fila", fila);
                                 micon.Parameters.AddWithValue("@bult", row.Cells[1].Value.ToString());
                                 micon.Parameters.AddWithValue("@citem", row.Cells[2].Value.ToString());
@@ -1365,11 +1355,11 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@codm", row.Cells[5].Value.ToString());
                                 micon.Parameters.AddWithValue("@detp", row.Cells[6].Value.ToString());
                                 micon.Parameters.AddWithValue("@cmnn", MonDeft);
-                                micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
-                                micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
-                                micon.Parameters.AddWithValue("@pagaut", "S");
-                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
-                                micon.Parameters.AddWithValue("@vesta", (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString()));
+                                //micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
+                                //micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
+                                //micon.Parameters.AddWithValue("@pagaut", "S");
+                                //micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                //micon.Parameters.AddWithValue("@vesta", (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString()));
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
