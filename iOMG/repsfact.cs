@@ -369,7 +369,7 @@ namespace iOMG
                 }
             }
         }
-        private void bt_plan_Click(object sender, EventArgs e)          // genera reporte planilla de carga
+        private void bt_plan_Click(object sender, EventArgs e)          // genera reporte notas  de credito
         {
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
@@ -381,8 +381,6 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@fecini", dtp_fini_plan.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@fecfin", dtp_fter_plan.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@loca", (tx_dat_sede_plan.Text != "") ? tx_dat_sede_plan.Text : "");
-                    micon.Parameters.AddWithValue("@esta", (tx_dat_estad_plan.Text != "") ? tx_dat_estad_plan.Text : "");
-                    micon.Parameters.AddWithValue("@excl", (chk_exclu_plan.Checked == true)? "1" : "0");
                     using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
                     {
                         dgv_notcre.DataSource = null;
@@ -531,16 +529,9 @@ namespace iOMG
                 case "dgv_notcre":
                     for (int i = 0; i < dgv_notcre.Rows.Count; i++)
                     {
-                        if (dgv_notcre.Rows[i].Cells["ESTADO"].Value.ToString() != etiq_anulado)
                         {
-                            tvv = tvv + Convert.ToDouble(dgv_notcre.Rows[i].Cells["TOTAL_MN"].Value);
+                            tvv = tvv + Convert.ToDouble(dgv_notcre.Rows[i].Cells["totdvMN"].Value);   // 
                             cr = cr + 1;
-                        }
-                        else
-                        {
-                            dgv_notcre.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                            ca = ca + 1;
-                            tva = tva + Convert.ToDouble(dgv_notcre.Rows[i].Cells["TOTAL_MN"].Value);
                         }
                     }
                     tx_tfi_n.Text = cr.ToString();

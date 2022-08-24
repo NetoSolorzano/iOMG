@@ -335,9 +335,13 @@ namespace iOMG
                             tx_tfil.Text = dr.GetString("canfidt");
                             tx_dat_mone.Text = dr.GetString("mondvta");
 
-                            tx_bruto.Text = dr.GetString("subtota");
-                            tx_igv.Text = dr.GetString("igvtota");
-                            tx_valor.Text = dr.GetString("totnota");
+                            tx_valor.Text = dr.GetString("totdvta");
+                            tx_bruto.Text = (double.Parse(dr.GetString("totdvta")) / (1 + double.Parse(v_igv) / 100)).ToString("#0.00");
+                            tx_igv.Text = (double.Parse(dr.GetString("totdvta")) / (double.Parse(v_igv) / 100)).ToString("#0.00");
+
+                            tx_bruNot.Text = dr.GetString("subtota");
+                            tx_igvNot.Text = dr.GetString("igvtota");
+                            tx_valNot.Text = dr.GetString("totnota");
 
                             tx_dat_estad.Text = dr.GetString("estnota");
                             //tx_nomVen.Text = dr.GetString("vendedor");
@@ -355,6 +359,10 @@ namespace iOMG
                             axs = string.Format("idcodice='{0}'", tx_dat_tipnot.Text);
                             row = dtnota.Select(axs);
                             cmb_tiponot.SelectedItem = row[0].ItemArray[0].ToString();
+
+                            axs = string.Format("idcodice='{0}'", tx_dat_tipdoc.Text);
+                            row = dtpedido.Select(axs);
+                            cmb_tipo.SelectedItem = row[0].ItemArray[1].ToString();
 
                             // nombre de estado
                             tx_status.Text = tx_dat_estad.Text;
@@ -569,6 +577,7 @@ namespace iOMG
             limpia_panel(pan_cli);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
+            cmb_mon.Enabled = false;
             Tx_modo.Text = modo;
             if (modo != "NUEVO")
             {
@@ -593,6 +602,27 @@ namespace iOMG
                 cmb_mon.SelectedItem = tx_dat_mone.Text;
                 if (MonTodas == "S") cmb_mon.Enabled = false;
                 else cmb_mon.Enabled = true;
+            }
+        }
+        private void modonota()                             // campos de valores según el tipo de nota de credito
+        {
+            if (tx_dat_tipnot.Text == v_tnotanu)        // tipo de nota ANULACION
+            {
+                tx_bruNot.Text = tx_bruto.Text;
+                tx_igvNot.Text = tx_igv.Text;
+                tx_valNot.Text = tx_valor.Text;
+
+                tx_bruNot.ReadOnly = true;
+                tx_igvNot.ReadOnly = true;
+                tx_valNot.ReadOnly = true;
+                tx_coment.Focus();
+            }
+            if (tx_dat_tipnot.Text == v_tnotdsc)        // tipo de nota por descuento
+            {
+                tx_bruNot.ReadOnly = true;
+                tx_igvNot.ReadOnly = true;
+                tx_valNot.ReadOnly = false;
+                tx_valNot.Focus();
             }
         }
 
@@ -884,9 +914,9 @@ namespace iOMG
             }
             tx_status.Enabled = false;
             dtp_pedido.Enabled = false;
-            tx_bruto.ReadOnly = true;
-            tx_igv.ReadOnly = true;
-            tx_valor.ReadOnly = true;
+            tx_bruNot.ReadOnly = true;
+            tx_igvNot.ReadOnly = true;
+            tx_valNot.ReadOnly = true;
         }
         private void escribepan(Panel pan)
         {
@@ -1025,7 +1055,10 @@ namespace iOMG
         }
         private void cmb_tiponot_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            
+            tx_bruNot.Text = "";
+            tx_igvNot.Text = "";
+            tx_valNot.Text = "";
+            modonota();
             string axs = string.Format("descrizionerid='{0}'", cmb_tiponot.Text);
             DataRow[] row = dtnota.Select(axs);
             tx_dat_tipnot.Text = row[0].ItemArray[1].ToString();
@@ -1069,6 +1102,16 @@ namespace iOMG
                 {
                     jalaoc("tx_corre");
                 }
+            }
+        }
+        private void tx_valNot_Leave(object sender, EventArgs e)            // nota de cred por descuento
+        {
+            if (Tx_modo.Text == "NUEVO" && tx_dat_tipnot.Text == v_tnotdsc && tx_valNot.Text != "")
+            {
+                double vbru = double.Parse(tx_valNot.Text) / (1 + double.Parse(v_igv) / 100);  // 1.18;
+                double vigv = double.Parse(tx_valNot.Text) - vbru;
+                tx_igvNot.Text = vigv.ToString("#0.00");
+                tx_bruNot.Text = vbru.ToString("#0.00");
             }
         }
 
@@ -1198,16 +1241,7 @@ namespace iOMG
                     return;
                 }
                 // según tipo de nota vemos que hacemos
-                if (tx_dat_tipnot.Text == v_tnotanu)        // tipo de nota ANULACION
-                {
-                    tx_bruto.ReadOnly = true;
-                    tx_igv.ReadOnly = true;
-                    tx_valor.ReadOnly = true;
-                }
-                if (tx_dat_tipnot.Text == v_tnotdsc)        // tipo de nota por descuento
-                {
-
-                }
+                modonota();
             }
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
@@ -1241,6 +1275,12 @@ namespace iOMG
             {
                 MessageBox.Show("Ingrese el número del comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 tx_numdvta.Focus();
+                return;
+            }
+            if (tx_valNot.Text == "")
+            {
+                MessageBox.Show("Ingrese el valor de la nota", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_valNot.Focus();
                 return;
             }
             
@@ -1280,7 +1320,7 @@ namespace iOMG
                     "subtMN,igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred,vendedor,idpse_ose," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
                     "@fechop,@mtdvta,@ctnota,@sernot,@numnot,@tcdvta,@serdvta,@numdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl," +
-                    "@ubicre,@mailcl,@telec1,@ldcpgr,@didegr,@ubdegr,@obsprg,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@totpgr,@saldvta," +
+                    "@ubicre,@mailcl,@telec1,@ldcpgr,@didegr,@ubdegr,@obsprg,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@totdva,@saldvta," +
                     "@subMN,@igvMN,@totMN,@codMN,@estpgr,@frase1,@impSN,@canfil,@tinocr,@vende,@idpse," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
@@ -1309,14 +1349,15 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@obsprg", tx_coment.Text);
                     micon.Parameters.AddWithValue("@monppr", tx_dat_mone.Text);
                     micon.Parameters.AddWithValue("@tcoper", "0");                              // TIPO DE CAMBIO
-                    micon.Parameters.AddWithValue("@subpgr", tx_bruto.Text);                     // sub total
-                    micon.Parameters.AddWithValue("@igvpgr", tx_igv.Text);                      // igv
+                    micon.Parameters.AddWithValue("@subpgr", tx_bruNot.Text);                     // sub total
+                    micon.Parameters.AddWithValue("@igvpgr", tx_igvNot.Text);                      // igv
                     micon.Parameters.AddWithValue("@porcigv", v_igv);                           // porcentaje en numeros de IGV
-                    micon.Parameters.AddWithValue("@totpgr", tx_valor.Text);                    // total inc. igv
+                    micon.Parameters.AddWithValue("@totpgr", tx_valNot.Text);                    // total inc. igv
+                    micon.Parameters.AddWithValue("@totdva", tx_valor.Text);                    // total doc.venta
                     micon.Parameters.AddWithValue("@saldvta", 0);                               // SALDO DEL DOC.VTA.
-                    micon.Parameters.AddWithValue("@subMN", tx_bruto.Text);      // subtMN
-                    micon.Parameters.AddWithValue("@igvMN", tx_igv.Text);        // igvtMN
-                    micon.Parameters.AddWithValue("@totMN", tx_valor.Text);      // fletMN
+                    micon.Parameters.AddWithValue("@subMN", tx_bruNot.Text);      // subtMN
+                    micon.Parameters.AddWithValue("@igvMN", tx_igvNot.Text);        // igvtMN
+                    micon.Parameters.AddWithValue("@totMN", tx_valNot.Text);      // fletMN
                     micon.Parameters.AddWithValue("@codMN", MonDeft);                           // codigo moneda local
                     micon.Parameters.AddWithValue("@estpgr", "");                          // estado de la nota
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner
