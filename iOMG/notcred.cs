@@ -282,11 +282,11 @@ namespace iOMG
                     parte = "id=@idr";
                 }
             }
-            if (campo == "tx_corre" && tx_numdvta.Text != "")
+            if (campo == "tx_corre")
             {
                 if (Tx_modo.Text != "NUEVO")
                 {
-                    parte = "tipnota=@tdv and sernota=@sdv and numnota=@ndv";
+                    parte = "sernota=@sdv and numnota=@ndv";
                 }
             }
             jala = jala + parte;
@@ -300,7 +300,7 @@ namespace iOMG
                         if (parte == "id=@idr") micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                         else
                         {
-                            micon.Parameters.AddWithValue("@tdv", tx_dat_tipnot.Text);
+                            //micon.Parameters.AddWithValue("@tdv", tx_dat_tipnot.Text);
                             micon.Parameters.AddWithValue("@sdv", tx_sernot.Text);
                             micon.Parameters.AddWithValue("@ndv", tx_numnot.Text);
                         }
@@ -347,10 +347,15 @@ namespace iOMG
                         if (tx_idr.Text != "")
                         {
                             cmb_taller.SelectedItem = tx_dat_orig.Text;     // local de ventas
-                                                                            // tipo doc cliente
+                           
                             string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
                             DataRow[] row = dtdoc.Select(axs);
-                            cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
+                            cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();     // tipo doc cliente
+                            
+                            axs = string.Format("idcodice='{0}'", tx_dat_tipnot.Text);
+                            row = dtnota.Select(axs);
+                            cmb_tiponot.SelectedItem = row[0].ItemArray[0].ToString();
+
                             // nombre de estado
                             tx_status.Text = tx_dat_estad.Text;
                             // moneda
@@ -371,7 +376,7 @@ namespace iOMG
         }
         private void jaladet(string idr)                    // jala el detalle 
         {
-            string jalad = "SELECT ,cantbul,codprod,descpro,unimedp,madera,acabado,medidas,codmad,detpied,codMN,estadoser " + 
+            string jalad = "SELECT filadet,cantbul,codprod,descpro,unimedp,madera,acabado,medidas,codmad,detpied,codMN,estadoser " + 
                 "FROM detnotcred where idc=@idr";
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
@@ -401,7 +406,7 @@ namespace iOMG
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             if (modo == "NUEVO") dataGridView1.ColumnCount = 12;
-            // it   
+            // it       
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho                
             dataGridView1.Columns[0].HeaderText = "It";         // titulo de la columna
@@ -421,7 +426,7 @@ namespace iOMG
             dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[2].Name = "item";
-            // descpro
+            // descpro     
             dataGridView1.Columns[3].Visible = true;            // columna visible o no
             dataGridView1.Columns[3].HeaderText = "descpro";    // titulo de la columna
             dataGridView1.Columns[3].Width = 400;                // ancho
@@ -455,7 +460,7 @@ namespace iOMG
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[7].Name = "medidas";
-            // codmad   
+            // codmad        
             dataGridView1.Columns[8].Visible = true;            // columna visible o no
             dataGridView1.Columns[8].HeaderText = "codmad"; // titulo de la columna
             dataGridView1.Columns[8].Width = 60;                // ancho
@@ -472,13 +477,13 @@ namespace iOMG
             dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[9].Name = "detpied";
             // codMN
-            dataGridView1.Columns[11].Visible = true;
-            dataGridView1.Columns[11].HeaderText = "codMN"; // titulo de la columna
-            dataGridView1.Columns[11].Width = 60;                // ancho
-            dataGridView1.Columns[11].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[11].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridView1.Columns[11].Name = "codMN";
+            dataGridView1.Columns[10].Visible = true;
+            dataGridView1.Columns[10].HeaderText = "codMN"; // titulo de la columna
+            dataGridView1.Columns[10].Width = 60;                // ancho
+            dataGridView1.Columns[10].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[10].Name = "codMN";
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
@@ -1053,19 +1058,17 @@ namespace iOMG
         }
         internal void tx_corre_Leave(object sender, EventArgs e)
         {
-            if (Tx_modo.Text != "NUEVO" && tx_numnot.Text != "")
+            if (Tx_modo.Text != "NUEVO")
             {
-                string td = tx_dat_tipnot.Text;
-                string sd = tx_sernot.Text;
-                string nd = tx_numnot.Text;
-                limpia_ini();
-                tx_dat_tipnot.Text = td;
-                string axs = string.Format("idcodice='{0}'", tx_dat_tipnot.Text);
-                DataRow[] row = dtnota.Select(axs);
-                cmb_tiponot.SelectedItem = row[0].ItemArray[1].ToString();
-                tx_sernot.Text = sd;
-                tx_numnot.Text = nd;
-                jalaoc("tx_corre");
+                if (tx_sernot.Text == "")
+                {
+                    tx_sernot.Focus();
+                    return;
+                }
+                if (tx_numnot.Text != "")
+                {
+                    jalaoc("tx_corre");
+                }
             }
         }
 
@@ -1082,6 +1085,10 @@ namespace iOMG
         #region botones de grabar y agregar
         private void button2_Click(object sender, EventArgs e)      // jala datos del comprobante para la nota
         {
+            if (Tx_modo.Text != "NUEVO")
+            {
+                return;
+            }
             // validamos datos del comprobante
             if (tx_dat_tipdoc.Text == "")
             {

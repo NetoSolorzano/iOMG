@@ -82,6 +82,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.tx_telef2 = new iOMG.NumericTextBox();
+            this.tx_telef1 = new iOMG.NumericTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_mail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -94,6 +96,7 @@
             this.tx_nombre = new System.Windows.Forms.TextBox();
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.tx_ndc = new iOMG.NumericTextBox();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.tx_dat_orig = new System.Windows.Forms.TextBox();
@@ -142,9 +145,6 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_telef2 = new iOMG.NumericTextBox();
-            this.tx_telef1 = new iOMG.NumericTextBox();
-            this.tx_ndc = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -698,6 +698,22 @@
             this.label5.TabIndex = 358;
             this.label5.Text = "Dist.";
             // 
+            // tx_telef2
+            // 
+            this.tx_telef2.AllowSpace = false;
+            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
+            this.tx_telef2.Name = "tx_telef2";
+            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef2.TabIndex = 13;
+            // 
+            // tx_telef1
+            // 
+            this.tx_telef1.AllowSpace = false;
+            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
+            this.tx_telef1.Name = "tx_telef1";
+            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef1.TabIndex = 12;
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -806,6 +822,15 @@
             this.label11.TabIndex = 345;
             this.label11.Text = "Cliente";
             // 
+            // tx_ndc
+            // 
+            this.tx_ndc.AllowSpace = false;
+            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
+            this.tx_ndc.Name = "tx_ndc";
+            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
+            this.tx_ndc.TabIndex = 5;
+            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
+            // 
             // dtp_pedido
             // 
             this.dtp_pedido.Checked = false;
@@ -855,7 +880,6 @@
             this.tx_numdvta.Size = new System.Drawing.Size(70, 20);
             this.tx_numdvta.TabIndex = 3;
             this.tx_numdvta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_numdvta.Leave += new System.EventHandler(this.tx_corre_Leave);
             // 
             // label53
             // 
@@ -1144,6 +1168,7 @@
             this.tx_numnot.Size = new System.Drawing.Size(72, 20);
             this.tx_numnot.TabIndex = 430;
             this.tx_numnot.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_numnot.Leave += new System.EventHandler(this.tx_corre_Leave);
             // 
             // milinea4
             // 
@@ -1245,31 +1270,6 @@
             this.tx_valor.Size = new System.Drawing.Size(73, 20);
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // tx_telef2
-            // 
-            this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
-            this.tx_telef2.Name = "tx_telef2";
-            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef2.TabIndex = 13;
-            // 
-            // tx_telef1
-            // 
-            this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
-            this.tx_telef1.Name = "tx_telef1";
-            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef1.TabIndex = 12;
-            // 
-            // tx_ndc
-            // 
-            this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
-            this.tx_ndc.Name = "tx_ndc";
-            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
-            this.tx_ndc.TabIndex = 5;
-            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
             // 
             // notcred
             // 
