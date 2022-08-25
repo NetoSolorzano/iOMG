@@ -225,9 +225,8 @@ namespace iOMG
                 cmb_estad_guias.DisplayMember = "descrizionerid";
                 cmb_estad_guias.ValueMember = "idcodice";
                 // PANEL notas de credito
-                cmb_estad_plan.DataSource = dtestad;
-                cmb_estad_plan.DisplayMember = "descrizionerid";
-                cmb_estad_plan.ValueMember = "idcodice";
+
+
                 // *************** seleccion de segmento de ventas
                 // aca falta ....
 
@@ -554,19 +553,6 @@ namespace iOMG
                 tx_dat_sede_plan.Text = "";
             }
         }
-        private void cmb_estad_plan_SelectionChangeCommitted(object sender, EventArgs e)    // ok
-        {
-            if (cmb_estad_plan.SelectedValue != null) tx_dat_estad_plan.Text = cmb_estad_plan.SelectedValue.ToString();
-            else tx_dat_estad_plan.Text = "";
-        }
-        private void cmb_estad_plan_KeyDown(object sender, KeyEventArgs e)                  // ok
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                cmb_estad_plan.SelectedIndex = -1;
-                tx_dat_estad_plan.Text = "";
-            }
-        }
         private void cmb_sede_guias_SelectionChangeCommitted(object sender, EventArgs e)    // ok
         {
             if (cmb_sede_guias.SelectedValue != null) tx_sede_guias.Text = cmb_sede_guias.SelectedValue.ToString();
@@ -738,7 +724,6 @@ namespace iOMG
             //
             cmb_sede_guias.SelectedIndex = -1;
             cmb_estad_guias.SelectedIndex = -1;
-            cmb_estad_plan.SelectedIndex = -1;
             cmb_loc_det.SelectedIndex = -1;
             cmb_sede_plan.SelectedIndex = -1;
             cmb_seg_det.SelectedIndex = -1;

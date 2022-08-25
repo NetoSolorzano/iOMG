@@ -128,6 +128,19 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.tabregvtas = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox31 = new System.Windows.Forms.GroupBox();
+            this.groupBox32 = new System.Windows.Forms.GroupBox();
+            this.groupBox39 = new System.Windows.Forms.GroupBox();
+            this.groupBox40 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tx_dat_rvtas_Sede = new System.Windows.Forms.TextBox();
+            this.cmb_rvtas_sede = new System.Windows.Forms.ComboBox();
+            this.dtp_rvtas_fter = new System.Windows.Forms.DateTimePicker();
+            this.dtp_rvtas_fini = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.bt_regvtas = new System.Windows.Forms.Button();
             this.dgv_regvtas = new ADGV.AdvancedDataGridView();
             this.tabnotas = new System.Windows.Forms.TabPage();
@@ -137,12 +150,6 @@
             this.label16 = new System.Windows.Forms.Label();
             this.tx_totval_n = new iOMG.NumericTextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.chk_exclu_plan = new System.Windows.Forms.CheckBox();
-            this.groupBox23 = new System.Windows.Forms.GroupBox();
-            this.groupBox24 = new System.Windows.Forms.GroupBox();
-            this.tx_dat_estad_plan = new System.Windows.Forms.TextBox();
-            this.cmb_estad_plan = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox25 = new System.Windows.Forms.GroupBox();
             this.groupBox26 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -159,19 +166,6 @@
             this.bt_filtra_plan = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox31 = new System.Windows.Forms.GroupBox();
-            this.groupBox32 = new System.Windows.Forms.GroupBox();
-            this.groupBox39 = new System.Windows.Forms.GroupBox();
-            this.groupBox40 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tx_dat_rvtas_Sede = new System.Windows.Forms.TextBox();
-            this.cmb_rvtas_sede = new System.Windows.Forms.ComboBox();
-            this.dtp_rvtas_fter = new System.Windows.Forms.DateTimePicker();
-            this.dtp_rvtas_fini = new System.Windows.Forms.DateTimePicker();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabfacts.SuspendLayout();
@@ -193,17 +187,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vtabar)).BeginInit();
             this.groupBox37.SuspendLayout();
             this.tabregvtas.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox31.SuspendLayout();
+            this.groupBox39.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_regvtas)).BeginInit();
             this.tabnotas.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            this.groupBox23.SuspendLayout();
             this.groupBox25.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox21.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_notcre)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.groupBox31.SuspendLayout();
-            this.groupBox39.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -1303,6 +1296,130 @@
             this.tabregvtas.Text = "Registro de Ventas";
             this.tabregvtas.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox1.Location = new System.Drawing.Point(496, 46);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(161, 1);
+            this.groupBox1.TabIndex = 433;
+            this.groupBox1.TabStop = false;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Location = new System.Drawing.Point(0, -26);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(164, 1);
+            this.groupBox2.TabIndex = 113;
+            this.groupBox2.TabStop = false;
+            // 
+            // groupBox31
+            // 
+            this.groupBox31.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox31.Controls.Add(this.groupBox32);
+            this.groupBox31.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox31.Location = new System.Drawing.Point(496, 24);
+            this.groupBox31.Name = "groupBox31";
+            this.groupBox31.Size = new System.Drawing.Size(161, 1);
+            this.groupBox31.TabIndex = 432;
+            this.groupBox31.TabStop = false;
+            // 
+            // groupBox32
+            // 
+            this.groupBox32.Location = new System.Drawing.Point(0, -26);
+            this.groupBox32.Name = "groupBox32";
+            this.groupBox32.Size = new System.Drawing.Size(164, 1);
+            this.groupBox32.TabIndex = 113;
+            this.groupBox32.TabStop = false;
+            // 
+            // groupBox39
+            // 
+            this.groupBox39.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox39.Controls.Add(this.groupBox40);
+            this.groupBox39.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox39.Location = new System.Drawing.Point(236, 24);
+            this.groupBox39.Name = "groupBox39";
+            this.groupBox39.Size = new System.Drawing.Size(171, 1);
+            this.groupBox39.TabIndex = 431;
+            this.groupBox39.TabStop = false;
+            // 
+            // groupBox40
+            // 
+            this.groupBox40.Location = new System.Drawing.Point(0, -26);
+            this.groupBox40.Name = "groupBox40";
+            this.groupBox40.Size = new System.Drawing.Size(164, 1);
+            this.groupBox40.TabIndex = 113;
+            this.groupBox40.TabStop = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(238, 9);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(69, 13);
+            this.label8.TabIndex = 429;
+            this.label8.Text = "Local Ventas";
+            // 
+            // tx_dat_rvtas_Sede
+            // 
+            this.tx_dat_rvtas_Sede.Location = new System.Drawing.Point(216, 5);
+            this.tx_dat_rvtas_Sede.Name = "tx_dat_rvtas_Sede";
+            this.tx_dat_rvtas_Sede.Size = new System.Drawing.Size(20, 20);
+            this.tx_dat_rvtas_Sede.TabIndex = 430;
+            this.tx_dat_rvtas_Sede.Visible = false;
+            // 
+            // cmb_rvtas_sede
+            // 
+            this.cmb_rvtas_sede.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_rvtas_sede.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_rvtas_sede.DropDownWidth = 100;
+            this.cmb_rvtas_sede.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_rvtas_sede.FormattingEnabled = true;
+            this.cmb_rvtas_sede.Location = new System.Drawing.Point(306, 4);
+            this.cmb_rvtas_sede.Name = "cmb_rvtas_sede";
+            this.cmb_rvtas_sede.Size = new System.Drawing.Size(119, 21);
+            this.cmb_rvtas_sede.TabIndex = 428;
+            this.cmb_rvtas_sede.SelectionChangeCommitted += new System.EventHandler(this.cmb_rvtas_sede_SelectionChangeCommitted);
+            this.cmb_rvtas_sede.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_rvtas_sede_KeyDown);
+            // 
+            // dtp_rvtas_fter
+            // 
+            this.dtp_rvtas_fter.Checked = false;
+            this.dtp_rvtas_fter.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_rvtas_fter.Location = new System.Drawing.Point(562, 27);
+            this.dtp_rvtas_fter.Name = "dtp_rvtas_fter";
+            this.dtp_rvtas_fter.Size = new System.Drawing.Size(95, 20);
+            this.dtp_rvtas_fter.TabIndex = 425;
+            // 
+            // dtp_rvtas_fini
+            // 
+            this.dtp_rvtas_fini.Checked = false;
+            this.dtp_rvtas_fini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_rvtas_fini.Location = new System.Drawing.Point(562, 5);
+            this.dtp_rvtas_fini.Name = "dtp_rvtas_fini";
+            this.dtp_rvtas_fini.Size = new System.Drawing.Size(95, 20);
+            this.dtp_rvtas_fini.TabIndex = 424;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(506, 32);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.TabIndex = 427;
+            this.label9.Text = "Fech final";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(498, 9);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(61, 13);
+            this.label20.TabIndex = 426;
+            this.label20.Text = "Fech Inicial";
+            // 
             // bt_regvtas
             // 
             this.bt_regvtas.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -1337,11 +1454,6 @@
             this.tabnotas.Controls.Add(this.label16);
             this.tabnotas.Controls.Add(this.tx_totval_n);
             this.tabnotas.Controls.Add(this.label17);
-            this.tabnotas.Controls.Add(this.chk_exclu_plan);
-            this.tabnotas.Controls.Add(this.groupBox23);
-            this.tabnotas.Controls.Add(this.tx_dat_estad_plan);
-            this.tabnotas.Controls.Add(this.cmb_estad_plan);
-            this.tabnotas.Controls.Add(this.label7);
             this.tabnotas.Controls.Add(this.groupBox25);
             this.tabnotas.Controls.Add(this.label10);
             this.tabnotas.Controls.Add(this.tx_dat_sede_plan);
@@ -1429,66 +1541,6 @@
             this.label17.TabIndex = 410;
             this.label17.Text = "Total Valor Nota S/";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // chk_exclu_plan
-            // 
-            this.chk_exclu_plan.AutoSize = true;
-            this.chk_exclu_plan.Location = new System.Drawing.Point(387, 28);
-            this.chk_exclu_plan.Name = "chk_exclu_plan";
-            this.chk_exclu_plan.Size = new System.Drawing.Size(63, 17);
-            this.chk_exclu_plan.TabIndex = 3;
-            this.chk_exclu_plan.Text = "Excluye";
-            this.chk_exclu_plan.UseVisualStyleBackColor = true;
-            // 
-            // groupBox23
-            // 
-            this.groupBox23.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox23.Controls.Add(this.groupBox24);
-            this.groupBox23.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox23.Location = new System.Drawing.Point(209, 45);
-            this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(154, 1);
-            this.groupBox23.TabIndex = 402;
-            this.groupBox23.TabStop = false;
-            // 
-            // groupBox24
-            // 
-            this.groupBox24.Location = new System.Drawing.Point(0, -26);
-            this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Size = new System.Drawing.Size(164, 1);
-            this.groupBox24.TabIndex = 113;
-            this.groupBox24.TabStop = false;
-            // 
-            // tx_dat_estad_plan
-            // 
-            this.tx_dat_estad_plan.Location = new System.Drawing.Point(189, 28);
-            this.tx_dat_estad_plan.Name = "tx_dat_estad_plan";
-            this.tx_dat_estad_plan.Size = new System.Drawing.Size(17, 20);
-            this.tx_dat_estad_plan.TabIndex = 404;
-            this.tx_dat_estad_plan.Visible = false;
-            // 
-            // cmb_estad_plan
-            // 
-            this.cmb_estad_plan.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_estad_plan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_estad_plan.DropDownWidth = 100;
-            this.cmb_estad_plan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_estad_plan.FormattingEnabled = true;
-            this.cmb_estad_plan.Location = new System.Drawing.Point(296, 25);
-            this.cmb_estad_plan.Name = "cmb_estad_plan";
-            this.cmb_estad_plan.Size = new System.Drawing.Size(85, 21);
-            this.cmb_estad_plan.TabIndex = 2;
-            this.cmb_estad_plan.SelectionChangeCommitted += new System.EventHandler(this.cmb_estad_plan_SelectionChangeCommitted);
-            this.cmb_estad_plan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_estad_plan_KeyDown);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(211, 30);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(84, 13);
-            this.label7.TabIndex = 401;
-            this.label7.Text = "Estado comprob";
             // 
             // groupBox25
             // 
@@ -1651,130 +1703,6 @@
             this.label6.TabIndex = 391;
             this.label6.Text = "Fech Inicial";
             // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox1.Location = new System.Drawing.Point(496, 46);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(161, 1);
-            this.groupBox1.TabIndex = 433;
-            this.groupBox1.TabStop = false;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Location = new System.Drawing.Point(0, -26);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(164, 1);
-            this.groupBox2.TabIndex = 113;
-            this.groupBox2.TabStop = false;
-            // 
-            // groupBox31
-            // 
-            this.groupBox31.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox31.Controls.Add(this.groupBox32);
-            this.groupBox31.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox31.Location = new System.Drawing.Point(496, 24);
-            this.groupBox31.Name = "groupBox31";
-            this.groupBox31.Size = new System.Drawing.Size(161, 1);
-            this.groupBox31.TabIndex = 432;
-            this.groupBox31.TabStop = false;
-            // 
-            // groupBox32
-            // 
-            this.groupBox32.Location = new System.Drawing.Point(0, -26);
-            this.groupBox32.Name = "groupBox32";
-            this.groupBox32.Size = new System.Drawing.Size(164, 1);
-            this.groupBox32.TabIndex = 113;
-            this.groupBox32.TabStop = false;
-            // 
-            // groupBox39
-            // 
-            this.groupBox39.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox39.Controls.Add(this.groupBox40);
-            this.groupBox39.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox39.Location = new System.Drawing.Point(236, 24);
-            this.groupBox39.Name = "groupBox39";
-            this.groupBox39.Size = new System.Drawing.Size(171, 1);
-            this.groupBox39.TabIndex = 431;
-            this.groupBox39.TabStop = false;
-            // 
-            // groupBox40
-            // 
-            this.groupBox40.Location = new System.Drawing.Point(0, -26);
-            this.groupBox40.Name = "groupBox40";
-            this.groupBox40.Size = new System.Drawing.Size(164, 1);
-            this.groupBox40.TabIndex = 113;
-            this.groupBox40.TabStop = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(238, 9);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(69, 13);
-            this.label8.TabIndex = 429;
-            this.label8.Text = "Local Ventas";
-            // 
-            // tx_dat_rvtas_Sede
-            // 
-            this.tx_dat_rvtas_Sede.Location = new System.Drawing.Point(216, 5);
-            this.tx_dat_rvtas_Sede.Name = "tx_dat_rvtas_Sede";
-            this.tx_dat_rvtas_Sede.Size = new System.Drawing.Size(20, 20);
-            this.tx_dat_rvtas_Sede.TabIndex = 430;
-            this.tx_dat_rvtas_Sede.Visible = false;
-            // 
-            // cmb_rvtas_sede
-            // 
-            this.cmb_rvtas_sede.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.cmb_rvtas_sede.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_rvtas_sede.DropDownWidth = 100;
-            this.cmb_rvtas_sede.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_rvtas_sede.FormattingEnabled = true;
-            this.cmb_rvtas_sede.Location = new System.Drawing.Point(306, 4);
-            this.cmb_rvtas_sede.Name = "cmb_rvtas_sede";
-            this.cmb_rvtas_sede.Size = new System.Drawing.Size(119, 21);
-            this.cmb_rvtas_sede.TabIndex = 428;
-            this.cmb_rvtas_sede.SelectionChangeCommitted += new System.EventHandler(this.cmb_rvtas_sede_SelectionChangeCommitted);
-            this.cmb_rvtas_sede.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_rvtas_sede_KeyDown);
-            // 
-            // dtp_rvtas_fter
-            // 
-            this.dtp_rvtas_fter.Checked = false;
-            this.dtp_rvtas_fter.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_rvtas_fter.Location = new System.Drawing.Point(562, 27);
-            this.dtp_rvtas_fter.Name = "dtp_rvtas_fter";
-            this.dtp_rvtas_fter.Size = new System.Drawing.Size(95, 20);
-            this.dtp_rvtas_fter.TabIndex = 425;
-            // 
-            // dtp_rvtas_fini
-            // 
-            this.dtp_rvtas_fini.Checked = false;
-            this.dtp_rvtas_fini.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_rvtas_fini.Location = new System.Drawing.Point(562, 5);
-            this.dtp_rvtas_fini.Name = "dtp_rvtas_fini";
-            this.dtp_rvtas_fini.Size = new System.Drawing.Size(95, 20);
-            this.dtp_rvtas_fini.TabIndex = 424;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(506, 32);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 13);
-            this.label9.TabIndex = 427;
-            this.label9.Text = "Fech final";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(498, 9);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(61, 13);
-            this.label20.TabIndex = 426;
-            this.label20.Text = "Fech Inicial";
-            // 
             // repsfact
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1814,18 +1742,17 @@
             this.groupBox37.ResumeLayout(false);
             this.tabregvtas.ResumeLayout(false);
             this.tabregvtas.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox31.ResumeLayout(false);
+            this.groupBox39.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_regvtas)).EndInit();
             this.tabnotas.ResumeLayout(false);
             this.tabnotas.PerformLayout();
             this.groupBox9.ResumeLayout(false);
-            this.groupBox23.ResumeLayout(false);
             this.groupBox25.ResumeLayout(false);
             this.groupBox15.ResumeLayout(false);
             this.groupBox21.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_notcre)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox31.ResumeLayout(false);
-            this.groupBox39.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1882,12 +1809,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage tabnotas;
-        private System.Windows.Forms.CheckBox chk_exclu_plan;
-        private System.Windows.Forms.GroupBox groupBox23;
-        private System.Windows.Forms.GroupBox groupBox24;
-        private System.Windows.Forms.TextBox tx_dat_estad_plan;
-        private System.Windows.Forms.ComboBox cmb_estad_plan;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox25;
         private System.Windows.Forms.GroupBox groupBox26;
         private System.Windows.Forms.Label label10;

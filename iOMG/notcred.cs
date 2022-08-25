@@ -273,7 +273,7 @@ namespace iOMG
             string parte = "";
             string jala = "SELECT id,fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
                 "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta,subtMN," +
-                "igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred " +
+                "igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred,vendedor,contrato " +
                 "FROM cabnotascd where ";
             if (campo == "tx_idr" && tx_idr.Text != "" && tx_numdvta.Text.Trim() == "")
             {
@@ -334,7 +334,8 @@ namespace iOMG
                             tx_coment.Text = dr.GetString("obsnota");
                             tx_tfil.Text = dr.GetString("canfidt");
                             tx_dat_mone.Text = dr.GetString("mondvta");
-
+                            tx_nomVen.Text = dr.GetString("vendedor");
+                            tx_contrat.Text = dr.GetString("contrato");
                             tx_valor.Text = dr.GetString("totdvta");
                             tx_bruto.Text = (double.Parse(dr.GetString("totdvta")) / (1 + double.Parse(v_igv) / 100)).ToString("#0.00");
                             tx_igv.Text = (double.Parse(dr.GetString("totdvta")) / (double.Parse(v_igv) / 100)).ToString("#0.00");
@@ -359,6 +360,7 @@ namespace iOMG
                             axs = string.Format("idcodice='{0}'", tx_dat_tipnot.Text);
                             row = dtnota.Select(axs);
                             cmb_tiponot.SelectedItem = row[0].ItemArray[0].ToString();
+                            tx_dat_codnot.Text = row[0].ItemArray[3].ToString();
 
                             axs = string.Format("idcodice='{0}'", tx_dat_tipdoc.Text);
                             row = dtpedido.Select(axs);
@@ -519,7 +521,7 @@ namespace iOMG
                     cmb_taller.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion del tipo de nota de credito
-                const string connota = "select descrizionerid,idcodice,sunat from desc_tnc " +
+                const string connota = "select descrizionerid,idcodice,sunat,codigo from desc_tnc " +
                                        "where numero=1";            // filtramos solo los documentos de venta
                 MySqlCommand cmdnota = new MySqlCommand(connota, conn);
                 MySqlDataAdapter danota = new MySqlDataAdapter(cmdnota);
@@ -721,6 +723,7 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
             cmb_tiponot.Focus();
+            tx_nomVen.Text = Program.vg_nuse;
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1062,6 +1065,7 @@ namespace iOMG
             string axs = string.Format("descrizionerid='{0}'", cmb_tiponot.Text);
             DataRow[] row = dtnota.Select(axs);
             tx_dat_tipnot.Text = row[0].ItemArray[1].ToString();
+            tx_dat_codnot.Text = row[0].ItemArray[3].ToString();
         }
         #endregion comboboxes
 
@@ -1160,7 +1164,8 @@ namespace iOMG
                     string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
                         "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,round(totdvta,2) as totdvta,totpags,saldvta,estdvta,frase01," +
                         "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-                        "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose from cabfactu where tipdvta=@tdv and serdvta=@sdv and numdvta=@ndv";
+                        "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,contrato " +
+                        "from cabfactu where tipdvta=@tdv and serdvta=@sdv and numdvta=@ndv";
                     using (MySqlCommand micon = new MySqlCommand(jala, conn))
                     {
                         micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
@@ -1170,7 +1175,7 @@ namespace iOMG
                         if (dr.Read())
                         {
                             tx_idr.Text = dr.GetString("id");
-                            dtp_pedido.Value = dr.GetDateTime("fechope");
+                            //dtp_pedido.Value = dr.GetDateTime("fechope");
                             tx_dat_tipdoc.Text = dr.GetString("tipdvta");
                             tx_dat_tdoc.Text = dr.GetString("tidoclt");
                             tx_ndc.Text = dr.GetString("nudoclt");
@@ -1193,6 +1198,7 @@ namespace iOMG
                             tx_dat_estad.Text = dr.GetString("estdvta");
                             tx_nomVen.Text = dr.GetString("vendedor");
                             tx_id_rapifac.Text = dr.GetString("idpse_ose");
+                            tx_contrat.Text = dr.GetString("contrato");
                         }
                         dr.Dispose();
                         if (tx_idr.Text != "")
@@ -1317,11 +1323,11 @@ namespace iOMG
                 string inserta = "insert into cabnotascd (" +
                     "fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
                     "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta," +
-                    "subtMN,igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred,vendedor,idpse_ose," +
+                    "subtMN,igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred,vendedor,idpse_ose,contrato," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
                     "@fechop,@mtdvta,@ctnota,@sernot,@numnot,@tcdvta,@serdvta,@numdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl," +
                     "@ubicre,@mailcl,@telec1,@ldcpgr,@didegr,@ubdegr,@obsprg,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@totdva,@saldvta," +
-                    "@subMN,@igvMN,@totMN,@codMN,@estpgr,@frase1,@impSN,@canfil,@tinocr,@vende,@idpse," +
+                    "@subMN,@igvMN,@totMN,@codMN,@estpgr,@frase1,@impSN,@canfil,@tinocr,@vende,@idpse,@cont," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
@@ -1363,9 +1369,10 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner
                     micon.Parameters.AddWithValue("@impSN", "N");                               // impreso? S, N ==> no se imprimen las notas 23/08/2022
                     micon.Parameters.AddWithValue("@canfil", tx_tfil.Text);                     // cantidad de filas de detalle
-                    micon.Parameters.AddWithValue("@tinocr", tx_dat_tipnot.Text);               // tipo de cliente credito o contado => TODOS SON CONTADO=1
+                    micon.Parameters.AddWithValue("@tinocr", tx_dat_codnot.Text);               // tipo de cliente credito o contado => TODOS SON CONTADO=1
                     micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
-                    micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text); 
+                    micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text);
+                    micon.Parameters.AddWithValue("@cont",tx_contrat.Text);                     //
                     micon.Parameters.AddWithValue("@verApp", "");
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@iplan", lib.iplan());
@@ -1414,6 +1421,26 @@ namespace iOMG
                                 retorna = true;         // no hubo errores!
                             }
                         }
+                    }
+                }
+                // medios de pago
+                {
+                    string inpag = "insert into adifactpag (idc,tdvta,sdvta,ndvta,it,medio,operac,importe,codpag,fpago) values (" +
+                        "@idc,@tdv,@sdv,@ndv,@it,@med,@ope,@imp,@cpa,@fpa)";
+                    using (MySqlCommand micon = new MySqlCommand(inpag, conn))
+                    {
+                        decimal xx = decimal.Negate(decimal.Parse(tx_valNot.Text));
+                        micon.Parameters.AddWithValue("@idc", 0);
+                        micon.Parameters.AddWithValue("@tdv", tx_dat_codnot.Text);
+                        micon.Parameters.AddWithValue("@sdv", tx_sernot.Text);
+                        micon.Parameters.AddWithValue("@ndv", tx_numnot.Text);
+                        micon.Parameters.AddWithValue("@it", (1).ToString());
+                        micon.Parameters.AddWithValue("@med", "");
+                        micon.Parameters.AddWithValue("@ope", "");
+                        micon.Parameters.AddWithValue("@imp", xx.ToString());
+                        micon.Parameters.AddWithValue("@cpa", "");
+                        micon.Parameters.AddWithValue("@fpa", dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2));
+                        micon.ExecuteNonQuery();
                     }
                 }
             }

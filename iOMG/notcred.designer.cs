@@ -154,6 +154,8 @@
             this.milinea11 = new iOMG.milinea();
             this.label16 = new System.Windows.Forms.Label();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.tx_dat_codnot = new System.Windows.Forms.TextBox();
+            this.tx_contrat = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1366,11 +1368,31 @@
             this.tx_valor.TabIndex = 11;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // tx_dat_codnot
+            // 
+            this.tx_dat_codnot.Location = new System.Drawing.Point(66, 29);
+            this.tx_dat_codnot.Name = "tx_dat_codnot";
+            this.tx_dat_codnot.Size = new System.Drawing.Size(31, 20);
+            this.tx_dat_codnot.TabIndex = 441;
+            this.tx_dat_codnot.Tag = "Codigo del tipo de nota";
+            this.tx_dat_codnot.Visible = false;
+            // 
+            // tx_contrat
+            // 
+            this.tx_contrat.Location = new System.Drawing.Point(195, 320);
+            this.tx_contrat.Name = "tx_contrat";
+            this.tx_contrat.Size = new System.Drawing.Size(65, 20);
+            this.tx_contrat.TabIndex = 442;
+            this.tx_contrat.Tag = "Codigo del tipo de nota";
+            this.tx_contrat.Visible = false;
+            // 
             // notcred
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(830, 421);
+            this.Controls.Add(this.tx_contrat);
+            this.Controls.Add(this.tx_dat_codnot);
             this.Controls.Add(this.milinea11);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.tx_valor);
@@ -1580,5 +1602,7 @@
         private milinea milinea11;
         private System.Windows.Forms.Label label16;
         private NumericTextBox tx_valor;
+        internal System.Windows.Forms.TextBox tx_dat_codnot;
+        internal System.Windows.Forms.TextBox tx_contrat;
     }
 }
