@@ -104,6 +104,10 @@ namespace iOMG
         DataTable dtfp = new DataTable();       // combo para tipo de pago
         DataTable dtpedido = new DataTable();   // tipos documento de venta
         DataTable dtmon = new DataTable();      // monedas
+        DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
+        AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
+        AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
+        AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
         string vpago = "";                      // pago anticipo o cancelatorio
         string[,] dtpagos = new string[10, 7];  // 10 filas, 6 columnas para los medios de pago por comprobante
 
@@ -234,6 +238,7 @@ namespace iOMG
             //Bt_print.Enabled = false;
             bt_prev.Enabled = false;
             tx_d_nom.Enabled = false;
+            autodptos();
         }
         private void init()
         {
@@ -619,6 +624,21 @@ namespace iOMG
             if (conn.State != ConnectionState.Open)
             {
                 MessageBox.Show("No se pudo conectar con el servidor", "Error de conexión");
+                Application.Exit();
+                return;
+            }
+            // autocompletados de departamento, provincia y distrito
+            string consulta = "SELECT depart,provin,distri,nombre FROM ubigeos";
+            MySqlCommand micon = new MySqlCommand(consulta, conn);
+            try
+            {
+                MySqlDataAdapter daa = new MySqlDataAdapter(micon);
+                daa.Fill(dtadpd);
+                daa.Dispose();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error en obtener nombres de dptos,provin y distritos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
                 return;
             }
@@ -1022,6 +1042,121 @@ namespace iOMG
             }
         }
 
+        #region autocompletados
+        private void autodptos()
+        {
+            DataRow[] result = dtadpd.Select("provin='00' AND distri='00'");
+            foreach (DataRow row in result)
+            {
+                adptos.Add(row["nombre"].ToString());
+            }
+            tx_dpto.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tx_dpto.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tx_dpto.AutoCompleteCustomSource = adptos;
+        }
+        private void autoprovi()
+        {
+            aprovi.Clear();
+            DataRow[] result = dtadpd.Select("distri='00' AND depart='" + tx_dat_dpto.Text + "'");  // provin<>'00' AND 
+            foreach (DataRow row in result)
+            {
+                aprovi.Add(row["nombre"].ToString());
+            }
+            tx_prov.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tx_prov.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tx_prov.AutoCompleteCustomSource = aprovi;
+        }
+        private void autodistr()
+        {
+            adistr.Clear();
+            DataRow[] result;
+            if (tx_dat_dpto.Text == "07")   // callao
+            {
+                result = dtadpd.Select("provin='01' AND depart='" + tx_dat_dpto.Text + "'");  // AND distri='00' 
+            }
+            else
+            {
+                result = dtadpd.Select("provin='" + tx_dat_provin.Text + "' AND depart='" + tx_dat_dpto.Text + "'");  // AND distri='00' 
+            }
+            foreach (DataRow row in result)
+            {
+                adistr.Add(row["nombre"].ToString());
+            }
+            tx_dist.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tx_dist.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tx_dist.AutoCompleteCustomSource = adistr;
+        }
+        private void tx_dpto_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tx_dat_dpto.Text = "";
+            if (tx_dpto.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            {
+                DataRow[] result = dtadpd.Select("provin='00' AND distri='00' AND nombre='" + tx_dpto.Text.Trim() + "'");
+                foreach (DataRow row in result)
+                {
+                    tx_dat_dpto.Text = row["depart"].ToString();
+                }
+                if (tx_dat_dpto.Text == "")
+                {
+                    MessageBox.Show("No existe el departamento escrito", "Por favor revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_dpto.Text = "";
+                    tx_dpto.Focus();
+                    return;
+                }
+                autoprovi();
+            }
+        }
+        private void tx_prov_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tx_dat_provin.Text = "";
+            if (tx_prov.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            {
+                DataRow[] result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND distri='00' AND nombre='" + tx_prov.Text.Trim() + "'");
+                foreach (DataRow row in result)
+                {
+                    if (tx_dat_dpto.Text == "07") tx_dat_provin.Text = "01";
+                    else tx_dat_provin.Text = row["provin"].ToString();
+                }
+                if (tx_dat_provin.Text == "")
+                {
+                    MessageBox.Show("No existe la provincia escrita", "Por favor revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_prov.Text = "";
+                    tx_prov.Focus();
+                    return;
+                }
+                autodistr();
+            }
+        }
+        private void tx_dist_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tx_dat_distri.Text = "";
+            DataRow[] result;
+            if (tx_dist.Text.Trim() != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            {
+                if (tx_dat_dpto.Text == "07")
+                {
+                    result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND provin='01' AND nombre='" + tx_dist.Text.Trim() + "'");
+                }
+                else
+                {
+                    result = dtadpd.Select("depart='" + tx_dat_dpto.Text + "' AND provin='" + tx_dat_provin.Text.Trim() + "' AND nombre='" + tx_dist.Text.Trim() + "'");
+                }
+                foreach (DataRow row in result)
+                {
+                    tx_dat_distri.Text = row["distri"].ToString();
+                }
+                if (tx_dat_distri.Text == "")
+                {
+                    MessageBox.Show("No existe el distrito escrito", "Por favor revise", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    tx_dist.Text = "";
+                    tx_dist.Focus();
+                    return;
+                }
+            }
+        }
+
+        #endregion autocompletados
+
         #region botones_de_comando_y_permisos  
         private void toolboton()
         {
@@ -1125,6 +1260,7 @@ namespace iOMG
             rb_contado.Checked = true;
             tx_d_med.ReadOnly = true;
             rb_tbienes.Checked = true;
+            tx_d_can.ReadOnly = false;
             cmb_tipo.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -2073,9 +2209,6 @@ namespace iOMG
                 cmb_tipo.Focus();
                 return;
             }
-
-/*            if (conex_Rapifac() == false) return;   //// **************/
-
             if (tx_dat_tdoc.Text.Trim() == "")
             {
                 MessageBox.Show("Seleccione el tipo de documento del cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -2088,7 +2221,9 @@ namespace iOMG
                 tx_ndc.Focus();
                 return;
             }
-            
+
+            /*            if (conex_Rapifac() == false) return;   //// **************/
+
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones 
@@ -2115,6 +2250,13 @@ namespace iOMG
                 {
                     MessageBox.Show("Es obligatorio registrar la dirección", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     tx_direc.Focus();
+                    return;
+                }
+                if (rb_antic.Checked == true && dataGridView1.Rows.Count <= 2)
+                {
+                    MessageBox.Show("Debe ingresar el detalle de la venta" + Environment.NewLine + 
+                        "los anticipos deben tener un detalle previo","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    rb_bienes.Focus();
                     return;
                 }
 

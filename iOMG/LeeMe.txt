@@ -189,3 +189,5 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form notcred, creacion del formulario .............................................. ok 23/08/22
 - form notcred, puesta a punto del form .............................................. ok 24/08/22
 - form repsfact, agregar codigo y P.A. para reporte de notas de credito .............. ok 24/08/22
+- form docsvta, mejoras varias de reunion del 25/08/22 ............................... ok 26/08/22
+

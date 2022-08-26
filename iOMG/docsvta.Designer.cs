@@ -798,6 +798,7 @@
             this.tx_dpto.Size = new System.Drawing.Size(83, 20);
             this.tx_dpto.TabIndex = 8;
             this.tx_dpto.Tag = "Id";
+            this.tx_dpto.Validating += new System.ComponentModel.CancelEventHandler(this.tx_dpto_Validating);
             // 
             // tx_prov
             // 
@@ -806,6 +807,7 @@
             this.tx_prov.Size = new System.Drawing.Size(83, 20);
             this.tx_prov.TabIndex = 9;
             this.tx_prov.Tag = "Id";
+            this.tx_prov.Validating += new System.ComponentModel.CancelEventHandler(this.tx_prov_Validating);
             // 
             // tx_direc
             // 
@@ -832,6 +834,7 @@
             this.tx_dist.Size = new System.Drawing.Size(83, 20);
             this.tx_dist.TabIndex = 10;
             this.tx_dist.Tag = "Id";
+            this.tx_dist.Validating += new System.ComponentModel.CancelEventHandler(this.tx_dist_Validating);
             // 
             // tx_nombre
             // 
@@ -1036,6 +1039,7 @@
             this.tx_d_preSinDscto.TabIndex = 317;
             this.tx_d_preSinDscto.Tag = "Id";
             this.tx_d_preSinDscto.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_preSinDscto.Visible = false;
             // 
             // tx_d_valAntic
             // 
