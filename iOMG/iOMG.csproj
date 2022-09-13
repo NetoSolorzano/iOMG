@@ -147,6 +147,7 @@
     <Compile Include="notcred.designer.cs">
       <DependentUpon>notcred.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductoPrecioDTO.cs" />
     <Compile Include="_rapifac.cs" />
     <Compile Include="clients.cs">
       <SubType>Form</SubType>

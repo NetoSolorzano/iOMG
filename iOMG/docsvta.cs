@@ -28,6 +28,7 @@ namespace iOMG
         string colstrp = iOMG.Program.colstr;       // color del strip
         static string nomtab = "cabfactu";
         libreria lib = new libreria();
+        NumLetra nle = new NumLetra();
 
         #region variables
         //public string perAg = "";             // permisos agregar
@@ -87,6 +88,7 @@ namespace iOMG
         string itemSer = "";            // items (capit) de comprobantes de servicios
         string cliente = Program.cliente;    // razon social para los reportes
         #endregion
+
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
 
         // string de conexion
@@ -2222,7 +2224,7 @@ namespace iOMG
                 return;
             }
 
-            /*            if (conex_Rapifac() == false) return;   //// **************/
+            if (conex_Rapifac() == "") return;   //
 
             if (Tx_modo.Text == "NUEVO")
             {
@@ -2344,6 +2346,10 @@ namespace iOMG
                     }
                 }
                 else return;
+            }
+            if (Tx_modo.Text == "EDITAR")
+            {
+                if (conex_Rapifac() == "") return;   //
             }
             limpia_ini();
             tx_serie.Focus();
@@ -2635,20 +2641,25 @@ namespace iOMG
             httpWebRequest.ContentLength = bytes.Length;
             Stream newStream = httpWebRequest.GetRequestStream();
             newStream.Write(bytes, 0, bytes.Length);
-
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            try
             {
-                var result = streamReader.ReadToEnd();
-                var masticado = JObject.Parse(result);
-                retorna = masticado["access_token"].ToString();
-                if (retorna == null)
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    retorna = recon_rapifac(masticado["refresh_token"].ToString(),host, id_clte);
+                    var result = streamReader.ReadToEnd();
+                    var masticado = JObject.Parse(result);
+                    retorna = masticado["access_token"].ToString();
+                    if (retorna == null)
+                    {
+                        retorna = recon_rapifac(masticado["refresh_token"].ToString(), host, id_clte);
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
             return retorna;
         }
         private string recon_rapifac(string fresco,string host,string id_clte)      // si el token expiro, pedimos otro
@@ -2684,7 +2695,7 @@ namespace iOMG
             if (token != "")
             {
                 // datos variables para la emisión
-                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc;
+                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim();
 
                 //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
@@ -2713,150 +2724,209 @@ namespace iOMG
                 httpWebRequest.Method = "POST";
                 httpWebRequest.Headers.Add("Authorization", "bearer " + token);
 
-                CComprobanteDetalle det = new CComprobanteDetalle
-                {
-                    ID = 0,
-                    ComprobanteID = 0,
-                    Item = 1,
-                    TipoProductoCodigo = "",
-                    ProductoCodigo = "Prod00005",
-                    ProductoCodigoSUNAT = "39121321",
-                    TipoSistemaISCCodigo = "00",
-                    UnidadMedidaCodigo = "NIU",
-                    PrecioUnitarioSugerido = 0,
-                    PrecioUnitarioItem = 118,
-                    PrecioVentaCodigo = "01",
-                    ICBPER = 0,
-                    CargoIndicador = "0",
-                    DescuentoIndicador = "",
-                    DescuentoCargoCodigo = "00",
-                    PercepcionCantidadUmbral = 0,
-                    PercepcionMontoUmbral = 0,
-                    PercepcionPorcentaje = 0,
-                    Control = 0,
-                    PrecioCompra = 100.005M,
-                    Cargo = 0,
-                    //DescuentoGlobal = 0,
-                    Descuento = 0,
-                    ValorUnitario = 100,
-                    ValorVenta = 100,
-                    ValorVentaItem = 100,
-                    ValorVentaItemXML = 100,
-                    //ValorVentaNeto = 100,
-                    //ValorVentaNetoXML = 0,
-                    //ISCUnitario = 0,
-                    //ISCNeto = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    //ICBPERItem = 0,
-                    ICBPERSubTotal = 0,
-                    DescuentoBase = 100,
-                    //DescuentoCargo = 0,
-                    //DescuentoCargoGravado = 0,
-                    CargoItem = 0,
-                    //CargoTotal = 0,
-                    //CargoNeto = 0,
-                    PrecioVenta = 118,
-                    MontoTributo = 18,
-                    ISCPorcentaje = 0,
-                    //ISCMonto = 0,
-                    CargoPorcentaje = 0,
-                    //Extension = { },
-                    Descripcion = "00 PRODUCTO GRAVADO",
-                    Observacion = "",
-                    Cantidad = 1,
-                    PrecioCodigo = 7,
-                    PrecioUnitario = 118,
-                    Peso = 0,
-                    DescuentoMonto = 0,
-                    DescuentoPorcentaje = 0,
-                    TipoAfectacionIGVCodigo = "10",
-                    //IGVNeto = 18,
-                    ImporteTotal = 118,
-                    PesoTotal = 0
-                };                  // detalles
+                int cta_ron = 1;
                 List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
-                aaa.Add(det);
-                CMovimientoCuenta cta = new CMovimientoCuenta
+                foreach (DataGridViewRow ron in dataGridView1.Rows)
                 {
-                    TipoDocumentoCodigo = "01",
-                    Serie = "F001",
-                    Correlativo = 2480,
-                    Condicion = "Contado",
-                    TipoCuentaCodigo = 1,
-                    CuentaNumero = "30303030",
-                    Usuario = "30303030",
-                    MonedaCodigo = "PEN",
-                    SucursalId = 50,
-                    TipoDocIdentidadCodigo = "",
-                    NumeroDocIdentidad = "",
-                    Observacion = "",
-                    //Extension = { },
-                    //CuentaValor = "1-30303030",
-                    Pago = 118,
-                    Vuelto = 0,
-                    FechaPago = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                    NumeroOperacion = "",
-                    FechaVencimiento = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                    PlazoDias = 1
-                };                      // movimientos
+                    if (ron.Cells[1].Value != null)
+                    {
+                        int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
+                        decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                            ((decimal.Parse(v_igv) / 100) + 1);
+                        decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
+                            (decimal.Parse(ron.Cells[9].Value.ToString()) /
+                            ((decimal.Parse(v_igv) / 100) + 1));
+                        decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
+                            ((decimal.Parse(v_igv) / 100) + 1);
+                        CComprobanteDetalle det = new CComprobanteDetalle
+                        {
+                            ID = 0,
+                            ComprobanteID = 0,
+                            Item = cta_ron,
+                            TipoProductoCodigo = "",
+                            ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                            ProductoCodigoSUNAT = "",                       // "56101532",
+                            TipoSistemaISCCodigo = "00",
+                            UnidadMedidaCodigo = "NIU",
+                            PrecioUnitarioSugerido = 0,
+                            PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                            PrecioVentaCodigo = "01",
+                            ICBPER = 0,
+                            CargoIndicador = "0",
+                            CargoCargoCodigo = "",
+                            DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                            DescuentoCargoCodigo = "00",
+                            PercepcionCantidadUmbral = 0,
+                            PercepcionMontoUmbral = 0,
+                            PercepcionPorcentaje = 0,
+                            Control = 0,
+                            PrecioCompra = 0,
+                            EsAnticipo = false,                         // y si es anticipo ????
+                            ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                            CantidadUnidadMedida = v_cant,
+                            Kit = 1,
+                            CantidadReferencial = 1,
+                            Cargo = 0,
+                            DescuentoGlobal = 0,
+                            Descuento = 0,
+                            ValorUnitario = v_valorUnit,
+                            ValorVentaItem = v_valorUnit * v_cant,
+                            ValorVentaItemXML = v_valorUnit * v_cant,
+                            ValorVentaNeto = v_valorUnit * v_cant,
+                            ValorVentaNetoXML = 0,
+                            ISCUnitario = 0,
+                            ISCNeto = 0,
+                            ISC = 0,
+                            IGV = v_valIgvTot,
+                            ICBPERItem = 0,
+                            ICBPERSubTotal = 0,
+                            DescuentoBase = 0,
+                            DescuentoCargo = 0,
+                            DescuentoCargoGravado = 0,
+                            CargoItem = 0,
+                            CargoTotal = 0,
+                            CargoNeto = 0,
+                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            MontoTributo = v_valIgvTot,
+                            ISCPorcentaje = 0,
+                            ISCMonto = 0,
+                            CargoPorcentaje = 0,
+                            //Extension = { },
+                            ListaSeries = new List<CProductoCodigoSerie>(),
+                            ListaPrecios = new List<ProductoPrecioDTO>(),
+                            PrecioUnitarioRecuperado = false,
+                            UUID = "",
+                            BANDERA_CONCURRENCIA = false,
+                            BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                            BANDERA_DETALLEREEMPLAZADO = false,
+                            BANDERA_DETALLERECUPERADO = false,
+                            BANDERA_ITEMDETALLADO = true,
+                            Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
+                            Observacion = "",
+                            Stock = 0,
+                            Cantidad = int.Parse(ron.Cells[1].Value.ToString()),
+                            PrecioCodigo = 0,
+                            PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            Peso = 0,
+                            DescuentoMonto = 0,
+                            DescuentoPorcentaje = "0.00",
+                            TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
+                            ValorVenta = v_valTotal,
+                            Ganancia = 0,
+                            IGVNeto = v_valIgvTot,
+                            ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            PesoTotal = 0
+                        };                      // detalles
+                        aaa.Add(det);
+                        cta_ron += 1;
+                    }
+                }
+
                 List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
-                bbb.Add(cta);
+                for (int i = 0; i < 9; i++)
+                {
+                    if (dtpagos[i, 2] != null && dtpagos[i, 2] != "")
+                    {
+                        CMovimientoCuenta cta = new CMovimientoCuenta
+                        {
+                            TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
+                            Serie = tx_serie.Text,
+                            Correlativo = 0,                // int.Parse(tx_corre.Text),
+                            Condicion = dtpagos[i, 2],
+                            TipoCuentaCodigo = 1,
+                            CuentaNumero = "",
+                            Usuario = Program.vg_nuse,
+                            MonedaCodigo = "PEN",                                   // de momento todo es soles
+                            SucursalId = int.Parse(tx_codSuc.Text),
+                            TipoDocIdentidadCodigo = "",
+                            NumeroDocIdentidad = "",
+                            Observacion = "",
+                            //Extension = { },
+                            //CuentaValor = "1-30303030",
+                            Pago = decimal.Parse(dtpagos[i, 4]),
+                            Vuelto = 0,
+                            FechaPago = dtpagos[i, 6],   // dtp_pedido.Value.Date.ToString("dd/MM/yyyy")
+                            NumeroOperacion = dtpagos[i, 3],
+                            FechaVencimiento = dtpagos[i, 6],    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            PlazoDias = 1
+                        };                      // movimientos
+                        bbb.Add(cta);
+                    }
+                    /*
+                    dtpagos[i, 0] = id 
+                    dtpagos[i, 1] = contador
+                    dtpagos[i, 2] = nombre del medio de pago
+                    dtpagos[i, 3] = #operacion
+                    dtpagos[i, 4] = importe pagado
+                    dtpagos[i, 5] = codigo medio
+                    dtpagos[i, 6] = fecha de pago
+                    */
+                }
 
                 CComprobante obj = new CComprobante
                 {
                     ID = 0,
                     IdRepositorio = 0,
+                    AplicaContingencia = false,
+                    AplicaAnticipo = false,
+                    AplicaOtroSistema = false,
+                    Usuario = Program.vg_nuse,
+                    AplicaStockNegativo = false,
+                    ModificacionDePrecio = false,
                     Sucursal = int.Parse(tx_codSuc.Text),
                     IGVPorcentaje = decimal.Parse(Program.v_igv),
                     DescuentoGlobalMonto = 0,
                     DescuentoGlobalIndicadorDescuento = "0",
                     DescuentoGlobalCodigoMotivo = "00",
-                    DescuentoGlobalNGIndicadorDescuento = "00",
+                    DescuentoGlobalNGPorcentaje = 0,
+                    DescuentoGlobalNGIndicadorDescuento = 0,
                     DescuentoGlobalNGCodigoMotivo = "00",
                     CargoGlobalPorcentaje = 0,
-                    DetraccionTipoOperacion = "01",
+                    DetraccionTipoOperacion = "01",                                     // esto debería estar en variable
                     CargoGlobalIndicadorCargos = "0",
                     CargoGlobalCodigoMotivo = "0",
-                    PagosMultiples = false,
+                    CantidadDecimales = 2,
+                    AgentePercepcion = false,
+                    PermisoProductoSerie = false,
                     EnviarCorreo = false,
-                    OrigenSistema = 7,
+                    OrigenSistema = 0,
                     TipoGuiaRemisionCodigo = "",
-                    ModalidadTrasladoCodigo = "02",
                     TransportistaTipoDocIdentidadCodigo = "",
-                    ConductorTipoDocIdentidadCodigo = "1",
                     CanalVenta = "2",
                     Vendedor = tx_nomVen.Text,
+                    VendedorNombre = tx_nomVen.Text,
                     CondicionEstado = "",
                     CondicionPago = rb_contado.Text,
-                    DescuentoIndicador = false,
+                    SituacionPagoCodigo = 2,
+                    DescuentoIndicador = 0,
                     Ubigeo = tx_dir_ubigpe.Text,
-                    Anticipo = false,
-                    TipoCambio = 1.0M,
+                    AnticipoMonto = 0,
                     ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
                     ClienteNumeroDocIdentidad = tx_ndc.Text,
+                    ClienteContacto = "",
+                    ClienteTelefono = tx_telef1.Text,
+                    OrdenNumero = "",
                     GuiaNumero = "",
                     ReferenciaNumeroDocumento = "",
                     ReferenciaTipoDocumento = "",
-                    DocAdicionalDetalle = "",
                     DiasPermanencia = 0,
                     FechaConsumo = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
                     MotivoTrasladoDescripcion = "",
-                    FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
                     TransportistaNumeroDocIdentidad = "",
-                    TransportistaNombreRazonSocial = "",
-                    PlacaVehiculo = "",
-                    ConductorNumeroDocIdentidad = "",
+                    ClienteTipoSunat = 1,
+                    VistaDocumento = "",
+                    CondicionComercialIndicador = 0,
+                    //Extension = {}
                     ListaDetalles = aaa,
                     ExoneradaXML = 0,
                     InafectoXML = 0,
                     ExportacionXML = 0,
-                    ImporteTotalTexto = "CIENTO DIECIOCHO CON 00/100 SOLES",
+                    ImporteTotalTexto = nle.Convertir(tx_valor.Text,true),
                     Detraccion = 0,
                     Percepcion = 0,
                     PercepcionBaseImponible = 0,
                     Retencion = 0,
-                    DescuentoGlobalMontoBase = 100,
+                    DescuentoGlobalMontoBase = 0,
                     DescuentoGlobalNGMonto = 0,
                     DescuentoGlobalNGMontoBase = 0,
                     DescuentoNGMonto = 0,
@@ -2864,82 +2934,106 @@ namespace iOMG
                     AnticiposExonerado = 0,
                     AnticiposInafecto = 0,
                     CargoGlobalMonto = 0,
-                    CargoGlobalMontoBase = 100,
-                    ISCBase = 100,
+                    CargoGlobalMontoBase = 0,
+                    ISCBase = 0,
                     GratuitoGravado = 0,
-                    TotalPrecioVenta = 118,
-                    TotalValorVenta = 100,
+                    TotalPrecioVenta = decimal.Parse(tx_valor.Text),
+                    TotalValorVenta = decimal.Parse(tx_bruto.Text),
                     Peso = 0,
-                    Bultos = 0,
-                    CreditoTotal = 0,
                     PercepcionRegimen = "",
                     PercepcionFactor = 0,
                     ListaMovimientos = bbb,
-                    //ListaGuias = { },
-                    //ListaCuotas = { },
+                    PagosMultiples = false,                             // que significa esto?
+                    CreditoTotal = 0,
+                    ListaGuias = { },
+                    ListaCuotas = { },
+                    TotalCuotas = 0,
+                    ListaAnticipos = { },
+                    ListaDocumentosRelacionados = { },
+                    ListaCondicionesComerciales = { },
+                    UUID = "",
+                    BANDERA_CONCURRENCIA = false,
+                    BANDERA_DIRECCIONPARTIDAEDICION = false,
+                    BANDERA_GANANCIAVERIFICADA = true,
+                    BANDERA_ERRORESGANANCIA = false,
+                    NOMBRE_UBIGEOLLEGADA = "",
+                    NOMBRE_UBIGEOPARTIDA = "",
+                    CONTADOR_BUSCAPRODUCTO = 0,
+                    CONTADOR_CLICKEMITIR = 1,
                     EstadoContingencia = false,
-                    //EstadoAnticipo = false,
-                    //EstadoOtroSistema = false,
-                    //ClasePrecioCodigo = 1,
+                    Anticipo = false,
+                    EstadoOtroSistema = false,
+                    ClasePrecioCodigo = 1,
                     TipoPrecio = 0,
                     FormatoPDF = 0,
-                    TipoDocumentoCodigo = "01",
-                    Serie = "F001",
-                    Correlativo = 2480,
+                    TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                    Serie = tx_serie.Text,       // cmb_tipo.Text.Substring(0,1) + tx_serie.Text
+                    Correlativo = 0,             // int.Parse(tx_corre.Text),
                     MonedaCodigo = "PEN",
-                    FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),    // "22/02/2022",
-                    TipoDocumentoCodigoModificado = "01",
+                    FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                    TipoDocumentoCodigoModificado = tx_dat_tipdoc_s.Text,
                     SerieModificado = "",
                     CorrelativoModificado = "",
                     TipoNotaCreditoCodigo = "01",
                     TipoNotaDebitoCodigo = "01",
-                    TipoOperacionCodigo = "0101",
+                    TipoOperacionCodigo = "0101",                               // todo esto debe estar en variables
+                    TipoCambio = "0",
                     MotivoTrasladoCodigo = "01",
-                    ClienteNombreRazonSocial = "YAÑEZ SANZ ANTHONY JOSEPH",
-                    ClienteDireccion = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
-                    UbigeoPartida = "080108",
-                    DireccionPartida = "AV. LA CULTURA 666 - WANCHAQ - CUSCO - CUSCO",
-                    UbigeoLlegada = "080105",
-                    DireccionLlegada = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
-                    //TipoBusquedaProductoCodigo = 0,
+                    ClienteNombreRazonSocial = tx_nombre.Text,
+                    ClienteDireccion = tx_direc.Text,
+                    UbigeoPartida = "",    // tx_dir_ubigpe.Text
+                    DireccionPartida = "",
+                    UbigeoLlegada = "",
+                    DireccionLlegada = "",
+                    TipoBusquedaProductoCodigo = 0,
                     DescuentoGlobalPorcentaje = 0,
                     DescuentoGlobalValor = 0,
-                    CorreoElectronicoPrincipal = "no-send@rapifac.com",
+                    CorreoElectronicoPrincipal = "no-send@rapifac.com",         // no debería ser correo de artesanos?
                     Observacion = "",
-                    Gravado = 100,
+                    Gravado = decimal.Parse(tx_bruto.Text),
                     Exonerada = 0,
                     Inafecto = 0,
                     Exportacion = 0,
-                    //OperacionNoGravada = 0,
+                    OperacionNoGravada = 0,
                     Gratuito = 0,
                     TotalDescuentos = 0,
                     DescuentoGlobal = 0,
                     TotalAnticipos = 0,
                     ISC = 0,
-                    IGV = 18,
+                    IGV = decimal.Parse(tx_igv.Text),
                     ICBPER = 0,
-                    ImpuestoTotal = 18,
-                    //ImpuestoVarios = 0,
+                    ImpuestoTotal = decimal.Parse(tx_igv.Text),
+                    ImpuestoVarios = 0,
                     TotalOtrosCargos = 0,
-                    TotalImporteVenta = 118,
+                    TotalImporteVenta = decimal.Parse(tx_valor.Text),
+                    TotalImporteVentaCelular = decimal.Parse(tx_valor.Text),
+                    TotalImporteVentaReferencia = 0,
                     PercepcionTotal = 0,
-                    TotalPago = 118,
+                    TotalPago = decimal.Parse(tx_impMedios.Text),
                     PesoTotal = 0,
+                    Bultos = (tx_prdsCont.Text.Trim() == "") ? 1 : int.Parse(tx_prdsCont.Text),
                     Leyenda = 0,
-                    BienServicioCodigo = "001",
-                    DetraccionPorcentaje = 10,
-                    //RetencionPorcentaje = 3,
-                    DetraccionCuenta = "12-123466-7",
+                    BienServicioCodigo = "001",                     // de donde sale esto?
+                    DetraccionPorcentaje = 0,
+                    RetencionPorcentaje = 0,
+                    DetraccionCuenta = "",
                     DocAdicionalCodigo = 0,
-                    //TotalRetencion = 118,
-                    MontoRetencion = 3.54M,
-                    PendientePago = 118.00M,
-                    //PermitirCuotas = 1,
-                    AlojamientoPaisDocEmisor = "AF",
+                    DocAdicionalDetalle = "",
+                    TotalRetencion = 0,
+                    MontoRetencion = 0,
+                    PendientePago = 0,
+                    PermitirCuotas = 0,                             // que significa ?
+                    AlojamientoPaisDocEmisor = "AF",                // esto ?
                     PaisResidencia = "AF",
                     //FechaIngresoPais = "22/02/2022",
                     //FechaIngresoEstablecimiento = "22/02/2022",
                     //FechaSalidaEstablecimiento = "22/02/2022",
+                    ModalidadTrasladoCodigo = "01",
+                    ConductorTipoDocIdentidadCodigo = "1",
+                    FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                    TransportistaNombreRazonSocial = "",
+                    PlacaVehiculo = "",
+                    ConductorNumeroDocIdentidad = "",
                     AlojamientoNumeroDocIdentidad = "",
                     AlojamientoNombreRazonSocial = "",
                     AlojamientoTipoDocIdentidadCodigo = "1"
@@ -2955,7 +3049,6 @@ namespace iOMG
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    MessageBox.Show(result.ToString());
                     retorna = result.ToString();
                 }
                 

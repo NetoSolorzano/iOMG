@@ -33,13 +33,13 @@ namespace iOMG
         /* PRECIO VENTA */
         public decimal PrecioVenta { get; set; }
         public string PrecioVentaCodigo { get; set; }
-        public decimal CantidadUnidadMedida { get; set; }
+        public int CantidadUnidadMedida { get; set; }
         /* DESCUENTO */
         public decimal Descuento { get; set; }
         public decimal DescuentoBase { get; set; }
         public decimal DescuentoMonto { get; set; }
-        public decimal DescuentoPorcentaje { get; set; }
-        public string DescuentoIndicador { get; set; }
+        public string DescuentoPorcentaje { get; set; }
+        public int DescuentoIndicador { get; set; }
         public string DescuentoCargoCodigo { get; set; }
         /* OTROS CARGOS (NO HAY DATOS)*/
         public decimal Cargo { get; set; }
@@ -47,6 +47,7 @@ namespace iOMG
         public decimal CargoItem { get; set; }
         public decimal CargoPorcentaje { get; set; }
         public string CargoIndicador { get; set; }
+        public string CargoCargoCodigo { get; set; }
         public string CargoCodigo { get; set; }
         /* PERCEPCION */
         public decimal Percepcion { get; set; }
@@ -72,15 +73,39 @@ namespace iOMG
         public decimal IGV { get; set; }
         public decimal IGVPorcentaje { get; set; }
         public decimal ImporteTotal { get; set; }
-        public bool Kit { get; set; }
+        public int Kit { get; set; }
         public decimal PrecioCompra { get; set; }
         public decimal Peso { get; set; }
         public decimal PesoTotal { get; set; }
         public int Control { get; set; }
         public int PrecioCodigo { get; set; }
+        public bool EsAnticipo { get; set; }
+        public decimal ImporteTotalReferencia { get; set; }
+        public int CantidadReferencial { get; set; }
+        public decimal DescuentoGlobal { get; set; }
+        public decimal ValorVentaNeto { get; set; }
+        public decimal ValorVentaNetoXML { get; set; }
+        public decimal ISCUnitario { get; set; }
+        public decimal ISCNeto { get; set; }
+        public decimal ICBPERItem { get; set; }
+        public decimal DescuentoCargo { get; set; }
+        public decimal DescuentoCargoGravado { get; set; }
+        public decimal CargoTotal { get; set; }
+        public decimal CargoNeto { get; set; }
+        public decimal ISCMonto { get; set; }
+        public bool PrecioUnitarioRecuperado { get; set; }
+        public string UUID { get; set; }
+        public bool BANDERA_CONCURRENCIA { get; set; }
+        public bool BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE { get; set; }
+        public bool BANDERA_DETALLEREEMPLAZADO { get; set; }
+        public bool BANDERA_DETALLERECUPERADO { get; set; }
+        public bool BANDERA_ITEMDETALLADO { get; set; }
+        public int Stock { get; set; }
+        public decimal Ganancia { get; set; }
+        public decimal IGVNeto { get; set; }
 
         public List<CProductoCodigoSerie> ListaSeries { get; set; }
-        //public List<ProductoPrecioDTO> ListaPrecios { get; set; }
+        public List<ProductoPrecioDTO> ListaPrecios { get; set; }
 
         public CComprobanteDetalle()
         {
@@ -110,8 +135,8 @@ namespace iOMG
             CantidadUnidadMedida = 1;
             Descuento = 0;
             DescuentoBase = 0;
-            DescuentoPorcentaje = 0;
-            DescuentoIndicador = "0";
+            DescuentoPorcentaje = "0";
+            DescuentoIndicador = 0;
             DescuentoCargoCodigo = "";
             Cargo = 0;
             CargoBase = 0;
@@ -136,7 +161,7 @@ namespace iOMG
             IGV = 0;
             IGVPorcentaje = 0;
             ImporteTotal = 0;
-            Kit = false;
+            Kit = 0;
             PrecioCompra = 0;
             Peso = 0;
             PesoTotal = 0;

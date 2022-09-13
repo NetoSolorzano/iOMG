@@ -11,6 +11,11 @@ namespace iOMG
     public class CComprobante
     {
         public long ID { get; set; }
+        public long IdRepositorio { get; set; }
+        public bool AplicaContingencia { get; set; }
+        public bool AplicaAnticipo { get; set; }
+        public bool AplicaOtroSistema { get; set; }
+
         public bool EsBorrador { get; set; }
         public string DocumentoID { get; set; }
         public string TipoDocumentoCodigo { get; set; }
@@ -42,7 +47,7 @@ namespace iOMG
         /*** OBSERVACION CAMBIO ***/
         public string Observacion { get; set; }
         public string MonedaCodigo { get; set; }
-        public decimal TipoCambio { get; set; }
+        public string TipoCambio { get; set; }
         /*** ORDEN Y GUIA ***/
         public bool DesdeOrden { get; set; }
         public string GuiaNumero { get; set; }
@@ -93,7 +98,7 @@ namespace iOMG
         public decimal MontoRetencion { get; set; }
         public decimal DescuentoGlobal { get; set; }
         /*** DESCUENTOS GLOBAL ***/
-        public bool DescuentoIndicador { get; set; }
+        public int DescuentoIndicador { get; set; }
         public decimal DescuentoGlobalMonto { get; set; }
         public decimal DescuentoGlobalMontoBase { get; set; }
         public decimal DescuentoGlobalPorcentaje { get; set; }
@@ -103,7 +108,7 @@ namespace iOMG
         /*** DESCUENTOS GLOBAL NO GRAVADO ***/
         public decimal DescuentoGlobalNGMonto { get; set; }
         public decimal DescuentoGlobalNGMontoBase { get; set; }
-        public string DescuentoGlobalNGIndicadorDescuento { get; set; }
+        public int DescuentoGlobalNGIndicadorDescuento { get; set; }
         public string DescuentoGlobalNGCodigoMotivo { get; set; }
         public decimal DescuentoNGMonto { get; set; }
         public decimal AnticiposGravado { get; set; }
@@ -151,7 +156,6 @@ namespace iOMG
         public bool TieneXML { get; set; }
         public bool TieneCDR { get; set; }
         public int FormatoPDF { get; set; }
-        public long IdRepositorio { get; set; }
         public string VistaDocumento { get; set; }
         public string SunatRespuesta { get; set; }
         public string SunatMensaje { get; set; }
@@ -217,6 +221,36 @@ namespace iOMG
         public string DocAdicionalDetalle { get; set; }
         public bool PagosMultiples { get; set; }
         public bool EsPrico { get; set; }
+        /* agragados finales */
+        public bool AplicaStockNegativo { get; set; }
+        public bool ModificacionDePrecio { get; set; }
+        public decimal DescuentoGlobalNGPorcentaje { get; set; }
+        public int CantidadDecimales { get; set; }
+        public bool AgentePercepcion { get; set; }
+        public bool PermisoProductoSerie { get; set; }
+        public int SituacionPagoCodigo { get; set; }
+        public string OrdenNumero { get; set; }
+        public int ClienteTipoSunat { get; set; }
+        public int CondicionComercialIndicador { get; set; }
+        public int TotalCuotas { get; set; }
+        public string UUID { get; set; }
+        public bool BANDERA_CONCURRENCIA { get; set; }
+        public bool BANDERA_DIRECCIONPARTIDAEDICION { get; set; }
+        public bool BANDERA_GANANCIAVERIFICADA { get; set; }
+        public bool BANDERA_ERRORESGANANCIA { get; set; }
+        public int CONTADOR_BUSCAPRODUCTO { get; set; }
+        public int CONTADOR_CLICKEMITIR { get; set; }
+        public bool EstadoOtroSistema { get; set; }
+        public int ClasePrecioCodigo { get; set; }
+        public int TipoBusquedaProductoCodigo { get; set; }
+        public int OperacionNoGravada { get; set; }
+        public decimal ImpuestoVarios { get; set; }
+        public decimal TotalImporteVentaCelular { get; set; }
+        public decimal TotalImporteVentaReferencia { get; set; }
+        public int RetencionPorcentaje { get; set; }
+        public decimal TotalRetencion { get; set; }
+        public int PermitirCuotas { get; set; }
+
 
         /* LISTAS */
         public List<CComprobanteDetalle> ListaDetalles { get; set; }
@@ -257,7 +291,7 @@ namespace iOMG
             AgenciaPaqueteDescripcion = "";
             Observacion = "";
             MonedaCodigo = "PEN";
-            TipoCambio = 0;
+            TipoCambio = "0.00";
             DesdeOrden = false;
             GuiaNumero = "";
             ServicioPublicoNumero = "";
@@ -302,7 +336,7 @@ namespace iOMG
             DescuentoGlobalCodigoMotivo = "";
             DescuentoGlobalNGMonto = 0;
             DescuentoGlobalNGMontoBase = 0;
-            DescuentoGlobalNGIndicadorDescuento = "";
+            DescuentoGlobalNGIndicadorDescuento = 0;
             DescuentoGlobalNGCodigoMotivo = "";
             DescuentoNGMonto = 0;
             AnticiposGravado = 0;
