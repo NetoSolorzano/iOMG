@@ -148,6 +148,12 @@
       <DependentUpon>notcred.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductoPrecioDTO.cs" />
+    <Compile Include="text.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="text.Designer.cs">
+      <DependentUpon>text.cs</DependentUpon>
+    </Compile>
     <Compile Include="_rapifac.cs" />
     <Compile Include="clients.cs">
       <SubType>Form</SubType>
@@ -734,6 +740,9 @@
     <EmbeddedResource Include="terminosYcondiciones.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>terminosYcondiciones.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="text.resx">
+      <DependentUpon>text.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="users.resx">
       <DependentUpon>users.cs</DependentUpon>

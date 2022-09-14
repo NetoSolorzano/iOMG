@@ -181,6 +181,7 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.tx_totcant = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1508,12 +1509,11 @@
             // 
             // tx_tfil
             // 
-            this.tx_tfil.Location = new System.Drawing.Point(515, 357);
+            this.tx_tfil.Location = new System.Drawing.Point(315, 357);
             this.tx_tfil.Name = "tx_tfil";
             this.tx_tfil.ReadOnly = true;
             this.tx_tfil.Size = new System.Drawing.Size(31, 20);
             this.tx_tfil.TabIndex = 414;
-            this.tx_tfil.Visible = false;
             // 
             // tx_prdsCont
             // 
@@ -1544,7 +1544,7 @@
             // 
             // tx_tipComp
             // 
-            this.tx_tipComp.Location = new System.Drawing.Point(375, 357);
+            this.tx_tipComp.Location = new System.Drawing.Point(435, 357);
             this.tx_tipComp.Name = "tx_tipComp";
             this.tx_tipComp.Size = new System.Drawing.Size(31, 20);
             this.tx_tipComp.TabIndex = 417;
@@ -1703,11 +1703,20 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // tx_totcant
+            // 
+            this.tx_totcant.Location = new System.Drawing.Point(352, 357);
+            this.tx_totcant.Name = "tx_totcant";
+            this.tx_totcant.ReadOnly = true;
+            this.tx_totcant.Size = new System.Drawing.Size(31, 20);
+            this.tx_totcant.TabIndex = 423;
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.tx_totcant);
             this.Controls.Add(this.tx_id_rapifac);
             this.Controls.Add(this.tx_codSuc);
             this.Controls.Add(this.tx_dat_mon_s);
@@ -1945,5 +1954,6 @@
         private System.Windows.Forms.TextBox tx_codSuc;
         private System.Windows.Forms.TextBox tx_id_rapifac;
         private System.Windows.Forms.TextBox tx_d_preSinDscto;
+        private System.Windows.Forms.TextBox tx_totcant;
     }
 }

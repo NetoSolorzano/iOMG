@@ -86,7 +86,12 @@ namespace iOMG
         string v_liav = "";             // letra o caracter inicial indicativo de articulos varios vta directa sin stock
         string v_cnprd = "";            // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
         string itemSer = "";            // items (capit) de comprobantes de servicios
-        string cliente = Program.cliente;    // razon social para los reportes
+        string cliente = Program.cliente;   // razon social para los reportes
+        string usuaRuc = "";                // ruc/usuarios del cliente
+        string usuaDni = "";                // dni/usuario del cliente
+        string clave = "";                  // clave del dni/usuario
+        string id_clte = "";                // identificador clave
+        string rut_pdf = "";                // ruta web del pdf en servidor Rapifac
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -301,25 +306,34 @@ namespace iOMG
                 for (int t = 0; t < dt.Rows.Count; t++)
                 {
                     DataRow row = dt.Rows[t];
-                    if (row["campo"].ToString() == "imagenes" && row["formulario"].ToString() == "main")
+                    if (row["formulario"].ToString() == "main")
                     {
-                        if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
-                        if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
-                        if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
-                        if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
-                        if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
-                        if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
-                        //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
-                        // boton de vista preliminar .... esta por verse su utlidad
-                        if (row["param"].ToString() == "img_bti") img_bti = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL INICIO
-                        if (row["param"].ToString() == "img_bts") img_bts = row["valor"].ToString().Trim();         // imagen del boton de accion SIGUIENTE
-                        if (row["param"].ToString() == "img_btr") img_btr = row["valor"].ToString().Trim();         // imagen del boton de accion RETROCEDE
-                        if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
-                        if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
-                        if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
-                        if (row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
-                        if (row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
-                        //if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
+                        if (row["campo"].ToString() == "imagenes")
+                        {
+                            if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
+                            if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
+                            if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
+                            if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
+                            if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
+                            if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
+                            //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
+                            if (row["param"].ToString() == "img_bti") img_bti = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL INICIO
+                            if (row["param"].ToString() == "img_bts") img_bts = row["valor"].ToString().Trim();         // imagen del boton de accion SIGUIENTE
+                            if (row["param"].ToString() == "img_btr") img_btr = row["valor"].ToString().Trim();         // imagen del boton de accion RETROCEDE
+                            if (row["param"].ToString() == "img_btf") img_btf = row["valor"].ToString().Trim();         // imagen del boton de accion IR AL FINAL
+                            if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
+                            if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                            if (row["param"].ToString() == "img_pre") img_pre = row["valor"].ToString().Trim();         // imagen del boton vista preliminar
+                            if (row["param"].ToString() == "img_ver") img_ver = row["valor"].ToString().Trim();         // imagen del boton visualización
+                        }
+                        if (row["campo"].ToString() == "rapifac")
+                        {
+                            if (row["param"].ToString() == "rucCliente") usuaRuc = row["valor"].ToString().Trim();          // ruc/usuarios del cliente
+                            if (row["param"].ToString() == "dniCliente") usuaDni = row["valor"].ToString().Trim();          // dni/usuario del cliente
+                            if (row["param"].ToString() == "clave") clave = row["valor"].ToString().Trim();                 // clave del dni/usuario
+                            if (row["param"].ToString() == "id_clte") id_clte = row["valor"].ToString().Trim();             // identificador clave
+                            if (row["param"].ToString() == "ruta_pdf") rut_pdf = row["valor"].ToString().Trim();            // ruta web del pdf en Rapifac
+                        }
                     }
                     if (row["formulario"].ToString() == "clients")
                     {
@@ -1043,6 +1057,17 @@ namespace iOMG
                 }
             }
         }
+        private void suma_grilla()
+        {
+            int tbul = 0;
+            for (int i=0; i<dataGridView1.Rows.Count - 1; i++)
+            {
+                tbul = tbul + int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString());
+            }
+
+            tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+            tx_totcant.Text = tbul.ToString();
+        }
 
         #region autocompletados
         private void autodptos()
@@ -1366,26 +1391,17 @@ namespace iOMG
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
-            if (tx_corre.Text != "")
+            if (tx_corre.Text != "" && Tx_modo.Text != "")
             {
-                setParaCrystal();
+                //setParaCrystal();
+                // jalamos el pdf de Rapifac si el comprobante esta ok y en pantalla
+                string rutaT = rut_pdf + tx_id_rapifac.Text;
+                System.Diagnostics.Process.Start(rutaT);
             }
         }
         private void bt_exc_Click(object sender, EventArgs e)
         {
-            string nombre = "";
-            nombre = "xxx" +
-                "" + DateTime.Now.Date.ToString("yyyy-MM-dd") + ".xlsx";
-            var aa = MessageBox.Show("Confirma que desea generar la hoja de calculo?",
-                "Archivo: " + nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (aa == DialogResult.Yes)
-            {
-                var wb = new XLWorkbook();
-                wb.Worksheets.Add(dtg, "xxx");
-                wb.SaveAs(nombre);
-                MessageBox.Show("Archivo generado con exito!");
-                this.Close();
-            }
+
         }
         private void Bt_close_Click(object sender, EventArgs e)
         {
@@ -2123,6 +2139,7 @@ namespace iOMG
                     tx_igv.Text = ((tv - vb) - ((tv - vb) / 1.18)).ToString("#0.00");
 
                     tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+                    suma_grilla();
                 }
             }
         }
@@ -2201,6 +2218,7 @@ namespace iOMG
                 }
             }
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+            suma_grilla();
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
@@ -2223,9 +2241,7 @@ namespace iOMG
                 tx_ndc.Focus();
                 return;
             }
-
-            if (conex_Rapifac() == "") return;   //
-
+            //if (conex_Rapifac() == "") return;   //
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones 
@@ -2270,7 +2286,7 @@ namespace iOMG
                     "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    /* validaciones de conex con Rapifac
+                    // validaciones de conex con Rapifac
                     string resultado = conex_Rapifac();
                     if (resultado == "")
                     {
@@ -2282,12 +2298,12 @@ namespace iOMG
                     }
                     else
                     {
-                        JArray v = JArray.Parse(resultado);
-                        var items = v.Where(x => x["cdr"].ToString() == tx_dat_tipdoc_s.Text).ToList();
-                        tx_serie.Text = items[0].SelectToken("Serie").ToString();
-                        tx_corre.Text = items[0].SelectToken("Correlativo").ToString();
-                        tx_id_rapifac.Text = items[0].SelectToken("IDComprobante").ToString();    // esto debemos grabarlo en nuestra tabla cabfactu
-                    } */
+                        Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(resultado);
+                        string[] resA = myDeserializedClass.xml_pdf.Mensaje.Split('-');
+                        tx_serie.Text = resA[1];
+                        tx_corre.Text = resA[2].Substring(1,(resA[2].Length-1));
+                        tx_id_rapifac.Text = myDeserializedClass.xml_pdf.IDRepositorio; // items[0].SelectToken("IDRepositorio").ToString();
+                    }
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
@@ -2349,7 +2365,7 @@ namespace iOMG
             }
             if (Tx_modo.Text == "EDITAR")
             {
-                if (conex_Rapifac() == "") return;   //
+                // NO HABILATAMOS ESTA OPCION, NO HAY NADA QUE EDITAR
             }
             limpia_ini();
             tx_serie.Focus();
@@ -2363,7 +2379,7 @@ namespace iOMG
             {
                 // conexion a rapifact para leer el correlativo del comprobante
                 //
-                tx_corre.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
+                //tx_corre.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
 
                 //
 
@@ -2623,11 +2639,6 @@ namespace iOMG
         private string conex_token()                                                // obtenemos el token de rapifac
         {
             string retorna = "";
-            string usuaRuc = "20463339342";
-            string usuaDni = "12121212";
-            string clave = "Hola1234@";
-            string id_clte = "89cfc4c0-b0c5-47ab-a8f0-2f813dbbe000";
-
             string host = "http://wsoauth-exp.rapifac.com/oauth2/token";
 
             // create a request
@@ -2718,7 +2729,8 @@ namespace iOMG
                     //tx_corre.Text = numComp;
                 }
                 // emite el comprobante
-                host = "http://wsventas-exp.rapifac.com/v0/comprobantes";
+                /*host = "http://wsventas-exp.rapifac.com/v0/comprobantes"; */
+                host = "http://wsventas-exp.rapifac.com/v0/comprobantes?IncluirCDR=1";
                 httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
                 httpWebRequest.ContentType = "application/json";        // , text/javascript, */*; q=0.01
                 httpWebRequest.Method = "POST";
@@ -2728,6 +2740,36 @@ namespace iOMG
                 List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
                 foreach (DataGridViewRow ron in dataGridView1.Rows)
                 {
+                    List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
+                    if (ron.Cells[1].Value != null)
+                    {
+                        ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                        {
+                            PrecioId = 99,
+                            PrecioConfiguracion = 1,
+                            ProductoCod = ron.Cells[2].Value.ToString(),
+                            CodigoUnidadMedida = "NIU",
+                            DescripcionUnidadMedida = "UNIDAD",
+                            CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
+                            MonedaCodigo = "PEN",
+                            SucursalId = tx_codSuc.Text,
+                            Margenganancia = 0,
+                            MargenPorcentaje = 0,
+                            PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            OtrosCargosPorcentaje = 0,
+                            CantidadAplicable = 0,
+                            FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            Estado = 1,
+                            ISCPorcentaje = 0,
+                            ISCCalculado = 0,
+                            //Extension = { };
+                            UUID = ""
+                        };
+                        ccc.Add(dlp);
+                    }
+                    
                     if (ron.Cells[1].Value != null)
                     {
                         int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
@@ -2793,7 +2835,8 @@ namespace iOMG
                             CargoPorcentaje = 0,
                             //Extension = { },
                             ListaSeries = new List<CProductoCodigoSerie>(),
-                            ListaPrecios = new List<ProductoPrecioDTO>(),
+                            //ListaPrecios = new List<ProductoPrecioDTO>(),
+                            ListaPrecios = ccc,
                             PrecioUnitarioRecuperado = false,
                             UUID = "",
                             BANDERA_CONCURRENCIA = false,
@@ -2893,7 +2936,7 @@ namespace iOMG
                     TipoGuiaRemisionCodigo = "",
                     TransportistaTipoDocIdentidadCodigo = "",
                     CanalVenta = "2",
-                    Vendedor = tx_nomVen.Text,
+                    Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
                     VendedorNombre = tx_nomVen.Text,
                     CondicionEstado = "",
                     CondicionPago = rb_contado.Text,
@@ -2921,7 +2964,7 @@ namespace iOMG
                     ExoneradaXML = 0,
                     InafectoXML = 0,
                     ExportacionXML = 0,
-                    ImporteTotalTexto = nle.Convertir(tx_valor.Text,true),
+                    ImporteTotalTexto = nle.Convertir(tx_valor.Text, true),
                     Detraccion = 0,
                     Percepcion = 0,
                     PercepcionBaseImponible = 0,
@@ -2952,6 +2995,17 @@ namespace iOMG
                     ListaDocumentosRelacionados = { },
                     ListaCondicionesComerciales = { },
                     UUID = "",
+                    DescuentoGlobalPorcentaje = 0,
+                    DescuentoGlobalValor = 0,
+                    CorreoElectronicoPrincipal = "no-send@rapifac.com",         // no debería ser correo de artesanos
+                    Exonerada = 0,
+                    Inafecto = 0,
+                    Exportacion = 0,
+                    OperacionNoGravada = 0,
+                    Gratuito = 0,
+                    TotalDescuentos = 0,
+                    DescuentoGlobal = 0,
+                    TotalAnticipos = 0,
                     BANDERA_CONCURRENCIA = false,
                     BANDERA_DIRECCIONPARTIDAEDICION = false,
                     BANDERA_GANANCIAVERIFICADA = true,
@@ -2977,28 +3031,15 @@ namespace iOMG
                     TipoNotaCreditoCodigo = "01",
                     TipoNotaDebitoCodigo = "01",
                     TipoOperacionCodigo = "0101",                               // todo esto debe estar en variables
-                    TipoCambio = "0",
+                    TipoCambio = "1.00",
                     MotivoTrasladoCodigo = "01",
-                    ClienteNombreRazonSocial = tx_nombre.Text,
-                    ClienteDireccion = tx_direc.Text,
+                    ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
+                    ClienteDireccion = tx_direc.Text.Trim(),
                     UbigeoPartida = "",    // tx_dir_ubigpe.Text
                     DireccionPartida = "",
                     UbigeoLlegada = "",
                     DireccionLlegada = "",
                     TipoBusquedaProductoCodigo = 0,
-                    DescuentoGlobalPorcentaje = 0,
-                    DescuentoGlobalValor = 0,
-                    CorreoElectronicoPrincipal = "no-send@rapifac.com",         // no debería ser correo de artesanos?
-                    Observacion = "",
-                    Gravado = decimal.Parse(tx_bruto.Text),
-                    Exonerada = 0,
-                    Inafecto = 0,
-                    Exportacion = 0,
-                    OperacionNoGravada = 0,
-                    Gratuito = 0,
-                    TotalDescuentos = 0,
-                    DescuentoGlobal = 0,
-                    TotalAnticipos = 0,
                     ISC = 0,
                     IGV = decimal.Parse(tx_igv.Text),
                     ICBPER = 0,
@@ -3011,9 +3052,9 @@ namespace iOMG
                     PercepcionTotal = 0,
                     TotalPago = decimal.Parse(tx_impMedios.Text),
                     PesoTotal = 0,
-                    Bultos = (tx_prdsCont.Text.Trim() == "") ? 1 : int.Parse(tx_prdsCont.Text),
+                    Bultos = int.Parse(tx_totcant.Text),
                     Leyenda = 0,
-                    BienServicioCodigo = "001",                     // de donde sale esto?
+                    BienServicioCodigo = "001",                     // de donde sale esto? ... desde aca
                     DetraccionPorcentaje = 0,
                     RetencionPorcentaje = 0,
                     DetraccionCuenta = "",
@@ -3025,6 +3066,8 @@ namespace iOMG
                     PermitirCuotas = 0,                             // que significa ?
                     AlojamientoPaisDocEmisor = "AF",                // esto ?
                     PaisResidencia = "AF",
+                    Gravado = decimal.Parse(tx_bruto.Text),
+                    Observacion = "",
                     //FechaIngresoPais = "22/02/2022",
                     //FechaIngresoEstablecimiento = "22/02/2022",
                     //FechaSalidaEstablecimiento = "22/02/2022",
@@ -3038,7 +3081,10 @@ namespace iOMG
                     AlojamientoNombreRazonSocial = "",
                     AlojamientoTipoDocIdentidadCodigo = "1"
                 };
+                /*
+                                    
 
+                */
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     string cabeza = JsonConvert.SerializeObject(obj);
@@ -3051,8 +3097,6 @@ namespace iOMG
                     var result = streamReader.ReadToEnd();
                     retorna = result.ToString();
                 }
-                
-
             }
             return retorna;
         }
@@ -3707,6 +3751,28 @@ namespace iOMG
         public string comprob { get; set; }
         public string valor { get; set; }
     };
+    public class Cdr
+    {
+        public int IDComprobante { get; set; }
+        public int Codigo { get; set; }
+        public string IDRepositorio { get; set; }
+        public string Firma { get; set; }
+        public string Mensaje { get; set; }
+    }
 
+    public class Root
+    {
+        public XmlPdf xml_pdf { get; set; }
+        public Cdr cdr { get; set; }
+    }
+
+    public class XmlPdf
+    {
+        public int IDComprobante { get; set; }
+        public int Codigo { get; set; }
+        public string IDRepositorio { get; set; }
+        public string Firma { get; set; }
+        public string Mensaje { get; set; }
+    }
 
 }

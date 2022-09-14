@@ -418,7 +418,6 @@ namespace iOMG
             DocAdicionalDetalle = "";
             PagosMultiples = false;
             EsPrico = false;
-
             ListaDetalles = null;
             ListaAnticipos = null;
             ListaCuotas = null;
