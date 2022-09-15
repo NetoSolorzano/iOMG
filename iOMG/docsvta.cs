@@ -557,7 +557,7 @@ namespace iOMG
             dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[1].Name = "cant";
             // articulo
-            dataGridView1.Columns[2].Visible = false;            // columna visible o no
+            dataGridView1.Columns[2].Visible = false;            //  columna visible o no
             dataGridView1.Columns[2].HeaderText = "Artículo";    // titulo de la columna
             dataGridView1.Columns[2].Width = 70;                // ancho
             dataGridView1.Columns[2].ReadOnly = true;           // lectura o no
@@ -584,14 +584,14 @@ namespace iOMG
             dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[5].Name = "madera";
             // piedra
-            dataGridView1.Columns[6].Visible = false;            // columna visible o no
+            dataGridView1.Columns[6].Visible = false;            //   columna visible o no
             dataGridView1.Columns[6].HeaderText = "Deta2";    // titulo de la columna
             dataGridView1.Columns[6].Width = 70;                // ancho
             dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[6].Name = "piedra";
             // acabado 
-            dataGridView1.Columns[7].Visible = false;            // columna visible o no
+            dataGridView1.Columns[7].Visible = false;            //   columna visible o no
             dataGridView1.Columns[7].HeaderText = "Acabado";    // titulo de la columna
             dataGridView1.Columns[7].Width = 70;                // ancho
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
@@ -709,7 +709,7 @@ namespace iOMG
                     }
                 }
                 // seleccion de moneda
-                const string conmon = "select descrizionerid,idcodice,codigo from desc_mon where numero=1";
+                const string conmon = "select descrizionerid,idcodice,codigo,descrizione from desc_mon where numero=1";
                 using (MySqlCommand my = new MySqlCommand(conmon, conn))
                 {
                     using (MySqlDataAdapter dafp = new MySqlDataAdapter(my))
@@ -1758,6 +1758,7 @@ namespace iOMG
                 DataRow[] row = dtmon.Select(axs);
                 tx_dat_mone.Text = row[0].ItemArray[1].ToString();
                 tx_dat_mon_s.Text = row[0].ItemArray[2].ToString();
+                tx_dat_monNom.Text = row[0].ItemArray[3].ToString();
             }
         }
         private void cmb_mon_SelectedIndexChanged(object sender, EventArgs e)
@@ -1766,6 +1767,7 @@ namespace iOMG
             DataRow[] row = dtmon.Select(axs);
             tx_dat_mone.Text = row[0].ItemArray[1].ToString();
             tx_dat_mon_s.Text = row[0].ItemArray[2].ToString();
+            tx_dat_monNom.Text = row[0].ItemArray[3].ToString();
         }
         #endregion comboboxes
 
@@ -2746,7 +2748,7 @@ namespace iOMG
                     List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
                     if ((rb_antic.Checked == true && tx_d_valAntic.Text != ""))
                     {
-                        if (ron.Cells[1].Value.ToString() == "A")
+                        if (ron.Cells[1].Value != null && ron.Cells[10].Value != null && ron.Cells[10].Value.ToString() == "A")
                         {
                             ProductoPrecioDTO dlp = new ProductoPrecioDTO
                             {
@@ -2808,7 +2810,7 @@ namespace iOMG
                     }
                     if (rb_antic.Checked == true && tx_d_valAntic.Text != "")
                     {
-                        if (ron.Cells[1].Value.ToString() == "A")
+                        if (ron.Cells[1].Value != null && ron.Cells[10].Value != null && ron.Cells[10].Value.ToString() == "A")
                         {
                             int v_cant = 1;                    // cantidad
                             decimal v_valorUnit = decimal.Parse(ron.Cells[9].Value.ToString()) /      // valor unit (precio unit sin IGV)
@@ -2882,8 +2884,8 @@ namespace iOMG
                                 BANDERA_DETALLEREEMPLAZADO = false,
                                 BANDERA_DETALLERECUPERADO = false,
                                 BANDERA_ITEMDETALLADO = true,
-                                Descripcion = "Anticipo",            // "00 PRODUCTO GRAVADO",
-                                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? "Anticipo" : "",
+                                Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
+                                Observacion = "",
                                 Stock = 0,
                                 Cantidad = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? 1 : int.Parse(ron.Cells[1].Value.ToString()),
                                 PrecioCodigo = 0,
@@ -3099,7 +3101,7 @@ namespace iOMG
                     ExoneradaXML = 0,
                     InafectoXML = 0,
                     ExportacionXML = 0,
-                    ImporteTotalTexto = nle.Convertir(tx_valor.Text, true),
+                    ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text, 
                     Detraccion = 0,
                     Percepcion = 0,
                     PercepcionBaseImponible = 0,
@@ -3169,7 +3171,7 @@ namespace iOMG
                     TipoCambio = "1.00",
                     MotivoTrasladoCodigo = "01",
                     ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
-                    ClienteDireccion = tx_direc.Text.Trim(),
+                    ClienteDireccion = tx_direc.Text.Trim() + "-" + tx_dist.Text + "-" + tx_prov.Text + "-" + tx_dpto.Text,
                     UbigeoPartida = "",    // tx_dir_ubigpe.Text
                     DireccionPartida = "",
                     UbigeoLlegada = "",
@@ -3202,7 +3204,7 @@ namespace iOMG
                     AlojamientoPaisDocEmisor = "AF",                // esto ?
                     PaisResidencia = "AF",
                     Gravado = decimal.Parse(tx_bruto.Text),
-                    Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? "ANTICIPO" : "",
+                    Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : "",
                     //FechaIngresoPais = "22/02/2022",
                     //FechaIngresoEstablecimiento = "22/02/2022",
                     //FechaSalidaEstablecimiento = "22/02/2022",
