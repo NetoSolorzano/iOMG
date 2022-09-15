@@ -1062,9 +1062,10 @@ namespace iOMG
             int tbul = 0;
             for (int i=0; i<dataGridView1.Rows.Count - 1; i++)
             {
-                tbul = tbul + int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                int a = 0;
+                int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
+                tbul = tbul + a;
             }
-
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
             tx_totcant.Text = tbul.ToString();
         }
@@ -1288,6 +1289,7 @@ namespace iOMG
             tx_d_med.ReadOnly = true;
             rb_tbienes.Checked = true;
             tx_d_can.ReadOnly = false;
+            bt_prev.Enabled = false;
             cmb_tipo.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -1343,6 +1345,8 @@ namespace iOMG
             tx_d_med.ReadOnly = true;
             tx_coment.Enabled = true;
             tx_coment.ReadOnly = false;
+            bt_prev.Enabled = true;
+            cmb_tipo.Focus();
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -1364,6 +1368,7 @@ namespace iOMG
             tx_corre.ReadOnly = false;
             tx_impMedios.ReadOnly = false;
             tx_impMedios.Enabled = true;
+            bt_prev.Enabled = true;
             cmb_tipo.Focus();
         }
         private void Bt_print_Click(object sender, EventArgs e)
@@ -1393,8 +1398,6 @@ namespace iOMG
         {
             if (tx_corre.Text != "" && Tx_modo.Text != "")
             {
-                //setParaCrystal();
-                // jalamos el pdf de Rapifac si el comprobante esta ok y en pantalla
                 string rutaT = rut_pdf + tx_id_rapifac.Text;
                 System.Diagnostics.Process.Start(rutaT);
             }
@@ -2300,8 +2303,8 @@ namespace iOMG
                     {
                         Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(resultado);
                         string[] resA = myDeserializedClass.xml_pdf.Mensaje.Split('-');
-                        tx_serie.Text = resA[1];
-                        tx_corre.Text = resA[2].Substring(1,(resA[2].Length-1));
+                        tx_serie.Text = resA[1].Substring(1, (resA[1].Length - 1));
+                        tx_corre.Text = resA[2];
                         tx_id_rapifac.Text = myDeserializedClass.xml_pdf.IDRepositorio; // items[0].SelectToken("IDRepositorio").ToString();
                     }
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
@@ -2738,130 +2741,262 @@ namespace iOMG
 
                 int cta_ron = 1;
                 List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
-                foreach (DataGridViewRow ron in dataGridView1.Rows)
+                foreach (DataGridViewRow ron in dataGridView1.Rows) 
                 {
                     List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
-                    if (ron.Cells[1].Value != null)
+                    if ((rb_antic.Checked == true && tx_d_valAntic.Text != ""))
                     {
-                        ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                        if (ron.Cells[1].Value.ToString() == "A")
                         {
-                            PrecioId = 99,
-                            PrecioConfiguracion = 1,
-                            ProductoCod = ron.Cells[2].Value.ToString(),
-                            CodigoUnidadMedida = "NIU",
-                            DescripcionUnidadMedida = "UNIDAD",
-                            CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
-                            MonedaCodigo = "PEN",
-                            SucursalId = tx_codSuc.Text,
-                            Margenganancia = 0,
-                            MargenPorcentaje = 0,
-                            PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
-                            Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
-                            OtrosCargosPorcentaje = 0,
-                            CantidadAplicable = 0,
-                            FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                            FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                            Estado = 1,
-                            ISCPorcentaje = 0,
-                            ISCCalculado = 0,
-                            //Extension = { };
-                            UUID = ""
-                        };
-                        ccc.Add(dlp);
+                            ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                            {
+                                PrecioId = 99,
+                                PrecioConfiguracion = 1,
+                                ProductoCod = "",
+                                CodigoUnidadMedida = "NIU",
+                                DescripcionUnidadMedida = "UNIDAD",
+                                CantidadUnidadMedida = 1,
+                                MonedaCodigo = "PEN",
+                                SucursalId = tx_codSuc.Text,
+                                Margenganancia = 0,
+                                MargenPorcentaje = 0,
+                                PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
+                                Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                                OtrosCargosPorcentaje = 0,
+                                CantidadAplicable = 0,
+                                FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                                FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                                Estado = 1,
+                                ISCPorcentaje = 0,
+                                ISCCalculado = 0,
+                                //Extension = { };
+                                UUID = ""
+                            };
+                            ccc.Add(dlp);
+                        }
                     }
-                    
-                    if (ron.Cells[1].Value != null)
+                    else
                     {
-                        int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
-                        decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
-                            ((decimal.Parse(v_igv) / 100) + 1);
-                        decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
-                            (decimal.Parse(ron.Cells[9].Value.ToString()) /
-                            ((decimal.Parse(v_igv) / 100) + 1));
-                        decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
-                            ((decimal.Parse(v_igv) / 100) + 1);
-                        CComprobanteDetalle det = new CComprobanteDetalle
+                        if (ron.Cells[1].Value != null)
                         {
-                            ID = 0,
-                            ComprobanteID = 0,
-                            Item = cta_ron,
-                            TipoProductoCodigo = "",
-                            ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
-                            ProductoCodigoSUNAT = "",                       // "56101532",
-                            TipoSistemaISCCodigo = "00",
-                            UnidadMedidaCodigo = "NIU",
-                            PrecioUnitarioSugerido = 0,
-                            PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
-                            PrecioVentaCodigo = "01",
-                            ICBPER = 0,
-                            CargoIndicador = "0",
-                            CargoCargoCodigo = "",
-                            DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
-                            DescuentoCargoCodigo = "00",
-                            PercepcionCantidadUmbral = 0,
-                            PercepcionMontoUmbral = 0,
-                            PercepcionPorcentaje = 0,
-                            Control = 0,
-                            PrecioCompra = 0,
-                            EsAnticipo = false,                         // y si es anticipo ????
-                            ImporteTotalReferencia = 0,                 // este es el valor referencial 
-                            CantidadUnidadMedida = v_cant,
-                            Kit = 1,
-                            CantidadReferencial = 1,
-                            Cargo = 0,
-                            DescuentoGlobal = 0,
-                            Descuento = 0,
-                            ValorUnitario = v_valorUnit,
-                            ValorVentaItem = v_valorUnit * v_cant,
-                            ValorVentaItemXML = v_valorUnit * v_cant,
-                            ValorVentaNeto = v_valorUnit * v_cant,
-                            ValorVentaNetoXML = 0,
-                            ISCUnitario = 0,
-                            ISCNeto = 0,
-                            ISC = 0,
-                            IGV = v_valIgvTot,
-                            ICBPERItem = 0,
-                            ICBPERSubTotal = 0,
-                            DescuentoBase = 0,
-                            DescuentoCargo = 0,
-                            DescuentoCargoGravado = 0,
-                            CargoItem = 0,
-                            CargoTotal = 0,
-                            CargoNeto = 0,
-                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
-                            MontoTributo = v_valIgvTot,
-                            ISCPorcentaje = 0,
-                            ISCMonto = 0,
-                            CargoPorcentaje = 0,
-                            //Extension = { },
-                            ListaSeries = new List<CProductoCodigoSerie>(),
-                            //ListaPrecios = new List<ProductoPrecioDTO>(),
-                            ListaPrecios = ccc,
-                            PrecioUnitarioRecuperado = false,
-                            UUID = "",
-                            BANDERA_CONCURRENCIA = false,
-                            BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
-                            BANDERA_DETALLEREEMPLAZADO = false,
-                            BANDERA_DETALLERECUPERADO = false,
-                            BANDERA_ITEMDETALLADO = true,
-                            Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
-                            Observacion = "",
-                            Stock = 0,
-                            Cantidad = int.Parse(ron.Cells[1].Value.ToString()),
-                            PrecioCodigo = 0,
-                            PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
-                            Peso = 0,
-                            DescuentoMonto = 0,
-                            DescuentoPorcentaje = "0.00",
-                            TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
-                            ValorVenta = v_valTotal,
-                            Ganancia = 0,
-                            IGVNeto = v_valIgvTot,
-                            ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
-                            PesoTotal = 0
-                        };                      // detalles
-                        aaa.Add(det);
-                        cta_ron += 1;
+                            ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                            {
+                                PrecioId = 99,
+                                PrecioConfiguracion = 1,
+                                ProductoCod = ron.Cells[2].Value.ToString(),
+                                CodigoUnidadMedida = "NIU",
+                                DescripcionUnidadMedida = "UNIDAD",
+                                CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
+                                MonedaCodigo = "PEN",
+                                SucursalId = tx_codSuc.Text,
+                                Margenganancia = 0,
+                                MargenPorcentaje = 0,
+                                PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
+                                Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                                OtrosCargosPorcentaje = 0,
+                                CantidadAplicable = 0,
+                                FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                                FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                                Estado = 1,
+                                ISCPorcentaje = 0,
+                                ISCCalculado = 0,
+                                //Extension = { };
+                                UUID = ""
+                            };
+                            ccc.Add(dlp);
+                        }
+                    }
+                    if (rb_antic.Checked == true && tx_d_valAntic.Text != "")
+                    {
+                        if (ron.Cells[1].Value.ToString() == "A")
+                        {
+                            int v_cant = 1;                    // cantidad
+                            decimal v_valorUnit = decimal.Parse(ron.Cells[9].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                                ((decimal.Parse(v_igv) / 100) + 1);
+                            decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
+                                (decimal.Parse(ron.Cells[9].Value.ToString()) /
+                                ((decimal.Parse(v_igv) / 100) + 1));
+                            decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
+                                ((decimal.Parse(v_igv) / 100) + 1);
+                            CComprobanteDetalle det = new CComprobanteDetalle
+                            {
+                                ID = 0,
+                                ComprobanteID = 0,
+                                Item = cta_ron,
+                                TipoProductoCodigo = "",
+                                ProductoCodigo = "",   // "Prod00005",
+                                ProductoCodigoSUNAT = "",                       // "56101532",
+                                TipoSistemaISCCodigo = "00",
+                                UnidadMedidaCodigo = "NIU",
+                                PrecioUnitarioSugerido = 0,
+                                PrecioUnitarioItem = decimal.Parse(ron.Cells[9].Value.ToString()),       // 118,
+                                PrecioVentaCodigo = "01",
+                                ICBPER = 0,
+                                CargoIndicador = "0",
+                                CargoCargoCodigo = "",
+                                DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                                DescuentoCargoCodigo = "00",
+                                PercepcionCantidadUmbral = 0,
+                                PercepcionMontoUmbral = 0,
+                                PercepcionPorcentaje = 0,
+                                Control = 0,
+                                PrecioCompra = 0,
+                                EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                                ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                                CantidadUnidadMedida = v_cant,
+                                Kit = 1,
+                                CantidadReferencial = 1,
+                                Cargo = 0,
+                                DescuentoGlobal = 0,
+                                Descuento = 0,
+                                ValorUnitario = v_valorUnit,
+                                ValorVentaItem = v_valorUnit * v_cant,
+                                ValorVentaItemXML = v_valorUnit * v_cant,
+                                ValorVentaNeto = v_valorUnit * v_cant,
+                                ValorVentaNetoXML = 0,
+                                ISCUnitario = 0,
+                                ISCNeto = 0,
+                                ISC = 0,
+                                IGV = v_valIgvTot,
+                                ICBPERItem = 0,
+                                ICBPERSubTotal = 0,
+                                DescuentoBase = 0,
+                                DescuentoCargo = 0,
+                                DescuentoCargoGravado = 0,
+                                CargoItem = 0,
+                                CargoTotal = 0,
+                                CargoNeto = 0,
+                                PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                                MontoTributo = v_valIgvTot,
+                                ISCPorcentaje = 0,
+                                ISCMonto = 0,
+                                CargoPorcentaje = 0,
+                                //Extension = { },
+                                ListaSeries = new List<CProductoCodigoSerie>(),
+                                //ListaPrecios = new List<ProductoPrecioDTO>(),
+                                ListaPrecios = ccc,
+                                PrecioUnitarioRecuperado = false,
+                                UUID = "",
+                                BANDERA_CONCURRENCIA = false,
+                                BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                                BANDERA_DETALLEREEMPLAZADO = false,
+                                BANDERA_DETALLERECUPERADO = false,
+                                BANDERA_ITEMDETALLADO = true,
+                                Descripcion = "Anticipo",            // "00 PRODUCTO GRAVADO",
+                                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? "Anticipo" : "",
+                                Stock = 0,
+                                Cantidad = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? 1 : int.Parse(ron.Cells[1].Value.ToString()),
+                                PrecioCodigo = 0,
+                                PrecioUnitario = decimal.Parse(ron.Cells[9].Value.ToString()),
+                                Peso = 0,
+                                DescuentoMonto = 0,
+                                DescuentoPorcentaje = "0.00",
+                                TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
+                                ValorVenta = v_valTotal,
+                                Ganancia = 0,
+                                IGVNeto = v_valIgvTot,
+                                ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                                PesoTotal = 0
+                            };                      // detalles
+                            aaa.Add(det);
+                            cta_ron += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (ron.Cells[1].Value != null)
+                        {
+                            int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
+                            decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                                ((decimal.Parse(v_igv) / 100) + 1);
+                            decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
+                                (decimal.Parse(ron.Cells[9].Value.ToString()) /
+                                ((decimal.Parse(v_igv) / 100) + 1));
+                            decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
+                                ((decimal.Parse(v_igv) / 100) + 1);
+                            CComprobanteDetalle det = new CComprobanteDetalle
+                            {
+                                ID = 0,
+                                ComprobanteID = 0,
+                                Item = cta_ron,
+                                TipoProductoCodigo = "",
+                                ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                                ProductoCodigoSUNAT = "",                       // "56101532",
+                                TipoSistemaISCCodigo = "00",
+                                UnidadMedidaCodigo = "NIU",
+                                PrecioUnitarioSugerido = 0,
+                                PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                                PrecioVentaCodigo = "01",
+                                ICBPER = 0,
+                                CargoIndicador = "0",
+                                CargoCargoCodigo = "",
+                                DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                                DescuentoCargoCodigo = "00",
+                                PercepcionCantidadUmbral = 0,
+                                PercepcionMontoUmbral = 0,
+                                PercepcionPorcentaje = 0,
+                                Control = 0,
+                                PrecioCompra = 0,
+                                EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                                ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                                CantidadUnidadMedida = v_cant,
+                                Kit = 1,
+                                CantidadReferencial = 1,
+                                Cargo = 0,
+                                DescuentoGlobal = 0,
+                                Descuento = 0,
+                                ValorUnitario = v_valorUnit,
+                                ValorVentaItem = v_valorUnit * v_cant,
+                                ValorVentaItemXML = v_valorUnit * v_cant,
+                                ValorVentaNeto = v_valorUnit * v_cant,
+                                ValorVentaNetoXML = 0,
+                                ISCUnitario = 0,
+                                ISCNeto = 0,
+                                ISC = 0,
+                                IGV = v_valIgvTot,
+                                ICBPERItem = 0,
+                                ICBPERSubTotal = 0,
+                                DescuentoBase = 0,
+                                DescuentoCargo = 0,
+                                DescuentoCargoGravado = 0,
+                                CargoItem = 0,
+                                CargoTotal = 0,
+                                CargoNeto = 0,
+                                PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                                MontoTributo = v_valIgvTot,
+                                ISCPorcentaje = 0,
+                                ISCMonto = 0,
+                                CargoPorcentaje = 0,
+                                //Extension = { },
+                                ListaSeries = new List<CProductoCodigoSerie>(),
+                                //ListaPrecios = new List<ProductoPrecioDTO>(),
+                                ListaPrecios = ccc,
+                                PrecioUnitarioRecuperado = false,
+                                UUID = "",
+                                BANDERA_CONCURRENCIA = false,
+                                BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                                BANDERA_DETALLEREEMPLAZADO = false,
+                                BANDERA_DETALLERECUPERADO = false,
+                                BANDERA_ITEMDETALLADO = true,
+                                Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
+                                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? "Anticipo" : "",
+                                Stock = 0,
+                                Cantidad = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? 1 : int.Parse(ron.Cells[1].Value.ToString()),
+                                PrecioCodigo = 0,
+                                PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
+                                Peso = 0,
+                                DescuentoMonto = 0,
+                                DescuentoPorcentaje = "0.00",
+                                TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
+                                ValorVenta = v_valTotal,
+                                Ganancia = 0,
+                                IGVNeto = v_valIgvTot,
+                                ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                                PesoTotal = 0
+                            };                      // detalles
+                            aaa.Add(det);
+                            cta_ron += 1;
+                        }
                     }
                 }
 
@@ -3015,7 +3150,7 @@ namespace iOMG
                     CONTADOR_BUSCAPRODUCTO = 0,
                     CONTADOR_CLICKEMITIR = 1,
                     EstadoContingencia = false,
-                    Anticipo = false,
+                    Anticipo = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
                     EstadoOtroSistema = false,
                     ClasePrecioCodigo = 1,
                     TipoPrecio = 0,
@@ -3067,7 +3202,7 @@ namespace iOMG
                     AlojamientoPaisDocEmisor = "AF",                // esto ?
                     PaisResidencia = "AF",
                     Gravado = decimal.Parse(tx_bruto.Text),
-                    Observacion = "",
+                    Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? "ANTICIPO" : "",
                     //FechaIngresoPais = "22/02/2022",
                     //FechaIngresoEstablecimiento = "22/02/2022",
                     //FechaSalidaEstablecimiento = "22/02/2022",
@@ -3081,10 +3216,7 @@ namespace iOMG
                     AlojamientoNombreRazonSocial = "",
                     AlojamientoTipoDocIdentidadCodigo = "1"
                 };
-                /*
-                                    
 
-                */
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     string cabeza = JsonConvert.SerializeObject(obj);
@@ -3744,7 +3876,6 @@ namespace iOMG
             if (e.ToString().Trim() == "") tx_status.Visible = false;
             else tx_status.Visible = true;
         }
-
     }
     public class docsAnticip
     {
@@ -3759,13 +3890,11 @@ namespace iOMG
         public string Firma { get; set; }
         public string Mensaje { get; set; }
     }
-
     public class Root
     {
         public XmlPdf xml_pdf { get; set; }
         public Cdr cdr { get; set; }
     }
-
     public class XmlPdf
     {
         public int IDComprobante { get; set; }
