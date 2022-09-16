@@ -1042,6 +1042,10 @@ namespace iOMG
                                         docsAnticip item = new docsAnticip();
                                         item.comprob = dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);
                                         item.valor = dr.GetString(3);
+                                        item.bruto = "";                // me quede aca
+                                        item.descrip = "";              // la consulta debe obtener estos datos
+                                        item.IdCompRapifac = 0;         // este campo debe crearse en la tabla cabfactu, junto al identificador del pdf
+                                        item.igv = "";                  // 
                                         _docsAnticip.Add(item);
                                     }
                                 }
@@ -2746,7 +2750,7 @@ namespace iOMG
                 foreach (DataGridViewRow ron in dataGridView1.Rows) 
                 {
                     List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
-                    if ((rb_antic.Checked == true && tx_d_valAntic.Text != ""))
+                    if ((rb_antic.Checked == true))     //  && tx_d_valAntic.Text != ""
                     {
                         if (ron.Cells[1].Value != null && ron.Cells[10].Value != null && ron.Cells[10].Value.ToString() == "A")
                         {
@@ -2762,8 +2766,8 @@ namespace iOMG
                                 SucursalId = tx_codSuc.Text,
                                 Margenganancia = 0,
                                 MargenPorcentaje = 0,
-                                PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
-                                Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                                PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),         // ron.Cells[9].Value.ToString()
+                                Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),            // ron.Cells[9].Value.ToString()
                                 OtrosCargosPorcentaje = 0,
                                 CantidadAplicable = 0,
                                 FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
@@ -2808,7 +2812,7 @@ namespace iOMG
                             ccc.Add(dlp);
                         }
                     }
-                    if (rb_antic.Checked == true && tx_d_valAntic.Text != "")
+                    if (rb_antic.Checked == true)       //  && tx_d_valAntic.Text != ""
                     {
                         if (ron.Cells[1].Value != null && ron.Cells[10].Value != null && ron.Cells[10].Value.ToString() == "A")
                         {
@@ -2887,7 +2891,7 @@ namespace iOMG
                                 Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
                                 Observacion = "",
                                 Stock = 0,
-                                Cantidad = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? 1 : int.Parse(ron.Cells[1].Value.ToString()),
+                                Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
                                 PrecioCodigo = 0,
                                 PrecioUnitario = decimal.Parse(ron.Cells[9].Value.ToString()),
                                 Peso = 0,
@@ -2981,9 +2985,9 @@ namespace iOMG
                                 BANDERA_DETALLERECUPERADO = false,
                                 BANDERA_ITEMDETALLADO = true,
                                 Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
-                                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? "Anticipo" : "",
+                                Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
                                 Stock = 0,
-                                Cantidad = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? 1 : int.Parse(ron.Cells[1].Value.ToString()),
+                                Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
                                 PrecioCodigo = 0,
                                 PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
                                 Peso = 0,
@@ -3204,7 +3208,7 @@ namespace iOMG
                     AlojamientoPaisDocEmisor = "AF",                // esto ?
                     PaisResidencia = "AF",
                     Gravado = decimal.Parse(tx_bruto.Text),
-                    Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : "",
+                    Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
                     //FechaIngresoPais = "22/02/2022",
                     //FechaIngresoEstablecimiento = "22/02/2022",
                     //FechaSalidaEstablecimiento = "22/02/2022",
@@ -3879,10 +3883,16 @@ namespace iOMG
             else tx_status.Visible = true;
         }
     }
-    public class docsAnticip
+    public class docsAnticip                                                // comprobantes de anticipo
     {
-        public string comprob { get; set; }
-        public string valor { get; set; }
+        public string comprob { get; set; }                 // comprobante completo
+        public string valor { get; set; }                   // ImporteTotal - rapifac
+        public string bruto { get; set; }                   // ValorVentaItem - rapifac
+        public string igv { get; set; }                     // IGV - rapifac
+        public string descrip { get; set; }                 // Descripcion - rapifac
+        public int IdCompRapifac { get; set; }              // ComprobanteId - rapifac
+
+
     };
     public class Cdr
     {
