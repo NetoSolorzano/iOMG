@@ -384,7 +384,7 @@ namespace iOMG
             string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
             "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,round(totdvta,2) as totdvta,totpags,saldvta,estdvta,frase01," +
             "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-            "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose from cabfactu where ";
+            "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,pdfpse_ose from cabfactu where ";
             string parte = "";
             if (campo == "tx_idr" && tx_idr.Text != "" && tx_corre.Text.Trim() == "")
             {
@@ -450,6 +450,7 @@ namespace iOMG
                             rb_contado.Checked = (dr.GetString("conPago") == "1") ? true : false;
                             tx_tipComp.Text = dr.GetString("tipdcob");
                             tx_id_rapifac.Text = dr.GetString("idpse_ose");
+                            tx_pdf_rapifac.Text = dr.GetString("pdfpse_ose");
                         }
                         dr.Dispose();
                         if (tx_idr.Text != "")
@@ -973,6 +974,7 @@ namespace iOMG
                         }
                         dt.Dispose();
                     }
+                    suma_grilla();
                 }
             }
             catch (MySqlException ex)
@@ -1024,7 +1026,14 @@ namespace iOMG
         {
             if (tx_tipComp.Text == "C")
             {
-                string consu = "SELECT dv,serie,numero,montosol FROM pagamenti WHERE contrato=@cont";   //  AND saldo>0
+                _docsAnticip.Clear();
+
+                string consu = "SELECT a.dv,a.serie,a.numero,a.montosol,ifnull(b.mondvta,'') AS mondvta,ifnull(b.tcadvta,1) AS tcadvta,ifnull(b.subtota,0) AS subtota," +
+                "ifnull(b.igvtota, 0) AS igvtota, ifnull(b.totdvta, 0) AS totdvta, ifnull(b.idpse_ose, 0) AS idpse_ose, ifnull(b.pdfpse_ose, '') AS pdfpse_ose," +
+                "c.sunat,CONCAT(b.martdve,a.serie) AS serRapi,d.codigo AS codMon,e.sunat AS codDoc,b.nudoclt AS docClie " +
+                "FROM pagamenti a LEFT JOIN cabfactu b ON b.tipdvta = a.dv AND b.serdvta = a.serie AND b.numdvta = a.numero " +
+                "LEFT JOIN desc_tdv c ON c.IDCodice=b.tipdvta LEFT JOIN desc_mon d ON d.IDCodice=b.mondvta LEFT JOIN desc_doc e ON e.IDCodice=b.tidoclt " +
+                "WHERE a.contrato = @cont";   //  AND saldo>0
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
@@ -1042,10 +1051,20 @@ namespace iOMG
                                         docsAnticip item = new docsAnticip();
                                         item.comprob = dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);
                                         item.valor = dr.GetString(3);
-                                        item.bruto = "";                // me quede aca
-                                        item.descrip = "";              // la consulta debe obtener estos datos
-                                        item.IdCompRapifac = 0;         // este campo debe crearse en la tabla cabfactu, junto al identificador del pdf
-                                        item.igv = "";                  // 
+                                        item.bruto = dr.GetString("subtota");                // me quede aca
+                                        item.descrip = "x y z";              // la consulta debe obtener estos datos
+                                        item.IdCompRapifac = dr.GetInt32("idpse_ose");       // este campo debe crearse en la tabla cabfactu, junto al identificador del pdf
+                                        item.igv = dr.GetString("igvtota");                  // 
+                                        item.tipDocCod = dr.GetString("sunat");             // codigo sunat para el tipo de comprobante
+                                        item.serieRap = dr.GetString("serRapi");            // serie completa del comprobante, ej: F200
+                                        item.corRap = dr.GetInt16("numero");               // correlativo del comprobante
+                                        item.codMon = dr.GetString("codMon");
+                                        item.tDocClte = dr.GetString("codDoc");             // codigo sunat del tipo doc del cliente
+                                        item.nroDocC = dr.GetString("docClie");             // ruc dni del cliente
+                                        /*
+                                            AnticiposId = "0",
+                                            TipoAfectacionIGVCodigo = ""
+                                        */
                                         _docsAnticip.Add(item);
                                     }
                                 }
@@ -2295,8 +2314,26 @@ namespace iOMG
                     "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    // validaciones de conex con Rapifac
-                    string resultado = conex_Rapifac();
+                    cosas_pagamenti();
+                    string resultado = "";
+                    // armado de las clases para Rapifac
+                    if (rb_bienes.Checked == true)      // venta directa
+                    {
+                        resultado = conex_Rapifac();
+                    }
+                    if (rb_antic.Checked == true)       // anticipo o cancelacion
+                    {
+                        if (tx_cont.Text != "" && tx_tipComp.Text == "C")   // cancelacion
+                        {
+                            resultado = rapifac_cancelacion();
+                        }
+                        else
+                        {
+                            // anticipo
+                            resultado = conex_Rapifac();
+                        }
+                    }
+                    
                     if (resultado == "")
                     {
                         MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
@@ -2311,12 +2348,13 @@ namespace iOMG
                         string[] resA = myDeserializedClass.xml_pdf.Mensaje.Split('-');
                         tx_serie.Text = resA[1].Substring(1, (resA[1].Length - 1));
                         tx_corre.Text = resA[2];
-                        tx_id_rapifac.Text = myDeserializedClass.xml_pdf.IDRepositorio; // items[0].SelectToken("IDRepositorio").ToString();
+                        tx_id_rapifac.Text = myDeserializedClass.xml_pdf.IDComprobante.ToString();
+                        tx_pdf_rapifac.Text = myDeserializedClass.xml_pdf.IDRepositorio; // items[0].SelectToken("IDRepositorio").ToString();
                     }
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
-                        cosas_pagamenti();                  // vemos si es cancelacion para llenar la lista de pagos
+                        //cosas_pagamenti();                  // vemos si es cancelacion para llenar la lista de pagos
                         Bt_print.PerformClick();
                         //
                         if (tx_prdsCont.Text == "S" && tx_cont.Text.Trim() == "")
@@ -2379,6 +2417,515 @@ namespace iOMG
             limpia_ini();
             tx_serie.Focus();
         }
+        private string rapifac_cancelacion()                          // genera comprobante de cancelacion para rapifac
+        {
+            string retorna = "";
+            List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();        // detalle cpmpleto
+            List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();            // lista de precios
+            List<CAnticipo> ddd = new List<CAnticipo>();                            // lista de anticipos
+            int cta_ron = 1;
+            foreach (DataGridViewRow ron in dataGridView1.Rows)
+            {
+                if (ron.Cells[1].Value != null)
+                {
+                    if (ron.Cells[1].Value.ToString().Trim() != "" && ron.Cells[1].Value.ToString().Trim() != "0")  // buscamos que sea artículo con cantidad
+                    {
+                        // *********** PRECIO 
+                        ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                        {
+                            PrecioId = 99,
+                            PrecioConfiguracion = 1,
+                            ProductoCod = ron.Cells[2].Value.ToString(),
+                            CodigoUnidadMedida = "NIU",
+                            DescripcionUnidadMedida = "UNIDAD",
+                            CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()), 
+                            MonedaCodigo = "PEN",
+                            SucursalId = tx_codSuc.Text,
+                            Margenganancia = 0,
+                            MargenPorcentaje = 0,
+                            PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            OtrosCargosPorcentaje = 0,
+                            CantidadAplicable = 0,
+                            FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            Estado = 1,
+                            ISCPorcentaje = 0,
+                            ISCCalculado = 0,
+                            //Extension = { };
+                            UUID = ""
+                        };
+                        ccc.Add(dlp);
+                        // ********** DETALLE FILA
+                        int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
+                        decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                            ((decimal.Parse(v_igv) / 100) + 1);
+                        decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
+                            (decimal.Parse(ron.Cells[9].Value.ToString()) /
+                            ((decimal.Parse(v_igv) / 100) + 1));
+                        decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
+                            ((decimal.Parse(v_igv) / 100) + 1);
+                        CComprobanteDetalle det = new CComprobanteDetalle
+                        {
+                            ID = 0,
+                            ComprobanteID = 0,
+                            Item = cta_ron,
+                            TipoProductoCodigo = "",
+                            ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                            ProductoCodigoSUNAT = "",                       // "56101532",
+                            TipoSistemaISCCodigo = "00",
+                            UnidadMedidaCodigo = "NIU",
+                            PrecioUnitarioSugerido = 0,
+                            PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                            PrecioVentaCodigo = "01",
+                            ICBPER = 0,
+                            CargoIndicador = "0",
+                            CargoCargoCodigo = "",
+                            DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                            DescuentoCargoCodigo = "00",
+                            PercepcionCantidadUmbral = 0,
+                            PercepcionMontoUmbral = 0,
+                            PercepcionPorcentaje = 0,
+                            Control = 0,
+                            PrecioCompra = 0,
+                            EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                            ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                            CantidadUnidadMedida = v_cant,
+                            Kit = 1,
+                            CantidadReferencial = 1,
+                            Cargo = 0,
+                            DescuentoGlobal = 0,
+                            Descuento = 0,
+                            ValorUnitario = v_valorUnit,
+                            ValorVentaItem = v_valorUnit * v_cant,
+                            ValorVentaItemXML = v_valorUnit * v_cant,
+                            ValorVentaNeto = v_valorUnit * v_cant,
+                            ValorVentaNetoXML = 0,
+                            ISCUnitario = 0,
+                            ISCNeto = 0,
+                            ISC = 0,
+                            IGV = v_valIgvTot,
+                            ICBPERItem = 0,
+                            ICBPERSubTotal = 0,
+                            DescuentoBase = 0,
+                            DescuentoCargo = 0,
+                            DescuentoCargoGravado = 0,
+                            CargoItem = 0,
+                            CargoTotal = 0,
+                            CargoNeto = 0,
+                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            MontoTributo = v_valIgvTot,
+                            ISCPorcentaje = 0,
+                            ISCMonto = 0,
+                            CargoPorcentaje = 0,
+                            //Extension = { },
+                            ListaSeries = new List<CProductoCodigoSerie>(),
+                            //ListaPrecios = new List<ProductoPrecioDTO>(),
+                            ListaPrecios = ccc,
+                            PrecioUnitarioRecuperado = false,
+                            UUID = "",
+                            BANDERA_CONCURRENCIA = false,
+                            BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                            BANDERA_DETALLEREEMPLAZADO = false,
+                            BANDERA_DETALLERECUPERADO = false,
+                            BANDERA_ITEMDETALLADO = true,
+                            Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
+                            Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
+                            Stock = 0,
+                            Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
+                            PrecioCodigo = 0,
+                            PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            Peso = 0,
+                            DescuentoMonto = 0,
+                            DescuentoPorcentaje = "0.00",
+                            TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
+                            ValorVenta = v_valTotal,
+                            Ganancia = 0,
+                            IGVNeto = v_valIgvTot,
+                            ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            PesoTotal = 0
+                        };                      // detalles
+                        aaa.Add(det);
+                        cta_ron += 1;
+                    }
+
+                }
+            }
+            // terminado con los items ahora vamos por los anticipos
+            decimal totAnt = 0, subtotAnt=0;
+            for (int i=0; i<=_docsAnticip.Count - 1; i++)
+            {
+                int v_cant = 1;                                                     // cantidad
+                decimal v_valorUnit = decimal.Parse(_docsAnticip[i].bruto);         // valor unit (precio unit sin IGV) 
+                decimal v_valIgvTot = decimal.Parse(_docsAnticip[i].igv);           // igv total de la fila
+                decimal v_valTotal = decimal.Parse(_docsAnticip[i].valor);          // valor total fila sin igv
+                CComprobanteDetalle det = new CComprobanteDetalle
+                {
+                    ID = 0,
+                    ComprobanteID = 0,
+                    Item = cta_ron,
+                    TipoProductoCodigo = "",
+                    ProductoCodigo = _docsAnticip[i].descrip,
+                    ProductoCodigoSUNAT = "",
+                    TipoSistemaISCCodigo = "00",
+                    UnidadMedidaCodigo = "NIU",
+                    PrecioUnitarioSugerido = 0,
+                    PrecioUnitarioItem = decimal.Parse(_docsAnticip[i].valor),       // 118,
+                    PrecioVentaCodigo = "01",
+                    ICBPER = 0,
+                    CargoIndicador = "0",
+                    CargoCargoCodigo = "",
+                    DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                    DescuentoCargoCodigo = "00",
+                    PercepcionCantidadUmbral = 0,
+                    PercepcionMontoUmbral = 0,
+                    PercepcionPorcentaje = 0,
+                    Control = 0,
+                    PrecioCompra = 0,
+                    EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                    ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                    CantidadUnidadMedida = v_cant,
+                    Kit = 1,
+                    CantidadReferencial = 1,
+                    Cargo = 0,
+                    DescuentoGlobal = 0,
+                    Descuento = 0,
+                    ValorUnitario = v_valorUnit,
+                    ValorVentaItem = v_valorUnit * v_cant,
+                    ValorVentaItemXML = v_valorUnit * v_cant,
+                    ValorVentaNeto = v_valorUnit * v_cant,
+                    ValorVentaNetoXML = 0,
+                    ISCUnitario = 0,
+                    ISCNeto = 0,
+                    ISC = 0,
+                    IGV = v_valIgvTot,
+                    ICBPERItem = 0,
+                    ICBPERSubTotal = 0,
+                    DescuentoBase = 0,
+                    DescuentoCargo = 0,
+                    DescuentoCargoGravado = 0,
+                    CargoItem = 0,
+                    CargoTotal = 0,
+                    CargoNeto = 0,
+                    PrecioVenta = decimal.Parse(_docsAnticip[i].valor),
+                    MontoTributo = v_valIgvTot,
+                    ISCPorcentaje = 0,
+                    ISCMonto = 0,
+                    CargoPorcentaje = 0,
+                    //Extension = { },
+                    ListaSeries = new List<CProductoCodigoSerie>(),
+                    //ListaPrecios = new List<ProductoPrecioDTO>(),
+                    ListaPrecios = ccc,
+                    PrecioUnitarioRecuperado = false,
+                    UUID = "",
+                    BANDERA_CONCURRENCIA = false,
+                    BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                    BANDERA_DETALLEREEMPLAZADO = false,
+                    BANDERA_DETALLERECUPERADO = false,
+                    BANDERA_ITEMDETALLADO = true,
+                    Descripcion = _docsAnticip[i].descrip,
+                    Observacion = "Anticipo",
+                    Stock = 0,
+                    Cantidad = 1,
+                    PrecioCodigo = 0,
+                    PrecioUnitario = decimal.Parse(_docsAnticip[i].valor),
+                    Peso = 0,
+                    DescuentoMonto = 0,
+                    DescuentoPorcentaje = "0.00",
+                    TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
+                    ValorVenta = v_valTotal,
+                    Ganancia = 0,
+                    IGVNeto = v_valIgvTot,
+                    ImporteTotal = decimal.Parse(_docsAnticip[i].valor),
+                    PesoTotal = 0
+                };                      // detalles
+                aaa.Add(det);
+                CAnticipo ant = new CAnticipo
+                {
+                    ComprobanteID = _docsAnticip[i].IdCompRapifac,
+                    TipoDocumentoCodigo = _docsAnticip[i].tipDocCod,
+                    Serie = _docsAnticip[i].serieRap,
+                    Correlativo = _docsAnticip[i].corRap,
+                    MonedaCodigo = _docsAnticip[i].codMon,
+                    AnticiposId = "1",
+                    Anticipo = decimal.Parse(_docsAnticip[i].valor),
+                    AnticipoBase = decimal.Parse(_docsAnticip[i].bruto),
+                    AnticipoIGV = decimal.Parse(_docsAnticip[i].igv),
+                    TipoDocIdentidadCodigo = _docsAnticip[i].tDocClte,
+                    NumeroDocIdentidad = _docsAnticip[i].nroDocC,
+                    TipoAfectacionIGVCodigo = ""
+                };
+                ddd.Add(ant);
+                totAnt = totAnt + decimal.Parse(_docsAnticip[i].valor);
+                subtotAnt = subtotAnt + decimal.Parse(_docsAnticip[i].bruto);
+                cta_ron += 1;
+            }
+            // terminado los anticipos, vamos por los pagos
+            List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
+            for (int i = 0; i < 9; i++)
+            {
+                if (dtpagos[i, 2] != null && dtpagos[i, 2] != "")
+                {
+                    CMovimientoCuenta cta = new CMovimientoCuenta
+                    {
+                        TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
+                        Serie = cmb_tipo.Text.Substring(0,1) + tx_serie.Text,
+                        Correlativo = 0,                // int.Parse(tx_corre.Text),
+                        Condicion = dtpagos[i, 2],
+                        TipoCuentaCodigo = 1,
+                        CuentaNumero = "",
+                        Usuario = Program.vg_nuse,
+                        MonedaCodigo = "PEN",                                   // de momento todo es soles
+                        SucursalId = int.Parse(tx_codSuc.Text),
+                        TipoDocIdentidadCodigo = "",
+                        NumeroDocIdentidad = "",
+                        Observacion = "",
+                        //Extension = { },
+                        //CuentaValor = "1-30303030",
+                        Pago = decimal.Parse(dtpagos[i, 4]),
+                        Vuelto = 0,
+                        FechaPago = dtpagos[i, 6],   // dtp_pedido.Value.Date.ToString("dd/MM/yyyy")
+                        NumeroOperacion = dtpagos[i, 3],
+                        FechaVencimiento = dtpagos[i, 6],    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                        PlazoDias = 1
+                    };                      // movimientos
+                    bbb.Add(cta);
+                }
+                /*
+                dtpagos[i, 0] = id 
+                dtpagos[i, 1] = contador
+                dtpagos[i, 2] = nombre del medio de pago
+                dtpagos[i, 3] = #operacion
+                dtpagos[i, 4] = importe pagado
+                dtpagos[i, 5] = codigo medio
+                dtpagos[i, 6] = fecha de pago
+                */
+            }
+            // terminado con los movimientos de pagos por el comprobante entero
+            CComprobante obj = new CComprobante
+            {
+                ID = 0,
+                IdRepositorio = 0,
+                AplicaContingencia = false,
+                AplicaAnticipo = true,
+                AplicaOtroSistema = false,
+                Usuario = Program.vg_nuse,
+                AplicaStockNegativo = false,
+                ModificacionDePrecio = false,
+                Sucursal = int.Parse(tx_codSuc.Text),
+                IGVPorcentaje = decimal.Parse(Program.v_igv),
+                DescuentoGlobalMonto = 0,
+                DescuentoGlobalIndicadorDescuento = "0",
+                DescuentoGlobalCodigoMotivo = "00",
+                DescuentoGlobalNGPorcentaje = 0,
+                DescuentoGlobalNGIndicadorDescuento = 0,
+                DescuentoGlobalNGCodigoMotivo = "00",
+                CargoGlobalPorcentaje = 0,
+                DetraccionTipoOperacion = "01",                                     // esto debería estar en variable
+                CargoGlobalIndicadorCargos = "0",
+                CargoGlobalCodigoMotivo = "0",
+                CantidadDecimales = 2,
+                AgentePercepcion = false,
+                PermisoProductoSerie = false,
+                EnviarCorreo = false,
+                OrigenSistema = 0,
+                TipoGuiaRemisionCodigo = "",
+                TransportistaTipoDocIdentidadCodigo = "",
+                CanalVenta = "2",
+                Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
+                VendedorNombre = tx_nomVen.Text,
+                CondicionEstado = "",
+                CondicionPago = rb_contado.Text,
+                SituacionPagoCodigo = 2,
+                DescuentoIndicador = 0,
+                Ubigeo = tx_dir_ubigpe.Text,
+                AnticipoMonto = totAnt,                                   // suma de anticipos, antes de la cancelacion
+                ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
+                ClienteNumeroDocIdentidad = tx_ndc.Text,
+                ClienteContacto = "",
+                ClienteTelefono = tx_telef1.Text,
+                OrdenNumero = "",
+                GuiaNumero = "",
+                ReferenciaNumeroDocumento = "",
+                ReferenciaTipoDocumento = "",
+                DiasPermanencia = 0,
+                FechaConsumo = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                MotivoTrasladoDescripcion = "",
+                TransportistaNumeroDocIdentidad = "",
+                ClienteTipoSunat = 1,
+                VistaDocumento = "",
+                CondicionComercialIndicador = 0,
+                //Extension = {}
+                ListaDetalles = aaa,
+                ExoneradaXML = 0,
+                InafectoXML = 0,
+                ExportacionXML = 0,
+                ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text,
+                Detraccion = 0,
+                Percepcion = 0,
+                PercepcionBaseImponible = 0,
+                Retencion = 0,
+                DescuentoGlobalMontoBase = decimal.Parse(tx_bruto.Text),
+                DescuentoGlobalNGMonto = 0,
+                DescuentoGlobalNGMontoBase = 0,
+                DescuentoNGMonto = 0,
+                AnticiposGravado = subtotAnt,
+                AnticiposExonerado = 0,
+                AnticiposInafecto = 0,
+                CargoGlobalMonto = 0,
+                CargoGlobalMontoBase = decimal.Parse(tx_bruto.Text),
+                ISCBase = 0,
+                GratuitoGravado = 0,
+                TotalPrecioVenta = decimal.Parse(tx_valor.Text),
+                TotalValorVenta = decimal.Parse(tx_bruto.Text),
+                Peso = 0,
+                PercepcionRegimen = "",
+                PercepcionFactor = 0,
+                ListaMovimientos = bbb,
+                PagosMultiples = false,                             // que significa esto?
+                CreditoTotal = 0,
+                ListaGuias = { },
+                ListaCuotas = { },
+                TotalCuotas = 0,
+                ListaAnticipos = ddd,
+                ListaDocumentosRelacionados = { },
+                ListaCondicionesComerciales = { },
+                UUID = "",
+                DescuentoGlobalPorcentaje = 0,
+                DescuentoGlobalValor = 0,
+                CorreoElectronicoPrincipal = "no-send@rapifac.com",         // no debería ser correo de artesanos
+                Exonerada = 0,
+                Inafecto = 0,
+                Exportacion = 0,
+                OperacionNoGravada = 0,
+                Gratuito = 0,
+                TotalDescuentos = 0,
+                DescuentoGlobal = 0,
+                TotalAnticipos = 0,
+                BANDERA_CONCURRENCIA = false,
+                BANDERA_DIRECCIONPARTIDAEDICION = false,
+                BANDERA_GANANCIAVERIFICADA = true,
+                BANDERA_ERRORESGANANCIA = false,
+                NOMBRE_UBIGEOLLEGADA = "",
+                NOMBRE_UBIGEOPARTIDA = "",
+                CONTADOR_BUSCAPRODUCTO = 0,
+                CONTADOR_CLICKEMITIR = 1,
+                EstadoContingencia = false,
+                Anticipo = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
+                EstadoOtroSistema = false,
+                ClasePrecioCodigo = 1,
+                TipoPrecio = 0,
+                FormatoPDF = 0,
+                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,       // cmb_tipo.Text.Substring(0,1) + tx_serie.Text
+                Correlativo = 0,             // int.Parse(tx_corre.Text),
+                MonedaCodigo = "PEN",
+                FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                TipoDocumentoCodigoModificado = tx_dat_tipdoc_s.Text,
+                SerieModificado = "",
+                CorrelativoModificado = "",
+                TipoNotaCreditoCodigo = "01",
+                TipoNotaDebitoCodigo = "01",
+                TipoOperacionCodigo = "0101",                               // todo esto debe estar en variables
+                TipoCambio = "1.00",
+                MotivoTrasladoCodigo = "01",
+                ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
+                ClienteDireccion = tx_direc.Text.Trim() + "-" + tx_dist.Text + "-" + tx_prov.Text + "-" + tx_dpto.Text,
+                UbigeoPartida = "",    // tx_dir_ubigpe.Text
+                DireccionPartida = "",
+                UbigeoLlegada = "",
+                DireccionLlegada = "",
+                TipoBusquedaProductoCodigo = 0,
+                ISC = 0,
+                IGV = decimal.Parse(tx_igv.Text),
+                ICBPER = 0,
+                ImpuestoTotal = decimal.Parse(tx_igv.Text),
+                ImpuestoVarios = 0,
+                TotalOtrosCargos = 0,
+                TotalImporteVenta = decimal.Parse(tx_valor.Text),
+                TotalImporteVentaCelular = decimal.Parse(tx_valor.Text),
+                TotalImporteVentaReferencia = 0,
+                PercepcionTotal = 0,
+                TotalPago = decimal.Parse(tx_impMedios.Text),
+                PesoTotal = 0,
+                Bultos = int.Parse(tx_totcant.Text), 
+                Leyenda = 0,
+                BienServicioCodigo = "001",                     // de donde sale esto? ... desde aca
+                DetraccionPorcentaje = 0,
+                RetencionPorcentaje = 0,
+                DetraccionCuenta = "",
+                DocAdicionalCodigo = 0,
+                DocAdicionalDetalle = "",
+                TotalRetencion = 0,
+                MontoRetencion = 0,
+                PendientePago = 0,
+                PermitirCuotas = 0,                             // que significa ?
+                AlojamientoPaisDocEmisor = "AF",                // esto ?
+                PaisResidencia = "AF",
+                Gravado = decimal.Parse(tx_bruto.Text),
+                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "" && tx_tipComp.Text != "C") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                //FechaIngresoPais = "22/02/2022",
+                //FechaIngresoEstablecimiento = "22/02/2022",
+                //FechaSalidaEstablecimiento = "22/02/2022",
+                ModalidadTrasladoCodigo = "01",
+                ConductorTipoDocIdentidadCodigo = "1",
+                FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                TransportistaNombreRazonSocial = "",
+                PlacaVehiculo = "",
+                ConductorNumeroDocIdentidad = "",
+                AlojamientoNumeroDocIdentidad = "",
+                AlojamientoNombreRazonSocial = "",
+                AlojamientoTipoDocIdentidadCodigo = "1"
+            };
+            string cabeza = JsonConvert.SerializeObject(obj);
+            string token = conex_token();
+            if (token != "")
+            {
+                // datos variables para la emisión
+                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim();
+
+                //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+                httpWebRequest.ContentType = "application/json";         // , text/javascript, */*; q=0.01"
+                httpWebRequest.Method = "GET";
+                httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+
+                string serComp = "";                                    // obtiene el correlativo para la sede y serie
+                string numComp = "";
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    JArray v = JArray.Parse(result);
+                    var items = v.Where(x => x["TipoDocumento"].ToString() == tx_dat_tipdoc_s.Text).ToList();
+                    serComp = items[0].SelectToken("Serie").ToString();
+                    numComp = items[0].SelectToken("Correlativo").ToString();
+                    tx_serie.Text = serComp;
+                    //tx_corre.Text = numComp;
+                }
+                // emite el comprobante
+                /*host = "http://wsventas-exp.rapifac.com/v0/comprobantes"; */
+                host = "http://wsventas-exp.rapifac.com/v0/comprobantes?IncluirCDR=1";
+                httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+                httpWebRequest.ContentType = "application/json";        // , text/javascript, */*; q=0.01
+                httpWebRequest.Method = "POST";
+                httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    //string cabeza = JsonConvert.SerializeObject(obj);
+                    streamWriter.Write(cabeza);
+                }
+
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    retorna = result.ToString();
+                }
+            }
+            return retorna;
+        }
         private bool graba()                                // graba cabecera del comprobante
         {
             bool retorna = false;
@@ -2386,13 +2933,6 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                // conexion a rapifact para leer el correlativo del comprobante
-                //
-                //tx_corre.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
-
-                //
-
-                //if (tx_tipcam.Text == "") tx_tipcam.Text = "0";
                 decimal fletMN = 0;
                 decimal subtMN = 0;
                 decimal igvtMN = 0;
@@ -2412,12 +2952,12 @@ namespace iOMG
                     "fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
                     "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
                     "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-                    "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose," +
+                    "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,pdfpse_ose," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
                     "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
                     "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
                     "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
-                    "@refer,@updest,@conpag,@cont,@vende,@mueb,@idpse," +
+                    "@refer,@updest,@conpag,@cont,@vende,@mueb,@idpse,@pdfpse," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
@@ -2474,7 +3014,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@cont", tx_cont.Text);
                     micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
                     micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
-                    micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text); 
+                    micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text);
+                    micon.Parameters.AddWithValue("@pdfpse", tx_pdf_rapifac.Text);
                     micon.Parameters.AddWithValue("@verApp", "");
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@iplan", lib.iplan());
@@ -3891,8 +4432,12 @@ namespace iOMG
         public string igv { get; set; }                     // IGV - rapifac
         public string descrip { get; set; }                 // Descripcion - rapifac
         public int IdCompRapifac { get; set; }              // ComprobanteId - rapifac
-
-
+        public string tipDocCod { get; set; }               // tipoDocumentoCodigo - rapifac
+        public string serieRap { get; set; }                // serie - rapifac, "F200"
+        public int corRap { get; set; }                     // correlativo - rapifac
+        public string codMon { get; set; }                  // monedaCodigo - rapifac
+        public string tDocClte { get; set; }                // tipoDocIdentidadCodigo - rapifac
+        public string nroDocC { get; set; }                 // numeroDocIdentidad - rapifac
     };
     public class Cdr
     {

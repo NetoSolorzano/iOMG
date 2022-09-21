@@ -183,6 +183,7 @@
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
             this.tx_dat_monNom = new System.Windows.Forms.TextBox();
+            this.tx_pdf_rapifac = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1722,11 +1723,21 @@
             this.tx_dat_monNom.TabIndex = 424;
             this.tx_dat_monNom.Visible = false;
             // 
+            // tx_pdf_rapifac
+            // 
+            this.tx_pdf_rapifac.Location = new System.Drawing.Point(699, 1);
+            this.tx_pdf_rapifac.Name = "tx_pdf_rapifac";
+            this.tx_pdf_rapifac.ReadOnly = true;
+            this.tx_pdf_rapifac.Size = new System.Drawing.Size(36, 20);
+            this.tx_pdf_rapifac.TabIndex = 425;
+            this.tx_pdf_rapifac.Visible = false;
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.tx_pdf_rapifac);
             this.Controls.Add(this.tx_dat_monNom);
             this.Controls.Add(this.tx_totcant);
             this.Controls.Add(this.tx_id_rapifac);
@@ -1968,5 +1979,6 @@
         private System.Windows.Forms.TextBox tx_d_preSinDscto;
         private System.Windows.Forms.TextBox tx_totcant;
         private System.Windows.Forms.TextBox tx_dat_monNom;
+        private System.Windows.Forms.TextBox tx_pdf_rapifac;
     }
 }
