@@ -13,7 +13,7 @@ namespace iOMG
         public string TipoDocumentoCodigo { get; set; }
         public string Serie { get; set; }
         public int Correlativo { get; set; }
-        public DateTime FechaEmision { get; set; }
+        public string FechaEmision { get; set; }
         public string Moneda { get; set; }
         public decimal Importe { get; set; }
         public string UsuarioNombre { get; set; }
@@ -27,7 +27,7 @@ namespace iOMG
             TipoDocumentoCodigo = "";
             Serie = "";
             Correlativo = 0;
-            FechaEmision = DateTime.Now;
+            FechaEmision = "";
             Moneda = "";
             Importe = 0;
             IDPadre = "";
@@ -41,7 +41,7 @@ namespace iOMG
             TipoDocumentoCodigo = pTipoDocumentoCodigo;
             Serie = pSerie;
             Correlativo = pCorrelativo;
-            FechaEmision = pFechaEmision;
+            FechaEmision = "";
             Moneda = pMoneda;
             Importe = pImporte;
             IDPadre = pIDPadre;

@@ -12,8 +12,8 @@ namespace iOMG
         public int Item { get; set; }
         public long ComprobanteID { get; set; }
         public string TipoDocumentoCodigo { get; set; }
-        public string Serie { get; set; }
-        public int Correlativo { get; set; }
+        //public string Serie { get; set; }
+        //public int Correlativo { get; set; }
         public string TipoProductoCodigo { get; set; }
         public string Observacion { get; set; }
         public string DocumentoID { get; set; }
@@ -113,8 +113,8 @@ namespace iOMG
             Item = 0;
             ComprobanteID = 0;
             TipoDocumentoCodigo = "";
-            Serie = "";
-            Correlativo = 0;
+            //Serie = "";
+            //Correlativo = 0;
             TipoProductoCodigo = "0";
             Observacion = "";
             DocumentoID = "";

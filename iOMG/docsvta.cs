@@ -1030,7 +1030,7 @@ namespace iOMG
 
                 string consu = "SELECT a.dv,a.serie,a.numero,a.montosol,ifnull(b.mondvta,'') AS mondvta,ifnull(b.tcadvta,1) AS tcadvta,ifnull(b.subtota,0) AS subtota," +
                 "ifnull(b.igvtota, 0) AS igvtota, ifnull(b.totdvta, 0) AS totdvta, ifnull(b.idpse_ose, 0) AS idpse_ose, ifnull(b.pdfpse_ose, '') AS pdfpse_ose," +
-                "c.sunat,CONCAT(b.martdve,a.serie) AS serRapi,d.codigo AS codMon,e.sunat AS codDoc,b.nudoclt AS docClie " +
+                "c.sunat,CONCAT(b.martdve,a.serie) AS serRapi,d.codigo AS codMon,e.sunat AS codDoc,b.nudoclt AS docClie,DATE_FORMAT(b.fechope,'%d/%m/%Y') AS fechope " +
                 "FROM pagamenti a LEFT JOIN cabfactu b ON b.tipdvta = a.dv AND b.serdvta = a.serie AND b.numdvta = a.numero " +
                 "LEFT JOIN desc_tdv c ON c.IDCodice=b.tipdvta LEFT JOIN desc_mon d ON d.IDCodice=b.mondvta LEFT JOIN desc_doc e ON e.IDCodice=b.tidoclt " +
                 "WHERE a.contrato = @cont";   //  AND saldo>0
@@ -1052,7 +1052,7 @@ namespace iOMG
                                         item.comprob = dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);
                                         item.valor = dr.GetString(3);
                                         item.bruto = dr.GetString("subtota");                // me quede aca
-                                        item.descrip = "x y z";              // la consulta debe obtener estos datos
+                                        item.descrip = "ANTICIPO DE CONTRATO " + tx_cont.Text;              // la consulta debe obtener estos datos
                                         item.IdCompRapifac = dr.GetInt32("idpse_ose");       // este campo debe crearse en la tabla cabfactu, junto al identificador del pdf
                                         item.igv = dr.GetString("igvtota");                  // 
                                         item.tipDocCod = dr.GetString("sunat");             // codigo sunat para el tipo de comprobante
@@ -1061,6 +1061,7 @@ namespace iOMG
                                         item.codMon = dr.GetString("codMon");
                                         item.tDocClte = dr.GetString("codDoc");             // codigo sunat del tipo doc del cliente
                                         item.nroDocC = dr.GetString("docClie");             // ruc dni del cliente
+                                        item.fecEmi = dr.GetString("fechope");              // fecha emision del comprobante
                                         /*
                                             AnticiposId = "0",
                                             TipoAfectacionIGVCodigo = ""
@@ -1749,6 +1750,16 @@ namespace iOMG
                 tx_dat_tdoc_s.Text = row[0].ItemArray[3].ToString();
             }
         }
+        private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmb_tdoc.SelectedIndex > -1)
+            {
+                string axs = string.Format("descrizionerid='{0}'", cmb_tdoc.Text);
+                DataRow[] row = dtdoc.Select(axs);
+                tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
+                tx_dat_tdoc_s.Text = row[0].ItemArray[3].ToString();
+            }
+        }
         private void cmb_plazo_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (cmb_plazo.SelectedIndex > -1)
@@ -2423,6 +2434,7 @@ namespace iOMG
             List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();        // detalle cpmpleto
             List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();            // lista de precios
             List<CAnticipo> ddd = new List<CAnticipo>();                            // lista de anticipos
+            List<CDocumentoRelacionado> eee = new List<CDocumentoRelacionado>();    // lista de documentos relacionados 
             int cta_ron = 1;
             foreach (DataGridViewRow ron in dataGridView1.Rows)
             {
@@ -2548,7 +2560,6 @@ namespace iOMG
                         aaa.Add(det);
                         cta_ron += 1;
                     }
-
                 }
             }
             // terminado con los items ahora vamos por los anticipos
@@ -2556,13 +2567,13 @@ namespace iOMG
             for (int i=0; i<=_docsAnticip.Count - 1; i++)
             {
                 int v_cant = 1;                                                     // cantidad
-                decimal v_valorUnit = decimal.Parse(_docsAnticip[i].bruto);         // valor unit (precio unit sin IGV) 
-                decimal v_valIgvTot = decimal.Parse(_docsAnticip[i].igv);           // igv total de la fila
-                decimal v_valTotal = decimal.Parse(_docsAnticip[i].valor);          // valor total fila sin igv
+                decimal v_valorUnit = decimal.Parse(_docsAnticip[i].bruto) * -1;         // valor unit (precio unit sin IGV) 
+                decimal v_valIgvTot = decimal.Parse(_docsAnticip[i].igv) * -1;           // igv total de la fila
+                decimal v_valTotal = decimal.Parse(_docsAnticip[i].valor) * -1;          // valor total fila sin igv
                 CComprobanteDetalle det = new CComprobanteDetalle
                 {
                     ID = 0,
-                    ComprobanteID = 0,
+                    ComprobanteID = _docsAnticip[i].IdCompRapifac,
                     Item = cta_ron,
                     TipoProductoCodigo = "",
                     ProductoCodigo = _docsAnticip[i].descrip,
@@ -2570,7 +2581,7 @@ namespace iOMG
                     TipoSistemaISCCodigo = "00",
                     UnidadMedidaCodigo = "NIU",
                     PrecioUnitarioSugerido = 0,
-                    PrecioUnitarioItem = decimal.Parse(_docsAnticip[i].valor),       // 118,
+                    PrecioUnitarioItem = decimal.Parse(_docsAnticip[i].valor) * -1,       // 118,
                     PrecioVentaCodigo = "01",
                     ICBPER = 0,
                     CargoIndicador = "0",
@@ -2582,7 +2593,7 @@ namespace iOMG
                     PercepcionPorcentaje = 0,
                     Control = 0,
                     PrecioCompra = 0,
-                    EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                    EsAnticipo = true,
                     ImporteTotalReferencia = 0,                 // este es el valor referencial 
                     CantidadUnidadMedida = v_cant,
                     Kit = 1,
@@ -2607,7 +2618,7 @@ namespace iOMG
                     CargoItem = 0,
                     CargoTotal = 0,
                     CargoNeto = 0,
-                    PrecioVenta = decimal.Parse(_docsAnticip[i].valor),
+                    PrecioVenta = decimal.Parse(_docsAnticip[i].valor) * -1,
                     MontoTributo = v_valIgvTot,
                     ISCPorcentaje = 0,
                     ISCMonto = 0,
@@ -2616,25 +2627,25 @@ namespace iOMG
                     ListaSeries = new List<CProductoCodigoSerie>(),
                     //ListaPrecios = new List<ProductoPrecioDTO>(),
                     ListaPrecios = ccc,
-                    PrecioUnitarioRecuperado = false,
+                    PrecioUnitarioRecuperado = true,
                     UUID = "",
                     BANDERA_CONCURRENCIA = false,
                     BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
                     BANDERA_DETALLEREEMPLAZADO = false,
-                    BANDERA_DETALLERECUPERADO = false,
+                    BANDERA_DETALLERECUPERADO = true,
                     BANDERA_ITEMDETALLADO = true,
                     Descripcion = _docsAnticip[i].descrip,
-                    Observacion = "Anticipo",
+                    Observacion = "",
                     Stock = 0,
                     Cantidad = 1,
                     PrecioCodigo = 0,
-                    PrecioUnitario = decimal.Parse(_docsAnticip[i].valor),
+                    PrecioUnitario = decimal.Parse(_docsAnticip[i].valor) * -1,
                     Peso = 0,
                     DescuentoMonto = 0,
                     DescuentoPorcentaje = "0.00",
                     TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
-                    ValorVenta = v_valTotal,
-                    Ganancia = 0,
+                    ValorVenta = v_valorUnit,
+                    Ganancia = v_valTotal,
                     IGVNeto = v_valIgvTot,
                     ImporteTotal = decimal.Parse(_docsAnticip[i].valor),
                     PesoTotal = 0
@@ -2653,9 +2664,20 @@ namespace iOMG
                     AnticipoIGV = decimal.Parse(_docsAnticip[i].igv),
                     TipoDocIdentidadCodigo = _docsAnticip[i].tDocClte,
                     NumeroDocIdentidad = _docsAnticip[i].nroDocC,
-                    TipoAfectacionIGVCodigo = ""
+                    TipoAfectacionIGVCodigo = "10"
                 };
                 ddd.Add(ant);
+                CDocumentoRelacionado rel = new CDocumentoRelacionado
+                {
+                    TipoDocumentoCodigo = _docsAnticip[i].tipDocCod,
+                    Serie = _docsAnticip[i].serieRap,
+			        Correlativo = _docsAnticip[i].corRap,
+			        FechaEmision = _docsAnticip[i].fecEmi,
+			        Moneda = _docsAnticip[i].codMon,
+			        Importe = decimal.Parse(_docsAnticip[i].valor)
+			        //Extension = { }
+                };
+                eee.Add(rel);
                 totAnt = totAnt + decimal.Parse(_docsAnticip[i].valor);
                 subtotAnt = subtotAnt + decimal.Parse(_docsAnticip[i].bruto);
                 cta_ron += 1;
@@ -2668,13 +2690,14 @@ namespace iOMG
                 {
                     CMovimientoCuenta cta = new CMovimientoCuenta
                     {
-                        TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
+                        TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
                         Serie = cmb_tipo.Text.Substring(0,1) + tx_serie.Text,
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
+                        CondicionComprobante = "CONTADO",  //dtpagos[i, ], este dato de condicion no tenemos en la matris
                         TipoCuentaCodigo = 1,
                         CuentaNumero = "",
-                        Usuario = Program.vg_nuse,
+                        Usuario = usuaDni,             // Program.vg_nuse,
                         MonedaCodigo = "PEN",                                   // de momento todo es soles
                         SucursalId = int.Parse(tx_codSuc.Text),
                         TipoDocIdentidadCodigo = "",
@@ -2788,7 +2811,7 @@ namespace iOMG
                 ListaCuotas = { },
                 TotalCuotas = 0,
                 ListaAnticipos = ddd,
-                ListaDocumentosRelacionados = { },
+                ListaDocumentosRelacionados = eee,
                 ListaCondicionesComerciales = { },
                 UUID = "",
                 DescuentoGlobalPorcentaje = 0,
@@ -2801,7 +2824,7 @@ namespace iOMG
                 Gratuito = 0,
                 TotalDescuentos = 0,
                 DescuentoGlobal = 0,
-                TotalAnticipos = 0,
+                TotalAnticipos = subtotAnt,
                 BANDERA_CONCURRENCIA = false,
                 BANDERA_DIRECCIONPARTIDAEDICION = false,
                 BANDERA_GANANCIAVERIFICADA = true,
@@ -2811,7 +2834,7 @@ namespace iOMG
                 CONTADOR_BUSCAPRODUCTO = 0,
                 CONTADOR_CLICKEMITIR = 1,
                 EstadoContingencia = false,
-                Anticipo = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
+                Anticipo = false,           // este es el ultimo pago, es una cancelacion, no es anticipo
                 EstadoOtroSistema = false,
                 ClasePrecioCodigo = 1,
                 TipoPrecio = 0,
@@ -2850,7 +2873,7 @@ namespace iOMG
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text), 
                 Leyenda = 0,
-                BienServicioCodigo = "001",                     // de donde sale esto? ... desde aca
+                BienServicioCodigo = "037",                     // Demas servicios gravados con el IGV (Tipo de Bien o Servicio)
                 DetraccionPorcentaje = 0,
                 RetencionPorcentaje = 0,
                 DetraccionCuenta = "",
@@ -4438,6 +4461,7 @@ namespace iOMG
         public string codMon { get; set; }                  // monedaCodigo - rapifac
         public string tDocClte { get; set; }                // tipoDocIdentidadCodigo - rapifac
         public string nroDocC { get; set; }                 // numeroDocIdentidad - rapifac
+        public string fecEmi { get; set; }                  // fecha de emision del comprobante - rapifac
     };
     public class Cdr
     {
