@@ -1052,7 +1052,8 @@ namespace iOMG
                                         item.comprob = dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);
                                         item.valor = dr.GetString(3);
                                         item.bruto = dr.GetString("subtota");                // me quede aca
-                                        item.descrip = "ANTICIPO DE CONTRATO " + tx_cont.Text;              // la consulta debe obtener estos datos
+                                        item.descrip = "ANTICIPO DE CONTRATO " + tx_cont.Text + " - " +
+                                            dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);              // la consulta debe obtener estos datos
                                         item.IdCompRapifac = dr.GetInt32("idpse_ose");       // este campo debe crearse en la tabla cabfactu, junto al identificador del pdf
                                         item.igv = dr.GetString("igvtota");                  // 
                                         item.tipDocCod = dr.GetString("sunat");             // codigo sunat para el tipo de comprobante
@@ -1422,7 +1423,7 @@ namespace iOMG
         {
             if (tx_corre.Text != "" && Tx_modo.Text != "")
             {
-                string rutaT = rut_pdf + tx_id_rapifac.Text;
+                string rutaT = rut_pdf + tx_pdf_rapifac.Text;  // tx_id_rapifac.Text;
                 System.Diagnostics.Process.Start(rutaT);
             }
         }
@@ -2532,7 +2533,6 @@ namespace iOMG
                             CargoPorcentaje = 0,
                             //Extension = { },
                             ListaSeries = new List<CProductoCodigoSerie>(),
-                            //ListaPrecios = new List<ProductoPrecioDTO>(),
                             ListaPrecios = ccc,
                             PrecioUnitarioRecuperado = false,
                             UUID = "",
@@ -2542,7 +2542,8 @@ namespace iOMG
                             BANDERA_DETALLERECUPERADO = false,
                             BANDERA_ITEMDETALLADO = true,
                             Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
-                            Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
+                            //Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
+                            Observacion = "",
                             Stock = 0,
                             Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
                             PrecioCodigo = 0,
@@ -2647,7 +2648,7 @@ namespace iOMG
                     ValorVenta = v_valorUnit,
                     Ganancia = v_valTotal,
                     IGVNeto = v_valIgvTot,
-                    ImporteTotal = decimal.Parse(_docsAnticip[i].valor),
+                    ImporteTotal = decimal.Parse(_docsAnticip[i].valor) * -1,
                     PesoTotal = 0
                 };                      // detalles
                 aaa.Add(det);
@@ -2758,7 +2759,7 @@ namespace iOMG
                 Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
                 VendedorNombre = tx_nomVen.Text,
                 CondicionEstado = "",
-                CondicionPago = rb_contado.Text,
+                CondicionPago = (rb_contado.Checked == true)? "Contado" : "Credito",
                 SituacionPagoCodigo = 2,
                 DescuentoIndicador = 0,
                 Ubigeo = tx_dir_ubigpe.Text,
@@ -3644,7 +3645,7 @@ namespace iOMG
                     Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
                     VendedorNombre = tx_nomVen.Text,
                     CondicionEstado = "",
-                    CondicionPago = rb_contado.Text,
+                    CondicionPago = (rb_contado.Checked == true)? "Contado" : "Credito",
                     SituacionPagoCodigo = 2,
                     DescuentoIndicador = 0,
                     Ubigeo = tx_dir_ubigpe.Text,
