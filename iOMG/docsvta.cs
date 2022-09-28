@@ -447,6 +447,7 @@ namespace iOMG
                             tx_bruto.Text = dr.GetString("subtota");
                             tx_igv.Text = dr.GetString("igvtota");
                             tx_valor.Text = dr.GetString("totdvta");
+                            tx_impMedios.Text = dr.GetString("totdvta");    // los pagos son iguales al valor del comprobante, sino no deja grabar
                             tx_dat_estad.Text = dr.GetString("estdvta");
                             tx_dat_plazo.Text = dr.GetString("tippago");
                             tx_numOpe.Text = dr.GetString("referen1");
@@ -461,8 +462,9 @@ namespace iOMG
                         dr.Dispose();
                         if (tx_idr.Text != "")
                         {
-                            cmb_taller.SelectedItem = tx_dat_orig.Text;     // local de ventas
-                                                                            // tipo doc cliente
+                            cmb_taller.SelectedItem = tx_dat_orig.Text;     // local de ventas  
+                            cmb_taller_SelectionChangeCommitted(null,null);                        //tx_codSuc.Text = row[0].ItemArray[6].ToString();
+                            // tipo doc cliente
                             string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
                             DataRow[] row = dtdoc.Select(axs);
                             cmb_tdoc.SelectedItem = row[0].ItemArray[0].ToString();
@@ -517,6 +519,7 @@ namespace iOMG
             }
             jaladet(tx_idr.Text);
             cosas_pagamenti();                              // llenamos lista de pagos si es cancelacion
+            suma_grilla();
         }
         private void jaladet(string idr)                    // jala el detalle 
         {
@@ -792,6 +795,8 @@ namespace iOMG
                 tx_dat_estad.Text = "";
                 dtp_pedido.Enabled = false;
                 tx_idr.Text = "";
+                tx_impMedios.Enabled = true;
+                tx_impMedios.ReadOnly = true;
             }
             else
             {
@@ -2019,6 +2024,7 @@ namespace iOMG
                 cmb_tipo.SelectedItem = row[0].ItemArray[1].ToString();
                 tx_serie.Text = sd;
                 tx_corre.Text = nd;
+                tx_dat_tipdoc_s.Text = row[0].ItemArray[2].ToString();
                 jalaoc("tx_corre");
             }
         }
@@ -2467,16 +2473,15 @@ namespace iOMG
                     "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
-                    /* validaciones de conex con Rapifac
+                    // validaciones de conex con Rapifac
                     if (anula_Rapifac() == false)
                     {
                         MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
                             "con el proveedor OSE/PSE. Confirme que tenga internet." + Environment.NewLine +
-                            "No se puede grabar el comprobante.",
+                            "No se puede anular el comprobante.",
                             "Falla en Facturación Electrónica", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    */
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (anula() == false)
                     {
@@ -4525,52 +4530,331 @@ namespace iOMG
         private bool anula_Rapifac()                                                // damos de baja el comprobante
         {
             bool retorna = false;
+            int cta_ron = 1;
+            List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
+            foreach (DataGridViewRow ron in dataGridView1.Rows)
+            {
+                List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
+                {
+                    if (ron.Cells[1].Value != null)
+                    {
+                        ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                        {
+                            PrecioId = 99,
+                            PrecioConfiguracion = 1,
+                            ProductoCod = ron.Cells[2].Value.ToString(),
+                            CodigoUnidadMedida = cod_umed,              // "NIU",
+                            DescripcionUnidadMedida = nom_umed,         // "UNIDAD",
+                            CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
+                            MonedaCodigo = tx_dat_mon_s.Text,       // "PEN",
+                            SucursalId = tx_codSuc.Text,
+                            Margenganancia = 0,
+                            MargenPorcentaje = 0,
+                            PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            OtrosCargosPorcentaje = 0,
+                            CantidadAplicable = 0,
+                            FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            Estado = 1,
+                            ISCPorcentaje = 0,
+                            ISCCalculado = 0,
+                            //Extension = { };
+                            UUID = ""
+                        };
+                        ccc.Add(dlp);
+                    }
+                }
+                if (ron.Cells[1].Value != null)
+                {
+                    int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
+                    decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                        ((decimal.Parse(v_igv) / 100) + 1);
+                    decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
+                        (decimal.Parse(ron.Cells[9].Value.ToString()) /
+                        ((decimal.Parse(v_igv) / 100) + 1));
+                    decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
+                        ((decimal.Parse(v_igv) / 100) + 1);
+                    CComprobanteDetalle det = new CComprobanteDetalle
+                    {
+                        ID = 0,
+                        ComprobanteID = 0,
+                        Item = cta_ron,
+                        TipoProductoCodigo = "",
+                        ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                        ProductoCodigoSUNAT = "",                       // "56101532",
+                        TipoSistemaISCCodigo = "00",
+                        UnidadMedidaCodigo = cod_umed,                   // "NIU",
+                        PrecioUnitarioSugerido = 0,
+                        PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                        PrecioVentaCodigo = "01",
+                        ICBPER = 0,
+                        CargoIndicador = "0",
+                        CargoCargoCodigo = "",
+                        DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                        DescuentoCargoCodigo = "00",
+                        PercepcionCantidadUmbral = 0,
+                        PercepcionMontoUmbral = 0,
+                        PercepcionPorcentaje = 0,
+                        Control = 0,
+                        PrecioCompra = 0,
+                        EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                        ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                        CantidadUnidadMedida = v_cant,
+                        Kit = 1,
+                        CantidadReferencial = 1,
+                        Cargo = 0,
+                        DescuentoGlobal = 0,
+                        Descuento = 0,
+                        ValorUnitario = v_valorUnit,
+                        ValorVentaItem = v_valorUnit * v_cant,
+                        ValorVentaItemXML = v_valorUnit * v_cant,
+                        ValorVentaNeto = v_valorUnit * v_cant,
+                        ValorVentaNetoXML = 0,
+                        ISCUnitario = 0,
+                        ISCNeto = 0,
+                        ISC = 0,
+                        IGV = v_valIgvTot,
+                        ICBPERItem = 0,
+                        ICBPERSubTotal = 0,
+                        DescuentoBase = 0,
+                        DescuentoCargo = 0,
+                        DescuentoCargoGravado = 0,
+                        CargoItem = 0,
+                        CargoTotal = 0,
+                        CargoNeto = 0,
+                        PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                        MontoTributo = v_valIgvTot,
+                        ISCPorcentaje = 0,
+                        ISCMonto = 0,
+                        CargoPorcentaje = 0,
+                        //Extension = { },
+                        ListaSeries = new List<CProductoCodigoSerie>(),
+                        //ListaPrecios = new List<ProductoPrecioDTO>(),
+                        ListaPrecios = ccc,
+                        PrecioUnitarioRecuperado = false,
+                        UUID = "",
+                        BANDERA_CONCURRENCIA = false,
+                        BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                        BANDERA_DETALLEREEMPLAZADO = false,
+                        BANDERA_DETALLERECUPERADO = false,
+                        BANDERA_ITEMDETALLADO = true,
+                        Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
+                        Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
+                        Stock = 0,
+                        Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
+                        PrecioCodigo = 0,
+                        PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
+                        Peso = 0,
+                        DescuentoMonto = 0,
+                        DescuentoPorcentaje = "0.00",
+                        TipoAfectacionIGVCodigo = "10",                     // Sunat Catalogo 7 - Venta grabada operación onerosa
+                        ValorVenta = v_valTotal,
+                        Ganancia = 0,
+                        IGVNeto = v_valIgvTot,
+                        ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                        PesoTotal = 0
+                    };                      // detalles
+                    aaa.Add(det);
+                    cta_ron += 1;
+                }
+            }
+            List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
+            for (int i = 0; i < 9; i++)
+            {
+                if (dtpagos[i, 2] != null && dtpagos[i, 2] != "")
+                {
+                    CMovimientoCuenta cta = new CMovimientoCuenta
+                    {
+                        TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
+                        Serie = tx_serie.Text,
+                        Correlativo = 0,                // int.Parse(tx_corre.Text),
+                        Condicion = dtpagos[i, 2],
+                        TipoCuentaCodigo = 1,
+                        CuentaNumero = "",
+                        Usuario = Program.vg_nuse,
+                        MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",                                   // de momento todo es soles
+                        SucursalId = int.Parse(tx_codSuc.Text),
+                        TipoDocIdentidadCodigo = "",
+                        NumeroDocIdentidad = "",
+                        Observacion = "",
+                        //Extension = { },
+                        //CuentaValor = "1-30303030",
+                        Pago = decimal.Parse(dtpagos[i, 4]),
+                        Vuelto = 0,
+                        FechaPago = dtpagos[i, 6],   // dtp_pedido.Value.Date.ToString("dd/MM/yyyy")
+                        NumeroOperacion = dtpagos[i, 3],
+                        FechaVencimiento = dtpagos[i, 6],    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                        PlazoDias = 1
+                    };                      // movimientos
+                    bbb.Add(cta);
+                }
+                /*
+                dtpagos[i, 0] = id 
+                dtpagos[i, 1] = contador
+                dtpagos[i, 2] = nombre del medio de pago
+                dtpagos[i, 3] = #operacion
+                dtpagos[i, 4] = importe pagado
+                dtpagos[i, 5] = codigo medio
+                dtpagos[i, 6] = fecha de pago
+                */
+            }
+            CComprobante obj_anu = new CComprobante
+            {
+                ID = int.Parse(tx_id_rapifac.Text),
+                DocumentoID = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text + tx_corre.Text,
+                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
+                Correlativo = int.Parse(tx_corre.Text),
+                FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                FechaRegistro = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                TipoNotaCreditoCodigo = "01",
+                TipoNotaDebitoCodigo = "01",
+                TipoOperacionCodigo = "0101",
+                TipoDocumentoCodigoModificado = tx_dat_tipdoc_s.Text,
+                SerieModificado = "",
+                CorrelativoModificado = "",
+                CondicionEstado = "",
+                ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text,
+                Observacion = "",
+                MonedaCodigo = tx_dat_mon_s.Text,
+                TipoCambio = "1.00",
+                GuiaNumero = "",
+                ReferenciaNumeroDocumento = "",
+                ReferenciaTipoDocumento = "",
+                ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
+                ClienteNumeroDocIdentidad = tx_ndc.Text,
+                ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
+                ClienteDireccion = tx_direc.Text.Trim() + "-" + tx_dist.Text + "-" + tx_prov.Text + "-" + tx_dpto.Text,
+                CorreoElectronicoPrincipal = null,
+                ClienteContacto = "",
+                ClienteTelefono = "",
+                Detraccion = 0,
+                DetraccionCuenta = "",
+                DetraccionTipoOperacion = "",
+                DetraccionPorcentaje = 0,
+                BienServicioCodigo = "1",
+                CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
+                CreditoTotal = 0,
+                Percepcion = 0,
+                PercepcionRegimen = "",
+                PercepcionFactor = 0,
+                PercepcionTotal = 0,
+                PercepcionBaseImponible = 0,
+                Retencion = 0,
+                MontoRetencion = 0,
+                DescuentoGlobal = 0,
+                DescuentoIndicador = 0,
+                DescuentoGlobalMonto = 0,
+                DescuentoGlobalMontoBase = 0,
+                DescuentoGlobalPorcentaje = 0,
+                DescuentoGlobalValor = 0,
+                DescuentoGlobalIndicadorDescuento = "0",
+                DescuentoGlobalCodigoMotivo = "00",
+                DescuentoGlobalNGPorcentaje = 0,
+                DescuentoGlobalNGIndicadorDescuento = 0,
+                DescuentoGlobalNGCodigoMotivo = "00",
+                DescuentoGlobalNGMonto = 0,
+                DescuentoGlobalNGMontoBase = 0,
+                DescuentoNGMonto = 0,
+                AnticiposGravado = 0,
+                AnticiposExonerado = 0,
+                AnticiposInafecto = 0,
+                CargoGlobalMonto = 0,
+                CargoGlobalMontoBase = 0,
+                CargoGlobalPorcentaje = 0,
+                CargoGlobalIndicadorCargos = "0",
+                CargoGlobalCodigoMotivo = "0",
+                ImpuestoTotal = decimal.Parse(tx_igv.Text),
+                ISC = 0,
+                ISCBase = 0,
+                IGV = decimal.Parse(tx_igv.Text),
+                IGVPorcentaje = decimal.Parse(Program.v_igv),
+                Gravado = decimal.Parse(tx_bruto.Text),
+                ICBPER = 0,
+                Exonerada = 0,
+                Inafecto = 0,
+                Exportacion = 0,
+                ExoneradaXML = 0,
+                InafectoXML = 0,
+                ExportacionXML = 0,
+                Gratuito = 0,
+                GratuitoGravado = 0,
+                TotalImporteVenta = decimal.Parse(tx_valor.Text),
+                TotalImporteVentaCelular = decimal.Parse(tx_valor.Text),
+                TotalImporteVentaReferencia = 0,
+                TotalPrecioVenta = decimal.Parse(tx_valor.Text),
+                TotalValorVenta = decimal.Parse(tx_bruto.Text),
+                TotalDescuentos = 0,
+                TotalOtrosCargos = 0,
+                TotalAnticipos = 0,
+                TotalPago = decimal.Parse(tx_impMedios.Text),
+                PendientePago = 0,
+                EnviarCorreo = false,
+                FormatoPDF = 0,
+                IdRepositorio = 0,                                  // que va aca?
+                VistaDocumento = "",
+                Sucursal = int.Parse(tx_codSuc.Text),
+                Usuario = Program.vg_nuse,
+                Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
+                VendedorNombre = tx_nomVen.Text,
+                CanalVenta = "2",
+                AlojamientoPaisDocEmisor = "",
+                AlojamientoNumeroDocIdentidad = "",
+                AlojamientoNombreRazonSocial = "",
+                AlojamientoTipoDocIdentidadCodigo = "",
+                PaisResidencia = "",
+                FechaConsumo = null,
+                DiasPermanencia = 0,
+                Peso = 0,
+                PesoTotal = 0,
+                Bultos = int.Parse(tx_totcant.Text),
+                MotivoTrasladoDescripcion = "",
+                MotivoTrasladoCodigo = "01",
+                ModalidadTrasladoCodigo = "",
+                FechaTraslado = null,
+                TransportistaNumeroDocIdentidad = "",
+                TransportistaNombreRazonSocial = "",
+                TransportistaTipoDocIdentidadCodigo = "",
+                ConductorTipoDocIdentidadCodigo = "",
+                PlacaVehiculo = "",
+                ConductorNumeroDocIdentidad = "",
+                UbigeoLlegada = "",
+                DireccionLlegada = "",
+                NOMBRE_UBIGEOLLEGADA = "",
+                UbigeoPartida = "",
+                DireccionPartida = "",
+                NOMBRE_UBIGEOPARTIDA = "",
+                Anticipo = false,
+                EstadoContingencia = false,
+                Baja = 0,
+                Leyenda = 0,
+                MotivoBaja = "Anulación",
+                OrigenSistema = 0,
+                TipoPrecio = 0,
+                Ubigeo = tx_dir_ubigpe.Text,
+                Estado = 0,
+                DocAdicionalCodigo = 0,
+                DocAdicionalDetalle = "",
+                PagosMultiples = false,
+                ListaDetalles = aaa,
+                ListaAnticipos = { },
+                ListaCuotas = { },
+                ListaGuias = { },
+                ListaMovimientos = bbb,
+                ListaDocumentosRelacionados = { },
+                ListaCondicionesComerciales = { }
+            };
+            string cabeza = JsonConvert.SerializeObject(obj_anu);
+
             string token = conex_token();
             // ANULA el comprobante
             string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/anular";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-            httpWebRequest.ContentType = "application/json";        // , text/javascript, */*; q=0.01
+            httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "PUT";
             httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-            
-            CComprobanteAnula obj_anu = new CComprobanteAnula
-            {
-                IdMovimiento = int.Parse(tx_id_rapifac.Text),           // id rapifac del comprobante a anular
-                TipoCuentaCodigo = 1,                                   // que significa esto
-                CuentaNumero = "10101010",                              // que significa esto
-                CuentaNombre = "",
-                TipoIngresoEgreso = 1,                                  // que significa esto
-                MontoPagar = decimal.Parse(tx_valor.Text),
-                MonedaCodigo = tx_dat_mon_s.Text,
-                Observacion = "",
-                NumeroOperacion = "",
-                TipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
-                NumeroDocIdentidad = tx_ndc.Text,
-                Origen = "VENTAS",                                      // que significa esto
-                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
-                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
-                Correlativo = int.Parse(tx_corre.Text),
-                Usuario = Program.vg_nuse,
-                IdOrigen = 1,                                           // que significa esto
-                Estado = 1,                                             // que significa esto
-                FechaPago = dtp_pedido.Value.Date.ToString("yyyy-MM-dd"),    // que formato va aca?
-                SucursalId = int.Parse(tx_codSuc.Text),
-                Pago = decimal.Parse(tx_valor.Text),                    // valor del comprobante?
-                Pagado = 0,                                             // que va aca?
-                Saldo = 0,                                              // que va aca?
-                FechaVencimiento = "",                                  // vencimiento de quien?
-                PlazoDias = 0,
-                CondicionComprobante = rb_contado.Text,
-                Condicion = rb_contado.Text,
-                Vuelto = 0,
-                CondicionPagoModificado = "",
-                CuentaNumeroModificado = "",
-                CuentaTipoModificado = "",
-            };
-            List<CComprobanteAnula> ccc = new List<CComprobanteAnula>();
-            ccc.Add(obj_anu);
-            string cabeza = "[";
-            cabeza = cabeza + JsonConvert.SerializeObject(obj_anu) + "]";
+
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 streamWriter.Write(cabeza);
@@ -4579,7 +4863,8 @@ namespace iOMG
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
-                MessageBox.Show(result.ToString());
+                //MessageBox.Show(result.ToString());
+                retorna = (bool.Parse(result.ToString()) == true) ? true : false;
             }
 
             return retorna;

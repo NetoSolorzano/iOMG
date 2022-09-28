@@ -627,6 +627,40 @@ namespace iOMG
                 tx_valNot.Focus();
             }
         }
+        private void valnumero(string tipo, string serie, string corre)
+        {
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    string vb = "select * from cabnotascd where tipnota=@tno and sernota=@sno and numnota=@nno";
+                    using (MySqlCommand micon = new MySqlCommand(vb, conn))
+                    {
+                        micon.Parameters.AddWithValue("@tno", tipo);
+                        micon.Parameters.AddWithValue("@sno", serie);
+                        micon.Parameters.AddWithValue("@nno", corre);
+                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                if (dr.GetString(0) != null && dr.GetString(0) != "")
+                                {
+                                    MessageBox.Show("Error, la nota ya existe!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    tx_numnot.Text = "";
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Se perdió acceso al servidor!","Error de conexión",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    return;
+                }
+            }
+        }
 
         #region botones_de_comando_y_permisos  
         private void toolboton()
@@ -722,8 +756,10 @@ namespace iOMG
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
-            cmb_tiponot.Focus();
             tx_nomVen.Text = Program.vg_nuse;
+            tx_numnot.Enabled = true;
+            tx_numnot.ReadOnly = false;
+            cmb_tiponot.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1107,6 +1143,10 @@ namespace iOMG
                     jalaoc("tx_corre");
                 }
             }
+            else
+            {
+                valnumero(tx_dat_tipnot.Text,tx_sernot.Text,tx_numnot.Text);
+            }
         }
         private void tx_valNot_Leave(object sender, EventArgs e)            // nota de cred por descuento
         {
@@ -1306,7 +1346,7 @@ namespace iOMG
                 else return;
             }
             limpia_ini();
-            tx_serdvta.Focus();
+            cmb_tiponot.Focus();
         }
         private bool graba()                                // graba cabecera de la nota
         {
@@ -1315,11 +1355,8 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                // conexion a rapifact para leer el correlativo del comprobante
-                //
-                tx_numnot.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
-
-                //
+                // no se hace conexion a Rapifac 28/09/2022, en ADM hacen las notas y luego avisan a Barranco para su registro en el sistema y archivos
+                //tx_numnot.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
                 string inserta = "insert into cabnotascd (" +
                     "fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
                     "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta," +
@@ -1456,371 +1493,7 @@ namespace iOMG
         #endregion
 
         #region Fact-Electrónica RAPIFAC
-        private string conex_token()                                                // obtenemos el token de rapifac
-        {
-            string retorna = "";
-            string usuaRuc = "20463339342";
-            string usuaDni = "12121212";
-            string clave = "Hola1234@";
-            string id_clte = "89cfc4c0-b0c5-47ab-a8f0-2f813dbbe000";
-
-            string host = "http://wsoauth-exp.rapifac.com/oauth2/token";
-
-            // create a request
-            //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-            httpWebRequest.Method = "POST"; 
-            string postData = "grant_type=password&username=" + usuaDni + usuaRuc + "&password=" + clave + "&client_id=" + id_clte;
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] bytes = encoding.GetBytes(postData);
-            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-            httpWebRequest.ContentLength = bytes.Length;
-            Stream newStream = httpWebRequest.GetRequestStream();
-            newStream.Write(bytes, 0, bytes.Length);
-
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                var masticado = JObject.Parse(result);
-                retorna = masticado["access_token"].ToString();
-                if (retorna == null)
-                {
-                    retorna = recon_rapifac(masticado["refresh_token"].ToString(),host, id_clte);
-                }
-            }
-
-            return retorna;
-        }
-        private string recon_rapifac(string fresco,string host,string id_clte)      // si el token expiro, pedimos otro
-        {
-            string retorna = "";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-            httpWebRequest.Method = "POST";
-            string postData = "grant_type=refresh_token&refresh_token=" + fresco + "client_id = " + id_clte;
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] bytes = encoding.GetBytes(postData);
-            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-            httpWebRequest.ContentLength = bytes.Length;
-            Stream newStream = httpWebRequest.GetRequestStream();
-            newStream.Write(bytes, 0, bytes.Length);
-
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                var masticado = JObject.Parse(result);
-                retorna = masticado["access_token"].ToString();
-                if (retorna == null)
-                {
-                    recon_rapifac(masticado["refresh_token"].ToString(), host, id_clte);
-                }
-            }
-            return retorna;
-        }
-        private string conex_Rapifac()                                                // obtemos la serie y correlativo, actualizmos el correlativo a usar
-        {
-            string retorna = "";
-            string token = conex_token();
-            if (token != "")
-            {
-                // datos variables para la emisión
-                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc;
-
-                //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-                httpWebRequest.ContentType = "application/json";         // , text/javascript, */*; q=0.01"
-                httpWebRequest.Method = "GET";
-                httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-
-                string serComp = "";                                    // obtiene el correlativo para la sede y serie
-                string numComp = "";
-
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    JArray v = JArray.Parse(result);
-                    var items = v.Where(x => x["TipoDocumento"].ToString() == tx_dat_tipdoc_s.Text).ToList();
-                    serComp = items[0].SelectToken("Serie").ToString();
-                    numComp = items[0].SelectToken("Correlativo").ToString();
-                    tx_serdvta.Text = serComp;
-                    //tx_corre.Text = numComp;
-                }
-                // emite el comprobante
-                host = "http://wsventas-exp.rapifac.com/v0/comprobantes";
-                httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-                httpWebRequest.ContentType = "application/json";        // , text/javascript, */*; q=0.01
-                httpWebRequest.Method = "POST";
-                httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-
-                CComprobanteDetalle det = new CComprobanteDetalle
-                {
-                    ID = 0,
-                    ComprobanteID = 0,
-                    Item = 1,
-                    TipoProductoCodigo = "",
-                    ProductoCodigo = "Prod00005",
-                    ProductoCodigoSUNAT = "39121321",
-                    TipoSistemaISCCodigo = "00",
-                    UnidadMedidaCodigo = "NIU",
-                    PrecioUnitarioSugerido = 0,
-                    PrecioUnitarioItem = 118,
-                    PrecioVentaCodigo = "01",
-                    ICBPER = 0,
-                    CargoIndicador = "0",
-                    DescuentoIndicador = 0,
-                    DescuentoCargoCodigo = "00",
-                    PercepcionCantidadUmbral = 0,
-                    PercepcionMontoUmbral = 0,
-                    PercepcionPorcentaje = 0,
-                    Control = 0,
-                    PrecioCompra = 100.005M,
-                    Cargo = 0,
-                    //DescuentoGlobal = 0,
-                    Descuento = 0,
-                    ValorUnitario = 100,
-                    ValorVenta = 100,
-                    ValorVentaItem = 100,
-                    ValorVentaItemXML = 100,
-                    //ValorVentaNeto = 100,
-                    //ValorVentaNetoXML = 0,
-                    //ISCUnitario = 0,
-                    //ISCNeto = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    //ICBPERItem = 0,
-                    ICBPERSubTotal = 0,
-                    DescuentoBase = 100,
-                    //DescuentoCargo = 0,
-                    //DescuentoCargoGravado = 0,
-                    CargoItem = 0,
-                    //CargoTotal = 0,
-                    //CargoNeto = 0,
-                    PrecioVenta = 118,
-                    MontoTributo = 18,
-                    ISCPorcentaje = 0,
-                    //ISCMonto = 0,
-                    CargoPorcentaje = 0,
-                    //Extension = { },
-                    Descripcion = "00 PRODUCTO GRAVADO",
-                    Observacion = "",
-                    Cantidad = 1,
-                    PrecioCodigo = 7,
-                    PrecioUnitario = 118,
-                    Peso = 0,
-                    DescuentoMonto = 0,
-                    DescuentoPorcentaje = "0",
-                    TipoAfectacionIGVCodigo = "10",
-                    //IGVNeto = 18,
-                    ImporteTotal = 118,
-                    PesoTotal = 0
-                };                  // detalles
-                List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
-                aaa.Add(det);
-                CMovimientoCuenta cta = new CMovimientoCuenta
-                {
-                    TipoDocumentoCodigo = "01",
-                    Serie = "F001",
-                    Correlativo = 2480,
-                    Condicion = "Contado",
-                    TipoCuentaCodigo = 1,
-                    CuentaNumero = "30303030",
-                    Usuario = "30303030",
-                    MonedaCodigo = "PEN",
-                    SucursalId = 50,
-                    TipoDocIdentidadCodigo = "",
-                    NumeroDocIdentidad = "",
-                    Observacion = "",
-                    //Extension = { },
-                    //CuentaValor = "1-30303030",
-                    Pago = 118,
-                    Vuelto = 0,
-                    FechaPago = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                    NumeroOperacion = "",
-                    FechaVencimiento = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                    PlazoDias = 1
-                };                      // movimientos
-                List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
-                bbb.Add(cta);
-
-                CComprobante obj = new CComprobante
-                {
-                    ID = 0,
-                    IdRepositorio = 0,
-                    Sucursal = int.Parse(tx_codSuc.Text),
-                    IGVPorcentaje = decimal.Parse(Program.v_igv),
-                    DescuentoGlobalMonto = 0,
-                    DescuentoGlobalIndicadorDescuento = "0",
-                    DescuentoGlobalCodigoMotivo = "00",
-                    DescuentoGlobalNGIndicadorDescuento = 0,
-                    DescuentoGlobalNGCodigoMotivo = "00",
-                    CargoGlobalPorcentaje = 0,
-                    DetraccionTipoOperacion = "01",
-                    CargoGlobalIndicadorCargos = "0",
-                    CargoGlobalCodigoMotivo = "0",
-                    PagosMultiples = false,
-                    EnviarCorreo = false,
-                    OrigenSistema = 7,
-                    TipoGuiaRemisionCodigo = "",
-                    ModalidadTrasladoCodigo = "02",
-                    TransportistaTipoDocIdentidadCodigo = "",
-                    ConductorTipoDocIdentidadCodigo = "1",
-                    CanalVenta = "2",
-                    Vendedor = tx_nomVen.Text,
-                    CondicionEstado = "",
-                    //CondicionPago = rb_contado.Text,
-                    DescuentoIndicador = 0,
-                    Ubigeo = tx_dir_ubigpe.Text,
-                    Anticipo = false,
-                    TipoCambio = "1.00",
-                    ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
-                    ClienteNumeroDocIdentidad = tx_ndc.Text,
-                    GuiaNumero = "",
-                    ReferenciaNumeroDocumento = "",
-                    ReferenciaTipoDocumento = "",
-                    DocAdicionalDetalle = "",
-                    DiasPermanencia = 0,
-                    FechaConsumo = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                    MotivoTrasladoDescripcion = "",
-                    FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                    TransportistaNumeroDocIdentidad = "",
-                    TransportistaNombreRazonSocial = "",
-                    PlacaVehiculo = "",
-                    ConductorNumeroDocIdentidad = "",
-                    ListaDetalles = aaa,
-                    ExoneradaXML = 0,
-                    InafectoXML = 0,
-                    ExportacionXML = 0,
-                    ImporteTotalTexto = "CIENTO DIECIOCHO CON 00/100 SOLES",
-                    Detraccion = 0,
-                    Percepcion = 0,
-                    PercepcionBaseImponible = 0,
-                    Retencion = 0,
-                    DescuentoGlobalMontoBase = 100,
-                    DescuentoGlobalNGMonto = 0,
-                    DescuentoGlobalNGMontoBase = 0,
-                    DescuentoNGMonto = 0,
-                    AnticiposGravado = 0,
-                    AnticiposExonerado = 0,
-                    AnticiposInafecto = 0,
-                    CargoGlobalMonto = 0,
-                    CargoGlobalMontoBase = 100,
-                    ISCBase = 100,
-                    GratuitoGravado = 0,
-                    TotalPrecioVenta = 118,
-                    TotalValorVenta = 100,
-                    Peso = 0,
-                    Bultos = 0,
-                    CreditoTotal = 0,
-                    PercepcionRegimen = "",
-                    PercepcionFactor = 0,
-                    ListaMovimientos = bbb,
-                    //ListaGuias = { },
-                    //ListaCuotas = { },
-                    EstadoContingencia = false,
-                    //EstadoAnticipo = false,
-                    //EstadoOtroSistema = false,
-                    //ClasePrecioCodigo = 1,
-                    TipoPrecio = 0,
-                    FormatoPDF = 0,
-                    TipoDocumentoCodigo = "01",
-                    Serie = "F001",
-                    Correlativo = 2480,
-                    MonedaCodigo = "PEN",
-                    FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),    // "22/02/2022",
-                    TipoDocumentoCodigoModificado = "01",
-                    SerieModificado = "",
-                    CorrelativoModificado = "",
-                    TipoNotaCreditoCodigo = "01",
-                    TipoNotaDebitoCodigo = "01",
-                    TipoOperacionCodigo = "0101",
-                    MotivoTrasladoCodigo = "01",
-                    ClienteNombreRazonSocial = "YAÑEZ SANZ ANTHONY JOSEPH",
-                    ClienteDireccion = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
-                    UbigeoPartida = "080108",
-                    DireccionPartida = "AV. LA CULTURA 666 - WANCHAQ - CUSCO - CUSCO",
-                    UbigeoLlegada = "080105",
-                    DireccionLlegada = "MZ. F LT. 14 APV. FERNANDEZ - CUSCO - CUSCO - SAN SEBASTIAN",
-                    //TipoBusquedaProductoCodigo = 0,
-                    DescuentoGlobalPorcentaje = 0,
-                    DescuentoGlobalValor = 0,
-                    CorreoElectronicoPrincipal = "no-send@rapifac.com",
-                    Observacion = "",
-                    Gravado = 100,
-                    Exonerada = 0,
-                    Inafecto = 0,
-                    Exportacion = 0,
-                    //OperacionNoGravada = 0,
-                    Gratuito = 0,
-                    TotalDescuentos = 0,
-                    DescuentoGlobal = 0,
-                    TotalAnticipos = 0,
-                    ISC = 0,
-                    IGV = 18,
-                    ICBPER = 0,
-                    ImpuestoTotal = 18,
-                    //ImpuestoVarios = 0,
-                    TotalOtrosCargos = 0,
-                    TotalImporteVenta = 118,
-                    PercepcionTotal = 0,
-                    TotalPago = 118,
-                    PesoTotal = 0,
-                    Leyenda = 0,
-                    BienServicioCodigo = "001",
-                    DetraccionPorcentaje = 10,
-                    //RetencionPorcentaje = 3,
-                    DetraccionCuenta = "12-123466-7",
-                    DocAdicionalCodigo = 0,
-                    //TotalRetencion = 118,
-                    MontoRetencion = 3.54M,
-                    PendientePago = 118.00M,
-                    //PermitirCuotas = 1,
-                    AlojamientoPaisDocEmisor = "AF",
-                    PaisResidencia = "AF",
-                    //FechaIngresoPais = "22/02/2022",
-                    //FechaIngresoEstablecimiento = "22/02/2022",
-                    //FechaSalidaEstablecimiento = "22/02/2022",
-                    AlojamientoNumeroDocIdentidad = "",
-                    AlojamientoNombreRazonSocial = "",
-                    AlojamientoTipoDocIdentidadCodigo = "1"
-                };
-
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    string cabeza = JsonConvert.SerializeObject(obj);
-                    streamWriter.Write(cabeza);
-                }
-
-                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    MessageBox.Show(result.ToString());
-                    retorna = result.ToString();
-                }
-                
-
-            }
-            return retorna;
-        }
-        private bool Jala_oc_Rapifac()                                              // jala comprobante de rapifac
-        {
-            bool retorna = false;
-            /*      // NO NECESITAMOS ESTO ... 10/08/2022
-            string token = conex_token();
-            // obtiene el comprobante desde rapifac
-            string host = "http://wsventas-exp.rapifac.com/v0/comprobantes";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-            httpWebRequest.ContentType = "application/json";        // , text/javascript, 
-            httpWebRequest.Method = "GET";
-            httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-            // me quede acá .... para jalar es necesario el ID y ademas serie y numero?
-            // no se podría jalar solo con la serie y numero ??
-            */
-            return retorna;
-        }
+        // no hay
         #endregion
 
         #region impresion
