@@ -410,7 +410,7 @@ namespace iOMG
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Fact/Boletas",img_F1,fac_rapida_Click);           // F1
             menuStrip1.Items.Add("Notas de crédito",img_F2,not_credito_Click);      // F2
-            menuStrip1.Items.Add("Notas de débito",img_F3,not_debito_Click);        // F3
+            //menuStrip1.Items.Add("Notas de débito",img_F3,not_debito_Click);        // F3
             menuStrip1.Items.Add("Control de pagos",img_F4,control_pagos_Click);    // F4
             menuStrip1.Items.Add("Reportes",img_F5,fac_reportes_Click);             // F5
             //

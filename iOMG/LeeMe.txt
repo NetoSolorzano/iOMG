@@ -192,4 +192,5 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, mejoras varias de reunion del 25/08/22 ............................... ok 26/08/22
 - form docsvta, retomando la fact electrónica con rapifac ............................ ok 23/09/22
 - form docsvta, pruebas de anulacion a rapifac y base de datos ....................... ok 28/09/22
-- form notcred, permitir el ingreso del numero de nota, no esta integrado a rapifac .. 		en ADM hacen las notas en rapifac y avisan a vendedores para su registro 
+- form notcred, permitir el ingreso del numero de nota, no esta integrado a rapifac .. ok 28/09/22		en ADM hacen las notas en rapifac y avisan a vendedores para su registro 
+- form docsvta, según el local imprime en TK o previsualiza A4 ....................... ok 29/09/22

@@ -581,6 +581,7 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             cmb_mon.Enabled = false;
             Tx_modo.Text = modo;
+            cmb_mon.Enabled = false;
             if (modo != "NUEVO")
             {
                 tx_dat_orig.Text = "";
@@ -1158,7 +1159,10 @@ namespace iOMG
                 tx_bruNot.Text = vbru.ToString("#0.00");
             }
         }
-
+        private void tx_valNot_TextChanged(object sender, EventArgs e)
+        {
+            if (tx_valNot.Text.Trim() != "") tx_valNot.Text = double.Parse(tx_valNot.Text).ToString("#0.00");
+        }
         #endregion leaves;
 
         #region radio_buttons

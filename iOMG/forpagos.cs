@@ -8,13 +8,13 @@ namespace iOMG
     {
         DataTable dt;           // medios de pago
         string _mpefec = "";    // variable tipo de pago efectivo
-
-        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta)
+        bool SoloLee = false;
+        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta, bool sololee)
         {
             dt = dtmp;
             _mpefec = mpefec;
             InitializeComponent();
-            if (idavuelta[0, 2].ToString() != "")
+            if (idavuelta[0, 2] != null && idavuelta[0, 2].ToString() != "")
             {
                 for (int i=0; i<9; i++)
                 {
@@ -27,6 +27,7 @@ namespace iOMG
                     }
                 }
             }
+            if (sololee == true) SoloLee = true;
         }
         private void forpagos_Load(object sender, EventArgs e)
         {
@@ -34,6 +35,12 @@ namespace iOMG
             {
                 cmb_plazo.Items.Add(row.ItemArray[0].ToString());
                 totalizagrid();
+            }
+            if (SoloLee == true)
+            {
+                bt_mas.Enabled = false;
+                button1.Enabled = false;
+                dataGridView1.Enabled = false;
             }
         }
         private void forpagos_KeyDown(object sender, KeyEventArgs e)

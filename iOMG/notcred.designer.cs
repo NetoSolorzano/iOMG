@@ -480,7 +480,7 @@
             this.tx_serdvta.Location = new System.Drawing.Point(645, 37);
             this.tx_serdvta.Name = "tx_serdvta";
             this.tx_serdvta.Size = new System.Drawing.Size(35, 20);
-            this.tx_serdvta.TabIndex = 2;
+            this.tx_serdvta.TabIndex = 4;
             this.tx_serdvta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_status
@@ -889,7 +889,7 @@
             this.tx_numdvta.Location = new System.Drawing.Point(680, 37);
             this.tx_numdvta.Name = "tx_numdvta";
             this.tx_numdvta.Size = new System.Drawing.Size(70, 20);
-            this.tx_numdvta.TabIndex = 6;
+            this.tx_numdvta.TabIndex = 5;
             this.tx_numdvta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label53
@@ -957,7 +957,7 @@
             this.cmb_tipo.Location = new System.Drawing.Point(593, 35);
             this.cmb_tipo.Name = "cmb_tipo";
             this.cmb_tipo.Size = new System.Drawing.Size(50, 21);
-            this.cmb_tipo.TabIndex = 4;
+            this.cmb_tipo.TabIndex = 3;
             this.cmb_tipo.SelectionChangeCommitted += new System.EventHandler(this.cmb_cap_SelectionChangeCommitted);
             // 
             // tx_idr
@@ -1159,7 +1159,7 @@
             this.button2.Location = new System.Drawing.Point(771, 27);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(56, 36);
-            this.button2.TabIndex = 7;
+            this.button2.TabIndex = 6;
             this.button2.Text = "procesar";
             this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.button2.UseVisualStyleBackColor = true;
@@ -1282,6 +1282,7 @@
             this.tx_valNot.Size = new System.Drawing.Size(73, 20);
             this.tx_valNot.TabIndex = 14;
             this.tx_valNot.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_valNot.TextChanged += new System.EventHandler(this.tx_valNot_TextChanged);
             this.tx_valNot.Leave += new System.EventHandler(this.tx_valNot_Leave);
             // 
             // milinea9

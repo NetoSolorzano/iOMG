@@ -209,7 +209,7 @@ namespace iOMG
                 }
                 if (tx_impMedios.Focused == true)
                 {
-                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos);
+                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos, (Tx_modo.Text == "NUEVO")? false : true);
                     var resu = pagos.ShowDialog();
                     if (resu == DialogResult.Cancel)
                     {
@@ -672,15 +672,15 @@ namespace iOMG
             if (quien == "todos")
             {
                 // seleccion de local de ventas ... ok
-                const string contaller = "select a.descrizionerid,a.idcodice,a.codigo,b.serie,b.dir_pe,b.ubigeo,a.sunat from desc_ven a " +
-                    "left JOIN (select serie,sede,dir_pe,ubigeo from series WHERE tipdoc IN ('FT','BV')) b on b.sede=a.idcodice " +
+                const string contaller = "select a.descrizionerid,a.idcodice,a.codigo,b.serie,b.dir_pe,b.ubigeo,a.sunat,b.format from desc_ven a " +
+                    "left JOIN (select serie,sede,dir_pe,ubigeo,format from series WHERE tipdoc IN ('FT','BV')) b on b.sede=a.idcodice " +
                     "where a.numero=1 AND a.codigo<>'' order by a.idcodice";
                 MySqlCommand cmdtaller = new MySqlCommand(contaller, conn);
                 MySqlDataAdapter dataller = new MySqlDataAdapter(cmdtaller);
                 dataller.Fill(dttaller);
                 foreach (DataRow row in dttaller.Rows)
                 {
-                    cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6));
+                    cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6).Trim());
                     cmb_taller.ValueMember = row.ItemArray[1].ToString();
                 }
                 // seleccion de tipo de doc. venta ... ok
@@ -1062,7 +1062,7 @@ namespace iOMG
                                         docsAnticip item = new docsAnticip();
                                         item.comprob = dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);
                                         item.valor = dr.GetString(3);
-                                        item.bruto = dr.GetString("subtota");                // me quede aca
+                                        item.bruto = dr.GetString("subtota");
                                         item.descrip = "ANTICIPO DE CONTRATO " + tx_cont.Text + " - " +
                                             dr.GetString(0).Substring(0, 1) + dr.GetString(1) + "-" + dr.GetString(2);              // la consulta debe obtener estos datos
                                         item.IdCompRapifac = dr.GetInt32("idpse_ose");       // este campo debe crearse en la tabla cabfactu, junto al identificador del pdf
@@ -1935,14 +1935,21 @@ namespace iOMG
                             }
                             else
                             {
-                                tx_nombre.Text = biene[0];   // razon social
-                                //biene[1];                    // ubigeo
-                                tx_direc.Text = biene[2];    // direccion
-                                tx_dpto.Text = biene[3];     // departamento
-                                tx_prov.Text = biene[4];     // provincia
-                                tx_dist.Text = biene[5];     // distrito
-                                //biene[6]                      // estado del contrib.
-                                //biene[7]
+                                if (biene[1] == "00000000")     // cliente no identificado
+                                {
+                                    System.Diagnostics.Process.Start("https://eldni.com/pe/buscar-por-dni");
+                                }
+                                else
+                                {
+                                    tx_nombre.Text = biene[0];   // razon social
+                                                                 //biene[1];                    // ubigeo
+                                    tx_direc.Text = biene[2];    // direccion
+                                    tx_dpto.Text = biene[3];     // departamento
+                                    tx_prov.Text = biene[4];     // provincia
+                                    tx_dist.Text = biene[5];     // distrito
+                                                 //biene[6]                      // estado del contrib.
+                                                 //biene[7]
+                                }
                             }
                         }
                     }
@@ -2436,8 +2443,26 @@ namespace iOMG
                     // despues de terminado todo en rapifac, grabamos en nuestra base de datos
                     if (graba() == true)
                     {
-                        //cosas_pagamenti();                  // vemos si es cancelacion para llenar la lista de pagos
-                        Bt_print.PerformClick();
+                        // vemos el local y documento para saber si mostramos el pdf o imprimimos el TK
+                        if (true)
+                        {
+                            string axs = string.Format("idcodice='{0}'", tx_dat_orig.Text);
+                            DataRow[] row = dttaller.Select(axs);
+                            if (row[0].ItemArray[7] == null || row[0].ItemArray[7].ToString().Trim() == "") Bt_print.PerformClick();
+                            else
+                            {
+                                if (row[0].ItemArray[7].ToString() == "TK") Bt_print.PerformClick();
+                                else
+                                {
+                                    if (row[0].ItemArray[7].ToString() == "A4")
+                                    {
+                                        string rutaT = rut_pdf + tx_pdf_rapifac.Text;  // tx_id_rapifac.Text;
+                                        System.Diagnostics.Process.Start(rutaT);
+                                    }
+                                    else { Bt_print.PerformClick(); }
+                                }
+                            }
+                        }
                         //
                         if (tx_prdsCont.Text == "S" && tx_cont.Text.Trim() == "")
                         {
@@ -4880,7 +4905,7 @@ namespace iOMG
             httpWebRequest.ContentType = "application/json";        // , text/javascript, 
             httpWebRequest.Method = "GET";
             httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-            // me quede acá .... para jalar es necesario el ID y ademas serie y numero?
+            // .... para jalar es necesario el ID y ademas serie y numero?
             // no se podría jalar solo con la serie y numero ??
             */
             return retorna;
