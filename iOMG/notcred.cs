@@ -177,6 +177,7 @@ namespace iOMG
             tx_telef2.MaxLength = 15;                   // ancho del campo numerotel2 de la tabla anagrafiche
             tx_coment.MaxLength = 240;
             tx_numdvta.CharacterCasing = CharacterCasing.Upper;
+            tx_sernot.CharacterCasing = CharacterCasing.Upper;
             //
             this.milinea1.BackColor = Color.White;
             this.milinea1.ForeColor = Color.White;
@@ -758,6 +759,8 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             grilladet("NUEVO");
             tx_nomVen.Text = Program.vg_nuse;
+            tx_sernot.Enabled = true;
+            tx_sernot.ReadOnly = false;
             tx_numnot.Enabled = true;
             tx_numnot.ReadOnly = false;
             cmb_tiponot.Focus();
