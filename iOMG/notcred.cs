@@ -1047,6 +1047,10 @@ namespace iOMG
                 DataRow[] row = dtpedido.Select(axs);
                 tx_dat_tipdoc.Text = row[0].ItemArray[1].ToString();
                 tx_dat_tipdoc_s.Text = row[0].ItemArray[2].ToString();
+                if (Tx_modo.Text == "NUEVO")
+                {
+                     // no, no, que el digitador ponga la serie completa
+                }
             }
             else
             {
@@ -1336,7 +1340,25 @@ namespace iOMG
                 tx_valNot.Focus();
                 return;
             }
-            
+            if (tx_sernot.Text.Trim().Length != 4)
+            {
+                MessageBox.Show("Ingrese la serie de la nota", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_sernot.Focus();
+                return;
+            }
+            if (tx_sernot.Text.Substring(0, 2) != "BC" && tx_sernot.Text.Substring(0, 2) != "FC")
+            {
+                MessageBox.Show("Las series deben iniciar en BC o FC", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_sernot.Focus();
+                return;
+            }
+            if (tx_numnot.Text.Trim() == "")
+            {
+                MessageBox.Show("Ingrese el número de la nota", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_numnot.Focus();
+                return;
+            }
+
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones 
@@ -1355,7 +1377,7 @@ namespace iOMG
             limpia_ini();
             cmb_tiponot.Focus();
         }
-        private bool graba()                                // graba cabecera de la nota
+        private bool graba()                                        // graba cabecera de la nota
         {
             bool retorna = false;
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1376,7 +1398,7 @@ namespace iOMG
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
                     micon.Parameters.AddWithValue("@fechop", dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2));
-                    micon.Parameters.AddWithValue("@mtdvta", "");     // cmb_tipo.Text.Substring(0, 1)
+                    micon.Parameters.AddWithValue("@mtdvta", cmb_tipo.Text.Substring(0, 1) + "C");     // cmb_tipo.Text.Substring(0, 1)
                     micon.Parameters.AddWithValue("@ctnota", tx_dat_tipnot.Text);
                     micon.Parameters.AddWithValue("@sernot", tx_sernot.Text);
                     micon.Parameters.AddWithValue("@numnot", tx_numnot.Text);
