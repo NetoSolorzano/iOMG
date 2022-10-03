@@ -1358,7 +1358,12 @@ namespace iOMG
                 tx_numnot.Focus();
                 return;
             }
-
+            if (tx_sernot.Text.Substring(0, 1) != cmb_tipo.Text.Substring(0, 1))
+            {
+                MessageBox.Show("No coincide la serie de la nota con el tipo de Doc.Venta", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_sernot.Focus();
+                return;
+            }
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones 
