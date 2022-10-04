@@ -287,7 +287,7 @@ namespace iOMG
             {
                 if (Tx_modo.Text != "NUEVO")
                 {
-                    parte = "sernota=@sdv and numnota=@ndv";
+                    parte = "tipncred='NC' and sernota=@sdv and numnota=@ndv";
                 }
             }
             jala = jala + parte;
@@ -1440,7 +1440,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner
                     micon.Parameters.AddWithValue("@impSN", "N");                               // impreso? S, N ==> no se imprimen las notas 23/08/2022
                     micon.Parameters.AddWithValue("@canfil", tx_tfil.Text);                     // cantidad de filas de detalle
-                    micon.Parameters.AddWithValue("@tinocr", tx_dat_codnot.Text);               // tipo de cliente credito o contado => TODOS SON CONTADO=1
+                    micon.Parameters.AddWithValue("@tinocr", tx_dat_codnot.Text);               // 
                     micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
                     micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text);
                     micon.Parameters.AddWithValue("@cont",tx_contrat.Text);                     //
