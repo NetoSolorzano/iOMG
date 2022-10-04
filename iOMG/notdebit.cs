@@ -18,9 +18,9 @@ using System.Collections.Generic;
 
 namespace iOMG
 {
-    public partial class notcred : Form
+    public partial class notdebit : Form
     {
-        static string nomform = "notcred";      // nombre del formulario
+        static string nomform = "notdebit";      // nombre del formulario
         string asd = iOMG.Program.vg_user;          // usuario conectado al sistema
         string colback = iOMG.Program.colbac;       // color de fondo
         string colpage = iOMG.Program.colpag;       // color de los pageframes
@@ -86,8 +86,8 @@ namespace iOMG
         string v_cnprd = "";            // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
         string itemSer = "";            // items (capit) de comprobantes de servicios
         string cliente = Program.cliente;    // razon social para los reportes
-        string v_tnotanu = "";          // tipo de nota de credito por Anulacion
-        string v_tnotdsc = "";          // tipo de nota de credito por Descuento Global
+        string v_tnotanu = "";          // tipo de nota de debito por intereses
+        string v_tnotdsc = "";          // tipo de nota de debito por aumento de valor
         #endregion
 
         // string de conexion
@@ -105,11 +105,11 @@ namespace iOMG
         DataTable dtmon = new DataTable();      // monedas
         DataTable dtnota = new DataTable();     // tipos de notas de credito
 
-        public notcred()
+        public notdebit()
         {
             InitializeComponent();
         }
-        private void notcred_KeyDown(object sender, KeyEventArgs e)
+        private void notdebit_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) SendKeys.Send("{TAB}");
         }
@@ -130,7 +130,7 @@ namespace iOMG
             // Call the base class
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        private void notcred_Load(object sender, EventArgs e)
+        private void notdebit_Load(object sender, EventArgs e)
         {
             init();
             toolboton();
@@ -230,32 +230,16 @@ namespace iOMG
                     }
                     if (row["formulario"].ToString() == "docsvta")
                     {
-                        //if (row["campo"].ToString() == "tipoped" && row["param"].ToString() == "clientes") tipede = row["valor"].ToString().Trim();         // 
-                        //if (row["campo"].ToString() == "anticipos" && row["param"].ToString() == "glosa") letiden = row["valor"].ToString().Trim();         // glosa de anticipos
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "codAnu") estanu = row["valor"].ToString().Trim();         // codigo estado anulado
-                        //if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "Anulado") nomanu = row["valor"].ToString().Trim();        // nombre estado anulado
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "cancelado") codCanc = row["valor"].ToString().Trim();     // codigo estado cancelado
                         if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "default") MonDeft = row["valor"].ToString().Trim();          // moneda por defecto
-                        //if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "todas") MonTodas = row["valor"].ToString().Trim();          // moneda por defecto
-                        //if (row["campo"].ToString() == "items" && row["param"].ToString() == "stock") lps = row["valor"].ToString().Trim();                 // tipos de muebles que se hacen contrato
-                        //if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "nomImTK") v_impTK = row["valor"].ToString().Trim();       // nombre de la impresora de tickets
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "factura") codfact = row["valor"].ToString().Trim();       // codigo tipo doc factura
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "boleta") codbole = row["valor"].ToString().Trim();       // codigo tipo doc boleta
-                        //if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen1") leydet1 = row["valor"].ToString().Trim();           // 
-                        //if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen2") leydet2 = row["valor"].ToString().Trim();           // 
-                        //if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "restex") restexto = row["valor"].ToString().Trim();       // texto resolucion sunat autorizando prov. fact electronica
-                        //if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "resAut") autoriz = row["valor"].ToString().Trim();        //
-                        //if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
-                        //if (row["campo"].ToString() == "documento" && row["param"].ToString() == "valdirec") valdirec = row["valor"].ToString().Trim();     // monto limite para obligar a tener direcion en boleta
-                        //if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
-                        //if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ciavss") v_liav = row["valor"].ToString().Trim();         // letra o caracter inicial indicativo de articulos varios vta directa sin stock
-                        //if (row["campo"].ToString() == "documento" && row["param"].ToString() == "camnomb") v_cnprd = row["valor"].ToString().Trim();       // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
-                        //if (row["campo"].ToString() == "servicios" && row["param"].ToString() == "items") itemSer = row["valor"].ToString().Trim();       // Items para comprobantes de servicios
                     }
                     if (row["formulario"].ToString() == nomform)
                     {
-                        if (row["campo"].ToString() == "ctipnot" && row["param"].ToString() == "anulacion") v_tnotanu = row["valor"].ToString().Trim();         // tipo nota anulacion
-                        if (row["campo"].ToString() == "ctipnot" && row["param"].ToString() == "dsctoGlob") v_tnotdsc = row["valor"].ToString().Trim();         // tipo nota descuento
+                        if (row["campo"].ToString() == "ctipnot" && row["param"].ToString() == "intereses") v_tnotanu = row["valor"].ToString().Trim();         // tipo nota debito por intereses
+                        if (row["campo"].ToString() == "ctipnot" && row["param"].ToString() == "aumento_v") v_tnotdsc = row["valor"].ToString().Trim();         // tipo nota debito por aumento de valor
                     }
                 }
                 da.Dispose();
@@ -275,7 +259,7 @@ namespace iOMG
             string jala = "SELECT id,fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
                 "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta,subtMN," +
                 "igvtMN,totdvMN,codMN,estnota,frase01,impreso,canfidt,tipncred,vendedor,contrato " +
-                "FROM cabnotascd where ";
+                "FROM cabnotascd where martnot not in ('FC','BC') and ";
             if (campo == "tx_idr" && tx_idr.Text != "" && tx_numdvta.Text.Trim() == "")
             {
                 if (Tx_modo.Text != "NUEVO")
@@ -308,11 +292,6 @@ namespace iOMG
                         MySqlDataReader dr = micon.ExecuteReader();
                         if (dr.Read())
                         {
-                            /*
-                martnot,tipncred,ubigclt,frase01,impreso,
-                tcadvta,porcigv,totdvta,saldvta,subtMN,igvtMN,totdvMN,codMN,
-                             */
-
                             tx_idr.Text = dr.GetString("id");
                             tx_dat_tipnot.Text = dr.GetString("tipnota");
                             tx_sernot.Text = dr.GetString("sernota");
@@ -521,8 +500,8 @@ namespace iOMG
                     cmb_taller.Items.Add(row.ItemArray[1].ToString().PadRight(6).Substring(0, 6));
                     cmb_taller.ValueMember = row.ItemArray[1].ToString();
                 }
-                // seleccion del tipo de nota de credito
-                const string connota = "select descrizionerid,idcodice,sunat,codigo from desc_tnc " +
+                // seleccion del tipo de nota de debito
+                const string connota = "select descrizionerid,idcodice,sunat,codigo from desc_tnd " +
                                        "where numero=1";            // filtramos solo los documentos de venta
                 MySqlCommand cmdnota = new MySqlCommand(connota, conn);
                 MySqlDataAdapter danota = new MySqlDataAdapter(cmdnota);
@@ -608,20 +587,9 @@ namespace iOMG
                 else cmb_mon.Enabled = true;
             }
         }
-        private void modonota()                             // campos de valores según el tipo de nota de credito
+        private void modonota()                             // campos de valores según el tipo de debito
         {
-            if (tx_dat_tipnot.Text == v_tnotanu)        // tipo de nota ANULACION
-            {
-                tx_bruNot.Text = tx_bruto.Text;
-                tx_igvNot.Text = tx_igv.Text;
-                tx_valNot.Text = tx_valor.Text;
-
-                tx_bruNot.ReadOnly = true;
-                tx_igvNot.ReadOnly = true;
-                tx_valNot.ReadOnly = true;
-                tx_coment.Focus();
-            }
-            if (tx_dat_tipnot.Text == v_tnotdsc)        // tipo de nota por descuento
+            // tipo de nota por descuento
             {
                 tx_bruNot.ReadOnly = true;
                 tx_igvNot.ReadOnly = true;
@@ -636,7 +604,7 @@ namespace iOMG
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
                 {
-                    string vb = "select * from cabnotascd where tipncred=@tno and sernota=@sno and numnota=@nno";
+                    string vb = "select * from cabnotascd where tipncred=@tno and sernota=@sno and numnota=@nno";   //  and martnot not in ('FC','BC')
                     using (MySqlCommand micon = new MySqlCommand(vb, conn))
                     {
                         micon.Parameters.AddWithValue("@tno", tipo);
@@ -1153,12 +1121,12 @@ namespace iOMG
             }
             else
             {
-                valnumero("NC",tx_sernot.Text,tx_numnot.Text);
+                valnumero("ND",tx_sernot.Text,tx_numnot.Text);
             }
         }
         private void tx_valNot_Leave(object sender, EventArgs e)            // nota de cred por descuento
         {
-            if (Tx_modo.Text == "NUEVO" && tx_dat_tipnot.Text == v_tnotdsc && tx_valNot.Text != "")
+            if (Tx_modo.Text == "NUEVO" && tx_valNot.Text != "")
             {
                 double vbru = double.Parse(tx_valNot.Text) / (1 + double.Parse(v_igv) / 100);  // 1.18;
                 double vigv = double.Parse(tx_valNot.Text) - vbru;
@@ -1306,7 +1274,7 @@ namespace iOMG
             // validaciones generales
             if (tx_dat_tipnot.Text == "")
             {
-                MessageBox.Show("Seleccione el tipo de nota de crédito", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione el tipo de nota de Débito", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmb_tiponot.Focus();
                 return;
             }
@@ -1346,16 +1314,17 @@ namespace iOMG
                 tx_sernot.Focus();
                 return;
             }
-            if (tx_sernot.Text.Substring(0, 2) != "BC" && tx_sernot.Text.Substring(0, 2) != "FC")
-            {
-                MessageBox.Show("Las series deben iniciar en BC o FC", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tx_sernot.Focus();
-                return;
-            }
             if (tx_numnot.Text.Trim() == "")
             {
                 MessageBox.Show("Ingrese el número de la nota", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 tx_numnot.Focus();
+                return;
+            }
+            /*
+            if (tx_sernot.Text.Substring(0, 2) != "BC" && tx_sernot.Text.Substring(0, 2) != "FC")
+            {
+                MessageBox.Show("Las series deben iniciar en BC o FC", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tx_sernot.Focus();
                 return;
             }
             if (tx_sernot.Text.Substring(0, 1) != cmb_tipo.Text.Substring(0, 1))
@@ -1364,12 +1333,13 @@ namespace iOMG
                 tx_sernot.Focus();
                 return;
             }
+            */
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones 
 
                 var aa = MessageBox.Show(" Confirma que desea CREAR " + Environment.NewLine +
-                    "la Nota de Crédito?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                    "la Nota de Débito?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     if (graba() == true)
@@ -1390,7 +1360,6 @@ namespace iOMG
             if (conn.State == ConnectionState.Open)
             {
                 // no se hace conexion a Rapifac 28/09/2022, en ADM hacen las notas y luego avisan a Barranco para su registro en el sistema y archivos
-                //tx_numnot.Text = lib.Right(DateTime.Now.Millisecond.ToString(), 8);
                 string inserta = "insert into cabnotascd (" +
                     "fechope,martnot,tipnota,sernota,numnota,tipdvta,serdvta,numdvta,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt," +
                     "ubigclt,corrclt,teleclt,locorig,dirorig,ubiorig,obsnota,mondvta,tcadvta,subtota,igvtota,porcigv,totnota,totdvta,saldvta," +
@@ -1403,7 +1372,7 @@ namespace iOMG
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
                     micon.Parameters.AddWithValue("@fechop", dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2));
-                    micon.Parameters.AddWithValue("@mtdvta", cmb_tipo.Text.Substring(0, 1) + "C");     // cmb_tipo.Text.Substring(0, 1)
+                    micon.Parameters.AddWithValue("@mtdvta", cmb_tipo.Text.Substring(0, 1) + "D");     // cmb_tipo.Text.Substring(0, 1)
                     micon.Parameters.AddWithValue("@ctnota", tx_dat_tipnot.Text);
                     micon.Parameters.AddWithValue("@sernot", tx_sernot.Text);
                     micon.Parameters.AddWithValue("@numnot", tx_numnot.Text);
@@ -1500,7 +1469,7 @@ namespace iOMG
                         "@idc,@tdv,@sdv,@ndv,@it,@med,@ope,@imp,@cpa,@fpa)";
                     using (MySqlCommand micon = new MySqlCommand(inpag, conn))
                     {
-                        decimal xx = decimal.Negate(decimal.Parse(tx_valNot.Text));
+                        decimal xx = decimal.Parse(tx_valNot.Text);
                         micon.Parameters.AddWithValue("@idc", 0);
                         micon.Parameters.AddWithValue("@tdv", tx_dat_codnot.Text);
                         micon.Parameters.AddWithValue("@sdv", tx_sernot.Text);
@@ -1514,6 +1483,7 @@ namespace iOMG
                         micon.ExecuteNonQuery();
                     }
                 }
+                // pagamenti se inserta desde triggers
             }
             else
             {

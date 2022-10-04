@@ -410,7 +410,7 @@ namespace iOMG
             menuStrip1.Items.Clear();
             menuStrip1.Items.Add("Fact/Boletas",img_F1,fac_rapida_Click);           // F1
             menuStrip1.Items.Add("Notas de crédito",img_F2,not_credito_Click);      // F2
-            //menuStrip1.Items.Add("Notas de débito",img_F3,not_debito_Click);        // F3
+            menuStrip1.Items.Add("Notas de débito",img_F3,not_debito_Click);        // F3
             menuStrip1.Items.Add("Control de pagos",img_F4,control_pagos_Click);    // F4
             menuStrip1.Items.Add("Reportes",img_F5,fac_reportes_Click);             // F5
             //
@@ -438,7 +438,13 @@ namespace iOMG
         }
         private void not_debito_Click(object sender, EventArgs e)    // notas de debito
         {
-            MessageBox.Show("Form de facturas de anticipos");
+            notdebit fnc1 = new notdebit();
+            fnc1.TopLevel = false;
+            fnc1.Parent = this;
+            fnc1.Top = pn_phor.Top + pn_phor.Height + 1;
+            fnc1.Left = pn_pver.Left + pn_pver.Width + 1;
+            pn_centro.Controls.Add(fnc1);
+            fnc1.Show();
         }
         private void control_pagos_Click(object sender, EventArgs e)       // control de pagos
         {
