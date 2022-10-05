@@ -323,15 +323,15 @@ namespace iOMG
                     if (vd != 0) advancedDataGridView1.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
                 int b = 0;
-                for (int i = 0; i < advancedDataGridView1.Columns.Count; i++)
+                for (int i = 3; i < advancedDataGridView1.Columns.Count; i++)
                 {
                     int a = advancedDataGridView1.Columns[i].Width;
                     b += a;
-                    advancedDataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    advancedDataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;    // DataGridViewAutoSizeColumnMode.None;
                     advancedDataGridView1.Columns[i].Width = a;
                     if (i + 1 == advancedDataGridView1.Columns.Count) advancedDataGridView1.Columns[i].Visible = false; // ultima columna invisible
                 }
-                if (b < advancedDataGridView1.Width) advancedDataGridView1.Width = b - 20;  // b + 60;
+                //if (b < advancedDataGridView1.Width) advancedDataGridView1.Width = b + 60;   // b - 20;
             }
             //
             advancedDataGridView1.ReadOnly = true;
@@ -432,8 +432,8 @@ namespace iOMG
         {
             //ID,FPAGO,DOC_VENTA,CONT,DOC,NUM_DOC,CLIENTE,ESTADO,VAL_CONT,SALDO,MON,VAL_SOLES,MED_PAGO,N_OPER,TDC
             string tdoc, ndoc = "";
-            tdoc = advancedDataGridView1.Rows[idc].Cells[14].Value.ToString();
-            ndoc = advancedDataGridView1.Rows[idc].Cells[5].Value.ToString();
+            tdoc = advancedDataGridView1.Rows[idc].Cells[4].Value.ToString();
+            ndoc = advancedDataGridView1.Rows[idc].Cells[2].Value.ToString();
             //tabControl1.SelectedTab = tabuser;
             limpiar(this);
             limpiapag(tabuser);

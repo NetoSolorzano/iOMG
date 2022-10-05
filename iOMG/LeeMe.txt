@@ -197,4 +197,5 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form notcred, permitir ingreso de serie manualmente, no automático ................. ok 03/10/22
 - form notcred, hacer adecuaciones para que no jale notas debito en jalaoc y otros ... ok 04/10/22
 - from notdebit, creación del form ................................................... ok 04/10/22
-- form cpagos, mostrar en grillas datos de nombres de clientes, etc de NOTAS ......... 
+- form cpagos, mostrar en grillas datos de nombres de clientes, etc de NOTAS ......... ok 05/10/22
+- form cpagos, en la grilla principal, solo debe mostrar totales agrupados x clt ..... ok 05/10/22
