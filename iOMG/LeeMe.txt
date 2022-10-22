@@ -199,3 +199,4 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - from notdebit, creación del form ................................................... ok 04/10/22
 - form cpagos, mostrar en grillas datos de nombres de clientes, etc de NOTAS ......... ok 05/10/22
 - form cpagos, en la grilla principal, solo debe mostrar totales agrupados x clt ..... ok 05/10/22
+- form contratos, permitir el ingreso manual del num de contrato solo en algunas sedes ... 

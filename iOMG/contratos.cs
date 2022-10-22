@@ -72,7 +72,7 @@ namespace iOMG
         string docFac = "";                 // codigo facturas
         int intfec = 1;                     // intervalo de días para busqueda de comprobantes sin contrato
         string vtasc = "";                  // tipo de articulo (capitulo) que no se hace contrato
-
+        string vapm = "";                   // sedes donde el pago se puede registrar manualmente                22/10/2022
         internal List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
 
@@ -159,9 +159,8 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text))
+                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text) && vapm.Contains(tx_dat_orig.Text))
                 {
-                    /*
                     para1 = "PAGCON";
                     para2 = tx_codped.Text.Trim();
                     para3 = tx_saldo.Text.Trim();
@@ -184,7 +183,6 @@ namespace iOMG
                             }
                         }
                     }
-                    */
                 }
                 if (tx_corre.Focused == true || tx_serie.Focused == true || tx_mc.Focused == true)
                 {
@@ -501,6 +499,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "nogrilla") cnojal = row["valor"].ToString().Trim();              // estados de contratos que no se jalan a la grilla
                         if (row["campo"].ToString() == "impresora" && row["param"].ToString() == "default") impDef = row["valor"].ToString().Trim();            // nombre de la impresora por defecto
                         if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos que no hace contrato
+                        if (row["campo"].ToString() == "sedespag" && row["param"].ToString() == "manual") vapm = row["valor"].ToString().Trim();                // sedes donde se acepta registro de pagos manuales 
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -2161,8 +2160,9 @@ namespace iOMG
             tx_d_saldo.ReadOnly = true;
             tx_a_codig.ReadOnly = true;
             tx_a_salcan.ReadOnly = true;
-            tx_acta.ReadOnly = true;
             cmb_tipo.Enabled = false;
+            if (vapm.Contains(tx_dat_orig.Text)) tx_acta.ReadOnly = false;
+            else tx_acta.ReadOnly = true;
             /*
             if (tncont == "AUTOMA")
             {
