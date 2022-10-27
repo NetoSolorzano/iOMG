@@ -96,6 +96,7 @@ namespace iOMG
         string nom_umed = "";               // nombre unidad de medida
         string mailPrin = "";               // correo electrónico principal
         string webdni = "";                 // direccion web de pag. busqueda dni
+        string vSNdsctoD = "";              // S ó N, permite o no descuento en detalle
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -373,7 +374,9 @@ namespace iOMG
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ciavss") v_liav = row["valor"].ToString().Trim();         // letra o caracter inicial indicativo de articulos varios vta directa sin stock
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "camnomb") v_cnprd = row["valor"].ToString().Trim();       // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
-                        if (row["campo"].ToString() == "servicios" && row["param"].ToString() == "items") itemSer = row["valor"].ToString().Trim();       // Items para comprobantes de servicios
+                        if (row["campo"].ToString() == "servicios" && row["param"].ToString() == "items") itemSer = row["valor"].ToString().Trim();         // Items para comprobantes de servicios
+                        if (row["campo"].ToString() == "descuento" && row["param"].ToString() == "detalle") vSNdsctoD = row["valor"].ToString().Trim();     // acepta descuento en detalle S/N
+
                     }
                 }
                 da.Dispose();
@@ -814,7 +817,18 @@ namespace iOMG
                 cmb_mon.SelectedItem = tx_dat_mone.Text;
                 if (MonTodas == "S") cmb_mon.Enabled = false;
                 else cmb_mon.Enabled = true;
+                if (vSNdsctoD == "S")
+                {
+                    tx_ImpDsctoD.ReadOnly = false;
+                    tx_ImpDsctoD.Text = "0.00";
+                }
+                else
+                {
+                    tx_ImpDsctoD.ReadOnly = true;
+                    tx_ImpDsctoD.Text = "0.00";
+                }
             }
+            lb_totDet.Text = lb_totDet.Text + " " + cmb_mon.Text;
             ini_pagos();
             _docsAnticip.Clear();
         }
@@ -1106,6 +1120,17 @@ namespace iOMG
             }
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
             tx_totcant.Text = tbul.ToString();
+        }
+        private void recalDet()
+        {
+            int cant = 0;
+            int.TryParse(tx_d_can.Text, out cant);
+            double preSin = 0;
+            double.TryParse(tx_d_preSinDscto.Text, out preSin);
+            double desc = 0;
+            double.TryParse(tx_ImpDsctoD.Text, out desc);
+            tx_d_ptot.Text = (cant * preSin).ToString("#0.00");
+            tx_d_precio.Text = (double.Parse(tx_d_ptot.Text) - desc).ToString("#0.00");
         }
 
         #region autocompletados
@@ -1832,6 +1857,8 @@ namespace iOMG
             tx_d_nom.ReadOnly = true;
             tx_d_med.ReadOnly = true;
             tx_d_mad.ReadOnly = false;
+            tx_d_precio.ReadOnly = true;        // por defecto 27/10/2022
+            tx_d_ptot.ReadOnly = true;
             if (Tx_modo.Text == "NUEVO") 
             {
                 if (tx_d_codi.Text.Trim() != "")
@@ -1841,6 +1868,7 @@ namespace iOMG
                         tx_d_nom.ReadOnly = false;
                         tx_d_med.ReadOnly = true;
                         tx_d_mad.ReadOnly = true;
+                        tx_d_preSinDscto.ReadOnly = false;
                     }
                     else
                     {
@@ -1849,6 +1877,7 @@ namespace iOMG
                             tx_d_nom.ReadOnly = false;
                             tx_d_med.ReadOnly = false;
                             tx_d_mad.ReadOnly = false;
+                            tx_d_preSinDscto.ReadOnly = false;
                         }
                         else
                         {
@@ -1857,6 +1886,7 @@ namespace iOMG
                                 tx_d_nom.ReadOnly = false;
                                 tx_d_med.ReadOnly = false;
                                 tx_d_mad.ReadOnly = false;
+                                tx_d_preSinDscto.ReadOnly = true;
                             }
                         }
                     }
@@ -2037,6 +2067,18 @@ namespace iOMG
                 jalaoc("tx_corre");
             }
         }
+        private void tx_d_can_Leave(object sender, EventArgs e)
+        {
+            recalDet();
+        }
+        private void tx_d_preSinDscto_Leave(object sender, EventArgs e)
+        {
+            recalDet();
+        }
+        private void tx_ImpDsctoD_Leave(object sender, EventArgs e)
+        {
+            recalDet();
+        }
         #endregion leaves;
 
         #region radio_buttons
@@ -2056,6 +2098,9 @@ namespace iOMG
                 tx_d_med.Visible = true;
                 tx_d_mad.Visible = true;
                 tx_d_precio.Visible = true;
+                tx_d_preSinDscto.Visible = true;
+                tx_d_ptot.Visible = true;
+                tx_ImpDsctoD.Visible = true;
                 //
                 lb_cont.Visible = false;
                 tx_cont.Visible = false;
@@ -2087,18 +2132,21 @@ namespace iOMG
                 tx_d_med.Visible = false;
                 tx_d_mad.Visible = false;
                 tx_d_precio.Visible = false;
+                tx_d_preSinDscto.Visible = false;
+                tx_d_ptot.Visible = false;
+                tx_ImpDsctoD.Visible = false;
                 //
-                tx_d_antic.Left = 28;
+                tx_d_antic.Left = 3;    // 28
                 tx_d_antic.Top = 5;
-                tx_d_antic.Width = 700;
-                tx_d_antic.Height = 40;
+                tx_d_antic.Width = 720;
+                tx_d_antic.Height = 50; // 40
                 tx_d_antic.Multiline = true;
                 tx_d_antic.Visible = true;
                 tx_d_antic.Text = letiden;
                 //
                 tx_d_valAntic.Left = 728;
                 tx_d_valAntic.Top = 5;
-                tx_d_valAntic.Height = 40;
+                tx_d_valAntic.Height = 50;  // 40
                 tx_d_valAntic.Multiline = true;
                 tx_d_valAntic.Visible = true;
                 //
@@ -2250,8 +2298,9 @@ namespace iOMG
                     return;
                 }
 
-                ntoti = double.Parse(tx_d_precio.Text);                         // precio individual incluyendo descuento
-                double vdscto = (tx_d_preSinDscto.Text == "0.00" || tx_d_preSinDscto.Text == "") ? 0 : double.Parse(tx_d_preSinDscto.Text) - ntoti;    // valor del descuento
+                ntoti = double.Parse(tx_d_precio.Text);                         // precio total de la fila incluyendo descuento
+                //double vdscto = (tx_d_preSinDscto.Text == "0.00" || tx_d_preSinDscto.Text == "") ? 0 : double.Parse(tx_d_preSinDscto.Text) - ntoti;    // valor del descuento
+                double vdscto = double.Parse(tx_ImpDsctoD.Text);
                 ncant = double.Parse(tx_d_can.Text);
                 if (ntoti > 0)
                 {
@@ -5480,6 +5529,7 @@ namespace iOMG
             if (e.ToString().Trim() == "") tx_status.Visible = false;
             else tx_status.Visible = true;
         }
+
     }
     public class docsAnticip                                                // comprobantes de anticipo
     {
