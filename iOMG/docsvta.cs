@@ -284,7 +284,7 @@ namespace iOMG
             tx_telef1.MaxLength = 15;                   // ancho del campo numeroTel1 de la tabla anagrafiche
             tx_telef2.MaxLength = 15;                   // ancho del campo numerotel2 de la tabla anagrafiche
             tx_numOpe.MaxLength = 25;                   // este campo debe grabarse en todos lados .. referen1 tabla cabfactu
-            tx_coment.MaxLength = 240;
+            tx_coment.MaxLength = 100;                  // 27-10-2022 se imprime este comentario y va al xml-pdf
             tx_corre.CharacterCasing = CharacterCasing.Upper;
             //
             tx_d_nom.MaxLength = 90;                    // ancho del campo nombr de la maestra de items
@@ -1121,7 +1121,7 @@ namespace iOMG
             tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
             tx_totcant.Text = tbul.ToString();
         }
-        private void recalDet()
+        private void recalDet()                             // CALCULA valores de precios detalle
         {
             int cant = 0;
             int.TryParse(tx_d_can.Text, out cant);
@@ -1130,7 +1130,7 @@ namespace iOMG
             double desc = 0;
             double.TryParse(tx_ImpDsctoD.Text, out desc);
             tx_d_ptot.Text = (cant * preSin).ToString("#0.00");
-            tx_d_precio.Text = (double.Parse(tx_d_ptot.Text) - desc).ToString("#0.00");
+            tx_d_precio.Text = (Math.Round(double.Parse(tx_d_ptot.Text) - desc,6)).ToString("#0.00");
         }
 
         #region autocompletados
@@ -1881,12 +1881,12 @@ namespace iOMG
                         }
                         else
                         {
+                            tx_d_preSinDscto.ReadOnly = true;
                             if (v_cnprd == "S") // ser permite cambiar nombres para efecto del comprobante? S=si | N=no
                             {
                                 tx_d_nom.ReadOnly = false;
                                 tx_d_med.ReadOnly = false;
                                 tx_d_mad.ReadOnly = false;
-                                tx_d_preSinDscto.ReadOnly = true;
                             }
                         }
                     }
@@ -2138,15 +2138,15 @@ namespace iOMG
                 //
                 tx_d_antic.Left = 3;    // 28
                 tx_d_antic.Top = 5;
-                tx_d_antic.Width = 720;
-                tx_d_antic.Height = 50; // 40
+                tx_d_antic.Width = 727;
+                tx_d_antic.Height = 45; // 40
                 tx_d_antic.Multiline = true;
                 tx_d_antic.Visible = true;
                 tx_d_antic.Text = letiden;
                 //
                 tx_d_valAntic.Left = 728;
                 tx_d_valAntic.Top = 5;
-                tx_d_valAntic.Height = 50;  // 40
+                tx_d_valAntic.Height = 45;  // 40
                 tx_d_valAntic.Multiline = true;
                 tx_d_valAntic.Visible = true;
                 //
@@ -2680,7 +2680,7 @@ namespace iOMG
                         if (row.Cells[2].Value != null && row.Cells[2].Value.ToString() == "")      // anticipo
                         {
                             string inserd2 = "update detfactu set " +
-                                "contrato=@cont,descpro=@desc,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta " +
+                                "contrato=@cont,descpro=@desc,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@dscto " +
                                 "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
                             using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
                             {
@@ -2696,6 +2696,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
                                 micon.Parameters.AddWithValue("@pagaut", "S");
                                 micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                micon.Parameters.AddWithValue("@dscto", 0); // decimal.Parse(row.Cells[11].Value.ToString())
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
@@ -2731,7 +2732,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
                                 micon.Parameters.AddWithValue("@pagaut", "S");
                                 micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
-                                micon.Parameters.AddWithValue("@vesta", (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString()));
+                                micon.Parameters.AddWithValue("@vesta", decimal.Parse(row.Cells[11].Value.ToString()));  // (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString())
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
@@ -3230,7 +3231,8 @@ namespace iOMG
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
-                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                //Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                Observacion = tx_coment.Text.Trim(),
                 //FechaIngresoPais = "22/02/2022",
                 //FechaIngresoEstablecimiento = "22/02/2022",
                 //FechaSalidaEstablecimiento = "22/02/2022",
@@ -3706,7 +3708,8 @@ namespace iOMG
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
-                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "" && tx_tipComp.Text != "C") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                //Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "" && tx_tipComp.Text != "C") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                Observacion = tx_coment.Text,
                 //FechaIngresoPais = "22/02/2022",
                 //FechaIngresoEstablecimiento = "22/02/2022",
                 //FechaSalidaEstablecimiento = "22/02/2022",
@@ -4055,7 +4058,8 @@ namespace iOMG
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
-                Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                //Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
+                Observacion = tx_coment.Text.Trim(),
                 //FechaIngresoPais = "22/02/2022",
                 //FechaIngresoEstablecimiento = "22/02/2022",
                 //FechaSalidaEstablecimiento = "22/02/2022",
@@ -5375,7 +5379,22 @@ namespace iOMG
                         recto = new RectangleF(puntoF, siz);
                         e.Graphics.DrawString(tx_valor.Text, lt_peq, Brushes.Black, recto, alder);
                     }
-                    posi = posi + alfi * 2;
+                    if (tx_coment.Text.Trim() != "")
+                    {
+                        posi = posi + alfi * 2;
+                        puntoF = new PointF(coli, posi);
+                        string Vobs = "Observ.: " + tx_coment.Text.Trim();
+                        if (Vobs.Length <= 30) siz = new SizeF(lib.CentimeterToPixel(anchTik), alfi);
+                        else siz = new SizeF(lib.CentimeterToPixel(anchTik), alfi * 2);
+                        recto = new RectangleF(puntoF, siz);
+                        e.Graphics.DrawString(Vobs, lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                        if (Vobs.Length <= 30) posi = posi + alfi;
+                        else posi = posi + alfi + alfi;
+                    }
+                    else
+                    {
+                        posi = posi + alfi * 2;
+                    }
                     puntoF = new PointF(coli, posi);
                     NumLetra nl = new NumLetra();
                     string monlet = "SON: " + nl.Convertir(tx_valor.Text.ToString(), true);
