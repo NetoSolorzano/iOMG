@@ -2902,6 +2902,7 @@ namespace iOMG
         {
             string retorna = "";
             int cta_ron = 1;
+            decimal v_totDscto = 0;
             List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
             foreach (DataGridViewRow ron in dataGridView1.Rows)
             {
@@ -2946,6 +2947,18 @@ namespace iOMG
                         ((decimal.Parse(v_igv) / 100) + 1));
                     decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
                         ((decimal.Parse(v_igv) / 100) + 1);
+                    decimal v_dsctofila = 0;
+                    decimal v_dsctobase = 0;
+                    decimal v_dsctoNume = 0;
+                    string v_dsctoLetr = "0.00";
+                    if (ron.Cells[11].Value.ToString() != "" && ron.Cells[11].Value.ToString() != "0" && ron.Cells[11].Value.ToString() != "0.00")
+                    {
+                        v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());
+                        v_dsctobase = v_valTotal + v_dsctofila;
+                        v_dsctoNume = (v_dsctofila * 100) / v_dsctobase;
+                        v_dsctoLetr = v_dsctoNume.ToString();
+                        v_totDscto = v_totDscto + v_dsctofila;
+                    }
                     CComprobanteDetalle det = new CComprobanteDetalle
                     {
                         ID = 0,
@@ -2976,7 +2989,7 @@ namespace iOMG
                         CantidadReferencial = 1,
                         Cargo = 0,
                         DescuentoGlobal = 0,
-                        Descuento = 0,
+                        Descuento = decimal.Parse(ron.Cells[11].Value.ToString()),
                         ValorUnitario = v_valorUnit,
                         ValorVentaItem = v_valorUnit * v_cant,
                         ValorVentaItemXML = v_valorUnit * v_cant,
@@ -2988,7 +3001,7 @@ namespace iOMG
                         IGV = v_valIgvTot,
                         ICBPERItem = 0,
                         ICBPERSubTotal = 0,
-                        DescuentoBase = 0,
+                        DescuentoBase = v_dsctobase,
                         DescuentoCargo = 0,
                         DescuentoCargoGravado = 0,
                         CargoItem = 0,
@@ -3017,8 +3030,8 @@ namespace iOMG
                         PrecioCodigo = 0,
                         PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
                         Peso = 0,
-                        DescuentoMonto = 0,
-                        DescuentoPorcentaje = "0.00",
+                        DescuentoMonto = v_dsctoNume,
+                        DescuentoPorcentaje = v_dsctoLetr,
                         TipoAfectacionIGVCodigo = "10",                     // Sunat Catalogo 7 - Venta grabada operación onerosa
                         ValorVenta = v_valTotal,
                         Ganancia = 0,
@@ -3167,7 +3180,7 @@ namespace iOMG
                 Exportacion = 0,
                 OperacionNoGravada = 0,
                 Gratuito = 0,
-                TotalDescuentos = 0,
+                TotalDescuentos = v_totDscto,
                 DescuentoGlobal = 0,
                 TotalAnticipos = 0,
                 BANDERA_CONCURRENCIA = false,
