@@ -82,6 +82,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.tx_telef2 = new iOMG.NumericTextBox();
+            this.tx_telef1 = new iOMG.NumericTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tx_mail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -94,6 +96,7 @@
             this.tx_nombre = new System.Windows.Forms.TextBox();
             this.cmb_tdoc = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.tx_ndc = new iOMG.NumericTextBox();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.tx_dat_estad = new System.Windows.Forms.TextBox();
             this.tx_dat_orig = new System.Windows.Forms.TextBox();
@@ -109,9 +112,7 @@
             this.cmb_tipo = new System.Windows.Forms.ComboBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lb_totDet = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
+            this.tx_ImpDsctoD = new iOMG.NumericTextBox();
             this.tx_d_ptot = new System.Windows.Forms.TextBox();
             this.tx_d_preSinDscto = new System.Windows.Forms.TextBox();
             this.tx_d_valAntic = new System.Windows.Forms.TextBox();
@@ -133,6 +134,9 @@
             this.tx_d_can = new System.Windows.Forms.TextBox();
             this.tx_d_id = new System.Windows.Forms.TextBox();
             this.tx_d_it = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.lb_totDet = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tx_coment = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -143,6 +147,9 @@
             this.rb_bienes = new System.Windows.Forms.RadioButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
+            this.tx_impMedios = new iOMG.NumericTextBox();
+            this.milinea4 = new iOMG.milinea();
+            this.milinea8 = new iOMG.milinea();
             this.tx_cuotas = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.rb_credito = new System.Windows.Forms.RadioButton();
@@ -182,13 +189,6 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_impMedios = new iOMG.NumericTextBox();
-            this.milinea4 = new iOMG.milinea();
-            this.milinea8 = new iOMG.milinea();
-            this.tx_telef2 = new iOMG.NumericTextBox();
-            this.tx_telef1 = new iOMG.NumericTextBox();
-            this.tx_ndc = new iOMG.NumericTextBox();
-            this.tx_ImpDsctoD = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -200,8 +200,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.pan_tipo.SuspendLayout();
             this.milinea4.SuspendLayout();
+            this.pan_tipo.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -747,6 +747,22 @@
             this.label5.TabIndex = 358;
             this.label5.Text = "Dist.";
             // 
+            // tx_telef2
+            // 
+            this.tx_telef2.AllowSpace = false;
+            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
+            this.tx_telef2.Name = "tx_telef2";
+            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef2.TabIndex = 13;
+            // 
+            // tx_telef1
+            // 
+            this.tx_telef1.AllowSpace = false;
+            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
+            this.tx_telef1.Name = "tx_telef1";
+            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
+            this.tx_telef1.TabIndex = 12;
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -858,6 +874,15 @@
             this.label11.Size = new System.Drawing.Size(39, 13);
             this.label11.TabIndex = 345;
             this.label11.Text = "Cliente";
+            // 
+            // tx_ndc
+            // 
+            this.tx_ndc.AllowSpace = false;
+            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
+            this.tx_ndc.Name = "tx_ndc";
+            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
+            this.tx_ndc.TabIndex = 5;
+            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
             // 
             // dtp_pedido
             // 
@@ -1020,33 +1045,15 @@
             this.panel1.Size = new System.Drawing.Size(869, 58);
             this.panel1.TabIndex = 14;
             // 
-            // lb_totDet
+            // tx_ImpDsctoD
             // 
-            this.lb_totDet.AutoSize = true;
-            this.lb_totDet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_totDet.Location = new System.Drawing.Point(677, 35);
-            this.lb_totDet.Name = "lb_totDet";
-            this.lb_totDet.Size = new System.Drawing.Size(36, 13);
-            this.lb_totDet.TabIndex = 323;
-            this.lb_totDet.Text = "Total";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(548, 35);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(59, 13);
-            this.label24.TabIndex = 321;
-            this.label24.Text = "Descuento";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(412, 35);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(64, 13);
-            this.label23.TabIndex = 319;
-            this.label23.Text = "Precio Total";
+            this.tx_ImpDsctoD.AllowSpace = false;
+            this.tx_ImpDsctoD.Location = new System.Drawing.Point(608, 31);
+            this.tx_ImpDsctoD.Name = "tx_ImpDsctoD";
+            this.tx_ImpDsctoD.Size = new System.Drawing.Size(62, 20);
+            this.tx_ImpDsctoD.TabIndex = 7;
+            this.tx_ImpDsctoD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_ImpDsctoD.Leave += new System.EventHandler(this.tx_ImpDsctoD_Leave);
             // 
             // tx_d_ptot
             // 
@@ -1254,6 +1261,34 @@
             this.tx_d_it.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_d_it.Visible = false;
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(412, 35);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(64, 13);
+            this.label23.TabIndex = 319;
+            this.label23.Text = "Precio Total";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(546, 35);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(62, 13);
+            this.label24.TabIndex = 321;
+            this.label24.Text = "Dscto.Total";
+            // 
+            // lb_totDet
+            // 
+            this.lb_totDet.AutoSize = true;
+            this.lb_totDet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lb_totDet.Location = new System.Drawing.Point(677, 35);
+            this.lb_totDet.Name = "lb_totDet";
+            this.lb_totDet.Size = new System.Drawing.Size(36, 13);
+            this.lb_totDet.TabIndex = 323;
+            this.lb_totDet.Text = "Total";
+            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -1358,6 +1393,35 @@
             this.label20.Size = new System.Drawing.Size(93, 13);
             this.label20.TabIndex = 411;
             this.label20.Text = "Importe en medios";
+            // 
+            // tx_impMedios
+            // 
+            this.tx_impMedios.AllowSpace = false;
+            this.tx_impMedios.Location = new System.Drawing.Point(229, 3);
+            this.tx_impMedios.Name = "tx_impMedios";
+            this.tx_impMedios.ReadOnly = true;
+            this.tx_impMedios.Size = new System.Drawing.Size(73, 20);
+            this.tx_impMedios.TabIndex = 401;
+            this.tx_impMedios.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // milinea4
+            // 
+            this.milinea4.Controls.Add(this.milinea8);
+            this.milinea4.Location = new System.Drawing.Point(3, 22);
+            this.milinea4.Name = "milinea4";
+            this.milinea4.Size = new System.Drawing.Size(355, 1);
+            this.milinea4.TabIndex = 395;
+            this.milinea4.TabStop = false;
+            this.milinea4.Text = "milinea4";
+            // 
+            // milinea8
+            // 
+            this.milinea8.Location = new System.Drawing.Point(212, 0);
+            this.milinea8.Name = "milinea8";
+            this.milinea8.Size = new System.Drawing.Size(212, 1);
+            this.milinea8.TabIndex = 411;
+            this.milinea8.TabStop = false;
+            this.milinea8.Text = "milinea8";
             // 
             // tx_cuotas
             // 
@@ -1729,70 +1793,6 @@
             this.tx_valor.TabIndex = 397;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tx_impMedios
-            // 
-            this.tx_impMedios.AllowSpace = false;
-            this.tx_impMedios.Location = new System.Drawing.Point(229, 3);
-            this.tx_impMedios.Name = "tx_impMedios";
-            this.tx_impMedios.ReadOnly = true;
-            this.tx_impMedios.Size = new System.Drawing.Size(73, 20);
-            this.tx_impMedios.TabIndex = 401;
-            this.tx_impMedios.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // milinea4
-            // 
-            this.milinea4.Controls.Add(this.milinea8);
-            this.milinea4.Location = new System.Drawing.Point(3, 22);
-            this.milinea4.Name = "milinea4";
-            this.milinea4.Size = new System.Drawing.Size(355, 1);
-            this.milinea4.TabIndex = 395;
-            this.milinea4.TabStop = false;
-            this.milinea4.Text = "milinea4";
-            // 
-            // milinea8
-            // 
-            this.milinea8.Location = new System.Drawing.Point(212, 0);
-            this.milinea8.Name = "milinea8";
-            this.milinea8.Size = new System.Drawing.Size(212, 1);
-            this.milinea8.TabIndex = 411;
-            this.milinea8.TabStop = false;
-            this.milinea8.Text = "milinea8";
-            // 
-            // tx_telef2
-            // 
-            this.tx_telef2.AllowSpace = false;
-            this.tx_telef2.Location = new System.Drawing.Point(490, 50);
-            this.tx_telef2.Name = "tx_telef2";
-            this.tx_telef2.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef2.TabIndex = 13;
-            // 
-            // tx_telef1
-            // 
-            this.tx_telef1.AllowSpace = false;
-            this.tx_telef1.Location = new System.Drawing.Point(405, 50);
-            this.tx_telef1.Name = "tx_telef1";
-            this.tx_telef1.Size = new System.Drawing.Size(82, 20);
-            this.tx_telef1.TabIndex = 12;
-            // 
-            // tx_ndc
-            // 
-            this.tx_ndc.AllowSpace = false;
-            this.tx_ndc.Location = new System.Drawing.Point(101, 4);
-            this.tx_ndc.Name = "tx_ndc";
-            this.tx_ndc.Size = new System.Drawing.Size(90, 20);
-            this.tx_ndc.TabIndex = 5;
-            this.tx_ndc.Leave += new System.EventHandler(this.valDocClte_Leave);
-            // 
-            // tx_ImpDsctoD
-            // 
-            this.tx_ImpDsctoD.AllowSpace = false;
-            this.tx_ImpDsctoD.Location = new System.Drawing.Point(608, 31);
-            this.tx_ImpDsctoD.Name = "tx_ImpDsctoD";
-            this.tx_ImpDsctoD.Size = new System.Drawing.Size(62, 20);
-            this.tx_ImpDsctoD.TabIndex = 7;
-            this.tx_ImpDsctoD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tx_ImpDsctoD.Leave += new System.EventHandler(this.tx_ImpDsctoD_Leave);
-            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1876,9 +1876,9 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.milinea4.ResumeLayout(false);
             this.pan_tipo.ResumeLayout(false);
             this.pan_tipo.PerformLayout();
-            this.milinea4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

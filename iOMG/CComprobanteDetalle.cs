@@ -94,6 +94,7 @@ namespace iOMG
         public decimal CargoNeto { get; set; }
         public decimal ISCMonto { get; set; }
         public bool PrecioUnitarioRecuperado { get; set; }
+        public decimal PrecioUnitarioNeto { get; set; }
         public string UUID { get; set; }
         public bool BANDERA_CONCURRENCIA { get; set; }
         public bool BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE { get; set; }
