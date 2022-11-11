@@ -189,6 +189,12 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.milinea9 = new iOMG.milinea();
+            this.label25 = new System.Windows.Forms.Label();
+            this.tx_desGlob = new iOMG.NumericTextBox();
+            this.milinea10 = new iOMG.milinea();
+            this.label26 = new System.Windows.Forms.Label();
+            this.tx_subtot = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1043,7 +1049,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 140);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(869, 58);
-            this.panel1.TabIndex = 14;
+            this.panel1.TabIndex = 5;
             // 
             // tx_ImpDsctoD
             // 
@@ -1295,23 +1301,22 @@
             this.dataGridView1.Location = new System.Drawing.Point(4, 201);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView1.Size = new System.Drawing.Size(869, 156);
-            this.dataGridView1.TabIndex = 369;
+            this.dataGridView1.Size = new System.Drawing.Size(869, 143);
+            this.dataGridView1.TabIndex = 15;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
             // tx_coment
             // 
-            this.tx_coment.Location = new System.Drawing.Point(70, 393);
-            this.tx_coment.Multiline = true;
+            this.tx_coment.Location = new System.Drawing.Point(70, 403);
             this.tx_coment.Name = "tx_coment";
-            this.tx_coment.Size = new System.Drawing.Size(517, 31);
-            this.tx_coment.TabIndex = 16;
+            this.tx_coment.Size = new System.Drawing.Size(517, 20);
+            this.tx_coment.TabIndex = 22;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 402);
+            this.label1.Location = new System.Drawing.Point(3, 406);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 370;
@@ -1380,7 +1385,7 @@
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.rb_credito);
             this.panel3.Controls.Add(this.rb_contado);
-            this.panel3.Location = new System.Drawing.Point(4, 363);
+            this.panel3.Location = new System.Drawing.Point(4, 375);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(305, 26);
             this.panel3.TabIndex = 15;
@@ -1470,7 +1475,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(221, 397);
+            this.label16.Location = new System.Drawing.Point(519, 379);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(57, 13);
             this.label16.TabIndex = 410;
@@ -1479,9 +1484,9 @@
             // 
             // tx_numOpe
             // 
-            this.tx_numOpe.Location = new System.Drawing.Point(278, 392);
+            this.tx_numOpe.Location = new System.Drawing.Point(576, 374);
             this.tx_numOpe.Name = "tx_numOpe";
-            this.tx_numOpe.Size = new System.Drawing.Size(146, 20);
+            this.tx_numOpe.Size = new System.Drawing.Size(28, 20);
             this.tx_numOpe.TabIndex = 396;
             this.tx_numOpe.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_numOpe.Visible = false;
@@ -1492,7 +1497,7 @@
             this.cmb_plazo.DropDownWidth = 100;
             this.cmb_plazo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_plazo.FormattingEnabled = true;
-            this.cmb_plazo.Location = new System.Drawing.Point(16, 408);
+            this.cmb_plazo.Location = new System.Drawing.Point(48, 350);
             this.cmb_plazo.Name = "cmb_plazo";
             this.cmb_plazo.Size = new System.Drawing.Size(98, 21);
             this.cmb_plazo.TabIndex = 1;
@@ -1502,7 +1507,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(610, 364);
+            this.label8.Location = new System.Drawing.Point(613, 353);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(43, 13);
             this.label8.TabIndex = 399;
@@ -1511,7 +1516,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(610, 386);
+            this.label21.Location = new System.Drawing.Point(613, 380);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(25, 13);
             this.label21.TabIndex = 398;
@@ -1520,7 +1525,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(610, 408);
+            this.label9.Location = new System.Drawing.Point(613, 407);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(42, 13);
             this.label9.TabIndex = 396;
@@ -1529,10 +1534,10 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(786, 367);
+            this.button1.Location = new System.Drawing.Point(790, 360);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 50);
-            this.button1.TabIndex = 17;
+            this.button1.TabIndex = 23;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -1556,7 +1561,7 @@
             // 
             // tx_dat_plazo
             // 
-            this.tx_dat_plazo.Location = new System.Drawing.Point(471, 369);
+            this.tx_dat_plazo.Location = new System.Drawing.Point(471, 381);
             this.tx_dat_plazo.Name = "tx_dat_plazo";
             this.tx_dat_plazo.Size = new System.Drawing.Size(64, 20);
             this.tx_dat_plazo.TabIndex = 412;
@@ -1564,7 +1569,7 @@
             // 
             // tx_dat_mone
             // 
-            this.tx_dat_mone.Location = new System.Drawing.Point(750, 361);
+            this.tx_dat_mone.Location = new System.Drawing.Point(753, 350);
             this.tx_dat_mone.Name = "tx_dat_mone";
             this.tx_dat_mone.Size = new System.Drawing.Size(31, 20);
             this.tx_dat_mone.TabIndex = 413;
@@ -1572,7 +1577,7 @@
             // 
             // tx_tfil
             // 
-            this.tx_tfil.Location = new System.Drawing.Point(315, 357);
+            this.tx_tfil.Location = new System.Drawing.Point(315, 381);
             this.tx_tfil.Name = "tx_tfil";
             this.tx_tfil.ReadOnly = true;
             this.tx_tfil.Size = new System.Drawing.Size(31, 20);
@@ -1581,7 +1586,7 @@
             // 
             // tx_prdsCont
             // 
-            this.tx_prdsCont.Location = new System.Drawing.Point(471, 357);
+            this.tx_prdsCont.Location = new System.Drawing.Point(452, 381);
             this.tx_prdsCont.Name = "tx_prdsCont";
             this.tx_prdsCont.ReadOnly = true;
             this.tx_prdsCont.Size = new System.Drawing.Size(31, 20);
@@ -1599,16 +1604,16 @@
             this.cmb_mon.DropDownWidth = 100;
             this.cmb_mon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmb_mon.FormattingEnabled = true;
-            this.cmb_mon.Location = new System.Drawing.Point(550, 359);
+            this.cmb_mon.Location = new System.Drawing.Point(553, 348);
             this.cmb_mon.Name = "cmb_mon";
             this.cmb_mon.Size = new System.Drawing.Size(50, 21);
-            this.cmb_mon.TabIndex = 416;
+            this.cmb_mon.TabIndex = 18;
             this.cmb_mon.SelectedIndexChanged += new System.EventHandler(this.cmb_mon_SelectedIndexChanged);
             this.cmb_mon.SelectionChangeCommitted += new System.EventHandler(this.cmb_mon_SelectionChangeCommitted);
             // 
             // tx_tipComp
             // 
-            this.tx_tipComp.Location = new System.Drawing.Point(435, 357);
+            this.tx_tipComp.Location = new System.Drawing.Point(420, 381);
             this.tx_tipComp.Name = "tx_tipComp";
             this.tx_tipComp.Size = new System.Drawing.Size(31, 20);
             this.tx_tipComp.TabIndex = 417;
@@ -1661,7 +1666,7 @@
             // 
             // tx_dat_mon_s
             // 
-            this.tx_dat_mon_s.Location = new System.Drawing.Point(750, 383);
+            this.tx_dat_mon_s.Location = new System.Drawing.Point(752, 377);
             this.tx_dat_mon_s.Name = "tx_dat_mon_s";
             this.tx_dat_mon_s.Size = new System.Drawing.Size(31, 20);
             this.tx_dat_mon_s.TabIndex = 420;
@@ -1686,7 +1691,7 @@
             // 
             // tx_totcant
             // 
-            this.tx_totcant.Location = new System.Drawing.Point(352, 357);
+            this.tx_totcant.Location = new System.Drawing.Point(352, 381);
             this.tx_totcant.Name = "tx_totcant";
             this.tx_totcant.ReadOnly = true;
             this.tx_totcant.Size = new System.Drawing.Size(31, 20);
@@ -1695,7 +1700,7 @@
             // 
             // tx_dat_monNom
             // 
-            this.tx_dat_monNom.Location = new System.Drawing.Point(750, 404);
+            this.tx_dat_monNom.Location = new System.Drawing.Point(752, 402);
             this.tx_dat_monNom.Name = "tx_dat_monNom";
             this.tx_dat_monNom.Size = new System.Drawing.Size(31, 20);
             this.tx_dat_monNom.TabIndex = 424;
@@ -1712,7 +1717,7 @@
             // 
             // milinea6
             // 
-            this.milinea6.Location = new System.Drawing.Point(601, 401);
+            this.milinea6.Location = new System.Drawing.Point(604, 395);
             this.milinea6.Name = "milinea6";
             this.milinea6.Size = new System.Drawing.Size(142, 1);
             this.milinea6.TabIndex = 410;
@@ -1721,7 +1726,7 @@
             // 
             // milinea7
             // 
-            this.milinea7.Location = new System.Drawing.Point(601, 423);
+            this.milinea7.Location = new System.Drawing.Point(604, 422);
             this.milinea7.Name = "milinea7";
             this.milinea7.Size = new System.Drawing.Size(142, 1);
             this.milinea7.TabIndex = 411;
@@ -1730,7 +1735,7 @@
             // 
             // milinea5
             // 
-            this.milinea5.Location = new System.Drawing.Point(601, 379);
+            this.milinea5.Location = new System.Drawing.Point(604, 368);
             this.milinea5.Name = "milinea5";
             this.milinea5.Size = new System.Drawing.Size(142, 1);
             this.milinea5.TabIndex = 409;
@@ -1767,37 +1772,99 @@
             // tx_bruto
             // 
             this.tx_bruto.AllowSpace = false;
-            this.tx_bruto.Location = new System.Drawing.Point(670, 360);
+            this.tx_bruto.Location = new System.Drawing.Point(673, 349);
             this.tx_bruto.Name = "tx_bruto";
             this.tx_bruto.ReadOnly = true;
             this.tx_bruto.Size = new System.Drawing.Size(73, 20);
-            this.tx_bruto.TabIndex = 400;
+            this.tx_bruto.TabIndex = 19;
             this.tx_bruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tx_igv
             // 
             this.tx_igv.AllowSpace = false;
-            this.tx_igv.Location = new System.Drawing.Point(670, 382);
+            this.tx_igv.Location = new System.Drawing.Point(673, 376);
             this.tx_igv.Name = "tx_igv";
             this.tx_igv.Size = new System.Drawing.Size(73, 20);
-            this.tx_igv.TabIndex = 395;
+            this.tx_igv.TabIndex = 20;
             this.tx_igv.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tx_valor
             // 
             this.tx_valor.AllowSpace = false;
-            this.tx_valor.Location = new System.Drawing.Point(670, 404);
+            this.tx_valor.Location = new System.Drawing.Point(673, 403);
             this.tx_valor.Name = "tx_valor";
             this.tx_valor.ReadOnly = true;
             this.tx_valor.Size = new System.Drawing.Size(73, 20);
-            this.tx_valor.TabIndex = 397;
+            this.tx_valor.TabIndex = 21;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // milinea9
+            // 
+            this.milinea9.Location = new System.Drawing.Point(359, 368);
+            this.milinea9.Name = "milinea9";
+            this.milinea9.Size = new System.Drawing.Size(170, 1);
+            this.milinea9.TabIndex = 428;
+            this.milinea9.TabStop = false;
+            this.milinea9.Text = "milinea9";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(361, 353);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(92, 13);
+            this.label25.TabIndex = 427;
+            this.label25.Text = "DSCTO. GLOBAL";
+            // 
+            // tx_desGlob
+            // 
+            this.tx_desGlob.AllowSpace = false;
+            this.tx_desGlob.Location = new System.Drawing.Point(456, 349);
+            this.tx_desGlob.Name = "tx_desGlob";
+            this.tx_desGlob.Size = new System.Drawing.Size(73, 20);
+            this.tx_desGlob.TabIndex = 17;
+            this.tx_desGlob.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_desGlob.Leave += new System.EventHandler(this.tx_desGlob_Leave);
+            // 
+            // milinea10
+            // 
+            this.milinea10.Location = new System.Drawing.Point(184, 368);
+            this.milinea10.Name = "milinea10";
+            this.milinea10.Size = new System.Drawing.Size(157, 1);
+            this.milinea10.TabIndex = 431;
+            this.milinea10.TabStop = false;
+            this.milinea10.Text = "milinea10";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(186, 353);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(67, 13);
+            this.label26.TabIndex = 430;
+            this.label26.Text = "SUB TOTAL";
+            // 
+            // tx_subtot
+            // 
+            this.tx_subtot.AllowSpace = false;
+            this.tx_subtot.Location = new System.Drawing.Point(268, 349);
+            this.tx_subtot.Name = "tx_subtot";
+            this.tx_subtot.ReadOnly = true;
+            this.tx_subtot.Size = new System.Drawing.Size(73, 20);
+            this.tx_subtot.TabIndex = 16;
+            this.tx_subtot.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.milinea10);
+            this.Controls.Add(this.label26);
+            this.Controls.Add(this.tx_subtot);
+            this.Controls.Add(this.milinea9);
+            this.Controls.Add(this.label25);
+            this.Controls.Add(this.tx_desGlob);
             this.Controls.Add(this.tx_pdf_rapifac);
             this.Controls.Add(this.tx_dat_monNom);
             this.Controls.Add(this.tx_totcant);
@@ -2046,5 +2113,11 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox tx_d_ptot;
         private NumericTextBox tx_ImpDsctoD;
+        private milinea milinea9;
+        private System.Windows.Forms.Label label25;
+        private NumericTextBox tx_desGlob;
+        private milinea milinea10;
+        private System.Windows.Forms.Label label26;
+        private NumericTextBox tx_subtot;
     }
 }
