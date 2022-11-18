@@ -92,6 +92,7 @@ namespace iOMG
         string clave = "";                  // clave del dni/usuario
         string id_clte = "";                // identificador clave
         string rut_pdf = "";                // ruta web del pdf en servidor Rapifac
+        string rut_xml = "";                // ruta para descargar el xml de rapifac
         string cod_umed = "";               // codigo unidad de medida
         string nom_umed = "";               // nombre unidad de medida
         string mailPrin = "";               // correo electrónico principal
@@ -339,6 +340,7 @@ namespace iOMG
                             if (row["param"].ToString() == "clave") clave = row["valor"].ToString().Trim();                 // clave del dni/usuario
                             if (row["param"].ToString() == "id_clte") id_clte = row["valor"].ToString().Trim();             // identificador clave
                             if (row["param"].ToString() == "ruta_pdf") rut_pdf = row["valor"].ToString().Trim();            // ruta web del pdf en Rapifac
+                            if (row["param"].ToString() == "ruta_xml") rut_xml = row["valor"].ToString().Trim();            // ruta web para descargar el xml en Rapifac
                             if (row["param"].ToString() == "cod_uMed") cod_umed = row["valor"].ToString().Trim();           // codigo unidad de medida
                             if (row["param"].ToString() == "nom_uMed") nom_umed = row["valor"].ToString().Trim();           // nombre unidad de medida
                             if (row["param"].ToString() == "mail_prin1") mailPrin = row["valor"].ToString().Trim();           // correo electronico principal
@@ -465,7 +467,18 @@ namespace iOMG
                             tx_tipComp.Text = dr.GetString("tipdcob");
                             tx_id_rapifac.Text = dr.GetString("idpse_ose");
                             tx_pdf_rapifac.Text = dr.GetString("pdfpse_ose");
+                            tx_desGlob.Text = dr.GetString("valordscto");
+                            tx_subtot.Text = (dr.GetDouble("subtota") + dr.GetDouble("valordscto")).ToString("#0.00");
+                            tx_valor.Text = dr.GetDouble("totdvta").ToString("#0.00");
+                            tx_bruto.Text = dr.GetDouble("subtota").ToString("#0.00");    // (ntoti / 1.18).ToString("#0.00");
+                            tx_igv.Text = dr.GetDouble("igvtota").ToString("#0.00");
                         }
+                        if (tx_tipComp.Text == "A" || tx_tipComp.Text == "C")
+                        {
+                            rb_antic.Checked = true;
+                        }
+                        else rb_bienes.Checked = true;
+
                         dr.Dispose();
                         if (tx_idr.Text != "")
                         {
@@ -526,12 +539,21 @@ namespace iOMG
             }
             jaladet(tx_idr.Text);
             cosas_pagamenti();                              // llenamos lista de pagos si es cancelacion
-            suma_grilla();
+            // suma_grilla();
         }
         private void jaladet(string idr)                    // jala el detalle 
         {
-            string jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto " +
-                "FROM detfactu where idc=@idr";
+            string jalad = "";
+            if (rb_antic.Checked == true)
+            {
+                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,if(cantbul>0,'A',space(1)),dscto,totSinDscto " +
+                    "FROM detfactu where idc=@idr";
+            }
+            else
+            {
+                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto " +
+                    "FROM detfactu where idc=@idr";
+            }
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
             conn.Open();
             if (conn.State == ConnectionState.Open)
@@ -829,12 +851,9 @@ namespace iOMG
                     tx_ImpDsctoD.ReadOnly = true;
                     tx_ImpDsctoD.Text = "0.00";
                 }
+                tx_desGlob.Text = "0";
                 if (vSNdsctoC == "S") tx_desGlob.Enabled = true;
-                else
-                {
-                    tx_desGlob.Text = "0";
-                    tx_desGlob.Enabled = false;
-                }
+                else tx_desGlob.Enabled = false;
             }
             lb_totDet.Text = lb_totDet.Text + " " + cmb_mon.Text;
             ini_pagos();
@@ -1501,7 +1520,9 @@ namespace iOMG
         {
             if (tx_corre.Text != "" && Tx_modo.Text != "")
             {
-                string rutaT = rut_pdf + tx_pdf_rapifac.Text;  // tx_id_rapifac.Text;
+                string rutaT = rut_pdf + tx_pdf_rapifac.Text;
+                string rutXml = rut_xml + tx_pdf_rapifac.Text;
+                System.Diagnostics.Process.Start(rutXml);
                 System.Diagnostics.Process.Start(rutaT);
             }
         }
@@ -1955,12 +1976,13 @@ namespace iOMG
                         {
                             dataGridView1.Rows.Insert(0, dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_antic.Text, tx_d_med.Text,
                                         tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A");
-
-                            tx_valor.Text = ntoti.ToString("#0.00");
-                            tx_bruto.Text = (ntoti / 1.18).ToString("#0.00");
-                            tx_igv.Text = (ntoti - (ntoti / 1.18)).ToString("#0.00");
+                            tx_subtot.Text = (ntoti).ToString("#0.00");
+                            tx_valor.Text = (ntoti - double.Parse(tx_desGlob.Text)).ToString("#0.00");
+                            tx_bruto.Text = (double.Parse(tx_valor.Text) / 1.18).ToString("#0.00");
+                            tx_igv.Text = (double.Parse(tx_valor.Text) - (double.Parse(tx_valor.Text) / 1.18)).ToString("#0.00");
                         }
                         tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+                        tx_desGlob.ReadOnly = false;
                     }
                 }
             }
@@ -2320,84 +2342,89 @@ namespace iOMG
         #region botones de grabar y agregar
         private void bt_det_Click(object sender, EventArgs e)
         {
-            double ntoti = 0;
-            double ncant = 0;
-            double.TryParse(tx_valor.Text, out double tv);
-
-            if (Tx_modo.Text == "NUEVO" && rb_antic.Checked == true)
+            if (Tx_modo.Text == "NUEVO")
             {
-                if (tx_d_valAntic.Text != "")
+                double ntoti = 0;
+                double ncant = 0;
+                double.TryParse(tx_valor.Text, out double tv);
+
+                if (rb_antic.Checked == true && tx_d_valAntic.Visible == true)
                 {
-                    double.TryParse(tx_d_valAntic.Text, out ntoti);
+                    if (tx_d_valAntic.Text != "")   //  && tx_cont.Text.Trim() == ""
+                    {
+                        double.TryParse(tx_d_valAntic.Text, out ntoti);
+                        if (ntoti > 0)
+                        {
+                            dataGridView1.Rows.Insert(0, dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_antic.Text, tx_d_med.Text,
+                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A", "0", "0");
+
+                        }
+                        tx_d_valAntic.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ingrese el valor del anticipo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        tx_d_valAntic.Focus();
+                        //rb_antic.Focus();
+                        return;
+                    }
+                    // DESCUENTO GLOBAL
+                    // si es vta. directa -> se habilita el dscto global
+                    // si es cancelación -> se habilita el dscto global
+                    // si anticipo NO se permite dscto global
+                    tx_desGlob.ReadOnly = false;
+                    if (tx_cont.Text.Trim() == "")
+                    {
+                        tx_desGlob.ReadOnly = true;
+                        tx_desGlob.Text = "0";
+                    }
+                }
+                if (rb_bienes.Checked == true)
+                {
+                    // validaciones
+                    if (tx_d_can.Text.Trim() == "")
+                    {
+                        MessageBox.Show("Ingrese la cantidad", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        tx_d_can.Focus();
+                        return;
+                    }
+                    if (tx_d_codi.Text.Trim() == "")
+                    {
+                        MessageBox.Show("Seleccione un artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        tx_d_codi.Focus();
+                        return;
+                    }
+                    ncant = double.Parse(tx_d_can.Text);
+                    ntoti = double.Parse(tx_d_precio.Text) / ncant;                         // precio total de la fila incluyendo descuento
+                    double vdscto = double.Parse(tx_ImpDsctoD.Text);
                     if (ntoti > 0)
                     {
-                        dataGridView1.Rows.Insert(0,dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_antic.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), ntoti.ToString("#0.00"), "A", "0", "0");
+                        if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
+                        {
+                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text); // (ntoti+vdscto).ToString()
+                        }
+                        else
+                        {
+                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text);  // (ntoti + vdscto).ToString()
+                        }
 
+                        limpia_panel(panel1);
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Ingrese el valor del anticipo","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    rb_antic.Focus();
-                    return;
-                }
-                // DESCUENTO GLOBAL
-                // si es vta. directa -> se habilita el dscto global
-                // si es cancelación -> se habilita el dscto global
-                // si anticipo NO se permite dscto global
-                tx_desGlob.ReadOnly = false;
-                if (tx_cont.Text.Trim() == "")
-                {
-                    tx_desGlob.ReadOnly = true;
-                    tx_desGlob.Text = "0";
-                }
-            }
-            if (Tx_modo.Text == "NUEVO" && rb_bienes.Checked == true)
-            {
-                // validaciones
-                if (tx_d_can.Text.Trim() == "")
-                {
-                    MessageBox.Show("Ingrese la cantidad", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    tx_d_can.Focus();
-                    return;
-                }
-                if (tx_d_codi.Text.Trim() == "")
-                {
-                    MessageBox.Show("Seleccione un artículo", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    tx_d_codi.Focus();
-                    return;
-                }
-                ncant = double.Parse(tx_d_can.Text);
-                ntoti = double.Parse(tx_d_precio.Text) / ncant;                         // precio total de la fila incluyendo descuento
-                double vdscto = double.Parse(tx_ImpDsctoD.Text);
-                if (ntoti > 0)
-                {
-                    if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
+                    else
                     {
-                        _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti*ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text); // (ntoti+vdscto).ToString()
+                        MessageBox.Show("Ingrese el precio de venta", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        tx_d_precio.Focus();
+                        return;
                     }
-                    else 
-                    {
-                        _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                    tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text);  // (ntoti + vdscto).ToString()
-                    }
-
-                    limpia_panel(panel1);
+                    // DESCUENTO GLOBAL
+                    // si es vta. directa -> se habilita el dscto global
+                    tx_desGlob.ReadOnly = false;
                 }
-                else 
-                {
-                    MessageBox.Show("Ingrese el precio de venta", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    tx_d_precio.Focus();
-                    return;
-                }
-                // DESCUENTO GLOBAL
-                // si es vta. directa -> se habilita el dscto global
-                tx_desGlob.ReadOnly = false;
+                tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+                suma_grilla();
             }
-            tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
-            suma_grilla();
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
@@ -2530,6 +2557,7 @@ namespace iOMG
                             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                             {
                                 streamWriter.Write(cabeza);
+                                System.IO.File.WriteAllText(@"c:\temp\xxx",cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -2724,7 +2752,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
                     micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
                     micon.Parameters.AddWithValue("@pordesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
-                    micon.Parameters.AddWithValue("@valdesc", "0");                 // los precios ya tienen descuento incluido, el operador pone precio
+                    micon.Parameters.AddWithValue("@valdesc", tx_desGlob.Text);                 // a partir de reunion con isacco y pedro en argentina, si van descuentos en detalle
                     micon.Parameters.AddWithValue("@refer", "");    // tx_dat_plazo.Text
                     micon.Parameters.AddWithValue("@updest", "");
                     micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
@@ -2973,6 +3001,8 @@ namespace iOMG
             int cta_ron = 1;
             decimal v_totDscto = 0;
             decimal v_preToti = 0;
+            decimal v_dgloSin = decimal.Parse(tx_desGlob.Text) / (1 + (decimal.Parse(v_igv) / 100));
+            decimal v_dgporc = Math.Round(decimal.Parse(tx_desGlob.Text) * 100 / decimal.Parse(tx_subtot.Text), 2);
             List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
             foreach (DataGridViewRow ron in dataGridView1.Rows)
             {
@@ -2982,7 +3012,7 @@ namespace iOMG
                     {
                         ProductoPrecioDTO dlp = new ProductoPrecioDTO
                         {
-                            PrecioId = 99,
+                            PrecioId = cta_ron,
                             PrecioConfiguracion = 1,
                             ProductoCod = ron.Cells[2].Value.ToString(),
                             CodigoUnidadMedida = cod_umed,              // "NIU",
@@ -3021,6 +3051,7 @@ namespace iOMG
                     decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString());           // precio individual con descuento
                     decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                     decimal v_valTotal = v_valorUnit * v_cant;
+                    decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / (dataGridView1.Rows.Count - 1) / v_cant;
                     if (ron.Cells[11].Value.ToString() != "" && ron.Cells[11].Value.ToString() != "0" && ron.Cells[11].Value.ToString() != "0.00")
                     {
                         v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
@@ -3042,10 +3073,10 @@ namespace iOMG
                         UnidadMedidaCodigo = cod_umed,                   // "NIU",
                         PrecioUnitarioSugerido = 0,
 
-                        PrecioUnitarioNeto = v_preUmdes - v_dsctoNume,       // v_preToti / v_cant - decimal.Parse(ron.Cells[11].Value.ToString()),
+                        PrecioUnitarioNeto = v_preUmdes - v_dsctoNume - v_dsctoGlob,       // v_preToti / v_cant - decimal.Parse(ron.Cells[11].Value.ToString()),
                         PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
                         CantidadUnidadMedida = v_cant,
-                        DescuentoGlobal = 0,
+                        DescuentoGlobal = v_dgloSin,
                         Descuento = v_dsctofsin,    //  decimal.Parse(ron.Cells[11].Value.ToString()),
                         ValorUnitario = v_valorUnit,
                         ValorVentaItem = v_valorUnit * v_cant,
@@ -3053,11 +3084,11 @@ namespace iOMG
                         ValorVentaNeto = v_dsctobase - v_dsctofsin,   // v_valorUnit * v_cant,  
                         ValorVentaNetoXML = 0,
                         IGV = v_valIgvTot,
-                        DescuentoBase = v_valTotal,    // v_dsctobase,    
+                        DescuentoBase = (v_dsctofsin <= 0) ? 0 : v_valTotal,    // v_dsctobase,    
                         PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
                         MontoTributo = v_valIgvTot,
 
-                        PrecioCodigo = 0,
+                        PrecioCodigo = cta_ron,
                         PrecioUnitario = v_preUmdes,    // decimal.Parse(ron.Cells[8].Value.ToString()),
                         Peso = 0,
                         DescuentoMonto = v_dsctoNume,
@@ -3170,7 +3201,7 @@ namespace iOMG
                 ModificacionDePrecio = false,
                 Sucursal = int.Parse(tx_codSuc.Text),
                 IGVPorcentaje = decimal.Parse(Program.v_igv),
-                DescuentoGlobalMonto = 0,
+                DescuentoGlobalMonto = v_dgloSin,
                 DescuentoGlobalIndicadorDescuento = "0",
                 DescuentoGlobalCodigoMotivo = "00",
                 DescuentoGlobalNGPorcentaje = 0,
@@ -3247,16 +3278,16 @@ namespace iOMG
                 ListaDocumentosRelacionados = { },
                 ListaCondicionesComerciales = { },
                 UUID = "",
-                DescuentoGlobalPorcentaje = 0,
-                DescuentoGlobalValor = 0,
+                DescuentoGlobalPorcentaje = v_dgporc,
+                DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text),
                 CorreoElectronicoPrincipal = mailPrin,
                 Exonerada = 0,
                 Inafecto = 0,
                 Exportacion = 0,
                 OperacionNoGravada = 0,
                 Gratuito = 0,
-                TotalDescuentos = v_totDscto,
-                DescuentoGlobal = 0,
+                TotalDescuentos = (v_totDscto / ( 1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,
+                DescuentoGlobal = v_dgloSin,
                 TotalAnticipos = 0,
                 BANDERA_CONCURRENCIA = false,
                 BANDERA_DIRECCIONPARTIDAEDICION = false,
@@ -3319,7 +3350,6 @@ namespace iOMG
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
-                //Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
                 Observacion = tx_coment.Text.Trim(),
                 //FechaIngresoPais = "22/02/2022",
                 //FechaIngresoEstablecimiento = "22/02/2022",
@@ -3343,6 +3373,8 @@ namespace iOMG
             string retorna = "";
             decimal v_totDscto = 0;
             decimal v_preToti = 0;
+            decimal v_dgloSin = decimal.Parse(tx_desGlob.Text) / (1 + (decimal.Parse(v_igv) / 100));
+            decimal v_dgporc = Math.Round(decimal.Parse(tx_desGlob.Text) * 100 / decimal.Parse(tx_subtot.Text), 2);
             List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();        // detalle cpmpleto
             List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();            // lista de precios
             List<CAnticipo> ddd = new List<CAnticipo>();                            // lista de anticipos
@@ -3397,6 +3429,8 @@ namespace iOMG
                         decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString());           // precio individual con descuento
                         decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                         decimal v_valTotal = v_valorUnit * v_cant;
+                        int sss = ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count) == 0) ? 1 : ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count));
+                        decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / sss / v_cant;
                         if (ron.Cells[11].Value.ToString() != "" && ron.Cells[11].Value.ToString() != "0" && ron.Cells[11].Value.ToString() != "0.00")
                         {
                             v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
@@ -3419,7 +3453,7 @@ namespace iOMG
                             UnidadMedidaCodigo = cod_umed,          // "NIU",
                             PrecioUnitarioSugerido = 0,
 
-                            PrecioUnitarioNeto = v_preUmdes - v_dsctoNume,
+                            PrecioUnitarioNeto = v_preUmdes - v_dsctoNume - v_dsctoGlob,
                             PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
                             CantidadUnidadMedida = v_cant,
                             DescuentoGlobal = 0,
@@ -3672,7 +3706,7 @@ namespace iOMG
                 ModificacionDePrecio = false,
                 Sucursal = int.Parse(tx_codSuc.Text),
                 IGVPorcentaje = decimal.Parse(Program.v_igv),
-                DescuentoGlobalMonto = 0,
+                DescuentoGlobalMonto = v_dgloSin,
                 DescuentoGlobalIndicadorDescuento = "0",
                 DescuentoGlobalCodigoMotivo = "00",
                 DescuentoGlobalNGPorcentaje = 0,
@@ -3749,16 +3783,16 @@ namespace iOMG
                 ListaDocumentosRelacionados = eee,
                 ListaCondicionesComerciales = { },
                 UUID = "",
-                DescuentoGlobalPorcentaje = 0,
-                DescuentoGlobalValor = 0,
+                DescuentoGlobalPorcentaje = v_dgporc,
+                DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text),
                 CorreoElectronicoPrincipal = mailPrin,
                 Exonerada = 0,
                 Inafecto = 0,
                 Exportacion = 0,
                 OperacionNoGravada = 0,
                 Gratuito = 0,
-                TotalDescuentos = 0,
-                DescuentoGlobal = 0,
+                TotalDescuentos = (v_totDscto / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,      // TotalDescuentos = 0,
+                DescuentoGlobal = v_dgloSin,
                 TotalAnticipos = subtotAnt,
                 BANDERA_CONCURRENCIA = false,
                 BANDERA_DIRECCIONPARTIDAEDICION = false,
@@ -5288,6 +5322,8 @@ namespace iOMG
                     e.Graphics.DrawString("---------------------------------------------------------------------------", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                     posi = posi + alfi;
                     double valcont = 0;             // total importes de items para casos de cancelacion 
+                    double desglob = 0;
+                    double.TryParse(tx_desGlob.Text, out desglob);
                     if (tx_tipComp.Text == "B") // ventas directas
                     {
                         for (int l = 0; l < dataGridView1.Rows.Count - 1; l++)
@@ -5450,6 +5486,14 @@ namespace iOMG
                         e.Graphics.DrawString((valcont - valant).ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
                         posi = posi + alfi;
                         // A PARTIR DE ACA LOS VALORES DEL PAGO ACTUAL
+                        if (tx_desGlob.Text.Trim() != "")
+                        {
+                            puntoF = new PointF(coli, posi);
+                            e.Graphics.DrawString("DESCUENTO GLOBAL", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            puntoF = new PointF(coli + 199, posi);
+                            recst = new RectangleF(puntoF, siz);
+                            e.Graphics.DrawString((desglob).ToString("#0.00"), lt_peq, Brushes.Black, recst, alder);
+                        }
                         posi = posi + alfi;
                         puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString("OP. GRAVADA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
@@ -5474,6 +5518,14 @@ namespace iOMG
                     {
                         siz = new SizeF(70, 15);
                         posi = posi + alfi;
+                        if (tx_desGlob.Text.Trim() != "")
+                        {
+                            e.Graphics.DrawString("DESCUENTO GLOBAL", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            puntoF = new PointF(coli + 199, posi);
+                            RectangleF recsD = new RectangleF(puntoF, siz);
+                            e.Graphics.DrawString((desglob).ToString("#0.00"), lt_peq, Brushes.Black, recsD, alder);
+                            posi = posi + alfi;
+                        }
                         puntoF = new PointF(coli, posi);
                         e.Graphics.DrawString("OP. GRAVADA", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                         puntoF = new PointF(coli + 199, posi);
