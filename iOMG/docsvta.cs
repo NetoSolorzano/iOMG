@@ -99,6 +99,7 @@ namespace iOMG
         string webdni = "";                 // direccion web de pag. busqueda dni
         string vSNdsctoD = "";              // S ó N, permite o no descuento en detalle
         string vSNdsctoC = "";              // S ó N, permite o no descuento GLOBAL
+        double DetServLim = 0;              // Límite para Detracción en Servicios
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -119,6 +120,7 @@ namespace iOMG
         DataTable dtpedido = new DataTable();   // tipos documento de venta
         DataTable dtmon = new DataTable();      // monedas
         DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
+        DataTable dtdetS = new DataTable();     // combo de porcentajes de detraccion
         AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
         AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
         AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
@@ -370,6 +372,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "boleta") codbole = row["valor"].ToString().Trim();       // codigo tipo doc boleta
                         if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen1") leydet1 = row["valor"].ToString().Trim();           // 
                         if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "leyen2") leydet2 = row["valor"].ToString().Trim();           // 
+                        if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "serv_limit") DetServLim = double.Parse(row["valor"].ToString()); // Monto limite para Detraccion en servicios
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "restex") restexto = row["valor"].ToString().Trim();       // texto resolucion sunat autorizando prov. fact electronica
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "resAut") autoriz = row["valor"].ToString().Trim();        //
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
@@ -399,7 +402,7 @@ namespace iOMG
             string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
             "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,round(totdvta,2) as totdvta,totpags,saldvta,estdvta,frase01," +
             "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-            "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,pdfpse_ose from cabfactu where ";
+            "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,pdfpse_ose,tipoComp from cabfactu where ";
             string parte = "";
             if (campo == "tx_idr" && tx_idr.Text != "" && tx_corre.Text.Trim() == "")
             {
@@ -472,6 +475,18 @@ namespace iOMG
                             tx_valor.Text = dr.GetDouble("totdvta").ToString("#0.00");
                             tx_bruto.Text = dr.GetDouble("subtota").ToString("#0.00");    // (ntoti / 1.18).ToString("#0.00");
                             tx_igv.Text = dr.GetDouble("igvtota").ToString("#0.00");
+                            if (dr.GetString("tipoComp") == "B") rb_tbienes.Checked = true;
+                            else
+                            {
+                                rb_tserv.Checked = true;
+                                if (tx_dat_cDet.Text != "")
+                                {
+                                    tx_dat_cDet.Text = dr.GetString("tippago");
+                                    string ax = string.Format("idcodice='{0}'", tx_dat_cDet.Text);
+                                    DataRow[] data = dtdetS.Select(ax);
+                                    cmb_detrac.SelectedItem = data[0].ItemArray[1].ToString();
+                                }
+                            }
                         }
                         if (tx_tipComp.Text == "A" || tx_tipComp.Text == "C")
                         {
@@ -757,6 +772,19 @@ namespace iOMG
                         foreach (DataRow row in dtmon.Rows)
                         {
                             cmb_mon.Items.Add(row.ItemArray[1].ToString());
+                        }
+                    }
+                }
+                // seleccion de los porcentajes de detraccion
+                const string condet = "select descrizionerid,idcodice,codigo,descrizione,sunat from desc_sde where numero=1";
+                using (MySqlCommand my = new MySqlCommand(condet, conn))
+                {
+                    using (MySqlDataAdapter dafp = new MySqlDataAdapter(my))
+                    {
+                        dafp.Fill(dtdetS);
+                        foreach (DataRow row in dtdetS.Rows)
+                        {
+                            cmb_detrac.Items.Add(row.ItemArray[0].ToString());
                         }
                     }
                 }
@@ -1903,6 +1931,12 @@ namespace iOMG
             tx_dat_mon_s.Text = row[0].ItemArray[2].ToString();
             tx_dat_monNom.Text = row[0].ItemArray[3].ToString();
         }
+        private void cmb_detrac_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string axs = string.Format("descrizionerid='{0}'", cmb_detrac.Text);
+            DataRow[] row = dtdetS.Select(axs);
+            tx_dat_cDet.Text = row[0].ItemArray[1].ToString();
+        }
         #endregion comboboxes
 
         #region leaves
@@ -2153,6 +2187,12 @@ namespace iOMG
             tx_valor.Text = (cc).ToString("#0.00");
             tx_bruto.Text = (cc - ti).ToString("#0.00");
             tx_igv.Text = (ti).ToString("#0.00");
+
+            if (rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
+            {
+                panel4.Visible = true;
+            }
+            else panel4.Visible = false;
         }
 
         #endregion leaves;
@@ -2273,10 +2313,12 @@ namespace iOMG
         private void rb_tbienes_Click(object sender, EventArgs e)
         {
             ini_deta();
+            panel4.Visible = false;
         }
         private void rb_tserv_Click(object sender, EventArgs e)
         {
             ini_deta();
+            panel4.Visible = false;
         }
         #endregion
 
@@ -2424,6 +2466,11 @@ namespace iOMG
                 }
                 tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
                 suma_grilla();
+                if (rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
+                {
+                    panel4.Visible = true;
+                }
+                else panel4.Visible = false;
             }
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
@@ -2487,6 +2534,18 @@ namespace iOMG
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
                 if (valProdCont() == true) tx_prdsCont.Text = "S";
                 else tx_prdsCont.Text = "N";
+
+                // validaciones de servicios y detraccion
+                if (rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
+                {
+                    if (tx_dat_cDet.Text == "")
+                    {
+                        MessageBox.Show("Debe seleccionar un porcentaje" + Environment.NewLine +
+                        "de Detracción para el servicio", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cmb_detrac.Focus();
+                        return;
+                    }
+                }
 
                 var aa = MessageBox.Show(" Confirma que desea CREAR " + Environment.NewLine +
                     "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
@@ -2697,12 +2756,12 @@ namespace iOMG
                     "fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
                     "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,totdvta,totpags,saldvta,estdvta,frase01," +
                     "tipoclt,m1clien,tippago,impreso,codMN,subtMN,igvtMN,totdvMN,pagauto,tipdcob,idcaja,plazocred,porcendscto,valordscto," +
-                    "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,pdfpse_ose," +
+                    "referen1,ubipdest,conPago,contrato,vendedor,muebles,idpse_ose,pdfpse_ose,tipoComp," +
                     "verApp,userc,fechc,diriplan4,diripwan4,netbname) values (" +
                     "@fechop,@mtdvta,@ctdvta,@serdv,@numdv,@tcdvta,@tdcrem,@ndcrem,@nomrem,@dircre,@dptocl,@provcl,@distcl,@ubicre,@mailcl,@telec1,@telec2," +
                     "@ldcpgr,@didegr,@ubdegr,@obsprg,@canfil,@totcpr,@monppr,@tcoper,@subpgr,@igvpgr,@porcigv,@totpgr,@pagpgr,@salxpa,@estpgr,@frase1," +
                     "@ticlre,@m1clte,@tipacc,@impSN,@codMN,@subMN,@igvMN,@totMN,@pagaut,@tipdco,@idcaj,@plazc,@pordesc,@valdesc," +
-                    "@refer,@updest,@conpag,@cont,@vende,@mueb,@idpse,@pdfpse," +
+                    "@refer,@updest,@conpag,@cont,@vende,@mueb,@idpse,@pdfpse,@tipcom," +
                     "@verApp,@asd,now(),@iplan,@ipwan,@nbnam)";
                 using (MySqlCommand micon = new MySqlCommand(inserta, conn))
                 {
@@ -2741,7 +2800,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
                     micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
                     micon.Parameters.AddWithValue("@m1clte", "");
-                    micon.Parameters.AddWithValue("@tipacc", ""); // tx_dat_plazo.Text                  // pago del documento x defecto si nace la fact pagada
+                    micon.Parameters.AddWithValue("@tipacc", tx_dat_cDet.Text);                  // codigo tipo detraccion 
                     micon.Parameters.AddWithValue("@impSN", "S");                               // impreso? S, N
                     micon.Parameters.AddWithValue("@codMN", MonDeft);                  // codigo moneda local
                     micon.Parameters.AddWithValue("@subMN", subtMN);
@@ -2761,6 +2820,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
                     micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text);
                     micon.Parameters.AddWithValue("@pdfpse", tx_pdf_rapifac.Text);
+                    micon.Parameters.AddWithValue("@tipcom", (rb_bienes.Checked == true)? "B" : "S");
                     micon.Parameters.AddWithValue("@verApp", "");
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@iplan", lib.iplan());
