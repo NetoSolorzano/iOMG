@@ -2616,7 +2616,8 @@ namespace iOMG
                             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                             {
                                 streamWriter.Write(cabeza);
-                                System.IO.File.WriteAllText(@"c:\temp\xxx",cabeza);
+                                // escribimos el json del comprobantes para efectos de prueba
+                                System.IO.File.WriteAllText(@"c:\temp\" + tx_dat_tipdoc_s.Text + tx_serie.Text + tx_corre.Text, cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -3221,7 +3222,8 @@ namespace iOMG
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
                         TipoCuentaCodigo = 1,
-                        CuentaNumero = "",
+                        CuentaNumero = dtpagos[i, 5],
+                        CuentaNombre = dtpagos[i, 2],
                         Usuario = Program.vg_nuse,
                         MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",                                   // de momento todo es soles
                         SucursalId = int.Parse(tx_codSuc.Text),
@@ -3725,7 +3727,8 @@ namespace iOMG
                         Condicion = dtpagos[i, 2],
                         CondicionComprobante = "Contado",  //dtpagos[i, ], este dato de condicion no tenemos en la matris
                         TipoCuentaCodigo = 1,
-                        CuentaNumero = "",
+                        CuentaNumero = dtpagos[i, 5],
+                        CuentaNombre = dtpagos[i, 2],
                         Usuario = usuaDni,             // Program.vg_nuse,
                         MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",                                   // de momento todo es soles
                         SucursalId = int.Parse(tx_codSuc.Text),
@@ -4077,7 +4080,8 @@ namespace iOMG
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
                         TipoCuentaCodigo = 1,
-                        CuentaNumero = "",
+                        CuentaNumero = dtpagos[i, 5],
+                        CuentaNombre = dtpagos[i, 2],
                         Usuario = Program.vg_nuse,
                         MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",                                   // de momento todo es soles
                         SucursalId = int.Parse(tx_codSuc.Text),
