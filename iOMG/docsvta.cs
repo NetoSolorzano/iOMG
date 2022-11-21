@@ -1103,6 +1103,7 @@ namespace iOMG
             limpia_panel(panel1);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
+            tx_subtot.Text = "";
             tx_valor.Text = "";
             tx_bruto.Text = "";
             tx_igv.Text = "";
@@ -1831,6 +1832,7 @@ namespace iOMG
             cmb_tipo.SelectedIndex = -1;
             cmb_tdoc.SelectedIndex = -1;
             cmb_plazo.SelectedIndex = -1;
+            cmb_detrac.SelectedIndex = -1;
         }
         private void limpia_panel(Panel pan)            // limpia los cuadros de texto solo del panel pasado como parametro
         {
@@ -1935,7 +1937,8 @@ namespace iOMG
         {
             string axs = string.Format("descrizionerid='{0}'", cmb_detrac.Text);
             DataRow[] row = dtdetS.Select(axs);
-            tx_dat_cDet.Text = row[0].ItemArray[1].ToString();
+            tx_dat_cDet.Text = row[0].ItemArray[1].ToString();  // codigo interno detraccion
+            tx_dat_pDet.Text = row[0].ItemArray[2].ToString();  // porcentaje detraccion
         }
         #endregion comboboxes
 
@@ -2314,11 +2317,15 @@ namespace iOMG
         {
             ini_deta();
             panel4.Visible = false;
+            tx_dat_pDet.Text = "";
+            tx_dat_cDet.Text = "";
         }
         private void rb_tserv_Click(object sender, EventArgs e)
         {
             ini_deta();
             panel4.Visible = false;
+            tx_dat_pDet.Text = "";
+            tx_dat_cDet.Text = "";
         }
         #endregion
 
@@ -2617,7 +2624,7 @@ namespace iOMG
                             {
                                 streamWriter.Write(cabeza);
                                 // escribimos el json del comprobantes para efectos de prueba
-                                System.IO.File.WriteAllText(@"c:\temp\" + tx_dat_tipdoc_s.Text + tx_serie.Text + tx_corre.Text, cabeza);
+                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + numComp, cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -3270,7 +3277,6 @@ namespace iOMG
                 DescuentoGlobalNGIndicadorDescuento = 0,
                 DescuentoGlobalNGCodigoMotivo = "00",
                 CargoGlobalPorcentaje = 0,
-                DetraccionTipoOperacion = "01",
                 CargoGlobalIndicadorCargos = "0",
                 CargoGlobalCodigoMotivo = "0",
                 CantidadDecimales = 2,
@@ -3310,7 +3316,6 @@ namespace iOMG
                 InafectoXML = 0,
                 ExportacionXML = 0,
                 ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text,
-                Detraccion = 0,
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
@@ -3348,7 +3353,7 @@ namespace iOMG
                 Exportacion = 0,
                 OperacionNoGravada = 0,
                 Gratuito = 0,
-                TotalDescuentos = (v_totDscto / ( 1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,
+                TotalDescuentos = (v_totDscto / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,
                 DescuentoGlobal = v_dgloSin,
                 TotalAnticipos = 0,
                 BANDERA_CONCURRENCIA = false,
@@ -3400,9 +3405,11 @@ namespace iOMG
                 Bultos = int.Parse(tx_totcant.Text),
                 Leyenda = 0,
                 BienServicioCodigo = "001",                     // de donde sale esto?
-                DetraccionPorcentaje = 0,
+                DetraccionTipoOperacion = "01",
+                Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
+                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
+                DetraccionCuenta = Program.ctadetra,
                 RetencionPorcentaje = 0,
-                DetraccionCuenta = "",
                 DocAdicionalCodigo = 0,
                 DocAdicionalDetalle = "",
                 TotalRetencion = 0,
