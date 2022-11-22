@@ -206,8 +206,9 @@ namespace iOMG
         public bool Anticipo { get; set; }
         public bool EstadoContingencia { get; set; }
         public int Baja { get; set; }
-        public int Leyenda { get; set; }
+        //public int Leyenda { get; set; }
         public int LeyendaBoleta { get; set; }
+        public string Leyenda { get; set; }
         public int LeyendaFactura { get; set; }
         public string MotivoBaja { get; set; }
         public int OrigenSistema { get; set; }
@@ -403,7 +404,7 @@ namespace iOMG
             Anticipo = false;
             EstadoContingencia = false;
             Baja = 0;
-            Leyenda = 0;
+            Leyenda = "0";
             LeyendaBoleta = 0;
             LeyendaFactura = 0;
             MotivoBaja = "";

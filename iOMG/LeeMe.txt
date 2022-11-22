@@ -204,7 +204,7 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form docsvta, agregando logica de descuentos en cabecera ........................... ok 17/11/22
 - form docsvta, Las observaciones deben imprimirse en el comprobante y pdf ........... ok 17/11/22
 - form docsvta, al momento de visualizar pdf debe descargar xml en ruta establecida .. ok 17/11/12  ... al momento de visualizar el pdf se descarga su xml equivalente en la carpeta de descargas del equipo
-- form docsvta, implementando servicios, rapifac y iOMG tablas y form ................ me quede acá 21/11/22
+- form docsvta, implementando servicios, rapifac y iOMG tablas y form ................ me quede acá probando vta directa SERVICIO con detrac 21/11/22
 - form contratos, permitir ingreso manual del num de contrato solo en algunas sedes .. Esto se manejará asi: cada sede tiene una numeración, esto se maneja en configuracion
 
 

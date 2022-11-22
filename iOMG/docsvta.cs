@@ -83,7 +83,7 @@ namespace iOMG
         string tpcontad = "";           // codigo tipo de pago contado efectivo
         string estman = "";             // estados que se pueden seleccionar manualmente
         int indant = -1;                // indice anterior al cambio en el combobox de estado
-        string v_liav = "";             // letra o caracter inicial indicativo de articulos varios vta directa sin stock
+        string v_liav = "";             // letra o caracter inicial indicativo de articulos varios vta directa sin stock   
         string v_cnprd = "";            // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
         string itemSer = "";            // items (capit) de comprobantes de servicios
         string cliente = Program.cliente;   // razon social para los reportes
@@ -95,6 +95,8 @@ namespace iOMG
         string rut_xml = "";                // ruta para descargar el xml de rapifac
         string cod_umed = "";               // codigo unidad de medida
         string nom_umed = "";               // nombre unidad de medida
+        string cod_user = "";               // codigo unidad de SERVICIO
+        string nom_user = "";               // nombre unidad de SERVICIO
         string mailPrin = "";               // correo electrónico principal
         string webdni = "";                 // direccion web de pag. busqueda dni
         string vSNdsctoD = "";              // S ó N, permite o no descuento en detalle
@@ -345,6 +347,8 @@ namespace iOMG
                             if (row["param"].ToString() == "ruta_xml") rut_xml = row["valor"].ToString().Trim();            // ruta web para descargar el xml en Rapifac
                             if (row["param"].ToString() == "cod_uMed") cod_umed = row["valor"].ToString().Trim();           // codigo unidad de medida
                             if (row["param"].ToString() == "nom_uMed") nom_umed = row["valor"].ToString().Trim();           // nombre unidad de medida
+                            if (row["param"].ToString() == "cod_uSer") cod_user = row["valor"].ToString().Trim();           // codigo unidad de SERVICIO
+                            if (row["param"].ToString() == "nom_uSer") nom_user = row["valor"].ToString().Trim();           // nombre unidad de SERVICIO
                             if (row["param"].ToString() == "mail_prin1") mailPrin = row["valor"].ToString().Trim();           // correo electronico principal
                             if (row["param"].ToString() == "web_dni") webdni = row["valor"].ToString().Trim();              // pag web para busqueda de dni
                         }
@@ -2624,7 +2628,7 @@ namespace iOMG
                             {
                                 streamWriter.Write(cabeza);
                                 // escribimos el json del comprobantes para efectos de prueba
-                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + numComp, cabeza);
+                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -3083,8 +3087,8 @@ namespace iOMG
                             PrecioId = cta_ron,
                             PrecioConfiguracion = 1,
                             ProductoCod = ron.Cells[2].Value.ToString(),
-                            CodigoUnidadMedida = cod_umed,              // "NIU",
-                            DescripcionUnidadMedida = nom_umed,         // "UNIDAD",
+                            CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,              // 
+                            DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,         // 
                             CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
                             MonedaCodigo = tx_dat_mon_s.Text,       // "PEN",
                             SucursalId = tx_codSuc.Text,
@@ -3138,7 +3142,7 @@ namespace iOMG
                         ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
                         ProductoCodigoSUNAT = "",                       // "56101532",
                         TipoSistemaISCCodigo = "00",
-                        UnidadMedidaCodigo = cod_umed,                   // "NIU",
+                        UnidadMedidaCodigo = (rb_tbienes.Checked == true) ? cod_umed : cod_user,                   // "NIU",
                         PrecioUnitarioSugerido = 0,
 
                         PrecioUnitarioNeto = v_preUmdes - v_dsctoNume - v_dsctoGlob,       // v_preToti / v_cant - decimal.Parse(ron.Cells[11].Value.ToString()),
@@ -3403,7 +3407,7 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
-                Leyenda = 0,
+                Leyenda = (tx_dat_pDet.Text.Trim() == "") ? "0" : "1",      // codigo leyenda 1 = leyenda de detraccion
                 BienServicioCodigo = "001",                     // de donde sale esto?
                 DetraccionTipoOperacion = "01",
                 Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
@@ -3911,7 +3915,7 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
-                Leyenda = 0,
+                Leyenda = (rb_tbienes.Checked == true)? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
                 BienServicioCodigo = "037",                     // Demas servicios gravados con el IGV (Tipo de Bien o Servicio)
                 DetraccionPorcentaje = 0,
                 RetencionPorcentaje = 0,
@@ -3959,8 +3963,8 @@ namespace iOMG
                         PrecioId = 99,
                         PrecioConfiguracion = 1,
                         ProductoCod = "",
-                        CodigoUnidadMedida = cod_umed,          //  "NIU",
-                        DescripcionUnidadMedida = nom_umed,     // "UNIDAD",
+                        CodigoUnidadMedida = (rb_tbienes.Checked == true)? cod_umed : cod_user,          //  "NIU",
+                        DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,     // "UNIDAD",
                         CantidadUnidadMedida = 1,
                         MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",
                         SucursalId = tx_codSuc.Text,
@@ -4263,7 +4267,7 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
-                Leyenda = 0,
+                Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
                 BienServicioCodigo = "001",                     // de donde sale esto? ... desde aca
                 DetraccionPorcentaje = 0,
                 RetencionPorcentaje = 0,
@@ -4347,8 +4351,8 @@ namespace iOMG
                                 PrecioId = 99,
                                 PrecioConfiguracion = 1,
                                 ProductoCod = "",
-                                CodigoUnidadMedida = "NIU",
-                                DescripcionUnidadMedida = "UNIDAD",
+                                CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,
+                                DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,
                                 CantidadUnidadMedida = 1,
                                 MonedaCodigo = "PEN",
                                 SucursalId = tx_codSuc.Text,
@@ -4378,8 +4382,8 @@ namespace iOMG
                                 PrecioId = 99,
                                 PrecioConfiguracion = 1,
                                 ProductoCod = ron.Cells[2].Value.ToString(),
-                                CodigoUnidadMedida = "NIU",
-                                DescripcionUnidadMedida = "UNIDAD",
+                                CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,
+                                DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,
                                 CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
                                 MonedaCodigo = "PEN",
                                 SucursalId = tx_codSuc.Text,
@@ -4782,7 +4786,7 @@ namespace iOMG
                     TotalPago = decimal.Parse(tx_impMedios.Text),
                     PesoTotal = 0,
                     Bultos = int.Parse(tx_totcant.Text),
-                    Leyenda = 0,
+                    Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
                     BienServicioCodigo = "001",                     // de donde sale esto? ... desde aca
                     DetraccionPorcentaje = 0,
                     RetencionPorcentaje = 0,
@@ -4842,8 +4846,8 @@ namespace iOMG
                             PrecioId = 99,
                             PrecioConfiguracion = 1,
                             ProductoCod = ron.Cells[2].Value.ToString(),
-                            CodigoUnidadMedida = cod_umed,              // "NIU",
-                            DescripcionUnidadMedida = nom_umed,         // "UNIDAD",
+                            CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,              // "NIU",
+                            DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,         // "UNIDAD",
                             CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
                             MonedaCodigo = tx_dat_mon_s.Text,       // "PEN",
                             SucursalId = tx_codSuc.Text,
@@ -5127,7 +5131,7 @@ namespace iOMG
                 Anticipo = false,
                 EstadoContingencia = false,
                 Baja = 0,
-                Leyenda = 0,
+                Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
                 MotivoBaja = "Anulación",
                 OrigenSistema = 0,
                 TipoPrecio = 0,
