@@ -147,6 +147,13 @@ namespace iOMG
             advancedDataGridView1.Columns[6].ReadOnly = true;
             advancedDataGridView1.Columns[6].Tag = "validaSI";
             advancedDataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // cod.sunat
+            advancedDataGridView1.Columns[7].Visible = false;
+            advancedDataGridView1.Columns[7].HeaderText = "SUNAT";
+            advancedDataGridView1.Columns[7].Width = 40;
+            advancedDataGridView1.Columns[7].ReadOnly = true;
+            advancedDataGridView1.Columns[7].Tag = "validaNO";
+            advancedDataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void jalainfo()                 // obtiene datos de imagenes
         {
@@ -207,6 +214,7 @@ namespace iOMG
             textBox5.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[5].Value.ToString();  // descrizionerid
             textBox4.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString();  // idtabella
             checkBox1.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString() == "1") ? true : false;
+            tx_sunat.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[7].Value.ToString();  // codigo sunat
             comboBox1.SelectedValue = textBox4.Text;
         }
         public void dataload()                  // jala datos para los combos y la grilla
@@ -233,7 +241,7 @@ namespace iOMG
             comboBox1.DisplayMember = "idtabella";
             comboBox1.ValueMember = "idtabella";
             // datos de las deficiones
-            string datgri = "select id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero " +
+            string datgri = "select id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero,sunat " +
                 "from descrittive order by idtabella,idcodice";
             MySqlCommand cdg = new MySqlCommand(datgri, conn);
             MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
@@ -418,9 +426,9 @@ namespace iOMG
                     }
                 }
                 string consulta = "insert into descrittive (" +
-                    "idtabella,idcodice,codigo,descrizione,descrizionerid,numero)" +
+                    "idtabella,idcodice,codigo,descrizione,descrizionerid,numero,sunat)" +
                     " values (" +
-                    "@idt,@idc,@cod,@des,@der,@num)";
+                    "@idt,@idc,@cod,@des,@der,@num,@sun)";
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 if (conn.State == ConnectionState.Open)
@@ -431,6 +439,7 @@ namespace iOMG
                     mycomand.Parameters.AddWithValue("@cod", textBox2.Text);
                     mycomand.Parameters.AddWithValue("@des", textBox3.Text);
                     mycomand.Parameters.AddWithValue("@der", textBox5.Text);
+                    mycomand.Parameters.AddWithValue("@sun", tx_sunat.Text);
                     mycomand.Parameters.AddWithValue("@num", (checkBox1.Checked == true)? "1":"0");
                     try
                     {
@@ -451,7 +460,7 @@ namespace iOMG
                     conn.Close();
                     // insertamos en el datatable
                     DataRow dr = dtg.NewRow();
-                    // id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero
+                    // id,idtabella,idcodice,codigo,descrizione,descrizionerid,numero,sunat
                     string cid = "0";
                     dr[0] = cid;
                     dr[1] = textBox4.Text;
@@ -460,6 +469,7 @@ namespace iOMG
                     dr[4] = textBox3.Text;
                     dr[5] = textBox5.Text;
                     dr[6] = (checkBox1.Checked == true) ? "1" : "0";
+                    dr[7] = tx_sunat.Text;
                     dtg.Rows.Add(dr);
                 }
                 else
@@ -472,7 +482,7 @@ namespace iOMG
             if (modo == "EDITAR")
             {
                 string consulta = "update descrittive set " +
-                        "descrizione=@des,descrizionerid=@der,numero=@num,codigo=@cod " +
+                        "descrizione=@des,descrizionerid=@der,numero=@num,codigo=@cod,sunat=@sun " +
                         "where id=@idc";    // codigo=@cod,
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
@@ -483,6 +493,7 @@ namespace iOMG
                     mycom.Parameters.AddWithValue("@des", textBox3.Text);
                     mycom.Parameters.AddWithValue("@der", textBox5.Text);
                     mycom.Parameters.AddWithValue("@num", (checkBox1.Checked == true) ? "1" : "0");
+                    mycom.Parameters.AddWithValue("@sun", tx_sunat.Text);
                     mycom.Parameters.AddWithValue("@idc", tx_idr.Text);
                     try
                     {
@@ -513,6 +524,7 @@ namespace iOMG
                             dtg.Rows[i][4] = textBox3.Text;
                             dtg.Rows[i][5] = textBox5.Text;
                             dtg.Rows[i][6] = (checkBox1.Checked == true) ? "1" : "0";
+                            dtg.Rows[i][7] = tx_sunat.Text;
                         }
                     }
                 }
@@ -589,6 +601,7 @@ namespace iOMG
                     textBox3.Text = row[4].ToString();
                     textBox5.Text = row[5].ToString();
                     checkBox1.Checked = (row[5].ToString() == "0") ? false : true;
+                    tx_sunat.Text = row[7].ToString();
                 }
                 if(contador == 0)
                 {
@@ -598,6 +611,7 @@ namespace iOMG
                     textBox3.Text = "";
                     textBox5.Text = "";
                     checkBox1.Checked = false;
+                    tx_sunat.Text = "";
                     return;
                 }
             }

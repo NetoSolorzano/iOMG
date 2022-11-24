@@ -1943,6 +1943,7 @@ namespace iOMG
             DataRow[] row = dtdetS.Select(axs);
             tx_dat_cDet.Text = row[0].ItemArray[1].ToString();  // codigo interno detraccion
             tx_dat_pDet.Text = row[0].ItemArray[2].ToString();  // porcentaje detraccion
+            tx_dat_sDet.Text = row[0].ItemArray[4].ToString();  // codigo sunat 
         }
         #endregion comboboxes
 
@@ -3408,7 +3409,7 @@ namespace iOMG
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
                 Leyenda = (tx_dat_pDet.Text.Trim() == "") ? "0" : "1",      // codigo leyenda 1 = leyenda de detraccion
-                BienServicioCodigo = "001",                     // de donde sale esto?
+                BienServicioCodigo = (tx_dat_pDet.Text.Trim() == "") ? "001" : tx_dat_sDet.Text,        // codigo del bien o servicio sujeto a detraccion
                 DetraccionTipoOperacion = "01",
                 Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
                 DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
@@ -3424,9 +3425,9 @@ namespace iOMG
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
                 Observacion = tx_coment.Text.Trim(),
-                //FechaIngresoPais = "22/02/2022",
-                //FechaIngresoEstablecimiento = "22/02/2022",
-                //FechaSalidaEstablecimiento = "22/02/2022",
+                FechaIngresoPais = "01/01/1900",
+                FechaIngresoEstablecimiento = "01/01/1900",
+                FechaSalidaEstablecimiento = "01/01/1900",
                 ModalidadTrasladoCodigo = "01",
                 ConductorTipoDocIdentidadCodigo = "1",
                 FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
@@ -3787,7 +3788,6 @@ namespace iOMG
                 DescuentoGlobalNGIndicadorDescuento = 0,
                 DescuentoGlobalNGCodigoMotivo = "00",
                 CargoGlobalPorcentaje = 0,
-                DetraccionTipoOperacion = "01",                                     // esto debería estar en variable
                 CargoGlobalIndicadorCargos = "0",
                 CargoGlobalCodigoMotivo = "0",
                 CantidadDecimales = 2,
@@ -3827,7 +3827,6 @@ namespace iOMG
                 InafectoXML = 0,
                 ExportacionXML = 0,
                 ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text,
-                Detraccion = 0,
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
@@ -3916,10 +3915,12 @@ namespace iOMG
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
                 Leyenda = (rb_tbienes.Checked == true)? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
-                BienServicioCodigo = "037",                     // Demas servicios gravados con el IGV (Tipo de Bien o Servicio)
-                DetraccionPorcentaje = 0,
+                BienServicioCodigo = (rb_tbienes.Checked == true) ? "037" : (tx_dat_cDet.Text != "") ? tx_dat_sDet.Text : "001",                     // Demas servicios gravados con el IGV (Tipo de Bien o Servicio)
+                DetraccionTipoOperacion = "01",
+                Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
+                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
+                DetraccionCuenta = Program.ctadetra,
                 RetencionPorcentaje = 0,
-                DetraccionCuenta = "",
                 DocAdicionalCodigo = 0,
                 DocAdicionalDetalle = "",
                 TotalRetencion = 0,
@@ -3931,9 +3932,9 @@ namespace iOMG
                 Gravado = decimal.Parse(tx_bruto.Text),
                 //Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "" && tx_tipComp.Text != "C") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
                 Observacion = tx_coment.Text,
-                //FechaIngresoPais = "22/02/2022",
-                //FechaIngresoEstablecimiento = "22/02/2022",
-                //FechaSalidaEstablecimiento = "22/02/2022",
+                FechaIngresoPais = "01/01/1900",
+                FechaIngresoEstablecimiento = "01/01/1900",
+                FechaSalidaEstablecimiento = "01/01/1900",
                 ModalidadTrasladoCodigo = "01",
                 ConductorTipoDocIdentidadCodigo = "1",
                 FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
@@ -4139,7 +4140,6 @@ namespace iOMG
                 DescuentoGlobalNGIndicadorDescuento = 0,
                 DescuentoGlobalNGCodigoMotivo = "00",
                 CargoGlobalPorcentaje = 0,
-                DetraccionTipoOperacion = "01",                                     // esto debería estar en variable
                 CargoGlobalIndicadorCargos = "0",
                 CargoGlobalCodigoMotivo = "0",
                 CantidadDecimales = 2,
@@ -4179,7 +4179,6 @@ namespace iOMG
                 InafectoXML = 0,
                 ExportacionXML = 0,
                 ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text,
-                Detraccion = 0,
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
@@ -4267,11 +4266,15 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
+
+                BienServicioCodigo = (tx_dat_pDet.Text.Trim() == "") ? "001" : tx_dat_sDet.Text,        // codigo del bien o servicio sujeto a detraccion
+                DetraccionTipoOperacion = "01",
+                Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
+                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
+                DetraccionCuenta = Program.ctadetra,
+
                 Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
-                BienServicioCodigo = "001",                     // de donde sale esto? ... desde aca
-                DetraccionPorcentaje = 0,
                 RetencionPorcentaje = 0,
-                DetraccionCuenta = "",
                 DocAdicionalCodigo = 0,
                 DocAdicionalDetalle = "",
                 TotalRetencion = 0,
@@ -4283,9 +4286,9 @@ namespace iOMG
                 Gravado = decimal.Parse(tx_bruto.Text),
                 //Observacion = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? " * * * ANTICIPO * * * " : (rb_antic.Checked == true && tx_tipComp.Text == "C") ? "CANCELACIÓN DE CONTRATO " + tx_cont.Text : "",
                 Observacion = tx_coment.Text.Trim(),
-                //FechaIngresoPais = "22/02/2022",
-                //FechaIngresoEstablecimiento = "22/02/2022",
-                //FechaSalidaEstablecimiento = "22/02/2022",
+                FechaIngresoPais = "01/01/1900",
+                FechaIngresoEstablecimiento = "01/01/1900",
+                FechaSalidaEstablecimiento = "01/01/1900",
                 ModalidadTrasladoCodigo = "01",
                 ConductorTipoDocIdentidadCodigo = "1",
                 FechaTraslado = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),

@@ -201,6 +201,7 @@
             this.tx_valor = new iOMG.NumericTextBox();
             this.tx_dat_cDet = new System.Windows.Forms.TextBox();
             this.tx_dat_pDet = new System.Windows.Forms.TextBox();
+            this.tx_dat_sDet = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1918,11 +1919,20 @@
             this.tx_dat_pDet.TabIndex = 433;
             this.tx_dat_pDet.Tag = "Porcentaje detracion";
             // 
+            // tx_dat_sDet
+            // 
+            this.tx_dat_sDet.Location = new System.Drawing.Point(225, 342);
+            this.tx_dat_sDet.Name = "tx_dat_sDet";
+            this.tx_dat_sDet.Size = new System.Drawing.Size(24, 20);
+            this.tx_dat_sDet.TabIndex = 434;
+            this.tx_dat_sDet.Tag = "Porcentaje detracion";
+            // 
             // docsvta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.tx_dat_sDet);
             this.Controls.Add(this.tx_dat_pDet);
             this.Controls.Add(this.tx_dat_cDet);
             this.Controls.Add(this.panel4);
@@ -2194,5 +2204,6 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox tx_dat_cDet;
         private System.Windows.Forms.TextBox tx_dat_pDet;
+        private System.Windows.Forms.TextBox tx_dat_sDet;
     }
 }
