@@ -887,7 +887,7 @@ namespace iOMG
                 if (vSNdsctoC == "S") tx_desGlob.Enabled = true;
                 else tx_desGlob.Enabled = false;
             }
-            lb_totDet.Text = lb_totDet.Text + " " + cmb_mon.Text;
+            lb_totDet.Text = lb_totDet.Tag + " " + cmb_mon.Text;
             ini_pagos();
             _docsAnticip.Clear();
         }
@@ -2341,6 +2341,7 @@ namespace iOMG
         #region datagridview1 - grilla detalle del doc.venta
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            /* NO VAN EDICIONES EN FACTURACION, SE BORRA LA LINEA Y SE VUELVE A AGREGAR OTRA .... 28/11/2022
             if (e.ColumnIndex == 0 && e.RowIndex > -1)
             {
                 if (Tx_modo.Text == "EDITAR")
@@ -2359,6 +2360,7 @@ namespace iOMG
                 tx_d_codi.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();     //
                 tx_d_mad.Text = dataGridView1.Rows[e.RowIndex].Cells["madera"].Value.ToString();    //
             }
+            */
         }
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
@@ -2699,7 +2701,11 @@ namespace iOMG
                                 ncont.tx_corre.Text = tx_corre.Text;
                                 string xxx = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont._comprobantes.Add(xxx + "-" + tx_serie.Text + "-" + tx_corre.Text);
-                                // row[1].ToString().Substring(0, 1) + "-" + row[2].ToString() + "-" + row[3].ToString()
+                                
+                                // APLICACION DEL DSCTO GLOBAL EN EL CONTRATO ... AUN NO VA 29/11/2022
+                                //double ccc = 0;
+                                //double.TryParse(ncont.tx_dscto.Text, out ccc);
+                                //ncont.tx_dscto.Text = (ccc + double.Parse(tx_desGlob.Text)).ToString();
                             }
                         }
                     }
@@ -5598,6 +5604,7 @@ namespace iOMG
                         posi = posi + alfi;
                         if (tx_desGlob.Text.Trim() != "")
                         {
+                            puntoF = new PointF(coli, posi);
                             e.Graphics.DrawString("DESCUENTO GLOBAL", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
                             puntoF = new PointF(coli + 199, posi);
                             RectangleF recsD = new RectangleF(puntoF, siz);

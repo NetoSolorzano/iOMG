@@ -2902,7 +2902,6 @@
         private System.Windows.Forms.TextBox tx_rind;
         private System.Windows.Forms.TextBox tx_idr;
         private System.Windows.Forms.Button button1;
-        private NumericTextBox tx_dscto;
         private NumericTextBox tx_saldo;
         private NumericTextBox tx_acta;
         private NumericTextBox tx_valor;
@@ -2972,5 +2971,6 @@
         private NumericTextBox tx_cifm;
         internal System.Windows.Forms.TextBox tx_codped;
         internal System.Windows.Forms.ToolStripButton bt_view;
+        internal NumericTextBox tx_dscto;
     }
 }

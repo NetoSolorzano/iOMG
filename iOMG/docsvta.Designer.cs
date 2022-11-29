@@ -186,6 +186,9 @@
             this.cmb_detrac = new System.Windows.Forms.ComboBox();
             this.milinea11 = new iOMG.milinea();
             this.label27 = new System.Windows.Forms.Label();
+            this.tx_dat_cDet = new System.Windows.Forms.TextBox();
+            this.tx_dat_pDet = new System.Windows.Forms.TextBox();
+            this.tx_dat_sDet = new System.Windows.Forms.TextBox();
             this.milinea10 = new iOMG.milinea();
             this.tx_subtot = new iOMG.NumericTextBox();
             this.milinea9 = new iOMG.milinea();
@@ -199,9 +202,6 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tx_igv = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_dat_cDet = new System.Windows.Forms.TextBox();
-            this.tx_dat_pDet = new System.Windows.Forms.TextBox();
-            this.tx_dat_sDet = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.pan_cli.SuspendLayout();
             this.groupBox37.SuspendLayout();
@@ -1301,6 +1301,7 @@
             this.lb_totDet.Name = "lb_totDet";
             this.lb_totDet.Size = new System.Drawing.Size(36, 13);
             this.lb_totDet.TabIndex = 323;
+            this.lb_totDet.Tag = "Total";
             this.lb_totDet.Text = "Total";
             // 
             // dataGridView1
@@ -1782,6 +1783,33 @@
             this.label27.TabIndex = 411;
             this.label27.Text = "% Detrac.";
             // 
+            // tx_dat_cDet
+            // 
+            this.tx_dat_cDet.Location = new System.Drawing.Point(168, 348);
+            this.tx_dat_cDet.Name = "tx_dat_cDet";
+            this.tx_dat_cDet.Size = new System.Drawing.Size(24, 20);
+            this.tx_dat_cDet.TabIndex = 432;
+            this.tx_dat_cDet.Tag = "codigo interno detraccion";
+            this.tx_dat_cDet.Visible = false;
+            // 
+            // tx_dat_pDet
+            // 
+            this.tx_dat_pDet.Location = new System.Drawing.Point(195, 342);
+            this.tx_dat_pDet.Name = "tx_dat_pDet";
+            this.tx_dat_pDet.Size = new System.Drawing.Size(24, 20);
+            this.tx_dat_pDet.TabIndex = 433;
+            this.tx_dat_pDet.Tag = "Porcentaje detracion";
+            this.tx_dat_pDet.Visible = false;
+            // 
+            // tx_dat_sDet
+            // 
+            this.tx_dat_sDet.Location = new System.Drawing.Point(225, 342);
+            this.tx_dat_sDet.Name = "tx_dat_sDet";
+            this.tx_dat_sDet.Size = new System.Drawing.Size(24, 20);
+            this.tx_dat_sDet.TabIndex = 434;
+            this.tx_dat_sDet.Tag = "Porcentaje detracion";
+            this.tx_dat_sDet.Visible = false;
+            // 
             // milinea10
             // 
             this.milinea10.Location = new System.Drawing.Point(184, 368);
@@ -1902,30 +1930,6 @@
             this.tx_valor.Size = new System.Drawing.Size(73, 20);
             this.tx_valor.TabIndex = 22;
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // tx_dat_cDet
-            // 
-            this.tx_dat_cDet.Location = new System.Drawing.Point(168, 348);
-            this.tx_dat_cDet.Name = "tx_dat_cDet";
-            this.tx_dat_cDet.Size = new System.Drawing.Size(24, 20);
-            this.tx_dat_cDet.TabIndex = 432;
-            this.tx_dat_cDet.Tag = "codigo interno detraccion";
-            // 
-            // tx_dat_pDet
-            // 
-            this.tx_dat_pDet.Location = new System.Drawing.Point(195, 342);
-            this.tx_dat_pDet.Name = "tx_dat_pDet";
-            this.tx_dat_pDet.Size = new System.Drawing.Size(24, 20);
-            this.tx_dat_pDet.TabIndex = 433;
-            this.tx_dat_pDet.Tag = "Porcentaje detracion";
-            // 
-            // tx_dat_sDet
-            // 
-            this.tx_dat_sDet.Location = new System.Drawing.Point(225, 342);
-            this.tx_dat_sDet.Name = "tx_dat_sDet";
-            this.tx_dat_sDet.Size = new System.Drawing.Size(24, 20);
-            this.tx_dat_sDet.TabIndex = 434;
-            this.tx_dat_sDet.Tag = "Porcentaje detracion";
             // 
             // docsvta
             // 
