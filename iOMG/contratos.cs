@@ -73,6 +73,7 @@ namespace iOMG
         int intfec = 1;                     // intervalo de días para busqueda de comprobantes sin contrato
         string vtasc = "";                  // tipo de articulo (capitulo) que no se hace contrato
         string vapm = "";                   // sedes donde el pago se puede registrar manualmente                22/10/2022
+        string vupb = "";                   // usuarios que pueden quitar items virgenes de contratos sin importar su estado
         internal List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
 
@@ -500,6 +501,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "impresora" && row["param"].ToString() == "default") impDef = row["valor"].ToString().Trim();            // nombre de la impresora por defecto
                         if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos que no hace contrato
                         if (row["campo"].ToString() == "sedespag" && row["param"].ToString() == "manual") vapm = row["valor"].ToString().Trim();                // sedes donde se acepta registro de pagos manuales 
+                        if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "borra_i") vupb = row["valor"].ToString().Trim();             // usuarios que pueden quitar items virghenes de contratos
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -1721,6 +1723,51 @@ namespace iOMG
                 retorna = true;
             }
             conn.Close();
+            return retorna;
+        }
+        private bool borra_fila(string fila)                                       // elimina de la grilla un item detalle
+        {
+            bool retorna = true;
+
+            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+            conn.Open();
+            if (conn.State == ConnectionState.Open)
+            {
+                string borra = "delete from detacon where iddetacon=@idp";
+                MySqlCommand mion = new MySqlCommand(borra, conn);
+                mion.Parameters.AddWithValue("@idp", fila);
+                mion.ExecuteNonQuery();
+                // estado del contrato
+                /*string compa = "act_cont";
+                mion = new MySqlCommand(compa, conn);
+                mion.CommandType = CommandType.StoredProcedure;
+                mion.CommandTimeout = 300;
+                mion.Parameters.AddWithValue("@cont", tx_codped.Text);
+                MySqlParameter estad = new MySqlParameter("@estad","");
+                estad.Direction = ParameterDirection.Output;
+                mion.Parameters.Add(estad);
+                mion.ExecuteNonQuery();
+                string newestad = mion.Parameters["@estad"].Value.ToString();
+                tx_dat_estad.Text = newestad;
+                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
+                for (int i = 0; i < dtg.Rows.Count; i++)
+                {
+                    DataRow row = dtg.Rows[i];
+                    if (row[0].ToString() == tx_idr.Text)
+                    {
+                        dtg.Rows[i][3] = cmb_estado.SelectedItem.ToString().Substring(9, 6);
+                    }
+                }
+                */
+                retorna = true;
+                conn.Close();
+            }
+            else
+            {
+                MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
+            }
+            conn.Close();
+
             return retorna;
         }
         private void actuacli()                                                 // actualiza datos del cliente
@@ -4072,49 +4119,35 @@ namespace iOMG
                     if (Tx_modo.Text == "NUEVO") e.Cancel = false;
                     else
                     {   // modo edicion contrato = PENDIE y usuario con permiso
-                        if (Tx_modo.Text == "EDITAR" && tx_dat_estad.Text == tiesta)
+                        if (Tx_modo.Text == "EDITAR")
                         {
-                            MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                            conn.Open();
-                            if (conn.State == ConnectionState.Open)
+                            DataGridViewRow rdg = e.Row;
+                            if (tx_dat_estad.Text == tiesta)
                             {
-                                string borra = "delete from detacon where iddetacon=@idp";
-                                MySqlCommand mion = new MySqlCommand(borra, conn);
-                                mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString());
-                                mion.ExecuteNonQuery();
-                                // estado del contrato
-                                /*string compa = "act_cont";
-                                mion = new MySqlCommand(compa, conn);
-                                mion.CommandType = CommandType.StoredProcedure;
-                                mion.CommandTimeout = 300;
-                                mion.Parameters.AddWithValue("@cont", tx_codped.Text);
-                                MySqlParameter estad = new MySqlParameter("@estad","");
-                                estad.Direction = ParameterDirection.Output;
-                                mion.Parameters.Add(estad);
-                                mion.ExecuteNonQuery();
-                                string newestad = mion.Parameters["@estad"].Value.ToString();
-                                tx_dat_estad.Text = newestad;
-                                cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
-                                for (int i = 0; i < dtg.Rows.Count; i++)
-                                {
-                                    DataRow row = dtg.Rows[i];
-                                    if (row[0].ToString() == tx_idr.Text)
-                                    {
-                                        dtg.Rows[i][3] = cmb_estado.SelectedItem.ToString().Substring(9, 6);
-                                    }
-                                }
-                                */
-                                conn.Close();
+                                if (borra_fila(rdg.Cells[0].Value.ToString()) == true) e.Cancel = false;
                             }
                             else
                             {
-                                MessageBox.Show("No fue posible conectarse al servidor", "Error de conectividad");
+                                // si es usuario autorizado y el producto no tiene reserva,pedido o salida
+                                if (vupb.Contains(asd) && (rdg.Cells[2].Value == rdg.Cells[8].Value))
+                                {
+                                    if (borra_fila(rdg.Cells[0].Value.ToString()) == true)
+                                    {
+                                        e.Cancel = false;
+                                        // calculo de saldos en el contrato y pagamenti y actualizacion del estado si queda en cero
+                                        // me quede acá
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("No es posible proceder por falta de permisos" + Environment.NewLine +
+                                        "o porque el artículo tiene relación con otros procesos", "No se grabó la operación");
+                                    e.Cancel = true;
+                                }
                             }
-                            conn.Close();
                         }
                         else
                         {
-                            MessageBox.Show("No es posible proceder por estado o modo", "No se grabó la operación");
                             e.Cancel = true;
                         }
                     }

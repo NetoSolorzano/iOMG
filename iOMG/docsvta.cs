@@ -2599,7 +2599,7 @@ namespace iOMG
                         if (token != "")
                         {
                             // datos variables para la emisión
-                            string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim();
+                            string host = "https://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim();
 
                             //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
@@ -2622,7 +2622,7 @@ namespace iOMG
                                 //tx_corre.Text = numComp;
                             }
                             // emite el comprobante
-                            host = "http://wsventas-exp.rapifac.com/v0/comprobantes?IncluirCDR=1";
+                            host = "https://wsventas-exp.rapifac.com/v0/comprobantes?IncluirCDR=1";
                             httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
                             httpWebRequest.ContentType = "application/json";
                             httpWebRequest.Method = "POST";
@@ -3014,10 +3014,10 @@ namespace iOMG
         private string conex_token()                                                // obtenemos el token de rapifac
         {
             string retorna = "";
-            string host = "http://wsoauth-exp.rapifac.com/oauth2/token";
+            string host = "https://wsoauth-exp.rapifac.com/oauth2/token";
 
             // create a request
-            //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
             httpWebRequest.Method = "POST"; 
             string postData = "grant_type=password&username=" + usuaDni + usuaRuc + "&password=" + clave + "&client_id=" + id_clte;
@@ -4316,7 +4316,7 @@ namespace iOMG
             if (token != "")
             {
                 // datos variables para la emisión
-                string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim();
+                string host = "https://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim();
 
                 //ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
@@ -4339,8 +4339,8 @@ namespace iOMG
                     //tx_corre.Text = numComp;
                 }
                 // emite el comprobante
-                /*host = "http://wsventas-exp.rapifac.com/v0/comprobantes"; */
-                host = "http://wsventas-exp.rapifac.com/v0/comprobantes?IncluirCDR=1";
+                /*host = "https://wsventas-exp.rapifac.com/v0/comprobantes"; */
+                host = "https://wsventas-exp.rapifac.com/v0/comprobantes?IncluirCDR=1";
                 httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
                 httpWebRequest.ContentType = "application/json";        // , text/javascript, */*; q=0.01
                 httpWebRequest.Method = "POST";
@@ -5161,7 +5161,7 @@ namespace iOMG
 
             string token = conex_token();
             // ANULA el comprobante
-            string host = "http://wsventas-exp.rapifac.com/v0/comprobantes/anular";
+            string host = "https://wsventas-exp.rapifac.com/v0/comprobantes/anular";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "PUT";
@@ -5187,7 +5187,7 @@ namespace iOMG
             /*      // NO NECESITAMOS ESTO ... 10/08/2022
             string token = conex_token();
             // obtiene el comprobante desde rapifac
-            string host = "http://wsventas-exp.rapifac.com/v0/comprobantes";
+            string host = "https://wsventas-exp.rapifac.com/v0/comprobantes";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
             httpWebRequest.ContentType = "application/json";        // , text/javascript, 
             httpWebRequest.Method = "GET";
