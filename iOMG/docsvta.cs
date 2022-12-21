@@ -1121,7 +1121,8 @@ namespace iOMG
 
                 string consu = "SELECT a.dv,a.serie,a.numero,a.montosol,ifnull(b.mondvta,'') AS mondvta,ifnull(b.tcadvta,1) AS tcadvta,ifnull(b.subtota,0) AS subtota," +
                 "ifnull(b.igvtota, 0) AS igvtota, ifnull(b.totdvta, 0) AS totdvta, ifnull(b.idpse_ose, 0) AS idpse_ose, ifnull(b.pdfpse_ose, '') AS pdfpse_ose," +
-                "c.sunat,CONCAT(b.martdve,a.serie) AS serRapi,d.codigo AS codMon,e.sunat AS codDoc,b.nudoclt AS docClie,DATE_FORMAT(b.fechope,'%d/%m/%Y') AS fechope " +
+                "ifnull(c.sunat,'') as sunat,ifnull(CONCAT(b.martdve,a.serie),'') AS serRapi,ifnull(d.codigo,'') AS codMon,ifnull(e.sunat,'') AS codDoc," +
+                "ifnull(b.nudoclt,'') AS docClie,ifnull(DATE_FORMAT(b.fechope,'%d/%m/%Y'),'') AS fechope " +
                 "FROM pagamenti a LEFT JOIN cabfactu b ON b.tipdvta = a.dv AND b.serdvta = a.serie AND b.numdvta = a.numero " +
                 "LEFT JOIN desc_tdv c ON c.IDCodice=b.tipdvta LEFT JOIN desc_mon d ON d.IDCodice=b.mondvta LEFT JOIN desc_doc e ON e.IDCodice=b.tidoclt " +
                 "WHERE a.contrato = @cont";   //  AND saldo>0

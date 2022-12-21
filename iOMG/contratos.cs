@@ -74,6 +74,7 @@ namespace iOMG
         string vtasc = "";                  // tipo de articulo (capitulo) que no se hace contrato
         string vapm = "";                   // sedes donde el pago se puede registrar manualmente                22/10/2022
         string vupb = "";                   // usuarios que pueden quitar items virgenes de contratos sin importar su estado
+        string v_monLoc = "";               // codigo moneda local
         internal List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
 
@@ -760,6 +761,13 @@ namespace iOMG
                     cmb_det3.Items.Add(row.ItemArray[1].ToString() + "  -  " + row.ItemArray[0].ToString());  // citem_dt3
                     cmb_det3.ValueMember = row.ItemArray[1].ToString();    //citem_dt3.Value.ToString();
                 }
+                // seleccion de moneda nacional -> por defecto moneda local es la primera fila
+                MySqlCommand mimon = new MySqlCommand("SELECT * from desc_mon order by id limit 1", conn);
+                MySqlDataReader drmon = mimon.ExecuteReader();
+                if (drmon.Read())
+                {
+                    v_monLoc = drmon.GetString(0);
+                }
             }
             conn.Close();
         }
@@ -867,7 +875,8 @@ namespace iOMG
             advancedDataGridView1.Columns[22].Visible = false;
         }
         private void grilladet(string modo)                                     // grilla detalle
-        {   // iddetacon,a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,saldo,pedido,codref,coment,a.detpied,codpie,na,tda_item,totCat
+        {   // iddetacon,a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,saldo,pedido,codref,coment,a.detpied,codpie,na,tda_item,totCat = 17
+            // a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,codref,a.coment,piedra,codpie,na,tda_item,totCat,totdscto = 18
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
@@ -967,7 +976,7 @@ namespace iOMG
             dataGridView1.Columns[13].Width = 60;                 // ancho
             dataGridView1.Columns[13].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[13].Name = "CodPie";
-            // na (nuevo o actualiza)
+            // nab (nuevo o actualiza o borra)
             dataGridView1.Columns[14].Visible = false;
             // tda del item
             dataGridView1.Columns[15].Visible = true;
@@ -1350,7 +1359,7 @@ namespace iOMG
         private void jaladet(string pedido)                                     // jala el detalle del contrato
         {
             string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
-                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na,tda_item " +
+                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na,tda_item,space(1) as totCat,totdscto " +
                 "FROM detacon a " +
                 "left join desc_dt2 b on b.idcodice=a.piedra " +
                 "left join desc_mad c on c.idcodice=a.madera " +
@@ -1607,6 +1616,7 @@ namespace iOMG
             {
                 try
                 {
+                    double tvb = 0;     // valor total de items borrados en edicion
                     // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                     // a.valor,a.acuenta,a.saldo,a.dscto
                     string actua = "update contrat set " +
@@ -1688,8 +1698,49 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());   // tienda item
                             micon.ExecuteNonQuery();
                         }
+                        if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "B")
+                        {
+                            tvb = tvb + double.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+
+                            string borra = "delete from detacon where iddetacon=@idp";
+                            MySqlCommand mion = new MySqlCommand(borra, conn);
+                            mion.Parameters.AddWithValue("@idp", dataGridView1.Rows[i].Cells[0].Value.ToString());
+                            mion.ExecuteNonQuery();
+                            mion.Dispose();
+                        }
                     }
+                    // actualizamos el estado del contrato
+                    acciones acc = new acciones();          // ahora se usa éste actualizador 21/09/2020
+                    acc.act_cont(tx_codped.Text, "");
+                    micon = new MySqlCommand("select status from contrat where contrato=@cont", conn);
+                    micon.Parameters.AddWithValue("@cont", tx_codped.Text);
+                    MySqlDataReader dr = micon.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        tx_dat_estad.Text = dr.GetString(0);
+                    }
+                    dr.Dispose();
+                    // agregamos linea en pagamenti con 
+                    if (tvb > 0)    // si se borraron filas
+                    {
+                        string paga = "insert into pagamenti (contrato,valor,acuenta,saldo,fecha,moneda,monto,montosol,detalle,usuario,dia) " +
+                            "values (@cont,@valc,@acta,@sald,@fech,@mone,@mont,@mons,@deta,@usua,now())";
+                        micon = new MySqlCommand(paga, conn);
+                        micon.Parameters.AddWithValue("@cont", tx_codped.Text);
+                        micon.Parameters.AddWithValue("@valc", tx_valor.Text);
+                        micon.Parameters.AddWithValue("@acta", tx_acta.Text);
+                        micon.Parameters.AddWithValue("@sald", tx_saldo.Text);
+                        micon.Parameters.AddWithValue("@fech", dtp_pedido.Value.ToString("yyyy-MM-dd"));    // acá no debería ser la fecha de la modif?
+                        micon.Parameters.AddWithValue("@mone", v_monLoc);
+                        micon.Parameters.AddWithValue("@mont", tvb.ToString());
+                        micon.Parameters.AddWithValue("@mons", tvb.ToString());
+                        micon.Parameters.AddWithValue("@deta", "Modificación de contrato y saldo");
+                        micon.Parameters.AddWithValue("@usua", asd);
+                        micon.ExecuteNonQuery();
+                    }
+                    micon.Dispose();
                     retorna = true;
+
                 }
                 catch (MySqlException ex)
                 {
@@ -1883,22 +1934,29 @@ namespace iOMG
             decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
-                val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
-                // buscamos los codigos adicionales para acumularlos y guardarlo en el campo 
-                if(dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0,1) == letgru)
+                if (dataGridView1.Rows[i].Cells[14].Value.ToString() != "B")    // no totaliza las filas marcadas para borrar
                 {
-                    espe = espe + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
-                }
-                else
-                {
-                    // buscamos que la madera este seleccionada
-                    if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
-                        dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
+                    val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    decimal vddes = 0;
+                    decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
+                    dsto = dsto + vddes;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
+                    // buscamos los codigos adicionales para acumularlos y guardarlo en el campo 
+                    if (dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) == letgru)
+                    {
+                        espe = espe + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    }
+                    else
+                    {
+                        // buscamos que la madera este seleccionada
+                        if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
+                            dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
+                    }
                 }
             }
             tx_totesp.Text = espe.ToString("0.00");
             tx_bruto.Text = val.ToString("0.00");
-            if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
+            //if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
+            tx_dscto.Text = dsto.ToString("0.00");
             if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
             tx_valor.Text = (decimal.Parse(tx_bruto.Text) - dsto).ToString("0.00");
             tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
@@ -3041,7 +3099,7 @@ namespace iOMG
                             {
                                 // a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,a.fecha,a.cliente,b.razonsocial,a.coment,a.entrega,a.dentrega,
                                 // a.valor,a.acuenta,a.saldo,a.dscto,a.pcontacto,a.dreferen
-                                // dtg.Rows[i][3] = tx_dat_estad.Text; // cmb_estado.SelectedText.ToString();
+                                dtg.Rows[i][3] = tx_dat_estad.Text; // cmb_estado.SelectedText.ToString();
                                 dtg.Rows[i][4] = tx_dat_orig.Text;  // cmb_taller.SelectedText.ToString();
                                 dtg.Rows[i][5] = dtp_pedido.Value.ToString("yyyy-MM-dd");
                                 dtg.Rows[i][6] = tx_idcli.Text;
@@ -4116,7 +4174,11 @@ namespace iOMG
                 }
                 else
                 {
-                    if (Tx_modo.Text == "NUEVO") e.Cancel = false;
+                    if (Tx_modo.Text == "NUEVO")
+                    {
+                        e.Cancel = false;
+                        calculos();
+                    }
                     else
                     {   // modo edicion contrato = PENDIE y usuario con permiso
                         if (Tx_modo.Text == "EDITAR")
@@ -4124,18 +4186,25 @@ namespace iOMG
                             DataGridViewRow rdg = e.Row;
                             if (tx_dat_estad.Text == tiesta)
                             {
-                                if (borra_fila(rdg.Cells[0].Value.ToString()) == true) e.Cancel = false;
+                                //if (borra_fila(rdg.Cells[0].Value.ToString()) == true)
+                                {
+                                    rdg.DefaultCellStyle.BackColor = Color.Red;
+                                    rdg.Cells[14].Value = "B";
+                                    e.Cancel = true;   // false
+                                    calculos();
+                                }
                             }
                             else
                             {
                                 // si es usuario autorizado y el producto no tiene reserva,pedido o salida
-                                if (vupb.Contains(asd) && (rdg.Cells[2].Value == rdg.Cells[8].Value))
+                                if (vupb.Contains(asd) == true && (rdg.Cells[2].Value.ToString() == rdg.Cells[8].Value.ToString()))
                                 {
-                                    if (borra_fila(rdg.Cells[0].Value.ToString()) == true)
+                                    //if (borra_fila(rdg.Cells[0].Value.ToString()) == true)
                                     {
-                                        e.Cancel = false;
-                                        // calculo de saldos en el contrato y pagamenti y actualizacion del estado si queda en cero
-                                        // me quede acá
+                                        rdg.DefaultCellStyle.BackColor = Color.Red;
+                                        rdg.Cells[14].Value = "B";
+                                        e.Cancel = true;   // false
+                                        calculos();        // cálculo de saldos y actualizacion del estado si queda en cero
                                     }
                                 }
                                 else
