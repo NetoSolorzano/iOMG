@@ -36,7 +36,6 @@
             this.label16 = new System.Windows.Forms.Label();
             this.tx_numOpe = new System.Windows.Forms.TextBox();
             this.cmb_plazo = new System.Windows.Forms.ComboBox();
-            this.tx_importe = new iOMG.NumericTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -48,12 +47,13 @@
             this.codpag = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fpago = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
-            this.tx_total = new iOMG.NumericTextBox();
             this.bt_mas = new System.Windows.Forms.Button();
-            this.tx_tfil = new iOMG.NumericTextBox();
             this.tx_dat_mp = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tx_fpago = new System.Windows.Forms.DateTimePicker();
+            this.tx_tfil = new iOMG.NumericTextBox();
+            this.tx_total = new iOMG.NumericTextBox();
+            this.tx_importe = new iOMG.NumericTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,16 +109,6 @@
             this.cmb_plazo.Size = new System.Drawing.Size(98, 21);
             this.cmb_plazo.TabIndex = 0;
             this.cmb_plazo.SelectionChangeCommitted += new System.EventHandler(this.cmb_plazo_SelectionChangeCommitted);
-            // 
-            // tx_importe
-            // 
-            this.tx_importe.AllowSpace = false;
-            this.tx_importe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_importe.Location = new System.Drawing.Point(216, 24);
-            this.tx_importe.Name = "tx_importe";
-            this.tx_importe.Size = new System.Drawing.Size(82, 21);
-            this.tx_importe.TabIndex = 2;
-            this.tx_importe.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 
@@ -225,17 +215,6 @@
             this.label1.TabIndex = 418;
             this.label1.Text = "Importe Total";
             // 
-            // tx_total
-            // 
-            this.tx_total.AllowSpace = false;
-            this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_total.Location = new System.Drawing.Point(115, 174);
-            this.tx_total.Name = "tx_total";
-            this.tx_total.ReadOnly = true;
-            this.tx_total.Size = new System.Drawing.Size(82, 21);
-            this.tx_total.TabIndex = 417;
-            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // bt_mas
             // 
             this.bt_mas.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -246,18 +225,6 @@
             this.bt_mas.Text = "+";
             this.bt_mas.UseVisualStyleBackColor = true;
             this.bt_mas.Click += new System.EventHandler(this.bt_mas_Click);
-            // 
-            // tx_tfil
-            // 
-            this.tx_tfil.AllowSpace = false;
-            this.tx_tfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_tfil.Location = new System.Drawing.Point(219, 174);
-            this.tx_tfil.Name = "tx_tfil";
-            this.tx_tfil.ReadOnly = true;
-            this.tx_tfil.Size = new System.Drawing.Size(31, 21);
-            this.tx_tfil.TabIndex = 419;
-            this.tx_tfil.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tx_tfil.Visible = false;
             // 
             // tx_dat_mp
             // 
@@ -285,6 +252,40 @@
             this.tx_fpago.Name = "tx_fpago";
             this.tx_fpago.Size = new System.Drawing.Size(82, 20);
             this.tx_fpago.TabIndex = 3;
+            this.tx_fpago.ValueChanged += new System.EventHandler(this.tx_fpago_ValueChanged);
+            // 
+            // tx_tfil
+            // 
+            this.tx_tfil.AllowSpace = false;
+            this.tx_tfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_tfil.Location = new System.Drawing.Point(219, 174);
+            this.tx_tfil.Name = "tx_tfil";
+            this.tx_tfil.ReadOnly = true;
+            this.tx_tfil.Size = new System.Drawing.Size(31, 21);
+            this.tx_tfil.TabIndex = 419;
+            this.tx_tfil.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_tfil.Visible = false;
+            // 
+            // tx_total
+            // 
+            this.tx_total.AllowSpace = false;
+            this.tx_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_total.Location = new System.Drawing.Point(115, 174);
+            this.tx_total.Name = "tx_total";
+            this.tx_total.ReadOnly = true;
+            this.tx_total.Size = new System.Drawing.Size(82, 21);
+            this.tx_total.TabIndex = 417;
+            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_importe
+            // 
+            this.tx_importe.AllowSpace = false;
+            this.tx_importe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tx_importe.Location = new System.Drawing.Point(216, 24);
+            this.tx_importe.Name = "tx_importe";
+            this.tx_importe.Size = new System.Drawing.Size(82, 21);
+            this.tx_importe.TabIndex = 2;
+            this.tx_importe.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // forpagos
             // 

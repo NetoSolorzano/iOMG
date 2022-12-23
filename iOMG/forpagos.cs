@@ -13,6 +13,7 @@ namespace iOMG
         bool SoloLee = false;
         double vlimban = 0;     // valor limite para bancarizar pagos en efectivo
         string vglosa1 = "";    // glosa del limite bancariz
+
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
         static string port = ConfigurationManager.AppSettings["port"].ToString();
@@ -219,10 +220,18 @@ namespace iOMG
         {
             totalizagrid();
         }
-
         private void tx_fpago_Leave(object sender, EventArgs e)
         {
             bt_mas.Focus();
+        }
+        private void tx_fpago_ValueChanged(object sender, EventArgs e)
+        {
+            if (tx_fpago.Value.Date > DateTime.Now.Date)
+            {
+                MessageBox.Show("La fecha del pago no puede" + Environment.NewLine +
+                    "ser mayor a la fecha actual!", "Error de fecha", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tx_fpago.Value = DateTime.Now;
+            }
         }
     }
 }

@@ -207,6 +207,10 @@ FACTURACION ELECTRONICA CON RAPIFAC: 18/06/2022
 - form contratos, permitir ingreso manual del num de contrato solo en algunas sedes .. Esto se manejará asi: cada sede tiene una numeración, esto se maneja en configuracion
 - form defs, agregar campo "sunat" y codigo .......................................... ok 24/11/22
 - form docsvta, implementando servicios, rapifac y iOMG tablas y form ................ ok 28/11/22
+- form docsvta, agregar fecha y #Oper en pagos <> efectivo en pdf .................... OK 22/12/22
+- form forpagos, bloquear fecha de pago > a fecha actual ............................. ok 22/12/22
+- form ayuda2, en la selección de items servicios, ocultar bloqueados ................ ok 22/12/22
+- form adicionals, agregar codigo para bloqueado de items ............................ ok 22/12/22
 OJO, solo el descuento de detalle esta pasando al contrato, el dscto global no esta yendo al contrato. Ej. F200-124
 OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-126
 29/11/2022 DESCUENTO GLOBAL. tx_desGlob.Text

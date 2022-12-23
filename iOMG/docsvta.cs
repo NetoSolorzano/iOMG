@@ -102,6 +102,7 @@ namespace iOMG
         string vSNdsctoD = "";              // S ó N, permite o no descuento en detalle
         string vSNdsctoC = "";              // S ó N, permite o no descuento GLOBAL
         double DetServLim = 0;              // Límite para Detracción en Servicios
+        string vcpefec = "";                // codigo de pago efectivo contado
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -386,8 +387,8 @@ namespace iOMG
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "camnomb") v_cnprd = row["valor"].ToString().Trim();       // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
                         if (row["campo"].ToString() == "servicios" && row["param"].ToString() == "items") itemSer = row["valor"].ToString().Trim();         // Items para comprobantes de servicios
                         if (row["campo"].ToString() == "descuento" && row["param"].ToString() == "detalle") vSNdsctoD = row["valor"].ToString().Trim();     // acepta descuento en detalle S/N
-                        if (row["campo"].ToString() == "descuento" && row["param"].ToString() == "global") vSNdsctoC = row["valor"].ToString().Trim();     // acepta descuento GLOBAL
-
+                        if (row["campo"].ToString() == "descuento" && row["param"].ToString() == "global") vSNdsctoC = row["valor"].ToString().Trim();      // acepta descuento GLOBAL
+                        if (row["campo"].ToString() == "pago_efectivo" && row["param"].ToString() == "codigo") vcpefec = row["valor"].ToString().Trim();    // codigo de pago efectivo contado
                     }
                 }
                 da.Dispose();
@@ -3240,7 +3241,7 @@ namespace iOMG
                         Serie = tx_serie.Text,
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
-                        TipoCuentaCodigo = 1,
+                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
                         CuentaNumero = dtpagos[i, 5],
                         CuentaNombre = dtpagos[i, 2],
                         Usuario = Program.vg_nuse,

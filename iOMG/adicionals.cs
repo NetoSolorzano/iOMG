@@ -807,8 +807,8 @@ namespace iOMG
                     tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
                     tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
                     string inserta = "insert into items_adic (" +
-                        "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio) values (" +
-                        "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@nomb,@medi,@prec)";
+                        "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio,bloqueado) values (" +
+                        "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@nomb,@medi,@prec,@bloq)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@codi", codi);
                     micon.Parameters.AddWithValue("@capi", tx_dat_cap.Text.Trim());
@@ -823,6 +823,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
                     micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                     micon.Parameters.AddWithValue("@prec", tx_precio.Text);
+                    micon.Parameters.AddWithValue("@bloq", (checkBox1.Checked == true)? 1 : 0);
                     micon.ExecuteNonQuery();
                     retorna = true;
                 }
@@ -855,7 +856,7 @@ namespace iOMG
                     tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
                     string actua = "update items_adic set " +
                         "codig=@codi,capit=@capi,model=@mode,mader=@made,tipol=@tipo,deta1=@det1,acaba=@acab,talle=@tall," +
-                        "deta2=@det2,deta3=@det3,nombr=@nomb,medid=@medi,precio=@prec " +
+                        "deta2=@det2,deta3=@det3,nombr=@nomb,medid=@medi,precio=@prec,bloqueado=@bloq " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@codi", codi);
@@ -871,6 +872,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@nomb", tx_nombre.Text.Trim());
                     micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                     micon.Parameters.AddWithValue("@prec", tx_precio.Text);
+                    micon.Parameters.AddWithValue("@bloq", (checkBox1.Checked == true) ? 1 : 0);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
                     micon.ExecuteNonQuery();
                 }

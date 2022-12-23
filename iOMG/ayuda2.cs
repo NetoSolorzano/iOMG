@@ -85,7 +85,7 @@ namespace iOMG
             if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
             {
                 consulta = "select codig,nombr,medid,precio " +
-                    "from items_adic";
+                    "from items_adic where bloqueado=0";
                 // Acomodamos la grilla 891
                 dataGridView1.Rows.Clear();
                 dataGridView1.ColumnCount = 4;
