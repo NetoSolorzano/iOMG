@@ -1126,7 +1126,7 @@ namespace iOMG
                 "ifnull(b.nudoclt,'') AS docClie,ifnull(DATE_FORMAT(b.fechope,'%d/%m/%Y'),'') AS fechope " +
                 "FROM pagamenti a LEFT JOIN cabfactu b ON b.tipdvta = a.dv AND b.serdvta = a.serie AND b.numdvta = a.numero " +
                 "LEFT JOIN desc_tdv c ON c.IDCodice=b.tipdvta LEFT JOIN desc_mon d ON d.IDCodice=b.mondvta LEFT JOIN desc_doc e ON e.IDCodice=b.tidoclt " +
-                "WHERE a.contrato = @cont";   //  AND saldo>0
+                "WHERE a.contrato = @cont and dv<>''";   //  solo pagos, no "descuentos" por modificación de contratos 25/12/2022
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
@@ -3746,7 +3746,7 @@ namespace iOMG
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
                         CondicionComprobante = "Contado",  //dtpagos[i, ], este dato de condicion no tenemos en la matris
-                        TipoCuentaCodigo = 1,
+                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
                         CuentaNumero = dtpagos[i, 5],
                         CuentaNombre = dtpagos[i, 2],
                         Usuario = usuaDni,             // Program.vg_nuse,
@@ -4099,7 +4099,7 @@ namespace iOMG
                         Serie = tx_serie.Text,
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
-                        TipoCuentaCodigo = 1,
+                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
                         CuentaNumero = dtpagos[i, 5],
                         CuentaNombre = dtpagos[i, 2],
                         Usuario = Program.vg_nuse,
@@ -4620,7 +4620,7 @@ namespace iOMG
                             Serie = tx_serie.Text,
                             Correlativo = 0,                // int.Parse(tx_corre.Text),
                             Condicion = dtpagos[i, 2],
-                            TipoCuentaCodigo = 1,
+                            TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
                             CuentaNumero = "",
                             Usuario = Program.vg_nuse,
                             MonedaCodigo = "PEN",                                   // de momento todo es soles
@@ -4984,7 +4984,7 @@ namespace iOMG
                         Serie = tx_serie.Text,
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
-                        TipoCuentaCodigo = 1,
+                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
                         CuentaNumero = "",
                         Usuario = Program.vg_nuse,
                         MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",                                   // de momento todo es soles

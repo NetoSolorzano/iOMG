@@ -766,7 +766,7 @@ namespace iOMG
                 MySqlDataReader drmon = mimon.ExecuteReader();
                 if (drmon.Read())
                 {
-                    v_monLoc = drmon.GetString(0);
+                    v_monLoc = drmon.GetString(1);
                 }
             }
             conn.Close();
@@ -1700,7 +1700,7 @@ namespace iOMG
                         }
                         if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "B")
                         {
-                            tvb = tvb + double.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                            tvb = tvb + (double.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString()) - double.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()));
 
                             string borra = "delete from detacon where iddetacon=@idp";
                             MySqlCommand mion = new MySqlCommand(borra, conn);

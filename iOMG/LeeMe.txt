@@ -216,4 +216,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 29/11/2022 DESCUENTO GLOBAL. tx_desGlob.Text
 - Se deja deshabilitado o readonly hasta definir como queda este campo en su relación con los contratos.
 - form contratos, permitir borrar/retirar articulos que no tienen 
-  reservas/pedidos/salidas, etc. solo para usuarios específicos ...................... 
+  reservas/pedidos/salidas, etc. solo para usuarios específicos ...................... ok 25/12/22
