@@ -259,6 +259,10 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox52 = new System.Windows.Forms.GroupBox();
+            this.groupBox53 = new System.Windows.Forms.GroupBox();
+            this.label58 = new System.Windows.Forms.Label();
+            this.tx_desG = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -294,6 +298,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.groupBox52.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -339,6 +344,9 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.groupBox52);
+            this.tabuser.Controls.Add(this.label58);
+            this.tabuser.Controls.Add(this.tx_desG);
             this.tabuser.Controls.Add(this.tx_cifm);
             this.tabuser.Controls.Add(this.tx_mc);
             this.tabuser.Controls.Add(this.tx_serie);
@@ -424,7 +432,7 @@
             // tx_cifm
             // 
             this.tx_cifm.AllowSpace = false;
-            this.tx_cifm.Location = new System.Drawing.Point(852, 370);
+            this.tx_cifm.Location = new System.Drawing.Point(856, 461);
             this.tx_cifm.Name = "tx_cifm";
             this.tx_cifm.Size = new System.Drawing.Size(21, 20);
             this.tx_cifm.TabIndex = 394;
@@ -462,7 +470,7 @@
             // tx_totesp
             // 
             this.tx_totesp.AllowSpace = false;
-            this.tx_totesp.Location = new System.Drawing.Point(882, 370);
+            this.tx_totesp.Location = new System.Drawing.Point(889, 460);
             this.tx_totesp.Name = "tx_totesp";
             this.tx_totesp.ReadOnly = true;
             this.tx_totesp.Size = new System.Drawing.Size(73, 20);
@@ -1883,7 +1891,7 @@
             // 
             this.groupBox21.BackColor = System.Drawing.Color.DimGray;
             this.groupBox21.Controls.Add(this.groupBox22);
-            this.groupBox21.Location = new System.Drawing.Point(701, 389);
+            this.groupBox21.Location = new System.Drawing.Point(821, 389);
             this.groupBox21.Name = "groupBox21";
             this.groupBox21.Size = new System.Drawing.Size(145, 1);
             this.groupBox21.TabIndex = 332;
@@ -1900,7 +1908,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(703, 374);
+            this.label20.Location = new System.Drawing.Point(823, 374);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(49, 13);
             this.label20.TabIndex = 331;
@@ -1910,7 +1918,7 @@
             // 
             this.groupBox19.BackColor = System.Drawing.Color.DimGray;
             this.groupBox19.Controls.Add(this.groupBox20);
-            this.groupBox19.Location = new System.Drawing.Point(527, 389);
+            this.groupBox19.Location = new System.Drawing.Point(521, 389);
             this.groupBox19.Name = "groupBox19";
             this.groupBox19.Size = new System.Drawing.Size(145, 1);
             this.groupBox19.TabIndex = 329;
@@ -1927,7 +1935,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(529, 374);
+            this.label9.Location = new System.Drawing.Point(523, 374);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 13);
             this.label9.TabIndex = 328;
@@ -2346,7 +2354,7 @@
             // tx_saldo
             // 
             this.tx_saldo.AllowSpace = false;
-            this.tx_saldo.Location = new System.Drawing.Point(773, 370);
+            this.tx_saldo.Location = new System.Drawing.Point(893, 370);
             this.tx_saldo.Name = "tx_saldo";
             this.tx_saldo.ReadOnly = true;
             this.tx_saldo.Size = new System.Drawing.Size(73, 20);
@@ -2356,7 +2364,7 @@
             // tx_acta
             // 
             this.tx_acta.AllowSpace = false;
-            this.tx_acta.Location = new System.Drawing.Point(599, 370);
+            this.tx_acta.Location = new System.Drawing.Point(593, 370);
             this.tx_acta.Name = "tx_acta";
             this.tx_acta.Size = new System.Drawing.Size(73, 20);
             this.tx_acta.TabIndex = 11;
@@ -2685,6 +2693,42 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // groupBox52
+            // 
+            this.groupBox52.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox52.Controls.Add(this.groupBox53);
+            this.groupBox52.Location = new System.Drawing.Point(676, 389);
+            this.groupBox52.Name = "groupBox52";
+            this.groupBox52.Size = new System.Drawing.Size(138, 1);
+            this.groupBox52.TabIndex = 397;
+            this.groupBox52.TabStop = false;
+            // 
+            // groupBox53
+            // 
+            this.groupBox53.Location = new System.Drawing.Point(0, -26);
+            this.groupBox53.Name = "groupBox53";
+            this.groupBox53.Size = new System.Drawing.Size(164, 1);
+            this.groupBox53.TabIndex = 113;
+            this.groupBox53.TabStop = false;
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(678, 374);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(60, 13);
+            this.label58.TabIndex = 396;
+            this.label58.Text = "Dscto Glob";
+            // 
+            // tx_desG
+            // 
+            this.tx_desG.AllowSpace = false;
+            this.tx_desG.Location = new System.Drawing.Point(740, 370);
+            this.tx_desG.Name = "tx_desG";
+            this.tx_desG.Size = new System.Drawing.Size(73, 20);
+            this.tx_desG.TabIndex = 395;
+            this.tx_desG.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2736,6 +2780,7 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.groupBox52.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2972,5 +3017,9 @@
         internal System.Windows.Forms.TextBox tx_codped;
         internal System.Windows.Forms.ToolStripButton bt_view;
         internal NumericTextBox tx_dscto;
+        private System.Windows.Forms.GroupBox groupBox52;
+        private System.Windows.Forms.GroupBox groupBox53;
+        private System.Windows.Forms.Label label58;
+        internal NumericTextBox tx_desG;
     }
 }
