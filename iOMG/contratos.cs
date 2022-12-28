@@ -448,7 +448,7 @@ namespace iOMG
             tx_dirRef.MaxLength = 90;           // referencia de la dirección
             tx_contac.MaxLength = 90;           // persona de contacto
             tx_telcont.MaxLength = 25;          // telefono de contacto
-            
+            tx_motivD.MaxLength = 100;
         }
         private void jalainfo()                                                 // obtiene datos de imagenes
         {
@@ -1511,9 +1511,9 @@ namespace iOMG
                     correNum(conn);
                     //
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
-                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad) " +
+                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad,motivDes) " +
                         "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
-                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi)";
+                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi,@motdes)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
@@ -1537,6 +1537,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@drefe", tx_dirRef.Text);
                     micon.Parameters.AddWithValue("@tecont", tx_telcont.Text);
                     micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00":tx_totesp.Text);
+                    micon.Parameters.AddWithValue("@motdes", tx_motivD.Text);
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -1632,7 +1633,7 @@ namespace iOMG
                     string actua = "update contrat set " +
                         "tipocon=@tco,tipoes=@loc,fecha=@fec,cliente=@clt,coment=@com,entrega=@ent,dentrega=@den,valor=@val," +
                         "acuenta=@acta,saldo=@sal,dscto=@dscto,clte_recoje=@cltr,seresma=@ceem,pisoent=@pise,ascensor=@asce," +
-                        "pcontacto=@pecon,dreferen=@drefe,telcont=@tecont,totsad=@totadi,status=@stat " +
+                        "pcontacto=@pecon,dreferen=@drefe,telcont=@tecont,totsad=@totadi,status=@stat,motivDes=@motdes " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
@@ -1656,6 +1657,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@tecont", tx_telcont.Text);
                     micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00" : tx_totesp.Text);
                     micon.Parameters.AddWithValue("@stat", tx_dat_estad.Text);
+                    micon.Parameters.AddWithValue("@motdes", tx_motivD.Text);
                     micon.ExecuteNonQuery();
                     // detalle
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -1983,6 +1985,7 @@ namespace iOMG
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
             //if (tx_totesp.Text.Trim() == "") tx_totesp.Text = "0.00";
             tx_cifm.Text = v_ifm.ToString();
+            motivD();
         }
         private bool valexist(String docu)                                      // valida existencia de documento
         {
@@ -2062,6 +2065,30 @@ namespace iOMG
                 label17.ForeColor = Color.White;
                 label15.ForeColor = Color.White;
                 label16.ForeColor = Color.White;
+            }
+            else
+            {
+                motivD();
+            }
+        }
+        private void motivD()                                                   // habilita o no el campo tx_motivD si hay descuento
+        {
+            if ("NUEVO,EDITAR".Contains(Tx_modo.Text) == true)
+            {
+                if (tx_dscto.Text.Trim() != "")     // habilitamos la escritura si el contrato tiene descuento
+                {
+                    if (double.Parse(tx_dscto.Text) > 0) tx_motivD.ReadOnly = false;
+                    else
+                    {
+                        tx_motivD.Text = "";
+                        tx_motivD.ReadOnly = true;
+                    }
+                }
+                else
+                {
+                    tx_motivD.Text = "";
+                    tx_motivD.ReadOnly = true;
+                }
             }
         }
         private void tabgrilla_Enter(object sender, EventArgs e)
@@ -2240,6 +2267,7 @@ namespace iOMG
         }
         private void Bt_add_Click(object sender, EventArgs e)
         {
+            desCab = 0;                                 // inicializamos descuento global
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
@@ -2311,9 +2339,11 @@ namespace iOMG
             tx_corre.Visible = true;
             //
             _comprobantes.Clear();
+            motivD();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
+            desCab = 0;                                 // inicializamos descuento global
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = false;
@@ -2364,6 +2394,7 @@ namespace iOMG
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
+            desCab = 0;                                 // inicializamos descuento global
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = false;
@@ -2397,6 +2428,7 @@ namespace iOMG
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
+            desCab = 0;                                 // inicializamos descuento global
             tabControl1.Enabled = true;
             advancedDataGridView1.Enabled = true;
             advancedDataGridView1.ReadOnly = true;
@@ -2964,6 +2996,12 @@ namespace iOMG
             string modos = "NUEVO,EDITAR";
             if (modos.Contains(Tx_modo.Text))
             {
+                if (tx_motivD.ReadOnly == false && tx_motivD.Text.Trim() == "")
+                {
+                    MessageBox.Show("Debe ingresar el motivo del descuento","Atención, es ogligatorio",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    tx_motivD.Focus();
+                    return;
+                }
                 if (tx_dat_tiped.Text == "")
                 {
                     MessageBox.Show("Seleccione el tipo de contrato", "Atención - verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
@@ -3212,6 +3250,7 @@ namespace iOMG
             if (iserror == "no")
             {
                 // debe limpiar los campos y actualizar la grilla
+                desCab = 0;                                 // inicializamos descuento global
                 limpiar(this);
                 limpiapag(tabuser);
                 limpia_otros(tabuser);
@@ -3470,6 +3509,7 @@ namespace iOMG
             cmb_det3.SelectedIndex = -1;
             //
             calculos();
+            motivD();
         }        // detalle articulos 
         private void button2_Click(object sender, EventArgs e)          // detalle adicionales
         {

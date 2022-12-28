@@ -2391,9 +2391,12 @@ namespace iOMG
                     tx_igv.Text = ((tv - vb) - ((tv - vb) / 1.18)).ToString("#0.00");
 
                     tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
-                    suma_grilla();
                 }
             }
+        }
+        private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            suma_grilla();
         }
         #endregion
 
@@ -5801,7 +5804,6 @@ namespace iOMG
             if (e.ToString().Trim() == "") tx_status.Visible = false;
             else tx_status.Visible = true;
         }
-
     }
     public class docsAnticip                                                // comprobantes de anticipo
     {
