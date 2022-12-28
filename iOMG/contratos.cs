@@ -22,7 +22,7 @@ namespace iOMG
         string colstrp = iOMG.Program.colstr;   // color del strip
         bool conSol = iOMG.Program.vg_conSol;   // usa conector solorsoft ?
         static string nomtab = "contrat";
-
+        decimal desCab = 0;                     // descuento global
         #region variables 
         public int totfilgrid, cta, cuenta, pageCount;      // variables para impresion sin crystal, con crystal ya no se usan
         public string perAg = "";
@@ -253,7 +253,7 @@ namespace iOMG
                     string idc = "";
                     if (modo == "T")    //  || modo == "T"
                     {
-                        string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg " +
+                        string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg,a.valordscto " +
                             "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
                         using (MySqlCommand micon = new MySqlCommand(accion, conn))
                         {
@@ -288,6 +288,8 @@ namespace iOMG
                                     double ff = 0;
                                     double.TryParse(tx_acta.Text, out ff);
                                     tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
+                                    tx_desCab.Text = dr.GetString("valordscto");
+                                    desCab = decimal.Parse(tx_desCab.Text);
                                 }
                             }
                         }
@@ -316,7 +318,7 @@ namespace iOMG
 
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
-                            "ifnull(if(i.soles2018*a.cantbul=0,a.precio*a.cantbul,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.cantbul*dscto " +
+                            "ifnull(if(i.soles2018*a.cantbul=0,a.precio*a.cantbul,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.cantbul*a.dscto,a.dscto " +
                             "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''" + excluye;
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
                         {
@@ -357,6 +359,7 @@ namespace iOMG
                                     dtr[14] = rw.ItemArray[14].ToString();
                                     dtr[15] = rw.ItemArray[15].ToString();
                                     dtr[16] = rw.ItemArray[16].ToString();
+                                    //dtr[17] = rw.ItemArray[17].ToString();
                                     try
                                     {
                                         ((DataTable)dataGridView1.DataSource).Rows.Add(dtr);
@@ -1227,8 +1230,11 @@ namespace iOMG
                 if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString().Trim() == "") dtp_entreg.Checked = false;
                 else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
                 tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
-                tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
-                tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
+                //tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                tx_desCab.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                desCab = decimal.Parse(tx_desCab.Text);
+                //tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
+                tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_desCab.Text)).ToString("0.00");     // total bruto
                 tx_acta.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();     // pago a cuenta
                 tx_saldo.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();     // saldo actual del contrato
                 chk_lugent.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString() == "1") ? true:false ;
@@ -1271,7 +1277,9 @@ namespace iOMG
                         tx_coment.Text = row["coment"].ToString();                          // comentario
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
                         tx_valor.Text = row["valor"].ToString();                            // valor del contrato
-                        tx_dscto.Text = row["dscto"].ToString();                            // descuento final
+                        //tx_dscto.Text = row["dscto"].ToString();                            // descuento final
+                        tx_desCab.Text = row["dscto"].ToString();     // descuento final
+                        desCab = decimal.Parse(tx_desCab.Text);
                         tx_acta.Text = row["acuenta"].ToString();                           // pago a cuenta
                         tx_saldo.Text = row["saldo"].ToString();                            // saldo actual del contrato
                         chk_lugent.Checked = (row["clte_recoje"].ToString() == "1")? true:false;
@@ -1309,6 +1317,7 @@ namespace iOMG
                     tx_coment.ReadOnly = false;
                 }
             }
+            calculos();
         }
         private void jaladatclt(string id)                                      // jala datos del cliente
         {
@@ -1426,7 +1435,8 @@ namespace iOMG
                             if (dr.GetDateTime(9) == null) dtp_entreg.Checked = false;
                             else dtp_entreg.Value = dr.GetDateTime(9);    // fecha entrega
                             tx_valor.Text = dr.GetString(11);     // valor del contrato
-                            tx_dscto.Text = dr.GetString(14);     // descuento final
+                            //tx_dscto.Text = dr.GetString(14);     // descuento final
+                            tx_desCab.Text = dr.GetString(14);     // descuento final
                             tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
                             tx_acta.Text = dr.GetString(12);     // pago a cuenta
                             tx_saldo.Text = dr.GetString(13);     // saldo actual del contrato
@@ -1932,6 +1942,8 @@ namespace iOMG
         {
             int v_ifm = 0;
             decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
+            //decimal.TryParse(tx_desCab.Text, out desCab);
+            //desCab = decimal.Parse(tx_desCab.Text);
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 if (dataGridView1.Rows[i].Cells[14].Value.ToString() != "B")    // no totaliza las filas marcadas para borrar
@@ -1956,9 +1968,16 @@ namespace iOMG
             tx_totesp.Text = espe.ToString("0.00");
             tx_bruto.Text = val.ToString("0.00");
             //if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
-            tx_dscto.Text = dsto.ToString("0.00");
+            if (Tx_modo.Text == "NUEVO")
+            {
+                tx_dscto.Text = dsto.ToString("0.00");
+            }
+            else
+            {
+                tx_dscto.Text = Math.Abs((desCab)).ToString("0.00");
+            }
             if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
-            tx_valor.Text = (decimal.Parse(tx_bruto.Text) - dsto).ToString("0.00");
+            tx_valor.Text = (decimal.Parse(tx_bruto.Text) - decimal.Parse(tx_dscto.Text)).ToString("0.00");
             tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
