@@ -2056,6 +2056,13 @@ namespace iOMG
                         if (busclte(tx_dat_tdoc.Text,tx_ndc.Text) == false)
                         {
                             // si no hay Y SI DOCUMENTO ES RUC O DNI, vamos al conector a buscarlo por ahí
+                            if (lib.valiruc(tx_ndc.Text, tx_dat_tdoc.Text) == false)
+                            {
+                                MessageBox.Show("Número de ruc es inválido","Error de validación",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                tx_ndc.Text = "";
+                                tx_nombre.Text = "";
+                                return;
+                            }
                             string[] biene = lib.conectorSolorsoft(cmb_tdoc.Text.ToUpper().Trim(), tx_ndc.Text);
                             if (biene[0] == "")
                             {
@@ -2079,6 +2086,9 @@ namespace iOMG
                                 }
                                 else
                                 {
+                                    MessageBox.Show(biene[6], biene[7], MessageBoxButtons.OK);
+                                    // me quede acá, confirmar si no es HABIDO,ACTIVO
+
                                     tx_nombre.Text = biene[0];   // razon social
                                                                  //biene[1];                    // ubigeo
                                     tx_direc.Text = biene[2];    // direccion

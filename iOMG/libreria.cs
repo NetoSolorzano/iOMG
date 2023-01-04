@@ -504,7 +504,7 @@ namespace iOMG
             }
             conl.Close();
         }
-        public bool valiruc(string vr,string tp)                            // validación del documento
+        public bool valiruc(string vr,string tp)                            // validación del documento RUC
         {   // vr = num.documento, tp=tipo documento
             int cdig = 0;
             string docu = "";
@@ -2910,23 +2910,29 @@ namespace iOMG
                 start.UseShellExecute = false;
                 start.RedirectStandardOutput = true;
                 start.Arguments = numDoc + " " + "0";  // 2 parametros, numero a buscar, tipo de doc (0=ruc|1=dni)
-                using (Process proceso = Process.Start(start))
+                try
                 {
-
-                    using (StreamReader reader = proceso.StandardOutput)
+                    using (Process proceso = Process.Start(start))
                     {
-                        string result = reader.ReadToEnd();
-                        string[] datos = result.Split('|');
+                        using (StreamReader reader = proceso.StandardOutput)
+                        {
+                            string result = reader.ReadToEnd();
+                            string[] datos = result.Split('|');
 
-                        retorna[0] = datos[1].Replace("?", "Ñ");         // razon social
-                        retorna[1] = datos[4];                          // ubigeo
-                        retorna[2] = datos[5];                          // direccion
-                        retorna[3] = datos[8];                          // departamento
-                        retorna[4] = (datos[7].Length > 20)? datos[7].Substring(0,20) : datos[7];       // provincia
-                        retorna[5] = (datos[6].Length > 20)? datos[6].Substring(0,20) : datos[6];       // distrito
-                        retorna[6] = datos[2];                          // estado del contrib.
-                        retorna[7] = datos[3];                          // condicion domicilio
+                            retorna[0] = datos[1].Replace("?", "Ñ");         // razon social
+                            retorna[1] = datos[4];                          // ubigeo
+                            retorna[2] = datos[5];                          // direccion
+                            retorna[3] = datos[8];                          // departamento
+                            retorna[4] = (datos[7].Length > 20) ? datos[7].Substring(0, 20) : datos[7];       // provincia
+                            retorna[5] = (datos[6].Length > 20) ? datos[6].Substring(0, 20) : datos[6];       // distrito
+                            retorna[6] = datos[2];                          // estado del contrib.
+                            retorna[7] = datos[3];                          // condicion domicilio
+                        }
                     }
+                }
+                catch
+                {
+                    // numero de ruc que umasapa da error
                 }
             }
             if (cual == "DNI")
