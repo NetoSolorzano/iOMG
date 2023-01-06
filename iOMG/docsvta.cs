@@ -103,6 +103,7 @@ namespace iOMG
         string vSNdsctoC = "";              // S ó N, permite o no descuento GLOBAL
         double DetServLim = 0;              // Límite para Detracción en Servicios
         string vcpefec = "";                // codigo de pago efectivo contado
+        string NoRetGl = "";                // glosa de retorno cuando umasapa no encuentra el dni o ruc
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -352,6 +353,10 @@ namespace iOMG
                             if (row["param"].ToString() == "nom_uSer") nom_user = row["valor"].ToString().Trim();           // nombre unidad de SERVICIO
                             if (row["param"].ToString() == "mail_prin1") mailPrin = row["valor"].ToString().Trim();           // correo electronico principal
                             if (row["param"].ToString() == "web_dni") webdni = row["valor"].ToString().Trim();              // pag web para busqueda de dni
+                        }
+                        if (row["campo"].ToString() == "conector")
+                        {
+                            if (row["param"].ToString() == "noRetGlosa") NoRetGl = row["valor"].ToString().Trim();          // glosa que retorna umasapa cuando no encuentra dato
                         }
                     }
                     if (row["formulario"].ToString() == "clients")
@@ -1226,6 +1231,83 @@ namespace iOMG
             tx_d_ptot.Text = (cant * preSin).ToString("#0.00");
             tx_d_precio.Text = (Math.Round(double.Parse(tx_d_ptot.Text) - desc,6)).ToString("#0.00");
         }
+        private string[] busqueda_clt_conector(string tipoD, string numeD)  // retorna datos del cliente del conector externo
+        {
+            string[] retorna = new string[8];
+            retorna[0] = ""; retorna[1] = ""; retorna[2] = ""; retorna[3] = "";
+            retorna[4] = ""; retorna[5] = ""; retorna[6] = ""; retorna[7] = "";
+
+            if (tx_dat_tdoc.Text == vtc_ruc)
+            {
+                if (lib.valiruc(tx_ndc.Text, tx_dat_tdoc.Text) == false)
+                {
+                    MessageBox.Show("Número de ruc es inválido", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tx_ndc.Text = "";
+                    tx_nombre.Text = "";
+                    return retorna;
+                }
+            }
+            // si no hay Y SI DOCUMENTO ES RUC O DNI, vamos al conector a buscarlo por ahí
+            string[] biene = lib.conectorSolorsoft(cmb_tdoc.Text.ToUpper().Trim(), tx_ndc.Text);
+            string myStr = biene[0].Replace("\r\n", "");
+            if (biene[0] == "" || myStr == NoRetGl)  // compara retorno vacio o glosa cuando no encuentra el dato
+            {
+                if (tx_dat_tdoc.Text == vtc_ruc)
+                {
+                    var aa = MessageBox.Show(" No encontramos el documento en ningún registro. " + Environment.NewLine +
+                    " Deberá ingresarlo manualmente si esta seguro(a) " + Environment.NewLine +
+                    " de la validez del número y documento. " + Environment.NewLine +
+                    "" + Environment.NewLine +
+                    "Confirma que desea ingresarlo manualmente?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (aa == DialogResult.No)
+                    {
+                        tx_ndc.Text = "";
+                        tx_ndc.Focus();
+                        return retorna;
+                    }
+                }
+                if (tx_dat_tdoc.Text == vtc_dni)
+                {
+                    MessageBox.Show("No encontramos el DNI en la busqueda inicial, estamos abriendo" + Environment.NewLine +
+                                    "una página web para que efectúe la busqueda manualmente", "Redirección a web de DNI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    System.Diagnostics.Process.Start(webdni);    // "https://eldni.com/pe/buscar-por-dni"
+                }
+            }
+            else
+            {
+                if (tx_dat_tdoc.Text == vtc_ruc)
+                {
+                    if (biene[6] != "ACTIVO" || biene[7] != "HABIDO")
+                    {
+                        var aa = MessageBox.Show("No debería generar el comprobante" + Environment.NewLine +
+                            "el ruc tiene el estado o condición no correcto" + Environment.NewLine + Environment.NewLine +
+                            "Condición: " + biene[7] + Environment.NewLine +
+                            "Estado: " + biene[6] + Environment.NewLine + Environment.NewLine +
+                            "CONFIRMA QUE DESEA CONTINUAR?", "Alerta - no debería continuar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (aa == DialogResult.No)
+                        {
+                            tx_ndc.Text = "";
+                            tx_ndc.Focus();
+                            return retorna;
+                        }
+                    }
+                    retorna[0] = biene[0];     // razon social; 
+                    retorna[1] = biene[1];     // ubigeo
+                    retorna[2] = biene[2];     // direccion
+                    retorna[3] = biene[3];     // departamento
+                    retorna[4] = biene[4];     // provincia
+                    retorna[5] = biene[5];     // distrito
+                    retorna[6] = biene[6];     // estado del contrib.
+                    retorna[7] = biene[7];     // situación de domicilio
+                }
+                if (tx_dat_tdoc.Text == vtc_dni)
+                {
+                    //tx_nombre.Text = biene[0];   // razon social
+                    retorna[0] = biene[0];     // razon social; 
+                }
+            }
+            return retorna;
+        }
 
         #region autocompletados
         private void autodptos()
@@ -2052,53 +2134,16 @@ namespace iOMG
                     // Aca no hay F1  ... acá vamos defrente con el número
                     if (tx_ndc.Text.Trim() != "" && tx_dat_tdoc.Text != "")
                     {
-                        // primero buscamos en la base de clientes del sistema
-                        if (busclte(tx_dat_tdoc.Text,tx_ndc.Text) == false)
+                        if (busclte(tx_dat_tdoc.Text, tx_ndc.Text) == false)
                         {
-                            // si no hay Y SI DOCUMENTO ES RUC O DNI, vamos al conector a buscarlo por ahí
-                            if (lib.valiruc(tx_ndc.Text, tx_dat_tdoc.Text) == false)
-                            {
-                                MessageBox.Show("Número de ruc es inválido","Error de validación",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                                tx_ndc.Text = "";
-                                tx_nombre.Text = "";
-                                return;
-                            }
-                            string[] biene = lib.conectorSolorsoft(cmb_tdoc.Text.ToUpper().Trim(), tx_ndc.Text);
-                            if (biene[0] == "")
-                            {
-                                var aa = MessageBox.Show(" No encontramos el documento en ningún registro. " + Environment.NewLine +
-                                    " Deberá ingresarlo manualmente si esta seguro(a) " + Environment.NewLine + 
-                                    " de la validez del número y documento. " + Environment.NewLine +
-                                    "" + Environment.NewLine +
-                                    "Confirma que desea ingresarlo manualmente?","Atención",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                if (aa == DialogResult.No)
-                                {
-                                    tx_ndc.Text = "";
-                                    tx_ndc.Focus();
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                if (biene[1] == "00000000")     // cliente no identificado
-                                {
-                                    System.Diagnostics.Process.Start(webdni);    // "https://eldni.com/pe/buscar-por-dni"
-                                }
-                                else
-                                {
-                                    MessageBox.Show(biene[6], biene[7], MessageBoxButtons.OK);
-                                    // me quede acá, confirmar si no es HABIDO,ACTIVO
-
-                                    tx_nombre.Text = biene[0];   // razon social
-                                                                 //biene[1];                    // ubigeo
-                                    tx_direc.Text = biene[2];    // direccion
-                                    tx_dpto.Text = biene[3];     // departamento
-                                    tx_prov.Text = biene[4];     // provincia
-                                    tx_dist.Text = biene[5];     // distrito
-                                                 //biene[6]                      // estado del contrib.
-                                                 //biene[7]
-                                }
-                            }
+                            // llamada a la funcion
+                            string[] biene = busqueda_clt_conector(tx_dat_tdoc.Text, tx_ndc.Text);
+                            tx_nombre.Text = biene[0];   // razon social
+                                                         //biene[1];                    // ubigeo
+                            tx_direc.Text = biene[2];    // direccion
+                            tx_dpto.Text = biene[3];     // departamento
+                            tx_prov.Text = biene[4];     // provincia
+                            tx_dist.Text = biene[5];     // distrito
                         }
                     }
                     else
@@ -2115,41 +2160,14 @@ namespace iOMG
                     {
                         if (busclte(tx_dat_tdoc.Text, tx_ndc.Text) == false)
                         {
-                            var aaa = MessageBox.Show("No encontramos el documento en la B.D." + Environment.NewLine +
-                                "Confirma que desea generar el comprobante?","Atención",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
-                            if (aaa == DialogResult.Yes)
-                            {
-                                string[] biene = lib.conectorSolorsoft(cmb_tdoc.Text.ToUpper().Trim(), tx_ndc.Text);
-                                if (biene[0] == "")
-                                {
-                                    var aa = MessageBox.Show(" No encontramos los datos en ningún registro. " + Environment.NewLine +
-                                        " Deberá ingresarlo manualmente si esta seguro(a) " + Environment.NewLine +
-                                        " de la validez del número y documento. " + Environment.NewLine +
-                                        "" + Environment.NewLine +
-                                        "Confirma que desea ingresarlo manualmente?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                    if (aa == DialogResult.No)
-                                    {
-                                        tx_ndc.Text = "";
-                                        tx_ndc.Focus();
-                                        return;
-                                    }
-                                }
-                                else
-                                {
-                                    tx_nombre.Text = biene[0];   // razon social
-                                    //biene[1];                    // ubigeo
-                                    tx_direc.Text = biene[2];    // direccion
-                                    tx_dpto.Text = biene[3];     // departamento
-                                    tx_prov.Text = biene[4];     // provincia
-                                    tx_dist.Text = biene[5];     // distrito
-                                }
-                            }
-                            else
-                            {
-                                tx_ndc.Text = "";
-                                tx_ndc.Focus();
-                                return;
-                            }
+                            // llamada a la funcion
+                            string[] biene = busqueda_clt_conector(tx_dat_tdoc.Text, tx_ndc.Text);
+                            tx_nombre.Text = biene[0];   // razon social
+                                                         //biene[1];                    // ubigeo
+                            tx_direc.Text = biene[2];    // direccion
+                            tx_dpto.Text = biene[3];     // departamento
+                            tx_prov.Text = biene[4];     // provincia
+                            tx_dist.Text = biene[5];     // distrito
                         }
                     }
                     else
@@ -2467,7 +2485,9 @@ namespace iOMG
                     }
                     ncant = double.Parse(tx_d_can.Text);
                     ntoti = double.Parse(tx_d_precio.Text) / ncant;                         // precio total de la fila incluyendo descuento
-                    double vdscto = double.Parse(tx_ImpDsctoD.Text);
+                    //double vdscto = double.Parse(tx_ImpDsctoD.Text);
+                    double vdscto = 0;
+                    double.TryParse(tx_ImpDsctoD.Text, out vdscto);
                     if (ntoti > 0)
                     {
                         if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios

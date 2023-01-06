@@ -2896,7 +2896,7 @@ namespace iOMG
             }
             return retorna;
         }
-        public string[] conectorSolorsoft(string cual, string numDoc)
+        public string[] conectorSolorsoft_b(string cual, string numDoc)
         {
             string[] retorna = new string[8];
             retorna[0] = ""; retorna[1] = ""; retorna[2] = ""; retorna[3] = "";
@@ -3018,6 +3018,166 @@ namespace iOMG
                             }
                         }
                     }
+                }
+            }
+            return retorna;
+        }
+        public string[] conectorSolorsoft(string cual, string numDoc)
+        {
+            string[] retorna = new string[8];
+            retorna[0] = ""; retorna[1] = ""; retorna[2] = ""; retorna[3] = "";
+            retorna[4] = ""; retorna[5] = ""; retorna[6] = ""; retorna[7] = "";
+            string dirLoc = Directory.GetCurrentDirectory() + @"\conectores\";
+            string conectorFE = ConfigurationManager.AppSettings["conectFE"].ToString();
+            if (cual == "RUC")
+            {
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.FileName = dirLoc + conectorFE;                   // "conectorJson.exe";
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                start.Arguments = numDoc + " " + "0";  // 2 parametros, numero a buscar, tipo de doc (0=ruc|1=dni)
+                try
+                {
+                    using (Process proceso = Process.Start(start))
+                    {
+                        using (StreamReader reader = proceso.StandardOutput)
+                        {
+                            string result = reader.ReadToEnd();
+                            string[] datos = result.Split('|');
+
+                            retorna[0] = datos[1].Replace("?", "Ñ");         // razon social
+                            retorna[1] = datos[4];                          // ubigeo
+                            retorna[2] = datos[5];                          // direccion
+                            retorna[3] = datos[8];                          // departamento
+                            retorna[4] = (datos[7].Length > 20) ? datos[7].Substring(0, 20) : datos[7];       // provincia
+                            retorna[5] = (datos[6].Length > 20) ? datos[6].Substring(0, 20) : datos[6];       // distrito
+                            retorna[6] = datos[2];                          // estado del contrib.
+                            retorna[7] = datos[3];                          // condicion domicilio
+                        }
+                    }
+                }
+                catch
+                {
+                    // numero de ruc que umasapa da error
+                }
+            }
+            if (cual == "DNI")
+            {
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.FileName = dirLoc + conectorFE;                   // "conectorJson.exe";
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                start.Arguments = numDoc + " " + "1";  // 2 parametros, numero a buscar, tipo de doc (0=ruc|1=dni)
+                try
+                {
+                    using (Process proceso = Process.Start(start))
+                    {
+                        using (StreamReader reader = proceso.StandardOutput)
+                        {
+                            string result = reader.ReadToEnd();
+                            string[] datos = result.Split('|');
+
+                            retorna[0] = datos[1].Replace("?", "Ñ");         // razon social
+                            retorna[1] = datos[4];                          // ubigeo
+                            retorna[2] = datos[5];                          // direccion
+                            retorna[3] = datos[8];                          // departamento
+                            retorna[4] = (datos[7].Length > 20) ? datos[7].Substring(0, 20) : datos[7];       // provincia
+                            retorna[5] = (datos[6].Length > 20) ? datos[6].Substring(0, 20) : datos[6];       // distrito
+                            retorna[6] = datos[2];                          // estado del contrib.
+                            retorna[7] = datos[3];                          // condicion domicilio
+                        }
+                    }
+                }
+                catch
+                {
+                    // numero de DNI que umasapa da error
+                }
+                if (retorna[0] == "")   // umasapa no lo encontró, buscamos por otros medios ....
+                {
+                    /*
+                    string nomCon = "";
+                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    {
+                        conn.Open();
+                        string abre = "select valor from enlaces where formulario='main' and campo='conector'";
+                        using (MySqlCommand micon = new MySqlCommand(abre, conn))
+                        {
+                            using (MySqlDataReader dr = micon.ExecuteReader())
+                            {
+                                if (dr.Read())
+                                {
+                                    nomCon = dr.GetString(0);
+                                }
+                            }
+                        }
+                    }
+                    if (nomCon == "conectorc.exe")
+                    {
+                        int limite = 30000;
+                        start = new ProcessStartInfo();
+                        start.UseShellExecute = false;
+                        start.RedirectStandardOutput = true;
+                        start.FileName = dirLoc + "conectorc.exe";
+                        start.Arguments = "D " + numDoc;  // 2 parametros, "D" y dni a buscar
+                        Process p = Process.Start(start);
+                        p.WaitForInputIdle();
+                        p.WaitForExit(limite);
+                        if (p.HasExited == false)
+                        {
+                            if (p.Responding)
+                            {
+                                p.CloseMainWindow();
+                            }
+                            else
+                            {
+                                p.Kill();
+                            }
+                        }
+                        else
+                        {
+                            // leemos el .config del conectorc
+                            ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
+                            configMap.ExeConfigFilename = dirLoc + "conectorc.exe.config";
+                            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+                            retorna[0] = config.AppSettings.Settings["rnombre"].Value + " " +
+                                config.AppSettings.Settings["rapater"].Value + " " +
+                                config.AppSettings.Settings["ramater"].Value;   // textBox9.Text NOMBRE
+                            retorna[1] = config.AppSettings.Settings["rnumero"].Value;  // textBox3.Text NUMERO DNI
+                                                                                        //
+                            config.AppSettings.Settings["rnombre"].Value = "";
+                            config.AppSettings.Settings["rapater"].Value = "";
+                            config.AppSettings.Settings["ramater"].Value = "";
+                            config.Save();
+                            p.Close();
+                        }
+                    }
+                    if (nomCon == "conectorJson.exe")
+                    {
+                        start = new ProcessStartInfo();
+                        start.FileName = dirLoc + "conectorJson.exe";
+                        start.UseShellExecute = false;
+                        start.RedirectStandardOutput = true;
+                        start.Arguments = numDoc + " " + "1";  // 2 parametros, numero a buscar, tipo de doc (0=ruc|1=dni)
+                        using (Process proceso = Process.Start(start))
+                        {
+                            using (StreamReader reader = proceso.StandardOutput)
+                            {
+                                string result = reader.ReadToEnd();
+                                if (string.IsNullOrEmpty(result))
+                                {
+                                    retorna[1] = "";
+                                    retorna[0] = "";
+                                }
+                                else
+                                {
+                                    string[] datos = result.Split('|');
+                                    retorna[0] = datos[1].Replace("?", "Ñ");         // razon social
+                                    retorna[1] = datos[0];                          // numero
+                                }
+                            }
+                        }
+                    }
+                    */
                 }
             }
             return retorna;

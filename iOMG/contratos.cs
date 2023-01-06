@@ -572,7 +572,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
-                    "a.pcontacto,a.dreferen,a.telcont,a.totsad " +
+                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                     "where not find_in_set(a.status,@tea)";   // where a.status not in (@tea)
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
@@ -1245,6 +1245,7 @@ namespace iOMG
                 tx_dirRef.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[20].Value.ToString();     // referencia de direccion
                 tx_telcont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[21].Value.ToString();    // telefono del contact
                 tx_totesp.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[22].Value.ToString();    // total servicios adicionales
+                tx_motivD.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[23].Value.ToString();    // motivo de descuento
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
@@ -1290,6 +1291,7 @@ namespace iOMG
                         tx_dirRef.Text = row["dreferen"].ToString();                        // referencia de direccion
                         tx_telcont.Text = row["telcont"].ToString();                        // telefono del contacto de instal
                         tx_totesp.Text = string.Format("{0:#0.00}", row["totsad"].ToString());                          // total servicios adicionales
+                        tx_motivD.Text = row["motivDes"].ToString();                        // motivo de descuento
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
