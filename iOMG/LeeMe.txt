@@ -220,4 +220,5 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - libreria, mejorar codigo en conectorsolorsoft ...................................... ok 06/01/23
 - form docsvta, arreglar error en campo dscto detalle si esta en blanco .............. ok 06/01/23
 - form contratos, en dataload no estaba jalando el campo motivo descuento ............ ok 06/01/23
+- form contratos, vista de contrato, colocar estado del comprobante .................. ok 09/01/23
 - form docsvta, actualizar totales si se borra una fila de detalle ................... 

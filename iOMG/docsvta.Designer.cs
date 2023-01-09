@@ -1701,7 +1701,7 @@
             // 
             // tx_totcant
             // 
-            this.tx_totcant.Location = new System.Drawing.Point(362, 330);
+            this.tx_totcant.Location = new System.Drawing.Point(532, 374);
             this.tx_totcant.Name = "tx_totcant";
             this.tx_totcant.ReadOnly = true;
             this.tx_totcant.Size = new System.Drawing.Size(31, 20);

@@ -3424,13 +3424,42 @@ namespace iOMG
                     }
                 }
             }
-            if (Tx_modo.Text == "EDITAR")
+            if (Tx_modo.Text == "EDITAR")           
             {
                 if (!escambio.Contains(tx_dat_estad.Text))
                 {
-                    MessageBox.Show("El estado actual del contrato no permite modificar el detalle",
-                        "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
+                    if (decimal.Parse(tx_saldo.Text) <= 0)
+                    {
+                        MessageBox.Show("No esta permitido agregar items, el SALDO en S/ es cero",
+                                    "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return;
+                    }
+                    else
+                    {
+                        if (vupb.Contains(asd) == true)
+                        {
+                            string sn = "N";
+                            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                            {
+                                if (dataGridView1.Rows[i].Cells[14].Value.ToString() == "B")
+                                {
+                                    sn = "S";
+                                }
+                            }
+                            if (sn == "N")
+                            {
+                                MessageBox.Show("No esta permitido agregar items, el estado no lo permite",
+                                    "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("El estado actual del contrato no permite modificar el detalle",
+                                "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            return;
+                        }
+                    }
                 }
                 if (tx_d_id.Text.Trim() != "")    //  dataGridView1.Rows.Count > 1
                 {
@@ -4227,6 +4256,13 @@ namespace iOMG
             string modos = "EDITAR,NUEVO";
             if (modos.Contains(Tx_modo.Text) == true)    // y el usuario esta autorizado
             {
+                if (decimal.Parse(tx_saldo.Text) <= 0)
+                {
+                    MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine +
+                    "pero no se puede proceder porque el saldo S/ es cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    e.Cancel = true;
+                    return;
+                }
                 var aa = MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine +
                     "se actualizarán los datos", "Confirma?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.No)
@@ -4417,7 +4453,7 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero,via,saldo from pagamenti where contrato=@cont";
+                string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero,via,saldo,detalle from pagamenti where contrato=@cont";
                 MySqlCommand micon = new MySqlCommand(cpag, conn);
                 micon.Parameters.AddWithValue("@cont", tx_codped.Text.Trim());
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -4435,6 +4471,7 @@ namespace iOMG
                     pagoscont.numero = row.ItemArray[6].ToString();
                     pagoscont.tipoPago = row.ItemArray[7].ToString();
                     pagoscont.saldo = row.ItemArray[8].ToString();
+                    pagoscont.detalle = row.ItemArray[9].ToString();
                     repcontrato.pagoscont.AddpagoscontRow(pagoscont);
                 }
                 da.Dispose();

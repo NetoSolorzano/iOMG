@@ -596,6 +596,7 @@ namespace iOMG
                     da.Dispose();
                 }
                 grilladet("edita");     // obtiene contenido de grilla con DT
+                suma_grilla();      // recien puse el 09/01/2023
             }
             conn.Close();
         }
