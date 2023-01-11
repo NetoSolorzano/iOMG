@@ -109,6 +109,7 @@
             this.cmb_tipo = new System.Windows.Forms.ComboBox();
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tx_d_dat_pdet = new System.Windows.Forms.TextBox();
             this.tx_d_ptot = new System.Windows.Forms.TextBox();
             this.tx_d_preSinDscto = new System.Windows.Forms.TextBox();
             this.tx_d_valAntic = new System.Windows.Forms.TextBox();
@@ -1004,6 +1005,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tx_d_dat_pdet);
             this.panel1.Controls.Add(this.tx_ImpDsctoD);
             this.panel1.Controls.Add(this.tx_d_ptot);
             this.panel1.Controls.Add(this.tx_d_preSinDscto);
@@ -1033,6 +1035,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(869, 58);
             this.panel1.TabIndex = 5;
+            // 
+            // tx_d_dat_pdet
+            // 
+            this.tx_d_dat_pdet.Location = new System.Drawing.Point(386, 18);
+            this.tx_d_dat_pdet.Name = "tx_d_dat_pdet";
+            this.tx_d_dat_pdet.ReadOnly = true;
+            this.tx_d_dat_pdet.Size = new System.Drawing.Size(37, 20);
+            this.tx_d_dat_pdet.TabIndex = 324;
+            this.tx_d_dat_pdet.Tag = "porcentaje detraccion";
+            this.tx_d_dat_pdet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_d_ptot
             // 
@@ -1153,7 +1165,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(248, -1);
+            this.label13.Location = new System.Drawing.Point(101, -3);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(16, 13);
             this.label13.TabIndex = 305;
@@ -1220,7 +1232,7 @@
             // 
             // tx_d_id
             // 
-            this.tx_d_id.Location = new System.Drawing.Point(270, -5);
+            this.tx_d_id.Location = new System.Drawing.Point(109, -1);
             this.tx_d_id.Name = "tx_d_id";
             this.tx_d_id.ReadOnly = true;
             this.tx_d_id.Size = new System.Drawing.Size(37, 20);
@@ -2210,5 +2222,6 @@
         private System.Windows.Forms.TextBox tx_dat_cDet;
         private System.Windows.Forms.TextBox tx_dat_pDet;
         private System.Windows.Forms.TextBox tx_dat_sDet;
+        private System.Windows.Forms.TextBox tx_d_dat_pdet;
     }
 }

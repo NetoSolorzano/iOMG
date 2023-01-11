@@ -209,11 +209,15 @@ namespace iOMG
                             tx_d_nom.Text = ayu2.ReturnValue2.ToString();
                             tx_d_id.Text = ayu2.ReturnValue0.ToString();
 
-                            if (ayu2.ReturnValueA != null)
+                            if (ayu2.ReturnValueA != null && para1 == "items")
                             {
                                 tx_d_precio.Text = ayu2.ReturnValueA[3];
                                 tx_d_preSinDscto.Text = ayu2.ReturnValueA[3];
                                 tx_d_med.Text = ayu2.ReturnValueA[2];
+                            }
+                            if (ayu2.ReturnValueA != null && para1 == "items_adic")
+                            {
+                                tx_d_dat_pdet.Text = ayu2.ReturnValueA[4];
                             }
                         }
                     }
@@ -608,7 +612,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 13;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
             // it
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho                
@@ -698,6 +702,11 @@ namespace iOMG
             dataGridView1.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[12].Name = "VAL_SIN_DSCTO";
+            // porcentaje de detraccion para items de servicios
+            dataGridView1.Columns[13].Visible = true;
+            dataGridView1.Columns[13].HeaderText = "Por_Det";
+            dataGridView1.Columns[13].ReadOnly = true;
+            dataGridView1.Columns[13].Name = "POR_DET";
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
@@ -1328,6 +1337,31 @@ namespace iOMG
                     retorna[0] = biene[0];     // razon social; 
                 }
             }
+            return retorna;
+        }
+        private bool bus_detalle_detrac()
+        {
+            bool retorna = true;
+            string codi = "";
+            if (rb_tserv.Checked == true)
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells[13].Value != null && row.Cells[13].Value.ToString() != "")
+                    {
+                        if (codi != "")
+                        { 
+                            if (row.Cells[13].Value.ToString() != codi)
+                            {
+                                retorna = false;     // osea si hay codigo de detrac diferentes
+                            }
+                        }
+                        codi = row.Cells[13].Value.ToString();
+                    }
+                }
+            }
+            if (tx_dat_pDet.Text != "" && tx_dat_pDet.Text != codi) retorna = false;
+
             return retorna;
         }
 
@@ -2045,11 +2079,34 @@ namespace iOMG
         }
         private void cmb_detrac_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string axs = string.Format("descrizionerid='{0}'", cmb_detrac.Text);
-            DataRow[] row = dtdetS.Select(axs);
-            tx_dat_cDet.Text = row[0].ItemArray[1].ToString();  // codigo interno detraccion
-            tx_dat_pDet.Text = row[0].ItemArray[2].ToString();  // porcentaje detraccion
-            tx_dat_sDet.Text = row[0].ItemArray[4].ToString();  // codigo sunat 
+            if (cmb_detrac.SelectedIndex != -1)
+            {
+                string axs = string.Format("descrizionerid='{0}'", cmb_detrac.Text);
+                DataRow[] row = dtdetS.Select(axs);
+                tx_dat_cDet.Text = row[0].ItemArray[1].ToString();  // codigo interno detraccion
+                tx_dat_pDet.Text = row[0].ItemArray[2].ToString();  // porcentaje detraccion
+                tx_dat_sDet.Text = row[0].ItemArray[4].ToString();  // codigo sunat 
+
+                // validamos que los items del detalle tengan el porcentaje de detracción seleccionado
+                if (bus_detalle_detrac() == false)      // false = si hay codigos de detracción diferentes
+                {
+                    MessageBox.Show("El detalle tiene códigos de detracción diferentes", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cmb_detrac.SelectedIndex = -1;
+                    tx_dat_cDet.Text = "";
+                }
+            }
+            else
+            {
+                tx_dat_cDet.Text = "";  // codigo interno detraccion
+                tx_dat_pDet.Text = "";  // porcentaje detraccion
+                tx_dat_sDet.Text = "";  // codigo sunat 
+            }
+            if (cmb_detrac.Text.Trim() == "")
+            {
+                tx_dat_cDet.Text = "";  // codigo interno detraccion
+                tx_dat_pDet.Text = "";  // porcentaje detraccion
+                tx_dat_sDet.Text = "";  // codigo sunat 
+            }
         }
         #endregion comboboxes
 
@@ -2503,7 +2560,7 @@ namespace iOMG
                         tx_desGlob.Text = "0";
                     }
                 }
-                if (rb_bienes.Checked == true)
+                if (rb_bienes.Checked == true)      // items tanto de bienes como de servicios
                 {
                     // validaciones
                     if (tx_d_can.Text.Trim() == "")
@@ -2528,12 +2585,12 @@ namespace iOMG
                         if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
                         {
                             _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text); // (ntoti+vdscto).ToString()
+                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text, tx_d_dat_pdet.Text); // (ntoti+vdscto).ToString()
                         }
                         else
                         {
                             _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
-                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text);  // (ntoti + vdscto).ToString()
+                                        tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text, tx_d_dat_pdet.Text);  // (ntoti + vdscto).ToString()
                         }
 
                         limpia_panel(panel1);
@@ -2554,7 +2611,13 @@ namespace iOMG
                 {
                     panel4.Visible = true;
                 }
-                else panel4.Visible = false;
+                else
+                {
+                    panel4.Visible = false;
+                    tx_dat_cDet.Text = "";  // codigo interno detraccion
+                    tx_dat_pDet.Text = "";  // porcentaje detraccion
+                    tx_dat_sDet.Text = "";  // codigo sunat 
+                }
             }
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
@@ -2576,6 +2639,13 @@ namespace iOMG
             {
                 MessageBox.Show("Ingrese el documento del cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 tx_ndc.Focus();
+                return;
+            }
+            if (rb_tserv.Checked == true && bus_detalle_detrac() == false)      // false = si hay codigos de detracción diferentes
+            {
+                MessageBox.Show("El detalle tiene códigos de detracción diferentes", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmb_detrac.SelectedIndex = -1;
+                tx_dat_cDet.Text = "";
                 return;
             }
             //if (conex_Rapifac() == "") return;   //

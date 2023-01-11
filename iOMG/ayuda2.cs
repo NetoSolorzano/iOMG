@@ -84,11 +84,11 @@ namespace iOMG
             }
             if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")    // articulos de la maestra
             {
-                consulta = "select codig,nombr,medid,precio " +
-                    "from items_adic where bloqueado=0";
+                consulta = "select codig,nombr,medid,precio,detporc " +
+                    "from items_adic where bloqueado=0";                                    // el campo "detporc" es el % detraccion si fuera servicio
                 // Acomodamos la grilla 891
                 dataGridView1.Rows.Clear();
-                dataGridView1.ColumnCount = 4;
+                dataGridView1.ColumnCount = 5;
                 dataGridView1.Columns[0].Name = "CODIGO";
                 dataGridView1.Columns[0].Width = 170;
                 dataGridView1.Columns[0].ReadOnly = true;
@@ -101,8 +101,12 @@ namespace iOMG
                 dataGridView1.Columns[3].Name = "PRECIO";
                 dataGridView1.Columns[3].Width = 80;
                 dataGridView1.Columns[3].ReadOnly = true;
+                dataGridView1.Columns[4].Width = 10;
+                dataGridView1.Columns[4].Visible = false;
                 //
                 this.Width = dataGridView1.Width + 5;
+                //
+                ReturnValueA = new string[5] { "", "", "", "", "" };
             }
             if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")   // maestra de clientes
             {
@@ -414,7 +418,8 @@ namespace iOMG
                                                 row.ItemArray[0].ToString(),
                                                 row.ItemArray[1].ToString(),
                                                 row.ItemArray[2].ToString(),
-                                                row.ItemArray[3].ToString()
+                                                row.ItemArray[3].ToString(),
+                                                row.ItemArray[4].ToString()
                                                 );
                         }
                     }
@@ -572,6 +577,14 @@ namespace iOMG
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 }
+                if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                    ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                }
                 if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
                 {
                     ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();   // id
@@ -685,6 +698,11 @@ namespace iOMG
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = cellva;
                 tx_id.Text = "";
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
             }
             if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
             {
@@ -798,6 +816,14 @@ namespace iOMG
                     ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                     ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                     ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                }
+                if (para1 == "items_adic" && para2 == "todos" && para3 == "" && para4 == "")
+                {
+                    ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                    ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                    ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
                 }
                 if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
                 {
@@ -1015,6 +1041,11 @@ namespace iOMG
                 cellva = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 tx_codigo.Text = cellva;
                 tx_id.Text = "";
+                ReturnValueA[0] = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                ReturnValueA[1] = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                ReturnValueA[2] = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                ReturnValueA[3] = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                ReturnValueA[4] = dataGridView1.CurrentRow.Cells[4].Value.ToString();
             }
             if (para1 == "anag_cli" && para2 == "todos" && para3 == "" && para4 == "")
             {
