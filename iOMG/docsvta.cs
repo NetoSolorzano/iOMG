@@ -130,6 +130,7 @@ namespace iOMG
         AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
         string vpago = "";                      // pago anticipo o cancelatorio
         string[,] dtpagos = new string[10, 7];  // 10 filas, 6 columnas para los medios de pago por comprobante
+        string[,] pagoIni = new string[1, 2];   // Tipo doc y numero doc del primer pago del contrato
 
         public docsvta()
         {
@@ -897,10 +898,14 @@ namespace iOMG
             lb_totDet.Text = lb_totDet.Tag + " " + cmb_mon.Text;
             ini_pagos();
             _docsAnticip.Clear();
+            pagoIni[0, 0] = "";     // pago inicial del contrato, tipo doc del cliente del comprobante
+            pagoIni[0, 1] = "";     // pago inicial del contrato, numero doc del cliente del comprobante
         }
         private double jala_cont(string conti)                // jala datos del contrato
         {
             double retorna = 0;
+            pagoIni[0, 0] = "";     // pago inicial del contrato, tipo doc del cliente del comprobante
+            pagoIni[0, 1] = "";     // pago inicial del contrato, numero doc del cliente del comprobante
             try
             {
                 DataTable dt = new DataTable();
@@ -908,6 +913,21 @@ namespace iOMG
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
+                    // si es RUC, la FACTURA de cancelacion o anticipo no puede ser de otro ruc 
+                    // si es DNI, la BOLETA de cancelacion o anticipo puede ser de cualquier otro dni
+                    string clteUltpago = "select tidoclt,nudoclt from cabfactu where contrato=@cont order by id limit 1";
+                    using (MySqlCommand micon = new MySqlCommand(clteUltpago, conn))
+                    {
+                        micon.Parameters.AddWithValue("@cont", conti);
+                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                pagoIni[0, 0] = dr.GetString(0);        // tipo del documento del cliente
+                                pagoIni[0, 1] = dr.GetString(1);        // numero del documento del cliente del primer pago
+                            }
+                        }
+                    }
                     string continua = "N";
                     string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
@@ -1072,6 +1092,7 @@ namespace iOMG
                         dt.Dispose();
                     }
                     suma_grilla();
+                    valDocClte_Leave(null, null);
                 }
             }
             catch (MySqlException ex)
@@ -2119,6 +2140,16 @@ namespace iOMG
             // según que tipo de comprobante vamos a generar .. actuamos
             if (Tx_modo.Text == "NUEVO" && tx_ndc.Text.Trim() != "")
             {
+                // si tenemos contrato y es un anticipo/cancelacion y es el tipo de comprobante Factura ... entonces ..
+                // verificamos que tenemos dato en pagoIni -> si hay dato, ponemos esos acá, mensajeamos y bloqueamos
+                pan_cli.Enabled = true;
+                if (tx_cont.Text != "" && rb_antic.Checked == true && tx_dat_tdoc.Text == vtc_ruc && pagoIni[0,0] == vtc_ruc)
+                {
+                    tx_ndc.Text = pagoIni[0, 1];
+                    MessageBox.Show("En el caso de cancelaciones y anticipos con RUC" + Environment.NewLine + 
+                        "no se puede cambiar el cliente del comprobante","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    pan_cli.Enabled = false;
+                }
                 // validaciones básicas por tipo de documento 
                 string axs = string.Format("idcodice='{0}'", tx_dat_tdoc.Text);
                 DataRow[] row = dtdoc.Select(axs);
@@ -2180,6 +2211,7 @@ namespace iOMG
                 }
             }
         }
+
         private void tx_d_valAntic_Leave(object sender, EventArgs e)
         {
 
@@ -2233,7 +2265,9 @@ namespace iOMG
             }
             else panel4.Visible = false;
         }
-
+        private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+        }
         #endregion leaves;
 
         #region radio_buttons

@@ -503,7 +503,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();                // codigo de estado anulado
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "nogrilla") cnojal = row["valor"].ToString().Trim();              // estados de contratos que no se jalan a la grilla
                         if (row["campo"].ToString() == "impresora" && row["param"].ToString() == "default") impDef = row["valor"].ToString().Trim();            // nombre de la impresora por defecto
-                        if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos que no hace contrato
+                        if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos que no hace contrato, artículos chicoas
                         if (row["campo"].ToString() == "sedespag" && row["param"].ToString() == "manual") vapm = row["valor"].ToString().Trim();                // sedes donde se acepta registro de pagos manuales 
                         if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "borra_i") vupb = row["valor"].ToString().Trim();             // usuarios que pueden quitar items virghenes de contratos
                     }
@@ -1089,6 +1089,7 @@ namespace iOMG
                                     tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
                                     //if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                     tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
+                                    tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
                                     gol = "1";
                                     tx_d_can.Focus();
                                     break;
@@ -1106,6 +1107,7 @@ namespace iOMG
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
                                         //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
+                                        tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
                                         gol = "1";
                                         tx_d_can.Focus();
                                         break;
@@ -1117,6 +1119,7 @@ namespace iOMG
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
                                         //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
+                                        tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
                                         gol = "1";
                                         tx_d_can.Focus();
                                         break;
@@ -1954,7 +1957,7 @@ namespace iOMG
                 {
                     val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
                     decimal vddes = 0;
-                    decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
+                    if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
                     dsto = dsto + vddes;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                     // buscamos los codigos adicionales para acumularlos y guardarlo en el campo 
                     if (dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) == letgru)
@@ -3407,14 +3410,26 @@ namespace iOMG
                     obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();     // sera?
                     obj.Cells[14].Value = "N";
                     obj.Cells[15].Value = tx_d_tda.Text;  // tx_dat_orig.Text;
+                    //obj.Cells[16].Value = ;
+                    //obj.Cells[17].Value = ;
                 }
                 else
                 {
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
+                        int vca = int.Parse(tx_d_can.Text);                     // cantidad items
+                        decimal vpo = decimal.Parse(tx_d_dat_prec.Text);        // precio original de catologo
+                        decimal vpts = vpo * vca;                               // precio total sin descuento
+                        decimal vpc = decimal.Parse(tx_d_prec.Text);            // precio incluyendo descuento
+                        decimal vptc = vpc * vca;                               // precio total con descuento
+                        decimal vtd = vpts - vptc;                              // descuento total de la fila
+
+                        //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
+                        //     tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, 
+                        //     cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N",tx_d_tda.Text,vpts.ToString("#0.00"),vtd.ToString("#0.00"));
                         dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, 
-                             cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N",tx_d_tda.Text);
+                             tx_d_mad.Text, tx_d_dat_prec.Text, vpts.ToString("#0.00"), tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, 
+                             cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N",tx_d_tda.Text,vpts.ToString("#0.00"),vtd.ToString("#0.00"));
                     }
                     else
                     {
@@ -4254,7 +4269,7 @@ namespace iOMG
             // si es edicion, si es el usuario autorizado y el contrato es reciente => borra la(s) filas de detalle
             // busca en la base de datos y lo borra, debe actualizar estado del contrato y saldos
             string modos = "EDITAR,NUEVO";
-            if (modos.Contains(Tx_modo.Text) == true)    // y el usuario esta autorizado
+            if (modos.Contains(Tx_modo.Text) == true)
             {
                 if (decimal.Parse(tx_saldo.Text) <= 0)
                 {
@@ -4306,9 +4321,19 @@ namespace iOMG
                                 }
                                 else
                                 {
-                                    MessageBox.Show("No es posible proceder por falta de permisos" + Environment.NewLine +
-                                        "o porque el artículo tiene relación con otros procesos", "No se grabó la operación");
-                                    e.Cancel = true;
+                                    if (vupb.Contains(asd) == true && vtasc.Contains(rdg.Cells[1].Value.ToString().Substring(0, 1)) == true)
+                                    {
+                                        rdg.DefaultCellStyle.BackColor = Color.Red;
+                                        rdg.Cells[14].Value = "B";
+                                        e.Cancel = true;
+                                        calculos();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("No es posible proceder por falta de permisos" + Environment.NewLine +
+                                            "o porque el artículo tiene relación con otros procesos", "No se grabó la operación");
+                                        e.Cancel = true;
+                                    }
                                 }
                             }
                         }

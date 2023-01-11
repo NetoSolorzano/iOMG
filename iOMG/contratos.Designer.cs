@@ -264,6 +264,7 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tx_d_dat_prec = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -768,6 +769,7 @@
             // tabcodigo
             // 
             this.tabcodigo.BackColor = System.Drawing.Color.Gray;
+            this.tabcodigo.Controls.Add(this.tx_d_dat_prec);
             this.tabcodigo.Controls.Add(this.label56);
             this.tabcodigo.Controls.Add(this.tx_d_tda);
             this.tabcodigo.Controls.Add(this.tx_dat_mad);
@@ -2741,6 +2743,17 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // tx_d_dat_prec
+            // 
+            this.tx_d_dat_prec.AllowSpace = false;
+            this.tx_d_dat_prec.Location = new System.Drawing.Point(525, 34);
+            this.tx_d_dat_prec.Name = "tx_d_dat_prec";
+            this.tx_d_dat_prec.ReadOnly = true;
+            this.tx_d_dat_prec.Size = new System.Drawing.Size(59, 20);
+            this.tx_d_dat_prec.TabIndex = 380;
+            this.tx_d_dat_prec.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_d_dat_prec.Visible = false;
+            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3034,5 +3047,6 @@
         private System.Windows.Forms.GroupBox groupBox53;
         private System.Windows.Forms.TextBox tx_motivD;
         private System.Windows.Forms.Label label58;
+        private NumericTextBox tx_d_dat_prec;
     }
 }
