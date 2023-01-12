@@ -141,6 +141,12 @@
     <Compile Include="CGuiasComprobante.cs" />
     <Compile Include="CMovimientoCuenta.cs" />
     <Compile Include="CProductoCodigoSerie.cs" />
+    <Compile Include="forpcred.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forpcred.designer.cs">
+      <DependentUpon>forpcred.cs</DependentUpon>
+    </Compile>
     <Compile Include="notcred.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -594,6 +600,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forpagos.resx">
       <DependentUpon>forpagos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forpcred.resx">
+      <DependentUpon>forpcred.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forselcomp.resx">
       <DependentUpon>forselcomp.cs</DependentUpon>

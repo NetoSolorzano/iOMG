@@ -131,6 +131,7 @@ namespace iOMG
         string vpago = "";                      // pago anticipo o cancelatorio
         string[,] dtpagos = new string[10, 7];  // 10 filas, 6 columnas para los medios de pago por comprobante
         string[,] pagoIni = new string[1, 2];   // Tipo doc y numero doc del primer pago del contrato
+        string[,] dtcred = new string[10, 4];   // tabla para los creditos y sus fechas
 
         public docsvta()
         {
@@ -240,6 +241,26 @@ namespace iOMG
                                 dtpagos[i, 4] = pagos.ReturnValue[i, 4];
                                 dtpagos[i, 5] = pagos.ReturnValue[i, 5];
                                 dtpagos[i, 6] = pagos.ReturnValue[i, 6];
+                            }
+                        }
+                    }
+                }
+                if (tx_cuotas.Focused == true)
+                {
+                    forpcred creds = new forpcred(dtcred, (Tx_modo.Text == "NUEVO") ? false : true);
+                    var resu = creds.ShowDialog();
+                    if (resu == DialogResult.Cancel)
+                    {
+                        if (!string.IsNullOrEmpty(creds.ReturnValue1))
+                        {
+                            tx_cuotas.Text = creds.ReturnValue1.ToString();
+                            for (int i = 0; i < 9; i++)
+                            {
+                                dtcred[i, 0] = creds.ReturnValue[i, 0];
+                                dtcred[i, 1] = creds.ReturnValue[i, 1];
+                                dtcred[i, 2] = creds.ReturnValue[i, 2];
+                                dtcred[i, 3] = creds.ReturnValue[i, 3];
+                                //dtcred[i, 4] = creds.ReturnValue[i, 4];
                             }
                         }
                     }
@@ -522,13 +543,14 @@ namespace iOMG
                             rb_contado.PerformClick();
                             // nombre de estado
                             tx_status.Text = tx_dat_estad.Text;
-                            // medio de pago
+                            /* medio de pago
                             if (tx_dat_plazo.Text.Trim() != "")
                             {
                                 axs = string.Format("idcodice='{0}'", tx_dat_plazo.Text);
                                 row = dtfp.Select(axs);
                                 cmb_plazo.SelectedItem = (row.Length > 0)? row[0].ItemArray[0].ToString() : "";
                             }
+                            */
                             // moneda
                             cmb_mon.SelectedItem = tx_dat_mone.Text;
                             cmb_mon_SelectionChangeCommitted(null, null);
@@ -560,6 +582,28 @@ namespace iOMG
                                 dtpagos[i, 4] = row[8].ToString();
                                 dtpagos[i, 5] = row[9].ToString();
                                 dtpagos[i, 6] = row[10].ToString().Substring(0, 10);
+                                i = i + 1;
+                            }
+                            kll.Dispose();
+                        }
+                    }
+                    // cuotas de credito
+                    using (MySqlCommand micon = new MySqlCommand("select * from adifactcuot where tdvta=@tdv and sdvta=@sdv and ndvta=@ndv", conn))
+                    {
+                        micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                        micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                        micon.Parameters.AddWithValue("@ndv", tx_corre.Text);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                        {
+                            DataTable kll = new DataTable();
+                            da.Fill(kll);
+                            int i = 0;
+                            foreach (DataRow row in kll.Rows)
+                            {
+                                dtcred[i, 0] = row[1].ToString();       // ID cabecera de factura
+                                dtcred[i, 1] = row[5].ToString();       // num cuota
+                                dtcred[i, 2] = row[6].ToString();       // importe
+                                dtcred[i, 3] = row[7].ToString().Substring(0, 10);  // fecha
                                 i = i + 1;
                             }
                             kll.Dispose();
@@ -770,7 +814,7 @@ namespace iOMG
                     cmb_tdoc.Items.Add(row.ItemArray[0].ToString());
                     //cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
                 }
-                // seleccion de forma de pago
+                /* seleccion de forma de pago
                 const string confpa = "select descrizionerid,idcodice from desc_mpa where numero=1";
                 using (MySqlCommand my = new MySqlCommand(confpa, conn))
                 {
@@ -783,6 +827,7 @@ namespace iOMG
                         }
                     }
                 }
+                */
                 // seleccion de moneda
                 const string conmon = "select descrizionerid,idcodice,codigo,descrizione from desc_mon where numero=1";
                 using (MySqlCommand my = new MySqlCommand(conmon, conn))
@@ -1975,7 +2020,6 @@ namespace iOMG
             cmb_taller.SelectedIndex = -1;
             cmb_tipo.SelectedIndex = -1;
             cmb_tdoc.SelectedIndex = -1;
-            cmb_plazo.SelectedIndex = -1;
             cmb_detrac.SelectedIndex = -1;
         }
         private void limpia_panel(Panel pan)            // limpia los cuadros de texto solo del panel pasado como parametro
@@ -2032,15 +2076,6 @@ namespace iOMG
                 DataRow[] row = dtdoc.Select(axs);
                 tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
                 tx_dat_tdoc_s.Text = row[0].ItemArray[3].ToString();
-            }
-        }
-        private void cmb_plazo_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cmb_plazo.SelectedIndex > -1)
-            {
-                string axs = string.Format("descrizionerid='{0}'", cmb_plazo.Text);
-                DataRow[] row = dtfp.Select(axs);
-                tx_dat_plazo.Text = row[0].ItemArray[1].ToString();
             }
         }
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
@@ -2424,8 +2459,9 @@ namespace iOMG
             {
                 if (Tx_modo.Text == "NUEVO")
                 {
+                    lb_cuotas.Visible = false;
+                    tx_cuotas.Visible = false;
                     tx_cuotas.ReadOnly = true;
-                    cmb_plazo.Enabled = false;
                 }
             }
         }
@@ -2435,8 +2471,9 @@ namespace iOMG
             {
                 if (Tx_modo.Text == "NUEVO")
                 {
-                    tx_cuotas.ReadOnly = false;
-                    cmb_plazo.Enabled = true;
+                    lb_cuotas.Visible = true;
+                    tx_cuotas.Visible = true;
+                    tx_cuotas.ReadOnly = true;  // con F1 se ingresa a la ventana de cuotas y fechas
                 }
             }
         }
@@ -3076,6 +3113,26 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@imp", dtpagos[i, 4].ToString());
                             micon.Parameters.AddWithValue("@cpa", dtpagos[i, 5].ToString());
                             micon.Parameters.AddWithValue("@fpa", dtpagos[i, 6].ToString().Substring(6, 4) + "-" + dtpagos[i, 6].ToString().Substring(3, 2) + "-" + dtpagos[i, 6].ToString().Substring(0, 2));    // dd/mm/aaaa
+                            micon.ExecuteNonQuery();
+                        }
+                    }
+                }
+                // cuotas de credito
+                for (int i = 0; i < 9; i++)
+                {
+                    if (dtcred[i, 0] != null && dtcred[i, 1].ToString() != "")
+                    {
+                        string inpag = "insert into adifactcuot (idc,tdvta,sdvta,ndvta,cuota,importe,fpago) values (" +
+                            "@idc,@tdv,@sdv,@ndv,@it,@imp,@fpa)";
+                        using (MySqlCommand micon = new MySqlCommand(inpag, conn))
+                        {
+                            micon.Parameters.AddWithValue("@idc", 0);
+                            micon.Parameters.AddWithValue("@tdv", tx_dat_tipdoc.Text);
+                            micon.Parameters.AddWithValue("@sdv", tx_serie.Text);
+                            micon.Parameters.AddWithValue("@ndv", tx_corre.Text);
+                            micon.Parameters.AddWithValue("@it", dtcred[i, 1].ToString());
+                            micon.Parameters.AddWithValue("@imp", dtcred[i, 2].ToString());
+                            micon.Parameters.AddWithValue("@fpa", dtcred[i, 3].ToString().Substring(6, 4) + "-" + dtpagos[i, 6].ToString().Substring(3, 2) + "-" + dtpagos[i, 6].ToString().Substring(0, 2));    // dd/mm/aaaa
                             micon.ExecuteNonQuery();
                         }
                     }

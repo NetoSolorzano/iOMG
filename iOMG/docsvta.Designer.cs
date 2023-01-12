@@ -145,12 +145,11 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.tx_cuotas = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lb_cuotas = new System.Windows.Forms.Label();
             this.rb_credito = new System.Windows.Forms.RadioButton();
             this.rb_contado = new System.Windows.Forms.RadioButton();
             this.label16 = new System.Windows.Forms.Label();
             this.tx_numOpe = new System.Windows.Forms.TextBox();
-            this.cmb_plazo = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -198,7 +197,6 @@
             this.tx_valor = new iOMG.NumericTextBox();
             this.tx_impMedios = new iOMG.NumericTextBox();
             this.milinea4 = new iOMG.milinea();
-            this.milinea8 = new iOMG.milinea();
             this.tx_telef2 = new iOMG.NumericTextBox();
             this.tx_telef1 = new iOMG.NumericTextBox();
             this.tx_ndc = new iOMG.NumericTextBox();
@@ -216,7 +214,6 @@
             this.panel3.SuspendLayout();
             this.pan_tipo.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.milinea4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -1365,22 +1362,22 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.milinea4);
             this.panel3.Controls.Add(this.label20);
             this.panel3.Controls.Add(this.tx_impMedios);
-            this.panel3.Controls.Add(this.milinea4);
             this.panel3.Controls.Add(this.tx_cuotas);
-            this.panel3.Controls.Add(this.label2);
+            this.panel3.Controls.Add(this.lb_cuotas);
             this.panel3.Controls.Add(this.rb_credito);
             this.panel3.Controls.Add(this.rb_contado);
             this.panel3.Location = new System.Drawing.Point(4, 375);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(305, 26);
+            this.panel3.Size = new System.Drawing.Size(497, 26);
             this.panel3.TabIndex = 15;
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(134, 6);
+            this.label20.Location = new System.Drawing.Point(319, 7);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(93, 13);
             this.label20.TabIndex = 411;
@@ -1388,40 +1385,39 @@
             // 
             // tx_cuotas
             // 
-            this.tx_cuotas.Location = new System.Drawing.Point(165, 3);
+            this.tx_cuotas.Location = new System.Drawing.Point(247, 3);
             this.tx_cuotas.Name = "tx_cuotas";
-            this.tx_cuotas.Size = new System.Drawing.Size(16, 20);
+            this.tx_cuotas.Size = new System.Drawing.Size(36, 20);
             this.tx_cuotas.TabIndex = 393;
             this.tx_cuotas.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_cuotas.Visible = false;
             // 
-            // label2
+            // lb_cuotas
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(107, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 306;
-            this.label2.Text = "Cuotas";
-            this.label2.Visible = false;
+            this.lb_cuotas.AutoSize = true;
+            this.lb_cuotas.Location = new System.Drawing.Point(203, 7);
+            this.lb_cuotas.Name = "lb_cuotas";
+            this.lb_cuotas.Size = new System.Drawing.Size(40, 13);
+            this.lb_cuotas.TabIndex = 306;
+            this.lb_cuotas.Text = "Cuotas";
+            this.lb_cuotas.Visible = false;
             // 
             // rb_credito
             // 
             this.rb_credito.AutoSize = true;
-            this.rb_credito.Location = new System.Drawing.Point(90, 4);
+            this.rb_credito.Location = new System.Drawing.Point(111, 5);
             this.rb_credito.Name = "rb_credito";
             this.rb_credito.Size = new System.Drawing.Size(73, 17);
             this.rb_credito.TabIndex = 1;
             this.rb_credito.TabStop = true;
             this.rb_credito.Text = "CREDITO";
             this.rb_credito.UseVisualStyleBackColor = true;
-            this.rb_credito.Visible = false;
             this.rb_credito.Click += new System.EventHandler(this.rb_credito_Click);
             // 
             // rb_contado
             // 
             this.rb_contado.AutoSize = true;
-            this.rb_contado.Location = new System.Drawing.Point(18, 4);
+            this.rb_contado.Location = new System.Drawing.Point(16, 5);
             this.rb_contado.Name = "rb_contado";
             this.rb_contado.Size = new System.Drawing.Size(78, 17);
             this.rb_contado.TabIndex = 0;
@@ -1448,19 +1444,6 @@
             this.tx_numOpe.TabIndex = 396;
             this.tx_numOpe.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tx_numOpe.Visible = false;
-            // 
-            // cmb_plazo
-            // 
-            this.cmb_plazo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_plazo.DropDownWidth = 100;
-            this.cmb_plazo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmb_plazo.FormattingEnabled = true;
-            this.cmb_plazo.Location = new System.Drawing.Point(330, 379);
-            this.cmb_plazo.Name = "cmb_plazo";
-            this.cmb_plazo.Size = new System.Drawing.Size(98, 21);
-            this.cmb_plazo.TabIndex = 100;
-            this.cmb_plazo.Visible = false;
-            this.cmb_plazo.SelectionChangeCommitted += new System.EventHandler(this.cmb_plazo_SelectionChangeCommitted);
             // 
             // label8
             // 
@@ -1649,7 +1632,7 @@
             // 
             // tx_totcant
             // 
-            this.tx_totcant.Location = new System.Drawing.Point(532, 374);
+            this.tx_totcant.Location = new System.Drawing.Point(573, 374);
             this.tx_totcant.Name = "tx_totcant";
             this.tx_totcant.ReadOnly = true;
             this.tx_totcant.Size = new System.Drawing.Size(31, 20);
@@ -1883,7 +1866,7 @@
             // tx_impMedios
             // 
             this.tx_impMedios.AllowSpace = false;
-            this.tx_impMedios.Location = new System.Drawing.Point(229, 3);
+            this.tx_impMedios.Location = new System.Drawing.Point(414, 3);
             this.tx_impMedios.Name = "tx_impMedios";
             this.tx_impMedios.ReadOnly = true;
             this.tx_impMedios.Size = new System.Drawing.Size(73, 20);
@@ -1892,22 +1875,12 @@
             // 
             // milinea4
             // 
-            this.milinea4.Controls.Add(this.milinea8);
             this.milinea4.Location = new System.Drawing.Point(3, 22);
             this.milinea4.Name = "milinea4";
-            this.milinea4.Size = new System.Drawing.Size(355, 1);
+            this.milinea4.Size = new System.Drawing.Size(488, 1);
             this.milinea4.TabIndex = 395;
             this.milinea4.TabStop = false;
             this.milinea4.Text = "milinea4";
-            // 
-            // milinea8
-            // 
-            this.milinea8.Location = new System.Drawing.Point(212, 0);
-            this.milinea8.Name = "milinea8";
-            this.milinea8.Size = new System.Drawing.Size(212, 1);
-            this.milinea8.TabIndex = 411;
-            this.milinea8.TabStop = false;
-            this.milinea8.Text = "milinea8";
             // 
             // tx_telef2
             // 
@@ -1972,7 +1945,6 @@
             this.Controls.Add(this.tx_numOpe);
             this.Controls.Add(this.cmb_mon);
             this.Controls.Add(this.milinea6);
-            this.Controls.Add(this.cmb_plazo);
             this.Controls.Add(this.tx_prdsCont);
             this.Controls.Add(this.tx_tfil);
             this.Controls.Add(this.tx_dat_mone);
@@ -2041,7 +2013,6 @@
             this.pan_tipo.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.milinea4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2149,9 +2120,8 @@
         private System.Windows.Forms.Label lb_cont;
         private System.Windows.Forms.TextBox tx_cont;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.ComboBox cmb_plazo;
         private System.Windows.Forms.TextBox tx_cuotas;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lb_cuotas;
         private System.Windows.Forms.RadioButton rb_credito;
         private System.Windows.Forms.RadioButton rb_contado;
         private System.Windows.Forms.Label label8;
@@ -2180,7 +2150,6 @@
         private System.Windows.Forms.TextBox tx_tfil;
         private System.Windows.Forms.TextBox tx_prdsCont;
         private System.Windows.Forms.Label label16;
-        private milinea milinea8;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ComboBox cmb_mon;
         private System.Windows.Forms.TextBox tx_tipComp;
