@@ -41,6 +41,7 @@ namespace iOMG
         public string CondicionPagoModificado { get; set; }
         public string CuentaNumeroModificado { get; set; }
         public string CuentaTipoModificado { get; set; }
+        public string CuentaValor { get; set; }
 
         public CMovimientoCuenta()
         {
@@ -75,6 +76,7 @@ namespace iOMG
             CondicionPagoModificado = "";
             CuentaNumeroModificado = "";
             CuentaTipoModificado = "";
+            CuentaValor = "";
         }
         public CMovimientoCuenta(int pTipoCuentaCodigo, string pCuentaNumero, string pCuentaNombre, int pTipoIngresoEgreso, decimal pMontoPagar, string pMonedaCodigo, string pObservacion,
             string pNumeroOperacion, string pTipoDocIdentidadCodigo, string pNumeroDocIdentidad, string pOrigen, string pTipoDocumentoCodigo, string pSerie,
@@ -111,6 +113,7 @@ namespace iOMG
             CondicionPagoModificado = pCondicionPagoModicado;
             CuentaNumeroModificado = pCuentaNumeroMoficado;
             CuentaTipoModificado = pCuentaTipoModificado;
+            // aca no falta CuentaValor ????
         }
     }
 }

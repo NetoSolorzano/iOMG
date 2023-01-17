@@ -10,6 +10,7 @@ namespace iOMG
     {
         DataTable dt;           // medios de pago
         string _mpefec = "";    // variable tipo de pago efectivo
+        string _mpcred = "";    // variable tipo de pago credito
         bool SoloLee = false;
         double vlimban = 0;     // valor limite para bancarizar pagos en efectivo
         string vglosa1 = "";    // glosa del limite bancariz
@@ -25,10 +26,11 @@ namespace iOMG
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120" +
             ";ConnectionLifeTime=" + ctl + ";";
 
-        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta, bool sololee)
+        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta, bool sololee, string mpcred)
         {
             dt = dtmp;
             _mpefec = mpefec;
+            _mpcred = mpcred;
             InitializeComponent();
             if (idavuelta[0, 2] != null && idavuelta[0, 2].ToString() != "")
             {
@@ -137,7 +139,7 @@ namespace iOMG
                 cmb_plazo.Focus();
                 return;
             }
-            if (tx_numOpe.Text.Trim().Length < 4 && tx_dat_mp.Text != _mpefec)
+            if (tx_numOpe.Text.Trim().Length < 4 && (tx_dat_mp.Text != _mpefec && tx_dat_mp.Text != _mpcred))
             {
                 MessageBox.Show("Ingrese número de operación", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tx_numOpe.Focus();
@@ -226,7 +228,7 @@ namespace iOMG
         }
         private void tx_fpago_ValueChanged(object sender, EventArgs e)
         {
-            if (tx_fpago.Value.Date > DateTime.Now.Date)
+            if (tx_fpago.Value.Date > DateTime.Now.Date && tx_dat_mp.Text != _mpcred)
             {
                 MessageBox.Show("La fecha del pago no puede" + Environment.NewLine +
                     "ser mayor a la fecha actual!", "Error de fecha", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

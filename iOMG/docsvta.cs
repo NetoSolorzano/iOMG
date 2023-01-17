@@ -81,6 +81,7 @@ namespace iOMG
         string despe2 = "";             // texto despedida en la impresion
         string valdirec = "";           // valor limite maximo para tener boletas sin direccion
         string tpcontad = "";           // codigo tipo de pago contado efectivo
+        string tpcredit = "";           // codigo tipo de pago credito
         string estman = "";             // estados que se pueden seleccionar manualmente
         int indant = -1;                // indice anterior al cambio en el combobox de estado
         string v_liav = "";             // letra o caracter inicial indicativo de articulos varios vta directa sin stock   
@@ -225,7 +226,7 @@ namespace iOMG
                 }
                 if (tx_impMedios.Focused == true)
                 {
-                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos, (Tx_modo.Text == "NUEVO")? false : true);
+                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos, (Tx_modo.Text == "NUEVO")? false : true, tpcredit);
                     var resu = pagos.ShowDialog();
                     if (resu == DialogResult.Cancel)
                     {
@@ -415,6 +416,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "valdirec") valdirec = row["valor"].ToString().Trim();     // monto limite para obligar a tener direcion en boleta
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
+                        if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codcredi") tpcredit = row["valor"].ToString().Trim();     // codigo tipo de pago credito
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ciavss") v_liav = row["valor"].ToString().Trim();         // letra o caracter inicial indicativo de articulos varios vta directa sin stock
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "camnomb") v_cnprd = row["valor"].ToString().Trim();       // Se puede cambiar nombres de items de prods. catalogo? S=si, N=no
                         if (row["campo"].ToString() == "servicios" && row["param"].ToString() == "items") itemSer = row["valor"].ToString().Trim();         // Items para comprobantes de servicios
@@ -815,7 +817,7 @@ namespace iOMG
                     cmb_tdoc.Items.Add(row.ItemArray[0].ToString());
                     //cmb_tdoc.ValueMember = row.ItemArray[1].ToString();
                 }
-                /* seleccion de forma de pago
+                // seleccion de forma de pago
                 const string confpa = "select descrizionerid,idcodice from desc_mpa where numero=1";
                 using (MySqlCommand my = new MySqlCommand(confpa, conn))
                 {
@@ -824,11 +826,11 @@ namespace iOMG
                         dafp.Fill(dtfp);
                         foreach (DataRow row in dtfp.Rows)
                         {
-                            cmb_plazo.Items.Add(row.ItemArray[0].ToString());
+                            //cmb_plazo.Items.Add(row.ItemArray[0].ToString());
                         }
                     }
                 }
-                */
+                //
                 // seleccion de moneda
                 const string conmon = "select descrizionerid,idcodice,codigo,descrizione from desc_mon where numero=1";
                 using (MySqlCommand my = new MySqlCommand(conmon, conn))
@@ -2702,7 +2704,13 @@ namespace iOMG
                 }
                 else
                 {
-                    // si es crédito, no hay medios de pago
+                    if (tx_impMedios.Text != tx_totCuotas.Text)
+                    {
+                        MessageBox.Show("El importe en medios de pago debe" + Environment.NewLine +
+                       "ser igual al importe total en cuotas", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        tx_impMedios.Focus();
+                        return;
+                    }
                 }
             }
             //if (conex_Rapifac() == "") return;   //
@@ -3450,13 +3458,16 @@ namespace iOMG
             {
                 if (dtpagos[i, 2] != null && dtpagos[i, 2] != "")
                 {
+                    DateTime fmax = DateTime.Parse(dtpagos[i, 6]);
+                    TimeSpan rdia = fmax - DateTime.Now;
+                    int plazo = rdia.Days;
                     CMovimientoCuenta cta = new CMovimientoCuenta
                     {
                         TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
                         Serie = tx_serie.Text,
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
-                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
+                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : (tpcredit == dtpagos[i, 5]) ? 0 : 3,
                         CuentaNumero = dtpagos[i, 5],
                         CuentaNombre = dtpagos[i, 2],
                         Usuario = Program.vg_nuse,
@@ -3466,13 +3477,13 @@ namespace iOMG
                         NumeroDocIdentidad = "",
                         Observacion = "",
                         //Extension = { },
-                        //CuentaValor = "1-30303030",
+                        CuentaValor = (tpcredit == dtpagos[i, 5]) ? "0-Credito" : "",
                         Pago = decimal.Parse(dtpagos[i, 4]),
                         Vuelto = 0,
                         FechaPago = dtpagos[i, 6],   // dtp_pedido.Value.Date.ToString("dd/MM/yyyy")
                         NumeroOperacion = dtpagos[i, 3],
                         FechaVencimiento = dtpagos[i, 6],    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                        PlazoDias = 1
+                        PlazoDias = plazo
                     };                      // movimientos
                     bbb.Add(cta);
                 }
@@ -3519,8 +3530,8 @@ namespace iOMG
                 VendedorNombre = tx_nomVen.Text,
                 CondicionEstado = "",
                 CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
-                SituacionPagoCodigo = 2,
-                DescuentoIndicador = 0,
+                SituacionPagoCodigo = (rb_contado.Checked == true) ? 2 : 1,
+                DescuentoIndicador = 0,                             // que posibles valores van acá?
                 Ubigeo = tx_dir_ubigpe.Text,
                 AnticipoMonto = 0,
                 ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
