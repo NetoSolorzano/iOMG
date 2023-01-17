@@ -95,11 +95,14 @@ namespace iOMG
             }
         }
         public string ReturnValue1 { get; set; }
+        public string ReturnValue2 { get; set; }
+
         public string[,] ReturnValue = new string[10, 4];
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ReturnValue1 = tx_tfil.Text;  // tx_total.Text;
+            ReturnValue1 = tx_tfil.Text;
+            ReturnValue2 = tx_total.Text;
             int i = 0;
             foreach(DataGridViewRow row in dataGridView1.Rows)
             {

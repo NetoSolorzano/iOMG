@@ -245,7 +245,7 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_cuotas.Focused == true)
+                if (tx_cuotas.Focused == true || tx_totCuotas.Focused == true)
                 {
                     forpcred creds = new forpcred(dtcred, (Tx_modo.Text == "NUEVO") ? false : true);
                     var resu = creds.ShowDialog();
@@ -254,12 +254,13 @@ namespace iOMG
                         if (!string.IsNullOrEmpty(creds.ReturnValue1))
                         {
                             tx_cuotas.Text = creds.ReturnValue1.ToString();
+                            tx_totCuotas.Text = creds.ReturnValue2.ToString();
                             for (int i = 0; i < 9; i++)
                             {
-                                dtcred[i, 0] = creds.ReturnValue[i, 0];
-                                dtcred[i, 1] = creds.ReturnValue[i, 1];
-                                dtcred[i, 2] = creds.ReturnValue[i, 2];
-                                dtcred[i, 3] = creds.ReturnValue[i, 3];
+                                dtcred[i, 0] = creds.ReturnValue[i, 0];         // id de cabfactu
+                                dtcred[i, 1] = creds.ReturnValue[i, 1];         // num. de cuota
+                                dtcred[i, 2] = creds.ReturnValue[i, 2];         // valor cuota ..... OJO, en este momento 16/01/2023 todo es en soles
+                                dtcred[i, 3] = creds.ReturnValue[i, 3];         // fecha de pago
                                 //dtcred[i, 4] = creds.ReturnValue[i, 4];
                             }
                         }
@@ -2461,7 +2462,10 @@ namespace iOMG
                 {
                     lb_cuotas.Visible = false;
                     tx_cuotas.Visible = false;
+                    lb_totCuotas.Visible = false;
+                    tx_totCuotas.Visible = false;
                     tx_cuotas.ReadOnly = true;
+                    tx_totCuotas.ReadOnly = true;
                 }
             }
         }
@@ -2473,7 +2477,10 @@ namespace iOMG
                 {
                     lb_cuotas.Visible = true;
                     tx_cuotas.Visible = true;
+                    lb_totCuotas.Visible = true;
+                    tx_totCuotas.Visible = true;
                     tx_cuotas.ReadOnly = true;  // con F1 se ingresa a la ventana de cuotas y fechas
+                    tx_totCuotas.ReadOnly = true;
                 }
             }
         }
@@ -2685,6 +2692,19 @@ namespace iOMG
                 tx_dat_cDet.Text = "";
                 return;
             }
+            if (rb_credito.Checked == true)
+            {
+                if (tx_cuotas.Text == "" || tx_totCuotas.Text == "")
+                {
+                    MessageBox.Show("Debe ingresar las cuotas del crédito", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tx_cuotas.Focus();
+                    return;
+                }
+                else
+                {
+                    // si es crédito, no hay medios de pago
+                }
+            }
             //if (conex_Rapifac() == "") return;   //
             if (Tx_modo.Text == "NUEVO")
             {
@@ -2695,7 +2715,7 @@ namespace iOMG
                     tx_d_can.Focus();
                     return;
                 }
-                if (tx_impMedios.Text != tx_valor.Text)
+                if (rb_contado.Checked == true && tx_impMedios.Text != tx_valor.Text)
                 {
                     MessageBox.Show("El importe en medios de pago debe" + Environment.NewLine +
                         "ser igual al valor del comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -5868,7 +5888,16 @@ namespace iOMG
                     {
                         if (rb_credito.Checked == true)
                         {
-                            // no hay ventas al credito 18/07/2022
+                           // no hay ventas al credito 18/07/2022 ...... despuÉs de reunión del 04/01/2023 SI HAY
+                           for (int x = 0; x < 9; x++)
+                            {
+                                if (dtcred[x, 1] != null && dtcred[x, 1].ToString().Trim() != "")
+                                {
+                                    puntoF = new PointF(coli, posi);
+                                    e.Graphics.DrawString("Cuota " + dtcred[x, 1].ToString() + " " + cmb_mon.Text + " " + dtcred[x, 2].ToString() + " " + dtcred[x, 3].ToString(), lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                                    posi = posi + alfi;
+                                }
+                            }
                         }
                     }
                     /*
@@ -5978,7 +6007,6 @@ namespace iOMG
             }
             */
         }
-
         #endregion
 
         private void tabgrilla_Enter(object sender, EventArgs e)
