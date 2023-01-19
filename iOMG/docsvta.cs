@@ -64,6 +64,7 @@ namespace iOMG
         string MonTodas = "";           // variable para determinar si van todas las monedas o solo soles, S=soles, T=todas
         string v_igv = Program.v_igv;   // porentaje en numero del igv
         string codCanc = "";            // codigo estado cancelado
+        string codEmit = "";            // codigo estado comprobante emitido
         string lps = "";                // listado de productos que tienen stock
         string v_impTK = "";            // nombre de la impresora de tickets facturacion electrónica
         string otro = "";               // ruta y nombre del png código QR
@@ -402,6 +403,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "codAnu") estanu = row["valor"].ToString().Trim();         // codigo estado anulado
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "Anulado") nomanu = row["valor"].ToString().Trim();        // nombre estado anulado
                         if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "cancelado") codCanc = row["valor"].ToString().Trim();     // codigo estado cancelado
+                        if (row["campo"].ToString() == "tx_status" && row["param"].ToString() == "emitido") codEmit = row["valor"].ToString().Trim();     // codigo estado comprobante emitido
                         if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "default") MonDeft = row["valor"].ToString().Trim();          // moneda por defecto
                         if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "todas") MonTodas = row["valor"].ToString().Trim();          // moneda por defecto
                         if (row["campo"].ToString() == "items" && row["param"].ToString() == "stock") lps = row["valor"].ToString().Trim();                 // tipos de muebles que se hacen contrato
@@ -505,7 +507,6 @@ namespace iOMG
                             tx_cont.Text = dr.GetString("contrato");
                             tx_nomVen.Text = dr.GetString("vendedor");
                             tx_prdsCont.Text = dr.GetString("muebles");
-                            rb_contado.Checked = (dr.GetString("conPago") == "1") ? true : false;
                             tx_tipComp.Text = dr.GetString("tipdcob");
                             tx_id_rapifac.Text = dr.GetString("idpse_ose");
                             tx_pdf_rapifac.Text = dr.GetString("pdfpse_ose");
@@ -525,6 +526,16 @@ namespace iOMG
                                     DataRow[] data = dtdetS.Select(ax);
                                     cmb_detrac.SelectedItem = data[0].ItemArray[1].ToString();
                                 }
+                            }
+                            if (dr.GetString("conPago") == "1")
+                            {
+                                rb_contado.Checked = true;
+                                rb_contado.PerformClick();
+                            }
+                            else
+                            {
+                                rb_credito.Checked = true;
+                                rb_credito.PerformClick();
                             }
                         }
                         if (tx_tipComp.Text == "A" || tx_tipComp.Text == "C")
@@ -601,16 +612,27 @@ namespace iOMG
                             DataTable kll = new DataTable();
                             da.Fill(kll);
                             int i = 0;
+                            double ti = 0;
                             foreach (DataRow row in kll.Rows)
                             {
                                 dtcred[i, 0] = row[1].ToString();       // ID cabecera de factura
                                 dtcred[i, 1] = row[5].ToString();       // num cuota
                                 dtcred[i, 2] = row[6].ToString();       // importe
                                 dtcred[i, 3] = row[7].ToString().Substring(0, 10);  // fecha
+                                ti = ti + double.Parse(dtcred[i, 2]);
                                 i = i + 1;
                             }
                             kll.Dispose();
+                            tx_cuotas.Text = (i).ToString();
+                            tx_totCuotas.Text = ti.ToString("#0.00");
                         }
+                    }
+                    if (rb_credito.Checked == true)
+                    {
+                        lb_cuotas.Visible = true;
+                        tx_cuotas.Visible = true;
+                        lb_totCuotas.Visible = true;
+                        tx_totCuotas.Visible = true;
                     }
                 }
             }
@@ -623,12 +645,12 @@ namespace iOMG
             string jalad = "";
             if (rb_antic.Checked == true)
             {
-                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,if(cantbul>0,'A',space(1)),dscto,totSinDscto " +
+                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,if(cantbul>0,'A',space(1)),dscto,totSinDscto,space(1) as Por_Det " +
                     "FROM detfactu where idc=@idr";
             }
             else
             {
-                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto " +
+                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto,space(1) as Por_Det " +
                     "FROM detfactu where idc=@idr";
             }
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -1633,6 +1655,7 @@ namespace iOMG
             rb_tbienes.Checked = true;
             tx_d_can.ReadOnly = false;
             bt_prev.Enabled = false;
+            rb_contado_Click(null, null);
             cmb_tipo.Focus();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
@@ -2484,6 +2507,15 @@ namespace iOMG
                     tx_cuotas.ReadOnly = true;  // con F1 se ingresa a la ventana de cuotas y fechas
                     tx_totCuotas.ReadOnly = true;
                 }
+                else
+                {
+                    lb_cuotas.Visible = true;
+                    tx_cuotas.Visible = true;
+                    lb_totCuotas.Visible = true;
+                    tx_totCuotas.Visible = true;
+                    tx_cuotas.ReadOnly = true;
+                    tx_totCuotas.ReadOnly = true;
+                }
             }
         }
         private void rb_tbienes_Click(object sender, EventArgs e)
@@ -3020,7 +3052,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@totpgr", tx_valor.Text);                    // total inc. igv
                     micon.Parameters.AddWithValue("@pagpgr", "0");      // todos los comprobantes se emiten contado
                     micon.Parameters.AddWithValue("@salxpa", "0");      // y con la plata en mano ... asi que los comprobantes nacen cancelados
-                    micon.Parameters.AddWithValue("@estpgr", codCanc);                          // estado del comprobante
+                    micon.Parameters.AddWithValue("@estpgr", (rb_contado.Checked == true)? codCanc : codEmit);  // estado del comprobante
                     micon.Parameters.AddWithValue("@frase1", "");                               // no hay nada que poner 19/11/2020
                     micon.Parameters.AddWithValue("@ticlre", "1");                              // tipo de cliente credito o contado => TODOS SON CONTADO=1
                     micon.Parameters.AddWithValue("@m1clte", "");
@@ -3030,7 +3062,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@subMN", subtMN);
                     micon.Parameters.AddWithValue("@igvMN", igvtMN);
                     micon.Parameters.AddWithValue("@totMN", fletMN);
-                    micon.Parameters.AddWithValue("@pagaut", "S");                  // todos los comprobantes nacen pagados
+                    micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "N");
                     micon.Parameters.AddWithValue("@tipdco", tx_tipComp.Text);    // (rb_antic.Checked == true)? "A" : "B"
                     micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
                     micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado
@@ -3038,7 +3070,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@valdesc", tx_desGlob.Text);                 // a partir de reunion con isacco y pedro en argentina, si van descuentos en detalle
                     micon.Parameters.AddWithValue("@refer", "");    // tx_dat_plazo.Text
                     micon.Parameters.AddWithValue("@updest", "");
-                    micon.Parameters.AddWithValue("@conpag", "1");                  // todos son contado
+                    micon.Parameters.AddWithValue("@conpag", (rb_contado.Checked == true) ? "1" : "0"); // 1=contado, 0=crédito
                     micon.Parameters.AddWithValue("@cont", tx_cont.Text);
                     micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
                     micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
@@ -3075,8 +3107,8 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@cmnn", MonDeft);
                                 micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
                                 micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
-                                micon.Parameters.AddWithValue("@pagaut", "S");
-                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "N");
+                                micon.Parameters.AddWithValue("@esta", (rb_contado.Checked == true) ? codCanc : codEmit);        // todos los comprob. nacen cancelados
                                 micon.Parameters.AddWithValue("@dscto", 0); // decimal.Parse(row.Cells[11].Value.ToString())
                                 micon.ExecuteNonQuery();
                                 fila += 1;
@@ -3085,7 +3117,7 @@ namespace iOMG
                             }
                         }
                         else
-                        {
+                        {   
                             string inserd2 = "update detfactu set " +
                                 "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
                                 "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@vesta,totSinDscto=totalMN+dscto " +
@@ -3111,8 +3143,8 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@cmnn", MonDeft);
                                 micon.Parameters.AddWithValue("@pret", decimal.Parse(row.Cells[8].Value.ToString()));
                                 micon.Parameters.AddWithValue("@tgrmn", decimal.Parse(row.Cells[9].Value.ToString()));
-                                micon.Parameters.AddWithValue("@pagaut", "S");
-                                micon.Parameters.AddWithValue("@esta", codCanc);        // todos los comprob. nacen cancelados
+                                micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "N");
+                                micon.Parameters.AddWithValue("@esta", (rb_contado.Checked == true) ? codCanc : codEmit);        // todos los comprob. nacen cancelados
                                 micon.Parameters.AddWithValue("@vesta", decimal.Parse(row.Cells[11].Value.ToString()));  // (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString())
                                 micon.ExecuteNonQuery();
                                 fila += 1;
@@ -3160,7 +3192,7 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@ndv", tx_corre.Text);
                             micon.Parameters.AddWithValue("@it", dtcred[i, 1].ToString());
                             micon.Parameters.AddWithValue("@imp", dtcred[i, 2].ToString());
-                            micon.Parameters.AddWithValue("@fpa", dtcred[i, 3].ToString().Substring(6, 4) + "-" + dtpagos[i, 6].ToString().Substring(3, 2) + "-" + dtpagos[i, 6].ToString().Substring(0, 2));    // dd/mm/aaaa
+                            micon.Parameters.AddWithValue("@fpa", dtcred[i, 3].ToString().Substring(6, 4) + "-" + dtcred[i, 3].ToString().Substring(3, 2) + "-" + dtcred[i, 3].ToString().Substring(0, 2));    // dd/mm/aaaa
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -3460,7 +3492,7 @@ namespace iOMG
                 {
                     DateTime fmax = DateTime.Parse(dtpagos[i, 6]);
                     TimeSpan rdia = fmax - DateTime.Now;
-                    int plazo = rdia.Days;
+                    int plazo = rdia.Days + 1;
                     CMovimientoCuenta cta = new CMovimientoCuenta
                     {
                         TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
@@ -3496,6 +3528,24 @@ namespace iOMG
                 dtpagos[i, 5] = codigo medio
                 dtpagos[i, 6] = fecha de pago
                 */
+            }
+            List<CCreditoCuota> fff = new List<CCreditoCuota>();
+            for (int i = 0; i < 9; i++)
+            {
+                if (dtcred[i, 2] != null && dtcred[i, 2] != "")
+                {
+                    DateTime fmax = DateTime.Parse(dtcred[i, 3]);
+                    TimeSpan rdia = fmax - DateTime.Now;
+                    int plazo = rdia.Days + 1;
+                    CCreditoCuota cuota = new CCreditoCuota
+                    {
+                        PlazoDiasCuota = plazo,
+                        FechaVencimientoCuota = dtcred[i, 3],
+                        MontoCuota = decimal.Parse(dtcred[i, 2]),
+                        NroCuota = i + 1
+                    };
+                    fff.Add(cuota);
+                }
             }
             CComprobante obj = new CComprobante
             {
@@ -3578,7 +3628,7 @@ namespace iOMG
                 PagosMultiples = false,                             // que significa esto?
                 CreditoTotal = 0,
                 ListaGuias = { },
-                ListaCuotas = { },
+                ListaCuotas = fff,
                 TotalCuotas = 0,
                 ListaAnticipos = { },
                 ListaDocumentosRelacionados = { },
@@ -5876,11 +5926,11 @@ namespace iOMG
                     }
                     puntoF = new PointF(coli, posi);
                     NumLetra nl = new NumLetra();
-                    string monlet = "SON: " + nl.Convertir(tx_valor.Text.ToString(), true);
-                    if (monlet.Length <= 30) siz = new SizeF(lib.CentimeterToPixel(anchTik), alfi);
+                    string monlet = "SON: " + nl.Convertir(tx_valor.Text.ToString(), true) + " " + tx_dat_monNom.Text;
+                    if (monlet.Length <= 50) siz = new SizeF(lib.CentimeterToPixel(anchTik), alfi);
                     else siz = new SizeF(lib.CentimeterToPixel(anchTik), alfi * 2);
                     recto = new RectangleF(puntoF, siz);
-                    e.Graphics.DrawString(monlet, lt_peq, Brushes.Black, recto, StringFormat.GenericTypographic);
+                    e.Graphics.DrawString(monlet, lt_det, Brushes.Black, recto, StringFormat.GenericTypographic);
                     if (monlet.Length <= 30) posi = posi + alfi;
                     else posi = posi + alfi + alfi;
                     if (rb_contado.Checked == true)
@@ -5899,8 +5949,11 @@ namespace iOMG
                     {
                         if (rb_credito.Checked == true)
                         {
-                           // no hay ventas al credito 18/07/2022 ...... despuÉs de reunión del 04/01/2023 SI HAY
-                           for (int x = 0; x < 9; x++)
+                            // no hay ventas al credito 18/07/2022 ...... despuÉs de reunión del 04/01/2023 SI HAY
+                            puntoF = new PointF(coli, posi);
+                            e.Graphics.DrawString("FORMA DE PAGO: CREDITO", lt_peq, Brushes.Black, puntoF, StringFormat.GenericTypographic);
+                            posi = posi + alfi;
+                            for (int x = 0; x < 9; x++)
                             {
                                 if (dtcred[x, 1] != null && dtcred[x, 1].ToString().Trim() != "")
                                 {

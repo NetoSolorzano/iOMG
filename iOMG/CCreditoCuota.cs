@@ -11,15 +11,15 @@ namespace iOMG
     {
         public int NroCuota { get; set; }
         public int PlazoDiasCuota { get; set; }
-        [JsonConverter(typeof(FormatoFechaPersonalizado))]
-        public DateTime FechaVencimientoCuota { get; set; }
+        //[JsonConverter(typeof(FormatoFechaPersonalizado))]
+        public string FechaVencimientoCuota { get; set; }
         public decimal MontoCuota { get; set; }
 
         public CCreditoCuota()
         {
             NroCuota = 0;
             PlazoDiasCuota = 0;
-            FechaVencimientoCuota = DateTime.Now;
+            FechaVencimientoCuota = "";     // DateTime.Now.ToString().Substring(0, 10);
             MontoCuota = 0;
         }
     }

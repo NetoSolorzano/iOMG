@@ -253,7 +253,8 @@ namespace iOMG
                     string idc = "";
                     if (modo == "T")    //  || modo == "T"
                     {
-                        string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg,a.valordscto " +
+                        string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg," +
+                            "a.conPago,a.pagauto,a.valordscto " +
                             "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
                         using (MySqlCommand micon = new MySqlCommand(accion, conn))
                         {
@@ -287,7 +288,8 @@ namespace iOMG
                                     }
                                     double ff = 0;
                                     double.TryParse(tx_acta.Text, out ff);
-                                    tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
+                                    if (dr.GetString("conPago") == "S") tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
+                                    else tx_acta.Text = ff.ToString("#0.00");
                                     tx_desCab.Text = dr.GetString("valordscto");
                                     desCab = decimal.Parse(tx_desCab.Text);
                                 }
@@ -298,7 +300,7 @@ namespace iOMG
                     {
                         if (excluye != "")
                         {
-                            string conexc = "select sum(totalMN) from detfactu where idc=@idc and codprod<>'' and left(codprod,1) = '" + vtasc + "'";
+                            string conexc = "select sum(totalMN),pagauto from detfactu where idc=@idc and codprod<>'' and left(codprod,1) = '" + vtasc + "'";
                             using (MySqlCommand conexcl = new MySqlCommand(conexc, conn))
                             {
                                 conexcl.Parameters.AddWithValue("@idc", idc);
@@ -306,13 +308,18 @@ namespace iOMG
                                 {
                                     if (dr.Read())
                                     {
-                                        if (dr.HasRows == true && dr[0] != DBNull.Value) valexc = dr.GetDecimal(0);
+                                        if (dr.HasRows == true && dr[0] != DBNull.Value)
+                                        {
+                                            if (dr.GetString("pagauto") == "S") valexc = dr.GetDecimal(0);
+                                            else valexc = 0;
+                                        }
                                     }
                                 }
                             }
                         }
                         decimal ff = 0;
                         decimal.TryParse(tx_acta.Text, out ff);
+
                         decimal nueActa = ff - valexc;
                         tx_acta.Text = nueActa.ToString("#0.00");     // pago a cuenta - menos valor excluido
 
