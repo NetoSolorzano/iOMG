@@ -226,5 +226,8 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form forpcred, creacion del form de cuotas credito ................................. ok 11/01/23
 - form docsvta, habilitar creditos con sus cuotas y fechas de pago ................... ok 11/01/23 falta probar
 - form docsvta, hablitar en rapifac los comprobantes a credito ....................... ok 18/01/23
-- form docsvta, habilitar en la impresion de tickets los creditos .................... 
+- form docsvta, habilitar en la impresion de tickets los creditos .................... ok 18/01/23
+
+- form docsvta, habilitar cancelaciones separadas de bienes y servicios,
+  en el proceso de "cancelación" preguntar 
 - form docsvta, actualizar totales si se borra una fila de detalle ................... 
