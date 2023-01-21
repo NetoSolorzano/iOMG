@@ -2092,6 +2092,7 @@ namespace iOMG
                 DataRow[] row = dtdoc.Select(axs);
                 tx_dat_tdoc.Text = row[0].ItemArray[1].ToString();
                 tx_dat_tdoc_s.Text = row[0].ItemArray[3].ToString();
+                tx_ndc.Focus();
             }
         }
         private void cmb_tdoc_SelectedIndexChanged(object sender, EventArgs e)
@@ -2329,7 +2330,6 @@ namespace iOMG
                 }
             }
         }
-
         private void tx_d_valAntic_Leave(object sender, EventArgs e)
         {
 
@@ -2726,6 +2726,13 @@ namespace iOMG
                 tx_dat_cDet.Text = "";
                 return;
             }
+            if (tx_dat_tipdoc.Text == codfact && tx_dat_tdoc.Text == vtc_dni)
+            {
+                MessageBox.Show("Los tipos de documentos del comprobante y " + Environment.NewLine +
+                    "el cliente no son coincidentes","Corrija por favor",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cmb_tdoc.Focus();
+                return;
+            }
             if (rb_credito.Checked == true)
             {
                 if (tx_cuotas.Text == "" || tx_totCuotas.Text == "")
@@ -2780,6 +2787,14 @@ namespace iOMG
                         "los anticipos deben tener un detalle previo","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     rb_bienes.Focus();
                     return;
+                }
+                if (tx_cont.Text != "" && rb_antic.Checked == true && tx_dat_tdoc.Text == vtc_ruc && pagoIni[0, 0] == vtc_ruc)
+                {
+                    if (tx_ndc.Text != pagoIni[0,1])
+                    {
+                        MessageBox.Show("Este comprobante no puede tener un cliente distinto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                 }
 
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti

@@ -56,7 +56,7 @@ namespace iOMG
         string letpied = "";            // letra identificadora de Piedra en detalle 2 = R
         int vfdmax = 0;                 // limite de filas de detalle maximo por contrato
         string tncont = "";             // tipo de numeracion: AUTOMATICA o MANUAL
-        string letgru = "";                 // letra identificado en campo "CAPIT" para ADICIONAL
+        string letgru = "";                 // letra identificado en campo "CAPIT" para ADICIONAL, Z=adicionales, _=artículos chicos
         string talldef = "";                // taller por defecto en los contratos
         string madedef = "";                // maderas para adicionales
         string dets1 = "";                  // detalles1 para adicionales
@@ -288,7 +288,7 @@ namespace iOMG
                                     }
                                     double ff = 0;
                                     double.TryParse(tx_acta.Text, out ff);
-                                    if (dr.GetString("conPago") == "S") tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
+                                    if (dr.GetString("conPago") == "1") tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
                                     else tx_acta.Text = ff.ToString("#0.00");
                                     tx_desCab.Text = dr.GetString("valordscto");
                                     desCab = decimal.Parse(tx_desCab.Text);
@@ -510,7 +510,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") tiesan = row["valor"].ToString().Trim();                // codigo de estado anulado
                         if (row["campo"].ToString() == "estado" && row["param"].ToString() == "nogrilla") cnojal = row["valor"].ToString().Trim();              // estados de contratos que no se jalan a la grilla
                         if (row["campo"].ToString() == "impresora" && row["param"].ToString() == "default") impDef = row["valor"].ToString().Trim();            // nombre de la impresora por defecto
-                        if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos que no hace contrato, artículos chicoas
+                        if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos chicos
                         if (row["campo"].ToString() == "sedespag" && row["param"].ToString() == "manual") vapm = row["valor"].ToString().Trim();                // sedes donde se acepta registro de pagos manuales 
                         if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "borra_i") vupb = row["valor"].ToString().Trim();             // usuarios que pueden quitar items virghenes de contratos
                     }
@@ -1562,7 +1562,11 @@ namespace iOMG
                     foreach (string item in _comprobantes)
                     {
                         string[] partes = item.Split('-');
-                        using (MySqlCommand mic = new MySqlCommand("update pagamenti set contrato=@con,valor=@calc,acuenta=@acta,saldo=@sald where dv=@dv and serie=@ser and numero=@num and idpagamenti>0", conn))
+                        string actg = "update pagamenti a LEFT JOIN cabfactu b ON b.tipdvta=a.dv AND b.serdvta=a.serie AND b.numdvta=a.numero " +
+                            "set a.contrato=@con,a.valor=@calc,a.acuenta=@acta,a.saldo=@sald,b.contrato=@con " +
+                            "where a.dv=@dv and a.serie=@ser and a.numero=@num and a.idpagamenti>0";
+                        // "update pagamenti set contrato=@con,valor=@calc,acuenta=@acta,saldo=@sald where dv=@dv and serie=@ser and numero=@num and idpagamenti>0"
+                        using (MySqlCommand mic = new MySqlCommand(actg, conn))
                         {
                             mic.Parameters.AddWithValue("@con", tx_codped.Text);
                             mic.Parameters.AddWithValue("@calc", tx_valor.Text);
@@ -3349,7 +3353,7 @@ namespace iOMG
                 return;
             }
             // valida que no existan X en madera y acabado, y no exista XX en taller
-            if (cmb_mad.SelectedItem.ToString().Substring(0, 1) == "X")
+            if (cmb_mad.SelectedItem.ToString().Substring(0, 1) == "X" && cmb_fam.Text.Substring(0,1) != vtasc) // articulos chicos no van madera
             {
                 MessageBox.Show("Seleccione un tipo de madera valido", "Faltan datos!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 cmb_mad.Focus();
@@ -3497,7 +3501,8 @@ namespace iOMG
                     }
                     //a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,a.codref,a.coment,
                     //piedra,codpie,na,tda_item
-                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                    //DataGridViewRow obj = (DataGridViewRow)dataGridView1.CurrentRow;
+                    DataGridViewRow obj = (DataGridViewRow)dataGridView1.Rows[int.Parse(tx_d_it.Text)];
                     obj.Cells[1].Value = tx_d_codi.Text;
                     obj.Cells[2].Value = tx_d_can.Text;
                     obj.Cells[3].Value = tx_d_nom.Text;
@@ -4200,9 +4205,10 @@ namespace iOMG
                 {
                     tx_saldo.Enabled = false;
                 }
-                if (dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0,1) == letgru)
+                if (dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString().Substring(0,1) == letgru) // Z = adicionales, servicios
                 {
                     tabControl2.SelectedTab = tabadicion;
+                    tx_a_it.Text = dataGridView1.Rows[e.RowIndex].Index.ToString();
                     tx_a_id.Text = dataGridView1.Rows[e.RowIndex].Cells["iddetacon"].Value.ToString();
                     tx_a_cant.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
                     tx_a_codig.Text = dataGridView1.Rows[e.RowIndex].Cells["item"].Value.ToString();
@@ -4215,7 +4221,8 @@ namespace iOMG
                 }
                 else
                 {
-                    tabControl2.SelectedTab = tabcodigo;
+                    tabControl2.SelectedTab = tabcodigo;                                                    // articulos chicos y de catalogo
+                    tx_d_it.Text = dataGridView1.Rows[e.RowIndex].Index.ToString();
                     tx_d_nom.Text = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
                     tx_d_med.Text = dataGridView1.Rows[e.RowIndex].Cells["medidas"].Value.ToString();
                     tx_d_can.Text = dataGridView1.Rows[e.RowIndex].Cells["cant"].Value.ToString();
