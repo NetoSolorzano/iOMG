@@ -234,4 +234,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, habilitar cancelaciones separadas de bienes y servicios, |
   en el proceso de "cancelación" preguntar                               |
 -------------------------------------------------------------------------|
-
+************* ADECUACIONES SOBRE REUNION DEL 20/01/2023 Nancy, pedro y yo ***********************
+- form contratos, poner radiobutton selección bienes o servicios ..................... ok 24/01/23
+- form contratos, poner % detrac. en detalle de contrato nuevos ...................... 

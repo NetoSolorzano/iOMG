@@ -579,7 +579,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
-                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes " +
+                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes,a.articulo " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                     "where not find_in_set(a.status,@tea)";   // where a.status not in (@tea)
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
@@ -885,8 +885,7 @@ namespace iOMG
             advancedDataGridView1.Columns[22].Visible = false;
         }
         private void grilladet(string modo)                                     // grilla detalle
-        {   // iddetacon,a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,saldo,pedido,codref,coment,a.detpied,codpie,na,tda_item,totCat = 17
-            // a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,codref,a.coment,piedra,codpie,na,tda_item,totCat,totdscto = 18
+        {
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dataGridView1.Font = tiplg;
             dataGridView1.DefaultCellStyle.Font = tiplg;
@@ -1008,6 +1007,12 @@ namespace iOMG
                 dataGridView1.Columns[17].Width = 60;                 // ancho
                 dataGridView1.Columns[17].ReadOnly = true;            // lectura o no
                 dataGridView1.Columns[17].Name = "totDscto";
+                // tipo de contrato, B=bienes, S=servicios .......... esto es cabecera, no detalle!
+                //dataGridView1.Columns[18].Visible = false;
+                //dataGridView1.Columns[18].HeaderText = "BoS";      // titulo de la columna
+                //dataGridView1.Columns[18].Width = 30;                 // ancho
+                //dataGridView1.Columns[18].ReadOnly = true;            // lectura o no
+                //dataGridView1.Columns[18].Name = "BoS";
             }
         }
         private void armani()                                                   // arma el codigo y busca en la maestra
@@ -1256,6 +1261,7 @@ namespace iOMG
                 tx_telcont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[21].Value.ToString();    // telefono del contact
                 tx_totesp.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[22].Value.ToString();    // total servicios adicionales
                 tx_motivD.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[23].Value.ToString();    // motivo de descuento
+                tx_conMadre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[24].Value.ToString();    // tipo de contrato Bienes o Servicios
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
@@ -1302,6 +1308,7 @@ namespace iOMG
                         tx_telcont.Text = row["telcont"].ToString();                        // telefono del contacto de instal
                         tx_totesp.Text = string.Format("{0:#0.00}", row["totsad"].ToString());                          // total servicios adicionales
                         tx_motivD.Text = row["motivDes"].ToString();                        // motivo de descuento
+                        tx_conMadre.Text = row["articulo"].ToString();                      // tipo de contrato Bienes o Servicios
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
@@ -1480,10 +1487,12 @@ namespace iOMG
             }
             return retorna;
         }
-        private void correNum(MySqlConnection conn)                             // avanza la numeracion de contratos
+        private bool correNum(MySqlConnection conn)                             // avanza la numeracion de contratos
         {
+            bool retorna = true;
             if (tncont == "AUTOMA")  // modo automatico y el campo vacio
             {
+                if(rb_bienes.Checked == true)
                 {
                     string vamos = "select CONCAT(serie,right(CONCAT('00000',CAST(actual AS SIGNED) + 1),5)) from series " +
                         "WHERE tipdoc=@tdo AND sede=@sed"; 
@@ -1497,19 +1506,67 @@ namespace iOMG
                     }
                     dr.Dispose();
                     covam.Dispose();
-                    using (MySqlCommand micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed AND id>0", conn)) 
+                    //
+                    using (MySqlCommand micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed and vermodi<>@bs AND id>0", conn))
                     {
                         micon.Parameters.AddWithValue("@act", tx_codped.Text);   // tx_codped.Text.Substring(2, tx_codped.Text.Trim().Length - 2)
                         micon.Parameters.AddWithValue("@tdo", tdc);
                         micon.Parameters.AddWithValue("@sed", tx_dat_orig.Text);
+                        micon.Parameters.AddWithValue("@bs", "S");  // diferente de servicio
                         micon.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    string vamS = "";
+                    if (tx_conMadre.Text == "")
+                    {
+                        vamS = "select CONCAT(TRIM(serie),right(CONCAT('000000',CAST(right(actual, (LENGTH(actual) - 1)) AS SIGNED) + 1),6)) from series " +
+                            "WHERE tipdoc=@tdo AND sede=@sed and vermodi=@bs";
+                    }
+                    else
+                    {
+                        vamS = "select CONCAT(TRIM(serie),@conta,@conMad) from series " +
+                            "WHERE tipdoc=@tdo AND sede=@sed and vermodi=@bs"; 
+                    }
+                    using (MySqlCommand covam = new MySqlCommand(vamS, conn))
+                    {
+                        covam.Parameters.AddWithValue("@conta", tx_conS.Text);
+                        covam.Parameters.AddWithValue("@conMad", tx_conMadre.Text);
+                        covam.Parameters.AddWithValue("@tdo", tdc);
+                        covam.Parameters.AddWithValue("@sed", tx_dat_orig.Text);
+                        covam.Parameters.AddWithValue("@bs", "S");                      // SERVICIOS
+                        using (MySqlDataReader dr = covam.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                tx_codped.Text = dr.GetString(0);
+                            }
+                        }
+                    }
+                    if (tx_conMadre.Text == "")         // solo se actualiza el numero si es contrato de servicio sin contrado madre de bienes
+                    {
+                        using (MySqlCommand micon = new MySqlCommand("update series set actual=@act where tipdoc=@tdo AND sede=@sed and vermodi=@bs AND id>0", conn))
+                        {
+                            micon.Parameters.AddWithValue("@act", tx_codped.Text);   // tx_codped.Text.Substring(2, tx_codped.Text.Trim().Length - 2)
+                            micon.Parameters.AddWithValue("@tdo", tdc);
+                            micon.Parameters.AddWithValue("@sed", tx_dat_orig.Text);
+                            micon.Parameters.AddWithValue("@bs", "S");
+                            micon.ExecuteNonQuery();
+                        }
                     }
                 }
                 if (tx_codped.Text.Trim() == "")
                 {
-                    MessageBox.Show("Falta configurar numeración automática","Tabla series");
+                    MessageBox.Show("Falta configurar numeración automática", "Tabla series");
+                    retorna = false;
+                }
+                else
+                {
+                    //
                 }
             }
+            return retorna;
         }
         private bool graba()                                                    // graba cabecera y detalle
         {
@@ -1520,11 +1577,14 @@ namespace iOMG
             {
                 try
                 {
-                    correNum(conn);
+                    if (correNum(conn) == false)
+                    {
+                        return retorna;
+                    }
                     //
-                    string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS," +
+                    string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS,articulo," +
                         "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad,motivDes) " +
-                        "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
+                        "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@arti,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
                         "@pise,@asce,@pecon,@drefe,@tecont,@totadi,@motdes)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
@@ -1534,12 +1594,13 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@entr", (dtp_entreg.Checked == true) ? dtp_entreg.Value.ToString("yyyy-MM-dd") : null);
                     micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                     micon.Parameters.AddWithValue("@esta", tx_dat_estad.Text);
+                    micon.Parameters.AddWithValue("@arti", tx_conMadre.Text); 
                     micon.Parameters.AddWithValue("@valo", tx_valor.Text);
                     micon.Parameters.AddWithValue("@acta", tx_acta.Text);
                     micon.Parameters.AddWithValue("@sald", tx_saldo.Text);
                     micon.Parameters.AddWithValue("@dsct", tx_dscto.Text);
                     micon.Parameters.AddWithValue("@dent", tx_dirent.Text);
-                    micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
+                    micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);  // 
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@cltr", (chk_lugent.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@ceem", (chk_serema.Checked.ToString() == "True") ? "1" : "0");
@@ -1583,8 +1644,9 @@ namespace iOMG
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string acabado = dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(9, 1);
-                        //decimal totdscto = decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString()) * decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
-                        decimal totdscto = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
+                        decimal vtotd = 0; 
+                        if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vtotd);
+                        decimal totdscto = vtotd;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                         string insdet = "insert into detacon (" +
                             "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado,tda_item,totdscto) values (" +
                             "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2,@esta,@tdai,@tdscto)";
@@ -2300,7 +2362,7 @@ namespace iOMG
             limpia_combos(tabuser);
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-            grilladet("NUEVO");
+            //grilladet("NUEVO");
             tabControl1.SelectedTab = tabuser;
             //
             pan_cli.Enabled = true;
@@ -2349,6 +2411,7 @@ namespace iOMG
                 cmb_taller.Enabled = false;
                 cmb_tdoc.Focus();
             }
+            rb_bienes.PerformClick();        // rb_bienes.Checked = true;           // por defecto, bienes
             // 
             tx_mc.Visible = true;
             tx_serie.Visible = true;
@@ -2356,6 +2419,7 @@ namespace iOMG
             //
             _comprobantes.Clear();
             motivD();
+            grilladet("NUEVO");
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -2405,6 +2469,7 @@ namespace iOMG
             tx_mc.Visible = false;
             tx_serie.Visible = false;
             tx_corre.Visible = false;
+            rb_bienes.PerformClick();            // por defecto, bienes
             //
             _comprobantes.Clear();
         }
@@ -2880,6 +2945,13 @@ namespace iOMG
                 }
             }
             foreach (Control oControls in tabadicion.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = "";
+                }
+            }
+            foreach (Control oControls in pan_tcon.Controls)
             {
                 if (oControls is TextBox)
                 {
@@ -3630,11 +3702,17 @@ namespace iOMG
                 {
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
-                        //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                        //     "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
                         DataTable ndtg = (DataTable)dataGridView1.DataSource;
-                        ndtg.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                             "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
+                        if (ndtg != null)
+                        {
+                            ndtg.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
+                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
+                        }
+                        else
+                        {
+                            dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
+                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
+                        }
                     }
                     else
                     {
@@ -4084,6 +4162,73 @@ namespace iOMG
                 tx_coment.Focus();
             }
         }
+        private void tx_conMadre_Leave(object sender, EventArgs e)              // contrato de bienes madre para servicios
+        {
+            // validamos que el contrato sea de bienes y exista
+            // contrat.articulo = (blanco) ambos tipos, S=servicio, B=bienes
+            if (tx_conMadre.Text != "" && (Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR")) 
+            {
+                using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                {
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        string consu = "select a.contrato,a.articulo,a.fecha,a.tipoes,a.status,a.tipocon," +
+                            "b.razonsocial,b.ruc,b.tipdoc,ifnull(c.cnt,-1)," +
+                            "(SELECT COUNT(id) FROM contrat WHERE right(contrato,6)=@cont) AS cta " +
+                            "from contrat a left join anag_cli b on b.idanagrafica=a.cliente left join desc_doc c on c.idcodice=b.tipdoc " +
+                            "where right(a.contrato,6)=@cont";
+                        using (MySqlCommand micon = new MySqlCommand(consu, conn))
+                        {
+                            micon.Parameters.AddWithValue("@cont", lib.Right(tx_conMadre.Text.Trim(), 6));
+                            using (MySqlDataReader dr = micon.ExecuteReader())
+                            {
+                                if (dr.Read())
+                                {
+                                    if (dr.HasRows)
+                                    {
+                                        if (dr.GetString(1) == "S")
+                                        {
+                                            MessageBox.Show("El contrato existe pero no es del tipo Bienes", "verifique", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            tx_conMadre.Text = "";
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            tx_conS.Text = dr.GetString(10);
+                                            tx_dat_tdoc.Text = dr.GetString(8);
+                                            tx_ndc.Text = dr.GetString(7);
+                                            int vi = dr.GetInt16(9);
+                                            cmb_tdoc.SelectedIndex = vi;
+                                            tx_ndc_Leave(null, null);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Contrato NO existe", "verifique", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        tx_conMadre.Text = "";
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Ocurrió un error no controlado" + Environment.NewLine +
+                                        "Notifique al soporte técnico", "Error interno", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    tx_conMadre.Text = "";
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se tiene conexión con el servidor","Error de comunicación",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        tx_conMadre.Text = "";
+                        return;
+                    }
+                }
+            }
+        }
         #endregion leaves;
 
         #region advancedatagridview
@@ -4357,6 +4502,43 @@ namespace iOMG
                         }
                     }
                 }
+            }
+        }
+        #endregion
+
+        #region radiobuttons
+        private void rb_servi_Click(object sender, EventArgs e)
+        {
+            tabControl2.SelectedTab = tabadicion;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            //dataGridView1.Columns.Clear();
+            calculos();
+            tx_conMadre.Visible = true;
+            tx_conMadre.Focus();
+        }
+        private void rb_bienes_Click(object sender, EventArgs e)
+        {
+            tx_conMadre.Visible = false;
+            tx_conMadre.Text = "";
+            tabControl2.SelectedTab = tabcodigo;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            //dataGridView1.Columns.Clear();
+            calculos();
+        }
+        private void tabcodigo_Enter(object sender, EventArgs e)
+        {
+            if (rb_bienes.Checked != true)
+            {
+                tabControl2.SelectedTab = tabadicion;
+            }
+        }
+        private void tabadicion_Enter(object sender, EventArgs e)
+        {
+            if (rb_servi.Checked != true)
+            {
+                tabControl2.SelectedTab = tabcodigo;
             }
         }
         #endregion

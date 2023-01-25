@@ -1,4 +1,4 @@
-﻿namespace iOMG
+﻿namespace iOMG2
 {
 }
 
