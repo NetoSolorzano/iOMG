@@ -33,6 +33,11 @@
             this.tabgrilla = new System.Windows.Forms.TabPage();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabuser = new System.Windows.Forms.TabPage();
+            this.pan_tcon = new System.Windows.Forms.Panel();
+            this.tx_conS = new System.Windows.Forms.TextBox();
+            this.tx_conMadre = new System.Windows.Forms.TextBox();
+            this.rb_servi = new System.Windows.Forms.RadioButton();
+            this.rb_bienes = new System.Windows.Forms.RadioButton();
             this.groupBox52 = new System.Windows.Forms.GroupBox();
             this.groupBox53 = new System.Windows.Forms.GroupBox();
             this.tx_motivD = new System.Windows.Forms.TextBox();
@@ -245,9 +250,6 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pan_tcon = new System.Windows.Forms.Panel();
-            this.rb_bienes = new System.Windows.Forms.RadioButton();
-            this.rb_servi = new System.Windows.Forms.RadioButton();
             this.tx_desCab = new iOMG.NumericTextBox();
             this.tx_cifm = new iOMG.NumericTextBox();
             this.tx_totesp = new iOMG.NumericTextBox();
@@ -258,6 +260,7 @@
             this.tx_d_saldo = new iOMG.NumericTextBox();
             this.tx_d_total = new iOMG.NumericTextBox();
             this.tx_d_prec = new iOMG.NumericTextBox();
+            this.tx_a_pd = new iOMG.NumericTextBox();
             this.tx_a_salcan = new iOMG.NumericTextBox();
             this.tx_a_total = new iOMG.NumericTextBox();
             this.tx_a_precio = new iOMG.NumericTextBox();
@@ -268,12 +271,11 @@
             this.tx_saldo = new iOMG.NumericTextBox();
             this.tx_acta = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
-            this.tx_conMadre = new System.Windows.Forms.TextBox();
-            this.tx_conS = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabuser.SuspendLayout();
+            this.pan_tcon.SuspendLayout();
             this.groupBox52.SuspendLayout();
             this.groupBox49.SuspendLayout();
             this.groupBox47.SuspendLayout();
@@ -306,7 +308,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.pan_tcon.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -438,6 +439,60 @@
             this.tabuser.Text = "Registro";
             this.tabuser.UseVisualStyleBackColor = true;
             this.tabuser.Enter += new System.EventHandler(this.tabuser_Enter);
+            // 
+            // pan_tcon
+            // 
+            this.pan_tcon.Controls.Add(this.tx_conS);
+            this.pan_tcon.Controls.Add(this.tx_conMadre);
+            this.pan_tcon.Controls.Add(this.rb_servi);
+            this.pan_tcon.Controls.Add(this.rb_bienes);
+            this.pan_tcon.Location = new System.Drawing.Point(3, 5);
+            this.pan_tcon.Name = "pan_tcon";
+            this.pan_tcon.Size = new System.Drawing.Size(230, 21);
+            this.pan_tcon.TabIndex = 399;
+            // 
+            // tx_conS
+            // 
+            this.tx_conS.Location = new System.Drawing.Point(212, -5);
+            this.tx_conS.Name = "tx_conS";
+            this.tx_conS.Size = new System.Drawing.Size(24, 20);
+            this.tx_conS.TabIndex = 400;
+            this.tx_conS.Tag = "contador de contratos servicios";
+            this.tx_conS.Visible = false;
+            // 
+            // tx_conMadre
+            // 
+            this.tx_conMadre.Location = new System.Drawing.Point(148, 1);
+            this.tx_conMadre.Name = "tx_conMadre";
+            this.tx_conMadre.Size = new System.Drawing.Size(81, 20);
+            this.tx_conMadre.TabIndex = 3;
+            this.tx_conMadre.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.tx_conMadre, "Contrato madre de bienes");
+            this.tx_conMadre.Leave += new System.EventHandler(this.tx_conMadre_Leave);
+            // 
+            // rb_servi
+            // 
+            this.rb_servi.AutoSize = true;
+            this.rb_servi.Location = new System.Drawing.Point(71, 2);
+            this.rb_servi.Name = "rb_servi";
+            this.rb_servi.Size = new System.Drawing.Size(68, 17);
+            this.rb_servi.TabIndex = 2;
+            this.rb_servi.TabStop = true;
+            this.rb_servi.Text = "Servicios";
+            this.rb_servi.UseVisualStyleBackColor = true;
+            this.rb_servi.Click += new System.EventHandler(this.rb_servi_Click);
+            // 
+            // rb_bienes
+            // 
+            this.rb_bienes.AutoSize = true;
+            this.rb_bienes.Location = new System.Drawing.Point(4, 2);
+            this.rb_bienes.Name = "rb_bienes";
+            this.rb_bienes.Size = new System.Drawing.Size(57, 17);
+            this.rb_bienes.TabIndex = 1;
+            this.rb_bienes.TabStop = true;
+            this.rb_bienes.Text = "Bienes";
+            this.rb_bienes.UseVisualStyleBackColor = true;
+            this.rb_bienes.Click += new System.EventHandler(this.rb_bienes_Click);
             // 
             // groupBox52
             // 
@@ -1236,6 +1291,7 @@
             // 
             // tabadicion
             // 
+            this.tabadicion.Controls.Add(this.tx_a_pd);
             this.tabadicion.Controls.Add(this.button2);
             this.tabadicion.Controls.Add(this.label50);
             this.tabadicion.Controls.Add(this.tx_a_comen);
@@ -2020,6 +2076,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(969, 179);
             this.dataGridView1.TabIndex = 273;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            this.dataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridView1_UserDeletedRow);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
             // groupBox13
@@ -2567,41 +2624,6 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // pan_tcon
-            // 
-            this.pan_tcon.Controls.Add(this.tx_conS);
-            this.pan_tcon.Controls.Add(this.tx_conMadre);
-            this.pan_tcon.Controls.Add(this.rb_servi);
-            this.pan_tcon.Controls.Add(this.rb_bienes);
-            this.pan_tcon.Location = new System.Drawing.Point(3, 5);
-            this.pan_tcon.Name = "pan_tcon";
-            this.pan_tcon.Size = new System.Drawing.Size(230, 21);
-            this.pan_tcon.TabIndex = 399;
-            // 
-            // rb_bienes
-            // 
-            this.rb_bienes.AutoSize = true;
-            this.rb_bienes.Location = new System.Drawing.Point(4, 2);
-            this.rb_bienes.Name = "rb_bienes";
-            this.rb_bienes.Size = new System.Drawing.Size(57, 17);
-            this.rb_bienes.TabIndex = 1;
-            this.rb_bienes.TabStop = true;
-            this.rb_bienes.Text = "Bienes";
-            this.rb_bienes.UseVisualStyleBackColor = true;
-            this.rb_bienes.Click += new System.EventHandler(this.rb_bienes_Click);
-            // 
-            // rb_servi
-            // 
-            this.rb_servi.AutoSize = true;
-            this.rb_servi.Location = new System.Drawing.Point(71, 2);
-            this.rb_servi.Name = "rb_servi";
-            this.rb_servi.Size = new System.Drawing.Size(68, 17);
-            this.rb_servi.TabIndex = 2;
-            this.rb_servi.TabStop = true;
-            this.rb_servi.Text = "Servicios";
-            this.rb_servi.UseVisualStyleBackColor = true;
-            this.rb_servi.Click += new System.EventHandler(this.rb_servi_Click);
-            // 
             // tx_desCab
             // 
             this.tx_desCab.AllowSpace = false;
@@ -2702,6 +2724,18 @@
             this.tx_d_prec.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_d_prec.Leave += new System.EventHandler(this.tx_d_prec_Leave);
             // 
+            // tx_a_pd
+            // 
+            this.tx_a_pd.AllowSpace = false;
+            this.tx_a_pd.Location = new System.Drawing.Point(138, 42);
+            this.tx_a_pd.Name = "tx_a_pd";
+            this.tx_a_pd.ReadOnly = true;
+            this.tx_a_pd.Size = new System.Drawing.Size(31, 20);
+            this.tx_a_pd.TabIndex = 396;
+            this.tx_a_pd.Tag = "% detrac del item";
+            this.tx_a_pd.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tx_a_pd.Visible = false;
+            // 
             // tx_a_salcan
             // 
             this.tx_a_salcan.AllowSpace = false;
@@ -2800,25 +2834,6 @@
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_valor.Enter += new System.EventHandler(this.tx_valor_Enter);
             // 
-            // tx_conMadre
-            // 
-            this.tx_conMadre.Location = new System.Drawing.Point(148, 1);
-            this.tx_conMadre.Name = "tx_conMadre";
-            this.tx_conMadre.Size = new System.Drawing.Size(81, 20);
-            this.tx_conMadre.TabIndex = 3;
-            this.tx_conMadre.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.toolTip1.SetToolTip(this.tx_conMadre, "Contrato madre de bienes");
-            this.tx_conMadre.Leave += new System.EventHandler(this.tx_conMadre_Leave);
-            // 
-            // tx_conS
-            // 
-            this.tx_conS.Location = new System.Drawing.Point(212, -5);
-            this.tx_conS.Name = "tx_conS";
-            this.tx_conS.Size = new System.Drawing.Size(24, 20);
-            this.tx_conS.TabIndex = 400;
-            this.tx_conS.Tag = "contador de contratos servicios";
-            this.tx_conS.Visible = false;
-            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2835,6 +2850,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabuser.ResumeLayout(false);
             this.tabuser.PerformLayout();
+            this.pan_tcon.ResumeLayout(false);
+            this.pan_tcon.PerformLayout();
             this.groupBox52.ResumeLayout(false);
             this.groupBox49.ResumeLayout(false);
             this.groupBox47.ResumeLayout(false);
@@ -2871,8 +2888,6 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.pan_tcon.ResumeLayout(false);
-            this.pan_tcon.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3120,5 +3135,6 @@
         private System.Windows.Forms.RadioButton rb_bienes;
         internal System.Windows.Forms.TextBox tx_conMadre;
         private System.Windows.Forms.TextBox tx_conS;
+        private NumericTextBox tx_a_pd;
     }
 }

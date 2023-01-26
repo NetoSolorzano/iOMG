@@ -118,7 +118,7 @@ namespace iOMG
             bt_ingresos.Image = Image.FromFile(img_preview);
             bt_salidas.Image = Image.FromFile(img_preview);
 
-            tx_codped.MaxLength = 7;
+            tx_codped.MaxLength = 9;    // antes 7 hasta el 25/01/2023
         }
         private void jalainfo()                                     // obtiene datos de imagenes
         {

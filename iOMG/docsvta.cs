@@ -1011,11 +1011,12 @@ namespace iOMG
                     string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
-                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto " +
+                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto,it.detporc " +
                         "FROM detacon a " +
                         "LEFT JOIN desc_est de ON de.IDCodice = a.estado " +
                         "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
                         "LEFT JOIN anag_cli ac ON ac.IDAnagrafica = c.cliente " +
+                        "LEFT JOIN items_adic it on it.codig=a.item " +
                         "WHERE a.contratoh = @cont";
                     using (MySqlCommand micon = new MySqlCommand(consin, conn))
                     {
@@ -1137,7 +1138,7 @@ namespace iOMG
                                     data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
                                     (double.Parse(data.ItemArray[8].ToString()) - Dscto / double.Parse(data.ItemArray[3].ToString())).ToString("#0.00"),
                                     (double.Parse(data.ItemArray[9].ToString()) - Dscto).ToString("#0.00"),"",
-                                    Dscto, totSinD);
+                                    Dscto, totSinD, data.ItemArray[24].ToString()); 
                                 cnt += 1;
                                 toti = toti + (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString()));
                             }

@@ -75,6 +75,7 @@ namespace iOMG
         string vapm = "";                   // sedes donde el pago se puede registrar manualmente                22/10/2022
         string vupb = "";                   // usuarios que pueden quitar items virgenes de contratos sin importar su estado
         string v_monLoc = "";               // codigo moneda local
+        string limdet = "";                 // monto limite para el pago de detracciones en servicios
         internal List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
 
@@ -158,6 +159,7 @@ namespace iOMG
                             // ayu2.ReturnValue0;
                             tx_a_codig.Text = ayu2.ReturnValue1;
                             tx_a_nombre.Text = ayu2.ReturnValue2;
+                            tx_a_pd.Text = ayu2.ReturnValueA[4];
                         }
                     }
                 }
@@ -208,6 +210,7 @@ namespace iOMG
                                     jalaDatFact("T", row[1].ToString().Substring(0, 1), row[2].ToString(), row[3].ToString(), i.ToString());
                                     i = i + 1;
                                     _comprobantes.Add(row[1].ToString().Substring(0, 1) + "-" + row[2].ToString() + "-" + row[3].ToString());
+                                    calculos();     // recien lo pongo, verificar cuando jalamos bienes
                                 }
                             }
                         }
@@ -534,6 +537,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "boleta") docBol = row["valor"].ToString().Trim();
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "factura") docFac = row["valor"].ToString().Trim();
                         if (row["campo"].ToString() == "intervalo" && row["param"].ToString() == "diasFec") intfec = int.Parse(row["valor"].ToString());
+                        if (row["campo"].ToString() == "detrac" && row["param"].ToString() == "serv_limit") limdet = row["valor"].ToString().Trim();
                     }
                 }
                 da.Dispose();
@@ -979,7 +983,7 @@ namespace iOMG
             dataGridView1.Columns[12].Width = 60;                 // ancho
             dataGridView1.Columns[12].ReadOnly = true;            // lectura o no
             dataGridView1.Columns[12].Name = "Piedra";
-            // codigo piedra
+            // codigo piedra  - EN EL CASO DE CONTRATOS DE SERVICIOS % DETRACCION DEL ITEM
             dataGridView1.Columns[13].Visible = false;
             dataGridView1.Columns[13].HeaderText = "CodPie";      // titulo de la columna
             dataGridView1.Columns[13].Width = 60;                 // ancho
@@ -1014,6 +1018,29 @@ namespace iOMG
                 //dataGridView1.Columns[18].ReadOnly = true;            // lectura o no
                 //dataGridView1.Columns[18].Name = "BoS";
             }
+        }
+        private bool bus_detalle_detrac()                                       // busca codigos detraccion diferentes en el detalle
+        {
+            bool retorna = true;
+            string codi = "";
+            if (rb_servi.Checked == true)
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells[13].Value != null && row.Cells[13].Value.ToString() != "")
+                    {
+                        if (codi != "")
+                        {
+                            if (row.Cells[13].Value.ToString() != codi)
+                            {
+                                retorna = false;     // osea si hay codigo de detrac diferentes
+                            }
+                        }
+                        codi = row.Cells[13].Value.ToString();
+                    }
+                }
+            }
+            return retorna;
         }
         private void armani()                                                   // arma el codigo y busca en la maestra
         {
@@ -1386,11 +1413,19 @@ namespace iOMG
         }
         private void jaladet(string pedido)                                     // jala el detalle del contrato
         {
-            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
+            /*string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
                 "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,'') as codpie,space(1) as na,tda_item,space(1) as totCat,totdscto " +
                 "FROM detacon a " +
                 "left join desc_dt2 b on b.idcodice=a.piedra " +
                 "left join desc_mad c on c.idcodice=a.madera " +
+                "WHERE a.contratoh = @cont ";
+            */
+            string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
+                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,if(left(a.item,1)=@letg,it.detporc,'')) as codpie,space(1) as na,tda_item,space(1) as totCat,totdscto " +
+                "FROM detacon a " +
+                "left join desc_dt2 b on b.idcodice=a.piedra " +
+                "left join desc_mad c on c.idcodice=a.madera " +
+                "left join items_adic it on it.codig=a.item " +
                 "WHERE a.contratoh = @cont ";
             //try
             {
@@ -1400,6 +1435,7 @@ namespace iOMG
                 {
                     MySqlCommand micon = new MySqlCommand(jalad, conn);
                     micon.Parameters.AddWithValue("@cont", pedido);
+                    micon.Parameters.AddWithValue("@letg", letgru);
                     MySqlDataAdapter da = new MySqlDataAdapter(micon);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -3154,6 +3190,12 @@ namespace iOMG
                     tx_acta.Focus();
                     return;
                 }
+                if (double.Parse(tx_valor.Text) >= double.Parse(limdet) && bus_detalle_detrac() == false)      // buscamos codigos diferentes en el detalle del contrato de servicios
+                {
+                    MessageBox.Show("El contrato tiene detracción y códigos diferentes","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    dataGridView1.Focus();
+                    return;
+                }
                 if (MessageBox.Show("Confirma que la FECHA DE ENTREGA" + Environment.NewLine +
                     "es la correcta?","Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
@@ -3692,9 +3734,9 @@ namespace iOMG
                             obj.Cells[10].Value = "";
                             obj.Cells[11].Value = tx_a_comen.Text;
                             obj.Cells[12].Value = "";
-                            obj.Cells[13].Value = "";
+                            obj.Cells[13].Value = tx_a_pd.Text;   // en servicios es % detraccion
                             obj.Cells[14].Value = "N";
-                            obj.Cells[14].Value = "";   // no tiene tienda
+                            obj.Cells[14].Value = "";   // no tiene tienda 
                         }
                     }
                 }
@@ -3706,12 +3748,12 @@ namespace iOMG
                         if (ndtg != null)
                         {
                             ndtg.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
+                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", tx_a_pd.Text, "N", "");
                         }
                         else
                         {
                             dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", "", "N", "");
+                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", tx_a_pd.Text, "N", "");
                         }
                     }
                     else
@@ -3751,7 +3793,7 @@ namespace iOMG
                             row[10] = "";
                             row[11] = tx_a_comen.Text;
                             row[12] = "";
-                            row[13] = "";
+                            row[13] = tx_a_pd.Text;
                             row[14] = "A";  // registro actualizado
                             row[15] = "";   // adicionales no tienen tienda
                         }
@@ -3773,7 +3815,7 @@ namespace iOMG
                     tr["pedido"] = "";
                     tr["codref"] = "";
                     tr["coment"] = tx_a_comen.Text;
-                    tr["piedra"] = "";
+                    tr["piedra"] = tx_a_pd.Text;
                     tr["na"] = "N";
                     tr["tda_item"] = "";
                     dtg.Rows.Add(tr);
@@ -4448,7 +4490,7 @@ namespace iOMG
                     if (Tx_modo.Text == "NUEVO")
                     {
                         e.Cancel = false;
-                        calculos();
+                        //calculos();
                     }
                     else
                     {   // modo edicion contrato = PENDIE y usuario con permiso
@@ -4503,6 +4545,10 @@ namespace iOMG
                     }
                 }
             }
+        }
+        private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            calculos();
         }
         #endregion
 

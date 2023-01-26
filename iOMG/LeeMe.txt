@@ -236,4 +236,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 -------------------------------------------------------------------------|
 ************* ADECUACIONES SOBRE REUNION DEL 20/01/2023 Nancy, pedro y yo ***********************
 - form contratos, poner radiobutton selección bienes o servicios ..................... ok 24/01/23
-- form contratos, poner % detrac. en detalle de contrato nuevos ...................... 
+- form docsvta, poner % detrac. en detalle al jalar de contratos ..................... ok 25/01/23
+- form contratos, servicios, tiene detrac? 1 contrato por tipo % ..................... ok 25/01/23
+- form repsventas, ampliar ancho del campo contrato .................................. ok 25/01/23
