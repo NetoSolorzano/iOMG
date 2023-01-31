@@ -4243,6 +4243,7 @@ namespace iOMG
                                             int vi = dr.GetInt16(9);
                                             cmb_tdoc.SelectedIndex = vi;
                                             tx_ndc_Leave(null, null);
+                                            tx_ndc_Validating(null, null);
                                         }
                                     }
                                     else

@@ -213,7 +213,6 @@ namespace iOMG
         }
         private void grilla()                                       // arma la grilla pedidos
         {
-            //
             Font tiplg = new Font("Arial", 7, FontStyle.Bold);
             dgv_pedidos.Font = tiplg;
             dgv_pedidos.DefaultCellStyle.Font = tiplg;
@@ -222,7 +221,7 @@ namespace iOMG
             dgv_pedidos.AllowUserToAddRows = false;
             if (dgv_pedidos.DataSource == null) dgv_pedidos.ColumnCount = 21;
             //dgv_ped.DataSource = dtg;
-            // Fecha pedido
+            //a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
             dgv_pedidos.Columns[0].Visible = true;
             dgv_pedidos.Columns[0].HeaderText = "Fecha";    // titulo de la columna
             dgv_pedidos.Columns[0].Width = 70;                // ancho
@@ -264,7 +263,7 @@ namespace iOMG
             dgv_pedidos.Columns[5].ReadOnly = true;
             dgv_pedidos.Columns[5].Tag = "validaNO";          // las celdas de esta columna se NO se validan
             //dgv_pedidos.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            // items
+            // d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid,
             dgv_pedidos.Columns[6].Visible = true;
             dgv_pedidos.Columns[6].HeaderText = "Código";
             dgv_pedidos.Columns[6].Width = 100;
@@ -319,24 +318,36 @@ namespace iOMG
             dgv_pedidos.Columns[13].Width = 50;
             dgv_pedidos.Columns[13].ReadOnly = true;
             dgv_pedidos.Columns[13].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // resto de campos
-            dgv_pedidos.Columns[14].Visible = false;
-            dgv_pedidos.Columns[15].Visible = false;
+            // PRECIO,TOTAL_S,a.status,trim(a.origen),d.estado,d.madera,d.piedra,fingreso,coment
+            dgv_pedidos.Columns[14].Visible = true;        // precio individual
+            dgv_pedidos.Columns[14].HeaderText = "Pre.Ind.";
+            dgv_pedidos.Columns[14].Width = 60;
+            dgv_pedidos.Columns[14].ReadOnly = true;
+            dgv_pedidos.Columns[14].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            // precio total
+            dgv_pedidos.Columns[15].Visible = true;        // precio total
+            dgv_pedidos.Columns[15].HeaderText = "Pre.Total";
+            dgv_pedidos.Columns[15].Width = 60;
+            dgv_pedidos.Columns[15].ReadOnly = true;
+            dgv_pedidos.Columns[15].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            //
             dgv_pedidos.Columns[16].Visible = false;
             dgv_pedidos.Columns[17].Visible = false;
             dgv_pedidos.Columns[18].Visible = false;
-            // fecha de ingreso
-            dgv_pedidos.Columns[19].Visible = true;
-            dgv_pedidos.Columns[19].HeaderText = "Fech.Ing.";
-            dgv_pedidos.Columns[19].Width = 80;
-            dgv_pedidos.Columns[19].ReadOnly = true;
-            dgv_pedidos.Columns[19].Tag = "validaNO";          // las celdas de esta columna SI se validan
-            // comentario del pedido
+            dgv_pedidos.Columns[19].Visible = false;
             dgv_pedidos.Columns[20].Visible = false;
-            dgv_pedidos.Columns[20].HeaderText = "Comentario";
-            dgv_pedidos.Columns[20].Width = 200;
-            dgv_pedidos.Columns[20].ReadOnly = true;
-            dgv_pedidos.Columns[20].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            // fecha de ingreso
+            dgv_pedidos.Columns[21].Visible = true;
+            dgv_pedidos.Columns[21].HeaderText = "Fech.Ing.";
+            dgv_pedidos.Columns[21].Width = 80;
+            dgv_pedidos.Columns[21].ReadOnly = true;
+            dgv_pedidos.Columns[21].Tag = "validaNO";          // las celdas de esta columna SI se validan
+            // comentario del pedido
+            dgv_pedidos.Columns[22].Visible = false;
+            dgv_pedidos.Columns[22].HeaderText = "Comentario";
+            dgv_pedidos.Columns[22].Width = 200;
+            dgv_pedidos.Columns[22].ReadOnly = true;
+            dgv_pedidos.Columns[22].Tag = "validaNO";          // las celdas de esta columna SI se validan
         }
         private void grilla_ing()                                   // arma la grilla ingresos
         {
@@ -590,7 +601,7 @@ namespace iOMG
             {
                 consulta = "select a.fecha,a.codped,b.descrizione,c.descrizione,a.destino,a.entrega," +
                     "d.item,d.nombre,f.descrizionerid,g.descrizionerid,d.medidas,d.cant,d.saldo,e.descrizionerid," +
-                    "a.status,trim(a.origen),d.estado,d.madera,d.piedra," +
+                    "i.soles2018 as PRECIO,i.soles2018*d.cant as TOTAL_S,a.status,trim(a.origen),d.estado,d.madera,d.piedra," +
                     "if(d.fingreso='0000-00-00',NULL,d.fingreso) AS fingreso,'' as coment " +
                     "from pedidos a left join detaped d on d.pedidoh=a.codped " +
                     "left join desc_stp b on b.idcodice=a.status " +
@@ -598,6 +609,8 @@ namespace iOMG
                     "left join desc_est e on e.idcodice=d.estado " +
                     "left join desc_mad f on f.idcodice=d.madera " +
                     "left join desc_dt2 g on g.idcodice=d.piedra " +
+                    "left join items i on left(i.codig, 4)=left(d.item, 4) AND " +
+                    "SUBSTRING(i.codig, 6, 4)=SUBSTRING(d.item, 6, 4) AND SUBSTRING(i.codig,13,3)=SUBSTRING(d.item, 13, 3) " +
                     parte + parte3 + parte0 + parte1 + parte2 + parte4; // " order by a.fecha,a.origen,a.codped"; // d.coment, a.coment,
             }
             try

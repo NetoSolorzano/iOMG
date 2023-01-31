@@ -2151,7 +2151,7 @@ namespace iOMG
                 tx_dat_sDet.Text = row[0].ItemArray[4].ToString();  // codigo sunat 
 
                 // validamos que los items del detalle tengan el porcentaje de detracción seleccionado
-                if (bus_detalle_detrac() == false)      // false = si hay codigos de detracción diferentes
+                if (bus_detalle_detrac() == false && double.Parse(tx_valor.Text) >= DetServLim)      // false = si hay codigos de detracción diferentes
                 {
                     MessageBox.Show("El detalle tiene códigos de detracción diferentes", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     cmb_detrac.SelectedIndex = -1;
@@ -2720,7 +2720,7 @@ namespace iOMG
                 tx_ndc.Focus();
                 return;
             }
-            if (rb_tserv.Checked == true && bus_detalle_detrac() == false)      // false = si hay codigos de detracción diferentes
+            if (rb_tserv.Checked == true && bus_detalle_detrac() == false && double.Parse(tx_valor.Text) > DetServLim)      // false = si hay codigos de detracción diferentes
             {
                 MessageBox.Show("El detalle tiene códigos de detracción diferentes", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmb_detrac.SelectedIndex = -1;

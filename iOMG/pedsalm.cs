@@ -390,7 +390,7 @@ namespace iOMG
         {
             // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
             string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
-                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo " +
+                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo,a.precio,a.total " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
@@ -432,7 +432,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 16;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -519,6 +519,20 @@ namespace iOMG
             dataGridView1.Columns[13].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[13].Name = "saldo";
+            // precio
+            dataGridView1.Columns[14].Visible = true;            // columna visible o no
+            dataGridView1.Columns[14].HeaderText = "Precio"; // titulo de la columna
+            dataGridView1.Columns[14].Width = 60;                // ancho
+            dataGridView1.Columns[14].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[14].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[14].Name = "precio";
+            // total
+            dataGridView1.Columns[15].Visible = true;            // columna visible o no
+            dataGridView1.Columns[15].HeaderText = "Total"; // titulo de la columna
+            dataGridView1.Columns[15].Width = 60;                // ancho
+            dataGridView1.Columns[15].ReadOnly = true;           // lectura o no
+            dataGridView1.Columns[15].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[15].Name = "total";
         }
         private void dataload(string quien)                  // jala datos para los combos y la grilla
         {
@@ -831,6 +845,8 @@ namespace iOMG
                                 tx_d_mad.Text = "";
                                 tx_d_det2.Text = "";
                                 tx_d_est.Text = "";
+                                tx_precio.Text = "";
+                                tx_total.Text = "";
                                 return;
                             }
                             string gol = "";
@@ -842,6 +858,9 @@ namespace iOMG
                                 {
                                     tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                     tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                    tx_precio.Text = fila["soles2018"].ToString();
+                                    if (tx_d_can.Text != "") tx_total.Text = (int.Parse(tx_d_can.Text) * double.Parse(tx_precio.Text)).ToString("#0.00");
+                                    else tx_total.Text = tx_precio.Text;
                                     gol = "1";
                                     break;
                                 }
@@ -856,6 +875,9 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        tx_precio.Text = fila["soles2018"].ToString();
+                                        if (tx_d_can.Text != "") tx_total.Text = (int.Parse(tx_d_can.Text) * double.Parse(tx_precio.Text)).ToString("#0.00");
+                                        else tx_total.Text = tx_precio.Text;
                                         gol = "1";
                                         break;
                                     }   // (fila["mader"].ToString() == "X" || ... fila["mader"].ToString() == mad && 
@@ -864,6 +886,9 @@ namespace iOMG
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                        tx_precio.Text = fila["soles2018"].ToString();
+                                        if (tx_d_can.Text != "") tx_total.Text = (int.Parse(tx_d_can.Text) * double.Parse(tx_precio.Text)).ToString("#0.00");
+                                        else tx_total.Text = tx_precio.Text;
                                         gol = "1";
                                         break;
                                     }
@@ -895,6 +920,8 @@ namespace iOMG
                                 tx_d_mad.Text = "";
                                 tx_d_det2.Text = "";
                                 tx_d_est.Text = "";
+                                tx_precio.Text = "";
+                                tx_total.Text = "";
                                 return;
                             }
                         }
@@ -983,8 +1010,8 @@ namespace iOMG
                             tfing = ",@fing";
                         }
                         string insdet = "insert into detaped (" +
-                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo" + tfingreso + ") values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + tfing + ")";
+                            "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo,precio,total" + tfingreso + ") values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald,@prec,@toti" + tfing + ")";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                         micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -998,6 +1025,8 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
                         if (dtp_fingreso.Checked == true) micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
                         micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                        micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[14].Value.ToString());
+                        micon.Parameters.AddWithValue("@toti", dataGridView1.Rows[i].Cells[15].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
                     retorna = true;
@@ -1052,8 +1081,8 @@ namespace iOMG
                                 tfing = ",@fing";
                             }
                             insdet = "insert into detaped (" +
-                                "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo" + tfingreso + ") values (" +
-                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald" + tfing + ")";
+                                "pedidoh,tipo,item,cant,nombre,medidas,madera,estado,piedra,coment,saldo,precio,total" + tfingreso + ") values (" +
+                                "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@esta,@det2,@come,@sald,@prec,@toti" + tfing + ")";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                             micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);
@@ -1067,13 +1096,16 @@ namespace iOMG
                             micon.Parameters.AddWithValue("@come", dataGridView1.Rows[i].Cells[8].Value.ToString());
                             if (dtp_fingreso.Checked == true) micon.Parameters.AddWithValue("@fing", dataGridView1.Rows[i].Cells[12].Value.ToString());
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                            micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[14].Value.ToString());
+                            micon.Parameters.AddWithValue("@toti", dataGridView1.Rows[i].Cells[15].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                         else
                         {
                             //MessageBox.Show(dataGridView1.Rows[i].Cells[10].Value.ToString());  //
                             insdet = "update detaped set " +
-                                "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come,fingreso=@fing,saldo=@sald " +
+                                "item=@item,cant=@cant,nombre=@nomb,medidas=@medi,madera=@made,estado=@esta,piedra=@det2,coment=@come," +
+                                "fingreso=@fing,saldo=@sald,precio=@prec,total=@toti " +
                                 "where iddetaped=@idr";
                             micon = new MySqlCommand(insdet, conn);
                             micon.Parameters.AddWithValue("@idr", dataGridView1.Rows[i].Cells[0].Value.ToString());
@@ -1094,6 +1126,8 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@fing", Convert.ToDateTime(dataGridView1.Rows[i].Cells[12].Value.ToString()));
                             }
                             micon.Parameters.AddWithValue("@sald", dataGridView1.Rows[i].Cells[13].Value.ToString());
+                            micon.Parameters.AddWithValue("@prec", dataGridView1.Rows[i].Cells[14].Value.ToString());
+                            micon.Parameters.AddWithValue("@toti", dataGridView1.Rows[i].Cells[15].Value.ToString());
                             micon.ExecuteNonQuery();
                         }
                     }
@@ -1319,6 +1353,8 @@ namespace iOMG
             tx_d_med.Text = "";
             tx_d_nom.Text = "";
             tx_saldo.Text = "";
+            tx_precio.Text = "";
+            tx_total.Text = "";
         }
         private void limpia_chk()
         {
@@ -1653,6 +1689,8 @@ namespace iOMG
                     obj.Cells[11].Value = cmb_det2.Tag.ToString();
                     if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
                     obj.Cells[13].Value = tx_saldo.Text;
+                    obj.Cells[14].Value = tx_precio.Text;
+                    obj.Cells[15].Value = tx_total.Text;
                 }
                 else
                 {
@@ -1670,7 +1708,8 @@ namespace iOMG
                         {
                             dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
                                  tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                                cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                                cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "",
+                                tx_saldo.Text,tx_precio.Text,tx_total.Text);
                         }
                         else
                         {
@@ -1714,13 +1753,16 @@ namespace iOMG
                     obj.Cells[11].Value = cmb_det2.Text.Substring(0, 3);  // cmb_det2.Tag.ToString();
                     if (dtp_fingreso.Checked == true) obj.Cells[12].Value = dtp_fingreso.Value.ToShortDateString();  // tx_fingreso.Text;
                     obj.Cells[13].Value = tx_saldo.Text;
+                    obj.Cells[14].Value = tx_precio.Text;
+                    obj.Cells[15].Value = tx_total.Text;
                 }
                 else
                 {
                     DataTable dtg = (DataTable)dataGridView1.DataSource;
                     dtg.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
                         tx_d_mad.Text, tx_d_det2.Text, tx_d_est.Text, tx_d_com.Text, cmb_aca.Tag.ToString(),
-                        cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", tx_saldo.Text);
+                        cmb_mad.SelectedItem.ToString().Substring(0, 1), cmb_det2.SelectedItem.ToString().Substring(0, 3), "", 
+                        tx_saldo.Text,tx_precio.Text,tx_total.Text);
                 }
             }
             tx_d_nom.Text = "";
@@ -1734,6 +1776,8 @@ namespace iOMG
             tx_d_codi.Text = "";
             //tx_fingreso.Text = "";
             tx_saldo.Text = "";
+            tx_precio.Text = "";
+            tx_total.Text = "";
             //limpia_combos(tabuser);
             cmb_fam.SelectedIndex = -1;
             cmb_mod.SelectedIndex = -1;
@@ -1786,6 +1830,10 @@ namespace iOMG
         private void tx_d_can_Leave(object sender, EventArgs e)
         {
             tx_saldo.Text = tx_d_can.Text;
+            if (tx_d_can.Text != "")
+            {
+                tx_total.Text = (double.Parse(tx_precio.Text) * int.Parse(tx_d_can.Text)).ToString("#0.00");
+            }
         }
         #endregion leaves;
 

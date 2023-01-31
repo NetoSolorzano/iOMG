@@ -239,3 +239,8 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, poner % detrac. en detalle al jalar de contratos ..................... ok 25/01/23
 - form contratos, servicios, tiene detrac? 1 contrato por tipo % ..................... ok 25/01/23
 - form repsventas, ampliar ancho del campo contrato .................................. ok 25/01/23
+- form docsvta, arreglar detrac, esta alertando a pesar de importe inferior al limite. ok 30/01/23
+- form contratos, servicios no esta jalando completo datos cliente contrato bienes ... ok 30/01/23
+************* ADECUACIONES SOLICITADAS POR CHRISTIAN EL 18/01/2023 *******************
+- form repspedalm, colocar precio de catalogo en el reporte .......................... ok 30/01/23
+- form pedsalm, agregar campos de precio y total al formulario ....................... ok 30/01/23
