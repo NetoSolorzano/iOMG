@@ -110,6 +110,7 @@ namespace iOMG
             // longitudes maximas de campos
             tx_nombre.MaxLength = 90;           // nombre
             tx_medidas.MaxLength = 45;           // direccion
+            tx_csunat.Text = 0;                 // codigo detracción sunat
         }
         private void grilla()                               // arma la grilla
         {
@@ -213,6 +214,13 @@ namespace iOMG
             advancedDataGridView1.Columns[13].ReadOnly = false;
             advancedDataGridView1.Columns[13].Tag = "validaNO";          // las celdas de esta columna se SI se validan
             advancedDataGridView1.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // % detraccion sunat
+            advancedDataGridView1.Columns[14].Visible = true;
+            advancedDataGridView1.Columns[14].HeaderText = "% Det";
+            advancedDataGridView1.Columns[14].Width = 60;
+            advancedDataGridView1.Columns[14].ReadOnly = true;
+            advancedDataGridView1.Columns[14].Tag = "validaNO";          // las celdas de esta columna se SI se validan
+            advancedDataGridView1.Columns[14].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void grilla2()                              // grilla de filtros de nivel superior
         {
@@ -294,6 +302,7 @@ namespace iOMG
                 tx_nombre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();   // nombre
                 tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();   // medida
                 tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();    // precio
+                tx_csunat.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();    // % det sunat
                 cmb_cap.SelectedValue = tx_dat_cap.Text;
                 cmb_mod.SelectedValue = tx_dat_mod.Text;
                 cmb_mad.SelectedValue = tx_dat_mad.Text;
@@ -319,7 +328,7 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los adicionals
-                string datgri = "select id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio " +
+                string datgri = "select id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio,detporc " +
                     "from items_adic";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
@@ -717,7 +726,7 @@ namespace iOMG
                             dr[11] = tx_nombre.Text.Trim();
                             dr[12] = tx_medidas.Text.Trim();
                             dr[13] = tx_precio.Text; //tx_umed.Text;
-                                                     //dr[14] = tx_precio.Text;
+                            dr[14] = tx_csunat.Text;
                             dtg.Rows.Add(dr);
                             //dtu.Rows.Add(dr);
                         }

@@ -980,7 +980,7 @@ namespace iOMG
             pagoIni[0, 0] = "";     // pago inicial del contrato, tipo doc del cliente del comprobante
             pagoIni[0, 1] = "";     // pago inicial del contrato, numero doc del cliente del comprobante
         }
-        private double jala_cont(string conti)                // jala datos del contrato
+        private double jala_cont(string conti)                // jala datos del contrato .... me quede aca! si cont servicio o bienes
         {
             double retorna = 0;
             pagoIni[0, 0] = "";     // pago inicial del contrato, tipo doc del cliente del comprobante
@@ -2809,6 +2809,7 @@ namespace iOMG
                     {
                         MessageBox.Show("Debe seleccionar un porcentaje" + Environment.NewLine +
                         "de Detracción para el servicio", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        panel4.Visible = true;
                         cmb_detrac.Focus();
                         return;
                     }
@@ -2884,7 +2885,7 @@ namespace iOMG
                             {
                                 streamWriter.Write(cabeza);
                                 // escribimos el json del comprobantes para efectos de prueba
-                                //System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
+                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
