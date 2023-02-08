@@ -980,7 +980,7 @@ namespace iOMG
             pagoIni[0, 0] = "";     // pago inicial del contrato, tipo doc del cliente del comprobante
             pagoIni[0, 1] = "";     // pago inicial del contrato, numero doc del cliente del comprobante
         }
-        private double jala_cont(string conti)                // jala datos del contrato .... me quede aca! si cont servicio o bienes
+        private double jala_cont(string conti)                // jala datos del contrato, si es "marca0"
         {
             double retorna = 0;
             pagoIni[0, 0] = "";     // pago inicial del contrato, tipo doc del cliente del comprobante
@@ -1009,7 +1009,7 @@ namespace iOMG
                     }
                     string continua = "N";
                     string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
-                    string consin = "select a.saldo,a.status from contrat a where a.contrato=@cont";
+                    string consin = "select a.saldo,a.status,a.tipocon,a.acuenta from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,de.descrizione,a.codref,a.piedra,a.precio,a.total,c.cliente," +
                         "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto,it.detporc " +
                         "FROM detacon a " +
@@ -1024,6 +1024,18 @@ namespace iOMG
                         MySqlDataReader dr = micon.ExecuteReader();
                         if (dr.Read())
                         {
+                            if ((dr.GetString(2) == "9" && rb_tbienes.Checked == true) ||
+                                (dr.GetString(2) == "1" && rb_tserv.Checked == true))
+                            {
+                                var aaa = MessageBox.Show("El tipo de contrato NO coindice" + Environment.NewLine +
+                                    "con el tipo de comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                if (aaa == DialogResult.OK)
+                                {
+                                    tx_cont.Text = "";
+                                    tx_cont.Focus();
+                                    return retorna;
+                                }
+                            }
                             if (dr.GetDouble(0) <= 0)
                             {
                                 MessageBox.Show("El contrato no tiene saldo!" + Environment.NewLine +
@@ -3816,7 +3828,7 @@ namespace iOMG
                             v_totDscto = v_totDscto + v_dsctofila;
                         }
 
-                        CComprobanteDetalle det = new CComprobanteDetalle       // aca falta incluir descuento 
+                        CComprobanteDetalle det = new CComprobanteDetalle       //  
                         {
                             ID = 0,
                             ComprobanteID = 0,

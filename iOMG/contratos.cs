@@ -1619,9 +1619,9 @@ namespace iOMG
                     }
                     //
                     string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS,articulo," +
-                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad,motivDes) " +
+                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad,motivDes,marca0) " +
                         "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@arti,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
-                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi,@motdes)";
+                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi,@motdes,@mar0)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
@@ -1636,7 +1636,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@sald", tx_saldo.Text);
                     micon.Parameters.AddWithValue("@dsct", tx_dscto.Text);
                     micon.Parameters.AddWithValue("@dent", tx_dirent.Text);
-                    micon.Parameters.AddWithValue("@tipe", tx_dat_tiped.Text);  // 
+                    micon.Parameters.AddWithValue("@tipe", (rb_servi.Checked == true)? 9 : 1);  // tx_dat_tiped.Text
                     micon.Parameters.AddWithValue("@asd", asd);
                     micon.Parameters.AddWithValue("@cltr", (chk_lugent.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@ceem", (chk_serema.Checked.ToString() == "True") ? "1" : "0");
@@ -1647,6 +1647,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@tecont", tx_telcont.Text);
                     micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00":tx_totesp.Text);
                     micon.Parameters.AddWithValue("@motdes", tx_motivD.Text);
+                    micon.Parameters.AddWithValue("@mar0", "2");    // marca de version nueva integrador 2.0
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);

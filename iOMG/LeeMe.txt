@@ -245,5 +245,5 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form repspedalm, colocar precio de catalogo en el reporte .......................... ok 30/01/23
 - form pedsalm, agregar campos de precio y total al formulario ....................... ok 30/01/23
 **************************************************************************************
-- form docsvta, debe validar que el contrato asociado sea de bienes o servicios ...... 
+- form docsvta, debe validar que el contrato asociado sea de bienes o servicios ...... ok 08/02/23
 - form adicionals, agregar campo para %detracion sunat ............................... ok 07/02/23
