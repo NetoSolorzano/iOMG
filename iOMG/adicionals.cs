@@ -82,7 +82,6 @@ namespace iOMG
             dataload("maestra");
             dataload("todos");
             grilla();
-            //grilla2();
             this.KeyPreview = true;
             Bt_add.Enabled = true;
             Bt_anul.Enabled = true;
@@ -110,7 +109,8 @@ namespace iOMG
             // longitudes maximas de campos
             tx_nombre.MaxLength = 90;           // nombre
             tx_medidas.MaxLength = 45;           // direccion
-            tx_csunat.Text = 0;                 // codigo detracción sunat
+            tx_csunat.Text = "0";                 // codigo detracción sunat
+            filaroja();
         }
         private void grilla()                               // arma la grilla
         {
@@ -221,6 +221,15 @@ namespace iOMG
             advancedDataGridView1.Columns[14].ReadOnly = true;
             advancedDataGridView1.Columns[14].Tag = "validaNO";          // las celdas de esta columna se SI se validan
             advancedDataGridView1.Columns[14].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            // estado, bloqueado o activo
+            advancedDataGridView1.Columns[15].Visible = false;
+            advancedDataGridView1.Columns[15].HeaderText = "Bloquado";
+            advancedDataGridView1.Columns[15].Width = 30;
+            advancedDataGridView1.Columns[15].ReadOnly = true;
+            advancedDataGridView1.Columns[15].Tag = "validaNO";          // las celdas de esta columna se SI se validan
+            advancedDataGridView1.Columns[15].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //
+            filaroja();
         }
         private void grilla2()                              // grilla de filtros de nivel superior
         {
@@ -303,6 +312,7 @@ namespace iOMG
                 tx_medidas.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[12].Value.ToString();   // medida
                 tx_precio.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[13].Value.ToString();    // precio
                 tx_csunat.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();    // % det sunat
+                checkBox1.Checked = (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[15].Value.ToString() == "1") ? true : false;
                 cmb_cap.SelectedValue = tx_dat_cap.Text;
                 cmb_mod.SelectedValue = tx_dat_mod.Text;
                 cmb_mad.SelectedValue = tx_dat_mad.Text;
@@ -328,7 +338,7 @@ namespace iOMG
             if (quien == "maestra")
             {
                 // datos de los adicionals
-                string datgri = "select id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio,detporc " +
+                string datgri = "select id,codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio,detporc,bloqueado " +
                     "from items_adic";
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
                 MySqlDataAdapter dag = new MySqlDataAdapter(cdg);
@@ -336,6 +346,7 @@ namespace iOMG
                 dag.Fill(dtg);
                 //dag.Fill(dtu);  // original con la carga
                 dag.Dispose();
+                filaroja();
             }
             //  datos para el combobox de tipo de documento
             if (quien == "todos")
@@ -518,6 +529,18 @@ namespace iOMG
             advancedDataGridView1.DataSource = dtg;
             grilla();
             //cellsum(0);
+            filaroja();
+        }
+        private void filaroja()                             // pinta de rojo la fila bloqueada
+        {
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (row.Cells[15].Value != null && row.Cells[15].Value.ToString() == "1")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                }
+            }
+
         }
 
         #region limpiadores_modos
@@ -727,6 +750,7 @@ namespace iOMG
                             dr[12] = tx_medidas.Text.Trim();
                             dr[13] = tx_precio.Text; //tx_umed.Text;
                             dr[14] = tx_csunat.Text;
+                            dr[15] = (checkBox1.Checked == true) ? "1" : "0";
                             dtg.Rows.Add(dr);
                             //dtu.Rows.Add(dr);
                         }
@@ -780,6 +804,8 @@ namespace iOMG
                                 dtg.Rows[i][11] = tx_nombre.Text.Trim();
                                 dtg.Rows[i][12] = tx_medidas.Text.Trim();
                                 dtg.Rows[i][13] = tx_precio.Text;
+                                dtg.Rows[i][14] = tx_csunat.Text;
+                                dtg.Rows[i][15] = (checkBox1.Checked == true) ? "1" : "0";
                             }
                         }
                     }
@@ -816,8 +842,8 @@ namespace iOMG
                     tx_dat_tip.Text.Trim() + tx_dat_det1.Text.Trim() + tx_dat_aca.Text.Trim() +
                     tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
                     string inserta = "insert into items_adic (" +
-                        "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio,bloqueado) values (" +
-                        "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@nomb,@medi,@prec,@bloq)";
+                        "codig,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,nombr,medid,precio,bloqueado,detporc) values (" +
+                        "@codi,@capi,@mode,@made,@tipo,@det1,@acab,@tall,@det2,@det3,@nomb,@medi,@prec,@bloq,@detp)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@codi", codi);
                     micon.Parameters.AddWithValue("@capi", tx_dat_cap.Text.Trim());
@@ -833,6 +859,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@medi", tx_medidas.Text.Trim());
                     micon.Parameters.AddWithValue("@prec", tx_precio.Text);
                     micon.Parameters.AddWithValue("@bloq", (checkBox1.Checked == true)? 1 : 0);
+                    micon.Parameters.AddWithValue("@detp", tx_csunat.Text);
                     micon.ExecuteNonQuery();
                     retorna = true;
                 }
@@ -865,7 +892,7 @@ namespace iOMG
                     tx_dat_tal.Text.Trim() + tx_dat_det2.Text.Trim() + tx_dat_det3.Text.Trim();
                     string actua = "update items_adic set " +
                         "codig=@codi,capit=@capi,model=@mode,mader=@made,tipol=@tipo,deta1=@det1,acaba=@acab,talle=@tall," +
-                        "deta2=@det2,deta3=@det3,nombr=@nomb,medid=@medi,precio=@prec,bloqueado=@bloq " +
+                        "deta2=@det2,deta3=@det3,nombr=@nomb,medid=@medi,precio=@prec,bloqueado=@bloq,detporc=@detp " +
                         "where id=@idr";
                     MySqlCommand micon = new MySqlCommand(actua, conn);
                     micon.Parameters.AddWithValue("@codi", codi);
@@ -883,6 +910,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@prec", tx_precio.Text);
                     micon.Parameters.AddWithValue("@bloq", (checkBox1.Checked == true) ? 1 : 0);
                     micon.Parameters.AddWithValue("@idr", tx_idr.Text);
+                    micon.Parameters.AddWithValue("@detp", tx_csunat.Text);
                     micon.ExecuteNonQuery();
                 }
                 catch (MySqlException ex)
@@ -1148,6 +1176,7 @@ namespace iOMG
         {
             bt_exc.Enabled = true;
             Bt_print.Enabled = false;
+            filaroja();
         }
         #endregion botones;
         // adicionals para habilitar los botones de comando

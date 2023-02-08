@@ -61,6 +61,10 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.advancedDataGridView1 = new ADGV.AdvancedDataGridView();
             this.tabreg = new System.Windows.Forms.TabPage();
+            this.tx_csunat = new iOMG.NumericTextBox();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tx_dat_det3 = new System.Windows.Forms.TextBox();
             this.tx_dat_det2 = new System.Windows.Forms.TextBox();
             this.tx_dat_tal = new System.Windows.Forms.TextBox();
@@ -117,16 +121,13 @@
             this.tx_idr = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tx_csunat = new iOMG.NumericTextBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tabreg.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox9.SuspendLayout();
@@ -134,7 +135,6 @@
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox15.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -524,6 +524,41 @@
             this.tabreg.TabIndex = 1;
             this.tabreg.Text = "Registro Individual";
             this.tabreg.Enter += new System.EventHandler(this.tabreg_Enter);
+            // 
+            // tx_csunat
+            // 
+            this.tx_csunat.AllowSpace = false;
+            this.tx_csunat.Location = new System.Drawing.Point(301, 244);
+            this.tx_csunat.Name = "tx_csunat";
+            this.tx_csunat.Size = new System.Drawing.Size(79, 20);
+            this.tx_csunat.TabIndex = 222;
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.BackColor = System.Drawing.Color.White;
+            this.groupBox15.Controls.Add(this.groupBox16);
+            this.groupBox15.Location = new System.Drawing.Point(249, 263);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(132, 1);
+            this.groupBox15.TabIndex = 256;
+            this.groupBox15.TabStop = false;
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Location = new System.Drawing.Point(0, -26);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(164, 1);
+            this.groupBox16.TabIndex = 113;
+            this.groupBox16.TabStop = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(249, 247);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(50, 13);
+            this.label9.TabIndex = 255;
+            this.label9.Text = "% Detrac";
             // 
             // tx_dat_det3
             // 
@@ -1051,41 +1086,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // groupBox15
-            // 
-            this.groupBox15.BackColor = System.Drawing.Color.White;
-            this.groupBox15.Controls.Add(this.groupBox16);
-            this.groupBox15.Location = new System.Drawing.Point(249, 263);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(132, 1);
-            this.groupBox15.TabIndex = 256;
-            this.groupBox15.TabStop = false;
-            // 
-            // groupBox16
-            // 
-            this.groupBox16.Location = new System.Drawing.Point(0, -26);
-            this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(164, 1);
-            this.groupBox16.TabIndex = 113;
-            this.groupBox16.TabStop = false;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(249, 247);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(45, 13);
-            this.label9.TabIndex = 255;
-            this.label9.Text = "C.Sunat";
-            // 
-            // tx_csunat
-            // 
-            this.tx_csunat.AllowSpace = false;
-            this.tx_csunat.Location = new System.Drawing.Point(301, 244);
-            this.tx_csunat.Name = "tx_csunat";
-            this.tx_csunat.Size = new System.Drawing.Size(79, 20);
-            this.tx_csunat.TabIndex = 222;
-            // 
             // adicionals
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1114,6 +1114,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tabreg.ResumeLayout(false);
             this.tabreg.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
@@ -1121,7 +1122,6 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox15.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
