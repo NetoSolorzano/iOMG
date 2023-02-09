@@ -1185,6 +1185,7 @@ namespace iOMG
                     }
                     suma_grilla();
                     valDocClte_Leave(null, null);
+                    controlContadoCredito();
                 }
             }
             catch (MySqlException ex)
@@ -1446,6 +1447,30 @@ namespace iOMG
             if (tx_dat_pDet.Text != "" && tx_dat_pDet.Text != codi) retorna = false;
 
             return retorna;
+        }
+        private void controlContadoCredito()                // habilita deshabilita botones contado o credito según sea el caso
+        {
+            if (tx_dat_tipdoc.Text == codbole)      // en boletas no hay credito
+            {
+                rb_contado.Enabled = true;
+                rb_contado.PerformClick();
+                rb_credito.Enabled = false;
+            }
+            else
+            {
+                rb_contado.Enabled = true;
+                rb_credito.Enabled = true;
+                // en facturas si hay credito
+                if (Tx_modo.Text == "NUEVO" && tx_cont.Text.Trim() != "")
+                {
+                    if (vpago == "anticipo")
+                    {
+                        rb_contado.Enabled = true;
+                        rb_contado.PerformClick();
+                        rb_credito.Enabled = false;
+                    }
+                }
+            }
         }
 
         #region autocompletados
@@ -2076,25 +2101,19 @@ namespace iOMG
         #region comboboxes
         private void cmb_cap_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            /*if (cmb_tipo.SelectedValue != null)
-            {
-                tx_dat_tipdoc.Text = cmb_tipo.SelectedValue.ToString();
-            }
-            else
-            {
-                tx_dat_tipdoc.Text = cmb_tipo.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-            } */
             if (cmb_tipo.SelectedIndex > -1)
             {
                 string axs = string.Format("idcodice='{0}'", cmb_tipo.Text);
                 DataRow[] row = dtpedido.Select(axs);
                 tx_dat_tipdoc.Text = row[0].ItemArray[1].ToString();
                 tx_dat_tipdoc_s.Text = row[0].ItemArray[2].ToString();
+                controlContadoCredito();
             }
             else
             {
                 tx_dat_tipdoc.Text = "";
                 tx_dat_tipdoc_s.Text = "";
+                controlContadoCredito();
             }
         }
         private void cmb_tdoc_SelectionChangeCommitted(object sender, EventArgs e)
@@ -2265,6 +2284,7 @@ namespace iOMG
                         tx_desGlob.ReadOnly = false;
                     }
                 }
+                controlContadoCredito();
             }
         }
         private void valDocClte_Leave(object sender, EventArgs e)             // validamos el documento del cliente
@@ -2442,6 +2462,7 @@ namespace iOMG
                 // DESCUENTO GLOBAL
                 // si es vta. directa -> se habilita el dscto global
                 tx_desGlob.ReadOnly = false;
+                controlContadoCredito();
             }
         }
         private void rb_antic_Click(object sender, EventArgs e)
@@ -2491,6 +2512,7 @@ namespace iOMG
                     tx_cont.Focus();
                 }
             }
+            controlContadoCredito();
         }
         private void rb_contado_Click(object sender, EventArgs e)
         {
@@ -2537,6 +2559,7 @@ namespace iOMG
             panel4.Visible = false;
             tx_dat_pDet.Text = "";
             tx_dat_cDet.Text = "";
+            controlContadoCredito();
         }
         private void rb_tserv_Click(object sender, EventArgs e)
         {
@@ -2544,6 +2567,7 @@ namespace iOMG
             panel4.Visible = false;
             tx_dat_pDet.Text = "";
             tx_dat_cDet.Text = "";
+            controlContadoCredito();
         }
         #endregion
 
@@ -2897,7 +2921,7 @@ namespace iOMG
                             {
                                 streamWriter.Write(cabeza);
                                 // escribimos el json del comprobantes para efectos de prueba
-                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
+                                //System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -3732,8 +3756,8 @@ namespace iOMG
                 DocAdicionalDetalle = "",
                 TotalRetencion = 0,
                 MontoRetencion = 0,
-                PendientePago = 0,
-                PermitirCuotas = 0,                             // que significa ?
+                PendientePago = (rb_credito.Checked == true) ? decimal.Parse(tx_totCuotas.Text) : 0,
+                PermitirCuotas = (rb_credito.Checked == true) ? int.Parse(tx_cuotas.Text) : 0,
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
@@ -4256,8 +4280,8 @@ namespace iOMG
                 DocAdicionalDetalle = "",
                 TotalRetencion = 0,
                 MontoRetencion = 0,
-                PendientePago = 0,
-                PermitirCuotas = 0,                             // que significa ?
+                PendientePago = (rb_credito.Checked == true) ? decimal.Parse(tx_totCuotas.Text) : 0,
+                PermitirCuotas = (rb_credito.Checked == true) ? int.Parse(tx_cuotas.Text) : 0, 
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
