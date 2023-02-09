@@ -3655,10 +3655,10 @@ namespace iOMG
                 PercepcionFactor = 0,
                 ListaMovimientos = bbb,
                 PagosMultiples = false,                             // que significa esto?
-                CreditoTotal = 0,
+                CreditoTotal = (rb_credito.Checked == true)? decimal.Parse(tx_totCuotas.Text) : 0,
                 ListaGuias = { },
                 ListaCuotas = fff,
-                TotalCuotas = 0,
+                TotalCuotas = (rb_credito.Checked == true) ? decimal.Parse(tx_totCuotas.Text) : 0,
                 ListaAnticipos = { },
                 ListaDocumentosRelacionados = { },
                 ListaCondicionesComerciales = { },
@@ -3755,7 +3755,7 @@ namespace iOMG
 
             return retorna;
         }
-        private string rapifac_cancelacion()                                        // genera comprobante de cancelacion para rapifac
+        private string rapifac_cancelacion()                                        // genera comprobante de cancelacion para rapifac.. quede acá poniendo cuotas
         {
             string retorna = "";
             decimal v_totDscto = 0;
@@ -4081,6 +4081,24 @@ namespace iOMG
                 dtpagos[i, 6] = fecha de pago
                 */
             }
+            List<CCreditoCuota> fff = new List<CCreditoCuota>();
+            for (int i = 0; i < 9; i++)
+            {
+                if (dtcred[i, 2] != null && dtcred[i, 2] != "")
+                {
+                    DateTime fmax = DateTime.Parse(dtcred[i, 3]);
+                    TimeSpan rdia = fmax - DateTime.Now;
+                    int plazo = rdia.Days + 1;
+                    CCreditoCuota cuota = new CCreditoCuota
+                    {
+                        PlazoDiasCuota = plazo,
+                        FechaVencimientoCuota = dtcred[i, 3],
+                        MontoCuota = decimal.Parse(dtcred[i, 2]),
+                        NroCuota = i + 1
+                    };
+                    fff.Add(cuota);
+                }
+            }
             // terminado con los movimientos de pagos por el comprobante entero
             CComprobante obj = new CComprobante
             {
@@ -4161,10 +4179,10 @@ namespace iOMG
                 PercepcionFactor = 0,
                 ListaMovimientos = bbb,
                 PagosMultiples = false,                             // que significa esto?
-                CreditoTotal = 0,
+                CreditoTotal = (rb_credito.Checked == true) ? decimal.Parse(tx_totCuotas.Text) : 0,
                 ListaGuias = { },
-                ListaCuotas = { },
-                TotalCuotas = 0,
+                ListaCuotas = fff,
+                TotalCuotas = (rb_credito.Checked == true) ? decimal.Parse(tx_totCuotas.Text) : 0,
                 ListaAnticipos = ddd,
                 ListaDocumentosRelacionados = eee,
                 ListaCondicionesComerciales = { },

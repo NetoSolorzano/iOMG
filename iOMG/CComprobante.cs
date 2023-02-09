@@ -233,7 +233,7 @@ namespace iOMG
         public string OrdenNumero { get; set; }
         public int ClienteTipoSunat { get; set; }
         public int CondicionComercialIndicador { get; set; }
-        public int TotalCuotas { get; set; }
+        public decimal TotalCuotas { get; set; }
         public string UUID { get; set; }
         public bool BANDERA_CONCURRENCIA { get; set; }
         public bool BANDERA_DIRECCIONPARTIDAEDICION { get; set; }
