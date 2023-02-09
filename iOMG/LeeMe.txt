@@ -224,10 +224,10 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, permitir elimacion en edicion de articlos "chicos" ................. ok 09/01/23
 - form docsvta, si es cancel o 2do anticipo con ruc, no se puede cambiar cliente ..... ok 10/01/23
 - form forpcred, creacion del form de cuotas credito ................................. ok 11/01/23
-- form docsvta, habilitar creditos con sus cuotas y fechas de pago ................... ok 11/01/23 falta probar
+- form docsvta, habilitar creditos con sus cuotas y fechas de pago ................... ok 11/01/23
 - form docsvta, hablitar en rapifac los comprobantes a credito ....................... ok 18/01/23
 - form docsvta, habilitar en la impresion de tickets los creditos .................... ok 18/01/23
-- form docsvta, actualizar totales si se borra una fila de detalle ................... 
+- form docsvta, actualizar totales si se borra una fila de detalle ................... ok ??/01/23
 - form contratos, arreglo en edicion, detalle, doble click ........................... ok 21/01/23
 - form contratos, no esta actualizando el contrato en cabfactu ....................... ok 21/01/23
 ---- ESTO YA NO, REU 20/01/2023 -----------------------------------------|
@@ -247,3 +247,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 **************************************************************************************
 - form docsvta, debe validar que el contrato asociado sea de bienes o servicios ...... ok 08/02/23
 - form adicionals, agregar campo para %detracion sunat ............................... ok 07/02/23
+- form docsvta, arreglos en fact. al credito ......................................... ok 09/02/23
