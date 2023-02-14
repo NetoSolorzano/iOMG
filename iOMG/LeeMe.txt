@@ -251,3 +251,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 ************* ADECUACIONES PARA LA MIGRACION DE BASE DE DATOS ************************
 - form contratos, considerar que la edicion de contratos no debe modificar la marca .. ok 10/02/23	marca de migrados
 - form docsvta, validar que el contrato ingresado sea 2.0, sino, no debe permitir .... ok 10/02/23	solo permite facturar contratos 2.0
+- form contratos, permitir ingresar pago manualmente si es contrato antiguo ..........  si contrato antiguo no se puede hacer DV con el integrador
