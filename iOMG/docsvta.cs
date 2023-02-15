@@ -3123,7 +3123,8 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@subMN", subtMN);
                     micon.Parameters.AddWithValue("@igvMN", igvtMN);
                     micon.Parameters.AddWithValue("@totMN", fletMN);
-                    micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "N");
+                    micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "S"); // 14/02/2023, todo se considera pagado, el control 
+                                                                                                        // si el credito se cobra o no, no lo vemos en el sistema
                     micon.Parameters.AddWithValue("@tipdco", tx_tipComp.Text);    // (rb_antic.Checked == true)? "A" : "B"
                     micon.Parameters.AddWithValue("@idcaj", "0");                   // aca no manejamos caja
                     micon.Parameters.AddWithValue("@plazc", "");                    // aca no hay plazo  de credito...todo es contado

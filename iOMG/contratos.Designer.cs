@@ -250,6 +250,7 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tx_verCont = new System.Windows.Forms.TextBox();
             this.tx_desCab = new iOMG.NumericTextBox();
             this.tx_cifm = new iOMG.NumericTextBox();
             this.tx_totesp = new iOMG.NumericTextBox();
@@ -271,6 +272,9 @@
             this.tx_saldo = new iOMG.NumericTextBox();
             this.tx_acta = new iOMG.NumericTextBox();
             this.tx_valor = new iOMG.NumericTextBox();
+            this.groupBox54 = new System.Windows.Forms.GroupBox();
+            this.groupBox55 = new System.Windows.Forms.GroupBox();
+            this.label59 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -308,6 +312,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.groupBox54.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -353,6 +358,9 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.groupBox54);
+            this.tabuser.Controls.Add(this.label59);
+            this.tabuser.Controls.Add(this.tx_verCont);
             this.tabuser.Controls.Add(this.pan_tcon);
             this.tabuser.Controls.Add(this.groupBox52);
             this.tabuser.Controls.Add(this.tx_motivD);
@@ -2624,6 +2632,16 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
+            // tx_verCont
+            // 
+            this.tx_verCont.Enabled = false;
+            this.tx_verCont.Location = new System.Drawing.Point(916, 487);
+            this.tx_verCont.Name = "tx_verCont";
+            this.tx_verCont.ReadOnly = true;
+            this.tx_verCont.Size = new System.Drawing.Size(34, 20);
+            this.tx_verCont.TabIndex = 400;
+            this.tx_verCont.Tag = "version del contrato, 2.0 ó vacío";
+            // 
             // tx_desCab
             // 
             this.tx_desCab.AllowSpace = false;
@@ -2639,7 +2657,7 @@
             // tx_cifm
             // 
             this.tx_cifm.AllowSpace = false;
-            this.tx_cifm.Location = new System.Drawing.Point(851, 481);
+            this.tx_cifm.Location = new System.Drawing.Point(849, 455);
             this.tx_cifm.Name = "tx_cifm";
             this.tx_cifm.Size = new System.Drawing.Size(21, 20);
             this.tx_cifm.TabIndex = 394;
@@ -2649,7 +2667,7 @@
             // tx_totesp
             // 
             this.tx_totesp.AllowSpace = false;
-            this.tx_totesp.Location = new System.Drawing.Point(851, 461);
+            this.tx_totesp.Location = new System.Drawing.Point(849, 435);
             this.tx_totesp.Name = "tx_totesp";
             this.tx_totesp.ReadOnly = true;
             this.tx_totesp.Size = new System.Drawing.Size(24, 20);
@@ -2834,6 +2852,33 @@
             this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_valor.Enter += new System.EventHandler(this.tx_valor_Enter);
             // 
+            // groupBox54
+            // 
+            this.groupBox54.BackColor = System.Drawing.Color.DimGray;
+            this.groupBox54.Controls.Add(this.groupBox55);
+            this.groupBox54.Location = new System.Drawing.Point(866, 506);
+            this.groupBox54.Name = "groupBox54";
+            this.groupBox54.Size = new System.Drawing.Size(84, 1);
+            this.groupBox54.TabIndex = 402;
+            this.groupBox54.TabStop = false;
+            // 
+            // groupBox55
+            // 
+            this.groupBox55.Location = new System.Drawing.Point(0, -26);
+            this.groupBox55.Name = "groupBox55";
+            this.groupBox55.Size = new System.Drawing.Size(164, 1);
+            this.groupBox55.TabIndex = 113;
+            this.groupBox55.TabStop = false;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(866, 491);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(48, 13);
+            this.label59.TabIndex = 401;
+            this.label59.Text = "Versión: ";
+            // 
             // contratos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2888,6 +2933,7 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.groupBox54.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3136,5 +3182,9 @@
         internal System.Windows.Forms.TextBox tx_conMadre;
         private System.Windows.Forms.TextBox tx_conS;
         private NumericTextBox tx_a_pd;
+        private System.Windows.Forms.TextBox tx_verCont;
+        private System.Windows.Forms.GroupBox groupBox54;
+        private System.Windows.Forms.GroupBox groupBox55;
+        private System.Windows.Forms.Label label59;
     }
 }

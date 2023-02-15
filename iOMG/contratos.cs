@@ -163,8 +163,8 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text) && vapm.Contains(tx_dat_orig.Text))
-                {
+                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text) && tx_verCont.Text.Trim() == "") //  && vapm.Contains(tx_dat_orig.Text)
+                {   // tx_verCont.Text.Trim() == "" <-- esto se agrego el 14/02/23 porque solo los cont anteriores al 2.0 se ingresan los pagos manualmente
                     para1 = "PAGCON";
                     para2 = tx_codped.Text.Trim();
                     para3 = tx_saldo.Text.Trim();
@@ -583,7 +583,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
-                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes,a.articulo " +
+                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes,a.articulo,a.marca0 " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                     "where not find_in_set(a.status,@tea)";   // where a.status not in (@tea)
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
@@ -1289,6 +1289,7 @@ namespace iOMG
                 tx_totesp.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[22].Value.ToString();    // total servicios adicionales
                 tx_motivD.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[23].Value.ToString();    // motivo de descuento
                 tx_conMadre.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[24].Value.ToString();    // tipo de contrato Bienes o Servicios
+                tx_verCont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[25].Value.ToString();    // versión del contrato, anterior=(vacio), 2.0 nuevo
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
@@ -1336,6 +1337,7 @@ namespace iOMG
                         tx_totesp.Text = string.Format("{0:#0.00}", row["totsad"].ToString());                          // total servicios adicionales
                         tx_motivD.Text = row["motivDes"].ToString();                        // motivo de descuento
                         tx_conMadre.Text = row["articulo"].ToString();                      // tipo de contrato Bienes o Servicios
+                        tx_verCont.Text = row["marca0"].ToString();                         // 
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
@@ -2608,7 +2610,7 @@ namespace iOMG
                 impDef = setPrintD.PrinterName;
             }
             PrintReport(Application.StartupPath + "\\ContratoI.rpt", impDef, 1);  // "CutePDFWriter" 
-            PrintReport(Application.StartupPath + "\\resumen_termYcond.rpt", impDef, 2);  // \\terminosYcondiciones.rpt  "CutePDFWriter"
+            //PrintReport(Application.StartupPath + "\\resumen_termYcond.rpt", impDef, 2);  // ya no va 14/02/2023
         }
         private void bt_prev_Click(object sender, EventArgs e)
         {
