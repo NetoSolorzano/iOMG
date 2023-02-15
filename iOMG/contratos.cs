@@ -291,8 +291,9 @@ namespace iOMG
                                     }
                                     double ff = 0;
                                     double.TryParse(tx_acta.Text, out ff);
-                                    if (dr.GetString("conPago") == "1") tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
-                                    else tx_acta.Text = ff.ToString("#0.00");
+                                    //if (dr.GetString("conPago") == "1") tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // pago a cuenta
+                                    //else tx_acta.Text = ff.ToString("#0.00");
+                                    tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // 14/02/2023, todos los comprobantes se asumen el valor como contado
                                     tx_desCab.Text = dr.GetString("valordscto");
                                     desCab = decimal.Parse(tx_desCab.Text);
                                 }
@@ -1292,6 +1293,8 @@ namespace iOMG
                 tx_verCont.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[25].Value.ToString();    // versión del contrato, anterior=(vacio), 2.0 nuevo
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
+                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString() == "1") rb_bienes.PerformClick();
+                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString() == "9") rb_servi.PerformClick();
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
                 cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);    // estado
@@ -1341,6 +1344,8 @@ namespace iOMG
                         cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);
                         cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);
                         cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);
+                        if (row["tipocon"].ToString() == "1") rb_bienes.PerformClick();
+                        if (row["tipocon"].ToString() == "9") rb_servi.PerformClick();
                         //
                         jaladet(tx_codped.Text);
                     }
@@ -1664,8 +1669,8 @@ namespace iOMG
                         string[] partes = item.Split('-');
                         string actg = "update pagamenti a LEFT JOIN cabfactu b ON b.tipdvta=a.dv AND b.serdvta=a.serie AND b.numdvta=a.numero " +
                             "set a.contrato=@con,a.valor=@calc,a.acuenta=@acta,a.saldo=@sald,b.contrato=@con " +
-                            "where a.dv=@dv and a.serie=@ser and a.numero=@num and a.idpagamenti>0";
-                        // "update pagamenti set contrato=@con,valor=@calc,acuenta=@acta,saldo=@sald where dv=@dv and serie=@ser and numero=@num and idpagamenti>0"
+                            "where a.dv=@dv and a.serie=@ser and a.numero=@num and a.idpagamenti>0 and a.fecha>=@fcon";
+                        // 15/02/2023, se agrega condicion de fecha del pago para evitar errores de digitacion de fechas en los pagos de datos migrados al 2.0
                         using (MySqlCommand mic = new MySqlCommand(actg, conn))
                         {
                             mic.Parameters.AddWithValue("@con", tx_codped.Text);
@@ -1675,6 +1680,7 @@ namespace iOMG
                             mic.Parameters.AddWithValue("@dv", (partes[0].Substring(0, 1) == "F") ? docFac : docBol);   // (tx_mc.Text == "F") ? docFac : docBol
                             mic.Parameters.AddWithValue("@ser", partes[1]);      // tx_serie.Text
                             mic.Parameters.AddWithValue("@num", partes[2]);      // tx_corre.Text
+                            mic.Parameters.AddWithValue("@fcon", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                             mic.ExecuteNonQuery();
                         }
                     }

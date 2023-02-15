@@ -253,4 +253,8 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, validar que el contrato ingresado sea 2.0, sino, no debe permitir .... ok 10/02/23	solo permite facturar contratos 2.0
 - form contratos, permitir ingresar pago manualmente si es contrato antiguo .......... ok 14/10/23  si contrato antiguo no se puede hacer DV con el integrador
 - form contratos, ya no imprimir el "terminos y condiciones" del contrato ............ ok 14/10/23
-- form docsvta, cuando es al credito igual debe ir a pagamenti y demas ............... 
+- form contratos, los pagos en la impresion deben ser >= fecha del contrato .......... ok 15/02/23  por seguridad, en los datos migrados puede haber errores de digitacion en fechas
+- form docsvta, cuando es al credito igual debe ir a pagamenti y demas ............... ok 15/02/23  se forzó a que todas los DV tengan pagAuto = "S"
+- form docsvta, permitir creditos en anticipos ....................................... ok 15/02/23
+- form contratos, nuevo, corregir jalado del pago del DV como parcial ................ ok 15/02/23
+- form contratos, mejorar el jalaoc() en tipo de contrato B o S ...................... ok 15/02/23
