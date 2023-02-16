@@ -245,9 +245,11 @@ namespace iOMG
         {
             string excluye = "";
             decimal valexc = 0;
+            /* 16/02/2023, no se debe exluir nada porque sino los totales no cuadran cuando hay anticipos y cancelaciones
             var xx = MessageBox.Show("Excluye los artículos del capítulo: " + vtasc + Environment.NewLine +
                 "en el detalle del contrato?","Confirme por favor", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (xx == DialogResult.Yes) excluye = " and left(a.codprod,1) <> '" + vtasc + "'";
+            */
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
             {
                 conn.Open();

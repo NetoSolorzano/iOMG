@@ -2947,7 +2947,7 @@ namespace iOMG
                             {
                                 streamWriter.Write(cabeza);
                                 // escribimos el json del comprobantes para efectos de prueba
-                                //System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
+                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -4065,7 +4065,7 @@ namespace iOMG
                     Serie = _docsAnticip[i].serieRap,
                     Correlativo = _docsAnticip[i].corRap,
                     MonedaCodigo = _docsAnticip[i].codMon,
-                    AnticiposId = "1",
+                    AnticiposId = (i+1).ToString(),   // _docsAnticip[i].IdCompRapifac.ToString(),            // "1",
                     Anticipo = decimal.Parse(_docsAnticip[i].valor),
                     AnticipoBase = decimal.Parse(_docsAnticip[i].bruto),
                     AnticipoIGV = decimal.Parse(_docsAnticip[i].igv),
