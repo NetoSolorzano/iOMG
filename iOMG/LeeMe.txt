@@ -259,3 +259,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, nuevo, corregir jalado del pago del DV como parcial ................ ok 15/02/23
 - form contratos, mejorar el jalaoc() en tipo de contrato B o S ...................... ok 15/02/23
 - form contratos, jalar todos los items del comprobante, incluir los chicos .......... ok 16/02/23
+- form contratos, no permitir borrar un item que viene de un comprobante ............. ok 16/02/23
+- form contratos, validar que el comprobante origen sea bienes o servicios ........... 
+

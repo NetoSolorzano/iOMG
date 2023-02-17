@@ -259,7 +259,7 @@ namespace iOMG
                     if (modo == "T")    //  || modo == "T"
                     {
                         string accion = "select a.id,b.idanagrafica,a.totdvMN,a.tidoclt,a.nudoclt,a.nombclt,a.direclt,a.dptoclt,a.provclt,a.distclt,a.corrclt,a.teleclt,a.telemsg," +
-                            "a.conPago,a.pagauto,a.valordscto " +
+                            "a.conPago,a.pagauto,a.valordscto,a.tipocomp " +
                             "from cabfactu a LEFT JOIN anag_cli b ON b.tipdoc=a.tidoclt AND b.RUC=a.nudoclt where a.martdve=@mar and a.serdvta=@ser and a.numdvta=@num";
                         using (MySqlCommand micon = new MySqlCommand(accion, conn))
                         {
@@ -298,6 +298,12 @@ namespace iOMG
                                     tx_acta.Text = (ff + dr.GetDouble("totdvMN")).ToString("#0.00");     // 14/02/2023, todos los comprobantes se asumen el valor como contado
                                     tx_desCab.Text = dr.GetString("valordscto");
                                     desCab = decimal.Parse(tx_desCab.Text);
+                                    //
+                                    if ((rb_bienes.Checked == true && dr.GetString("tipocomp") != "B") || (rb_servi.Checked == true && dr.GetString("tipocomp") != "S"))
+                                    {
+                                        MessageBox.Show("El comprobante seleccionado es de un tipo distinto al contrato", "Tipo de contrato incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return;
+                                    }
                                 }
                             }
                         }
@@ -4488,6 +4494,13 @@ namespace iOMG
                 {
                     MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine +
                     "pero no se puede proceder porque el saldo S/ es cero", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    e.Cancel = true;
+                    return;
+                }
+                if (_comprobantes.Count > 0)
+                {
+                    MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine +
+                    "pero biene de una FT o BV, no se permite borrar", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     e.Cancel = true;
                     return;
                 }
