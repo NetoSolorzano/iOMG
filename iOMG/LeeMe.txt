@@ -261,5 +261,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, jalar todos los items del comprobante, incluir los chicos .......... ok 16/02/23
 - form contratos, no permitir borrar un item que viene de un comprobante ............. ok 16/02/23
 - form contratos, validar que el comprobante origen sea bienes o servicios ........... ok 16/02/23
-
-
+- form docsvta, CREDITO, fecha de cuotas debe ser > fecha del comprobante ............ ok 17/02/23
+- form forpagos, CREDITO, fecha del pago debe ser > fecha del comprobante ............ ok 17/02/23
+- form forpcred, fecha del pago debe ser > fecha del comprobante ..................... ok 17/02/23

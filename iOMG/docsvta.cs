@@ -230,7 +230,8 @@ namespace iOMG
                 }
                 if (tx_impMedios.Focused == true)
                 {
-                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos, (Tx_modo.Text == "NUEVO")? false : true, tpcredit);
+                    string fc = dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2);
+                    forpagos pagos = new forpagos(dtfp, tpcontad, dtpagos, (Tx_modo.Text == "NUEVO")? false : true, tpcredit, fc);
                     var resu = pagos.ShowDialog();
                     if (resu == DialogResult.Cancel)
                     {
@@ -252,7 +253,8 @@ namespace iOMG
                 }
                 if (tx_cuotas.Focused == true || tx_totCuotas.Focused == true)
                 {
-                    forpcred creds = new forpcred(dtcred, (Tx_modo.Text == "NUEVO") ? false : true);
+                    string fc = dtp_pedido.Text.Substring(6, 4) + "-" + dtp_pedido.Text.Substring(3, 2) + "-" + dtp_pedido.Text.Substring(0, 2);
+                    forpcred creds = new forpcred(dtcred, (Tx_modo.Text == "NUEVO") ? false : true, fc);
                     var resu = creds.ShowDialog();
                     if (resu == DialogResult.Cancel)
                     {
@@ -3749,7 +3751,7 @@ namespace iOMG
                 CorrelativoModificado = "",
                 TipoNotaCreditoCodigo = "01",
                 TipoNotaDebitoCodigo = "01",
-                TipoOperacionCodigo = "0101",
+                TipoOperacionCodigo = (rb_tbienes.Checked == true) ? "0101" : (tx_dat_cDet.Text.Trim() != "") ? "1001" : "0101",
                 TipoCambio = "1.00",
                 MotivoTrasladoCodigo = "01",
                 ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
@@ -4273,7 +4275,7 @@ namespace iOMG
                 CorrelativoModificado = "",
                 TipoNotaCreditoCodigo = "01",
                 TipoNotaDebitoCodigo = "01",
-                TipoOperacionCodigo = "0101",                               // todo esto debe estar en variables
+                TipoOperacionCodigo = (rb_tbienes.Checked == true) ? "0101" : (tx_dat_cDet.Text.Trim() != "")? "1001" : "0101",                               // todo esto debe estar en variables
                 TipoCambio = "1.00",
                 MotivoTrasladoCodigo = "01",
                 ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
@@ -4643,7 +4645,7 @@ namespace iOMG
                 CorrelativoModificado = "",
                 TipoNotaCreditoCodigo = "01",
                 TipoNotaDebitoCodigo = "01",
-                TipoOperacionCodigo = "0101",                               // todo esto debe estar en variables
+                TipoOperacionCodigo = (rb_tbienes.Checked == true) ? "0101" : (tx_dat_cDet.Text.Trim() != "") ? "1001" : "0101",                               // todo esto debe estar en variables
                 TipoCambio = "1.00",
                 MotivoTrasladoCodigo = "01",
                 ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
@@ -5165,7 +5167,7 @@ namespace iOMG
                     CorrelativoModificado = "",
                     TipoNotaCreditoCodigo = "01",
                     TipoNotaDebitoCodigo = "01",
-                    TipoOperacionCodigo = "0101",                               // todo esto debe estar en variables
+                    TipoOperacionCodigo = (rb_tbienes.Checked == true) ? "0101" : (tx_dat_cDet.Text.Trim() != "") ? "1001" : "0101",                               // todo esto debe estar en variables
                     TipoCambio = "1.00",
                     MotivoTrasladoCodigo = "01",
                     ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
@@ -5415,7 +5417,7 @@ namespace iOMG
                 FechaRegistro = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
                 TipoNotaCreditoCodigo = "01",
                 TipoNotaDebitoCodigo = "01",
-                TipoOperacionCodigo = "0101",
+                TipoOperacionCodigo = (rb_tbienes.Checked == true) ? "0101" : (tx_dat_cDet.Text.Trim() != "") ? "1001" : "0101",
                 TipoDocumentoCodigoModificado = tx_dat_tipdoc_s.Text,
                 SerieModificado = "",
                 CorrelativoModificado = "",

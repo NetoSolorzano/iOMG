@@ -10,6 +10,7 @@ namespace iOMG
     {
         DataTable dt;           // plazos, monto y fecha
         bool SoloLee = false;   // si no es modo "nuevo" debe ser solo lectura
+        string _feComp = "";    // fecha del comprobante
 
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -22,7 +23,7 @@ namespace iOMG
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120" +
             ";ConnectionLifeTime=" + ctl + ";";
 
-        public forpcred(string[,] idavuelta, bool sololee)
+        public forpcred(string[,] idavuelta, bool sololee, string fechComp)
         {
             InitializeComponent();
             if (idavuelta[0, 2] != null && idavuelta[0, 2].ToString() != "")    // 
@@ -39,6 +40,7 @@ namespace iOMG
                 }
             }
             if (sololee == true) SoloLee = true;
+            _feComp = fechComp;
         }
         private void forpcred_Load(object sender, EventArgs e)
         {
@@ -126,6 +128,12 @@ namespace iOMG
                 return;
             }
             // la fecha de pago por defecto es la fecha del día
+            if (tx_fpago.Value.Date <= DateTime.Parse(_feComp).Date)
+            {
+                MessageBox.Show("La fecha debe ser mayor al del comprobante", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                tx_fpago.Focus();
+                return;
+            }
             double vi = 0;
             double.TryParse(tx_importe.Text, out vi);
             if (tx_importe.Text.Trim() == "" || vi <= 0)

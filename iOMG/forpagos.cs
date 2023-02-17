@@ -14,6 +14,7 @@ namespace iOMG
         bool SoloLee = false;
         double vlimban = 0;     // valor limite para bancarizar pagos en efectivo
         string vglosa1 = "";    // glosa del limite bancariz
+        string _feComp = "";    // fecha del comprobante
 
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -26,11 +27,12 @@ namespace iOMG
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120" +
             ";ConnectionLifeTime=" + ctl + ";";
 
-        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta, bool sololee, string mpcred)
+        public forpagos(DataTable dtmp, string mpefec, string[,] idavuelta, bool sololee, string mpcred, string fechComp)
         {
             dt = dtmp;
             _mpefec = mpefec;
             _mpcred = mpcred;
+            _feComp = fechComp;
             InitializeComponent();
             if (idavuelta[0, 2] != null && idavuelta[0, 2].ToString() != "")
             {
@@ -152,6 +154,13 @@ namespace iOMG
             {
                 MessageBox.Show("El importe debe ser > 0", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tx_importe.Focus();
+                return;
+            }
+            // validacion de fecha si el comprobante es credito, debe ser: fecha pago > fecha comprobante
+            if (tx_dat_mp.Text == _mpcred && tx_fpago.Value.Date <= DateTime.Parse(_feComp).Date)
+            {
+                MessageBox.Show("La fecha debe ser mayor al del comprobante al crédito", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                tx_fpago.Focus();
                 return;
             }
             if (tx_dat_mp.Text == _mpefec && vi >= vlimban)
