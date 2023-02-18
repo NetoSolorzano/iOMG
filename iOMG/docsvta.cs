@@ -3470,6 +3470,7 @@ namespace iOMG
                     decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                     decimal v_valTotal = v_valorUnit * v_cant;
                     decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / (dataGridView1.Rows.Count - 1) / v_cant;
+                    decimal v_valvtaxml = (decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1)) * v_cant;
                     if (ron.Cells[11].Value.ToString() != "" && ron.Cells[11].Value.ToString() != "0" && ron.Cells[11].Value.ToString() != "0.00")
                     {
                         v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
@@ -3498,7 +3499,7 @@ namespace iOMG
                         Descuento = v_dsctofsin,    //  decimal.Parse(ron.Cells[11].Value.ToString()),
                         ValorUnitario = v_valorUnit,
                         ValorVentaItem = v_valorUnit * v_cant,
-                        ValorVentaItemXML = v_valorUnit * v_cant,
+                        ValorVentaItemXML = v_valvtaxml,                //  v_valorUnit * v_cant,       // 17/02/2023 ValorVentaItemXML = PrecioUnitarioItem / 1.18
                         ValorVentaNeto = v_dsctobase - v_dsctofsin,   // v_valorUnit * v_cant,  
                         ValorVentaNetoXML = 0,
                         IGV = v_valIgvTot,
@@ -3880,7 +3881,8 @@ namespace iOMG
                             v_dsctoLetr = Math.Round(100 - (((v_preUmdes - v_dsctoNume) * v_cant) * 100 / v_preToti), 2).ToString();  // v_dsctoNume.ToString();
                             v_totDscto = v_totDscto + v_dsctofila;
                         }
-
+                        //decimal v_valvtaxml = decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1);
+                        decimal v_valvtaxml = (decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1)) * v_cant;
                         CComprobanteDetalle det = new CComprobanteDetalle       //  
                         {
                             ID = 0,
@@ -3900,7 +3902,7 @@ namespace iOMG
                             Descuento = v_dsctofsin,
                             ValorUnitario = v_valorUnit,
                             ValorVentaItem = v_valorUnit * v_cant,
-                            ValorVentaItemXML = v_valorUnit * v_cant,
+                            ValorVentaItemXML = v_valvtaxml,                    // v_valorUnit * v_cant,
                             ValorVentaNeto = v_valorNeto,   // v_dsctobase - v_dsctofsin,     // v_valorUnit * v_cant,
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
