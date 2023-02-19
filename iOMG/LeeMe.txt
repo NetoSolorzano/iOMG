@@ -264,3 +264,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, CREDITO, fecha de cuotas debe ser > fecha del comprobante ............ ok 17/02/23
 - form forpagos, CREDITO, fecha del pago debe ser > fecha del comprobante ............ ok 17/02/23
 - form forpcred, fecha del pago debe ser > fecha del comprobante ..................... ok 17/02/23
+- form docsvta, anticipos, error en fecha de emision ................................. 
