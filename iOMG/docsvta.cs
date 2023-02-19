@@ -95,6 +95,7 @@ namespace iOMG
         string id_clte = "";                // identificador clave
         string rut_pdf = "";                // ruta web del pdf en servidor Rapifac
         string rut_xml = "";                // ruta para descargar el xml de rapifac
+        string host_rapifac = "";           // ruta host webservices rapifac
         string cod_umed = "";               // codigo unidad de medida
         string nom_umed = "";               // nombre unidad de medida
         string cod_user = "";               // codigo unidad de SERVICIO
@@ -385,8 +386,9 @@ namespace iOMG
                             if (row["param"].ToString() == "nom_uMed") nom_umed = row["valor"].ToString().Trim();           // nombre unidad de medida
                             if (row["param"].ToString() == "cod_uSer") cod_user = row["valor"].ToString().Trim();           // codigo unidad de SERVICIO
                             if (row["param"].ToString() == "nom_uSer") nom_user = row["valor"].ToString().Trim();           // nombre unidad de SERVICIO
-                            if (row["param"].ToString() == "mail_prin1") mailPrin = row["valor"].ToString().Trim();           // correo electronico principal
+                            if (row["param"].ToString() == "mail_prin1") mailPrin = row["valor"].ToString().Trim();         // correo electronico principal
                             if (row["param"].ToString() == "web_dni") webdni = row["valor"].ToString().Trim();              // pag web para busqueda de dni
+                            if (row["param"].ToString() == "host") host_rapifac = row["valor"].ToString().Trim();           // host del servidor webservices rapifac
                         }
                         if (row["campo"].ToString() == "conector")
                         {
@@ -3353,8 +3355,8 @@ namespace iOMG
         private string conex_token()                                                // obtenemos el token de rapifac
         {
             string retorna = "";
-            string host = "https://wsoauth-exp.rapifac.com/oauth2/token";
-
+            //string host = "https://wsoauth-exp.rapifac.com/oauth2/token";         // host de pruebas
+            string host = host_rapifac;                                             // host de producción
             // create a request
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);

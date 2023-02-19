@@ -264,4 +264,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, CREDITO, fecha de cuotas debe ser > fecha del comprobante ............ ok 17/02/23
 - form forpagos, CREDITO, fecha del pago debe ser > fecha del comprobante ............ ok 17/02/23
 - form forpcred, fecha del pago debe ser > fecha del comprobante ..................... ok 17/02/23
-- form docsvta, anticipos, error en fecha de emision ................................. 
+- form docsvta, anticipos, error en fecha de emision ................................. PARECE QUE ES PROBLEMA DEL PORTAL DE PRUEBAS DE RAPIFAC
+******************************** PASE A PRODUCCION ***********************************
+- form docsvta, pasar a variable la ruta host webservices rapifac .................... ok 19/02/23
