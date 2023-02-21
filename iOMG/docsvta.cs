@@ -125,6 +125,8 @@ namespace iOMG
         static string ctl = ConfigurationManager.AppSettings["ConnectionLifeTime"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";" +
             "ConnectionLifeTime=" + ctl + ";default command timeout=120";
+        //static string prpr = ConfigurationManager.AppSettings["prpr"].ToString(); // PRODUCCION / PRUEBAS || prpr <> PRUEBAS => produccion
+
         DataTable dtg = new DataTable();
         DataTable dttaller = new DataTable();   // combo local de ventas
         DataTable dtdoc = new DataTable();      // combo tipo doc cliente
