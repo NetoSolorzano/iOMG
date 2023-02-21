@@ -270,4 +270,5 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, quitar el c:temp en prodccion no lo usamos ........................... ok 20/09/23
 - form docsvta, validar campo "madera" <= 6 caracteres ............................... ok 20/02/23
 - form docsvta, deshabilitar el boton grabar cuando ya confirma la grabación ......... ok 21/02/23
-
+- form contratos, arreglar la ampliacion del form .................................... ok 21/02/23 maximisebox=false
+- form pedsalm, arreglar la ampliacion del form ...................................... ok 21/02/23 maximisebox=false

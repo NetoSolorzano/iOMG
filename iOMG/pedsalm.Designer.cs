@@ -36,6 +36,10 @@
             this.dtp_entreg = new System.Windows.Forms.DateTimePicker();
             this.dtp_pedido = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.tx_total = new System.Windows.Forms.TextBox();
+            this.tx_precio = new System.Windows.Forms.TextBox();
             this.tx_saldo = new iOMG.NumericTextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
@@ -149,10 +153,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.tx_total = new System.Windows.Forms.TextBox();
-            this.tx_precio = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -332,6 +332,44 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(963, 104);
             this.panel1.TabIndex = 298;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(817, 44);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(46, 13);
+            this.label31.TabIndex = 327;
+            this.label31.Text = "Total S/";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(764, 44);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(37, 13);
+            this.label32.TabIndex = 326;
+            this.label32.Text = "Precio";
+            // 
+            // tx_total
+            // 
+            this.tx_total.Location = new System.Drawing.Point(805, 58);
+            this.tx_total.Name = "tx_total";
+            this.tx_total.ReadOnly = true;
+            this.tx_total.Size = new System.Drawing.Size(59, 20);
+            this.tx_total.TabIndex = 23;
+            this.tx_total.Tag = "Id";
+            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tx_precio
+            // 
+            this.tx_precio.Location = new System.Drawing.Point(746, 58);
+            this.tx_precio.Name = "tx_precio";
+            this.tx_precio.ReadOnly = true;
+            this.tx_precio.Size = new System.Drawing.Size(59, 20);
+            this.tx_precio.TabIndex = 22;
+            this.tx_precio.Tag = "Id";
+            this.tx_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tx_saldo
             // 
@@ -1432,44 +1470,6 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(817, 44);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(46, 13);
-            this.label31.TabIndex = 327;
-            this.label31.Text = "Total S/";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(764, 44);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(37, 13);
-            this.label32.TabIndex = 326;
-            this.label32.Text = "Precio";
-            // 
-            // tx_total
-            // 
-            this.tx_total.Location = new System.Drawing.Point(805, 58);
-            this.tx_total.Name = "tx_total";
-            this.tx_total.ReadOnly = true;
-            this.tx_total.Size = new System.Drawing.Size(59, 20);
-            this.tx_total.TabIndex = 23;
-            this.tx_total.Tag = "Id";
-            this.tx_total.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_precio
-            // 
-            this.tx_precio.Location = new System.Drawing.Point(746, 58);
-            this.tx_precio.Name = "tx_precio";
-            this.tx_precio.ReadOnly = true;
-            this.tx_precio.Size = new System.Drawing.Size(59, 20);
-            this.tx_precio.TabIndex = 22;
-            this.tx_precio.Tag = "Id";
-            this.tx_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // Pedsalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1477,6 +1477,7 @@
             this.ClientSize = new System.Drawing.Size(977, 503);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tabControl1);
+            this.MaximizeBox = false;
             this.Name = "Pedsalm";
             this.Text = "Pedidos de Almacén";
             this.Load += new System.EventHandler(this.repspedidos_Load);
