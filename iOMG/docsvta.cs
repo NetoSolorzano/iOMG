@@ -336,6 +336,7 @@ namespace iOMG
             tx_d_nom.MaxLength = 90;                    // ancho del campo nombr de la maestra de items
             tx_d_antic.Text = letiden;
             tx_d_antic.MaxLength = 90;                  // 
+            tx_d_mad.MaxLength = 6;                     // 
             //
             this.milinea1.BackColor = Color.White;
             this.milinea1.ForeColor = Color.White;
@@ -950,6 +951,7 @@ namespace iOMG
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             Tx_modo.Text = modo;
+            button1.Enabled = true;
             if (modo != "NUEVO")
             {
                 tx_dat_orig.Text = "";
@@ -2891,6 +2893,8 @@ namespace iOMG
                     "el comprobante?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
+                    button1.Enabled = false;        // deshabilitamos el boton para evitar dobles click
+
                     cosas_pagamenti();
                     string resultado = "";
                     // armado de las clases para Rapifac
