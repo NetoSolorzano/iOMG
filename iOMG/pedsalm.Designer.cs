@@ -40,7 +40,6 @@
             this.label32 = new System.Windows.Forms.Label();
             this.tx_total = new System.Windows.Forms.TextBox();
             this.tx_precio = new System.Windows.Forms.TextBox();
-            this.tx_saldo = new iOMG.NumericTextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -153,6 +152,13 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.milinea1 = new iOMG.milinea();
+            this.tx_cant = new iOMG.NumericTextBox();
+            this.milinea7 = new iOMG.milinea();
+            this.tx_valor = new iOMG.NumericTextBox();
+            this.tx_saldo = new iOMG.NumericTextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -216,6 +222,12 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.milinea1);
+            this.tabuser.Controls.Add(this.label34);
+            this.tabuser.Controls.Add(this.tx_cant);
+            this.tabuser.Controls.Add(this.milinea7);
+            this.tabuser.Controls.Add(this.label33);
+            this.tabuser.Controls.Add(this.tx_valor);
             this.tabuser.Controls.Add(this.dtp_entreg);
             this.tabuser.Controls.Add(this.dtp_pedido);
             this.tabuser.Controls.Add(this.panel1);
@@ -370,14 +382,6 @@
             this.tx_precio.TabIndex = 22;
             this.tx_precio.Tag = "Id";
             this.tx_precio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tx_saldo
-            // 
-            this.tx_saldo.AllowSpace = false;
-            this.tx_saldo.Location = new System.Drawing.Point(645, 80);
-            this.tx_saldo.Name = "tx_saldo";
-            this.tx_saldo.Size = new System.Drawing.Size(35, 20);
-            this.tx_saldo.TabIndex = 323;
             // 
             // label30
             // 
@@ -892,7 +896,6 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(3, 203);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView1.Size = new System.Drawing.Size(963, 206);
             this.dataGridView1.TabIndex = 273;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
@@ -1471,6 +1474,70 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(560, 415);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(57, 13);
+            this.label33.TabIndex = 413;
+            this.label33.Text = "TOTAL S/";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(316, 415);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(39, 13);
+            this.label34.TabIndex = 416;
+            this.label34.Text = "CANT.";
+            // 
+            // milinea1
+            // 
+            this.milinea1.Location = new System.Drawing.Point(307, 430);
+            this.milinea1.Name = "milinea1";
+            this.milinea1.Size = new System.Drawing.Size(142, 1);
+            this.milinea1.TabIndex = 417;
+            this.milinea1.TabStop = false;
+            this.milinea1.Text = "milinea1";
+            // 
+            // tx_cant
+            // 
+            this.tx_cant.AllowSpace = false;
+            this.tx_cant.Location = new System.Drawing.Point(376, 411);
+            this.tx_cant.Name = "tx_cant";
+            this.tx_cant.ReadOnly = true;
+            this.tx_cant.Size = new System.Drawing.Size(73, 20);
+            this.tx_cant.TabIndex = 415;
+            this.tx_cant.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // milinea7
+            // 
+            this.milinea7.Location = new System.Drawing.Point(551, 430);
+            this.milinea7.Name = "milinea7";
+            this.milinea7.Size = new System.Drawing.Size(142, 1);
+            this.milinea7.TabIndex = 414;
+            this.milinea7.TabStop = false;
+            this.milinea7.Text = "milinea7";
+            // 
+            // tx_valor
+            // 
+            this.tx_valor.AllowSpace = false;
+            this.tx_valor.Location = new System.Drawing.Point(620, 411);
+            this.tx_valor.Name = "tx_valor";
+            this.tx_valor.ReadOnly = true;
+            this.tx_valor.Size = new System.Drawing.Size(73, 20);
+            this.tx_valor.TabIndex = 412;
+            this.tx_valor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // tx_saldo
+            // 
+            this.tx_saldo.AllowSpace = false;
+            this.tx_saldo.Location = new System.Drawing.Point(645, 80);
+            this.tx_saldo.Name = "tx_saldo";
+            this.tx_saldo.Size = new System.Drawing.Size(35, 20);
+            this.tx_saldo.TabIndex = 323;
+            // 
             // Pedsalm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1630,5 +1697,11 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox tx_total;
         private System.Windows.Forms.TextBox tx_precio;
+        private milinea milinea7;
+        private System.Windows.Forms.Label label33;
+        private NumericTextBox tx_valor;
+        private milinea milinea1;
+        private System.Windows.Forms.Label label34;
+        private NumericTextBox tx_cant;
     }
 }

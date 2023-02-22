@@ -390,11 +390,14 @@ namespace iOMG
         {
             // id,cant,item,nombre,medidas,madera,detalle2,acabado,comentario,estado,.....
             string jalad = "select a.iddetaped,a.cant,a.item,a.nombre,a.medidas,c.descrizionerid,d.descrizionerid," +
-                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo,a.precio,a.total " +
+                "b.descrizionerid,a.coment,a.estado,a.madera,a.piedra,DATE_FORMAT(fingreso,'%d/%m/%Y'),a.saldo," +
+                "if(a.precio=0,i.soles2018,a.precio) as precio,if(a.total=0,i.soles2018,a.total) as total " +
                 "from detaped a " +
                 "left join desc_est b on b.idcodice=a.estado " +
                 "left join desc_mad c on c.idcodice=a.madera " +
                 "left join desc_dt2 d on d.idcodice=a.piedra " +
+                "left join items i on left(i.codig, 4)=left(a.item, 4) AND " +
+                    "SUBSTRING(i.codig, 6, 4)=SUBSTRING(a.item, 6, 4) AND SUBSTRING(i.codig, 13, 3)=SUBSTRING(a.item, 13, 3) " +
                 "where a.pedidoh=@pedi";
             try
             {
@@ -414,7 +417,7 @@ namespace iOMG
                     grilladet("edita");     // obtiene contenido de grilla con DT
                     dt.Dispose();
                     da.Dispose();
-                    //MessageBox.Show(dataGridView1.Rows[0].Cells[2].Value.ToString(), dataGridView1.Rows[0].Cells[10].Value.ToString());
+                    suma_grilla();
                 }
                 conn.Close();
             }
@@ -441,9 +444,9 @@ namespace iOMG
             // cant
             dataGridView1.Columns[1].Visible = true;            // columna visible o no
             dataGridView1.Columns[1].HeaderText = "Cant";    // titulo de la columna
-            dataGridView1.Columns[1].Width = 20;                // ancho
+            dataGridView1.Columns[1].Width = 30;                // ancho
             dataGridView1.Columns[1].ReadOnly = true;           // lectura o no
-            dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[1].Name = "cant";
             // articulo
             dataGridView1.Columns[2].Visible = true;            // columna visible o no
@@ -455,42 +458,42 @@ namespace iOMG
             // nombre del articulo
             dataGridView1.Columns[3].Visible = true;            // columna visible o no
             dataGridView1.Columns[3].HeaderText = "Nombre";    // titulo de la columna
-            dataGridView1.Columns[3].Width = 200;                // ancho
+            dataGridView1.Columns[3].Width = 150;                // ancho
             dataGridView1.Columns[3].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[3].Name = "nombre";
             //dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             // medidas 
             dataGridView1.Columns[4].Visible = true;            // columna visible o no
             dataGridView1.Columns[4].HeaderText = "Medidas";    // titulo de la columna
-            dataGridView1.Columns[4].Width = 100;                // ancho
+            //dataGridView1.Columns[4].Width = 100;                // ancho
             dataGridView1.Columns[4].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[4].Name = "medidas";
             // madera
             dataGridView1.Columns[5].Visible = true;            // columna visible o no
             dataGridView1.Columns[5].HeaderText = "Madera";    // titulo de la columna
-            dataGridView1.Columns[5].Width = 60;                // ancho
+            //dataGridView1.Columns[5].Width = 60;                // ancho
             dataGridView1.Columns[5].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[5].Name = "madera";
             // detalle2
             dataGridView1.Columns[6].Visible = true;            // columna visible o no
             dataGridView1.Columns[6].HeaderText = "Deta2";    // titulo de la columna
-            dataGridView1.Columns[6].Width = 70;                // ancho
+            //dataGridView1.Columns[6].Width = 70;                // ancho
             dataGridView1.Columns[6].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[6].Name = "piedra";
             // acabado - descrizionerid
             dataGridView1.Columns[7].Visible = true;            // columna visible o no
             dataGridView1.Columns[7].HeaderText = "Acabado";    // titulo de la columna
-            dataGridView1.Columns[7].Width = 70;                // ancho
+            //dataGridView1.Columns[7].Width = 70;                // ancho
             dataGridView1.Columns[7].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[7].Name = "descrizionerid";
             // comentario   
             dataGridView1.Columns[8].Visible = true;            // columna visible o no
             dataGridView1.Columns[8].HeaderText = "Comentario"; // titulo de la columna
-            dataGridView1.Columns[8].Width = 150;                // ancho
+            dataGridView1.Columns[8].Width = 100;                // ancho
             dataGridView1.Columns[8].ReadOnly = true;           // lectura o no
             dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[8].Name = "coment";
@@ -1148,6 +1151,25 @@ namespace iOMG
             conn.Close();
             return retorna;
         }
+        private void suma_grilla()                          // totaliza cant y total
+        {
+            int tbul = 0;
+            double tval = 0;
+            if (true)
+            {
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    int a = 0;          // cantidad de bultos
+                    double b = 0;       // valor total de la fila 
+                    int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
+                    double.TryParse(dataGridView1.Rows[i].Cells[15].Value.ToString(), out b);
+                    tbul = tbul + a;
+                    tval = tval + b;
+                }
+            }
+            tx_cant.Text = tbul.ToString();
+            tx_valor.Text = (tval).ToString("#0,000.00");
+        }
 
         #region limpiadores_modos
         private void sololee(Form lfrm)
@@ -1788,6 +1810,7 @@ namespace iOMG
             //cmb_tal.SelectedIndex = -1;
             cmb_det2.SelectedIndex = -1;
             cmb_det3.SelectedIndex = -1;
+            suma_grilla();
         }
         #endregion boton_form;
 
@@ -2537,6 +2560,7 @@ namespace iOMG
                     }
                 }
             }
+            suma_grilla();
         }
         #endregion
 

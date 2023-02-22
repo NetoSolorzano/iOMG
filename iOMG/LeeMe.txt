@@ -275,6 +275,7 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 ************* Adecuaciones a contratos pedidos por Pedro y Fabiola *******************
 - Sacar campo teléfonos y poner direc.Entrega mas ancho .............................. ok 21/02/23
 - form forselcomp, agregar estado anulado al where de la consulta .................... ok 21/02/23  no van los comprobantes anulados
-- pedsalm, agregar totalizador a la grilla ........................................... 
+- pedsalm, agregar totalizador a la grilla ........................................... ok 22/02/23
+
 
 
