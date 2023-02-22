@@ -119,7 +119,7 @@ namespace iOMG
                 if (conn.State == ConnectionState.Open)
                 {
                     string consu = "SELECT CONCAT(martdve,serdvta,'-',numdvta) AS comprob,fechope,nudoclt,nombclt,mondvta,totdvta,tipdvta,serdvta,numdvta " +
-                        "FROM cabfactu WHERE contrato='' AND estdvta<>@esanu AND locorig=@loca AND fechope >= NOW() - INTERVAL @da DAY";
+                        "FROM cabfactu WHERE contrato='' AND estdvta<>@esanu AND locorig=@loca AND estintreg<>'A0' AND fechope >= NOW() - INTERVAL @da DAY";
                     using (MySqlCommand micon = new MySqlCommand(consu, conn))
                     {
                         micon.Parameters.AddWithValue("@esanu", _vanul);     // codigo estado anulado

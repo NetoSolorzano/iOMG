@@ -52,10 +52,7 @@
             this.tx_serie = new System.Windows.Forms.TextBox();
             this.tx_corre = new System.Windows.Forms.TextBox();
             this.tx_totesp = new iOMG.NumericTextBox();
-            this.groupBox49 = new System.Windows.Forms.GroupBox();
-            this.groupBox50 = new System.Windows.Forms.GroupBox();
             this.tx_telcont = new iOMG.NumericTextBox();
-            this.label57 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
             this.groupBox47 = new System.Windows.Forms.GroupBox();
             this.groupBox48 = new System.Windows.Forms.GroupBox();
@@ -282,7 +279,6 @@
             this.groupBox54.SuspendLayout();
             this.pan_tcon.SuspendLayout();
             this.groupBox52.SuspendLayout();
-            this.groupBox49.SuspendLayout();
             this.groupBox47.SuspendLayout();
             this.groupBox45.SuspendLayout();
             this.groupBox43.SuspendLayout();
@@ -371,9 +367,7 @@
             this.tabuser.Controls.Add(this.tx_serie);
             this.tabuser.Controls.Add(this.tx_corre);
             this.tabuser.Controls.Add(this.tx_totesp);
-            this.tabuser.Controls.Add(this.groupBox49);
             this.tabuser.Controls.Add(this.tx_telcont);
-            this.tabuser.Controls.Add(this.label57);
             this.tabuser.Controls.Add(this.label55);
             this.tabuser.Controls.Add(this.groupBox47);
             this.tabuser.Controls.Add(this.tx_contac);
@@ -561,7 +555,7 @@
             // 
             this.tx_motivD.Location = new System.Drawing.Point(120, 485);
             this.tx_motivD.Name = "tx_motivD";
-            this.tx_motivD.Size = new System.Drawing.Size(725, 20);
+            this.tx_motivD.Size = new System.Drawing.Size(727, 20);
             this.tx_motivD.TabIndex = 396;
             // 
             // label58
@@ -634,40 +628,14 @@
             this.tx_totesp.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tx_totesp.Visible = false;
             // 
-            // groupBox49
-            // 
-            this.groupBox49.BackColor = System.Drawing.Color.DimGray;
-            this.groupBox49.Controls.Add(this.groupBox50);
-            this.groupBox49.Location = new System.Drawing.Point(659, 457);
-            this.groupBox49.Name = "groupBox49";
-            this.groupBox49.Size = new System.Drawing.Size(188, 1);
-            this.groupBox49.TabIndex = 388;
-            this.groupBox49.TabStop = false;
-            // 
-            // groupBox50
-            // 
-            this.groupBox50.Location = new System.Drawing.Point(0, -26);
-            this.groupBox50.Name = "groupBox50";
-            this.groupBox50.Size = new System.Drawing.Size(164, 1);
-            this.groupBox50.TabIndex = 113;
-            this.groupBox50.TabStop = false;
-            // 
             // tx_telcont
             // 
             this.tx_telcont.AllowSpace = false;
-            this.tx_telcont.Location = new System.Drawing.Point(716, 438);
+            this.tx_telcont.Location = new System.Drawing.Point(855, 397);
             this.tx_telcont.Name = "tx_telcont";
-            this.tx_telcont.Size = new System.Drawing.Size(130, 20);
+            this.tx_telcont.Size = new System.Drawing.Size(15, 20);
             this.tx_telcont.TabIndex = 19;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(659, 442);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(54, 13);
-            this.label57.TabIndex = 386;
-            this.label57.Text = "Teléfonos";
+            this.tx_telcont.Visible = false;
             // 
             // label55
             // 
@@ -700,7 +668,7 @@
             // 
             this.tx_contac.Location = new System.Drawing.Point(521, 461);
             this.tx_contac.Name = "tx_contac";
-            this.tx_contac.Size = new System.Drawing.Size(325, 20);
+            this.tx_contac.Size = new System.Drawing.Size(326, 20);
             this.tx_contac.TabIndex = 21;
             // 
             // groupBox45
@@ -1875,6 +1843,8 @@
             this.tx_telef2.Name = "tx_telef2";
             this.tx_telef2.Size = new System.Drawing.Size(82, 20);
             this.tx_telef2.TabIndex = 50;
+            this.toolTip1.SetToolTip(this.tx_telef2, "Ingrese 9 digitos");
+            this.tx_telef2.Leave += new System.EventHandler(this.telefonos_Leave);
             // 
             // tx_telef1
             // 
@@ -1883,6 +1853,8 @@
             this.tx_telef1.Name = "tx_telef1";
             this.tx_telef1.Size = new System.Drawing.Size(82, 20);
             this.tx_telef1.TabIndex = 49;
+            this.toolTip1.SetToolTip(this.tx_telef1, "Teléfono con 9 digitos");
+            this.tx_telef1.Leave += new System.EventHandler(this.telefonos_Leave);
             // 
             // label16
             // 
@@ -2157,7 +2129,7 @@
             this.groupBox9.Controls.Add(this.groupBox10);
             this.groupBox9.Location = new System.Drawing.Point(3, 457);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(638, 1);
+            this.groupBox9.Size = new System.Drawing.Size(843, 1);
             this.groupBox9.TabIndex = 303;
             this.groupBox9.TabStop = false;
             // 
@@ -2173,7 +2145,7 @@
             // 
             this.tx_dirent.Location = new System.Drawing.Point(76, 438);
             this.tx_dirent.Name = "tx_dirent";
-            this.tx_dirent.Size = new System.Drawing.Size(564, 20);
+            this.tx_dirent.Size = new System.Drawing.Size(770, 20);
             this.tx_dirent.TabIndex = 18;
             // 
             // label11
@@ -2298,7 +2270,7 @@
             this.groupBox13.Controls.Add(this.groupBox14);
             this.groupBox13.Location = new System.Drawing.Point(484, 457);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(156, 1);
+            this.groupBox13.Size = new System.Drawing.Size(361, 1);
             this.groupBox13.TabIndex = 289;
             this.groupBox13.TabStop = false;
             // 
@@ -2900,7 +2872,6 @@
             this.pan_tcon.ResumeLayout(false);
             this.pan_tcon.PerformLayout();
             this.groupBox52.ResumeLayout(false);
-            this.groupBox49.ResumeLayout(false);
             this.groupBox47.ResumeLayout(false);
             this.groupBox45.ResumeLayout(false);
             this.groupBox43.ResumeLayout(false);
@@ -3156,10 +3127,7 @@
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.TextBox tx_d_tda;
         private System.Windows.Forms.TextBox tx_d_med;
-        private System.Windows.Forms.GroupBox groupBox49;
-        private System.Windows.Forms.GroupBox groupBox50;
         private NumericTextBox tx_telcont;
-        private System.Windows.Forms.Label label57;
         private NumericTextBox tx_totesp;
         private System.Windows.Forms.ToolTip toolTip1;
         internal System.Windows.Forms.ToolStripButton Bt_add;

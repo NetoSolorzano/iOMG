@@ -461,7 +461,7 @@ namespace iOMG
             tx_telef2.MaxLength = 15;
             tx_coment.MaxLength = 240;           // nombre
             tx_d_com.MaxLength = 80;
-            tx_dirent.MaxLength = 45;
+            tx_dirent.MaxLength = 90;
             tx_codped.CharacterCasing = CharacterCasing.Upper;
             tx_piso.MaxLength = 2;
             tx_dirRef.MaxLength = 90;           // referencia de la dirección
@@ -802,7 +802,7 @@ namespace iOMG
             advancedDataGridView1.Font = tiplg;
             advancedDataGridView1.DefaultCellStyle.Font = tiplg;
             advancedDataGridView1.RowTemplate.Height = 15;
-            advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
+            //advancedDataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
             advancedDataGridView1.DataSource = dtg;
             // id 
             advancedDataGridView1.Columns[0].Visible = false;
@@ -1302,7 +1302,10 @@ namespace iOMG
                 jaladatclt(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[6].Value.ToString());          // jala datos del cliente
                 //
                 if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString() == "1") rb_bienes.PerformClick();
-                if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString() == "9") rb_servi.PerformClick();
+                else
+                {
+                    if (advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[1].Value.ToString() == "9") rb_servi.PerformClick();
+                }
                 cmb_tipo.SelectedIndex = cmb_tipo.FindString(tx_dat_tiped.Text);        // tipo de contrato
                 cmb_taller.SelectedIndex = cmb_taller.FindString(tx_dat_orig.Text);     // local de venta
                 cmb_estado.SelectedIndex = cmb_estado.FindString(tx_dat_estad.Text);    // estado
@@ -2473,6 +2476,7 @@ namespace iOMG
             _comprobantes.Clear();
             motivD();
             grilladet("NUEVO");
+            color_filas();
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -2525,6 +2529,7 @@ namespace iOMG
             rb_bienes.PerformClick();            // por defecto, bienes
             //
             _comprobantes.Clear();
+            color_filas();
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -2559,6 +2564,7 @@ namespace iOMG
             tx_corre.Visible = false;
             //
             _comprobantes.Clear();
+            color_filas();
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -2614,6 +2620,7 @@ namespace iOMG
             tx_corre.Visible = false;
             //
             _comprobantes.Clear();
+            color_filas();
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -2836,6 +2843,7 @@ namespace iOMG
             //
             tx_idr.ReadOnly = true;
             tx_rind.ReadOnly = true;
+            tx_verCont.ReadOnly = true;
         }
         private void escribepag(TabPage pag)
         {
@@ -2962,6 +2970,7 @@ namespace iOMG
             //
             tx_idr.ReadOnly = true;
             tx_rind.ReadOnly = true;
+            tx_verCont.ReadOnly = true;
         }
         private static void limpiar(Form ofrm)
         {
@@ -3217,6 +3226,12 @@ namespace iOMG
                     "es la correcta?","Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
                     dtp_entreg.Focus();
+                    return;
+                }
+                if (tx_telef1.Text.Trim() == "" || tx_telef2.Text.Trim() == "")
+                {
+                    MessageBox.Show(" Por favor, ingrese al menos " + Environment.NewLine +
+                        " un número de teléfono ","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     return;
                 }
             }
@@ -4289,6 +4304,19 @@ namespace iOMG
                 }
             }
         }
+        private void telefonos_Leave(object sender, EventArgs e)                // validaciones de telefono 9 digitos o nada1
+        {
+            if ((Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"))
+            {
+                NumericTextBox ntb = (NumericTextBox)sender;
+                if (ntb.Text.Trim() != "" && ntb.Text.Length != 9)
+                {
+                    MessageBox.Show("El teléfono debe ser de 9 dígitos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ntb.Focus();
+                    return;
+                }
+            }
+        }
         #endregion leaves;
 
         #region advancedatagridview
@@ -4394,6 +4422,39 @@ namespace iOMG
         private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             e.Cancel = true;
+        }
+        private void color_filas()
+        {
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (row.Cells[3].Value != null)
+                {
+                    if (row.Cells[3].Value.ToString() == "PENDIE")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.White;
+                    }
+                    if (row.Cells[3].Value.ToString() == "PORLLE")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Yellow;
+                    }
+                    if (row.Cells[3].Value.ToString() == "LLEPAR")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.YellowGreen;
+                    }
+                    if (row.Cells[3].Value.ToString() == "PORENT")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Red;
+                    }
+                    if (row.Cells[3].Value.ToString() == "ENTPAR")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Peru;
+                    }
+                    if (row.Cells[3].Value.ToString() == "PEDPAR")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.LightBlue;
+                    }
+                }
+            }
         }
         #endregion
 
