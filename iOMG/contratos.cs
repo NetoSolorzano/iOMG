@@ -592,7 +592,7 @@ namespace iOMG
                 // datos de los contratos date_format(date(a.fecha),'%Y-%m-%d')
                 string datgri = "select a.id,a.tipocon,a.contrato,a.STATUS,a.tipoes,date_format(date(a.fecha),'%Y-%m-%d') as fecha,a.cliente,ifnull(b.razonsocial,'') as razonsocial,a.coment," +
                     "date_format(date(a.entrega),'%Y-%m-%d') as entrega,a.dentrega,a.valor,a.acuenta,a.saldo,a.dscto,a.clte_recoje,a.seresma,a.pisoent,a.ascensor," +
-                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes,a.articulo,a.marca0 " +
+                    "a.pcontacto,a.dreferen,a.telcont,a.totsad,a.motivDes,a.articulo,a.marca0,dsctocab " +
                     "from contrat a left join anag_cli b on b.idanagrafica=a.cliente " +
                     "where not find_in_set(a.status,@tea)";   // where a.status not in (@tea)
                 MySqlCommand cdg = new MySqlCommand(datgri, conn);
@@ -1282,7 +1282,8 @@ namespace iOMG
                 else dtp_entreg.Value = Convert.ToDateTime(advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[9].Value.ToString());    // fecha entrega
                 tx_valor.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[11].Value.ToString();     // valor del contrato
                 //tx_dscto.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
-                tx_desCab.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                // tx_desCab.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[14].Value.ToString();     // descuento final
+                tx_desCab.Text = advancedDataGridView1.Rows[int.Parse(tx_rind.Text)].Cells[26].Value.ToString();        // 22/02/2023
                 desCab = decimal.Parse(tx_desCab.Text);
                 //tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_dscto.Text)).ToString("0.00");     // total bruto
                 tx_bruto.Text = (decimal.Parse(tx_valor.Text) + decimal.Parse(tx_desCab.Text)).ToString("0.00");     // total bruto
@@ -1337,7 +1338,8 @@ namespace iOMG
                         tx_dirent.Text = row["dentrega"].ToString();                        // direc de entrega
                         tx_valor.Text = row["valor"].ToString();                            // valor del contrato
                         //tx_dscto.Text = row["dscto"].ToString();                            // descuento final
-                        tx_desCab.Text = row["dscto"].ToString();     // descuento final
+                        //tx_desCab.Text = row["dscto"].ToString();     // descuento final
+                        tx_desCab.Text = row["dsctocab"].ToString();     // 22/02/2023
                         desCab = decimal.Parse(tx_desCab.Text);
                         tx_acta.Text = row["acuenta"].ToString();                           // pago a cuenta
                         tx_saldo.Text = row["saldo"].ToString();                            // saldo actual del contrato
@@ -1636,10 +1638,10 @@ namespace iOMG
                         return retorna;
                     }
                     //
-                    string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS,articulo," +
-                        "valor,acuenta,saldo,dscto,dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad,motivDes,marca0) " +
+                    string inserta = "insert into contrat (fecha,tipoes,coment,cliente,entrega,contrato,STATUS,articulo,valor,acuenta,saldo,dscto," +
+                        "dentrega,tipocon,USER,dia,clte_recoje,seresma,pisoent,ascensor,pcontacto,dreferen,telcont,totsad,motivDes,marca0,dsctocab) " +
                         "values (@fepe,@tall,@come,@idcl,@entr,@cope,@esta,@arti,@valo,@acta,@sald,@dsct,@dent,@tipe,@asd,now(),@cltr,@ceem," +
-                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi,@motdes,@mar0)";
+                        "@pise,@asce,@pecon,@drefe,@tecont,@totadi,@motdes,@mar0,@descab)";
                     MySqlCommand micon = new MySqlCommand(inserta, conn);
                     micon.Parameters.AddWithValue("@fepe", dtp_pedido.Value.ToString("yyyy-MM-dd"));
                     micon.Parameters.AddWithValue("@tall", tx_dat_orig.Text);
@@ -1666,6 +1668,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@totadi", (string.IsNullOrEmpty(tx_totesp.Text)) ? "0.00":tx_totesp.Text);
                     micon.Parameters.AddWithValue("@motdes", tx_motivD.Text);
                     micon.Parameters.AddWithValue("@mar0", "2");    // marca de version nueva integrador 2.0
+                    micon.Parameters.AddWithValue("@descab", (tx_desCab.Text.Trim() == "")? 0 : decimal.Parse(tx_desCab.Text));
                     micon.ExecuteNonQuery();
                     string lid = "select last_insert_id()";
                     micon = new MySqlCommand(lid, conn);
@@ -1781,7 +1784,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@val", tx_valor.Text);
                     micon.Parameters.AddWithValue("@acta", tx_acta.Text);
                     micon.Parameters.AddWithValue("@sal", tx_saldo.Text);
-                    micon.Parameters.AddWithValue("@dscto", tx_dscto.Text);
+                    micon.Parameters.AddWithValue("@dscto", tx_desDet.Text);      // tx_dscto.Text
                     micon.Parameters.AddWithValue("@cltr", (chk_lugent.Checked.ToString() == "True") ? "1":"0");
                     micon.Parameters.AddWithValue("@ceem", (chk_serema.Checked.ToString() == "True") ? "1" : "0");
                     micon.Parameters.AddWithValue("@pise", (tx_piso.Text.Trim() == "") ? "0" : tx_piso.Text);
@@ -2106,12 +2109,16 @@ namespace iOMG
             //if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
             if (Tx_modo.Text == "NUEVO")
             {
-                tx_dscto.Text = dsto.ToString("0.00");
+                //tx_dscto.Text = dsto.ToString("0.00");
+                tx_desDet.Text = dsto.ToString("0.00");
             }
             else
             {
-                tx_dscto.Text = Math.Abs((desCab)).ToString("0.00");
+                //tx_dscto.Text = Math.Abs((desCab)).ToString("0.00");
+                tx_desDet.Text = dsto.ToString("0.00");
             }
+            if (tx_desCab.Text.Trim() == "") tx_desCab.Text = "0";
+            tx_dscto.Text = (dsto + decimal.Parse(tx_desCab.Text)).ToString("#0.00");
             if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
             tx_valor.Text = (decimal.Parse(tx_bruto.Text) - decimal.Parse(tx_dscto.Text)).ToString("0.00");
             tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
@@ -3228,7 +3235,7 @@ namespace iOMG
                     dtp_entreg.Focus();
                     return;
                 }
-                if (tx_telef1.Text.Trim() == "" || tx_telef2.Text.Trim() == "")
+                if (tx_telef1.Text.Trim() == "" && tx_telef2.Text.Trim() == "")
                 {
                     MessageBox.Show(" Por favor, ingrese al menos " + Environment.NewLine +
                         " un número de teléfono ","Atención",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
@@ -3286,6 +3293,10 @@ namespace iOMG
                         dr[20] = tx_dirRef.Text;
                         dr[21] = tx_telcont.Text;
                         dr[22] = tx_totesp.Text;
+                        dr[23] = tx_motivD.Text;        // motivDes
+                        dr[24] = "";                    // articulo --> contrato madre de bienes si este contrato es servicios
+                        dr[25] = "2";                   // marca0
+                        dr[26] = (tx_desCab.Text.Trim() == "") ? "0" : tx_desCab.Text;    // dsctocab
                         dtg.Rows.Add(dr);
                     }
                     else
@@ -3338,6 +3349,10 @@ namespace iOMG
                                 dtg.Rows[i][20] = tx_dirRef.Text;
                                 dtg.Rows[i][21] = tx_telcont.Text;
                                 dtg.Rows[i][22] = tx_totesp.Text;
+                                dtg.Rows[i][23] = tx_motivD.Text;        // motivDes
+                                dtg.Rows[i][24] = "";                    // articulo --> contrato madre de bienes si este contrato es servicios
+                                //dtg.Rows[i][25] = "";                   // marca0
+                                //dr[26] = (tx_desCab.Text.Trim() == "") ? "0" : tx_desCab.Text;    // dsctocab
                             }
                         }
                         // el estado es anulado??
