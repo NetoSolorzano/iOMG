@@ -334,11 +334,17 @@ namespace iOMG
 
                         decimal nueActa = ff - valexc;
                         tx_acta.Text = nueActa.ToString("#0.00");     // pago a cuenta - menos valor excluido
-
+                        /*
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
                             "ifnull(if(i.soles2018*a.cantbul=0,a.precio*a.cantbul,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.cantbul*a.dscto,a.dscto " +
                             "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''" + excluye;
+                        */
+                        string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
+                            "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
+                            "ifnull(if(i.soles2018*a.cantbul=0,a.totSinDscto,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.cantbul*a.dscto,a.dscto " +
+                            "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''" + excluye;
+                        // 23/02/2023
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
                         {
                             midet.Parameters.AddWithValue("@idc", idc); //
@@ -2087,7 +2093,8 @@ namespace iOMG
             {
                 if (dataGridView1.Rows[i].Cells[14].Value.ToString() != "B")    // no totaliza las filas marcadas para borrar
                 {
-                    val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    //val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    val = val + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());    // 23/02/2022
                     decimal vddes = 0;
                     if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
                     dsto = dsto + vddes;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
