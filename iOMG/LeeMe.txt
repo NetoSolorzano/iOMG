@@ -278,3 +278,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - pedsalm, agregar totalizador a la grilla ........................................... ok 22/02/23
 - form contratos, arreglar asunto de descuentos globales y de detalle ................ ok 22/02/23  probado en B.D. solorsoft
 - form contratos, campo "val.bruto" no esta jalando el valor sin dscto ............... ok 23/02/23  se cambio el código para que si jala el 
+- form contratos, recodificacion de funcion calculos() ............................... ok 24/02/23
+- form contratos, pagamenti no esta actualizando al grabar contrato .................. ok 24/02/23  comenté: update where fecha>=fecha del contrato 
+- form docsvta, arreglar la visualizacion de anticipos (no totaliza bien) ............ 

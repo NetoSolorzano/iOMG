@@ -1689,7 +1689,7 @@ namespace iOMG
                         string[] partes = item.Split('-');
                         string actg = "update pagamenti a LEFT JOIN cabfactu b ON b.tipdvta=a.dv AND b.serdvta=a.serie AND b.numdvta=a.numero " +
                             "set a.contrato=@con,a.valor=@calc,a.acuenta=@acta,a.saldo=@sald,b.contrato=@con " +
-                            "where a.dv=@dv and a.serie=@ser and a.numero=@num and a.idpagamenti>0 and a.fecha>=@fcon";
+                            "where a.dv=@dv and a.serie=@ser and a.numero=@num and a.idpagamenti>0";    // and a.fecha>=@fcon"; comentado 24/02/2023
                         // 15/02/2023, se agrega condicion de fecha del pago para evitar errores de digitacion de fechas en los pagos de datos migrados al 2.0
                         using (MySqlCommand mic = new MySqlCommand(actg, conn))
                         {
@@ -2084,6 +2084,71 @@ namespace iOMG
             }
         }
         private void calculos()                                                 // calculos de total, y saldo
+        {
+            int v_ifm = 0;
+            decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
+            //decimal.TryParse(tx_desCab.Text, out desCab);
+            //desCab = decimal.Parse(tx_desCab.Text);
+            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            {
+                if (dataGridView1.Rows[i].Cells[14].Value.ToString() != "B")    // no totaliza las filas marcadas para borrar
+                {
+                    //val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    // val = val + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());    // 23/02/2022
+                    //if (dataGridView1.Rows[i].Cells[16].Value.ToString().Trim() == "") val = val + 0;
+                    //else val = val + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());   // 24/02/2022
+                    /*  24/02/2023           */
+                    decimal vddes = 0;
+                    if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
+                    dsto = dsto + vddes;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
+
+                    if (Tx_modo.Text == "NUEVO")
+                    {
+                        val = val + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());
+                    }
+                    else
+                    {
+                        if (dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(1, 3) == "000") val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString()) + vddes;
+                        else val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    }
+                    // buscamos los codigos adicionales para acumularlos y guardarlo en el campo 
+                    if (dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) == letgru)
+                    {
+                        espe = espe + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
+                    }
+                    else
+                    {
+                        // buscamos que la madera este seleccionada
+                        if (dataGridView1.Rows[i].Cells[5].Value.ToString().Trim() == "" &&
+                            dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(0, 1) != "_") v_ifm += 1;
+                    }
+                }
+            }
+            tx_totesp.Text = espe.ToString("0.00");
+            tx_bruto.Text = val.ToString("0.00");
+            //if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
+            if (Tx_modo.Text == "NUEVO")
+            {
+                //tx_dscto.Text = dsto.ToString("0.00");
+                tx_desDet.Text = dsto.ToString("0.00");
+            }
+            else
+            {
+                //tx_dscto.Text = Math.Abs((desCab)).ToString("0.00");
+                tx_desDet.Text = dsto.ToString("0.00");
+            }
+            if (tx_desCab.Text.Trim() == "") tx_desCab.Text = "0";
+            tx_dscto.Text = (dsto + decimal.Parse(tx_desCab.Text)).ToString("#0.00");
+            if (tx_acta.Text.Trim() != "") acta = decimal.Parse(tx_acta.Text);
+            tx_valor.Text = (decimal.Parse(tx_bruto.Text) - decimal.Parse(tx_dscto.Text)).ToString("0.00");
+            tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
+            if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
+            if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
+            //if (tx_totesp.Text.Trim() == "") tx_totesp.Text = "0.00";
+            tx_cifm.Text = v_ifm.ToString();
+            motivD();
+        }
+        private void calculos_ex()                                                 // cambiado 24/02/2023 .. ya no se usa
         {
             int v_ifm = 0;
             decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
