@@ -456,7 +456,7 @@ namespace iOMG
                 return;
             }
         }
-        private void jalaoc(string campo)                   // jala datos 
+        private void jalaoc(string campo)                   // jala datos  
         {
             string jala = "select id,fechope,martdve,tipdvta,serdvta,numdvta,ticltgr,tidoclt,nudoclt,nombclt,direclt,dptoclt,provclt,distclt,ubigclt,corrclt,teleclt,telemsg," +
             "locorig,dirorig,ubiorig,obsdvta,canfidt,canbudt,mondvta,tcadvta,subtota,igvtota,porcigv,round(totdvta,2) as totdvta,totpags,saldvta,estdvta,frase01," +
@@ -1338,30 +1338,50 @@ namespace iOMG
             int tbul = 0;
             double tval = 0;
             double.TryParse(tx_desGlob.Text, out double tdes);
-            if (rb_bienes.Checked == true)
+            if (rb_bienes.Checked == true)      // estandar
             {
                 for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                 {
                     int a = 0;          // cantidad de bultos
                     double b = 0;       // valor total de la fila incluyendo dscto inc igv
-                    int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
-                    double.TryParse(dataGridView1.Rows[i].Cells[9].Value.ToString(), out b);
+                    {
+                        int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
+                        double.TryParse(dataGridView1.Rows[i].Cells[9].Value.ToString(), out b);
+                    }
                     tbul = tbul + a;
                     tval = tval + b;
                 }
             }
             else
-            {
+            {       // anticipo o cancelacion
                 for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                 {
-                    if (dataGridView1.Rows[i].Cells[10].Value.ToString() == "A")
+                    if (tx_tipComp.Text == "A") // dataGridView1.Rows[i].Cells[10].Value.ToString() == "A"
                     {
                         int a = 0;          // cantidad de bultos
                         double b = 0;       // valor total de la fila incluyendo dscto inc igv
-                        int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
-                        double.TryParse(dataGridView1.Rows[i].Cells[9].Value.ToString(), out b);
+                        if (dataGridView1.Rows[i].Cells[1].Value.ToString() == "0")
+                        {
+                            int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
+                            double.TryParse(dataGridView1.Rows[i].Cells[9].Value.ToString(), out b);
+                        }
                         tbul = tbul + a;
                         tval = tval + b;
+                    }
+                    else
+                    {
+                        // es cancelación
+                        if (dataGridView1.Rows[i].Cells[10].Value.ToString() == "A")
+                        {
+                            int a = 0;          // cantidad de bultos
+                            double b = 0;       // valor total de la fila incluyendo dscto inc igv
+                            {
+                                int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
+                                double.TryParse(dataGridView1.Rows[i].Cells[9].Value.ToString(), out b);
+                            }
+                            tbul = tbul + a;
+                            tval = tval + b;
+                        }
                     }
                 }
             }
