@@ -3002,8 +3002,10 @@ namespace iOMG
                                 }
                                 catch (Exception ex)
                                 {
-                                    MessageBox.Show(ex.Message,"Error en emitir comprobante",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                                    return;
+                                    MessageBox.Show("No obtuvimos respuesta del comprobante y no podemos continuar," + Environment.NewLine +
+                                        "confirme que el comprobante se haya creado en Rapifac" + Environment.NewLine + 
+                                        ex.Message,"Error en emitir comprobante",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                    return;     // agregado mas detalle 27/02/2023
                                 }
                             }
                         }

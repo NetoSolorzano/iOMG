@@ -282,3 +282,5 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, pagamenti no esta actualizando al grabar contrato .................. ok 24/02/23  comenté: update where fecha>=fecha del contrato 
 - form docsvta, arreglar la visualizacion de anticipos (no totaliza bien) ............ ok 25/02/23
 - form docsvta, arreglar la impresión de anticipos ................................... ok 25/02/23
+- form contratos, arreglo en validacion de dscto, le agregue llamada a motivD() ...... ok 27/02/23 ... laptop
+- form docsvta, + aviso detallado cuando no hay rpsta de rapifac al crear comprobante. ok 27/02/23 ... laptop

@@ -3225,6 +3225,7 @@ namespace iOMG
             string modos = "NUEVO,EDITAR";
             if (modos.Contains(Tx_modo.Text))
             {
+                motivD();       // ojeamos el asunto del dscto y su comentario
                 if (tx_motivD.ReadOnly == false && tx_motivD.Text.Trim() == "")
                 {
                     MessageBox.Show("Debe ingresar el motivo del descuento","Atención, es ogligatorio",MessageBoxButtons.OK,MessageBoxIcon.Information);
