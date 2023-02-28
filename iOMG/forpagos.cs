@@ -63,6 +63,7 @@ namespace iOMG
                 button1.Enabled = false;
                 dataGridView1.Enabled = false;
             }
+            tx_numOpe.MaxLength = 20;                   // maxima longitud del num de operacion en la tabla 
         }
         private void forpagos_KeyDown(object sender, KeyEventArgs e)
         {

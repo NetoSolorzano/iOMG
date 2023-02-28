@@ -285,3 +285,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, arreglo en validacion de dscto, le agregue llamada a motivD() ...... ok 27/02/23 ... laptop
 - form docsvta, + aviso detallado cuando no hay rpsta de rapifac al crear comprobante. ok 27/02/23 ... laptop
 - form contratos, agregamos calculos() antes de grabar pa validar madera y otros ..... ok 27/02/23
+- form forpagos, poner maximo limite a num.operacion 20 caracteres ................... ok 28/02/23
