@@ -3225,7 +3225,8 @@ namespace iOMG
             string modos = "NUEVO,EDITAR";
             if (modos.Contains(Tx_modo.Text))
             {
-                motivD();       // ojeamos el asunto del dscto y su comentario
+                motivD();       // ojeamos el asunto del dscto y su comentario 27/02/2023
+                calculos();     // verificamos los totales, maderas y demas 27/02/2023
                 if (tx_motivD.ReadOnly == false && tx_motivD.Text.Trim() == "")
                 {
                     MessageBox.Show("Debe ingresar el motivo del descuento","Atención, es ogligatorio",MessageBoxButtons.OK,MessageBoxIcon.Information);
