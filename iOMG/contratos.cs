@@ -3664,7 +3664,8 @@ namespace iOMG
                     if (dataGridView1.Rows.Count < vfdmax && tipede == tx_dat_tiped.Text.Trim())
                     {
                         int vca = int.Parse(tx_d_can.Text);                     // cantidad items
-                        decimal vpo = decimal.Parse(tx_d_dat_prec.Text);        // precio original de catologo
+                        decimal vpo = decimal.Parse(tx_d_prec.Text);            // Si es mueble a diseño no tiene precio de catalogo, cojemos el precio digitado
+                        if (decimal.Parse(tx_d_dat_prec.Text) > 0) vpo = decimal.Parse(tx_d_dat_prec.Text);        // precio original de catologo  28/02/2023
                         decimal vpts = vpo * vca;                               // precio total sin descuento
                         decimal vpc = decimal.Parse(tx_d_prec.Text);            // precio incluyendo descuento
                         decimal vptc = vpc * vca;                               // precio total con descuento

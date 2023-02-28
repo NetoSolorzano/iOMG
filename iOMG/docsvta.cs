@@ -1360,9 +1360,9 @@ namespace iOMG
                     {
                         int a = 0;          // cantidad de bultos
                         double b = 0;       // valor total de la fila incluyendo dscto inc igv
-                        if (dataGridView1.Rows[i].Cells[1].Value.ToString() == "0")
-                        {
-                            int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);
+                        if (dataGridView1.Rows[i].Cells[1].Value.ToString() == "0" || dataGridView1.Rows[i].Cells[1].Value.ToString().Trim() == "") // 28/02/23
+                        {           
+                            int.TryParse(dataGridView1.Rows[i].Cells[1].Value.ToString(), out a);                   // 
                             double.TryParse(dataGridView1.Rows[i].Cells[9].Value.ToString(), out b);
                         }
                         tbul = tbul + a;
