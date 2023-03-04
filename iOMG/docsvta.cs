@@ -656,7 +656,7 @@ namespace iOMG
             }
             jaladet(tx_idr.Text);
             cosas_pagamenti();                              // llenamos lista de pagos si es cancelacion
-            // suma_grilla();
+            tx_corre.ReadOnly = true;
         }
         private void jaladet(string idr)                    // jala el detalle 
         {

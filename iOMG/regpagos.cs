@@ -12,6 +12,7 @@ namespace iOMG
         public string para2 = "";
         public string para3 = "";
         public string para4 = "";
+        public string para5 = "";
         static string nomform = "regpagos";    // nombre del formulario
         string asd = iOMG.Program.vg_user;      // usuario conectado al sistema
         string colback = iOMG.Program.colbac;   // color de fondo
@@ -31,12 +32,13 @@ namespace iOMG
         static string data = ConfigurationManager.AppSettings["data"].ToString();
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + ";";
 
-        public regpagos(string param1, string param2, string param3, string param4)
+        public regpagos(string param1, string param2, string param3, string param4, string param5)
         {
             para1 = param1;              // pago contrato = PAGCON
             para2 = param2;              // contrato
             para3 = param3;              // saldo del contrato
             para4 = param4;              // imp.total contrato
+            para5 = param5;              // version del contrato
             InitializeComponent();
         }
 
@@ -164,6 +166,27 @@ namespace iOMG
         }
         #endregion
 
+        private bool valRegPago(string NumCon, string Saldo, string NumVer)
+        {
+            bool retorna = false;
+            if (true)   // modo "EDITAR" si, otro modo no debe proceder
+            {
+                if (NumVer == "2")
+                {
+                   if (double.Parse(Saldo) > 0)
+                    {
+                        // si version 2 y no tiene saldo -> si permitimos el registro
+                        retorna = true;
+                    }
+                }
+                else
+                {
+                    // versión anterior al 2, si se permite todo
+                    retorna = true;
+                }
+            }
+            return retorna;
+        }
         private void loadgrids()
         {
             string consulta = "select idpagamenti,fecha,montosol,via,detalle,dv,serie,numero," +
@@ -223,7 +246,14 @@ namespace iOMG
         private void button1_Click(object sender, EventArgs e)
         {
             calcula();
-            if(tx_total.Text.Trim() != "")
+            if (valRegPago(para2, para3, para5) == false)    // contrato, saldo, version
+            {
+                MessageBox.Show("No se permite registrar pago porque no" + Environment.NewLine + 
+                    "hay saldo en el contrato o no esta el modo correcto", "Error !", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+
+            if (tx_total.Text.Trim() != "")
             {
                 var aa = MessageBox.Show("Confirma que desea GRABAR?", "Atención confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
@@ -450,7 +480,6 @@ namespace iOMG
                 e.Cancel = true;
             }
         }
-
         private void tx_importe_Enter(object sender, EventArgs e)
         {
             decimal x = 0;
@@ -461,7 +490,6 @@ namespace iOMG
             tx_total.Text = x.ToString();
             //calcula();
         }
-
         private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             calcula();

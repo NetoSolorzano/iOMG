@@ -288,3 +288,16 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form forpagos, poner maximo limite a num.operacion 20 caracteres ................... ok 28/02/23
 - form contratos, muebles a diseño problemas en calculo detalle ...................... ok 28/02/23
 - form docsvta, no esta totalizando cuando es anticipo ............................... ok 28/02/23
+************** Problemas detectados en funcionamiento real, en vivo ******************
+1.- Cuando se hace comprobante en Rapifac, no hay forma de "ingresarlo" en el contrato
+===> Contratos -> EDICION -> Si el # contrato existe, es version 2 y no tiene pago registrado, permite ingresarlo manualmente
+2.- Cuando se anula un comprobante que esta amarrado a contrato, no hay forma de "ingresarlo" en el contrato
+===> Contratos -> EDICION -> Si el # contrato existe, es version 2 y no tiene pago registrado o tiene pago anulado, permite ingresarlo manualmente
+======>> PERMITIR AGREGAR PAGOS SI EL SALDO > 0 Y ESTAMOS EN MODO EDICION
+3.- Cuando se hace contrato desde fact con varios items, se desordena al ponerles madera 
+4.- En comprobantes, limitar el boton imprimir si no accionó leave() del campo num.doc
+**************************************************************************************
+- form contratos, quitar en el F1 la validacion de la versión ........................ ok 02/03/23
+- form regpagos, permitir ingreso datos en los casos: EDICION y saldo>0 .............. ok 03/03/23
+- form docsvta, no permitir impresión si no hay datos "jalados" ...................... ok 03/03/23
+- form contratos, NUEVO desde fact con varios items, se desordena al ponerles madera . ok 04/03/23

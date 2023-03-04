@@ -114,6 +114,7 @@ namespace iOMG
             string para2 = "";
             string para3 = "";
             string para4 = "";
+            string para5 = "";
             if (keyData == Keys.F1) //  && Tx_modo.Text == "NUEVO" || Tx_modo.Text == "EDITAR"
             {
                 if (cmb_fam.Focused == true || cmb_mod.Focused == true || cmb_mad.Focused == true || cmb_tip.Focused == true ||
@@ -163,13 +164,18 @@ namespace iOMG
                         }
                     }
                 }
-                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && "NUEVO,EDITAR".Contains(Tx_modo.Text) && tx_verCont.Text.Trim() == "") //  && vapm.Contains(tx_dat_orig.Text)
-                {   // tx_verCont.Text.Trim() == "" <-- esto se agrego el 14/02/23 porque solo los cont anteriores al 2.0 se ingresan los pagos manualmente
+                if (tx_acta.Focused == true && tx_codped.Text.Trim() != "" && 
+                    "NUEVO,EDITAR".Contains(Tx_modo.Text)) 
+                {
+                    //  && vapm.Contains(tx_dat_orig.Text)
+                    // tx_verCont.Text.Trim() == "" <-- esto se agrego el 14/02/23 porque solo los cont anteriores al 2.0 se ingresan los pagos manualmente
+                    // "NUEVO,EDITAR".Contains(Tx_modo.Text) && tx_verCont.Text.Trim() == "") cambiado 02/03/23 para validar en regpagos
                     para1 = "PAGCON";
                     para2 = tx_codped.Text.Trim();
                     para3 = tx_saldo.Text.Trim();
                     para4 = tx_valor.Text.Trim();
-                    regpagos pagos = new regpagos(para1, para2, para3, para4);
+                    para5 = tx_verCont.Text.Trim();
+                    regpagos pagos = new regpagos(para1, para2, para3, para4, para5);
                     DialogResult result = pagos.ShowDialog();
                     if(result == DialogResult.Cancel)
                     {
