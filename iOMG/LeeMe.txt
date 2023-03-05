@@ -300,4 +300,5 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, quitar en el F1 la validacion de la versión ........................ ok 02/03/23
 - form regpagos, permitir ingreso datos en los casos: EDICION y saldo>0 .............. ok 03/03/23
 - form docsvta, no permitir impresión si no hay datos "jalados" ...................... ok 03/03/23
-- form contratos, NUEVO desde fact con varios items, se desordena al ponerles madera . ok 04/03/23
+- form contratos, NUEVO desde fact con varios items, se desordena al ponerles madera . ok 04/03/23 no se encontró el problema
+- from regpagos, validar que no repitan el comprobante ingresado ..................... ok 04/03/23

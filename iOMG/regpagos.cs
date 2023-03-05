@@ -377,6 +377,21 @@ namespace iOMG
                 cmb_fpago.Focus();
                 return;
             }
+            // validamos que no repitamos el comprobante
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                {
+                    if (row.Cells[5].Value.ToString().Trim() == tx_dat_td.Text.Trim() &&
+                        row.Cells[6].Value.ToString().Trim() == tx_serie.Text.Trim() &&
+                        row.Cells[7].Value.ToString().Trim() == tx_corre.Text.Trim())
+                    {
+                        MessageBox.Show("Esta repitiendo el comprobante", " Error! ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+            }
+
             if (tx_idr.Text.Trim() == "")
             {
                 // idpagamenti,fecha,montosol,via,detalle,dv,serie,numero,valor,acuenta,saldo,moneda,monto,marca
