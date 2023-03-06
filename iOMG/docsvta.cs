@@ -2816,7 +2816,8 @@ namespace iOMG
                 tx_ndc.Focus();
                 return;
             }
-            if (rb_tserv.Checked == true && bus_detalle_detrac() == false && double.Parse(tx_valor.Text) > DetServLim)      // false = si hay codigos de detracción diferentes
+            if (tx_dat_tipdoc.Text == codfact && rb_tserv.Checked == true && 
+                bus_detalle_detrac() == false && double.Parse(tx_valor.Text) > DetServLim)      // false = si hay codigos de detracción diferentes
             {
                 MessageBox.Show("El detalle tiene códigos de detracción diferentes", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmb_detrac.SelectedIndex = -1;
@@ -2899,7 +2900,7 @@ namespace iOMG
                 else tx_prdsCont.Text = "N";
 
                 // validaciones de servicios y detraccion
-                if (rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
+                if (tx_dat_tipdoc.Text == codfact && rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
                 {
                     if (tx_dat_cDet.Text == "")
                     {
@@ -3812,12 +3813,14 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
-                Leyenda = (tx_dat_pDet.Text.Trim() == "") ? "0" : "1",      // codigo leyenda 1 = leyenda de detraccion
-                BienServicioCodigo = (tx_dat_pDet.Text.Trim() == "") ? "001" : tx_dat_sDet.Text,        // codigo del bien o servicio sujeto a detraccion
+                // ----|
+                Leyenda = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? "1" : "0",      // codigo leyenda 1 = leyenda de detraccion
+                BienServicioCodigo = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? tx_dat_sDet.Text : "001",        // codigo del bien o servicio sujeto a detraccion
                 DetraccionTipoOperacion = "01",
-                Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
-                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
+                Detraccion = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100) : 0,
+                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? decimal.Parse(tx_dat_pDet.Text) : 0,
                 DetraccionCuenta = Program.ctadetra,
+                // 06/03/2023 - detracciones 
                 RetencionPorcentaje = 0,
                 DocAdicionalCodigo = 0,
                 DocAdicionalDetalle = "",
@@ -4337,12 +4340,23 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
+                /*
                 Leyenda = (rb_tbienes.Checked == true)? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
                 BienServicioCodigo = (rb_tbienes.Checked == true) ? "037" : (tx_dat_cDet.Text != "") ? tx_dat_sDet.Text : "001",                     // Demas servicios gravados con el IGV (Tipo de Bien o Servicio)
                 DetraccionTipoOperacion = "01",
                 Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
                 DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
                 DetraccionCuenta = Program.ctadetra,
+                */
+                // ----|
+                Leyenda = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? "1" : "0",      // codigo leyenda 1 = leyenda de detraccion
+                BienServicioCodigo = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? tx_dat_sDet.Text : "001",        // codigo del bien o servicio sujeto a detraccion
+                DetraccionTipoOperacion = "01",
+                Detraccion = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100) : 0,
+                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? decimal.Parse(tx_dat_pDet.Text) : 0,
+                DetraccionCuenta = Program.ctadetra,
+                // 06/03/2023 - detracciones 
+
                 RetencionPorcentaje = 0,
                 DocAdicionalCodigo = 0,
                 DocAdicionalDetalle = "",
@@ -4707,14 +4721,23 @@ namespace iOMG
                 TotalPago = decimal.Parse(tx_impMedios.Text),
                 PesoTotal = 0,
                 Bultos = int.Parse(tx_totcant.Text),
-
+                /*
                 BienServicioCodigo = (tx_dat_pDet.Text.Trim() == "") ? "001" : tx_dat_sDet.Text,        // codigo del bien o servicio sujeto a detraccion
                 DetraccionTipoOperacion = "01",
                 Detraccion = (tx_dat_pDet.Text.Trim() == "") ? 0 : (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100),
                 DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() == "") ? 0 : decimal.Parse(tx_dat_pDet.Text),
                 DetraccionCuenta = Program.ctadetra,
-
                 Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
+                */
+                // ----|
+                Leyenda = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? "1" : "0",      // codigo leyenda 1 = leyenda de detraccion
+                BienServicioCodigo = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? tx_dat_sDet.Text : "001",        // codigo del bien o servicio sujeto a detraccion
+                DetraccionTipoOperacion = "01",
+                Detraccion = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100) : 0,
+                DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? decimal.Parse(tx_dat_pDet.Text) : 0,
+                DetraccionCuenta = Program.ctadetra,
+                // 06/03/2023 - detracciones 
+
                 RetencionPorcentaje = 0,
                 DocAdicionalCodigo = 0,
                 DocAdicionalDetalle = "",
