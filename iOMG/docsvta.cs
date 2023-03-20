@@ -2991,7 +2991,7 @@ namespace iOMG
                             {
                                 streamWriter.Write(cabeza);
                                 // escribimos el json del comprobantes para efectos de prueba
-                                //System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
+                                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + numComp + ".json", cabeza);
                             }
 
                             httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
