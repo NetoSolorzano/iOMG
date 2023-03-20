@@ -303,3 +303,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, NUEVO desde fact con varios items, se desordena al ponerles madera . ok 04/03/23 no se encontró el problema
 - from regpagos, validar que no repitan el comprobante ingresado ..................... ok 04/03/23
 - form docsvta, esta poniendo detracción a boletas!, las BV no tienen, solo las FT ... ok 06/03/23 se adecuó la parte de rapifac
+- form docsvta, no esta grabando o no tiene dato el campo "tipdcob" .................. ok 20/03/23 	marca B,A o C si es venta direct.anticipo o cancelación 

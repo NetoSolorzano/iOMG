@@ -2854,6 +2854,12 @@ namespace iOMG
             if (Tx_modo.Text == "NUEVO")
             {
                 // validaciones 
+                if (tx_tipComp.Text == "")
+                {
+                    MessageBox.Show("Seleccione si el comprobante es Vta.Directa, Anticipo o Cancelación","Atención",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    rb_bienes.Focus();
+                    return;
+                }
                 if (dataGridView1.Rows.Count < 2)
                 {
                     MessageBox.Show("Ingrese al menos un producto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
