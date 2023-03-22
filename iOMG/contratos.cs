@@ -480,6 +480,12 @@ namespace iOMG
             tx_contac.MaxLength = 90;           // persona de contacto
             tx_telcont.MaxLength = 25;          // telefono de contacto
             tx_motivD.MaxLength = 100;
+            tx_d_nom.MaxLength = 100;
+            tx_a_nombre.MaxLength = 100;
+            tx_d_med.MaxLength = 20;
+            tx_a_medid.MaxLength = 20;
+            tx_a_comen.MaxLength = 80;
+            tx_d_tda.MaxLength = 6;
         }
         private void jalainfo()                                                 // obtiene datos de imagenes
         {

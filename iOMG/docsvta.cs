@@ -339,6 +339,7 @@ namespace iOMG
             tx_d_antic.Text = letiden;
             tx_d_antic.MaxLength = 90;                  // 
             tx_d_mad.MaxLength = 6;                     // 
+            tx_d_med.MaxLength = 20;                    // 21/03/2023
             //
             this.milinea1.BackColor = Color.White;
             this.milinea1.ForeColor = Color.White;
