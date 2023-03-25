@@ -306,3 +306,4 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, no esta grabando o no tiene dato el campo "tipdcob" .................. ok 20/03/23 	marca B,A o C si es venta direct.anticipo o cancelación 
 - form docsvta, limitar los campos como medidas y demas .............................. ok 21/03/23
 - form contratos, limitar los campos como medidas y demas ............................ ok 21/03/23
+- form docsvta, problema con factura con dscto global y varios items ................. ok 24/03/23  falta probar en real

@@ -3466,6 +3466,7 @@ namespace iOMG
             decimal v_preToti = 0;
             decimal v_dgloSin = decimal.Parse(tx_desGlob.Text) / (1 + (decimal.Parse(v_igv) / 100));
             decimal v_dgporc = Math.Round(decimal.Parse(tx_desGlob.Text) * 100 / decimal.Parse(tx_subtot.Text), 2);
+            decimal v_totpun = 0;           // totalizador de precios unitarios netos del detalle
             List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
             foreach (DataGridViewRow ron in dataGridView1.Rows)
             {
@@ -3512,6 +3513,7 @@ namespace iOMG
                     decimal v_dsctoNume = 0;
                     string v_dsctoLetr = "0.00";                                                // % dscto en letras
                     decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString());           // precio individual con descuento
+                    v_totpun = v_totpun + v_preUmdes;                                           // totalizador de precios unitarios
                     decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                     decimal v_valTotal = v_valorUnit * v_cant;
                     decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / (dataGridView1.Rows.Count - 1) / v_cant;
@@ -3736,7 +3738,7 @@ namespace iOMG
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
-                DescuentoGlobalMontoBase = 0,
+                DescuentoGlobalMontoBase = (double.Parse(tx_desGlob.Text) > 0)? v_totpun / (1 + (decimal.Parse(v_igv) / 100)) : 0,        // la suma total de los item antes de aplicar el descuento y sin el IGV ... 24/03/2023
                 DescuentoGlobalNGMonto = 0,
                 DescuentoGlobalNGMontoBase = 0,
                 DescuentoNGMonto = 0,
@@ -4263,7 +4265,7 @@ namespace iOMG
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
-                DescuentoGlobalMontoBase = decimal.Parse(tx_bruto.Text),
+                DescuentoGlobalMontoBase = decimal.Parse(tx_bruto.Text),        // seguro que esto esta bien ??? 24/03/2023
                 DescuentoGlobalNGMonto = 0,
                 DescuentoGlobalNGMontoBase = 0,
                 DescuentoNGMonto = 0,
