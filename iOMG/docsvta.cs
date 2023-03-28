@@ -1336,6 +1336,9 @@ namespace iOMG
         }
         private void suma_grilla()
         {
+            tx_tac.Text = "";
+            tx_tag.Text = "";
+            int tac = 0, tag = 0;
             int tbul = 0;
             double tval = 0;
             double.TryParse(tx_desGlob.Text, out double tdes);
@@ -1351,6 +1354,15 @@ namespace iOMG
                     }
                     tbul = tbul + a;
                     tval = tval + b;
+                    //
+                    if (dataGridView1.Rows[i].Cells[2].Value.ToString().Substring(0, 1) == v_liav)
+                    {
+                        tac = tac + 1;
+                    }
+                    else
+                    {
+                        tag = tag + 1;
+                    }
                 }
             }
             else
@@ -1393,6 +1405,9 @@ namespace iOMG
             double tigv = double.Parse(tx_valor.Text) - (double.Parse(tx_valor.Text) / (1 + (double.Parse(v_igv) / 100)));
             tx_bruto.Text = (double.Parse(tx_valor.Text) - tigv).ToString("#0.00");    // (ntoti / 1.18).ToString("#0.00");
             tx_igv.Text = (tigv).ToString("#0.00");
+            //
+            tx_tac.Text = tac.ToString();
+            tx_tag.Text = tag.ToString();
         }
         private void recalDet()                             // CALCULA valores de precios detalle
         {
@@ -2901,7 +2916,15 @@ namespace iOMG
                         return;
                     }
                 }
-
+                if (double.Parse(tx_desGlob.Text) > 0 && rb_tbienes.Checked == true)
+                {
+                    if (int.Parse(tx_tac.Text) > 0 && (int.Parse(tx_tfil.Text) > int.Parse(tx_tac.Text)))
+                    {
+                        MessageBox.Show("No puede tener items 'chicos' y 'grandes' con descuento" + Environment.NewLine +
+                             "Debe hacer comprobantes separados.", "Atención",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
                 // verificamos si el comprobante tiene items "grandes" que podrían tener contrato ... estos se deben grabar el pago en la tabla pagamenti
                 if (valProdCont() == true) tx_prdsCont.Text = "S";
                 else tx_prdsCont.Text = "N";
@@ -3111,6 +3134,7 @@ namespace iOMG
             }
             limpia_ini();
             tx_serie.Focus();
+            Bt_add.PerformClick();
         }
         private bool graba()                                // graba cabecera del comprobante
         {
@@ -3513,7 +3537,7 @@ namespace iOMG
                     decimal v_dsctoNume = 0;
                     string v_dsctoLetr = "0.00";                                                // % dscto en letras
                     decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString());           // precio individual con descuento
-                    v_totpun = v_totpun + v_preUmdes;                                           // totalizador de precios unitarios
+                    v_totpun = v_totpun + (v_preUmdes * v_cant);                                           // totalizador de precios unitarios
                     decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                     decimal v_valTotal = v_valorUnit * v_cant;
                     decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / (dataGridView1.Rows.Count - 1) / v_cant;
@@ -3738,7 +3762,8 @@ namespace iOMG
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
-                DescuentoGlobalMontoBase = (double.Parse(tx_desGlob.Text) > 0)? v_totpun / (1 + (decimal.Parse(v_igv) / 100)) : 0,        // la suma total de los item antes de aplicar el descuento y sin el IGV ... 24/03/2023
+                //DescuentoGlobalMontoBase = (double.Parse(tx_desGlob.Text) > 0)? v_totpun / (1 + (decimal.Parse(v_igv) / 100)) : 0,        // la suma total de los item antes de aplicar el descuento y sin el IGV ... 24/03/2023
+                DescuentoGlobalMontoBase = v_totpun / (1 + (decimal.Parse(v_igv) / 100)),
                 DescuentoGlobalNGMonto = 0,
                 DescuentoGlobalNGMontoBase = 0,
                 DescuentoNGMonto = 0,
@@ -3865,6 +3890,7 @@ namespace iOMG
             decimal v_preToti = 0;
             decimal v_dgloSin = decimal.Parse(tx_desGlob.Text) / (1 + (decimal.Parse(v_igv) / 100));
             decimal v_dgporc = Math.Round(decimal.Parse(tx_desGlob.Text) * 100 / decimal.Parse(tx_subtot.Text), 2);
+            decimal v_totpun = 0;           // totalizador de precios unitarios netos del detalle
             List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();        // detalle cpmpleto
             List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();            // lista de precios
             List<CAnticipo> ddd = new List<CAnticipo>();                            // lista de anticipos
@@ -3921,6 +3947,7 @@ namespace iOMG
                         decimal v_valTotal = v_valorUnit * v_cant;
                         int sss = ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count) == 0) ? 1 : ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count));
                         decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / sss / v_cant;
+                        v_totpun = v_totpun + (v_preUmdes * v_cant);                                           // totalizador de precios unitarios
                         if (ron.Cells[11].Value.ToString() != "" && ron.Cells[11].Value.ToString() != "0" && ron.Cells[11].Value.ToString() != "0.00")
                         {
                             v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
@@ -4265,7 +4292,8 @@ namespace iOMG
                 Percepcion = 0,
                 PercepcionBaseImponible = 0,
                 Retencion = 0,
-                DescuentoGlobalMontoBase = decimal.Parse(tx_bruto.Text),        // seguro que esto esta bien ??? 24/03/2023
+                //DescuentoGlobalMontoBase = decimal.Parse(tx_bruto.Text),                  // seguro que esto esta bien ??? 24/03/2023
+                DescuentoGlobalMontoBase = v_totpun / (1 + (decimal.Parse(v_igv) / 100)),   // falta probar una cancelacion 27/03/2023
                 DescuentoGlobalNGMonto = 0,
                 DescuentoGlobalNGMontoBase = 0,
                 DescuentoNGMonto = 0,
