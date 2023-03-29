@@ -1419,6 +1419,13 @@ namespace iOMG
             double.TryParse(tx_ImpDsctoD.Text, out desc);
             tx_d_ptot.Text = (cant * preSin).ToString("#0.00");
             tx_d_precio.Text = (Math.Round(double.Parse(tx_d_ptot.Text) - desc,6)).ToString("#0.00");
+            //
+            if (Tx_modo.Text == "NUEVO" && desc > 0)
+            {
+                tx_desGlob.ReadOnly = true;
+                tx_desGlob.Text = "0";
+                tx_desGlob_Leave(null,null);
+            }
         }
         private string[] busqueda_clt_conector(string tipoD, string numeD)  // retorna datos del cliente del conector externo
         {
@@ -2702,6 +2709,13 @@ namespace iOMG
                     tx_igv.Text = ((tv - vb) - ((tv - vb) / 1.18)).ToString("#0.00");
 
                     tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
+
+                    if (double.Parse(dataGridView1.Rows[i].Cells[11].Value.ToString()) > 0)
+                    {
+                        tx_desGlob.ReadOnly = false;
+                        tx_desGlob.Text = "0";
+                        tx_desGlob_Leave(null, null);
+                    }
                 }
             }
         }
@@ -2744,12 +2758,17 @@ namespace iOMG
                     // si es vta. directa -> se habilita el dscto global
                     // si es cancelación -> se habilita el dscto global
                     // si anticipo NO se permite dscto global
+                    tx_desGlob.ReadOnly = true;
+                    tx_desGlob.Text = "0";
+                    tx_desGlob_Leave(null,null);
+                    /*  28/03/2023 no se permite descuento de ningun tipo en anticipos
                     tx_desGlob.ReadOnly = false;
                     if (tx_cont.Text.Trim() == "")
                     {
                         tx_desGlob.ReadOnly = true;
                         tx_desGlob.Text = "0";
                     }
+                    */
                 }
                 if (rb_bienes.Checked == true)      // items tanto de bienes como de servicios
                 {
@@ -2794,7 +2813,7 @@ namespace iOMG
                     }
                     // DESCUENTO GLOBAL
                     // si es vta. directa -> se habilita el dscto global
-                    tx_desGlob.ReadOnly = false;
+                    //tx_desGlob.ReadOnly = false;  // 28/03/2023 solo se permite un tipo de dscto, detalle o global, no ambos
                 }
                 tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
                 suma_grilla();
@@ -3569,7 +3588,7 @@ namespace iOMG
                         DescuentoGlobal = v_dgloSin,
                         Descuento = v_dsctofsin,    //  decimal.Parse(ron.Cells[11].Value.ToString()),
                         ValorUnitario = v_valorUnit,
-                        ValorVentaItem = v_valorUnit * v_cant,
+                        ValorVentaItem = v_valvtaxml,       //(v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),
                         ValorVentaItemXML = v_valvtaxml,                //  v_valorUnit * v_cant,       // 17/02/2023 ValorVentaItemXML = PrecioUnitarioItem / 1.18
                         ValorVentaNeto = v_dsctobase - v_dsctofsin,   // v_valorUnit * v_cant,  
                         ValorVentaNetoXML = 0,
@@ -3977,7 +3996,7 @@ namespace iOMG
                             DescuentoGlobal = 0,
                             Descuento = v_dsctofsin,
                             ValorUnitario = v_valorUnit,
-                            ValorVentaItem = v_valorUnit * v_cant,
+                            ValorVentaItem = v_valvtaxml, // (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),   // v_valorUnit * v_cant,
                             ValorVentaItemXML = v_valvtaxml,                    // v_valorUnit * v_cant,
                             ValorVentaNeto = v_valorNeto,   // v_dsctobase - v_dsctofsin,     // v_valorUnit * v_cant,
                             ValorVentaNetoXML = 0,
@@ -4089,7 +4108,7 @@ namespace iOMG
                     DescuentoGlobal = 0,
                     Descuento = 0,
                     ValorUnitario = v_valorUnit,
-                    ValorVentaItem = v_valorUnit * v_cant,
+                    ValorVentaItem = (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),    // v_valorUnit * v_cant,
                     ValorVentaItemXML = v_valorUnit * v_cant,
                     ValorVentaNeto = v_valorUnit * v_cant,
                     ValorVentaNetoXML = 0,
@@ -4502,7 +4521,7 @@ namespace iOMG
                         DescuentoGlobal = 0,
                         Descuento = 0,
                         ValorUnitario = v_valorUnit,
-                        ValorVentaItem = v_valorUnit * v_cant,
+                        ValorVentaItem = v_valorUnit * v_cant,                  // (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),
                         ValorVentaItemXML = v_valorUnit * v_cant,
                         ValorVentaNeto = v_valorUnit * v_cant,
                         ValorVentaNetoXML = 0,
@@ -4889,7 +4908,7 @@ namespace iOMG
                         DescuentoGlobal = 0,
                         Descuento = 0,
                         ValorUnitario = v_valorUnit,
-                        ValorVentaItem = v_valorUnit * v_cant,
+                        ValorVentaItem = (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),       // v_valorUnit * v_cant,
                         ValorVentaItemXML = v_valorUnit * v_cant,
                         ValorVentaNeto = v_valorUnit * v_cant,
                         ValorVentaNetoXML = 0,
