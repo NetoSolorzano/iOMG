@@ -2484,16 +2484,20 @@ namespace iOMG
         private void tx_desGlob_Leave(object sender, EventArgs e)
         {
             if (tx_desGlob.Text.Trim() == "") tx_desGlob.Text = "0";
-            double aa = double.Parse(tx_subtot.Text);
-            double bb = double.Parse(tx_desGlob.Text);
-            double cc = aa - bb;
-            double ti = cc - cc / (1 + (double.Parse(v_igv) / 100));
+            if (tx_subtot.Text != "")
+            {
+                double aa = double.Parse(tx_subtot.Text);
+                double bb = double.Parse(tx_desGlob.Text);
+                double cc = aa - bb;
+                double ti = cc - cc / (1 + (double.Parse(v_igv) / 100));
 
-            tx_valor.Text = (cc).ToString("#0.00");
-            tx_bruto.Text = (cc - ti).ToString("#0.00");
-            tx_igv.Text = (ti).ToString("#0.00");
-
-            if (rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
+                tx_valor.Text = (cc).ToString("#0.00");
+                tx_bruto.Text = (cc - ti).ToString("#0.00");
+                tx_igv.Text = (ti).ToString("#0.00");
+            }
+            double xxx = 0;
+            double.TryParse(tx_valor.Text, out xxx);
+            if (rb_tserv.Checked == true && xxx > DetServLim)       // double.Parse(tx_valor.Text) > DetServLim)
             {
                 panel4.Visible = true;
             }
@@ -3960,8 +3964,8 @@ namespace iOMG
                         decimal v_dsctofila = 0, v_dsctofsin = 0;
                         decimal v_dsctobase = 0;
                         decimal v_dsctoNume = 0;
-                        string v_dsctoLetr = "0.00";                                                // % dscto en letras
-                        decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString());           // precio individual con descuento
+                        string v_dsctoLetr = "0.00";                                                    // % dscto en letras
+                        decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString()) / v_cant;    // precio individual con descuento
                         decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                         decimal v_valTotal = v_valorUnit * v_cant;
                         int sss = ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count) == 0) ? 1 : ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count));
@@ -3973,7 +3977,8 @@ namespace iOMG
                             v_dsctofsin = v_dsctofila / ((decimal.Parse(v_igv) / 100) + 1);     // descuento fila sin igv
                             v_dsctobase = v_valTotal + v_dsctofsin;                             // valor total fila sin igv + dscto total fila
                             v_dsctoNume = v_dsctofila / v_cant; // (v_dsctofila * 100) / v_dsctobase;                    // descuento en numero
-                            v_dsctoLetr = Math.Round(100 - (((v_preUmdes - v_dsctoNume) * v_cant) * 100 / v_preToti), 2).ToString();  // v_dsctoNume.ToString();
+                            //v_dsctoLetr = Math.Round(100 - (((v_preUmdes - v_dsctoNume) * v_cant) * 100 / v_preToti), 2).ToString();  // v_dsctoNume.ToString();
+                            v_dsctoLetr = ((v_dsctoNume * 100) / v_preUmdes).ToString("#0.00");
                             v_totDscto = v_totDscto + v_dsctofila;
                         }
                         //decimal v_valvtaxml = decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1);
@@ -3996,8 +4001,8 @@ namespace iOMG
                             DescuentoGlobal = 0,
                             Descuento = v_dsctofsin,
                             ValorUnitario = v_valorUnit,
-                            ValorVentaItem = v_valvtaxml, // (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),   // v_valorUnit * v_cant,
-                            ValorVentaItemXML = v_valvtaxml,                    // v_valorUnit * v_cant,
+                            ValorVentaItem = v_valvtaxml,           // valor del item incluyendo descuento
+                            ValorVentaItemXML = v_valvtaxml,        // valor del item incluyendo descuento - descuento global si hubiera
                             ValorVentaNeto = v_valorNeto,   // v_dsctobase - v_dsctofsin,     // v_valorUnit * v_cant,
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
@@ -4011,12 +4016,12 @@ namespace iOMG
                             DescuentoMonto = v_dsctoNume,
                             DescuentoPorcentaje = v_dsctoLetr,
                             TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
-                            ValorVenta = v_valTotal,
+                            ValorVenta = v_valTotal,                // 
                             Ganancia = 0,
                             IGVNeto = v_valIgvTot,
                             ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
                             PesoTotal = 0,
-                            Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
+                            Cantidad = v_cant,       // (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString())
                             PrecioVentaCodigo = "01",
 
                             ICBPER = 0,
@@ -4108,7 +4113,7 @@ namespace iOMG
                     DescuentoGlobal = 0,
                     Descuento = 0,
                     ValorUnitario = v_valorUnit,
-                    ValorVentaItem = (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),    // v_valorUnit * v_cant,
+                    ValorVentaItem = v_valorUnit * v_cant,            // (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1), 
                     ValorVentaItemXML = v_valorUnit * v_cant,
                     ValorVentaNeto = v_valorUnit * v_cant,
                     ValorVentaNetoXML = 0,

@@ -584,7 +584,7 @@
             // tx_desCab
             // 
             this.tx_desCab.AllowSpace = false;
-            this.tx_desCab.Location = new System.Drawing.Point(916, 397);
+            this.tx_desCab.Location = new System.Drawing.Point(360, 412);
             this.tx_desCab.Name = "tx_desCab";
             this.tx_desCab.ReadOnly = true;
             this.tx_desCab.Size = new System.Drawing.Size(50, 20);

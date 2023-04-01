@@ -416,7 +416,8 @@ namespace iOMG
                         if (dataGridView1.Rows[i].Cells[7].Value != null) val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
                         if (dataGridView1.Rows[i].Cells[16].Value != null && dataGridView1.Rows[i].Cells[16].Value.ToString().Trim() != "")
                         {
-                            dscto = dscto + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());
+                            decimal xxx = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()) / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            dscto = dscto + xxx;
                         }
                         // buscamos que la madera este seleccionada
                         if (dataGridView1.Rows[i].Cells[5].Value != null)
@@ -1721,8 +1722,12 @@ namespace iOMG
                     for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                     {   // iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,'na'
                         string acabado = dataGridView1.Rows[i].Cells[1].Value.ToString().Substring(9, 1);
-                        decimal vtotd = 0; 
-                        if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vtotd);
+                        decimal vtotd = 0;
+                        if (dataGridView1.Rows[i].Cells[17].Value != null)
+                        {
+                            vtotd = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()) / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            //decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vtotd);
+                        }
                         decimal totdscto = vtotd;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                         string insdet = "insert into detacon (" +
                             "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado,tda_item,totdscto) values (" +
@@ -2112,7 +2117,7 @@ namespace iOMG
                     /*  24/02/2023           */
                     decimal vddes = 0;
                     if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
-                    dsto = dsto + vddes;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
+                    dsto = dsto + (vddes / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString()));    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
 
                     if (Tx_modo.Text == "NUEVO")
                     {
