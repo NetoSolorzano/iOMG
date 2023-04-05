@@ -1285,7 +1285,7 @@ namespace iOMG
                 "ifnull(b.nudoclt,'') AS docClie,ifnull(DATE_FORMAT(b.fechope,'%d/%m/%Y'),'') AS fechope " +
                 "FROM pagamenti a LEFT JOIN cabfactu b ON b.tipdvta = a.dv AND b.serdvta = a.serie AND b.numdvta = a.numero " +
                 "LEFT JOIN desc_tdv c ON c.IDCodice=b.tipdvta LEFT JOIN desc_mon d ON d.IDCodice=b.mondvta LEFT JOIN desc_doc e ON e.IDCodice=b.tidoclt " +
-                "WHERE a.contrato = @cont and dv<>''";   //  solo pagos, no "descuentos" por modificación de contratos 25/12/2022
+                "WHERE a.contrato = @cont and a.dv<>'' and b.estintreg='R0'";   //  solo pagos, no "descuentos" por modificación de contratos 25/12/2022
                 using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                 {
                     conn.Open();
@@ -1334,7 +1334,7 @@ namespace iOMG
                 }
             }
         }
-        private void suma_grilla()
+        private void suma_grilla()                          // totalizador grilla detalle
         {
             tx_tac.Text = "";
             tx_tag.Text = "";
@@ -2364,7 +2364,8 @@ namespace iOMG
                             tx_igv.Text = (double.Parse(tx_valor.Text) - (double.Parse(tx_valor.Text) / 1.18)).ToString("#0.00");
                         }
                         tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
-                        tx_desGlob.ReadOnly = false;
+                        tx_desGlob.Text = "0";
+                        tx_desGlob.ReadOnly = true; // 04/04/2023 sunat rechaza descuentos en cancelaciones, coordinado con rapifac (Anthony)
                     }
                 }
                 controlContadoCredito();
@@ -2497,11 +2498,17 @@ namespace iOMG
             }
             double xxx = 0;
             double.TryParse(tx_valor.Text, out xxx);
-            if (rb_tserv.Checked == true && xxx > DetServLim)       // double.Parse(tx_valor.Text) > DetServLim)
+            if (rb_tserv.Checked == true && tx_dat_tipdoc.Text == codfact && xxx > DetServLim)       // double.Parse(tx_valor.Text) > DetServLim)
             {
                 panel4.Visible = true;
             }
-            else panel4.Visible = false;
+            else
+            {
+                panel4.Visible = false;
+                tx_dat_cDet.Text = "";
+                tx_dat_pDet.Text = "";
+                tx_dat_sDet.Text = "";
+            }
         }
         private void tx_ndc_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -2821,7 +2828,7 @@ namespace iOMG
                 }
                 tx_tfil.Text = (dataGridView1.Rows.Count - 1).ToString();
                 suma_grilla();
-                if (rb_tserv.Checked == true && double.Parse(tx_valor.Text) > DetServLim)
+                if (rb_tserv.Checked == true && tx_dat_tipdoc.Text == codfact && double.Parse(tx_valor.Text) > DetServLim)
                 {
                     panel4.Visible = true;
                 }
@@ -3953,8 +3960,8 @@ namespace iOMG
                         ccc.Add(dlp);
                         // ********** DETALLE FILA
                         int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
-                        decimal v_valorNeto = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
-                            ((decimal.Parse(v_igv) / 100) + 1);
+                        decimal v_valorNeto = (decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                            ((decimal.Parse(v_igv) / 100) + 1) * v_cant);
                         decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
                             (decimal.Parse(ron.Cells[9].Value.ToString()) /
                             ((decimal.Parse(v_igv) / 100) + 1));
@@ -4007,7 +4014,8 @@ namespace iOMG
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
                             DescuentoBase = v_valTotal,
-                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            //PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            PrecioVenta = v_valvtaxml + v_valIgvTot - v_dsctofsin,
                             MontoTributo = v_valIgvTot,
 
                             PrecioCodigo = cta_ron,

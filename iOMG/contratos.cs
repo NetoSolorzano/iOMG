@@ -348,7 +348,7 @@ namespace iOMG
                         */
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
-                            "ifnull(if(i.soles2018*a.cantbul=0,a.totSinDscto,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.cantbul*a.dscto,a.dscto " +
+                            "ifnull(if(i.soles2018*a.cantbul=0,a.totSinDscto,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.dscto " + //a.cantbul*a.dscto,a.dscto
                             "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''" + excluye;
                         // 23/02/2023
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
@@ -416,7 +416,8 @@ namespace iOMG
                         if (dataGridView1.Rows[i].Cells[7].Value != null) val = val + decimal.Parse(dataGridView1.Rows[i].Cells[7].Value.ToString());
                         if (dataGridView1.Rows[i].Cells[16].Value != null && dataGridView1.Rows[i].Cells[16].Value.ToString().Trim() != "")
                         {
-                            decimal xxx = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()) / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            //decimal xxx = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()) / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            decimal xxx = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                             dscto = dscto + xxx;
                         }
                         // buscamos que la madera este seleccionada
@@ -1725,8 +1726,8 @@ namespace iOMG
                         decimal vtotd = 0;
                         if (dataGridView1.Rows[i].Cells[17].Value != null)
                         {
-                            vtotd = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()) / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString());
-                            //decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vtotd);
+                            //vtotd = decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString()) / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vtotd);
                         }
                         decimal totdscto = vtotd;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                         string insdet = "insert into detacon (" +
@@ -2117,7 +2118,8 @@ namespace iOMG
                     /*  24/02/2023           */
                     decimal vddes = 0;
                     if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
-                    dsto = dsto + (vddes / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString()));    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
+                    //dsto = dsto + (vddes / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString()));    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
+                    dsto = dsto + vddes;
 
                     if (Tx_modo.Text == "NUEVO")
                     {
