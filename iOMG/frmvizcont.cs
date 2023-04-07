@@ -20,7 +20,7 @@ namespace iOMG
 
         private void frmvizcont_Load(object sender, EventArgs e)
         {
-            if (_datosReporte.cabecera.Rows.Count > 0 && _datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "1")
+            if (_datosReporte.cabecera.Rows.Count > 0 && ("1,9").Contains(_datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim()))    //_datosReporte.cabecera.Rows[0]["tipoCont"].ToString().Trim() == "1"
             {
                 ContratoI _contrato = new ContratoI();  // antes ContratoG (23/03/2020)
                 _contrato.SetDataSource(_datosReporte);

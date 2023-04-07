@@ -4832,82 +4832,109 @@ namespace iOMG
             rowcabeza.totbrut = tx_bruto.Text;
             repcontrato.cabecera.AddcabeceraRow(rowcabeza);
             //MessageBox.Show(chk_lugent.Checked.ToString(), "Valor lugent");
-            foreach (DataGridViewRow row in dataGridView1.Rows)  //
+            if (rb_bienes.Checked == true)
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0,1) != letgru) // "Z"
+                foreach (DataGridViewRow row in dataGridView1.Rows)  //
                 {
-                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
-                    rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
-                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
-                    rowdetalle.codigo = row.Cells["item"].Value.ToString();
-                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
-                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdetalle.madera = row.Cells["codref"].Value.ToString();     // madera
-                    rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
-                    rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
-                    rowdetalle.precio = row.Cells["precio"].Value.ToString();
-                    rowdetalle.total = row.Cells["total"].Value.ToString();
-                    rowdetalle.coment = row.Cells["coment"].Value.ToString();
-                    rowdetalle.tienda = row.Cells["tda_item"].Value.ToString();    // 
-                    repcontrato.detalle.AdddetalleRow(rowdetalle);
-                    //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0, 1) != letgru) // "Z"
+                    {
+                        conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                        rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
+                        rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                        rowdetalle.codigo = row.Cells["item"].Value.ToString();
+                        rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                        rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                        rowdetalle.madera = row.Cells["codref"].Value.ToString();     // madera
+                        rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
+                        rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                        rowdetalle.precio = row.Cells["precio"].Value.ToString();
+                        rowdetalle.total = row.Cells["total"].Value.ToString();
+                        rowdetalle.coment = row.Cells["coment"].Value.ToString();
+                        rowdetalle.tienda = row.Cells["tda_item"].Value.ToString();    // 
+                        repcontrato.detalle.AdddetalleRow(rowdetalle);
+                        //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                    }
+                }
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru) // "Z"
+                    {
+                        conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                        rowdetalle.id = "0";
+                        rowdetalle.cant = "";
+                        rowdetalle.codigo = "";
+                        rowdetalle.nombre = "";
+                        rowdetalle.medidas = "";
+                        rowdetalle.madera = "";
+                        rowdetalle.det2 = "";
+                        rowdetalle.acabado = "";
+                        rowdetalle.precio = "";
+                        rowdetalle.total = "";
+                        rowdetalle.coment = "";
+                        rowdetalle.tienda = "";
+                        repcontrato.detalle.AdddetalleRow(rowdetalle);
+                        //
+                        rowdetalle = repcontrato.detalle.NewdetalleRow();
+                        rowdetalle.id = "0";
+                        rowdetalle.cant = "";
+                        rowdetalle.codigo = "";
+                        rowdetalle.nombre = "-- ADICIONALES --";
+                        rowdetalle.medidas = "";
+                        rowdetalle.madera = "";
+                        rowdetalle.det2 = "";
+                        rowdetalle.acabado = "";
+                        rowdetalle.precio = "";
+                        rowdetalle.total = "";
+                        rowdetalle.coment = "";
+                        rowdetalle.tienda = "";
+                        repcontrato.detalle.AdddetalleRow(rowdetalle);
+                        break;
+                    }
+                }
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru)    // "Z"
+                    {
+                        conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                        rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
+                        rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                        rowdetalle.codigo = row.Cells["item"].Value.ToString();
+                        rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                        rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                        rowdetalle.madera = row.Cells["madera"].Value.ToString();
+                        rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
+                        rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                        rowdetalle.precio = row.Cells["precio"].Value.ToString();
+                        rowdetalle.total = row.Cells["total"].Value.ToString();
+                        rowdetalle.coment = row.Cells["coment"].Value.ToString();
+                        rowdetalle.tienda = row.Cells["tda_item"].Value.ToString();
+                        repcontrato.detalle.AdddetalleRow(rowdetalle);
+                        //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                    }
                 }
             }
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            if (rb_servi.Checked == true)
             {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Trim() != "" && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru) // "Z"
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
-                    rowdetalle.id = "0";
-                    rowdetalle.cant = "";
-                    rowdetalle.codigo = "";
-                    rowdetalle.nombre = "";
-                    rowdetalle.medidas = "";
-                    rowdetalle.madera = "";
-                    rowdetalle.det2 = "";
-                    rowdetalle.acabado = "";
-                    rowdetalle.precio = "";
-                    rowdetalle.total = "";
-                    rowdetalle.coment = "";
-                    rowdetalle.tienda = "";
-                    repcontrato.detalle.AdddetalleRow(rowdetalle);
-                    //
-                    rowdetalle = repcontrato.detalle.NewdetalleRow();
-                    rowdetalle.id = "0";
-                    rowdetalle.cant = "";
-                    rowdetalle.codigo = "";
-                    rowdetalle.nombre = "-- ADICIONALES --";
-                    rowdetalle.medidas = "";
-                    rowdetalle.madera = "";
-                    rowdetalle.det2 = "";
-                    rowdetalle.acabado = "";
-                    rowdetalle.precio = "";
-                    rowdetalle.total = "";
-                    rowdetalle.coment = "";
-                    rowdetalle.tienda = "";
-                    repcontrato.detalle.AdddetalleRow(rowdetalle);
-                    break;
-                }
-            }
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru)    // "Z"
-                {
-                    conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
-                    rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
-                    rowdetalle.cant = row.Cells["cant"].Value.ToString();
-                    rowdetalle.codigo = row.Cells["item"].Value.ToString();
-                    rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
-                    rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
-                    rowdetalle.madera = row.Cells["madera"].Value.ToString();
-                    rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
-                    rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
-                    rowdetalle.precio = row.Cells["precio"].Value.ToString();
-                    rowdetalle.total = row.Cells["total"].Value.ToString();
-                    rowdetalle.coment = row.Cells["coment"].Value.ToString();
-                    rowdetalle.tienda = row.Cells["tda_item"].Value.ToString();
-                    repcontrato.detalle.AdddetalleRow(rowdetalle);
-                    //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                    if (row.Cells["item"].Value != null && row.Cells["item"].Value.ToString().Substring(0, 1) == letgru)    // "Z"
+                    {
+                        conClie.detalleRow rowdetalle = repcontrato.detalle.NewdetalleRow();
+                        rowdetalle.id = "0";    // row.Cells["iddetacon"].Value.ToString();
+                        rowdetalle.cant = row.Cells["cant"].Value.ToString();
+                        rowdetalle.codigo = row.Cells["item"].Value.ToString();
+                        rowdetalle.nombre = row.Cells["nombre"].Value.ToString();
+                        rowdetalle.medidas = row.Cells["medidas"].Value.ToString();
+                        rowdetalle.madera = row.Cells["madera"].Value.ToString();
+                        rowdetalle.det2 = row.Cells["piedra"].Value.ToString();
+                        rowdetalle.acabado = "";    // row.Cells[""].Value.ToString();
+                        rowdetalle.precio = row.Cells["precio"].Value.ToString();
+                        rowdetalle.total = row.Cells["total"].Value.ToString();
+                        rowdetalle.coment = row.Cells["coment"].Value.ToString();
+                        rowdetalle.tienda = row.Cells["tda_item"].Value.ToString();
+                        repcontrato.detalle.AdddetalleRow(rowdetalle);
+                        //iddetacon,item,cant,nombre,medidas,madera,precio,total,saldo,pedido,codref,coment,piedra,na
+                    }
                 }
             }
             // pagos del contrato

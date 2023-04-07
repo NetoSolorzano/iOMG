@@ -309,5 +309,7 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, problema con factura con dscto global y varios items ................. ok 28/03/23
 - form docsvta, evitar que se hagan dsctos a detalle y global en el mismo comprobante. ok 03/04/23	o es un tipo de dscto u otro, no pueden ser los 2 al mismo tiempo
 - trigger cabfactu_after_insert, arreglo en descuento global en cancelacion .......... ok 04/04/23	actualizar la base del servidor real
-- form docsvta, evitar que se hagan descuento global en cancelaciones ................		no lo permite sunat, se debe hacer la cancelacion con el importe total y luego una nota de credito
-- form contratos, no esta mostrando bien los descuentos .............................. 
+- form docsvta, evitar que se hagan descuento global en cancelaciones ................ ok 05/04/23	no lo permite sunat, se debe hacer la cancelacion con el importe total y luego una nota de credito
+- form contratos, no esta mostrando bien los descuentos al momento creacion autom .... 
+- form contratos, no genera visualización correcta en servicios ...................... ok 07/04/23
+
