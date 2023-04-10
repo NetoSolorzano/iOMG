@@ -1778,6 +1778,7 @@ namespace iOMG
             bt_prev.Enabled = false;
             rb_contado_Click(null, null);
             cmb_tipo.Focus();
+            panel_pdf.Enabled = true;
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
@@ -1807,6 +1808,7 @@ namespace iOMG
             tx_coment.ReadOnly = false;
             //
             tx_coment.Focus();
+            panel_pdf.Enabled = false;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1834,6 +1836,7 @@ namespace iOMG
             tx_coment.ReadOnly = false;
             bt_prev.Enabled = true;
             cmb_tipo.Focus();
+            panel_pdf.Enabled = false;
         }
         private void bt_view_Click(object sender, EventArgs e)
         {
@@ -1857,6 +1860,7 @@ namespace iOMG
             tx_impMedios.Enabled = true;
             bt_prev.Enabled = true;
             cmb_tipo.Focus();
+            panel_pdf.Enabled = false;
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
@@ -2191,12 +2195,16 @@ namespace iOMG
                 tx_dat_tipdoc.Text = row[0].ItemArray[1].ToString();
                 tx_dat_tipdoc_s.Text = row[0].ItemArray[2].ToString();
                 controlContadoCredito();
+                if (tx_dat_tipdoc.Text == codfact) rb_a4.Checked = true;
+                else rb_tk.Checked = true;
             }
             else
             {
                 tx_dat_tipdoc.Text = "";
                 tx_dat_tipdoc_s.Text = "";
                 controlContadoCredito();
+                rb_a4.Checked = false;
+                rb_tk.Checked = false;
             }
         }
         private void cmb_tdoc_SelectionChangeCommitted(object sender, EventArgs e)
@@ -3089,7 +3097,12 @@ namespace iOMG
                             if (row[0].ItemArray[7] == null || row[0].ItemArray[7].ToString().Trim() == "") Bt_print.PerformClick();
                             else
                             {
-                                if (row[0].ItemArray[7].ToString() == "TK") Bt_print.PerformClick();
+                                if (row[0].ItemArray[7].ToString() == "TK")
+                                {
+                                    //Bt_print.PerformClick();
+                                    string rutaT = rut_pdf + tx_pdf_rapifac.Text;  // tx_id_rapifac.Text;
+                                    System.Diagnostics.Process.Start(rutaT);
+                                }
                                 else
                                 {
                                     if (row[0].ItemArray[7].ToString() == "A4")
@@ -3843,7 +3856,7 @@ namespace iOMG
                 EstadoOtroSistema = false,
                 ClasePrecioCodigo = 1,
                 TipoPrecio = 0,
-                FormatoPDF = 0,
+                FormatoPDF = (rb_tk.Checked == true)? 2 : 0,
                 TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
                 Serie = tx_serie.Text,       // cmb_tipo.Text.Substring(0,1) + tx_serie.Text
                 Correlativo = 0,             // int.Parse(tx_corre.Text),
@@ -4375,7 +4388,7 @@ namespace iOMG
                 EstadoOtroSistema = false,
                 ClasePrecioCodigo = 1,
                 TipoPrecio = 0,
-                FormatoPDF = 0,
+                FormatoPDF = (rb_tk.Checked == true) ? 2 : 0,
                 TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
                 Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,       // cmb_tipo.Text.Substring(0,1) + tx_serie.Text
                 Correlativo = 0,             // int.Parse(tx_corre.Text),
@@ -4756,7 +4769,7 @@ namespace iOMG
                 EstadoOtroSistema = false,
                 ClasePrecioCodigo = 1,
                 TipoPrecio = 0,
-                FormatoPDF = 0,
+                FormatoPDF = (rb_tk.Checked == true) ? 2 : 0,
                 TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
                 Serie = tx_serie.Text,       // cmb_tipo.Text.Substring(0,1) + tx_serie.Text
                 Correlativo = 0,             // int.Parse(tx_corre.Text),
@@ -5812,6 +5825,14 @@ namespace iOMG
         {
             if (e.ToString().Trim() == "") tx_status.Visible = false;
             else tx_status.Visible = true;
+        }
+        private void panel_pdf_EnabledChanged(object sender, EventArgs e)   // panel de formato pdf, TK o A4
+        {
+            if (panel_pdf.Enabled == false)
+            {
+                rb_tk.Checked = false;
+                rb_a4.Checked = false;
+            } 
         }
     }
     public class docsAnticip                                                // comprobantes de anticipo
