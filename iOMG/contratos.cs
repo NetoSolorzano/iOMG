@@ -76,6 +76,7 @@ namespace iOMG
         string vupb = "";                   // usuarios que pueden quitar items virgenes de contratos sin importar su estado
         string v_monLoc = "";               // codigo moneda local
         string limdet = "";                 // monto limite para el pago de detracciones en servicios
+        string vucecs = "";                 // usuarios que pueden cambiar el estado de contratos de servicios
         internal List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
 
@@ -545,6 +546,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "tipoart" && row["param"].ToString() == "sinContrat") vtasc = row["valor"].ToString().Trim();            // capitulo de articulos chicos
                         if (row["campo"].ToString() == "sedespag" && row["param"].ToString() == "manual") vapm = row["valor"].ToString().Trim();                // sedes donde se acepta registro de pagos manuales 
                         if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "borra_i") vupb = row["valor"].ToString().Trim();             // usuarios que pueden quitar items virghenes de contratos
+                        if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "cambia_e") vucecs = row["valor"].ToString().Trim();          // usuarios que pueden cambiar el estado de contrato de servicios
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -3156,13 +3158,24 @@ namespace iOMG
         }
         private void cmb_estado_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
-            else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
-            var aaa = MessageBox.Show("Confirma que desea cambiar el estado del contrato?" + Environment.NewLine + 
-                "no es una acción recomendada, el estado cambia de forma automática", "Alerta de procedimiento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (aaa == DialogResult.No)
+            if (rb_bienes.Checked == true)
             {
-                cmb_estado.SelectedIndex = int.Parse(cmb_estado.Tag.ToString());
+                if (cmb_estado.SelectedValue != null) tx_dat_estad.Text = cmb_estado.SelectedValue.ToString();
+                else tx_dat_estad.Text = cmb_estado.SelectedItem.ToString().PadRight(6).Substring(0, 6).Trim();
+                var aaa = MessageBox.Show("Confirma que desea cambiar el estado del contrato?" + Environment.NewLine +
+                    "no es una acción recomendada, el estado cambia de forma automática", "Alerta de procedimiento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (aaa == DialogResult.No)
+                {
+                    cmb_estado.SelectedIndex = int.Parse(cmb_estado.Tag.ToString());
+                }
+            }
+            if (rb_servi.Checked == true)
+            {
+                if (!vucecs.Contains(asd))
+                {
+                    MessageBox.Show("No esta autorizado a realizar este cambio","Error en permisos",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    cmb_estado.SelectedIndex = int.Parse(cmb_estado.Tag.ToString());
+                }
             }
         }
         private void cmb_taller_SelectionChangeCommitted(object sender, EventArgs e)
