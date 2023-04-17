@@ -187,6 +187,8 @@
             this.panel_pdf = new System.Windows.Forms.Panel();
             this.rb_a4 = new System.Windows.Forms.RadioButton();
             this.rb_tk = new System.Windows.Forms.RadioButton();
+            this.cmb_vendedor = new System.Windows.Forms.ComboBox();
+            this.tx_dat_idven = new System.Windows.Forms.TextBox();
             this.milinea11 = new iOMG.milinea();
             this.milinea10 = new iOMG.milinea();
             this.tx_subtot = new iOMG.NumericTextBox();
@@ -1505,17 +1507,17 @@
             // 
             // tx_nomVen
             // 
-            this.tx_nomVen.Location = new System.Drawing.Point(330, 6);
+            this.tx_nomVen.Location = new System.Drawing.Point(457, 6);
             this.tx_nomVen.Name = "tx_nomVen";
             this.tx_nomVen.ReadOnly = true;
-            this.tx_nomVen.Size = new System.Drawing.Size(360, 20);
+            this.tx_nomVen.Size = new System.Drawing.Size(228, 20);
             this.tx_nomVen.TabIndex = 405;
             this.tx_nomVen.Tag = "Id";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(271, 10);
+            this.label12.Location = new System.Drawing.Point(259, 10);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(53, 13);
             this.label12.TabIndex = 402;
@@ -1809,6 +1811,28 @@
             this.rb_tk.Text = "PDF TK";
             this.rb_tk.UseVisualStyleBackColor = true;
             // 
+            // cmb_vendedor
+            // 
+            this.cmb_vendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_vendedor.DropDownWidth = 100;
+            this.cmb_vendedor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmb_vendedor.FormattingEnabled = true;
+            this.cmb_vendedor.Location = new System.Drawing.Point(318, 5);
+            this.cmb_vendedor.Name = "cmb_vendedor";
+            this.cmb_vendedor.Size = new System.Drawing.Size(137, 21);
+            this.cmb_vendedor.TabIndex = 438;
+            this.cmb_vendedor.SelectionChangeCommitted += new System.EventHandler(this.cmb_vendedor_SelectionChangeCommitted);
+            // 
+            // tx_dat_idven
+            // 
+            this.tx_dat_idven.Location = new System.Drawing.Point(241, -1);
+            this.tx_dat_idven.Name = "tx_dat_idven";
+            this.tx_dat_idven.ReadOnly = true;
+            this.tx_dat_idven.Size = new System.Drawing.Size(36, 20);
+            this.tx_dat_idven.TabIndex = 439;
+            this.tx_dat_idven.Tag = "Id del vendedor";
+            this.tx_dat_idven.Visible = false;
+            // 
             // milinea11
             // 
             this.milinea11.Location = new System.Drawing.Point(3, 22);
@@ -2009,6 +2033,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(877, 462);
+            this.Controls.Add(this.tx_dat_idven);
+            this.Controls.Add(this.cmb_vendedor);
             this.Controls.Add(this.panel_pdf);
             this.Controls.Add(this.tx_tac);
             this.Controls.Add(this.tx_tag);
@@ -2291,5 +2317,7 @@
         private System.Windows.Forms.Panel panel_pdf;
         private System.Windows.Forms.RadioButton rb_a4;
         private System.Windows.Forms.RadioButton rb_tk;
+        private System.Windows.Forms.ComboBox cmb_vendedor;
+        private System.Windows.Forms.TextBox tx_dat_idven;
     }
 }

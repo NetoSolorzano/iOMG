@@ -135,6 +135,7 @@ namespace iOMG
         DataTable dtmon = new DataTable();      // monedas
         DataTable dtadpd = new DataTable();     // tabla para el autocompletado de dpto, provin y distrito
         DataTable dtdetS = new DataTable();     // combo de porcentajes de detraccion
+        DataTable dtvend = new DataTable();     // combo para vendedores de tienda
         AutoCompleteStringCollection adptos = new AutoCompleteStringCollection();
         AutoCompleteStringCollection aprovi = new AutoCompleteStringCollection();
         AutoCompleteStringCollection adistr = new AutoCompleteStringCollection();
@@ -556,6 +557,19 @@ namespace iOMG
                                 rb_credito.Checked = true;
                                 rb_credito.PerformClick();
                             }
+                            // combo vendedor   idcodice,cnt,descrizione,descrizionerid,codigo 
+                            string xxx = string.Format("descrizione='{0}'", tx_nomVen.Text);
+                            DataRow[] row = dtvend.Select(xxx);
+                            if (row.Length < 1)
+                            {
+                                tx_dat_idven.Text = "0";
+                                cmb_vendedor.SelectedIndex = 0;
+                            }
+                            else
+                            {
+                                tx_dat_idven.Text = row[0].ItemArray[1].ToString();
+                                cmb_vendedor.SelectedItem = row[0].ItemArray[2].ToString();
+                            }
                         }
                         if (tx_tipComp.Text == "A" || tx_tipComp.Text == "C")
                         {
@@ -895,6 +909,20 @@ namespace iOMG
                         foreach (DataRow row in dtdetS.Rows)
                         {
                             cmb_detrac.Items.Add(row.ItemArray[0].ToString());
+                        }
+                    }
+                }
+                // seleccion de vendedores  
+                const string convend = "select idcodice,cnt,descrizione,descrizionerid,codigo from desc_vtd where numero=1";
+                using (MySqlCommand my = new MySqlCommand(convend, conn))
+                {
+                    using (MySqlDataAdapter dafp = new MySqlDataAdapter(my))
+                    {
+                        dafp.Fill(dtvend);
+                        foreach (DataRow row in dtvend.Rows)
+                        {
+                            cmb_vendedor.Items.Add(row.ItemArray[3].ToString());
+                            cmb_vendedor.ValueMember = row.ItemArray[1].ToString();
                         }
                     }
                 }
@@ -2293,6 +2321,16 @@ namespace iOMG
                 tx_dat_sDet.Text = "";  // codigo sunat 
             }
         }
+        private void cmb_vendedor_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (true)   // idcodice,cnt,descrizione,descrizionerid,codigo
+            {
+                string axs = string.Format("descrizionerid='{0}'", cmb_vendedor.SelectedItem);
+                DataRow[] row = dtvend.Select(axs);
+                tx_dat_idven.Text = row[0].ItemArray[1].ToString();    // cmb_vendedor.SelectedIndex.ToString();
+                tx_nomVen.Text = row[0].ItemArray[2].ToString();
+            }
+        }
         #endregion comboboxes
 
         #region leaves
@@ -3266,7 +3304,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@updest", "");
                     micon.Parameters.AddWithValue("@conpag", (rb_contado.Checked == true) ? "1" : "0"); // 1=contado, 0=crédito
                     micon.Parameters.AddWithValue("@cont", tx_cont.Text);
-                    micon.Parameters.AddWithValue("@vende", tx_nomVen.Text);
+                    micon.Parameters.AddWithValue("@vende", cmb_vendedor.Text);      // tx_nomVen.Text
                     micon.Parameters.AddWithValue("@mueb", tx_prdsCont.Text);
                     micon.Parameters.AddWithValue("@idpse", tx_id_rapifac.Text);
                     micon.Parameters.AddWithValue("@pdfpse", tx_pdf_rapifac.Text);
@@ -3751,7 +3789,7 @@ namespace iOMG
                 AplicaContingencia = false,
                 AplicaAnticipo = false,
                 AplicaOtroSistema = false,
-                Usuario = Program.vg_nuse,
+                Usuario = usuaDni,    //Program.vg_nuse,
                 AplicaStockNegativo = false,
                 ModificacionDePrecio = false,
                 Sucursal = int.Parse(tx_codSuc.Text),
@@ -3773,7 +3811,7 @@ namespace iOMG
                 TipoGuiaRemisionCodigo = "",
                 TransportistaTipoDocIdentidadCodigo = "",
                 CanalVenta = "2",
-                Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
+                Vendedor = tx_dat_idven.Text,
                 VendedorNombre = tx_nomVen.Text,
                 CondicionEstado = "",
                 CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
@@ -4283,7 +4321,7 @@ namespace iOMG
                 AplicaContingencia = false,
                 AplicaAnticipo = true,
                 AplicaOtroSistema = false,
-                Usuario = Program.vg_nuse,
+                Usuario = usuaDni,      // Program.vg_nuse,
                 AplicaStockNegativo = false,
                 ModificacionDePrecio = false,
                 Sucursal = int.Parse(tx_codSuc.Text),
@@ -4305,7 +4343,7 @@ namespace iOMG
                 TipoGuiaRemisionCodigo = "",
                 TransportistaTipoDocIdentidadCodigo = "",
                 CanalVenta = "2",
-                Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
+                Vendedor = tx_dat_idven.Text,
                 VendedorNombre = tx_nomVen.Text,
                 CondicionEstado = "",
                 CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
@@ -4665,7 +4703,7 @@ namespace iOMG
                 AplicaContingencia = false,
                 AplicaAnticipo = false,
                 AplicaOtroSistema = false,
-                Usuario = Program.vg_nuse,
+                Usuario = usuaDni,     // Program.vg_nuse
                 AplicaStockNegativo = false,
                 ModificacionDePrecio = false,
                 Sucursal = int.Parse(tx_codSuc.Text),
@@ -4687,7 +4725,7 @@ namespace iOMG
                 TipoGuiaRemisionCodigo = "",
                 TransportistaTipoDocIdentidadCodigo = "",
                 CanalVenta = "2",
-                Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
+                Vendedor = tx_dat_idven.Text,
                 VendedorNombre = tx_nomVen.Text,
                 CondicionEstado = "",
                 CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
@@ -5122,8 +5160,8 @@ namespace iOMG
                 IdRepositorio = 0,                                  // que va aca?
                 VistaDocumento = "",
                 Sucursal = int.Parse(tx_codSuc.Text),
-                Usuario = Program.vg_nuse,
-                Vendedor = usuaDni,                                 // acá debería ir el dni del usuario que hace el comprob
+                Usuario = usuaDni,                               // Program.vg_nuse
+                Vendedor = tx_dat_idven.Text,
                 VendedorNombre = tx_nomVen.Text,
                 CanalVenta = "2",
                 AlojamientoPaisDocEmisor = "",
