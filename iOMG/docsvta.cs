@@ -999,11 +999,12 @@ namespace iOMG
                 tx_dat_orig.Text = Program.tdauser;
                 cmb_taller_SelectionChangeCommitted(null,null);
                 tx_nomVen.Text = asd; // Program.vg_nuse;
-                tx_nomVen.ReadOnly = false;
+                tx_nomVen.ReadOnly = true;
                 dtp_pedido.Value = DateTime.Now;
                 tx_serie.ReadOnly = true;
                 tx_corre.ReadOnly = true;
                 tx_dat_mone.Text = MonDeft;
+                cmb_vendedor.SelectedIndex = 0;
                 cmb_mon_SelectionChangeCommitted(null, null);
                 cmb_mon.SelectedItem = tx_dat_mone.Text;
                 if (MonTodas == "S") cmb_mon.Enabled = false;
@@ -2322,6 +2323,16 @@ namespace iOMG
             }
         }
         private void cmb_vendedor_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (true)   // idcodice,cnt,descrizione,descrizionerid,codigo
+            {
+                string axs = string.Format("descrizionerid='{0}'", cmb_vendedor.SelectedItem);
+                DataRow[] row = dtvend.Select(axs);
+                tx_dat_idven.Text = row[0].ItemArray[1].ToString();    // cmb_vendedor.SelectedIndex.ToString();
+                tx_nomVen.Text = row[0].ItemArray[2].ToString();
+            }
+        }
+        private void cmb_vendedor_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (true)   // idcodice,cnt,descrizione,descrizionerid,codigo
             {

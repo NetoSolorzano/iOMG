@@ -314,4 +314,6 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, no genera visualización correcta en servicios ...................... ok 07/04/23
 - form docsvta, terminar de ver que hacemos con la impresion de TK anteriores ........   anteriores a la version del 10/04/2023
 - form contratos, permitir cambiar estado de contratos servicios algunos usuarios .... ok 14/04/23
-- form docsvta, correcciones en dato de vendedor en boletas .......................... 
+- form docsvta, correcciones en dato de vendedor en boletas .......................... ok 17/04/23
+- trigger descrittive_before_insert, actualización de campo cnt para tipo TVD ........ ok 17/04/23
+
