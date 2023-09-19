@@ -4022,8 +4022,10 @@ namespace iOMG
                         ccc.Add(dlp);
                         // ********** DETALLE FILA
                         int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
-                        decimal v_valorNeto = (decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
-                            ((decimal.Parse(v_igv) / 100) + 1) * v_cant);
+                        decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString()) / v_cant;    // precio individual con descuento
+                        decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
+                        //decimal v_valorNeto = (decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1) * v_cant);
+                        decimal v_valorNeto = v_valorUnit * v_cant;
                         decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
                             (decimal.Parse(ron.Cells[9].Value.ToString()) /
                             ((decimal.Parse(v_igv) / 100) + 1));
@@ -4034,8 +4036,6 @@ namespace iOMG
                         decimal v_dsctobase = 0;
                         decimal v_dsctoNume = 0;
                         string v_dsctoLetr = "0.00";                                                    // % dscto en letras
-                        decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString()) / v_cant;    // precio individual con descuento
-                        decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
                         decimal v_valTotal = v_valorUnit * v_cant;
                         int sss = ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count) == 0) ? 1 : ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count));
                         decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / sss / v_cant;
@@ -4065,20 +4065,20 @@ namespace iOMG
                             PrecioUnitarioSugerido = 0,
 
                             PrecioUnitarioNeto = v_preUmdes - v_dsctoNume - v_dsctoGlob,
-                            PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                            PrecioUnitarioItem = v_preUmdes, // decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,  
                             CantidadUnidadMedida = v_cant,
                             DescuentoGlobal = 0,
                             Descuento = v_dsctofsin,
                             ValorUnitario = v_valorUnit,
-                            ValorVentaItem = v_valvtaxml,           // valor del item incluyendo descuento
-                            ValorVentaItemXML = v_valvtaxml,        // valor del item incluyendo descuento - descuento global si hubiera
+                            ValorVentaItem = v_valTotal,    // v_valvtaxml,           // valor del item incluyendo descuento
+                            ValorVentaItemXML = v_valTotal, // v_valvtaxml,        // valor del item incluyendo descuento - descuento global si hubiera
                             ValorVentaNeto = v_valorNeto,   // v_dsctobase - v_dsctofsin,     // v_valorUnit * v_cant,
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
                             DescuentoBase = v_valTotal,
                             //PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
                             //PrecioVenta = v_valvtaxml + v_valIgvTot - v_dsctofsin,    // cambiado 18/09/2023
-                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()) - v_dsctofsin,
+                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()) - v_dsctofsin, 
                             MontoTributo = v_valIgvTot,
 
                             PrecioCodigo = cta_ron,
@@ -4090,7 +4090,7 @@ namespace iOMG
                             ValorVenta = v_valTotal,                // 
                             Ganancia = 0,
                             IGVNeto = v_valIgvTot,
-                            ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                            ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),  
                             PesoTotal = 0,
                             Cantidad = v_cant,       // (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString())
                             PrecioVentaCodigo = "01",
