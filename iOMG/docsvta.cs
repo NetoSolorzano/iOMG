@@ -4077,7 +4077,8 @@ namespace iOMG
                             IGV = v_valIgvTot,
                             DescuentoBase = v_valTotal,
                             //PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
-                            PrecioVenta = v_valvtaxml + v_valIgvTot - v_dsctofsin,
+                            //PrecioVenta = v_valvtaxml + v_valIgvTot - v_dsctofsin,    // cambiado 18/09/2023
+                            PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()) - v_dsctofsin,
                             MontoTributo = v_valIgvTot,
 
                             PrecioCodigo = cta_ron,

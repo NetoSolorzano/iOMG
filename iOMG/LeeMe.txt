@@ -316,4 +316,10 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form contratos, permitir cambiar estado de contratos servicios algunos usuarios .... ok 14/04/23
 - form docsvta, correcciones en dato de vendedor en boletas .......................... ok 17/04/23
 - trigger descrittive_before_insert, actualización de campo cnt para tipo TVD ........ ok 17/04/23
+- form docsvta, problema con cancelaciones, contrato 0101702, el item 3 del detalle ..		los totales del item3 no cuadraban por 0.05 
+********************** problema en reservas masivas - Pedro 18/08/023 ****************
+- form almgestion, no actualizo la tabla almloc con el contrato y reserva, porque:
+	o salió un error al terminar el programa "movimas" o algún otro proceso borró la
+	tabla "tempo" -> esta pendiente de revisar ....................................... 
+problema de cancelacion en contrato 0101702 .......................................... 
 
