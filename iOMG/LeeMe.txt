@@ -288,11 +288,13 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form forpagos, poner maximo limite a num.operacion 20 caracteres ................... ok 28/02/23
 - form contratos, muebles a diseño problemas en calculo detalle ...................... ok 28/02/23
 - form docsvta, no esta totalizando cuando es anticipo ............................... ok 28/02/23
-************** Problemas detectados en funcionamiento real, en vivo ******************
+************** Problemas detectados en funcionamiento real, en vivo ****************** [@]
 1.- Cuando se hace comprobante en Rapifac, no hay forma de "ingresarlo" en el contrato
-===> Contratos -> EDICION -> Si el # contrato existe, es version 2 y no tiene pago registrado, permite ingresarlo manualmente
+===> Contratos -> EDICION -> Si el # contrato existe, es version 2 y no tiene pago registrado, permite ingresarlo 
+	manualmente
 2.- Cuando se anula un comprobante que esta amarrado a contrato, no hay forma de "ingresarlo" en el contrato
-===> Contratos -> EDICION -> Si el # contrato existe, es version 2 y no tiene pago registrado o tiene pago anulado, permite ingresarlo manualmente
+===> Contratos -> EDICION -> Si el # contrato existe, es version 2 y no tiene pago registrado o tiene pago anulado, 
+	permite ingresarlo manualmente
 ======>> PERMITIR AGREGAR PAGOS SI EL SALDO > 0 Y ESTAMOS EN MODO EDICION
 3.- Cuando se hace contrato desde fact con varios items, se desordena al ponerles madera 
 4.- En comprobantes, limitar el boton imprimir si no accionó leave() del campo num.doc
@@ -317,9 +319,15 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form docsvta, correcciones en dato de vendedor en boletas .......................... ok 17/04/23
 - trigger descrittive_before_insert, actualización de campo cnt para tipo TVD ........ ok 17/04/23
 - form docsvta, problema con cancelaciones, contrato 0101702, el item 3 del detalle .. ok 19/09/23	los totales del item3 no cuadraban por 0.05 
+**************************************************************************************
+*** problema de cancelacion en contrato 0101721, tiene registro manual de FT y pago ** Coordinado con Pedro 12/10/2023
+	hecha en rapifac, el integrador esta dejando poner manualmente el pago y FT
+	en el formulario de contratos (F1 en campo de pagos) ............................. ok 12/10/23
+===> En adición a los puntos 1 y 2 de [@] se agrega que solo se permite si es un 
+	usuario autorizado, sino lo es, solo deja ver los pagos, no editar o agregar 
+- form regpagos, se agrego condicion si usuario esta permitido ....................... ok 12/10/23
 ********************** problema en reservas masivas - Pedro 18/08/023 ****************
 - form almgestion, no actualizo la tabla almloc con el contrato y reserva, porque:
 	o salió un error al terminar el programa "movimas" o algún otro proceso borró la
 	tabla "tempo" -> esta pendiente de revisar ....................................... 
-problema de cancelacion en contrato 0101702 .......................................... 
 

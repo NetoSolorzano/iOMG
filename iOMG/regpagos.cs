@@ -19,7 +19,7 @@ namespace iOMG
         string colpage = iOMG.Program.colpag;   // color de los pageframes
         string colgrid = iOMG.Program.colgri;   // color de las grillas
         string colstrp = iOMG.Program.colstr;   // color del strip
-        //static string nomtab = "pagamenti";       // 
+        string usperm = "";                     // usuarios permitidos a registrar pagos manualmente
         string timodef = "";                        // codigo moneda por defecto
         libreria lnp = new libreria();
         // Se crea un DataTable que almacenará los datos desde donde se cargaran los datos al DataGridView
@@ -90,7 +90,7 @@ namespace iOMG
                     if (row["formulario"].ToString() == nomform)
                     {
                         if (row["campo"].ToString() == "moneda" && row["param"].ToString() == "default") timodef = row["valor"].ToString().Trim();         // moneda por defecto
-                        //if (row["campo"].ToString() == "estado" && row["param"].ToString() == "default") tiesta = row["valor"].ToString().Trim();         // 
+                        if (row["campo"].ToString() == "usuarios" && row["param"].ToString() == "regManual") usperm = row["valor"].ToString().Trim();         // 
                         //if (row["campo"].ToString() == "detalle2" && row["param"].ToString() == "piedra") letpied = row["valor"].ToString().Trim();       // 
                     }
                 }
@@ -169,7 +169,7 @@ namespace iOMG
         private bool valRegPago(string NumCon, string Saldo, string NumVer)
         {
             bool retorna = false;
-            if (true)   // modo "EDITAR" si, otro modo no debe proceder
+            if (usperm.Contains(asd) == true)   // modo "EDITAR" si, otro modo no debe proceder
             {
                 if (NumVer == "2")
                 {
@@ -249,7 +249,8 @@ namespace iOMG
             if (valRegPago(para2, para3, para5) == false)    // contrato, saldo, version
             {
                 MessageBox.Show("No se permite registrar pago porque no" + Environment.NewLine + 
-                    "hay saldo en el contrato o no esta el modo correcto", "Error !", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    "hay saldo en el contrato o no esta el modo correcto " + Environment.NewLine +
+                    "o su usuario no esta autorizado", "Error !", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
 
