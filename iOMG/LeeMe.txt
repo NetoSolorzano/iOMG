@@ -330,4 +330,9 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 - form almgestion, no actualizo la tabla almloc con el contrato y reserva, porque:
 	o salió un error al terminar el programa "movimas" o algún otro proceso borró la
 	tabla "tempo" -> esta pendiente de revisar ....................................... 
-
+**************************************************************************************
+- form docsvta, problema con cancelaciones, contrato 0101728, error 500 rapifac
+-- Según el soporte de rapifac el problema es el campo valorVentaItem que debe ir con 
+	el precio del item menos el igv .................................................. 
+**************************************************************************************
+form docsvta, predeterminar que el formato x defecto es A4, deshabilitar TK .......... 

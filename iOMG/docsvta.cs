@@ -809,6 +809,14 @@ namespace iOMG
             dataGridView1.Columns[13].HeaderText = "Por_Det";
             dataGridView1.Columns[13].ReadOnly = true;
             dataGridView1.Columns[13].Name = "POR_DET";
+            //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
+            DataGridViewColumn colRapifac = new DataGridViewColumn();
+            colRapifac.Name = "crapi";
+            colRapifac.Visible = false;
+            colRapifac.HeaderText = "Rapifac";
+            colRapifac.CellTemplate = new DataGridViewTextBoxCell();
+            dataGridView1.Columns.Insert(14, colRapifac);
+            //dataGridView1.Columns.Add(colRapifac);
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
@@ -1581,6 +1589,24 @@ namespace iOMG
                         rb_credito.Enabled = false;
                         */
                     }
+                }
+            }
+        }
+        private void completaGrilla()                       // pone los codigos equivalentes de rapifac en la columna "crapi"
+        {
+            string listCod = " where codig in ('";
+            for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
+            {
+                if (x > 0) listCod = listCod + ",";
+                if (dataGridView1.Rows[x].Cells[2].Value != null && dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "") listCod = listCod + dataGridView1.Rows[x].Cells[2].Value.ToString() + "'";
+            }
+            listCod = listCod + ")";
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                using (MySqlCommand micon = new MySqlCommand("select id,codig,alterno1 from items" + listCod,conn))
+                {
+
                 }
             }
         }
@@ -2900,6 +2926,7 @@ namespace iOMG
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
+            completaGrilla();
             // validaciones generales
             if (tx_dat_tipdoc.Text.Trim() == "")
             {
@@ -3034,7 +3061,7 @@ namespace iOMG
                 if (aa == DialogResult.Yes)
                 {
                     button1.Enabled = false;        // deshabilitamos el boton para evitar dobles click
-
+                    completaGrilla();               // agrega los códigos rapifac equivalentes
                     cosas_pagamenti();
                     string resultado = "";
                     // armado de las clases para Rapifac
@@ -3649,7 +3676,7 @@ namespace iOMG
                         ComprobanteID = 0,
                         Item = cta_ron,
                         TipoProductoCodigo = "",
-                        ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                        ProductoCodigo = ron.Cells["crapi"].Value.ToString(),   // codigo rapifac
                         ProductoCodigoSUNAT = "",                       // "56101532",
                         TipoSistemaISCCodigo = "00",
                         UnidadMedidaCodigo = (rb_tbienes.Checked == true) ? cod_umed : cod_user,                   // "NIU",
@@ -4058,7 +4085,7 @@ namespace iOMG
                             ComprobanteID = 0,
                             Item = cta_ron,
                             TipoProductoCodigo = "",
-                            ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                            ProductoCodigo = ron.Cells["crapi"].Value.ToString(),   // "Prod00005",
                             ProductoCodigoSUNAT = "",                       // "56101532",
                             TipoSistemaISCCodigo = "00",
                             UnidadMedidaCodigo = cod_umed,          // "NIU",
