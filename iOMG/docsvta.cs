@@ -112,6 +112,7 @@ namespace iOMG
         string NoRetGl = "";                // glosa de retorno cuando umasapa no encuentra el dni o ruc
         string glos_antic = "";             // glosa generica para los anticipos
         string glos_cance = "";             // glosa generica para las cancelaciones
+        string vforImp = "";                // formatos de impresion admitidos
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -210,7 +211,7 @@ namespace iOMG
                     {
                         para1 = "items_adic";
                         para3 = "";
-                        //para4 = itemSer;    // este parametro  no sirve porque itemsadic son solo Z
+                        //para4 = itemSer;    // este parametro  no sirve porque itemsadic son solo Z ... Ojo, ya no es Z, ahora es U 05/01/2023
                     }
                     ayuda2 ayu2 = new ayuda2(para1, para2, para3, para4);
                     var result = ayu2.ShowDialog();
@@ -336,7 +337,8 @@ namespace iOMG
             tx_coment.MaxLength = 100;                  // 27-10-2022 se imprime este comentario y va al xml-pdf
             tx_corre.CharacterCasing = CharacterCasing.Upper;
             //
-            tx_d_nom.MaxLength = 90;                    // ancho del campo nombr de la maestra de items
+            tx_d_nom.MaxLength = 65;                    // ancho del campo nombr de la maestra de items
+            //tx_d_deta.MaxLength = 35;
             tx_d_antic.Text = letiden;
             tx_d_antic.MaxLength = 90;                  // 
             tx_d_mad.MaxLength = 6;                     // 
@@ -434,6 +436,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "restex") restexto = row["valor"].ToString().Trim();       // texto resolucion sunat autorizando prov. fact electronica
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "resAut") autoriz = row["valor"].ToString().Trim();        //
                         if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "desped") despe2 = row["valor"].ToString().Trim();         // 
+                        if (row["campo"].ToString() == "impresion" && row["param"].ToString() == "formatos") vforImp = row["valor"].ToString().Trim();      // formatos de impresion admitidos
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "valdirec") valdirec = row["valor"].ToString().Trim();     // monto limite para obligar a tener direcion en boleta
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codefect") tpcontad = row["valor"].ToString().Trim();     // codigo tipo de documento efectivo contado
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "codcredi") tpcredit = row["valor"].ToString().Trim();     // codigo tipo de pago credito
@@ -809,14 +812,16 @@ namespace iOMG
             dataGridView1.Columns[13].HeaderText = "Por_Det";
             dataGridView1.Columns[13].ReadOnly = true;
             dataGridView1.Columns[13].Name = "POR_DET";
-            //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
-            DataGridViewColumn colRapifac = new DataGridViewColumn();
-            colRapifac.Name = "crapi";
-            colRapifac.Visible = false;
-            colRapifac.HeaderText = "Rapifac";
-            colRapifac.CellTemplate = new DataGridViewTextBoxCell();
-            dataGridView1.Columns.Insert(14, colRapifac);
-            //dataGridView1.Columns.Add(colRapifac);
+            if (modo == "NUEVO")
+            {
+                //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
+                DataGridViewColumn colRapifac = new DataGridViewColumn();
+                colRapifac.Name = "crapi";
+                colRapifac.Visible = false;      // cambiar a false en condiciones de producccion
+                colRapifac.HeaderText = "Rapifac";
+                colRapifac.CellTemplate = new DataGridViewTextBoxCell();
+                dataGridView1.Columns.Insert(14, colRapifac);
+            }
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
         {
@@ -1597,7 +1602,7 @@ namespace iOMG
             string listCod = " where codig in ('";
             for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
             {
-                if (x > 0) listCod = listCod + ",";
+                if (x > 0 && (dataGridView1.Rows[x].Cells[2].Value != null && dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "")) listCod = listCod + ",'";
                 if (dataGridView1.Rows[x].Cells[2].Value != null && dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "") listCod = listCod + dataGridView1.Rows[x].Cells[2].Value.ToString() + "'";
             }
             listCod = listCod + ")";
@@ -1606,8 +1611,33 @@ namespace iOMG
                 conn.Open();
                 using (MySqlCommand micon = new MySqlCommand("select id,codig,alterno1 from items" + listCod,conn))
                 {
-
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(micon))
+                    {
+                        DataTable data = new DataTable();
+                        da.Fill(data);
+                        foreach (DataRow fila in data.Rows)
+                        {
+                            for (int x = 0; x <= dataGridView1.Rows.Count - 1; x ++)
+                            {
+                                if (dataGridView1.Rows[x].Cells[2].Value != null)
+                                {
+                                    if (fila.ItemArray[1].ToString() == dataGridView1.Rows[x].Cells[2].Value.ToString())
+                                    {
+                                        dataGridView1.Rows[x].Cells["crapi"].Value = fila.ItemArray[2].ToString();
+                                    }
+                                }
+                            }
+                        }
+                        data.Dispose();
+                    }
                 }
+            }
+        }
+        private void tx_d_deta_Enter(object sender, EventArgs e)    // el ancho maximo de la suma tx_d_nom y tx_d_deta DEBE SER 100
+        {
+            if (Tx_modo.Text == "NUEVO" && tx_d_nom.Text.Trim() != "")
+            {
+                tx_d_deta.MaxLength = 100 - (tx_d_nom.Text.Trim().Length) - 3;  // 100 - "cama oyara algo".lenght() - " - "
             }
         }
 
@@ -2250,8 +2280,21 @@ namespace iOMG
                 tx_dat_tipdoc.Text = row[0].ItemArray[1].ToString();
                 tx_dat_tipdoc_s.Text = row[0].ItemArray[2].ToString();
                 controlContadoCredito();
-                if (tx_dat_tipdoc.Text == codfact) rb_a4.Checked = true;
-                else rb_tk.Checked = true;
+                if (vforImp == "AMBOS")
+                {
+                    if (tx_dat_tipdoc.Text == codfact) rb_a4.Checked = true;
+                    else rb_tk.Checked = true;
+                }
+                if (vforImp == "A4")
+                {
+                    rb_a4.Checked = true;
+                    rb_tk.Enabled = false;
+                }
+                if (vforImp == "TK")
+                {
+                    rb_tk.Checked = true;
+                    rb_a4.Enabled = false;
+                }
             }
             else
             {
@@ -2391,7 +2434,7 @@ namespace iOMG
                 {
                     if (tx_d_codi.Text.Substring(0, 1) == v_liav || tx_d_codi.Text.Substring(0, 1) == itemSer)   // articulos varios que no tienen stock
                     {
-                        tx_d_nom.ReadOnly = false;
+                        tx_d_nom.ReadOnly = true;  // false ..... ya no se puede cambiar 05/01/2024
                         tx_d_med.ReadOnly = true;
                         tx_d_mad.ReadOnly = true;
                         tx_d_preSinDscto.ReadOnly = false;
@@ -2400,7 +2443,7 @@ namespace iOMG
                     {
                         if (tx_d_codi.Text.Substring(1, 3) == "000")
                         {
-                            tx_d_nom.ReadOnly = false;
+                            tx_d_nom.ReadOnly = true;  // false ..... ya no se puede cambiar 05/01/2024
                             tx_d_med.ReadOnly = false;
                             tx_d_mad.ReadOnly = false;
                             tx_d_preSinDscto.ReadOnly = false;
@@ -2410,7 +2453,7 @@ namespace iOMG
                             tx_d_preSinDscto.ReadOnly = true;
                             if (v_cnprd == "S") // ser permite cambiar nombres para efecto del comprobante? S=si | N=no
                             {
-                                tx_d_nom.ReadOnly = false;
+                                tx_d_nom.ReadOnly = true;  // false ..... ya no se puede cambiar 05/01/2024
                                 tx_d_med.ReadOnly = false;
                                 tx_d_mad.ReadOnly = false;
                             }
@@ -2888,12 +2931,12 @@ namespace iOMG
                     {
                         if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
                         {
-                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text.Trim() + " - " + tx_d_deta.Text.Trim(), tx_d_med.Text,
                                         tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text, tx_d_dat_pdet.Text); // (ntoti+vdscto).ToString()
                         }
                         else
                         {
-                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text, tx_d_med.Text,
+                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text.Trim() + " - " + tx_d_deta.Text.Trim(), tx_d_med.Text,
                                         tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text, tx_d_dat_pdet.Text);  // (ntoti + vdscto).ToString()
                         }
 
@@ -2926,7 +2969,6 @@ namespace iOMG
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
-            completaGrilla();
             // validaciones generales
             if (tx_dat_tipdoc.Text.Trim() == "")
             {
@@ -3091,9 +3133,14 @@ namespace iOMG
                     }
                     else
                     {
-                        string cabeza = resultado;  // JsonConvert.SerializeObject(resultado);
+                        string cabeza = resultado;
                         string token = conex_token();
-                        if (token != "")
+                        bool envia = true;             // en producción pasarlo a true
+                        if (envia == false)
+                        {
+                            System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
+                        }
+                        if (token != "" && envia == true)
                         {
                             // datos variables para la emisión
                             // string host = "https://wsventas-exp.rapifac.com/v0/comprobantes/series?sucursal=" + tx_codSuc.Text.Trim(); ..... pruebas

@@ -3706,9 +3706,19 @@ namespace iOMG
                         //dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
                         //     tx_d_mad.Text, tx_d_prec.Text, tx_d_total.Text, tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, 
                         //     cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N",tx_d_tda.Text,vpts.ToString("#0.00"),vtd.ToString("#0.00"));
-                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
-                             tx_d_mad.Text, tx_d_dat_prec.Text, vpts.ToString("#0.00"), tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text, 
-                             cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N",tx_d_tda.Text,vpts.ToString("#0.00"),vtd.ToString("#0.00"));
+                        // 05/01/2023 -> si el item es articulo chico o a diseño (sin precio definido) el precio es el que pone el operador
+                        if (cmb_mod.Text != "000")
+                        {
+                            dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
+                                 tx_d_mad.Text, tx_d_dat_prec.Text, vpts.ToString("#0.00"), tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text,
+                                 cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N", tx_d_tda.Text, vpts.ToString("#0.00"), vtd.ToString("#0.00"));
+                        }
+                        else
+                        {
+                            dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
+                                 tx_d_mad.Text, tx_d_prec.Text, vpts.ToString("#0.00"), tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text,
+                                 cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N", tx_d_tda.Text, vpts.ToString("#0.00"), vtd.ToString("#0.00"));
+                        }
                     }
                     else
                     {
