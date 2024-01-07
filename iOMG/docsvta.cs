@@ -817,7 +817,7 @@ namespace iOMG
                 //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
                 DataGridViewColumn colRapifac = new DataGridViewColumn();
                 colRapifac.Name = "crapi";
-                colRapifac.Visible = false;      // cambiar a false en condiciones de producccion
+                colRapifac.Visible = true;      // cambiar a false en condiciones de producccion
                 colRapifac.HeaderText = "Rapifac";
                 colRapifac.CellTemplate = new DataGridViewTextBoxCell();
                 dataGridView1.Columns.Insert(14, colRapifac);
@@ -1602,8 +1602,22 @@ namespace iOMG
             string listCod = " where codig in ('";
             for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
             {
-                if (x > 0 && (dataGridView1.Rows[x].Cells[2].Value != null && dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "")) listCod = listCod + ",'";
-                if (dataGridView1.Rows[x].Cells[2].Value != null && dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "") listCod = listCod + dataGridView1.Rows[x].Cells[2].Value.ToString() + "'";
+                if (dataGridView1.Rows[x].Cells[1].Value != null && dataGridView1.Rows[x].Cells[1].Value.ToString().Trim() != "")
+                {
+                    if (x > 0 && (dataGridView1.Rows[x].Cells[2].Value != null && 
+                        dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "") && listCod.Length > 20) listCod = listCod + ",'";
+                    if (dataGridView1.Rows[x].Cells[2].Value != null && dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "")
+                    {
+                        var theString = dataGridView1.Rows[x].Cells[2].Value.ToString();
+                        var aStringBuilder = new StringBuilder(theString);
+                        aStringBuilder.Remove(4, 1);
+                        aStringBuilder.Insert(4, "X");
+                        theString = aStringBuilder.ToString();
+                        theString = theString + "N000";
+                        //listCod = listCod + dataGridView1.Rows[x].Cells[2].Value.ToString() + "'"; NO FUNCA OJO ... QUITAR MADERA DE LA COMPARACION ...
+                        listCod = listCod + theString + "'";    // ME QUEDE ACA! 06/01/2024
+                    }
+                }
             }
             listCod = listCod + ")";
             using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
@@ -1621,7 +1635,13 @@ namespace iOMG
                             {
                                 if (dataGridView1.Rows[x].Cells[2].Value != null)
                                 {
-                                    if (fila.ItemArray[1].ToString() == dataGridView1.Rows[x].Cells[2].Value.ToString())
+                                    var theString = dataGridView1.Rows[x].Cells[2].Value.ToString();
+                                    var aStringBuilder = new StringBuilder(theString);
+                                    aStringBuilder.Remove(5, 1);
+                                    aStringBuilder.Insert(5, "X");
+                                    theString = aStringBuilder.ToString();
+                                    theString = theString + "N000";
+                                    if (fila.ItemArray[1].ToString() == theString)
                                     {
                                         dataGridView1.Rows[x].Cells["crapi"].Value = fila.ItemArray[2].ToString();
                                     }
@@ -2929,14 +2949,15 @@ namespace iOMG
                     double.TryParse(tx_ImpDsctoD.Text, out vdscto);
                     if (ntoti > 0)
                     {
+                        string cadena = tx_d_nom.Text.Trim() + ((tx_d_deta.Text.Trim() == "") ? "" : " - " + tx_d_deta.Text.Trim());
                         if (tx_d_codi.Text.Substring(0, 1) == v_liav)  // articulos varios
                         {
-                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text.Trim() + " - " + tx_d_deta.Text.Trim(), tx_d_med.Text,
+                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, cadena, tx_d_med.Text,
                                         tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", (ntoti).ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text, tx_d_dat_pdet.Text); // (ntoti+vdscto).ToString()
                         }
                         else
                         {
-                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, tx_d_nom.Text.Trim() + " - " + tx_d_deta.Text.Trim(), tx_d_med.Text,
+                            _ = dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_can.Text, tx_d_codi.Text, cadena, tx_d_med.Text,
                                         tx_d_mad.Text, tx_dat_mad.Text, "", string.Format("{0:#0.00}", ntoti.ToString("#0.00")), (ntoti * ncant).ToString("#0.00"), "N", vdscto.ToString(), tx_d_preSinDscto.Text, tx_d_dat_pdet.Text);  // (ntoti + vdscto).ToString()
                         }
 
@@ -2969,6 +2990,7 @@ namespace iOMG
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
+            completaGrilla();
             // validaciones generales
             if (tx_dat_tipdoc.Text.Trim() == "")
             {
@@ -4132,7 +4154,7 @@ namespace iOMG
                             ComprobanteID = 0,
                             Item = cta_ron,
                             TipoProductoCodigo = "",
-                            ProductoCodigo = ron.Cells["crapi"].Value.ToString(),   // "Prod00005",
+                            ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // ron.Cells["crapi"].Value.ToString() 06/01/2023 18:06
                             ProductoCodigoSUNAT = "",                       // "56101532",
                             TipoSistemaISCCodigo = "00",
                             UnidadMedidaCodigo = cod_umed,          // "NIU",
