@@ -1658,7 +1658,7 @@ namespace iOMG
             {
                 if (dataGridView1.Rows[x].Cells[2].Value != null)
                 {
-                    if (dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "")
+                    if (dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "") 
                     {
                         dataGridView1.Rows[x].Cells["crapi"].Value = dataGridView1.Rows[x].Cells[2].Value.ToString().Substring(0, 15);
                     }
@@ -3003,7 +3003,7 @@ namespace iOMG
         }
         private void button1_Click(object sender, EventArgs e)      // graba, anula
         {
-            completaGrilla();
+            //completaGrilla();
             // validaciones generales
             if (tx_dat_tipdoc.Text.Trim() == "")
             {
@@ -3783,7 +3783,7 @@ namespace iOMG
                         PrecioUnitario = v_preUmdes,    // decimal.Parse(ron.Cells[8].Value.ToString()),
                         Peso = 0,
                         DescuentoMonto = v_dsctoNume,
-                        DescuentoPorcentaje = v_dsctoLetr,
+                        DescuentoPorcentaje = v_dsctoLetr,      // descuento en %
                         TipoAfectacionIGVCodigo = "10",                     // Sunat Catalogo 7 - Venta grabada operación onerosa
                         ValorVenta = v_valTotal,
                         Ganancia = 0,
@@ -3796,7 +3796,7 @@ namespace iOMG
                         ICBPER = 0,
                         CargoIndicador = "0",
                         CargoCargoCodigo = "",
-                        DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                        DescuentoIndicador = 1,                         // 1=en soles, 0=en%
                         DescuentoCargoCodigo = "00",
                         PercepcionCantidadUmbral = 0,
                         PercepcionMontoUmbral = 0,
@@ -3936,7 +3936,7 @@ namespace iOMG
                 CondicionEstado = "",
                 CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
                 SituacionPagoCodigo = (rb_contado.Checked == true) ? 2 : 1,
-                DescuentoIndicador = 0,                             // que posibles valores van acá?
+                DescuentoIndicador = 1,                             // 1 = soles, 0 = %
                 Ubigeo = tx_dir_ubigpe.Text,
                 AnticipoMonto = 0,
                 ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
@@ -3991,15 +3991,15 @@ namespace iOMG
                 ListaCondicionesComerciales = { },
                 UUID = "",
                 DescuentoGlobalPorcentaje = v_dgporc,
-                DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text),
-                TotalDescuentosMonto = decimal.Parse(tx_desGlob.Text),
+                DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text) + v_totDscto,
+                TotalDescuentosMonto = decimal.Parse(tx_desGlob.Text) + v_totDscto, 
                 CorreoElectronicoPrincipal = mailPrin,
                 Exonerada = 0,
                 Inafecto = 0,
                 Exportacion = 0,
                 OperacionNoGravada = 0,
                 Gratuito = 0,
-                TotalDescuentos = (v_totDscto / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,
+                TotalDescuentos = ((decimal.Parse(tx_desGlob.Text) + v_totDscto) / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,
                 DescuentoGlobal = v_dgloSin,
                 TotalAnticipos = 0,
                 BANDERA_CONCURRENCIA = false,
@@ -4168,7 +4168,7 @@ namespace iOMG
                             ComprobanteID = 0,
                             Item = cta_ron,
                             TipoProductoCodigo = "",
-                            ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // ron.Cells["crapi"].Value.ToString() 06/01/2023 18:06
+                            ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // 
                             ProductoCodigoSUNAT = "",                       // "56101532",
                             TipoSistemaISCCodigo = "00",
                             UnidadMedidaCodigo = cod_umed,          // "NIU",
@@ -4267,7 +4267,7 @@ namespace iOMG
                     ComprobanteID = _docsAnticip[i].IdCompRapifac,
                     Item = cta_ron,
                     TipoProductoCodigo = "",
-                    ProductoCodigo = _docsAnticip[i].descrip,
+                    ProductoCodigo = "12345",    // 09/01/2024 _docsAnticip[i].descrip,
                     ProductoCodigoSUNAT = "",
                     TipoSistemaISCCodigo = "00",
                     UnidadMedidaCodigo = cod_umed, // "NIU",
@@ -4680,7 +4680,7 @@ namespace iOMG
                         ComprobanteID = 0,
                         Item = cta_ron,
                         TipoProductoCodigo = "",
-                        ProductoCodigo = "1",                           // ProductoCodigo = "" 08/01/2024
+                        ProductoCodigo = "12345",                           // ProductoCodigo = "" 08/01/2024
                         ProductoCodigoSUNAT = "",                       // "56101532",
                         TipoSistemaISCCodigo = "00",
                         UnidadMedidaCodigo = cod_umed,      // "NIU",
