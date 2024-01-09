@@ -2734,18 +2734,18 @@ namespace iOMG
                 tx_d_preSinDscto.Visible = false;
                 tx_d_ptot.Visible = false;
                 tx_ImpDsctoD.Visible = false;
-                //
-                tx_d_antic.Left = 3;    // 28
-                tx_d_antic.Top = 5;
-                tx_d_antic.Width = 727;
-                tx_d_antic.Height = 45; // 40
+                // 
+                tx_d_antic.Left = 3;    // 3
+                tx_d_antic.Top = 5;     // 5
+                tx_d_antic.Width = 727; // 727
+                tx_d_antic.Height = 65; // 45
                 tx_d_antic.Multiline = true;
                 tx_d_antic.Visible = true;
                 tx_d_antic.Text = letiden;
                 //
-                tx_d_valAntic.Left = 728;
-                tx_d_valAntic.Top = 5;
-                tx_d_valAntic.Height = 45;  // 40
+                tx_d_valAntic.Left = 728;   // 728
+                tx_d_valAntic.Top = 5;      // 5
+                tx_d_valAntic.Height = 65;  // 45
                 tx_d_valAntic.Multiline = true;
                 tx_d_valAntic.Visible = true;
                 //
@@ -3803,7 +3803,7 @@ namespace iOMG
                         PercepcionPorcentaje = 0,
                         Control = 0,
                         PrecioCompra = 0,
-                        EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                        EsAnticipo = false,
                         ImporteTotalReferencia = 0,                 // este es el valor referencial 
                         Kit = 1,
                         CantidadReferencial = 1,
@@ -4011,7 +4011,7 @@ namespace iOMG
                 CONTADOR_BUSCAPRODUCTO = 0,
                 CONTADOR_CLICKEMITIR = 1,
                 EstadoContingencia = false,
-                Anticipo = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
+                Anticipo = false,               // (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
                 EstadoOtroSistema = false,
                 ClasePrecioCodigo = 1,
                 TipoPrecio = 0,
@@ -4285,7 +4285,7 @@ namespace iOMG
                     PercepcionPorcentaje = 0,
                     Control = 0,
                     PrecioCompra = 0,
-                    EsAnticipo = true,
+                    EsAnticipo = false,
                     ImporteTotalReferencia = 0,                 // este es el valor referencial 
                     CantidadUnidadMedida = v_cant,
                     Kit = 1,
@@ -4823,7 +4823,7 @@ namespace iOMG
                 ID = 0,
                 IdRepositorio = 0,
                 AplicaContingencia = false,
-                AplicaAnticipo = false,
+                AplicaAnticipo = true,
                 AplicaOtroSistema = false,
                 Usuario = usuaDni,     // Program.vg_nuse
                 AplicaStockNegativo = false,
@@ -4925,7 +4925,7 @@ namespace iOMG
                 CONTADOR_BUSCAPRODUCTO = 0,
                 CONTADOR_CLICKEMITIR = 1,
                 EstadoContingencia = false,
-                Anticipo = (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
+                Anticipo = true,                         // (rb_antic.Checked == true && tx_d_valAntic.Text != "") ? true : false,
                 EstadoOtroSistema = false,
                 ClasePrecioCodigo = 1,
                 TipoPrecio = 0,
