@@ -1599,6 +1599,7 @@ namespace iOMG
         }
         private void completaGrilla()                       // pone los codigos equivalentes de rapifac en la columna "crapi"
         {
+            /*
             string listCod = " where codig in ('";
             for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
             {
@@ -1652,6 +1653,18 @@ namespace iOMG
                     }
                 }
             }
+            */
+            for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
+            {
+                if (dataGridView1.Rows[x].Cells[2].Value != null)
+                {
+                    if (dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "")
+                    {
+                        dataGridView1.Rows[x].Cells["crapi"].Value = dataGridView1.Rows[x].Cells[2].Value.ToString().Substring(0, 15);
+                    }
+                }
+            }
+
         }
         private void tx_d_deta_Enter(object sender, EventArgs e)    // el ancho maximo de la suma tx_d_nom y tx_d_deta DEBE SER 100
         {
@@ -3979,6 +3992,7 @@ namespace iOMG
                 UUID = "",
                 DescuentoGlobalPorcentaje = v_dgporc,
                 DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text),
+                TotalDescuentosMonto = decimal.Parse(tx_desGlob.Text),
                 CorreoElectronicoPrincipal = mailPrin,
                 Exonerada = 0,
                 Inafecto = 0,
@@ -4666,7 +4680,7 @@ namespace iOMG
                         ComprobanteID = 0,
                         Item = cta_ron,
                         TipoProductoCodigo = "",
-                        ProductoCodigo = "",   // "Prod00005",
+                        ProductoCodigo = "1",                           // ProductoCodigo = "" 08/01/2024
                         ProductoCodigoSUNAT = "",                       // "56101532",
                         TipoSistemaISCCodigo = "00",
                         UnidadMedidaCodigo = cod_umed,      // "NIU",
@@ -4684,8 +4698,8 @@ namespace iOMG
                         PercepcionPorcentaje = 0,
                         Control = 0,
                         PrecioCompra = 0,
-                        EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
-                        ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                        EsAnticipo = true,                         // EsAnticipo = false   SI ES ANTICIPO IGUAL ES FALSE
+                        ImporteTotalReferencia = 1,                 // ImporteTotalReferencia = 0  08/01/2024
                         CantidadUnidadMedida = v_cant,
                         Kit = 1,
                         CantidadReferencial = 1,
@@ -4729,7 +4743,7 @@ namespace iOMG
                         Observacion = "",
                         Stock = 0,
                         Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
-                        PrecioCodigo = 0,
+                        PrecioCodigo = -2,                               // PrecioCodigo = 0   08/01/2024
                         PrecioUnitario = decimal.Parse(ron.Cells[9].Value.ToString()),
                         Peso = 0,
                         DescuentoMonto = 0,
@@ -4752,7 +4766,7 @@ namespace iOMG
                 {
                     CMovimientoCuenta cta = new CMovimientoCuenta
                     {
-                        TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
+                        TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,      //tx_dat_tdoc_s.Text, 08/01/2024
                         Serie = tx_serie.Text,
                         Correlativo = 0,                // int.Parse(tx_corre.Text),
                         Condicion = dtpagos[i, 2],
@@ -4959,7 +4973,7 @@ namespace iOMG
                 */
                 // ----|
                 Leyenda = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? "1" : "0",      // codigo leyenda 1 = leyenda de detraccion
-                BienServicioCodigo = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? tx_dat_sDet.Text : "001",        // codigo del bien o servicio sujeto a detraccion
+                BienServicioCodigo = "022",          // (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? tx_dat_sDet.Text : "001", 
                 DetraccionTipoOperacion = "01",
                 Detraccion = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? (decimal.Parse(tx_valor.Text) * decimal.Parse(tx_dat_pDet.Text) / 100) : 0,
                 DetraccionPorcentaje = (tx_dat_pDet.Text.Trim() != "" && tx_dat_tipdoc.Text == codfact) ? decimal.Parse(tx_dat_pDet.Text) : 0,
@@ -4967,7 +4981,7 @@ namespace iOMG
                 // 06/03/2023 - detracciones 
 
                 RetencionPorcentaje = 0,
-                DocAdicionalCodigo = 0,
+                DocAdicionalCodigo = 1,         // DocAdicionalCodigo = 0       08/01/2024
                 DocAdicionalDetalle = "",
                 TotalRetencion = 0,
                 MontoRetencion = 0,
@@ -4976,7 +4990,7 @@ namespace iOMG
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
-                Observacion = tx_coment.Text.Trim(),
+                Observacion = "ANTICIPO",               // tx_coment.Text.Trim(), 08/01=2024
                 FechaIngresoPais = "01/01/1900",
                 FechaIngresoEstablecimiento = "01/01/1900",
                 FechaSalidaEstablecimiento = "01/01/1900",

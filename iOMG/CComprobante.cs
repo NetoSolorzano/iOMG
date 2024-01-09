@@ -103,6 +103,7 @@ namespace iOMG
         public decimal DescuentoGlobalMontoBase { get; set; }
         public decimal DescuentoGlobalPorcentaje { get; set; }
         public decimal DescuentoGlobalValor { get; set; }
+        public decimal TotalDescuentosMonto { get; set; }
         public string DescuentoGlobalIndicadorDescuento { get; set; }
         public string DescuentoGlobalCodigoMotivo { get; set; }
         /*** DESCUENTOS GLOBAL NO GRAVADO ***/
