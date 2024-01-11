@@ -349,7 +349,7 @@ namespace iOMG
                         */
                         string jadet = "select 0 as 'iddetacon',a.codprod,a.cantbul,a.descpro,a.medidas,a.madera,a.precio,a.totalMN,0 as 'saldo',space(1) AS 'pedido'," +
                             "space(1) as 'codref',space(1) as 'coment',a.detpied,space(1) as 'codpie',space(1) as na,space(1) as 'tda_item'," +
-                            "ifnull(if(i.soles2018*a.cantbul=0,a.totSinDscto,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.dscto " + //a.cantbul*a.dscto,a.dscto
+                            "ifnull(if(i.soles2018*a.cantbul=0,a.totSinDscto,i.soles2018*a.cantbul),a.precio*a.cantbul) as totCat,a.dscto,if(a.codprod<>'',left(a.codprod,15),'') as alterno1 " + //a.cantbul*a.dscto,a.dscto
                             "from detfactu a LEFT JOIN items i ON i.codig=a.codprod where a.idc=@idc and a.codprod<>''" + excluye;
                         // 23/02/2023
                         using (MySqlCommand midet = new MySqlCommand(jadet, conn))
@@ -926,7 +926,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 18;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 19;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -1048,6 +1048,11 @@ namespace iOMG
                 //dataGridView1.Columns[18].Width = 30;                 // ancho
                 //dataGridView1.Columns[18].ReadOnly = true;            // lectura o no
                 //dataGridView1.Columns[18].Name = "BoS";
+                dataGridView1.Columns[18].Visible = false;
+                dataGridView1.Columns[18].HeaderText = "rapifac";      // titulo de la columna
+                dataGridView1.Columns[18].Width = 60;                 // ancho
+                dataGridView1.Columns[18].ReadOnly = true;            // lectura o no
+                dataGridView1.Columns[18].Name = "alterno1";
             }
         }
         private bool bus_detalle_detrac()                                       // busca codigos detraccion diferentes en el detalle
@@ -1733,8 +1738,8 @@ namespace iOMG
                         }
                         decimal totdscto = vtotd;    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                         string insdet = "insert into detacon (" +
-                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado,tda_item,totdscto) values (" +
-                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2,@esta,@tdai,@tdscto)";
+                            "contratoh,tipo,item,cant,nombre,medidas,madera,precio,total,saldo,codref,coment,piedra,estado,tda_item,totdscto,alterno1) values (" +
+                            "@cope,@tipe,@item,@cant,@nomb,@medi,@made,@prec,@tota,@sald,@cref,@come,@det2,@esta,@tdai,@tdscto,@crapif)";
                         micon = new MySqlCommand(insdet, conn);
                         micon.Parameters.AddWithValue("@cope", tx_codped.Text);
                         micon.Parameters.AddWithValue("@tipe", tx_dat_orig.Text);       // tx_dat_tiped.Text
@@ -1752,6 +1757,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());
                         micon.Parameters.AddWithValue("@tdscto", totdscto);
+                        micon.Parameters.AddWithValue("@crapif", dataGridView1.Rows[i].Cells[18].Value.ToString());
                         micon.ExecuteNonQuery();
                     }
                     /* if (tncont == "AUTOMA")

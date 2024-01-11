@@ -1074,7 +1074,7 @@ namespace iOMG
                     string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
                     string consin = "select a.saldo,a.status,a.tipocon,a.acuenta,a.marca0 from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,left(de.descrizionerid,6),a.codref,a.piedra,a.precio,a.total,c.cliente," +
-                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto,it.detporc " +
+                        "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto,it.detporc,a.alterno1 " +
                         "FROM detacon a " +
                         "LEFT JOIN desc_est de ON de.IDCodice = a.estado " +
                         "LEFT JOIN contrat c ON c.contrato = a.contratoh " +
@@ -1221,7 +1221,7 @@ namespace iOMG
                                     data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
                                     (double.Parse(data.ItemArray[8].ToString()) - Dscto / double.Parse(data.ItemArray[3].ToString())).ToString("#0.00"),
                                     (double.Parse(data.ItemArray[9].ToString()) - Dscto).ToString("#0.00"),"",
-                                    Dscto, totSinD, data.ItemArray[24].ToString()); 
+                                    Dscto, totSinD, data.ItemArray[24].ToString(), data.ItemArray[25].ToString());  // [25] cod rapifac
                                 cnt += 1;
                                 toti = toti + (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString()));
                             }
@@ -1654,17 +1654,19 @@ namespace iOMG
                 }
             }
             */
-            for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
+            if (tx_tipComp.Text != "C" && tx_d_antic.Text != "CANCELACION ")
             {
-                if (dataGridView1.Rows[x].Cells[2].Value != null)
+                for (int x = 0; x <= dataGridView1.Rows.Count - 1; x++)
                 {
-                    if (dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "") 
+                    if (dataGridView1.Rows[x].Cells[2].Value != null)
                     {
-                        dataGridView1.Rows[x].Cells["crapi"].Value = dataGridView1.Rows[x].Cells[2].Value.ToString().Substring(0, 15);
+                        if (dataGridView1.Rows[x].Cells[2].Value.ToString().Trim() != "")
+                        {
+                            dataGridView1.Rows[x].Cells["crapi"].Value = dataGridView1.Rows[x].Cells[2].Value.ToString().Substring(0, 15);
+                        }
                     }
                 }
             }
-
         }
         private void tx_d_deta_Enter(object sender, EventArgs e)    // el ancho maximo de la suma tx_d_nom y tx_d_deta DEBE SER 100
         {
@@ -1982,10 +1984,11 @@ namespace iOMG
         }
         private void Bt_print_Click(object sender, EventArgs e)
         {
-            if (tx_serie.Text.Trim() != "" && tx_corre.Text.Trim() != "")
+            if (tx_serie.Text.Trim() != "" && tx_corre.Text.Trim() != "" && Tx_modo.Text == "NUEVO")
             {
                 {
-                    var aa = MessageBox.Show("Desea imprimir el comprobante?", "Confirme por favor",
+                    var aa = MessageBox.Show("Desea imprimir el comprobante?" + Environment.NewLine +
+                        "se usarán los formatos del integrador", "Confirme por favor",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (aa == DialogResult.Yes)
                     {
@@ -2001,6 +2004,11 @@ namespace iOMG
                         }
                     }
                 }
+            }
+            if (Tx_modo.Text != "NUEVO" && tx_serie.Text.Trim() != "" && tx_corre.Text.Trim() != "")
+            {
+                string rutaT = rut_pdf + tx_pdf_rapifac.Text;
+                System.Diagnostics.Process.Start(rutaT);
             }
         }
         private void bt_prev_Click(object sender, EventArgs e)
@@ -4162,13 +4170,23 @@ namespace iOMG
                         }
                         //decimal v_valvtaxml = decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1);
                         decimal v_valvtaxml = (decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1)) * v_cant;
+                        /*
+                        var codCon = "";    // solo en cancelaciones ponemos en X en madera
+                        if ((ron.Cells[14].Value != null && (ron.Cells[14].Value.ToString().Trim() != ""){
+                            codCon = ron.Cells[14].Value.ToString();
+                            var SBuilder = new StringBuilder(codCon);
+                            SBuilder.Remove(4, 1);
+                            SBuilder.Insert(4, "X");
+                            codCon = SBuilder.ToString();
+                        }
+                        */
                         CComprobanteDetalle det = new CComprobanteDetalle       //  
                         {
                             ID = 0,
                             ComprobanteID = 0,
                             Item = cta_ron,
                             TipoProductoCodigo = "",
-                            ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // 
+                            ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // codCon      10/01/2024
                             ProductoCodigoSUNAT = "",                       // "56101532",
                             TipoSistemaISCCodigo = "00",
                             UnidadMedidaCodigo = cod_umed,          // "NIU",
@@ -4990,7 +5008,7 @@ namespace iOMG
                 AlojamientoPaisDocEmisor = "AF",                // esto ?
                 PaisResidencia = "AF",
                 Gravado = decimal.Parse(tx_bruto.Text),
-                Observacion = "ANTICIPO",               // tx_coment.Text.Trim(), 08/01=2024
+                Observacion = "*** Comprobante de Anticipo ***",               // tx_coment.Text.Trim(), 08/01=2024
                 FechaIngresoPais = "01/01/1900",
                 FechaIngresoEstablecimiento = "01/01/1900",
                 FechaSalidaEstablecimiento = "01/01/1900",
