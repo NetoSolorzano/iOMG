@@ -1680,7 +1680,7 @@ namespace iOMG
                 tx_d_deta.MaxLength = 100 - (tx_d_nom.Text.Trim().Length) - 3;  // 100 - "cama oyara algo".lenght() - " - "
             }
         }
-        private void movAlmacen(string estado)                       // descarga de almacen si el comprob. es anulado 
+        private void movAlmacen(string estado)                       // descarga de almacen si el comprob. es anulado ... falta terminar 11/01/2024
         {
             if (estado == "ANULAR")             // descargamos del almacén si no se tiene contrato y es un "articulo chico"
             {
@@ -3520,7 +3520,7 @@ namespace iOMG
                         if (row.Cells[2].Value != null && row.Cells[2].Value.ToString() == "")      // anticipo
                         {
                             string inserd2 = "update detfactu set " +
-                                "contrato=@cont,descpro=@desc,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@dscto " +
+                                "contrato=@cont,descpro=@desc,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@dscto,alterno1=@rapif " +
                                 "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
                             using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
                             {
@@ -3537,6 +3537,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "N");
                                 micon.Parameters.AddWithValue("@esta", (rb_contado.Checked == true) ? codCanc : codEmit);        // todos los comprob. nacen cancelados
                                 micon.Parameters.AddWithValue("@dscto", 0); // decimal.Parse(row.Cells[11].Value.ToString())
+                                micon.Parameters.AddWithValue("@rapif", row.Cells["crapi"].Value.ToString());
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
@@ -3546,7 +3547,7 @@ namespace iOMG
                         else
                         {   
                             string inserd2 = "update detfactu set " +
-                                "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba," +
+                                "contrato=@cont,cantbul=@bult,codprod=@citem,unimedp=@unim,descpro=@desc,pesogro=@peso,medidas=@medid,madera=@mader,acabado=@acaba,alterno1=@rapif," +
                                 "codmad=@codm,detpied=@detp,codMN=@cmnn,precio=@pret,totalMN=@tgrmn,pagauto=@pagaut,estadoser=@esta,dscto=@vesta,totSinDscto=totalMN+dscto " +
                                 "where tipdocvta=@tdv and serdvta=@sdv and numdvta=@cdv and filadet=@fila";
                             using (MySqlCommand micon = new MySqlCommand(inserd2, conn))
@@ -3573,6 +3574,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "S"); // todo se asume pagado, asi sea credito 14/02/2023
                                 micon.Parameters.AddWithValue("@esta", (rb_contado.Checked == true) ? codCanc : codEmit);        // todos los comprob. nacen cancelados
                                 micon.Parameters.AddWithValue("@vesta", decimal.Parse(row.Cells[11].Value.ToString()));  // (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString())
+                                micon.Parameters.AddWithValue("@rapif", row.Cells["crapi"].Value.ToString());
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
