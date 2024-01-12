@@ -926,7 +926,7 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 19;
+            if (modo == "NUEVO") dataGridView1.ColumnCount = 20;
             // id 
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho
@@ -1468,7 +1468,8 @@ namespace iOMG
                 "WHERE a.contratoh = @cont ";
             */
             string jalad = "SELECT a.iddetacon,a.item,a.cant,a.nombre,a.medidas,a.madera,a.precio,a.total,a.saldo,a.pedido,c.descrizionerid as codref,a.coment," +
-                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,if(left(a.item,1)=@letg,it.detporc,'')) as codpie,space(1) as na,tda_item,space(1) as totCat,totdscto " +
+                "ifnull(b.descrizionerid,'') as piedra,ifnull(b.idcodice,if(left(a.item,1)=@letg,it.detporc,'')) as codpie,space(1) as na,tda_item," +
+                "space(1) as totCat,a.totdscto,a.alterno1 " +
                 "FROM detacon a " +
                 "left join desc_dt2 b on b.idcodice=a.piedra " +
                 "left join desc_mad c on c.idcodice=a.madera " +

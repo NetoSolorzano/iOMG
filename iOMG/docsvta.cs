@@ -3780,7 +3780,7 @@ namespace iOMG
                         {
                             PrecioId = cta_ron,
                             PrecioConfiguracion = 1,
-                            ProductoCod = ron.Cells[2].Value.ToString(),
+                            ProductoCod = ron.Cells["crapi"].Value.ToString(),    // ron.Cells[2].Value.ToString()
                             CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,              // 
                             DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,         // 
                             CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
@@ -3842,7 +3842,7 @@ namespace iOMG
                         PrecioUnitarioSugerido = 0,
 
                         PrecioUnitarioNeto = v_preUmdes - v_dsctoNume - v_dsctoGlob,       // v_preToti / v_cant - decimal.Parse(ron.Cells[11].Value.ToString()),
-                        PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                        PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // acá falta descontar dscto ?? 12/01/2024
                         CantidadUnidadMedida = v_cant,
                         DescuentoGlobal = v_dgloSin,
                         Descuento = v_dsctofsin,    //  decimal.Parse(ron.Cells[11].Value.ToString()),
@@ -4186,7 +4186,7 @@ namespace iOMG
                         {
                             PrecioId = cta_ron,        // 99
                             PrecioConfiguracion = 1,
-                            ProductoCod = ron.Cells[2].Value.ToString(),
+                            ProductoCod = ron.Cells["crapi"].Value.ToString(),      // ron.Cells[2].Value.ToString(),
                             CodigoUnidadMedida = cod_umed,          // "NIU",
                             DescripcionUnidadMedida = nom_umed,     //  "UNIDAD",
                             CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
@@ -4262,7 +4262,7 @@ namespace iOMG
                             PrecioUnitarioSugerido = 0,
 
                             PrecioUnitarioNeto = v_preUmdes - v_dsctoNume - v_dsctoGlob,
-                            PrecioUnitarioItem = v_preUmdes, // decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,  
+                            PrecioUnitarioItem = v_preUmdes - v_dsctoNume,  // Según chat de soporte rapifac el PrecioUnitarioItem incluye su dscto .. 12/01/2024 
                             CantidadUnidadMedida = v_cant,
                             DescuentoGlobal = 0,
                             Descuento = v_dsctofsin,
@@ -5155,7 +5155,7 @@ namespace iOMG
                         ComprobanteID = 0,
                         Item = cta_ron,
                         TipoProductoCodigo = "",
-                        ProductoCodigo = ron.Cells[2].Value.ToString(),   // "Prod00005",
+                        ProductoCodigo = ron.Cells["crapi"].Value.ToString(),   // ron.Cells[2].Value.ToString()
                         ProductoCodigoSUNAT = "",                       // "56101532",
                         TipoSistemaISCCodigo = "00",
                         UnidadMedidaCodigo = cod_umed,                   // "NIU",
