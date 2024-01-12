@@ -722,7 +722,7 @@ namespace iOMG
                 cmb_tip.Items.Clear();
                 cmb_tip.Tag = "";
                 const string contip = "select descrizionerid,idcodice from desc_tip " +
-                    "where numero=1";
+                    "where numero=1 order by descrizionerid,idcodice";
                 MySqlCommand cmdtip = new MySqlCommand(contip, conn);
                 DataTable dttip = new DataTable();
                 MySqlDataAdapter datip = new MySqlDataAdapter(cmdtip);
