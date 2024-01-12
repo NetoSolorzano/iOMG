@@ -335,13 +335,13 @@ OJO, el dscto global de una cancelacion no esta pasando al contrato. Ej. F200-12
 -- Según el soporte de rapifac el problema es el campo valorVentaItem que debe ir con 
 	el precio del item menos el igv .................................................. 
 **************************************************************************************
-form docsvta, predeterminar que el formato x defecto es A4, deshabilitar TK .......... 05/01/2024
-form contratos, items "chicos" o a diseño el precio lo pone el operador .............. 05/01/2024
-form docsvta, campo adicional para detalle de nombre de item ......................... 05/01/2024
-form docsvta, no debe poderse cambiar el nombre del catalogo ......................... 05/01/2024
-form docsvta, se debe enviar a rapifac el codigo alterno1 de la B.D. ................. 05/01/2024
-tabla enlaces, identificador de servicios ya no Z, ahora es U ........................ 04/01/2024
-tabla items_adic, actualizar contenido y con codigos nuevos .......................... 06/01/2024
-form docsvta, en venta directa no esta saliendo el descuento en el en rapifac ........ 08/01/2024 falta probar en producción
-form docsvta, todas las impresiones deben ser con el formato Rapifac .................  al dar click en "imprimir" debe darse click en visualizar
-form docsvta, en cancelaciones revisar si sale el descuento o como debe salir ........ 
+form docsvta, predeterminar que el formato x defecto es A4, deshabilitar TK .......... ok 05/01/2024
+form contratos, items "chicos" o a diseño el precio lo pone el operador .............. ok 05/01/2024
+form docsvta, campo adicional para detalle de nombre de item ......................... ok 05/01/2024
+form docsvta, no debe poderse cambiar el nombre del catalogo ......................... ok 05/01/2024
+form docsvta, se debe enviar a rapifac el codigo alterno1 de la B.D. ................. ok 05/01/2024
+tabla enlaces, identificador de servicios ya no Z, ahora es U ........................ ok 04/01/2024
+tabla items_adic, actualizar contenido y con codigos nuevos .......................... ok 06/01/2024
+form docsvta, en venta directa no esta saliendo el descuento en el en rapifac ........ ok 08/01/2024 falta probar en producción
+form docsvta, todas las impresiones deben ser con el formato Rapifac ................. ok 10/01/2021 al dar click en "imprimir" debe darse click en visualizar
+form docsvta, en cancelaciones revisar si sale el descuento o como debe salir ........ falta probar
