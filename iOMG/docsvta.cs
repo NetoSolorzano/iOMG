@@ -113,6 +113,7 @@ namespace iOMG
         string glos_antic = "";             // glosa generica para los anticipos
         string glos_cance = "";             // glosa generica para las cancelaciones
         string vforImp = "";                // formatos de impresion admitidos
+        string varchic = "";                // articulos chicos
         #endregion
 
         List<docsAnticip> _docsAnticip = new List<docsAnticip>();
@@ -406,6 +407,10 @@ namespace iOMG
                         if (row["campo"].ToString() == "conector")
                         {
                             if (row["param"].ToString() == "noRetGlosa") NoRetGl = row["valor"].ToString().Trim();          // glosa que retorna umasapa cuando no encuentra dato
+                        }
+                        if (row["campo"].ToString() == "items" && row["param"].ToString() == "chicos")
+                        {
+                            varchic = row["valor"].ToString().Trim();          // articulos chicos
                         }
                     }
                     if (row["formulario"].ToString() == "clients")
@@ -1673,6 +1678,68 @@ namespace iOMG
             if (Tx_modo.Text == "NUEVO" && tx_d_nom.Text.Trim() != "")
             {
                 tx_d_deta.MaxLength = 100 - (tx_d_nom.Text.Trim().Length) - 3;  // 100 - "cama oyara algo".lenght() - " - "
+            }
+        }
+        private void movAlmacen(string estado)                       // descarga de almacen si el comprob. es anulado 
+        {
+            if (estado == "ANULAR")             // descargamos del almacén si no se tiene contrato y es un "articulo chico"
+            {
+                if (tx_cont.Text.Trim() == "")      // entra si el comprobante no tiene contrato
+                {
+                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    {
+                        conn.Open();
+                        for (int i = 0; i <= dataGridView1.Rows.Count - 1; i++)
+                        {
+                            if (dataGridView1.Rows[i].Cells[1].Value != null &&
+                                dataGridView1.Rows[i].Cells[1].Value.ToString().Trim() != "" &&
+                                dataGridView1.Rows[i].Cells[1].Value.ToString().Trim() != "0")      // entra si hay cantidad > 0
+                            {
+                                if (dataGridView1.Rows[i].Cells[2].Value != null && dataGridView1.Rows[i].Cells[2].Value.ToString().Trim() != "")   // entra si hay código
+                                {
+                                    if (varchic.Contains(dataGridView1.Rows[i].Cells[2].Value.ToString().Substring(0, 1)))       // entra si es un artículo chico
+                                    {
+                                        // vamos al almacén e ingresamos la cantidad
+                                        string actalm = "select count(id) from @nomalm where codig=@item and almacen = @alm";
+                                        string actua = "";
+                                        using (MySqlCommand micon = new MySqlCommand(actalm, conn))
+                                        {
+                                            micon.Parameters.AddWithValue("@nomalm", "nolose");
+                                            micon.Parameters.AddWithValue("@alm", tx_dat_orig.Text);
+                                            using (MySqlDataReader dr = micon.ExecuteReader())
+                                            {
+                                                if (dr.HasRows == true)
+                                                {
+                                                    if (dr.Read())
+                                                    {
+                                                        if (dr.GetInt32(0) > 0) // codigo existe, entonces actualizamos
+                                                        {
+                                                            actua = "update @nomalm set cant = cant + @can where codig = @cod and almacen = @alm";
+                                                        }
+                                                        else
+                                                        {
+                                                            // NO existe, entonces insertamos
+                                                            actua = "insert into @nomalm (codig,nombre,cant,almacen,) values (@cod,@nom,@can,@alm)";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        using (MySqlCommand micon = new MySqlCommand(actua, conn))
+                                        {
+                                            micon.Parameters.AddWithValue("@nomalm", "nolose");     // nombre de la tabla almacen
+                                            micon.Parameters.AddWithValue("@alm", tx_dat_orig.Text);        // codigo de almacen
+                                            micon.Parameters.AddWithValue("@can", dataGridView1.Rows[i].Cells[1].Value.ToString());        // cantidad
+                                            micon.Parameters.AddWithValue("@nom", dataGridView1.Rows[i].Cells[3].Value.ToString());        // nombre
+                                            micon.Parameters.AddWithValue("@cod", dataGridView1.Rows[i].Cells[2].Value.ToString());        // codigo
+                                            micon.ExecuteNonQuery();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
