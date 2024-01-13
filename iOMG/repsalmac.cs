@@ -229,6 +229,11 @@ namespace iOMG
                 int anchColOpt = dgv_resumen.Columns[1].Width;
                 dgv_resumen.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgv_resumen.Columns[1].Width = anchColOpt / 2;
+                if (chk_stkval.Checked == true)
+                {
+                    dgv_resumen.Columns[17].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    dgv_resumen.Columns[17].Width = 100;
+                }
             }
             dgv_resumen.ReadOnly = true;
         }
@@ -505,13 +510,16 @@ namespace iOMG
                     dtg.Clear();
                     dtg.Columns.Clear();
                     dgv_resumen.DataSource = null;
+                    dgv_resumen.Columns.Clear();
+                    dgv_resumen.Rows.Clear();
                     //dgv_resumen.ColumnCount = 0;
                     if (rb_resalm.Checked == true)   // tx_dat_dest.Text.Trim() == ""
                     {
-                        consulta = "pivot_stock";  // pivot_stock1
+                        consulta = "pivot_stockV";  // pivot_stock (13/01/2024)
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
                         micon.CommandType = CommandType.StoredProcedure;
                         micon.Parameters.AddWithValue("@vcap", (cmb_fam.Text.Length > 0) ? cmb_fam.Text.Substring(0, 1) : "");
+                        micon.Parameters.AddWithValue("@valorizado", (chk_stkval.Checked == true) ? "S" : "");
                         MySqlDataAdapter da = new MySqlDataAdapter(micon);
                         da.Fill(dtg);
                         dgv_resumen.DataSource = dtg;
@@ -531,7 +539,7 @@ namespace iOMG
                         grilla();       // pone las columnas al ancho de la data
                         da.Dispose();
                     }
-                    else
+                    /* else
                     {
                         consulta = "rep_stock";     // anterior reporte de stock, antes del pivot
                         MySqlCommand micon = new MySqlCommand(consulta, conn);
@@ -544,7 +552,7 @@ namespace iOMG
                         da.Dispose();
                         if (chk_stkval.Checked == true) grillares("conval");
                         else grillares("sinval");
-                    }
+                    } */
                 }
                 else
                 {
@@ -685,7 +693,8 @@ namespace iOMG
         {
             cmb_destino.Enabled = false;
             tx_dat_dest.Text = "";
-            chk_stkval.Enabled = false;
+            chk_stkval.Visible = true;
+            chk_stkval.Enabled = true;
             chk_stkval.Checked = false;
             cmb_fam.Enabled = true;
         }
@@ -693,6 +702,7 @@ namespace iOMG
         {
             cmb_destino.Enabled = true;
             tx_dat_dest.Text = "";
+            chk_stkval.Visible = false;
             chk_stkval.Enabled = true;
             chk_stkval.Checked = false;
             cmb_fam.SelectedIndex = -1;

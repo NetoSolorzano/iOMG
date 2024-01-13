@@ -686,12 +686,12 @@ namespace iOMG
             string jalad = "";
             if (rb_antic.Checked == true)
             {
-                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,if(cantbul>0,'A',space(1)),dscto,totSinDscto,space(1) as Por_Det " +
+                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,if(cantbul>0,'A',space(1)),dscto,totSinDscto,space(1) as Por_Det,alterno1 " +
                     "FROM detfactu where idc=@idr";
             }
             else
             {
-                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto,space(1) as Por_Det " +
+                jalad = "SELECT filadet,cantbul,codprod,descpro,medidas,codmad,madera,acabado,precio,totalMN,space(1),dscto,totSinDscto,space(1) as Por_Det,alterno1 " +
                     "FROM detfactu where idc=@idr";
             }
             MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
@@ -817,7 +817,7 @@ namespace iOMG
             dataGridView1.Columns[13].HeaderText = "Por_Det";
             dataGridView1.Columns[13].ReadOnly = true;
             dataGridView1.Columns[13].Name = "POR_DET";
-            if (modo == "NUEVO")
+            if (true)    // modo == "NUEVO"
             {
                 //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
                 DataGridViewColumn colRapifac = new DataGridViewColumn();
@@ -1226,7 +1226,7 @@ namespace iOMG
                                     data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
                                     (double.Parse(data.ItemArray[8].ToString()) - Dscto / double.Parse(data.ItemArray[3].ToString())).ToString("#0.00"),
                                     (double.Parse(data.ItemArray[9].ToString()) - Dscto).ToString("#0.00"),"",
-                                    Dscto, totSinD, data.ItemArray[24].ToString(), data.ItemArray[25].ToString());  // [25] cod rapifac
+                                    Dscto, totSinD, data.ItemArray[24].ToString(), "", data.ItemArray[25].ToString());
                                 cnt += 1;
                                 toti = toti + (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString()));
                             }
@@ -1962,6 +1962,7 @@ namespace iOMG
             tx_d_med.ReadOnly = true;
             rb_tbienes.Checked = true;
             tx_d_can.ReadOnly = false;
+            label1.Text = "Comentarios";
             bt_prev.Enabled = false;
             rb_contado_Click(null, null);
             cmb_tipo.Focus();
@@ -1991,6 +1992,7 @@ namespace iOMG
             tx_d_can.ReadOnly = true;
             tx_d_nom.ReadOnly = true;
             tx_d_med.ReadOnly = true;
+            label1.Text = "Comentarios";
             tx_coment.Enabled = true;
             tx_coment.ReadOnly = false;
             //
@@ -2021,6 +2023,7 @@ namespace iOMG
             tx_d_med.ReadOnly = true;
             tx_coment.Enabled = true;
             tx_coment.ReadOnly = false;
+            label1.Text = "MOTIVO AN.";
             bt_prev.Enabled = true;
             cmb_tipo.Focus();
             panel_pdf.Enabled = false;
@@ -2043,6 +2046,7 @@ namespace iOMG
             tx_serie.ReadOnly = false;
             tx_corre.Enabled = true;
             tx_corre.ReadOnly = false;
+            label1.Text = "Comentarios";
             tx_impMedios.ReadOnly = false;
             tx_impMedios.Enabled = true;
             bt_prev.Enabled = true;
@@ -3382,6 +3386,12 @@ namespace iOMG
                     MessageBox.Show("No se permite anular fuera del día","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     return;
                 }
+                if (tx_coment.Text == "")
+                {
+                    MessageBox.Show("Registre el motivo de la anulación", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tx_coment.Focus();
+                    return;
+                }
                 var aa = MessageBox.Show(" Confirma que desea ANULAR " + Environment.NewLine +
                     "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
@@ -3537,7 +3547,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "N");
                                 micon.Parameters.AddWithValue("@esta", (rb_contado.Checked == true) ? codCanc : codEmit);        // todos los comprob. nacen cancelados
                                 micon.Parameters.AddWithValue("@dscto", 0); // decimal.Parse(row.Cells[11].Value.ToString())
-                                micon.Parameters.AddWithValue("@rapif", row.Cells["crapi"].Value.ToString());
+                                micon.Parameters.AddWithValue("@rapif", (row.Cells["crapi"].Value == null) ? "" : row.Cells["crapi"].Value.ToString());
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
@@ -3574,7 +3584,7 @@ namespace iOMG
                                 micon.Parameters.AddWithValue("@pagaut", (rb_contado.Checked == true) ? "S" : "S"); // todo se asume pagado, asi sea credito 14/02/2023
                                 micon.Parameters.AddWithValue("@esta", (rb_contado.Checked == true) ? codCanc : codEmit);        // todos los comprob. nacen cancelados
                                 micon.Parameters.AddWithValue("@vesta", decimal.Parse(row.Cells[11].Value.ToString()));  // (row.Cells[11].Value == null || row.Cells[11].Value == DBNull.Value) ? 0 : decimal.Parse(row.Cells[11].Value.ToString())
-                                micon.Parameters.AddWithValue("@rapif", row.Cells["crapi"].Value.ToString());
+                                micon.Parameters.AddWithValue("@rapif", (row.Cells["crapi"].Value == null) ? "" : row.Cells["crapi"].Value.ToString());
                                 micon.ExecuteNonQuery();
                                 fila += 1;
                                 //
@@ -4267,9 +4277,9 @@ namespace iOMG
                             DescuentoGlobal = 0,
                             Descuento = v_dsctofsin,
                             ValorUnitario = v_valorUnit,
-                            ValorVentaItem = v_valTotal,    // v_valvtaxml,           // valor del item incluyendo descuento
-                            ValorVentaItemXML = v_valTotal, // v_valvtaxml,        // valor del item incluyendo descuento - descuento global si hubiera
-                            ValorVentaNeto = v_valorNeto,   // v_dsctobase - v_dsctofsin,     // v_valorUnit * v_cant,
+                            ValorVentaItem = v_valTotal - v_dsctofsin,    // v_valTotal,           // valor del item incluyendo descuento
+                            ValorVentaItemXML = v_valTotal - v_dsctofsin, // v_valTotal        // valor del item incluyendo descuento - descuento global si hubiera
+                            ValorVentaNeto = v_valTotal - v_dsctofsin,   // v_valorNeto         estos 3 valorventa 12/01/2024
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
                             DescuentoBase = v_valTotal,
@@ -4295,7 +4305,7 @@ namespace iOMG
                             ICBPER = 0,
                             CargoIndicador = "0",
                             CargoCargoCodigo = "",
-                            DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                            DescuentoIndicador = 1,                         // 12/01/2024
                             DescuentoCargoCodigo = "00",
                             PercepcionCantidadUmbral = 0,
                             PercepcionMontoUmbral = 0,
@@ -4557,7 +4567,7 @@ namespace iOMG
                 CondicionEstado = "",
                 CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
                 SituacionPagoCodigo = 2,
-                DescuentoIndicador = 0,
+                DescuentoIndicador = 1,                 // 12/01/2024
                 Ubigeo = tx_dir_ubigpe.Text,
                 AnticipoMonto = totAnt,                                   // suma de anticipos, antes de la cancelacion
                 ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
@@ -4612,14 +4622,15 @@ namespace iOMG
                 ListaCondicionesComerciales = { },
                 UUID = "",
                 DescuentoGlobalPorcentaje = v_dgporc,
-                DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text),
+                DescuentoGlobalValor = decimal.Parse(tx_desGlob.Text) + v_totDscto,
                 CorreoElectronicoPrincipal = mailPrin,
                 Exonerada = 0,
                 Inafecto = 0,
                 Exportacion = 0,
                 OperacionNoGravada = 0,
                 Gratuito = 0,
-                TotalDescuentos = (v_totDscto / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,      // TotalDescuentos = 0,
+                TotalDescuentosMonto = decimal.Parse(tx_desGlob.Text) + v_totDscto,
+                TotalDescuentos = ((decimal.Parse(tx_desGlob.Text) + v_totDscto) / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,   //(v_totDscto / (1 + decimal.Parse(v_igv) / 100)) + v_dgloSin,      // TotalDescuentos = 0,
                 DescuentoGlobal = v_dgloSin,
                 TotalAnticipos = subtotAnt,
                 BANDERA_CONCURRENCIA = false,
@@ -5155,7 +5166,7 @@ namespace iOMG
                         ComprobanteID = 0,
                         Item = cta_ron,
                         TipoProductoCodigo = "",
-                        ProductoCodigo = ron.Cells["crapi"].Value.ToString(),   // ron.Cells[2].Value.ToString()
+                        ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // 
                         ProductoCodigoSUNAT = "",                       // "56101532",
                         TipoSistemaISCCodigo = "00",
                         UnidadMedidaCodigo = cod_umed,                   // "NIU",
@@ -5403,7 +5414,7 @@ namespace iOMG
                 EstadoContingencia = false,
                 Baja = 0,
                 Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
-                MotivoBaja = "Anulación",
+                MotivoBaja = tx_coment.Text,          //"Anulación",  13/01/2024
                 OrigenSistema = 0,
                 TipoPrecio = 0,
                 Ubigeo = tx_dir_ubigpe.Text,
@@ -5433,13 +5444,15 @@ namespace iOMG
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 streamWriter.Write(cabeza);
+                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + "anulado" + ".json", cabeza);
             }
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
                 //MessageBox.Show(result.ToString());
-                retorna = (bool.Parse(result.ToString()) == true) ? true : false;
+                //retorna = (bool.Parse(result.ToString()) == true) ? true : false;     marca como anulado pero acá no se como leerlo
+                retorna =  true;    // 12/01/2024
             }
 
             return retorna;
