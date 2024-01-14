@@ -696,7 +696,20 @@ namespace iOMG
         }
         private void Bt_edit_Click(object sender, EventArgs e)
         {
-            //
+            tabControl1.Enabled = true;
+            advancedDataGridView1.Enabled = true;
+            advancedDataGridView1.ReadOnly = false;
+            sololee(this);
+            Tx_modo.Text = "EDITAR";
+            limpiar(this);
+            limpiapag(tabuser);
+            sololeepag(tabuser);
+            limpia_otros(tabuser);
+            limpia_combos(tabuser);
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            limpia_panel(pan_cli);
+            cmb_tdoc.SelectedIndex = -1;
         }
         private void Bt_anul_Click(object sender, EventArgs e)
         {
@@ -1007,7 +1020,15 @@ namespace iOMG
         #region datagridview
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            // nada
+            if (Tx_modo.Text == "EDITAR") 
+            {
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT")
+                {
+                    dataGridView1.ReadOnly = false;
+
+                }
+
+            }
         }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
