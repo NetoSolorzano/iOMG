@@ -8,8 +8,15 @@ namespace iOMG
 {
     public class CComprobanteAnula
     {
-        public long IdMovimiento { get; set; }
-        public int TipoCuentaCodigo { get; set; }
+        public long ID { get; set; }
+        //public long IdMovimiento { get; set; }
+        //public int TipoCuentaCodigo { get; set; }
+        public string TipoDocumentoCodigo { get; set; }
+        public string Serie { get; set; }
+        public int Correlativo { get; set; }
+        public string FechaEmision { get; set; }
+        public string MotivoBaja { get; set; }
+        /*
         public string CuentaNumero { get; set; }
         public string CuentaNombre { get; set; }
         public int TipoIngresoEgreso { get; set; }
@@ -20,9 +27,6 @@ namespace iOMG
         public string TipoDocIdentidadCodigo { get; set; }
         public string NumeroDocIdentidad { get; set; }
         public string Origen { get; set; }
-        public string TipoDocumentoCodigo { get; set; }
-        public string Serie { get; set; }
-        public int Correlativo { get; set; }
         public string Usuario { get; set; }
         public int IdOrigen { get; set; }
         public int Estado { get; set; }
@@ -39,40 +43,20 @@ namespace iOMG
         public string CondicionPagoModificado { get; set; }
         public string CuentaNumeroModificado { get; set; }
         public string CuentaTipoModificado { get; set; }
+        */
+        public List<CComprobanteDetalle> ListaDetalles { get; set; }
+        public List<CMovimientoCuenta> ListaMovimientos { get; set; }
 
         public CComprobanteAnula()
         {
-            IdMovimiento = 0;
-            TipoCuentaCodigo = 0;
-            CuentaNumero = "";
-            CuentaNombre = "";
-            TipoIngresoEgreso = 0;
-            MontoPagar = 0;
-            MonedaCodigo = "";
-            Observacion = "";
-            NumeroOperacion = "";
-            TipoDocIdentidadCodigo = "";
-            NumeroDocIdentidad = "";
-            Origen = "";
+            ID = 0;
             TipoDocumentoCodigo = "";
             Serie = "";
             Correlativo = 0;
-            Usuario = "";
-            IdOrigen = 0;
-            Estado = 0;
-            FechaPago = "";
-            SucursalId = 0;
-            Pago = 0;
-            Pagado = 0;
-            Saldo = 0;
-            FechaVencimiento = "";
-            PlazoDias = 0;
-            CondicionComprobante = "";
-            Condicion = "";
-            Vuelto = 0;
-            CondicionPagoModificado = "";
-            CuentaNumeroModificado = "";
-            CuentaTipoModificado = "";
+            FechaEmision = "";
+            MotivoBaja = "";
+            ListaDetalles = null;
+            ListaMovimientos = null;
         }
     }
 }

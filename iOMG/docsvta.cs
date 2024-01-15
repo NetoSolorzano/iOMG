@@ -5119,7 +5119,181 @@ namespace iOMG
             // ya no usamos este rutina, esta archivada en c:/temp/back_docsvta2
             return retorna;
         }
-        private bool anula_Rapifac()                                                // damos de baja el comprobante
+        private bool anula_Rapifac()
+        {
+            bool retorna = false;
+            int cta_ron = 1;
+            List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
+            /* foreach (DataGridViewRow ron in dataGridView1.Rows)
+            {
+                List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
+                {
+                    if (ron.Cells[1].Value != null)
+                    {
+                        ProductoPrecioDTO dlp = new ProductoPrecioDTO
+                        {
+                            PrecioId = 99,
+                            PrecioConfiguracion = 1,
+                            ProductoCod = ron.Cells[2].Value.ToString(),
+                            CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,              // "NIU",
+                            DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,         // "UNIDAD",
+                            CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
+                            MonedaCodigo = tx_dat_mon_s.Text,       // "PEN",
+                            SucursalId = tx_codSuc.Text,
+                            Margenganancia = 0,
+                            MargenPorcentaje = 0,
+                            PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
+                            OtrosCargosPorcentaje = 0,
+                            CantidadAplicable = 0,
+                            FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                            Estado = 1,
+                            ISCPorcentaje = 0,
+                            ISCCalculado = 0,
+                            //Extension = { };
+                            UUID = ""
+                        };
+                        ccc.Add(dlp);
+                    }
+                }
+                if (ron.Cells[1].Value != null)
+                {
+                    int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
+                    decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
+                        ((decimal.Parse(v_igv) / 100) + 1);
+                    decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
+                        (decimal.Parse(ron.Cells[9].Value.ToString()) /
+                        ((decimal.Parse(v_igv) / 100) + 1));
+                    decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
+                        ((decimal.Parse(v_igv) / 100) + 1);
+                    CComprobanteDetalle det = new CComprobanteDetalle
+                    {
+                        ID = 0,
+                        ComprobanteID = 0,
+                        Item = cta_ron,
+                        TipoProductoCodigo = "",
+                        ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // 
+                        ProductoCodigoSUNAT = "",                       // "56101532",
+                        TipoSistemaISCCodigo = "00",
+                        UnidadMedidaCodigo = cod_umed,                   // "NIU",
+                        PrecioUnitarioSugerido = 0,
+                        PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
+                        PrecioVentaCodigo = "01",
+                        ICBPER = 0,
+                        CargoIndicador = "0",
+                        CargoCargoCodigo = "",
+                        DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                        DescuentoCargoCodigo = "00",
+                        PercepcionCantidadUmbral = 0,
+                        PercepcionMontoUmbral = 0,
+                        PercepcionPorcentaje = 0,
+                        Control = 0,
+                        PrecioCompra = 0,
+                        EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
+                        ImporteTotalReferencia = 0,                 // este es el valor referencial 
+                        CantidadUnidadMedida = v_cant,
+                        Kit = 1,
+                        CantidadReferencial = 1,
+                        Cargo = 0,
+                        DescuentoGlobal = 0,
+                        Descuento = 0,
+                        ValorUnitario = v_valorUnit,
+                        ValorVentaItem = (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),       // v_valorUnit * v_cant,
+                        ValorVentaItemXML = v_valorUnit * v_cant,
+                        ValorVentaNeto = v_valorUnit * v_cant,
+                        ValorVentaNetoXML = 0,
+                        ISCUnitario = 0,
+                        ISCNeto = 0,
+                        ISC = 0,
+                        IGV = v_valIgvTot,
+                        ICBPERItem = 0,
+                        ICBPERSubTotal = 0,
+                        DescuentoBase = 0,
+                        DescuentoCargo = 0,
+                        DescuentoCargoGravado = 0,
+                        CargoItem = 0,
+                        CargoTotal = 0,
+                        CargoNeto = 0,
+                        PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
+                        MontoTributo = v_valIgvTot,
+                        ISCPorcentaje = 0,
+                        ISCMonto = 0,
+                        CargoPorcentaje = 0,
+                        //Extension = { },
+                        ListaSeries = new List<CProductoCodigoSerie>(),
+                        //ListaPrecios = new List<ProductoPrecioDTO>(),
+                        ListaPrecios = ccc,
+                        PrecioUnitarioRecuperado = false,
+                        UUID = "",
+                        BANDERA_CONCURRENCIA = false,
+                        BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
+                        BANDERA_DETALLEREEMPLAZADO = false,
+                        BANDERA_DETALLERECUPERADO = false,
+                        BANDERA_ITEMDETALLADO = true,
+                        Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
+                        Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
+                        Stock = 0,
+                        Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
+                        PrecioCodigo = 0,
+                        PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
+                        Peso = 0,
+                        DescuentoMonto = 0,
+                        DescuentoPorcentaje = "0.00",
+                        TipoAfectacionIGVCodigo = "10",                     // Sunat Catalogo 7 - Venta grabada operación onerosa
+                        ValorVenta = v_valTotal,
+                        Ganancia = 0,
+                        IGVNeto = v_valIgvTot,
+                        ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
+                        PesoTotal = 0
+                    };                      // detalles
+                    aaa.Add(det);
+                    cta_ron += 1;
+                }
+            } */
+            List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
+            CComprobanteAnula obj_anu = new CComprobanteAnula
+            {
+                ID = int.Parse(tx_id_rapifac.Text),
+                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
+                Correlativo = int.Parse(tx_corre.Text),
+                FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                MotivoBaja = tx_coment.Text,          //"Anulación",  13/01/2024
+                ListaDetalles = null,       // aaa,     REGRESE a eta forma el 15/01/2024 5:50 pm.
+                ListaMovimientos = null     // bbb
+            };
+            string cabeza = JsonConvert.SerializeObject(obj_anu);
+            // para probar
+            //System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
+            //Application.Exit();
+            // borra las lineas de arriba
+            string token = conex_token();
+            // ANULA el comprobante
+            // string host = "https://wsventas-exp.rapifac.com/v0/comprobantes/anular";
+            string host = rut_panula;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "PUT";
+            httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(cabeza);
+                System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                //MessageBox.Show(result.ToString());
+                //retorna = (bool.Parse(result.ToString()) == true) ? true : false;     marca como anulado pero acá no se como leerlo
+                retorna = true;    // 12/01/2024
+            }
+
+            return retorna;
+        }
+        private bool anula_Rapifac_no()                                                // damos de baja el comprobante
         {
             bool retorna = false;
             int cta_ron = 1;

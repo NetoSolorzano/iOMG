@@ -346,7 +346,7 @@ form docsvta, en venta directa no esta saliendo el descuento en el en rapifac ..
 form docsvta, todas las impresiones deben ser con el formato Rapifac ................. ok 10/01/2024 al dar click en "imprimir" debe darse click en visualizar
 form docsvta, en cancelaciones revisar si sale el descuento o como debe salir ........ ok 12/01/2024
 form contratos, adecuar formulario a nuevo campo alterno1 en detalle ................. ok 12/01/2024
-form docsvta, en anulaciones, no esta sumando los items en Rapifac ................... ok 15/01/2024 por confirmar
+form docsvta, en anulaciones, no esta sumando los items en Rapifac ................... ok 
 form repsalmac, adecuar form y PA para valorizar stock ............................... ok 13/01/2024
 form cpagos, agregar opcion de "enlazar" pago con B/F a un contrato .................. me quede aca 14/01/2024
 
