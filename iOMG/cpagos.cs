@@ -1024,10 +1024,19 @@ namespace iOMG
             {
                 if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT")
                 {
-                    dataGridView1.ReadOnly = false;
-
+                    //dataGridView1.ReadOnly = false;
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly = false;
+                    // me quede aquí ...
+                }
+                else
+                {
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly = true;
                 }
 
+            }
+            else
+            {
+                dataGridView1.ReadOnly = true;
             }
         }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

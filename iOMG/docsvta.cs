@@ -817,7 +817,7 @@ namespace iOMG
             dataGridView1.Columns[13].HeaderText = "Por_Det";
             dataGridView1.Columns[13].ReadOnly = true;
             dataGridView1.Columns[13].Name = "POR_DET";
-            if (true)    // modo == "NUEVO"
+            if (modo == "NUEVO")    // true
             {
                 //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
                 DataGridViewColumn colRapifac = new DataGridViewColumn();
@@ -826,6 +826,13 @@ namespace iOMG
                 colRapifac.HeaderText = "Rapifac";
                 colRapifac.CellTemplate = new DataGridViewTextBoxCell();
                 dataGridView1.Columns.Insert(14, colRapifac);
+            }
+            else
+            {
+                dataGridView1.Columns[14].Visible = true;
+                dataGridView1.Columns[14].HeaderText = "Rapifac";
+                dataGridView1.Columns[14].ReadOnly = true;
+                dataGridView1.Columns[14].Name = "crapi";
             }
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
@@ -5444,7 +5451,7 @@ namespace iOMG
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 streamWriter.Write(cabeza);
-                System.IO.File.WriteAllText(@"c:\temp\" + tx_serie.Text + "-" + "anulado" + ".json", cabeza);
+                System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
             }
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
