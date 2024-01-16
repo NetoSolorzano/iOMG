@@ -67,6 +67,7 @@ namespace iOMG
         string docRuc = "";             // codigo documento RUC
         string cliente = Program.cliente;    // razon social para los reportes
         string impDef = "";                 // nombre de la impresora por defecto
+        string varconanu = "";              // codigo de contrato anulado
         #endregion
 
         libreria lib = new libreria();
@@ -173,12 +174,13 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi,@cli)";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped,@adi,@cli,@con)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
                 micon.Parameters.AddWithValue("@ped", "cpagos");
                 micon.Parameters.AddWithValue("@adi", "adicionals");
                 micon.Parameters.AddWithValue("@cli", "clients");
+                micon.Parameters.AddWithValue("@con", "contratos");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -234,6 +236,10 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "dni") docDni = row["valor"].ToString().Trim();
                         if (row["campo"].ToString() == "documento" && row["param"].ToString() == "ruc") docRuc = row["valor"].ToString().Trim();
+                    }
+                    if (row["formulario"].ToString() == "contratos")
+                    {
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "codAnu") varconanu = row["valor"].ToString().Trim();
                     }
                 }
                 da.Dispose();
@@ -412,6 +418,8 @@ namespace iOMG
                     dataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     _ = decimal.TryParse(dataGridView1.Rows[0].Cells[i].Value.ToString(), out decimal vd);
                     if (vd != 0) dataGridView1.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    if (dataGridView1.Columns[i].Name == "CONT") dataGridView1.Columns[i].ReadOnly = false;
+                    else dataGridView1.Columns[i].ReadOnly = true;
                 }
                 int b = 0;
                 for (int i = 0; i < dataGridView1.Columns.Count; i++)
@@ -425,7 +433,7 @@ namespace iOMG
                 if (b < dataGridView1.Width) dataGridView1.Width = b - 20;  // b + 60;
             }
             //
-            dataGridView1.ReadOnly = true;
+            //dataGridView1.ReadOnly = true;
             suma_grilla(dataGridView1.Name);
         }
         private void jaladet(int idc)                                           // jala datos del grid principal
@@ -604,6 +612,75 @@ namespace iOMG
             tx_totSaldo.Text = tvv.ToString("#0.00");
             //tx_tfi_f.Text = cr.ToString();
             
+        }
+        private bool validacont(string contra, decimal valcomp, string client)  // validaciones del contrato
+        {
+            // existencia del contrato      ok
+            // contrato no este anulado     ok
+            // saldo del contrato >= al importe del comprobante       ok
+            // cliente del contrato == cliente del comprobante        ok
+            // comprobante no este anulado  
+            bool retorna = false;
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                string a1 = "select a.id,a.fecha,a.cliente,a.contrato,a.STATUS,a.valor,a.acuenta,a.saldo,d.DescrizioneRid,c.RUC " +
+                    "from contrat a LEFT JOIN anag_cli c ON c.IDAnagrafica=a.cliente LEFT JOIN desc_doc d ON d.IDCodice=c.tipdoc " +
+                    "where a.contrato=@contra";
+                using (MySqlCommand micon = new MySqlCommand(a1, conn))
+                {
+                    micon.Parameters.AddWithValue("@contra", contra);
+                    using (MySqlDataReader dr = micon.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            if (dr.Read())
+                            {
+                                if (dr.GetString(4) == varconanu)
+                                {
+                                    MessageBox.Show("El contrato ingresado esta ANULADO", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return retorna;
+                                }
+                                if (valcomp <= 0)
+                                {
+                                    MessageBox.Show("El comprobante seleccionado esta ANULADO", "Error, valor cero", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return retorna;
+                                }
+                                if (valcomp > dr.GetDecimal(7))
+                                {
+                                    MessageBox.Show("El contrato tiene SALDO inferior al comprobante", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return retorna;
+                                }
+                                if (client != dr.GetString(8) + dr.GetString(9))
+                                {
+                                    var masato = MessageBox.Show("El cliente del comprobante no es igual al del contrato" + Environment.NewLine +
+                                        "Desea continuar?","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                                    if (masato == DialogResult.No)
+                                    {
+                                        MessageBox.Show("El cliente no es el mismo!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return retorna;
+                                    }
+                                }
+                                // se puede proceder con el enlace
+                                retorna = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("No existe el contrato ingresado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return retorna;
+                        }
+                    }
+                }
+            }
+            return retorna;
+        }
+        private bool acciona()
+        {
+            bool retorna = false;
+
+            // me quede aquí ... 16/01/2024
+            return retorna;
         }
         #endregion
 
@@ -1018,21 +1095,73 @@ namespace iOMG
         #endregion
 
         #region datagridview
+        private void dataGridView1_CellValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT" &&
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null &&
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != "" &&
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag.ToString() == "")
+            {
+                if (validacont(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(),    // validamos saldo cont, nombre cliente,
+                        decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[10].Value.ToString()),             // que el comprob. no este anulado, cont no anulado
+                        dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString() + dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString()) == true)
+                {
+                    if (acciona() == true)
+                    {
+                        MessageBox.Show("Contrato enlazado con exito!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        bt_view.PerformClick();
+                    }
+                }
+                else
+                {
+                    this.dataGridView1.CurrentCell.Value = "";
+                }
+            }
+        }
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            /*
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT" &&
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null && 
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != "" &&
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag.ToString() == "")
+                {
+                    if (validacont(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(),    // validamos saldo cont, nombre cliente,
+                        decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[10].Value.ToString()),             // que el comprob. no este anulado, cont no anulado
+                        dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString() + dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString()) == true)                   // etc.
+                    {
+                        if (acciona() == true)
+                        {
+                            MessageBox.Show("Contrato enlazado con exito!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            bt_view.PerformClick();
+                        }
+                    }
+                    else
+                    {
+                        this.dataGridView1.CurrentCell.Value = "";
+                    }
+                }
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT" && dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "")
+                {
+                    e.Cancel = false;
+                }
+            */
+        }
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
             if (Tx_modo.Text == "EDITAR") 
             {
-                if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT")
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT" && dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "")
                 {
-                    //dataGridView1.ReadOnly = false;
-                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly = false;
-                    // me quede aquí ...
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = "";
                 }
                 else
                 {
-                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly = true;
+                    //dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    this.dataGridView1.CurrentCell.ReadOnly = true;
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    return;
                 }
-
             }
             else
             {
@@ -1041,17 +1170,20 @@ namespace iOMG
         }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (Tx_modo.Text != "")
+            if (Tx_modo.Text != "EDITAR")
             {
                 if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
                 {
                     if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT")
                     {
-                        contratos ncont = new contratos();
-                        ncont.Show(this);
-                        ncont.bt_view.PerformClick();
-                        ncont.tx_codped.Text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                        ncont.tx_codped_Leave(null, null);
+                        if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != "")
+                        {
+                            contratos ncont = new contratos();
+                            ncont.Show(this);
+                            ncont.bt_view.PerformClick();
+                            ncont.tx_codped.Text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                            ncont.tx_codped_Leave(null, null);
+                        }
                     }
                     if (dataGridView1.Columns[e.ColumnIndex].Name == "DOC_VENTA")
                     {
@@ -1065,6 +1197,13 @@ namespace iOMG
                         ndv.tx_corre.Text = partes[2];
                         ndv.tx_corre_Leave(null, null);
                     }
+                }
+            }
+            if (Tx_modo.Text == "EDITAR")
+            {
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT" && dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "")
+                {
+                    // lo dejo acá ... no se si usaremos esta parte
                 }
             }
         }
