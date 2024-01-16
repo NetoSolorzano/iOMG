@@ -722,7 +722,14 @@ namespace iOMG
             dataGridView1.DefaultCellStyle.Font = tiplg;
             dataGridView1.RowTemplate.Height = 15;
             dataGridView1.DefaultCellStyle.BackColor = Color.MediumAquamarine;
-            if (modo == "NUEVO") dataGridView1.ColumnCount = 14;
+            if (modo == "NUEVO") 
+            { 
+                dataGridView1.ColumnCount = 14; 
+                if (vpago == "cancelacion")
+                {
+                    dataGridView1.ColumnCount = 15;
+                }
+            }
             // it
             dataGridView1.Columns[0].Visible = true;
             dataGridView1.Columns[0].Width = 30;                // ancho                
@@ -819,20 +826,23 @@ namespace iOMG
             dataGridView1.Columns[13].Name = "POR_DET";
             if (modo == "NUEVO")    // true
             {
-                //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
-                DataGridViewColumn colRapifac = new DataGridViewColumn();
-                colRapifac.Name = "crapi";
-                colRapifac.Visible = true;      // cambiar a false en condiciones de producccion
-                colRapifac.HeaderText = "Rapifac";
-                colRapifac.CellTemplate = new DataGridViewTextBoxCell();
-                dataGridView1.Columns.Insert(14, colRapifac);
-            }
-            else
-            {
-                dataGridView1.Columns[14].Visible = true;
-                dataGridView1.Columns[14].HeaderText = "Rapifac";
-                dataGridView1.Columns[14].ReadOnly = true;
-                dataGridView1.Columns[14].Name = "crapi";
+                if (vpago == "cancelacion")
+                {
+                    dataGridView1.Columns[14].Visible = true;
+                    dataGridView1.Columns[14].HeaderText = "Rapifac";
+                    dataGridView1.Columns[14].ReadOnly = true;
+                    dataGridView1.Columns[14].Name = "crapi";
+                }
+                else
+                {
+                    //  acá creamos la columna para el codigo de rapifac y usarlo cuando se genere el comprobante
+                    DataGridViewColumn colRapifac = new DataGridViewColumn();
+                    colRapifac.Name = "crapi";
+                    colRapifac.Visible = true;      // cambiar a false en condiciones de producccion
+                    colRapifac.HeaderText = "Rapifac";
+                    colRapifac.CellTemplate = new DataGridViewTextBoxCell();
+                    dataGridView1.Columns.Insert(14, colRapifac);
+                }
             }
         }
         private void dataload(string quien)                 // jala datos para los combos y la grilla
@@ -1008,6 +1018,7 @@ namespace iOMG
             dataGridView1.Rows.Clear();
             Tx_modo.Text = modo;
             button1.Enabled = true;
+            panel1.Visible = true;          // se oculta cuando es cancelacion
             if (modo != "NUEVO")
             {
                 tx_dat_orig.Text = "";
@@ -1232,8 +1243,8 @@ namespace iOMG
                                 dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
                                     data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
                                     (double.Parse(data.ItemArray[8].ToString()) - Dscto / double.Parse(data.ItemArray[3].ToString())).ToString("#0.00"),
-                                    (double.Parse(data.ItemArray[9].ToString()) - Dscto).ToString("#0.00"),"",
-                                    Dscto, totSinD, data.ItemArray[24].ToString(), "", data.ItemArray[25].ToString());
+                                    (double.Parse(data.ItemArray[9].ToString()) - Dscto).ToString("#0.00"),"", 
+                                    Dscto, totSinD, data.ItemArray[24].ToString(), data.ItemArray[25].ToString());
                                 cnt += 1;
                                 toti = toti + (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString()));
                             }
@@ -2591,6 +2602,9 @@ namespace iOMG
                     double aja = jala_cont(tx_cont.Text);    // segun pague todo o parcial hacemos algo 
                     if (vpago == "cancelacion")
                     {
+                        // limpiamos el cuadro de detalle
+                        panel1.Visible = false;
+                        //
                         double ntoti = aja;
                         tx_d_antic.Visible = false;
                         tx_d_valAntic.Visible = false;
