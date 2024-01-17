@@ -408,9 +408,9 @@ namespace iOMG
                         {
                             if (row["param"].ToString() == "noRetGlosa") NoRetGl = row["valor"].ToString().Trim();          // glosa que retorna umasapa cuando no encuentra dato
                         }
-                        if (row["campo"].ToString() == "items" && row["param"].ToString() == "chicos")
+                        if (row["campo"].ToString() == "items")
                         {
-                            varchic = row["valor"].ToString().Trim();          // articulos chicos
+                            if (row["param"].ToString() == "chicos") varchic = row["valor"].ToString().Trim();          // articulos chicos
                         }
                     }
                     if (row["formulario"].ToString() == "clients")
@@ -1302,6 +1302,28 @@ namespace iOMG
                     }
                 }
             }
+            return retorna;
+        }
+        private bool valProds()                             // valida que no se mesclen articulos chicos con grandes
+        {
+            bool retorna = false;       // false = si hay articulos chicos y grandes
+            int cac = 0, cag = 0;       // contadores
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[0].Value != null && row.Cells[2].Value.ToString() != "")
+                {
+                    if (lps.Contains(row.Cells[2].Value.ToString().Substring(0, 1)))
+                    {
+                        cag += 1;
+                    }
+                    if (varchic.Contains(row.Cells[2].Value.ToString().Substring(0, 1)))
+                    {
+                        cac += 1;
+                    }
+                }
+            }
+            if (cag > 0 && cac > 0) retorna = false;    // si hay mezcla
+            else retorna = true; // true = no hay mezcla
             return retorna;
         }
         private void ini_pagos()                            // inicializa la matris de pagos
@@ -3207,6 +3229,12 @@ namespace iOMG
                         return;
                     }
                 }
+                if (valProds() == false)
+                {
+                    MessageBox.Show("No puede tener items 'chicos' y 'grandes'" + Environment.NewLine +
+                             "Debe hacer comprobantes separados.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 if (double.Parse(tx_desGlob.Text) > 0 && rb_tbienes.Checked == true)
                 {
                     if (int.Parse(tx_tac.Text) > 0 && (int.Parse(tx_tfil.Text) > int.Parse(tx_tac.Text)))
@@ -3386,6 +3414,8 @@ namespace iOMG
                                 ncont.tx_mc.Text = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont.tx_serie.Text = tx_serie.Text;
                                 ncont.tx_corre.Text = tx_corre.Text;
+                                ncont.tx_d_prec.ReadOnly = true;
+                                ncont.tx_d_total.ReadOnly = true;
                                 string xxx = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont._comprobantes.Add(xxx + "-" + tx_serie.Text + "-" + tx_corre.Text);
                                 

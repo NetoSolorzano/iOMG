@@ -144,6 +144,7 @@ namespace iOMG
                             cmb_det2.SelectedIndex = cmb_det2.FindString(ayu2.ReturnValue1.Substring(12, 3));
                             cmb_det2_SelectionChangeCommitted(null, null);
                             cmb_det3.SelectedIndex = cmb_det3.FindString(ayu2.ReturnValue1.Substring(15, 3));
+                            tx_d_codal1.Text = ayu2.ReturnValueA[0];    // x ver
                             armani();
                         }
                     }
@@ -218,6 +219,8 @@ namespace iOMG
                                     i = i + 1;
                                     _comprobantes.Add(row[1].ToString().Substring(0, 1) + "-" + row[2].ToString() + "-" + row[3].ToString());
                                     calculos();     // recien lo pongo, verificar cuando jalamos bienes
+                                    tx_d_prec.ReadOnly = true;      // 16/01/2024 no se debe cambiar precio si viene de un comprobante
+                                    tx_d_total.ReadOnly = true;     // 16/01/2024
                                 }
                             }
                         }
@@ -1100,7 +1103,7 @@ namespace iOMG
                         conn.Open();
                         if (conn.State == ConnectionState.Open)
                         {
-                            string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3 " +
+                            string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,alterno1 " +
                                 "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1 and deta2=@dt2"; // se agrega detalle2 24/11/20 Gloria
                             MySqlCommand micon = new MySqlCommand(busca, conn);
                             //micon.Parameters.AddWithValue("@cod", codbs);
@@ -1165,6 +1168,7 @@ namespace iOMG
                                     //if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                     tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                     tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
+                                    tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
                                     gol = "1";
                                     tx_d_can.Focus();
                                     break;
@@ -1183,6 +1187,7 @@ namespace iOMG
                                         //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                         tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
+                                        tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
                                         gol = "1";
                                         tx_d_can.Focus();
                                         break;
@@ -1195,6 +1200,7 @@ namespace iOMG
                                         //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
                                         tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                         tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
+                                        tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
                                         gol = "1";
                                         tx_d_can.Focus();
                                         break;
@@ -1758,7 +1764,7 @@ namespace iOMG
                         micon.Parameters.AddWithValue("@det2", dataGridView1.Rows[i].Cells[13].Value.ToString());
                         micon.Parameters.AddWithValue("@tdai", dataGridView1.Rows[i].Cells[15].Value.ToString());
                         micon.Parameters.AddWithValue("@tdscto", totdscto);
-                        micon.Parameters.AddWithValue("@crapif", dataGridView1.Rows[i].Cells[18].Value.ToString());
+                        micon.Parameters.AddWithValue("@crapif", dataGridView1.Rows[i].Cells[18].Value.ToString()); 
                         micon.ExecuteNonQuery();
                     }
                     /* if (tncont == "AUTOMA")
@@ -3697,6 +3703,7 @@ namespace iOMG
                     obj.Cells[15].Value = tx_d_tda.Text;  // tx_dat_orig.Text;
                     //obj.Cells[16].Value = ;
                     //obj.Cells[17].Value = ;
+                    obj.Cells[18].Value = tx_d_codal1.Text;
                 }
                 else
                 {
@@ -3718,13 +3725,13 @@ namespace iOMG
                         {
                             dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
                                  tx_d_mad.Text, tx_d_dat_prec.Text, vpts.ToString("#0.00"), tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text,
-                                 cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N", tx_d_tda.Text, vpts.ToString("#0.00"), vtd.ToString("#0.00"));
+                                 cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N", tx_d_tda.Text, vpts.ToString("#0.00"), vtd.ToString("#0.00"), tx_d_codal1.Text);
                         }
                         else
                         {
                             dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_d_codi.Text, tx_d_can.Text, tx_d_nom.Text, tx_d_med.Text,
                                  tx_d_mad.Text, tx_d_prec.Text, vpts.ToString("#0.00"), tx_d_can.Text, "", tx_dat_mad.Text, tx_d_com.Text, tx_d_det2.Text,
-                                 cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N", tx_d_tda.Text, vpts.ToString("#0.00"), vtd.ToString("#0.00"));
+                                 cmb_det2.Text.ToString().Substring(0, 3).Trim(), "N", tx_d_tda.Text, vpts.ToString("#0.00"), vtd.ToString("#0.00"), tx_d_codal1.Text);
                         }
                     }
                     else
@@ -3803,6 +3810,7 @@ namespace iOMG
                     obj.Cells[13].Value = cmb_det2.Text.ToString().Substring(0, 3).Trim();
                     obj.Cells[14].Value = "A";  // registro actualizado
                     obj.Cells[15].Value = tx_d_tda.Text;
+                    obj.Cells[18].Value = tx_d_codal1.Text;
                 }
                 else
                 {
@@ -3824,6 +3832,7 @@ namespace iOMG
                     tr["codpie"] = cmb_det2.Text.ToString().Substring(0, 3).Trim();
                     tr["na"] = "N";
                     tr["tda_item"] = tx_d_tda.Text;
+                    tr["alterno1"] = tx_d_codal1.Text;
                     dtg.Rows.Add(tr);
                 }
             }
@@ -3839,6 +3848,7 @@ namespace iOMG
             tx_d_prec.Text = "";
             tx_d_total.Text = "";
             tx_d_tda.Text = "";
+            tx_d_codal1.Text = "";
             //tx_saldo.Text = "";
             //limpia_combos(tabuser);
             cmb_fam.SelectedIndex = -1;
