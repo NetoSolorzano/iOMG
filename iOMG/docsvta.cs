@@ -2837,6 +2837,7 @@ namespace iOMG
                 // DESCUENTO GLOBAL
                 // si es vta. directa -> se habilita el dscto global
                 tx_desGlob.ReadOnly = false;
+                tx_coment.Text = "";
                 controlContadoCredito();
             }
         }
@@ -2881,7 +2882,8 @@ namespace iOMG
                     tx_bruto.Text = "";
                     tx_igv.Text = "";
                     //
-                    tx_coment.Text = glos_antic;   // "*** Comprobante por antipo ***";
+                    if (rb_credito.Checked == true) { tx_coment.Text = ""; }
+                    else { tx_coment.Text = glos_antic; }   // "*** Comprobante por antipo ***";
                     lb_cont.Visible = true;
                     tx_cont.Visible = true;
                     tx_cont.Focus();
@@ -3077,6 +3079,7 @@ namespace iOMG
                         tx_d_codi.Focus();
                         return;
                     }
+                    recalDet();
                     ncant = double.Parse(tx_d_can.Text);
                     ntoti = double.Parse(tx_d_precio.Text) / ncant;                         // precio total de la fila incluyendo descuento
                     //double vdscto = double.Parse(tx_ImpDsctoD.Text);
