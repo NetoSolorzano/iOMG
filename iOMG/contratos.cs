@@ -221,6 +221,7 @@ namespace iOMG
                                     calculos();     // recien lo pongo, verificar cuando jalamos bienes
                                     tx_d_prec.ReadOnly = true;      // 16/01/2024 no se debe cambiar precio si viene de un comprobante
                                     tx_d_total.ReadOnly = true;     // 16/01/2024
+                                    tx_vDc.Text = "S";              // 17/01/2024
                                 }
                             }
                         }
@@ -1094,110 +1095,80 @@ namespace iOMG
             if (cmb_det2.SelectedItem != null) de2 = cmb_det2.SelectedItem.ToString().Substring(0, 3);  // 3
             if (cmb_det3.SelectedItem != null) de3 = cmb_det3.SelectedItem.ToString().Substring(0, 3);  // 3 _____ total 18
             tx_d_codi.Text = fam + mod + mad + tip + de1 + aca + tal + de2 + de3;
-            if (fam != "" && mod != "" && tip != "" && de1 != "" && aca != "" && de2 != "" && de3 != "")
+            if (tx_vDc.Text == "")      // solo aplica si hacemos contrato desde la nada  17/01/2024
             {
-                try
+                if (fam != "" && mod != "" && tip != "" && de1 != "" && aca != "" && de2 != "" && de3 != "")
                 {
-                    using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                    try
                     {
-                        conn.Open();
-                        if (conn.State == ConnectionState.Open)
+                        using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
                         {
-                            string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,alterno1 " +
-                                "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1 and deta2=@dt2"; // se agrega detalle2 24/11/20 Gloria
-                            MySqlCommand micon = new MySqlCommand(busca, conn);
-                            //micon.Parameters.AddWithValue("@cod", codbs);
-                            micon.Parameters.AddWithValue("@fam", fam);
-                            micon.Parameters.AddWithValue("@mod", mod);
-                            micon.Parameters.AddWithValue("@tip", tip);
-                            micon.Parameters.AddWithValue("@dt1", de1);
-                            micon.Parameters.AddWithValue("@dt2", de2); // se agrega 24/11/20 solicitado por Gloria
-                            MySqlDataAdapter da = new MySqlDataAdapter(micon);
-                            DataTable dtm = new DataTable();
-                            da.Fill(dtm);
-                            if (dtm.Rows.Count == 0)
+                            conn.Open();
+                            if (conn.State == ConnectionState.Open)
                             {
-                                /*
-                                var aaa = MessageBox.Show("No existe en la base de items" + Environment.NewLine +
-                                    "Busca en el stock?", "Atención - confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                if (aaa == DialogResult.Yes)
+                                string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,alterno1 " +
+                                    "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1 and deta2=@dt2"; // se agrega detalle2 24/11/20 Gloria
+                                MySqlCommand micon = new MySqlCommand(busca, conn);
+                                //micon.Parameters.AddWithValue("@cod", codbs);
+                                micon.Parameters.AddWithValue("@fam", fam);
+                                micon.Parameters.AddWithValue("@mod", mod);
+                                micon.Parameters.AddWithValue("@tip", tip);
+                                micon.Parameters.AddWithValue("@dt1", de1);
+                                micon.Parameters.AddWithValue("@dt2", de2); // se agrega 24/11/20 solicitado por Gloria
+                                MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                                DataTable dtm = new DataTable();
+                                da.Fill(dtm);
+                                if (dtm.Rows.Count == 0)
                                 {
-                                    if (busstock(tx_d_codi.Text) == false)
+                                    /*
+                                    var aaa = MessageBox.Show("No existe en la base de items" + Environment.NewLine +
+                                        "Busca en el stock?", "Atención - confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    if (aaa == DialogResult.Yes)
                                     {
-                                        MessageBox.Show("No existe en el stock", "Error en códido", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        if (busstock(tx_d_codi.Text) == false)
+                                        {
+                                            MessageBox.Show("No existe en el stock", "Error en códido", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                            tx_d_nom.Text = "";
+                                            tx_d_med.Text = "";
+                                            tx_d_mad.Text = "";
+                                            tx_d_det2.Text = "";
+                                            tx_d_est.Text = "";
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            dtm.Dispose();
+                                            conn.Close();
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
                                         tx_d_nom.Text = "";
                                         tx_d_med.Text = "";
                                         tx_d_mad.Text = "";
                                         tx_d_det2.Text = "";
                                         tx_d_est.Text = "";
-                                        return;
-                                    }
-                                    else
-                                    {
                                         dtm.Dispose();
                                         conn.Close();
                                         return;
                                     }
-                                }
-                                else
-                                {
-                                    tx_d_nom.Text = "";
-                                    tx_d_med.Text = "";
-                                    tx_d_mad.Text = "";
-                                    tx_d_det2.Text = "";
-                                    tx_d_est.Text = "";
+                                    */
+                                    MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     dtm.Dispose();
                                     conn.Close();
                                     return;
                                 }
-                                */
-                                MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                dtm.Dispose();
-                                conn.Close();
-                                return;
-                            }
-                            string gol = "";
-                            for (int i = 0; i < dtm.Rows.Count; i++)
-                            {
-                                DataRow fila = dtm.Rows[i];
-                                if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
-                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
-                                {
-                                    tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
-                                    tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                    //if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
-                                    tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
-                                    tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
-                                    tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
-                                    gol = "1";
-                                    tx_d_can.Focus();
-                                    break;
-                                }
-                            }
-                            if (gol == "")
-                            {
+                                string gol = "";
                                 for (int i = 0; i < dtm.Rows.Count; i++)
                                 {
                                     DataRow fila = dtm.Rows[i];
-                                    if (mad != "X" &&
-                                    fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
+                                    if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
+                                        fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
                                     {
                                         tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
                                         tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
-                                        tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
-                                        tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
-                                        tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
-                                        gol = "1";
-                                        tx_d_can.Focus();
-                                        break;
-                                    }
-                                    if (mad != "X" &&
-                                    fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
-                                    {
-                                        tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
-                                        tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
-                                        //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                                                                     //if (Tx_modo.Text == "NUEVO") tx_d_prec.Text = fila["soles2018"].ToString();  // precio
                                         tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
                                         tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
                                         tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
@@ -1206,17 +1177,60 @@ namespace iOMG
                                         break;
                                     }
                                 }
-                            }
-                            if (gol == "")
-                            {
-                                /*
-                                var aa = MessageBox.Show("No existe en la base de datos de items!" + Environment.NewLine + 
-                                    "Busca en el stock?", "Atención - Confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                if (aa == DialogResult.Yes)     // buscamos si existe en el stock
+                                if (gol == "")
                                 {
-                                    if (busstock(tx_d_codi.Text) == false)
+                                    for (int i = 0; i < dtm.Rows.Count; i++)
                                     {
-                                        MessageBox.Show("No existe en el stock", "Error en códido", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        DataRow fila = dtm.Rows[i];
+                                        if (mad != "X" &&
+                                        fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
+                                        {
+                                            tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                            tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                                                                         //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                            tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
+                                            tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
+                                            tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
+                                            gol = "1";
+                                            tx_d_can.Focus();
+                                            break;
+                                        }
+                                        if (mad != "X" &&
+                                        fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
+                                        {
+                                            tx_d_nom.Text = fila["nombr"].ToString();    // dr.GetString(1);
+                                            tx_d_med.Text = fila["medid"].ToString();    // dr.GetString(2);
+                                                                                         //if (tx_d_id.Text.Trim() == "") tx_d_prec.Text = fila["soles2018"].ToString();  // Tx_modo.Text == "NUEVO"
+                                            tx_d_prec.Text = fila["soles2018"].ToString();  // 02-11-2020 reunion con Gloria, debe jalar precio en nuevo y edicion
+                                            tx_d_dat_prec.Text = fila["soles2018"].ToString();  // precio original sin descuento
+                                            tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
+                                            gol = "1";
+                                            tx_d_can.Focus();
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (gol == "")
+                                {
+                                    /*
+                                    var aa = MessageBox.Show("No existe en la base de datos de items!" + Environment.NewLine + 
+                                        "Busca en el stock?", "Atención - Confirme", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    if (aa == DialogResult.Yes)     // buscamos si existe en el stock
+                                    {
+                                        if (busstock(tx_d_codi.Text) == false)
+                                        {
+                                            MessageBox.Show("No existe en el stock", "Error en códido", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                            tx_d_nom.Text = "";
+                                            tx_d_med.Text = "";
+                                            tx_d_mad.Text = "";
+                                            tx_d_det2.Text = "";
+                                            tx_d_est.Text = "";
+                                            conn.Close();
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
                                         tx_d_nom.Text = "";
                                         tx_d_med.Text = "";
                                         tx_d_mad.Text = "";
@@ -1224,39 +1238,121 @@ namespace iOMG
                                         tx_d_est.Text = "";
                                         conn.Close();
                                         return;
-                                    }
-                                }
-                                else
-                                {
-                                    tx_d_nom.Text = "";
-                                    tx_d_med.Text = "";
-                                    tx_d_mad.Text = "";
-                                    tx_d_det2.Text = "";
-                                    tx_d_est.Text = "";
+                                    }*/
+                                    MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    dtm.Dispose();
                                     conn.Close();
                                     return;
-                                }*/
-                                MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
                                 dtm.Dispose();
+                                conn.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se puede conectar a la base de datos", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                 conn.Close();
                                 return;
                             }
-                            dtm.Dispose();
-                            conn.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("No se puede conectar a la base de datos", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                            conn.Close();
-                            return;
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error interno en codigo");
+                        Application.Exit();
+                        return;
+                    }
                 }
-                catch (Exception ex)
+            }
+            if (tx_vDc.Text == "S")
+            {
+                if (fam != "" && mod != "" && tip != "" && de1 != "" && aca != "" && de2 != "" && de3 != "")
                 {
-                    MessageBox.Show(ex.Message, "Error interno en codigo");
-                    Application.Exit();
-                    return;
+                    try
+                    {
+                        using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+                        {
+                            conn.Open();
+                            if (conn.State == ConnectionState.Open)
+                            {
+                                string busca = "select id,nombr,medid,umed,soles2018,capit,model,mader,tipol,deta1,acaba,talle,deta2,deta3,alterno1 " +
+                                    "from items where capit=@fam and model=@mod and tipol=@tip and deta1=@dt1 and deta2=@dt2"; // se agrega detalle2 24/11/20 Gloria
+                                MySqlCommand micon = new MySqlCommand(busca, conn);
+                                //micon.Parameters.AddWithValue("@cod", codbs);
+                                micon.Parameters.AddWithValue("@fam", fam);
+                                micon.Parameters.AddWithValue("@mod", mod);
+                                micon.Parameters.AddWithValue("@tip", tip);
+                                micon.Parameters.AddWithValue("@dt1", de1);
+                                micon.Parameters.AddWithValue("@dt2", de2); // se agrega 24/11/20 solicitado por Gloria
+                                MySqlDataAdapter da = new MySqlDataAdapter(micon);
+                                DataTable dtm = new DataTable();
+                                da.Fill(dtm);
+                                if (dtm.Rows.Count == 0)
+                                {
+                                    MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    dtm.Dispose();
+                                    conn.Close();
+                                    return;
+                                }
+                                string gol = "";
+                                for (int i = 0; i < dtm.Rows.Count; i++)
+                                {
+                                    DataRow fila = dtm.Rows[i];
+                                    if (fila["mader"].ToString() == mad && fila["acaba"].ToString() == aca &&
+                                        fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3)
+                                    {
+                                        tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
+                                        gol = "1";
+                                        tx_d_can.Focus();
+                                        break;
+                                    }
+                                }
+                                if (gol == "")
+                                {
+                                    for (int i = 0; i < dtm.Rows.Count; i++)
+                                    {
+                                        DataRow fila = dtm.Rows[i];
+                                        if (mad != "X" &&
+                                        fila["deta2"].ToString() == de2 && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
+                                        {
+                                            tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
+                                            gol = "1";
+                                            tx_d_can.Focus();
+                                            break;
+                                        }
+                                        if (mad != "X" &&
+                                        fila["deta2"].ToString().Substring(0, 1) == letpied && fila["deta3"].ToString() == de3) // fila["acaba"].ToString() == aca &&
+                                        {
+                                            tx_d_codal1.Text = fila["alterno1"].ToString();     // codigo alterno para rapifac
+                                            gol = "1";
+                                            tx_d_can.Focus();
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (gol == "")
+                                {
+                                    MessageBox.Show("No existe en la base de items", " Atención ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    dtm.Dispose();
+                                    conn.Close();
+                                    return;
+                                }
+                                dtm.Dispose();
+                                conn.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se puede conectar a la base de datos", "Error de conectividad", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                conn.Close();
+                                return;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error interno en codigo");
+                        Application.Exit();
+                        return;
+                    }
                 }
             }
         }

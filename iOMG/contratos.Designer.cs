@@ -77,6 +77,7 @@
             this.tx_bruto = new iOMG.NumericTextBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabcodigo = new System.Windows.Forms.TabPage();
+            this.tx_d_codal1 = new System.Windows.Forms.TextBox();
             this.tx_d_dat_prec = new iOMG.NumericTextBox();
             this.label56 = new System.Windows.Forms.Label();
             this.tx_d_tda = new System.Windows.Forms.TextBox();
@@ -273,7 +274,7 @@
             this.Bt_fin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tx_d_codal1 = new System.Windows.Forms.TextBox();
+            this.tx_vDc = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabgrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
@@ -356,6 +357,7 @@
             // 
             // tabuser
             // 
+            this.tabuser.Controls.Add(this.tx_vDc);
             this.tabuser.Controls.Add(this.tx_desDet);
             this.tabuser.Controls.Add(this.groupBox54);
             this.tabuser.Controls.Add(this.label59);
@@ -915,6 +917,17 @@
             this.tabcodigo.TabIndex = 0;
             this.tabcodigo.Text = "CODIGO";
             this.tabcodigo.Enter += new System.EventHandler(this.tabcodigo_Enter);
+            // 
+            // tx_d_codal1
+            // 
+            this.tx_d_codal1.Location = new System.Drawing.Point(439, 29);
+            this.tx_d_codal1.Name = "tx_d_codal1";
+            this.tx_d_codal1.ReadOnly = true;
+            this.tx_d_codal1.Size = new System.Drawing.Size(121, 20);
+            this.tx_d_codal1.TabIndex = 381;
+            this.tx_d_codal1.Tag = "Cod alterno 1";
+            this.tx_d_codal1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_d_codal1.Visible = false;
             // 
             // tx_d_dat_prec
             // 
@@ -2867,15 +2880,14 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(3, 45);
             // 
-            // tx_d_codal1
+            // tx_vDc
             // 
-            this.tx_d_codal1.Location = new System.Drawing.Point(439, 29);
-            this.tx_d_codal1.Name = "tx_d_codal1";
-            this.tx_d_codal1.ReadOnly = true;
-            this.tx_d_codal1.Size = new System.Drawing.Size(121, 20);
-            this.tx_d_codal1.TabIndex = 381;
-            this.tx_d_codal1.Tag = "Cod alterno 1";
-            this.tx_d_codal1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tx_vDc.Location = new System.Drawing.Point(936, 397);
+            this.tx_vDc.Name = "tx_vDc";
+            this.tx_vDc.Size = new System.Drawing.Size(34, 20);
+            this.tx_vDc.TabIndex = 404;
+            this.tx_vDc.Tag = "Biene de un comprobante S o N";
+            this.tx_vDc.Visible = false;
             // 
             // contratos
             // 
@@ -3183,5 +3195,6 @@
         internal NumericTextBox tx_d_total;
         internal NumericTextBox tx_d_prec;
         private System.Windows.Forms.TextBox tx_d_codal1;
+        internal System.Windows.Forms.TextBox tx_vDc;
     }
 }

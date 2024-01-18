@@ -3416,6 +3416,7 @@ namespace iOMG
                                 ncont.tx_corre.Text = tx_corre.Text;
                                 ncont.tx_d_prec.ReadOnly = true;
                                 ncont.tx_d_total.ReadOnly = true;
+                                ncont.tx_vDc.Text = "S";            // 17/01/2024
                                 string xxx = (tx_dat_tipdoc.Text == codfact) ? "F" : "B";
                                 ncont._comprobantes.Add(xxx + "-" + tx_serie.Text + "-" + tx_corre.Text);
                                 
