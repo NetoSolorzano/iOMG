@@ -62,6 +62,9 @@ namespace iOMG
         string img_anul = "";
         string vcprecio = "";                                   // nombre del campo precio de la tabla "alm2018"
         string vcomentAu = "";                                  // comentario cuando el kardex es por movimientos automaticos, cuando se cambia valores en la grilla
+        string vcdet1 = "N";                // N=no se puede cambiar directamente el el código en la grilla del almacen
+        string vcdet2 = "N";                // N=no se puede cambiar directamente el el código en la grilla del almacen
+        string vcdet3 = "N";                // N=no se puede cambiar directamente el el código en la grilla del almacen
         #endregion
 
         public almgestion()
@@ -83,6 +86,7 @@ namespace iOMG
             advancedDataGridView1.DataSource = dt;
             grilla();
             init();
+            //grilla(); // 19/01/2024
             cellsum(0);
             cvc();
             rb_estan.Checked = true;
@@ -131,6 +135,12 @@ namespace iOMG
                     {
                         if (row["campo"].ToString() == "precio" && row["param"].ToString() == "campo") vcprecio = row["valor"].ToString().Trim();         // campo de precio actual
                         if (row["campo"].ToString() == "kardex" && row["param"].ToString() == "comAut") vcomentAu = row["valor"].ToString().Trim();         // comentario generico mov kardex
+                        if (row["campo"].ToString() == "cambiacod")
+                        {
+                            if (row["param"].ToString() == "deta1") { vcdet1 = row["valor"].ToString().Trim(); }    // S=Si cambia | N=no cambia 
+                            if (row["param"].ToString() == "deta2") { vcdet2 = row["valor"].ToString().Trim(); }    // S=Si cambia | N=no cambia 
+                            if (row["param"].ToString() == "deta3") { vcdet3 = row["valor"].ToString().Trim(); }    // S=Si cambia | N=no cambia 
+                        }
                     }
                 }
                 da.Dispose();
@@ -196,15 +206,15 @@ namespace iOMG
             advancedDataGridView1.Columns[8].Width = 30;             // tipologia
             advancedDataGridView1.Columns[8].ReadOnly = true;
             advancedDataGridView1.Columns[9].Width = 30;            // detalle 1
-            advancedDataGridView1.Columns[9].ReadOnly = true;
+            advancedDataGridView1.Columns[9].ReadOnly = (vcdet1 == "N") ? true : false;
             advancedDataGridView1.Columns[10].Width = 20;            // acabado
             advancedDataGridView1.Columns[10].ReadOnly = false;
             advancedDataGridView1.Columns[11].Width = 30;            // taller
             advancedDataGridView1.Columns[11].ReadOnly = true;
             advancedDataGridView1.Columns[12].Width = 40;            // detalle 2
-            advancedDataGridView1.Columns[12].ReadOnly = false;
+            advancedDataGridView1.Columns[12].ReadOnly = (vcdet2 == "N") ? true : false;
             advancedDataGridView1.Columns[13].Width = 40;           // detalle 3
-            advancedDataGridView1.Columns[13].ReadOnly = true;
+            advancedDataGridView1.Columns[13].ReadOnly = (vcdet3 == "N") ? true : false;
             advancedDataGridView1.Columns[14].Width = 40;           // juego
             advancedDataGridView1.Columns[14].ReadOnly = false;
             advancedDataGridView1.Columns[15].Width = 190;          // nombre
@@ -599,12 +609,6 @@ namespace iOMG
         {
             for (int i = 0; i <= dataGridView1.Rows[0].Cells.Count - 3; i++)
             {
-                if (marcas.ElementAt(i).ToString() == "True")
-                {
-                    dataGridView1.Rows[0].Cells[i].Value = true;
-                    dataGridView1.Columns[i].Visible = true;
-                }
-                else
                 {
                     dataGridView1.Rows[0].Cells[i].Value = false;
                     dataGridView1.Columns[i].Visible = false;
@@ -1255,9 +1259,16 @@ namespace iOMG
             {
                 for (int i = 0; i < advancedDataGridView1.Rows[0].Cells.Count; i++)
                 {
-                    advancedDataGridView1.Columns[i].Visible = false;
-                    dataGridView1.Columns[i].Visible = false;
-                    dataGridView2.Columns[i].Visible = false;
+                    if (i > 27)
+                    {
+                        // no le hacemos nada   19/01/2024
+                    }
+                    else
+                    {
+                        advancedDataGridView1.Columns[i].Visible = false;
+                        dataGridView1.Columns[i].Visible = false;
+                        dataGridView2.Columns[i].Visible = false;
+                    }
                 }
                 advancedDataGridView1.Columns["marca"].Visible = true;
                 dataGridView1.Columns["marca"].Visible = true;
@@ -1339,9 +1350,16 @@ namespace iOMG
             {
                 for (int i = 0; i < advancedDataGridView1.Rows[0].Cells.Count; i++)
                 {
-                    advancedDataGridView1.Columns[i].Visible = false;
-                    dataGridView1.Columns[i].Visible = false;
-                    dataGridView2.Columns[i].Visible = false;
+                    if (i > 27)
+                    {
+                        // no le hacemos nada 19/01/2024
+                    }
+                    else
+                    {
+                        advancedDataGridView1.Columns[i].Visible = false;
+                        dataGridView1.Columns[i].Visible = false;
+                        dataGridView2.Columns[i].Visible = false;
+                    }
                 }
                 advancedDataGridView1.Columns["marca"].Visible = true;
                 dataGridView1.Columns["marca"].Visible = true;
@@ -1364,10 +1382,12 @@ namespace iOMG
         {
             for (int i = 0; i < dataGridView1.Rows[0].Cells.Count; i++)
             {
-                dataGridView1.Rows[0].Cells[i].Value = true;
-                dataGridView1.Columns[i].Visible = true;
-                dataGridView2.Columns[i].Visible = true;
-                advancedDataGridView1.Columns[i].Visible = true;
+                {
+                    dataGridView1.Rows[0].Cells[i].Value = true;
+                    dataGridView1.Columns[i].Visible = true;
+                    dataGridView2.Columns[i].Visible = true;
+                    advancedDataGridView1.Columns[i].Visible = true;
+                }
             }
         }
         #endregion
