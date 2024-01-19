@@ -690,7 +690,7 @@ namespace iOMG
             string actua2 = "update contrat set acuenta=acuenta+@val,saldo=saldo-@val where contrato=@cont";
             string actua3 = "update pagamenti set contrato=@cont,valor=@valc,acuenta=@val,saldo=@sal where idpagamenti=@idpa";
 
-            // me quede aquí ... 16/01/2024
+            // me quede aquí ... 18/01/2024
             return retorna;
         }
         #endregion
