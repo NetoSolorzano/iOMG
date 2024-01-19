@@ -20,7 +20,7 @@ namespace iOMG
 {
     public partial class docsvta : Form
     {
-        static string nomform = "docsvta";      // nombre del formulario
+        static string nomform = "docsvta";          // nombre del formulario
         string asd = iOMG.Program.vg_user;          // usuario conectado al sistema
         string colback = iOMG.Program.colbac;       // color de fondo
         string colpage = iOMG.Program.colpag;       // color de los pageframes
@@ -31,10 +31,6 @@ namespace iOMG
         NumLetra nle = new NumLetra();
 
         #region variables
-        //public string perAg = "";             // permisos agregar
-        //public string perMo = "";             // permisos modificar
-        //public string perAn = "";             // permisos anular
-        //public string perIm = "";             // permisos imprimir
         string img_btN = "";
         string img_btE = "";
         string img_btP = "";
@@ -352,6 +348,21 @@ namespace iOMG
         {
             try
             {
+                // 19/01/2024 - Nueva conex a Rapifac ---------------------------------
+                string v_usuaRuc = "", v_usuaDni = "", v_clave = "";
+                if (Program.tdauser == "BARRAN") 
+                {
+                    v_usuaRuc = "rucClienteB";
+                    v_usuaDni = "dniClienteB";
+                    v_clave = "claveB";
+                }
+                if (Program.tdauser == "EXPO3")
+                {
+                    v_usuaRuc = "rucClienteJ";
+                    v_usuaDni = "dniClienteJ";
+                    v_clave = "claveJ";
+                }
+                // ----------------------------------------------------------------------
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
                 string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@clie,@ped)";
@@ -387,9 +398,12 @@ namespace iOMG
                         }
                         if (row["campo"].ToString() == "rapifac")
                         {
-                            if (row["param"].ToString() == "rucCliente") usuaRuc = row["valor"].ToString().Trim();          // ruc/usuarios del cliente
-                            if (row["param"].ToString() == "dniCliente") usuaDni = row["valor"].ToString().Trim();          // dni/usuario del cliente
-                            if (row["param"].ToString() == "clave") clave = row["valor"].ToString().Trim();                 // clave del dni/usuario
+                            //if (row["param"].ToString() == "rucClienteB") usuaRuc = row["valor"].ToString().Trim();          // ruc/usuarios del cliente
+                            //if (row["param"].ToString() == "dniClienteB") usuaDni = row["valor"].ToString().Trim();          // dni/usuario del cliente
+                            //if (row["param"].ToString() == "claveB") clave = row["valor"].ToString().Trim();                 // clave del dni/usuario
+                            if (row["param"].ToString() == v_usuaRuc) usuaRuc = row["valor"].ToString().Trim();             // ruc/usuarios del cliente
+                            if (row["param"].ToString() == v_usuaDni) usuaDni = row["valor"].ToString().Trim();             // dni/usuario del cliente
+                            if (row["param"].ToString() == v_clave) clave = row["valor"].ToString().Trim();                 // clave del dni/usuario
                             if (row["param"].ToString() == "id_clte") id_clte = row["valor"].ToString().Trim();             // identificador clave
                             if (row["param"].ToString() == "ruta_pdf") rut_pdf = row["valor"].ToString().Trim();            // ruta web del pdf en Rapifac
                             if (row["param"].ToString() == "ruta_xml") rut_xml = row["valor"].ToString().Trim();            // ruta web para descargar el xml en Rapifac
