@@ -678,6 +678,17 @@ namespace iOMG
         private bool acciona()
         {
             bool retorna = false;
+            // actualizar cabfactu, campo contrato, etc         ok
+            // actualizar detfactu, campo contrato, etc         ok
+            // actualizar pagamenti, campo contrato, etc        ok
+            // actualizar contrat, campos saldo,pago, etc.      ok
+            // revisar adifactpag
+            // revisar adifactcuot
+            string actua1 = "update cabfactu a left join detfactu b on b.idc=a.id " +
+                "set a.contrato=@cont,b.contrato=@cont " +
+                "where a.martdve=@tip and a.serdvta=@ser and a.numdvta=@num";
+            string actua2 = "update contrat set acuenta=acuenta+@val,saldo=saldo-@val where contrato=@cont";
+            string actua3 = "update pagamenti set contrato=@cont,valor=@valc,acuenta=@val,saldo=@sal where idpagamenti=@idpa";
 
             // me quede aquí ... 16/01/2024
             return retorna;
