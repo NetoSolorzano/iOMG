@@ -1109,7 +1109,7 @@ namespace iOMG
                     }
                     string continua = "N";
                     string conpag = "SELECT concat('ANTICIPO Cont.',contrato,'  ',dv,serie,'-',numero) AS deta,moneda,monto,montosol from pagamenti where contrato=@cont";
-                    string consin = "select a.saldo,a.status,a.tipocon,a.acuenta,a.marca0 from contrat a where a.contrato=@cont";
+                    string consin = "select a.saldo,a.status,a.tipocon,a.acuenta,a.marca0,a.fecha from contrat a where a.contrato=@cont";
                     string consulta = "SELECT a.contratoh,a.item,a.nombre,a.cant,a.medidas,left(de.descrizionerid,6),a.codref,a.piedra,a.precio,a.total,c.cliente," +
                         "ac.tipdoc,ac.RUC,ac.RazonSocial,ac.Direcc1,ac.Direcc2,ac.localidad,ac.Provincia,ac.depart,ac.NumeroTel1,ac.NumeroTel2,ac.EMail,c.valor,a.totdscto,it.detporc,a.alterno1 " +
                         "FROM detacon a " +
@@ -1124,6 +1124,14 @@ namespace iOMG
                         MySqlDataReader dr = micon.ExecuteReader();
                         if (dr.Read())
                         {
+                            if (dr.GetDateTime(5) <= DateTime.Parse("2024-01-19"))
+                            {
+                                MessageBox.Show("El contrato debe concluirse en Rapifac" + Environment.NewLine +
+                                    "No puede generar el comprobante en el integrador", "No puede continuar", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                                tx_cont.Text = "";
+                                tx_cont.Focus();
+                                return retorna;
+                            }
                             if (dr.GetString(4) == "")
                             {
                                 MessageBox.Show("El contrato no corresponde a la nueva versión" + Environment.NewLine +
