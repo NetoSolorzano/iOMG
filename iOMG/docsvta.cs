@@ -589,7 +589,7 @@ namespace iOMG
                             }
                             else
                             {
-                                tx_dat_idven.Text = row[0].ItemArray[1].ToString();
+                                tx_dat_idven.Text = row[0].ItemArray[4].ToString();     // 20/01/2024
                                 cmb_vendedor.SelectedItem = row[0].ItemArray[2].ToString();
                             }
                         }
@@ -971,7 +971,7 @@ namespace iOMG
                         foreach (DataRow row in dtvend.Rows)
                         {
                             cmb_vendedor.Items.Add(row.ItemArray[3].ToString());
-                            cmb_vendedor.ValueMember = row.ItemArray[1].ToString();
+                            cmb_vendedor.ValueMember = row.ItemArray[4].ToString();     // Campo código en desc_vtd (ese el código rápifac) 20/01/2024
                         }
                     }
                 }
@@ -2571,7 +2571,7 @@ namespace iOMG
             {
                 string axs = string.Format("descrizionerid='{0}'", cmb_vendedor.SelectedItem);
                 DataRow[] row = dtvend.Select(axs);
-                tx_dat_idven.Text = row[0].ItemArray[1].ToString();    // cmb_vendedor.SelectedIndex.ToString();
+                tx_dat_idven.Text = row[0].ItemArray[4].ToString();    // cmb_vendedor.SelectedIndex.ToString(); código rapifac 20/01/2024
                 tx_nomVen.Text = row[0].ItemArray[2].ToString();
             }
         }
@@ -2581,7 +2581,7 @@ namespace iOMG
             {
                 string axs = string.Format("descrizionerid='{0}'", cmb_vendedor.SelectedItem);
                 DataRow[] row = dtvend.Select(axs);
-                tx_dat_idven.Text = row[0].ItemArray[1].ToString();    // cmb_vendedor.SelectedIndex.ToString();
+                tx_dat_idven.Text = row[0].ItemArray[4].ToString();    // cmb_vendedor.SelectedIndex.ToString(); código rapifac 20/01/2024
                 tx_nomVen.Text = row[0].ItemArray[2].ToString();
             }
         }
