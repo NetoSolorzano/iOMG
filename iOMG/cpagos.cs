@@ -675,22 +675,67 @@ namespace iOMG
             }
             return retorna;
         }
-        private bool acciona()
+        private bool acciona(int fila, string contra)
         {
             bool retorna = false;
             // actualizar cabfactu, campo contrato, etc         ok
             // actualizar detfactu, campo contrato, etc         ok
             // actualizar pagamenti, campo contrato, etc        ok
             // actualizar contrat, campos saldo,pago, etc.      ok
-            // revisar adifactpag
-            // revisar adifactcuot
+            // revisar adifactpag --> no usamos en este caso
+            // revisar adifactcuot -> no usamos en este caso
+
+            //ID,FPAGO,CONT,DOC,NUM_DOC,CLIENTE,ESTADO,VAL_CONT,SALDO,MON,VAL_SOLES,MED_PAGO,N_OPER,DOC_VENTA (a.dv,'-',a.serie,'-',a.numero)
+            // 0   1     2   3     4       5      6       7       8    9     10        11      12       13    ( BV-200-2504 )
+            string[] jkl = dataGridView1.Rows[fila].Cells[13].Value.ToString().Split('-');
+
             string actua1 = "update cabfactu a left join detfactu b on b.idc=a.id " +
                 "set a.contrato=@cont,b.contrato=@cont " +
                 "where a.martdve=@tip and a.serdvta=@ser and a.numdvta=@num";
             string actua2 = "update contrat set acuenta=acuenta+@val,saldo=saldo-@val where contrato=@cont";
-            string actua3 = "update pagamenti set contrato=@cont,valor=@valc,acuenta=@val,saldo=@sal where idpagamenti=@idpa";
-
-            // me quede aquí ... 18/01/2024
+            string actua3 = "SELECT ifnull(SUM(monto),0) FROM pagamenti WHERE contrato=@cont";
+            string actua4 = "update pagamenti a LEFT JOIN contrat c ON c.contrato=@cont " +
+                    "SET a.contrato = @cont,a.valor = c.valor," +
+                    "a.acuenta = @acta + a.monto," +
+                    "a.saldo = c.valor - (@acta + a.monto) " +
+                "WHERE a.idpagamenti = @ipag";
+            using (MySqlConnection conn = new MySqlConnection(DB_CONN_STR))
+            {
+                conn.Open();
+                using (MySqlCommand micon = new MySqlCommand(actua1, conn))
+                {
+                    micon.Parameters.AddWithValue("@tip", jkl[0]);
+                    micon.Parameters.AddWithValue("@ser", jkl[1]);
+                    micon.Parameters.AddWithValue("@num", jkl[2]);
+                    micon.Parameters.AddWithValue("@cont", contra);
+                    micon.ExecuteNonQuery();
+                }
+                using (MySqlCommand micon = new MySqlCommand(actua2, conn))
+                {
+                    micon.Parameters.AddWithValue("@val", dataGridView1.Rows[fila].Cells[10].Value.ToString());
+                    micon.Parameters.AddWithValue("@cont", contra);
+                    micon.ExecuteNonQuery();
+                }
+                double acta = 0;
+                using (MySqlCommand micon = new MySqlCommand(actua3, conn))
+                {
+                    micon.Parameters.AddWithValue("@cont", contra);
+                    using (MySqlDataReader dr = micon.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            acta = dr.GetDouble(0);
+                        }
+                    }
+                }
+                using (MySqlCommand micon = new MySqlCommand(actua4, conn))
+                {
+                    micon.Parameters.AddWithValue("@ipag", dataGridView1.Rows[fila].Cells[0].Value.ToString());
+                    micon.Parameters.AddWithValue("@acta", acta);
+                    micon.Parameters.AddWithValue("@cont", contra);
+                    micon.ExecuteNonQuery();
+                }
+            }
             return retorna;
         }
         #endregion
@@ -1117,7 +1162,7 @@ namespace iOMG
                         decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[10].Value.ToString()),             // que el comprob. no este anulado, cont no anulado
                         dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString() + dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString()) == true)
                 {
-                    if (acciona() == true)
+                    if (acciona(e.RowIndex, dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()) == true)
                     {
                         MessageBox.Show("Contrato enlazado con exito!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         bt_view.PerformClick();
