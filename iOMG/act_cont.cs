@@ -20,6 +20,7 @@ namespace iOMG
         string DB_CONN_STR = "server=" + serv + ";uid=" + usua + ";pwd=" + cont + ";database=" + data + " " + ";default command timeout=120" +
         ";ConnectionLifeTime=" + ctl + ";";
         // 18-09-2020, REUNION GLORIA, NESTOR. LOS CODIGOS Z NO INFLUYEN EN EL ESTADO DE UN CONTRATO
+        // 20/01/2024, si el contrato esta anulado, no debe actualizar el estado
         public void act_cont(string numcon,string tipo)
         {
             MySqlConnection cn = new MySqlConnection(DB_CONN_STR);

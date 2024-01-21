@@ -887,13 +887,31 @@ namespace iOMG
         {
             if(tx_codped.Text != "")
             {
-                //lib.estcont(tx_codped.Text.Trim()); comentado 21/09/2020
-                acciones acc = new acciones();  // ahora se usa éste actualizador 21/09/2020
-                acc.act_cont(tx_codped.Text,"");
+                // 20/01/2024, si el contrato esta anulado, no debe actualizar el estado
+                MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    string mira = "SELECT id,fecha,tipoes,cliente,STATUS,valor,acuenta,saldo FROM contrat WHERE contrato=@ped";
+                    using (MySqlCommand micon = new MySqlCommand(mira, conn))
+                    {
+                        micon.Parameters.AddWithValue("@ped", tx_codped.Text);
+                        using (MySqlDataReader dr = micon.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                if (dr.GetString(4) != "ANULAD")   // ME QUEDE ACÁ 20/01/2024
+                                {
+                                    acciones acc = new acciones();
+                                    acc.act_cont(tx_codped.Text, "");
+                                }
+                            }
+                        }
+                    }
+                }
+
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
-                    conn.Open();
                     if (conn.State == ConnectionState.Open)
                     {
                         string consu = "select a.id,a.fecha,a.tipoes,a.cliente,a.valor,a.status,b.ruc,b.razonsocial,a.entrega " +
