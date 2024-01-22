@@ -36,6 +36,7 @@ namespace iOMG
         string letpied = "";            // letra indentificadora de piedra en detalle 2
         string cliente = Program.cliente;    // razon social para los reportes
         int pageCount = 1, cuenta = 0;
+        string venora = "";                 // estados de contratos que el sistema NO DEBE re actualizar 21/01/2024
         libreria lib = new libreria();
         // string de conexion
         static string serv = ConfigurationManager.AppSettings["serv"].ToString();
@@ -126,29 +127,36 @@ namespace iOMG
             {
                 MySqlConnection conn = new MySqlConnection(DB_CONN_STR);
                 conn.Open();
-                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@ped)";
+                string consulta = "select formulario,campo,param,valor from enlaces where formulario in(@nofo,@cont)";
                 MySqlCommand micon = new MySqlCommand(consulta, conn);
                 micon.Parameters.AddWithValue("@nofo", "main");
-                micon.Parameters.AddWithValue("@ped", "xxx");
+                micon.Parameters.AddWithValue("@cont", "contratos");
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 for (int t = 0; t < dt.Rows.Count; t++)
                 {
                     DataRow row = dt.Rows[t];
-                    if (row["campo"].ToString() == "imagenes" && row["formulario"].ToString() == "main")
+                    if (row["formulario"].ToString() == "main")
                     {
-                        if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
-                        if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
-                        if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
-                        if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
-                        if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
-                        if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
-                        //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();        // imagen del boton de accion IMPRIMIR
-                        if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
-                        if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
-                        if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
-                        if (row["param"].ToString() == "img_pre") img_preview = row["valor"].ToString().Trim();  // imagen del boton VISTA PRELIMINAR
+                        if (row["campo"].ToString() == "imagenes")
+                        {
+                            if (row["param"].ToString() == "img_btN") img_btN = row["valor"].ToString().Trim();         // imagen del boton de accion NUEVO
+                            if (row["param"].ToString() == "img_btE") img_btE = row["valor"].ToString().Trim();         // imagen del boton de accion EDITAR
+                            if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();         // imagen del boton de accion IMPRIMIR
+                            if (row["param"].ToString() == "img_btA") img_btA = row["valor"].ToString().Trim();         // imagen del boton de accion ANULAR/BORRAR
+                            if (row["param"].ToString() == "img_btexc") img_btexc = row["valor"].ToString().Trim();     // imagen del boton exporta a excel
+                            if (row["param"].ToString() == "img_btQ") img_btq = row["valor"].ToString().Trim();         // imagen del boton de accion SALIR
+                            //if (row["param"].ToString() == "img_btP") img_btP = row["valor"].ToString().Trim();        // imagen del boton de accion IMPRIMIR
+                            if (row["param"].ToString() == "img_gra") img_grab = row["valor"].ToString().Trim();         // imagen del boton grabar nuevo
+                            if (row["param"].ToString() == "img_anu") img_anul = row["valor"].ToString().Trim();         // imagen del boton grabar anular
+                            if (row["param"].ToString() == "img_imprime") img_imprime = row["valor"].ToString().Trim();  // imagen del boton IMPRIMIR REPORTE
+                            if (row["param"].ToString() == "img_pre") img_preview = row["valor"].ToString().Trim();  // imagen del boton VISTA PRELIMINAR
+                        }
+                    }
+                    if (row["formulario"].ToString() == "contratos")
+                    {
+                        if (row["param"].ToString() == "noreact") venora = row["valor"].ToString().Trim();                 // estados de contratos que el sistema NO DEBE re actualizar 21/01/2024
                     }
                     if (row["formulario"].ToString() == "xxx")
                     {
@@ -900,7 +908,7 @@ namespace iOMG
                         {
                             if (dr.Read())
                             {
-                                if (dr.GetString(4) != "ANULAD")   // ME QUEDE ACÁ 20/01/2024
+                                if (!venora.Contains(dr.GetString(4)))   // estado de contrato no está dentro de la variable venora (estados que no se reactualizan)
                                 {
                                     acciones acc = new acciones();
                                     acc.act_cont(tx_codped.Text, "");

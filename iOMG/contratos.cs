@@ -77,6 +77,7 @@ namespace iOMG
         string v_monLoc = "";               // codigo moneda local
         string limdet = "";                 // monto limite para el pago de detracciones en servicios
         string vucecs = "";                 // usuarios que pueden cambiar el estado de contratos de servicios
+        string venora = "";                 // estados de contratos que el sistema NO DEBE re actualizar 21/01/2024
         internal List<string> _comprobantes = new List<string>();        // comprobantes del contrato
         #endregion
 
@@ -551,6 +552,7 @@ namespace iOMG
                         if (row["campo"].ToString() == "sedespag" && row["param"].ToString() == "manual") vapm = row["valor"].ToString().Trim();                // sedes donde se acepta registro de pagos manuales 
                         if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "borra_i") vupb = row["valor"].ToString().Trim();             // usuarios que pueden quitar items virghenes de contratos
                         if (row["campo"].ToString() == "permisos_u" && row["param"].ToString() == "cambia_e") vucecs = row["valor"].ToString().Trim();          // usuarios que pueden cambiar el estado de contrato de servicios
+                        if (row["campo"].ToString() == "estado" && row["param"].ToString() == "noreact") venora = row["valor"].ToString().Trim();               // estados de contratos que el sistema NO DEBE re actualizar 21/01/2024
                     }
                     if (row["formulario"].ToString() == "adicionals")
                     {
@@ -1993,9 +1995,12 @@ namespace iOMG
                             mion.Dispose();
                         }
                     }
-                    // actualizamos el estado del contrato
-                    acciones acc = new acciones();          // ahora se usa éste actualizador 21/09/2020
-                    acc.act_cont(tx_codped.Text, "");
+                    if (!venora.Contains(tx_dat_estad.Text))
+                    {
+                        // actualizamos el estado del contrato
+                        acciones acc = new acciones();          // ahora se usa éste actualizador 21/09/2020
+                        acc.act_cont(tx_codped.Text, "");
+                    }
                     micon = new MySqlCommand("select status from contrat where contrato=@cont", conn);
                     micon.Parameters.AddWithValue("@cont", tx_codped.Text);
                     MySqlDataReader dr = micon.ExecuteReader();

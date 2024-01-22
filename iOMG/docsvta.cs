@@ -1640,7 +1640,7 @@ namespace iOMG
         }
         private void controlContadoCredito()                // habilita deshabilita botones contado o credito según sea el caso
         {
-            if (tx_dat_tipdoc.Text == codbole)      // en boletas no hay credito
+            if (tx_dat_tipdoc.Text == codbole)      // en boletas no hay credito, confirmado por Pedro y Nancy el 22/01/2024
             {
                 rb_contado.Enabled = true;
                 rb_contado.PerformClick();
