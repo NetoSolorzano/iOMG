@@ -4310,7 +4310,7 @@ namespace iOMG
                         decimal v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
                         decimal v_dsctoNume = v_dsctofila / v_cant;                                 // descuento individual de la fila
                         decimal v_descuento = v_dsctofila / ((decimal.Parse(v_igv) / 100) + 1);     // descuento sin igv
-                        decimal v_valIgvTot = (v_precioUnit * v_cant) - ((v_precioUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1));     // igv total de la fila
+                        decimal v_valIgvTot = (v_precioUnit * v_cant - v_dsctofila) - ((v_precioUnit * v_cant - v_dsctofila) / ((decimal.Parse(v_igv) / 100) + 1));     // igv total de la fila
                         string v_dsctoLetr = ((v_dsctoNume * 100) / v_precioUnit).ToString("#0.00");
                         decimal v_valTotal = v_valorUnit * v_cant;
                         /*
@@ -4363,12 +4363,12 @@ namespace iOMG
                             DescuentoGlobal = 0,
                             Descuento = v_descuento,                        //  v_dsctofsin,
                             ValorUnitario = v_valorUnit,
-                            ValorVentaItem = v_valorUnit,                   // v_valTotal - v_dsctofsin,    // v_valTotal,
+                            ValorVentaItem = (v_precioUnit - v_dsctoNume) / ((decimal.Parse(v_igv) / 100) + 1),        // valor menos dscto sin igv
                             ValorVentaItemXML = v_valorUnit - v_descuento,                // v_valTotal - v_dsctofsin, // v_valTotal
                             ValorVentaNeto = v_valorUnit,                   // v_valTotal - v_dsctofsin        estos 3 valorventa 12/01/2024
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
-                            DescuentoBase = v_descuento * v_cant,           // v_dsctofsin * v_cant
+                            DescuentoBase = v_valTotal,           // v_descuento * v_cant
                             PrecioVenta = (v_precioUnit - v_dsctoNume) * v_cant - v_descuento,    // (v_preUmdes - v_dsctoNume) * v_cant - v_descuento
                             MontoTributo = v_valIgvTot,
 
@@ -4379,7 +4379,7 @@ namespace iOMG
                             DescuentoPorcentaje = v_dsctoLetr,
                             TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
                             ValorVenta = v_valTotal,                // 
-                            Ganancia = 0,
+                            Ganancia = v_valorUnit * v_cant,        // valorVenta sin IGV 23/01/2024 17:27 
                             IGVNeto = v_valIgvTot,
                             ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),  
                             PesoTotal = 0,
@@ -4452,21 +4452,21 @@ namespace iOMG
                     ProductoCodigoSUNAT = "",
                     TipoSistemaISCCodigo = "00",
                     UnidadMedidaCodigo = cod_umed, // "NIU",
-                    PrecioUnitarioSugerido = 0,
+                    PrecioUnitarioSugerido = decimal.Parse(_docsAnticip[i].valor),
                     PrecioUnitarioItem = decimal.Parse(_docsAnticip[i].valor) * -1,       // 118,
                     PrecioUnitarioNeto = v_valTotal,
                     PrecioVentaCodigo = "01",
                     ICBPER = 0,
                     CargoIndicador = "0",
                     CargoCargoCodigo = "",
-                    DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
+                    DescuentoIndicador = 1,                         // 23/01/2024, rapifac pide que se ponga valor 1
                     DescuentoCargoCodigo = "00",
                     PercepcionCantidadUmbral = 0,
                     PercepcionMontoUmbral = 0,
                     PercepcionPorcentaje = 0,
                     Control = 0,
                     PrecioCompra = 0,
-                    EsAnticipo = false,
+                    EsAnticipo = true,
                     ImporteTotalReferencia = 0,                 // este es el valor referencial 
                     CantidadUnidadMedida = v_cant,
                     Kit = 1,
@@ -4485,7 +4485,7 @@ namespace iOMG
                     IGV = v_valIgvTot,
                     ICBPERItem = 0,
                     ICBPERSubTotal = 0,
-                    DescuentoBase = 0,
+                    DescuentoBase = v_valorUnit,
                     DescuentoCargo = 0,
                     DescuentoCargoGravado = 0,
                     CargoItem = 0,
@@ -4518,7 +4518,7 @@ namespace iOMG
                     DescuentoPorcentaje = "0.00",
                     TipoAfectacionIGVCodigo = "10",                     // esto deberia ser variable
                     ValorVenta = v_valorUnit,
-                    Ganancia = v_valTotal,
+                    Ganancia = v_valorUnit,                // decimal.Parse(_docsAnticip[i].valor)
                     IGVNeto = v_valIgvTot,
                     ImporteTotal = decimal.Parse(_docsAnticip[i].valor) * -1,
                     PesoTotal = 0
