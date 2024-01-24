@@ -360,3 +360,4 @@ form cpagos, agregar opcion de "enlazar" pago con B/F a un contrato ............
 form repsventas, resumen de contrato, si esta anulado y ENTREG no se cambia estado ... ok 22/01/2024
 form contratos, si esta anulado y ENTREG no se cambia estado ......................... ok 22/01/2024
 form docsvta, adecuaciones para cancelaciones ........................................ ok 23/01/2024
+form contratos, adecuar que salga en el formato CR el tipo de pago EN DETALLES ....... ok 24/01/2024

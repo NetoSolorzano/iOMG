@@ -5083,7 +5083,11 @@ namespace iOMG
             conn.Open();
             if (conn.State == ConnectionState.Open)
             {
-                string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero,via,saldo,detalle from pagamenti where contrato=@cont";
+                //string cpag = "select idpagamenti,fecha,moneda,montosol,dv,serie,numero,via,saldo,detalle from pagamenti where contrato=@cont";
+                string cpag = "select a.idpagamenti,a.fecha,a.moneda,a.montosol,a.dv,a.serie,a.numero,a.via,a.saldo,a.detalle," +
+                    "ifnull(p.medio,''),ifnull(p.operac,''),ifnull(p.importe,''),ifnull(p.codpag,''),ifnull(p.fpago,'') " +
+                    "from pagamenti a left join adifactpag p ON p.tdvta = a.dv AND p.sdvta = a.serie AND p.ndvta = a.numero " +
+                    "where a.contrato=@cont";
                 MySqlCommand micon = new MySqlCommand(cpag, conn);
                 micon.Parameters.AddWithValue("@cont", tx_codped.Text.Trim());
                 MySqlDataAdapter da = new MySqlDataAdapter(micon);
@@ -5099,7 +5103,7 @@ namespace iOMG
                     pagoscont.dv = row.ItemArray[4].ToString();
                     pagoscont.serie = row.ItemArray[5].ToString();
                     pagoscont.numero = row.ItemArray[6].ToString();
-                    pagoscont.tipoPago = row.ItemArray[7].ToString();
+                    pagoscont.tipoPago = (row.ItemArray[7].ToString().Trim() == "") ? row.ItemArray[10].ToString() : row.ItemArray[7].ToString();
                     pagoscont.saldo = row.ItemArray[8].ToString();
                     pagoscont.detalle = row.ItemArray[9].ToString();
                     repcontrato.pagoscont.AddpagoscontRow(pagoscont);
