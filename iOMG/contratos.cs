@@ -2221,8 +2221,6 @@ namespace iOMG
         {
             int v_ifm = 0;
             decimal val = 0, dsto = 0, acta = 0, espe = 0;  //sald = 0
-            //decimal.TryParse(tx_desCab.Text, out desCab);
-            //desCab = decimal.Parse(tx_desCab.Text);
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 if (dataGridView1.Rows[i].Cells[14].Value.ToString() != "B")    // no totaliza las filas marcadas para borrar
@@ -2234,12 +2232,11 @@ namespace iOMG
                     /*  24/02/2023           */
                     decimal vddes = 0;
                     if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
-                    //dsto = dsto + (vddes / decimal.Parse(dataGridView1.Rows[i].Cells[2].Value.ToString()));    // decimal.Parse(dataGridView1.Rows[i].Cells[17].Value.ToString());
                     dsto = dsto + vddes;
 
-                    if (Tx_modo.Text == "NUEVO")
+                    if (Tx_modo.Text == "NUEVO")    // me quede aca 24/01 ... 19:34 ... 
                     {
-                        val = val + decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString());
+                        val = val + ((dataGridView1.Rows[i].Cells[16].Value == null) ? 0 : decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString()));
                     }
                     else
                     {
@@ -2259,17 +2256,22 @@ namespace iOMG
                     }
                 }
             }
-            tx_totesp.Text = espe.ToString("0.00");
-            tx_bruto.Text = val.ToString("0.00");
-            //if (tx_dscto.Text.Trim() != "") dsto = decimal.Parse(tx_dscto.Text);
+            if (dtp_pedido.Value.Year >= 2024)
+            {
+                tx_totesp.Text = espe.ToString("0.00");
+                tx_bruto.Text = (val+dsto).ToString("0.00");
+            }
+            else
+            {
+                tx_totesp.Text = espe.ToString("0.00");
+                tx_bruto.Text = val.ToString("0.00");
+            }
             if (Tx_modo.Text == "NUEVO")
             {
-                //tx_dscto.Text = dsto.ToString("0.00");
                 tx_desDet.Text = dsto.ToString("0.00");
             }
             else
             {
-                //tx_dscto.Text = Math.Abs((desCab)).ToString("0.00");
                 tx_desDet.Text = dsto.ToString("0.00");
             }
             if (tx_desCab.Text.Trim() == "") tx_desCab.Text = "0";
@@ -2279,7 +2281,6 @@ namespace iOMG
             tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
-            //if (tx_totesp.Text.Trim() == "") tx_totesp.Text = "0.00";
             tx_cifm.Text = v_ifm.ToString();
             motivD();
         }

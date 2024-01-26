@@ -1269,10 +1269,17 @@ namespace iOMG
                                     Dscto, totSinD, data.ItemArray[24].ToString(), data.ItemArray[25].ToString());
                                 */
                                 // 22/01/2024 , en el [8] y [9] ya incluye el descuento
+                                /* 24/01/2024
                                 dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
                                     data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
                                     (double.Parse(data.ItemArray[8].ToString()) / double.Parse(data.ItemArray[3].ToString())).ToString("#0.00"),
                                     (double.Parse(data.ItemArray[9].ToString())).ToString("#0.00"), "",
+                                    Dscto, totSinD, data.ItemArray[24].ToString(), data.ItemArray[25].ToString()); // 25 es crapi
+                                */
+                                dataGridView1.Rows.Add(cnt, data.ItemArray[3].ToString(), data.ItemArray[1].ToString(), data.ItemArray[2].ToString(),
+                                    data.ItemArray[4].ToString(), data.ItemArray[6].ToString(), data.ItemArray[7].ToString(), data.ItemArray[5].ToString(),
+                                    double.Parse(data.ItemArray[8].ToString()).ToString("#0.00"),
+                                    double.Parse(data.ItemArray[9].ToString()).ToString("#0.00"), "",
                                     Dscto, totSinD, data.ItemArray[24].ToString(), data.ItemArray[25].ToString()); // 25 es crapi
                                 cnt += 1;
                                 toti = toti + (double.Parse(data.ItemArray[9].ToString()) - double.Parse(data.ItemArray[23].ToString()));
@@ -4303,48 +4310,17 @@ namespace iOMG
                         ccc.Add(dlp);
                         // ********** DETALLE FILA
                         int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad                        
-                        decimal v_precioUnit = decimal.Parse(ron.Cells[12].Value.ToString());       // 23/01/2024
+                        decimal v_precioUnit = decimal.Parse(ron.Cells[12].Value.ToString()) / v_cant;       // 23/01/2024, 24/01/2023
                         decimal v_valorUnit = v_precioUnit / ((decimal.Parse(v_igv) / 100) + 1);    // 23/01/2024
                         decimal v_valorVta = v_valorUnit * v_cant;                                  // 23/01/2024
-                        decimal v_preUmdes = decimal.Parse(ron.Cells[8].Value.ToString()) / v_cant;    // precioUnitarioItem (precio ind con descuento)
-                        decimal v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
+                        decimal v_preUmdes = decimal.Parse(ron.Cells[8].Value.ToString());    //  /v_cant    precioUnitarioItem (precio ind con descuento)
+                        decimal v_dsctofila = (ron.Cells[11].Value == null || ron.Cells[11].Value.ToString().Trim() == "") ? 0 : decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
                         decimal v_dsctoNume = v_dsctofila / v_cant;                                 // descuento individual de la fila
                         decimal v_descuento = v_dsctofila / ((decimal.Parse(v_igv) / 100) + 1);     // descuento sin igv
                         decimal v_valIgvTot = (v_precioUnit * v_cant - v_dsctofila) - ((v_precioUnit * v_cant - v_dsctofila) / ((decimal.Parse(v_igv) / 100) + 1));     // igv total de la fila
                         string v_dsctoLetr = ((v_dsctoNume * 100) / v_precioUnit).ToString("#0.00");
                         decimal v_valTotal = v_valorUnit * v_cant;
-                        /*
-                        //decimal v_preUmdes = decimal.Parse(ron.Cells[12].Value.ToString()) / v_cant;    // precio individual con descuento
-                        //decimal v_valorUnit = v_preUmdes / ((decimal.Parse(v_igv) / 100) + 1);
-                        //decimal v_valorNeto = (decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1) * v_cant);
-                        decimal v_valorNeto = v_valorUnit * v_cant;
-                        decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
-                            (decimal.Parse(ron.Cells[9].Value.ToString()) /
-                            ((decimal.Parse(v_igv) / 100) + 1));
-                        //decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
-                        //    ((decimal.Parse(v_igv) / 100) + 1);
-                        v_preToti = decimal.Parse(ron.Cells[12].Value.ToString()) * v_cant;
-                        decimal v_dsctofila = 0, v_dsctofsin = 0;
-                        decimal v_dsctobase = 0;
-                        decimal v_dsctoNume = 0;
-                        string v_dsctoLetr = "0.00";                                                    // % dscto en letras
-                        decimal v_valTotal = v_valorUnit * v_cant;
-                        int sss = ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count) == 0) ? 1 : ((dataGridView1.Rows.Count - 1) - (_docsAnticip.Count));
-                        decimal v_dsctoGlob = decimal.Parse(tx_desGlob.Text) / sss / v_cant;
-                        v_totpun = v_totpun + (v_preUmdes * v_cant);                                           // totalizador de precios unitarios
-                        if (ron.Cells[11].Value.ToString() != "" && ron.Cells[11].Value.ToString() != "0" && ron.Cells[11].Value.ToString() != "0.00")
-                        {
-                            v_dsctofila = decimal.Parse(ron.Cells[11].Value.ToString());        // descuento total fila
-                            v_dsctofsin = v_dsctofila / ((decimal.Parse(v_igv) / 100) + 1);     // descuento fila sin igv
-                            v_dsctobase = v_valTotal + v_dsctofsin;                             // valor total fila sin igv + dscto total fila
-                            v_dsctoNume = v_dsctofila / v_cant; // (v_dsctofila * 100) / v_dsctobase;                    // descuento en numero
-                            //v_dsctoLetr = Math.Round(100 - (((v_preUmdes - v_dsctoNume) * v_cant) * 100 / v_preToti), 2).ToString();  // v_dsctoNume.ToString();
-                            v_dsctoLetr = ((v_dsctoNume * 100) / v_preUmdes).ToString("#0.00");
-                            v_totDscto = v_totDscto + v_dsctofila;
-                        }
-                        //decimal v_valvtaxml = decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1);
-                        decimal v_valvtaxml = (decimal.Parse(ron.Cells[8].Value.ToString()) / ((decimal.Parse(v_igv) / 100) + 1)) * v_cant;
-                        */
+                        v_totDscto = v_totDscto + v_dsctofila;
                         CComprobanteDetalle det = new CComprobanteDetalle       //  
                         {
                             ID = 0,
@@ -4363,9 +4339,9 @@ namespace iOMG
                             DescuentoGlobal = 0,
                             Descuento = v_descuento,                        //  v_dsctofsin,
                             ValorUnitario = v_valorUnit,
-                            ValorVentaItem = (v_precioUnit - v_dsctoNume) / ((decimal.Parse(v_igv) / 100) + 1),        // valor menos dscto sin igv
-                            ValorVentaItemXML = v_valorUnit - v_descuento,                // v_valTotal - v_dsctofsin, // v_valTotal
-                            ValorVentaNeto = v_valorUnit,                   // v_valTotal - v_dsctofsin        estos 3 valorventa 12/01/2024
+                            ValorVentaItem = ((v_precioUnit - v_dsctoNume) / ((decimal.Parse(v_igv) / 100) + 1)) * v_cant,        // valor menos dscto sin igv
+                            ValorVentaItemXML = (v_valorUnit - v_descuento) * v_cant,                // v_valTotal - v_dsctofsin, // v_valTotal
+                            ValorVentaNeto = v_valorUnit * v_cant,                   // v_valTotal - v_dsctofsin        estos 3 valorventa 12/01/2024
                             ValorVentaNetoXML = 0,
                             IGV = v_valIgvTot,
                             DescuentoBase = v_valTotal,           // v_descuento * v_cant
@@ -4498,7 +4474,7 @@ namespace iOMG
                     CargoPorcentaje = 0,
                     //Extension = { },
                     ListaSeries = new List<CProductoCodigoSerie>(),
-                    //ListaPrecios = new List<ProductoPrecioDTO>(),
+                    //ListaPrecios = new List<ProductoPrecioDTO>(), ..  
                     ListaPrecios = ccc,
                     PrecioUnitarioRecuperado = true,
                     UUID = "",
