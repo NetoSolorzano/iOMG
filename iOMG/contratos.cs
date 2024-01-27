@@ -2272,7 +2272,11 @@ namespace iOMG
             {
                 tx_totesp.Text = espe.ToString("0.00");
                 if (rb_servi.Checked == true) tx_bruto.Text = (val + espe).ToString("0.00");             // 26/01/2024
-                else tx_bruto.Text = val.ToString("0.00");
+                else
+                {
+                    tx_bruto.Text = (val).ToString("0.00");         // 27/01/2024
+                    tx_desCab.Text = "0";
+                } 
             }
             if (Tx_modo.Text == "NUEVO")
             {
@@ -2290,6 +2294,19 @@ namespace iOMG
             if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
             if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
             tx_cifm.Text = v_ifm.ToString();
+            if (dtp_pedido.Value.Year < 2024)
+            {
+                if (Math.Abs(double.Parse(tx_saldo.Text)) == Math.Abs(double.Parse(tx_dscto.Text)))
+                {
+                    tx_dscto.Text = "0";
+                    tx_valor.Text = (decimal.Parse(tx_bruto.Text) - decimal.Parse(tx_dscto.Text)).ToString("0.00");
+                    tx_saldo.Text = (decimal.Parse(tx_valor.Text) - acta).ToString("0.00");
+                    if (tx_dscto.Text.Trim() == "") tx_dscto.Text = "0.00";
+                    if (tx_acta.Text.Trim() == "") tx_acta.Text = "0.00";
+                    tx_cifm.Text = v_ifm.ToString();
+                }
+            }
+
             motivD();
         }
         private void calculos_ex()                                                 // cambiado 24/02/2023 .. ya no se usa
@@ -4161,6 +4178,7 @@ namespace iOMG
                         {
                             jaladet(tx_codped.Text);
                             // verificar que jale los codigos adicionales
+                            calculos();             // 27/01/2024
                         }
                     }
                     if (escambio.Contains(tx_dat_estad.Text) && Tx_modo.Text == "EDITAR")   // si permite modificacion se habilitan los campos
