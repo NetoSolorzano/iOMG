@@ -735,6 +735,7 @@ namespace iOMG
                     micon.Parameters.AddWithValue("@cont", contra);
                     micon.ExecuteNonQuery();
                 }
+                retorna = true;
             }
             return retorna;
         }
@@ -1156,16 +1157,26 @@ namespace iOMG
             if (dataGridView1.Columns[e.ColumnIndex].Name == "CONT" &&
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null &&
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != "" &&
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag != null &&
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag.ToString() == "")
             {
                 if (validacont(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(),    // validamos saldo cont, nombre cliente,
                         decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[10].Value.ToString()),             // que el comprob. no este anulado, cont no anulado
                         dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString() + dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString()) == true)
                 {
-                    if (acciona(e.RowIndex, dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()) == true)
+                    var aaa = MessageBox.Show("Confirma que desea enlazar?" + Environment.NewLine + 
+                        "Este proceso es irreversible","Confirme por favor",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                    if (aaa == DialogResult.Yes)
                     {
-                        MessageBox.Show("Contrato enlazado con exito!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        bt_view.PerformClick();
+                        if (acciona(e.RowIndex, dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()) == true)
+                        {
+                            //MessageBox.Show("Contrato enlazado con exito!", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            //bt_view.PerformClick();
+                        }
+                    }
+                    else
+                    {
+                        this.dataGridView1.CurrentCell.Value = "";
                     }
                 }
                 else

@@ -164,6 +164,7 @@ namespace iOMG
                             tx_a_codig.Text = ayu2.ReturnValue1;
                             tx_a_nombre.Text = ayu2.ReturnValue2;
                             tx_a_pd.Text = ayu2.ReturnValueA[4];
+                            tx_d_codal1.Text = ayu2.ReturnValueA[0];
                         }
                     }
                 }
@@ -2234,9 +2235,9 @@ namespace iOMG
                     if (dataGridView1.Rows[i].Cells[17].Value != null) decimal.TryParse(dataGridView1.Rows[i].Cells[17].Value.ToString(), out vddes);
                     dsto = dsto + vddes;
 
-                    if (Tx_modo.Text == "NUEVO")    // me quede aca 24/01 ... 19:34 ... 
+                    if (Tx_modo.Text == "NUEVO") 
                     {
-                        val = val + ((dataGridView1.Rows[i].Cells[16].Value == null) ? 0 : decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString()));
+                        val = val + ((dataGridView1.Rows[i].Cells[16].Value == null || dataGridView1.Rows[i].Cells[16].Value.ToString().Trim() == "") ? 0 : decimal.Parse(dataGridView1.Rows[i].Cells[16].Value.ToString()));
                     }
                     else
                     {
@@ -2259,12 +2260,15 @@ namespace iOMG
             if (dtp_pedido.Value.Year >= 2024)
             {
                 tx_totesp.Text = espe.ToString("0.00");
-                tx_bruto.Text = (val+dsto).ToString("0.00");
+                if (rb_servi.Checked == true) tx_bruto.Text = (espe).ToString("0.00");             // 26/01/2024
+                else tx_bruto.Text = (val + dsto).ToString("0.00");             // 26/01/2024
+                //tx_bruto.Text = (val+dsto).ToString("0.00");
             }
             else
             {
                 tx_totesp.Text = espe.ToString("0.00");
-                tx_bruto.Text = val.ToString("0.00");
+                if (rb_servi.Checked == true) tx_bruto.Text = (val + espe).ToString("0.00");             // 26/01/2024
+                else tx_bruto.Text = val.ToString("0.00");
             }
             if (Tx_modo.Text == "NUEVO")
             {
@@ -4019,7 +4023,8 @@ namespace iOMG
                             obj.Cells[12].Value = "";
                             obj.Cells[13].Value = tx_a_pd.Text;   // en servicios es % detraccion
                             obj.Cells[14].Value = "N";
-                            obj.Cells[14].Value = "";   // no tiene tienda 
+                            obj.Cells[15].Value = "";   // no tiene tienda 
+                            obj.Cells[18].Value = tx_d_codal1.Text;                            // codigo alterno1 para rapifac
                         }
                     }
                 }
@@ -4031,12 +4036,12 @@ namespace iOMG
                         if (ndtg != null)
                         {
                             ndtg.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", tx_a_pd.Text, "N", "");
+                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", tx_a_pd.Text, "N", "", "", "", tx_d_codal1.Text);
                         }
                         else
                         {
                             dataGridView1.Rows.Add(dataGridView1.Rows.Count, tx_a_codig.Text, tx_a_cant.Text, tx_a_nombre.Text, tx_a_medid.Text,
-                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", tx_a_pd.Text, "N", "");
+                                 "", tx_a_precio.Text, tx_a_total.Text, tx_a_cant.Text, "", "", tx_a_comen.Text, "", tx_a_pd.Text, "N", "", "", "", tx_d_codal1.Text);
                         }
                     }
                     else
@@ -4111,6 +4116,7 @@ namespace iOMG
             tx_a_medid.Text = "";
             tx_a_precio.Text = "";
             tx_a_total.Text = "";
+            tx_d_codal1.Text = "";
             calculos();
         }
         #endregion boton_form;
@@ -5100,7 +5106,7 @@ namespace iOMG
                     pagoscont.id = row.ItemArray[0].ToString();
                     pagoscont.fecha = row.ItemArray[1].ToString().Substring(0,10);
                     pagoscont.moneda = row.ItemArray[2].ToString();
-                    pagoscont.montosol = row.ItemArray[3].ToString();
+                    pagoscont.montosol = row.ItemArray[12].ToString();       // row.ItemArray[3].ToString();   26/01/2024
                     pagoscont.dv = row.ItemArray[4].ToString();
                     pagoscont.serie = row.ItemArray[5].ToString();
                     pagoscont.numero = row.ItemArray[6].ToString();

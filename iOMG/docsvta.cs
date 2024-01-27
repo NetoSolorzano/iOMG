@@ -2879,6 +2879,13 @@ namespace iOMG
         }
         private void rb_antic_Click(object sender, EventArgs e)
         {
+            if (rb_tserv.Checked == true)
+            {
+                MessageBox.Show("En servicios no se permiten los anticipos/cancelaciones","Atención",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                rb_antic.Checked = false;
+                rb_bienes.PerformClick();    // rb_bienes_Click(null, null);
+                return;
+            }
             if (rb_antic.Checked == true)
             {
                 tx_tipComp.Text = "A";
@@ -2968,7 +2975,7 @@ namespace iOMG
         }
         private void rb_tbienes_Click(object sender, EventArgs e)
         {
-            ini_deta();
+            ini_deta();                     // limpia detalle y totales
             panel4.Visible = false;
             tx_dat_pDet.Text = "";
             tx_dat_cDet.Text = "";
@@ -2976,8 +2983,9 @@ namespace iOMG
         }
         private void rb_tserv_Click(object sender, EventArgs e)
         {
-            ini_deta();
-            panel4.Visible = false;
+            ini_deta();                     // limpia detalle y totales
+            panel4.Visible = false;         // 
+            rb_bienes.PerformClick();    // rb_bienes_Click(null, null);    // solo ventas directas en servicios 26/01/2024
             tx_dat_pDet.Text = "";
             tx_dat_cDet.Text = "";
             controlContadoCredito();
