@@ -2261,7 +2261,11 @@ namespace iOMG
             {
                 tx_totesp.Text = espe.ToString("0.00");
                 if (rb_servi.Checked == true) tx_bruto.Text = (espe).ToString("0.00");             // 26/01/2024
-                else tx_bruto.Text = (val + dsto).ToString("0.00");             // 26/01/2024
+                else
+                {
+                    if (Tx_modo.Text == "NUEVO") tx_bruto.Text = (val).ToString("0.00");             // 26/01/2024
+                    else tx_bruto.Text = (val + dsto).ToString("0.00");             // 26/01/2024
+                }
                 //tx_bruto.Text = (val+dsto).ToString("0.00");
             }
             else
