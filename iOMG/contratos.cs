@@ -3688,6 +3688,12 @@ namespace iOMG
         }
         private void bt_det_Click(object sender, EventArgs e)
         {
+            if (tx_vDc.Text == "S" && (tx_d_id.Text != "0" && tx_d_id.Text != ""))
+            {
+                MessageBox.Show("El contrato nace de un comprobante" + Environment.NewLine +
+                        "No puede cambiar los items", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (tx_d_nom.Text == "")
             {
                 MessageBox.Show("El código no existe en la maestra", "Atención - Verifique", MessageBoxButtons.OK, MessageBoxIcon.Hand);
@@ -4742,6 +4748,12 @@ namespace iOMG
         {
             if (e.ColumnIndex == 0 && e.RowIndex > -1)
             {
+                if (tx_vDc.Text == "S" && Tx_modo.Text != "NUEVO")
+                {
+                    MessageBox.Show("El contrato nace de un comprobante" + Environment.NewLine + 
+                        "No puede cambiar los items", "Atención", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    return;
+                }
                 if (Tx_modo.Text == "EDITAR")
                 {
                     tx_saldo.Enabled = true;
@@ -4830,6 +4842,13 @@ namespace iOMG
             string modos = "EDITAR,NUEVO";
             if (modos.Contains(Tx_modo.Text) == true)
             {
+                if (tx_vDc.Text == "S")
+                {
+                    MessageBox.Show("El contrato nace de un comprobante" + Environment.NewLine +
+                    "No puede cambiar los items", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    e.Cancel = true;
+                    return;
+                }
                 if (decimal.Parse(tx_saldo.Text) <= 0)
                 {
                     MessageBox.Show("seleccionó una fila para borrar" + Environment.NewLine +

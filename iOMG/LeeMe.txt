@@ -366,5 +366,6 @@ form docsvta, no permitir anticipos/cancelaciones en comprobantes de servicio ..
 form cpagos, agregar confirmación para enlazar, debe salir una pregunta .............. ok 26/01/2024
 form contratos, en pagos deben salir los valores de cada medio de pago ............... ok 26/01/2024
 form contratos, no está calculando bien precios y totalizando cuando viene de comprob. ok 26/01/2024 
-form contratos, no calcula bien totales cuando viene de comprob. dscto del 2023 ...... 
+form contratos, no calcula bien totales cuando viene de comprob. dscto del 2023 ...... ok 27/01/2024
+form contratos, evitar que se agreguen o borren items si el cont nace de comprobante . falta probar ... en EDICION se puede modificar, solo debe tener acceso pedro
 OJO: revisar servicios con descuento, comprobantes y contratos 
