@@ -746,5 +746,25 @@ namespace iOMG
         {
             //bt_nuevo.Enabled = false;
         }
+        private void main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                const string mensaje = "Desea salir del sistema?";
+                const string titulo = "Confirme por favor";
+                var result = MessageBox.Show(mensaje, titulo,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                else e.Cancel = true;
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+        }
+
     }
 }
