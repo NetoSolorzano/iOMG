@@ -136,6 +136,7 @@
     <Compile Include="CComprobante.cs" />
     <Compile Include="CComprobanteAnula.cs" />
     <Compile Include="CComprobanteDetalle.cs" />
+    <Compile Include="CComprobanteDetAnula.cs" />
     <Compile Include="CCondicionComercial.cs" />
     <Compile Include="CCreditoCuota.cs" />
     <Compile Include="CDocumentoRelacionado.cs" />

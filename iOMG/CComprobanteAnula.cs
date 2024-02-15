@@ -11,10 +11,12 @@ namespace iOMG
         public long ID { get; set; }
         //public long IdMovimiento { get; set; }
         //public int TipoCuentaCodigo { get; set; }
+        public string DocumentoID { get; set; }
         public string TipoDocumentoCodigo { get; set; }
         public string Serie { get; set; }
         public int Correlativo { get; set; }
         public string FechaEmision { get; set; }
+        public int Sucursal { get; set; }
         public string MotivoBaja { get; set; }
         /*
         public string CuentaNumero { get; set; }
@@ -44,7 +46,7 @@ namespace iOMG
         public string CuentaNumeroModificado { get; set; }
         public string CuentaTipoModificado { get; set; }
         */
-        public List<CComprobanteDetalle> ListaDetalles { get; set; }
+        public List<CComprobanteDetAnula> ListaDetalles { get; set; }
         public List<CMovimientoCuenta> ListaMovimientos { get; set; }
 
         public CComprobanteAnula()

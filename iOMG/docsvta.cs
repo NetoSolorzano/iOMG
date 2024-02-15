@@ -94,6 +94,7 @@ namespace iOMG
         string host_rapifac = "";           // ruta host webservices rapifac
         string rut_demi = "";               // ruta para los datos de emision
         string rut_emision = "";            // ruta del punto de emision
+        string rut_recupera = "";           // ruta del punto de recuperación de comprobante
         string rut_panula = "";             // ruta punto de anulacion
         string cod_umed = "";               // codigo unidad de medida
         string nom_umed = "";               // nombre unidad de medida
@@ -417,6 +418,7 @@ namespace iOMG
                             if (row["param"].ToString() == "ruta_datemi") rut_demi = row["valor"].ToString().Trim();        // ruta para jalar datos de emision
                             if (row["param"].ToString() == "ruta_emite") rut_emision = row["valor"].ToString().Trim();      // ruta del punto de emision de comprobantes
                             if (row["param"].ToString() == "ruta_anula") rut_panula = row["valor"].ToString().Trim();       // ruta punto de anulacion
+                            if (row["param"].ToString() == "ruta_recupera") rut_recupera = row["valor"].ToString().Trim();  // ruta punto de recuperación de comprobante
                         }
                         if (row["campo"].ToString() == "conector")
                         {
@@ -536,7 +538,7 @@ namespace iOMG
                             tx_telef2.Text = dr.GetString("telemsg");
                             tx_dat_orig.Text = dr.GetString("locorig");
                             tx_dir_pe.Text = dr.GetString("dirorig");
-                            tx_coment.Text = dr.GetString("obsdvta");
+                            tx_coment.Text = (Tx_modo.Text == "ANULAR") ? "" : dr.GetString("obsdvta");
                             tx_tfil.Text = dr.GetString("canfidt");
                             tx_dat_mone.Text = dr.GetString("mondvta");
                             tx_bruto.Text = dr.GetString("subtota");
@@ -3433,14 +3435,14 @@ namespace iOMG
                                 if (row[0].ItemArray[7].ToString() == "TK")
                                 {
                                     //Bt_print.PerformClick();
-                                    string rutaT = rut_pdf + tx_pdf_rapifac.Text;  // tx_id_rapifac.Text;
+                                    string rutaT = rut_pdf + tx_pdf_rapifac.Text;
                                     System.Diagnostics.Process.Start(rutaT);
                                 }
                                 else
                                 {
                                     if (row[0].ItemArray[7].ToString() == "A4")
                                     {
-                                        string rutaT = rut_pdf + tx_pdf_rapifac.Text;  // tx_id_rapifac.Text;
+                                        string rutaT = rut_pdf + tx_pdf_rapifac.Text;
                                         System.Diagnostics.Process.Start(rutaT);
                                     }
                                     else { Bt_print.PerformClick(); }
@@ -3492,11 +3494,12 @@ namespace iOMG
                     return;
                 }
                 var aa = MessageBox.Show(" Confirma que desea ANULAR " + Environment.NewLine +
-                    "el comprobante?", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    "el comprobante?" + Environment.NewLine + Environment.NewLine +
+                    "Este procedimiento puede tomar unos minutos", "Confirme por favor", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (aa == DialogResult.Yes)
                 {
                     // validaciones de conex con Rapifac
-                    if (anula_Rapifac() == false)
+                    if (anula_Rapifac2() == false)       //   14/02/2024 OK
                     {
                         MessageBox.Show("Lo sentimos, en este momento no se tiene conexión" + Environment.NewLine +
                             "con el proveedor OSE/PSE. Confirme que tenga internet." + Environment.NewLine +
@@ -5174,16 +5177,127 @@ namespace iOMG
 
             return retorna;
         }
-        private string conex_Rapifac()                                                // obtemos la serie y correlativo, actualizmos el correlativo a usar
+        private string conex_Rapifac()                                              // obtemos la serie y correlativo, actualizmos el correlativo a usar
         {
             string retorna = "";
             // ya no usamos este rutina, esta archivada en c:/temp/back_docsvta2
             return retorna;
         }
-        private bool anula_Rapifac()
+        private bool anula_Rapifac2()                                               // Anulacion con retorno al stock, nuevo procedimiento del 14/02/2024 ... OK
         {
             bool retorna = false;
-            List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
+            // recuperamos el comprobante desde Rapifac
+            string Vid = tx_id_rapifac.Text;
+            string VtipoDocumento = tx_dat_tipdoc_s.Text;
+            string Vserie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text;
+            int Vcorrelativo = int.Parse(tx_corre.Text);
+            int Vdetalles = 1;          // según modelo de soporte
+            int Vadicionales = 0;       // según modelo de soporte
+            int Vpagos = 1;             // según modelo de soporte
+            string json = Jala_oc_Rapifac(Vid, VtipoDocumento, Vserie, Vcorrelativo, Vdetalles, Vadicionales, Vpagos);
+            List<CComprobanteDetAnula> aaa = new List<CComprobanteDetAnula>();
+            if (rb_bienes.Checked == true || (rb_antic.Checked == true && tx_cont.Text != "" && tx_tipComp.Text == "C"))   // no anticipos
+            {
+                if (json == "")
+                {
+                    MessageBox.Show("Error recuperando comprobante" + Environment.NewLine +
+                        "no se puede completar la anulación", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    retorna = false;
+                }
+                else
+                {
+                    dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+                    int cta_ron = 1;
+                    foreach (DataGridViewRow ron in dataGridView1.Rows)
+                    {
+                        if (ron.Cells[1].Value != null)
+                        {
+                            CComprobanteDetAnula det = new CComprobanteDetAnula
+                            {
+                                ID = jsonObj["ListaDetalles"][cta_ron - 1]["ID"],
+                                Item = cta_ron,
+                                ComprobanteID = int.Parse(tx_id_rapifac.Text),
+                                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
+                                Correlativo = int.Parse(tx_corre.Text),
+                                UnidadMedidaCodigo = (rb_tbienes.Checked == true) ? cod_umed : cod_user,
+                                Cantidad = jsonObj["ListaDetalles"][cta_ron - 1]["Cantidad"],
+                                ProductoCodigo = jsonObj["ListaDetalles"][cta_ron - 1]["ProductoCodigo"],
+                                ProductoCodigoCliente = jsonObj["ListaDetalles"][cta_ron - 1]["ProductoCodigoCliente"]
+                            };                      // detalles
+                            aaa.Add(det);
+                            cta_ron += 1;
+                        }
+                    }
+                }
+            }
+            List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
+            for (int i = 0; i < 9; i++)
+            {
+                if (dtpagos[i, 2] != null && dtpagos[i, 2] != "")
+                {
+                    DateTime fmax = DateTime.Parse(dtpagos[i, 6]);
+                    TimeSpan rdia = fmax - DateTime.Now;
+                    int plazo = rdia.Days + 1;
+                    CMovimientoCuenta cta = new CMovimientoCuenta
+                    {
+                        CuentaNumero = dtpagos[i, 5],
+                        Observacion = "",
+                        NumeroOperacion = dtpagos[i, 3],
+                        TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
+                        Serie = tx_serie.Text,
+                        Correlativo = int.Parse(tx_corre.Text),
+                        Usuario = Program.vg_nuse,
+                        Pago = decimal.Parse(dtpagos[i, 4]),
+                        PlazoDias = plazo,
+                        Condicion = dtpagos[i, 2]
+                    };                      // movimientos
+                    bbb.Add(cta);
+                }
+            }
+
+            CComprobanteAnula obj_anu = new CComprobanteAnula
+            {
+                ID = int.Parse(tx_id_rapifac.Text),
+                DocumentoID = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text + "-" + int.Parse(tx_corre.Text).ToString(),
+                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
+                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
+                Correlativo = int.Parse(tx_corre.Text),
+                FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
+                Sucursal = int.Parse(tx_codSuc.Text),
+                MotivoBaja = tx_coment.Text,
+                ListaDetalles = aaa,
+                ListaMovimientos = bbb
+            };
+            string cabeza = JsonConvert.SerializeObject(obj_anu);
+            string token = conex_token();
+            // ANULA el comprobante
+            string host = rut_panula;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "PUT";
+            httpWebRequest.Headers.Add("Authorization", "bearer " + token);
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(cabeza);
+                System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                retorna = true;
+            }
+
+            return retorna;
+
+        }
+        private bool anula_Rapifac()                                                // no funciona, se usa el modelo dado por Rapifac hoy 14/02/2024 ... NO FUNCA
+        {
+            bool retorna = false;
+            List<CComprobanteDetAnula> aaa = new List<CComprobanteDetAnula>();
             List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
             CComprobanteAnula obj_anu = new CComprobanteAnula
             {
@@ -5222,365 +5336,94 @@ namespace iOMG
 
             return retorna;
         }
-        private bool anula_Rapifac_no()                                                // damos de baja el comprobante
+        private bool anula_Rapifac_newProc()                                        // Anulacion con retorno al stock, nuevo procedimiento 01/02/2024 ... NO FUNCA 
         {
             bool retorna = false;
-            int cta_ron = 1;
-            List<CComprobanteDetalle> aaa = new List<CComprobanteDetalle>();
-            foreach (DataGridViewRow ron in dataGridView1.Rows)
+            // ***************************     recuperamos el comprobante desde el id y demás parametros *************************************
+            string Vid = tx_id_rapifac.Text;
+            string VtipoDocumento = tx_dat_tipdoc_s.Text;
+            string Vserie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text; 
+            int Vcorrelativo = int.Parse(tx_corre.Text);
+            int Vdetalles = 1;          // según modelo de soporte
+            int Vadicionales = 0;       // según modelo de soporte
+            int Vpagos = 1;             // según modelo de soporte
+            string json = Jala_oc_Rapifac(Vid, VtipoDocumento, Vserie, Vcorrelativo, Vdetalles, Vadicionales, Vpagos);
+            if (json != "")
             {
-                List<ProductoPrecioDTO> ccc = new List<ProductoPrecioDTO>();
-                {
-                    if (ron.Cells[1].Value != null)
-                    {
-                        ProductoPrecioDTO dlp = new ProductoPrecioDTO
-                        {
-                            PrecioId = 99,
-                            PrecioConfiguracion = 1,
-                            ProductoCod = ron.Cells[2].Value.ToString(),
-                            CodigoUnidadMedida = (rb_tbienes.Checked == true) ? cod_umed : cod_user,              // "NIU",
-                            DescripcionUnidadMedida = (rb_tbienes.Checked == true) ? nom_umed : nom_user,         // "UNIDAD",
-                            CantidadUnidadMedida = int.Parse(ron.Cells[1].Value.ToString()),
-                            MonedaCodigo = tx_dat_mon_s.Text,       // "PEN",
-                            SucursalId = tx_codSuc.Text,
-                            Margenganancia = 0,
-                            MargenPorcentaje = 0,
-                            PrecioVenta = decimal.Parse(ron.Cells[8].Value.ToString()),
-                            Sugerido = decimal.Parse(ron.Cells[8].Value.ToString()),
-                            OtrosCargosPorcentaje = 0,
-                            CantidadAplicable = 0,
-                            FechaIngreso = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                            FechaActualizacion = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                            Estado = 1,
-                            ISCPorcentaje = 0,
-                            ISCCalculado = 0,
-                            //Extension = { };
-                            UUID = ""
-                        };
-                        ccc.Add(dlp);
-                    }
-                }
-                if (ron.Cells[1].Value != null)
-                {
-                    int v_cant = int.Parse(ron.Cells[1].Value.ToString());                    // cantidad
-                    decimal v_valorUnit = decimal.Parse(ron.Cells[8].Value.ToString()) /      // valor unit (precio unit sin IGV)
-                        ((decimal.Parse(v_igv) / 100) + 1);
-                    decimal v_valIgvTot = decimal.Parse(ron.Cells[9].Value.ToString()) -      // igv total de la fila
-                        (decimal.Parse(ron.Cells[9].Value.ToString()) /
-                        ((decimal.Parse(v_igv) / 100) + 1));
-                    decimal v_valTotal = decimal.Parse(ron.Cells[9].Value.ToString()) /       // valor total fila sin igv
-                        ((decimal.Parse(v_igv) / 100) + 1);
-                    CComprobanteDetalle det = new CComprobanteDetalle
-                    {
-                        ID = 0,
-                        ComprobanteID = 0,
-                        Item = cta_ron,
-                        TipoProductoCodigo = "",
-                        ProductoCodigo = (ron.Cells[14].Value == null) ? "" : ron.Cells[14].Value.ToString(),   // 
-                        ProductoCodigoSUNAT = "",                       // "56101532",
-                        TipoSistemaISCCodigo = "00",
-                        UnidadMedidaCodigo = cod_umed,                   // "NIU",
-                        PrecioUnitarioSugerido = 0,
-                        PrecioUnitarioItem = decimal.Parse(ron.Cells[8].Value.ToString()),       // 118,
-                        PrecioVentaCodigo = "01",
-                        ICBPER = 0,
-                        CargoIndicador = "0",
-                        CargoCargoCodigo = "",
-                        DescuentoIndicador = 0,                         // no reflejamos descuentos en el comprobante
-                        DescuentoCargoCodigo = "00",
-                        PercepcionCantidadUmbral = 0,
-                        PercepcionMontoUmbral = 0,
-                        PercepcionPorcentaje = 0,
-                        Control = 0,
-                        PrecioCompra = 0,
-                        EsAnticipo = false,                         // SI ES ANTICIPO IGUAL ES FALSE
-                        ImporteTotalReferencia = 0,                 // este es el valor referencial 
-                        CantidadUnidadMedida = v_cant,
-                        Kit = 1,
-                        CantidadReferencial = 1,
-                        Cargo = 0,
-                        DescuentoGlobal = 0,
-                        Descuento = 0,
-                        ValorUnitario = v_valorUnit,
-                        ValorVentaItem = (v_valorUnit * v_cant) / ((decimal.Parse(v_igv) / 100) + 1),       // v_valorUnit * v_cant,
-                        ValorVentaItemXML = v_valorUnit * v_cant,
-                        ValorVentaNeto = v_valorUnit * v_cant,
-                        ValorVentaNetoXML = 0,
-                        ISCUnitario = 0,
-                        ISCNeto = 0,
-                        ISC = 0,
-                        IGV = v_valIgvTot,
-                        ICBPERItem = 0,
-                        ICBPERSubTotal = 0,
-                        DescuentoBase = 0,
-                        DescuentoCargo = 0,
-                        DescuentoCargoGravado = 0,
-                        CargoItem = 0,
-                        CargoTotal = 0,
-                        CargoNeto = 0,
-                        PrecioVenta = decimal.Parse(ron.Cells[9].Value.ToString()),
-                        MontoTributo = v_valIgvTot,
-                        ISCPorcentaje = 0,
-                        ISCMonto = 0,
-                        CargoPorcentaje = 0,
-                        //Extension = { },
-                        ListaSeries = new List<CProductoCodigoSerie>(),
-                        //ListaPrecios = new List<ProductoPrecioDTO>(),
-                        ListaPrecios = ccc,
-                        PrecioUnitarioRecuperado = false,
-                        UUID = "",
-                        BANDERA_CONCURRENCIA = false,
-                        BANDERA_TIPOAFECTACIONIGVAGREGARITEMDETALLE = false,
-                        BANDERA_DETALLEREEMPLAZADO = false,
-                        BANDERA_DETALLERECUPERADO = false,
-                        BANDERA_ITEMDETALLADO = true,
-                        Descripcion = ron.Cells[3].Value.ToString(),            // "00 PRODUCTO GRAVADO",
-                        Observacion = (rb_antic.Checked == true && tx_tipComp.Text == "C") ? tx_tipComp.Text : (rb_antic.Checked == true && tx_tipComp.Text != "C") ? "Anticipo" : "",
-                        Stock = 0,
-                        Cantidad = (rb_antic.Checked == true) ? 1 : int.Parse(ron.Cells[1].Value.ToString()),       //  && tx_d_valAntic.Text != ""
-                        PrecioCodigo = 0,
-                        PrecioUnitario = decimal.Parse(ron.Cells[8].Value.ToString()),
-                        Peso = 0,
-                        DescuentoMonto = 0,
-                        DescuentoPorcentaje = "0.00",
-                        TipoAfectacionIGVCodigo = "10",                     // Sunat Catalogo 7 - Venta grabada operación onerosa
-                        ValorVenta = v_valTotal,
-                        Ganancia = 0,
-                        IGVNeto = v_valIgvTot,
-                        ImporteTotal = decimal.Parse(ron.Cells[9].Value.ToString()),
-                        PesoTotal = 0
-                    };                      // detalles
-                    aaa.Add(det);
-                    cta_ron += 1;
-                }
-            }
-            List<CMovimientoCuenta> bbb = new List<CMovimientoCuenta>();
-            for (int i = 0; i < 9; i++)
-            {
-                if (dtpagos[i, 2] != null && dtpagos[i, 2] != "")
-                {
-                    CMovimientoCuenta cta = new CMovimientoCuenta
-                    {
-                        TipoDocumentoCodigo = tx_dat_tdoc_s.Text,
-                        Serie = tx_serie.Text,
-                        Correlativo = 0,                // int.Parse(tx_corre.Text),
-                        Condicion = dtpagos[i, 2],
-                        TipoCuentaCodigo = (vcpefec == dtpagos[i, 5]) ? 1 : 3,
-                        CuentaNumero = "",
-                        Usuario = Program.vg_nuse,
-                        MonedaCodigo = tx_dat_mon_s.Text,     // "PEN",                                   // de momento todo es soles
-                        SucursalId = int.Parse(tx_codSuc.Text),
-                        TipoDocIdentidadCodigo = "",
-                        NumeroDocIdentidad = "",
-                        Observacion = "",
-                        //Extension = { },
-                        //CuentaValor = "1-30303030",
-                        Pago = decimal.Parse(dtpagos[i, 4]),
-                        Vuelto = 0,
-                        FechaPago = dtpagos[i, 6],   // dtp_pedido.Value.Date.ToString("dd/MM/yyyy")
-                        NumeroOperacion = dtpagos[i, 3],
-                        FechaVencimiento = dtpagos[i, 6],    // dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                        PlazoDias = 1
-                    };                      // movimientos
-                    bbb.Add(cta);
-                }
-                /*
-                dtpagos[i, 0] = id 
-                dtpagos[i, 1] = contador
-                dtpagos[i, 2] = nombre del medio de pago
-                dtpagos[i, 3] = #operacion
-                dtpagos[i, 4] = importe pagado
-                dtpagos[i, 5] = codigo medio
-                dtpagos[i, 6] = fecha de pago
-                */
-            }
-            CComprobante obj_anu = new CComprobante
-            {
-                ID = int.Parse(tx_id_rapifac.Text),
-                DocumentoID = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text + tx_corre.Text,
-                TipoDocumentoCodigo = tx_dat_tipdoc_s.Text,
-                Serie = cmb_tipo.Text.Substring(0, 1) + tx_serie.Text,
-                Correlativo = int.Parse(tx_corre.Text),
-                FechaEmision = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                FechaRegistro = dtp_pedido.Value.Date.ToString("dd/MM/yyyy"),
-                TipoNotaCreditoCodigo = "01",
-                TipoNotaDebitoCodigo = "01",
-                TipoOperacionCodigo = (rb_tbienes.Checked == true) ? "0101" : (tx_dat_cDet.Text.Trim() != "") ? "1001" : "0101",
-                TipoDocumentoCodigoModificado = tx_dat_tipdoc_s.Text,
-                SerieModificado = "",
-                CorrelativoModificado = "",
-                CondicionEstado = "",
-                ImporteTotalTexto = nle.Convertir(tx_valor.Text, true) + tx_dat_monNom.Text,
-                Observacion = "",
-                MonedaCodigo = tx_dat_mon_s.Text,
-                TipoCambio = "1.00",
-                GuiaNumero = "",
-                ReferenciaNumeroDocumento = "",
-                ReferenciaTipoDocumento = "",
-                ClienteTipoDocIdentidadCodigo = tx_dat_tdoc_s.Text,
-                ClienteNumeroDocIdentidad = tx_ndc.Text,
-                ClienteNombreRazonSocial = tx_nombre.Text.Trim(),
-                ClienteDireccion = tx_direc.Text.Trim() + "-" + tx_dist.Text + "-" + tx_prov.Text + "-" + tx_dpto.Text,
-                CorreoElectronicoPrincipal = null,
-                ClienteContacto = "",
-                ClienteTelefono = "",
-                Detraccion = 0,
-                DetraccionCuenta = "",
-                DetraccionTipoOperacion = "",
-                DetraccionPorcentaje = 0,
-                BienServicioCodigo = "1",
-                CondicionPago = (rb_contado.Checked == true) ? "Contado" : "Credito",
-                CreditoTotal = 0,
-                Percepcion = 0,
-                PercepcionRegimen = "",
-                PercepcionFactor = 0,
-                PercepcionTotal = 0,
-                PercepcionBaseImponible = 0,
-                Retencion = 0,
-                MontoRetencion = 0,
-                DescuentoGlobal = 0,
-                DescuentoIndicador = 0,
-                DescuentoGlobalMonto = 0,
-                DescuentoGlobalMontoBase = 0,
-                DescuentoGlobalPorcentaje = 0,
-                DescuentoGlobalValor = 0,
-                DescuentoGlobalIndicadorDescuento = "0",
-                DescuentoGlobalCodigoMotivo = "00",
-                DescuentoGlobalNGPorcentaje = 0,
-                DescuentoGlobalNGIndicadorDescuento = 0,
-                DescuentoGlobalNGCodigoMotivo = "00",
-                DescuentoGlobalNGMonto = 0,
-                DescuentoGlobalNGMontoBase = 0,
-                DescuentoNGMonto = 0,
-                AnticiposGravado = 0,
-                AnticiposExonerado = 0,
-                AnticiposInafecto = 0,
-                CargoGlobalMonto = 0,
-                CargoGlobalMontoBase = 0,
-                CargoGlobalPorcentaje = 0,
-                CargoGlobalIndicadorCargos = "0",
-                CargoGlobalCodigoMotivo = "0",
-                ImpuestoTotal = decimal.Parse(tx_igv.Text),
-                ISC = 0,
-                ISCBase = 0,
-                IGV = decimal.Parse(tx_igv.Text),
-                IGVPorcentaje = decimal.Parse(Program.v_igv),
-                Gravado = decimal.Parse(tx_bruto.Text),
-                ICBPER = 0,
-                Exonerada = 0,
-                Inafecto = 0,
-                Exportacion = 0,
-                ExoneradaXML = 0,
-                InafectoXML = 0,
-                ExportacionXML = 0,
-                Gratuito = 0,
-                GratuitoGravado = 0,
-                TotalImporteVenta = decimal.Parse(tx_valor.Text),
-                TotalImporteVentaCelular = decimal.Parse(tx_valor.Text),
-                TotalImporteVentaReferencia = 0,
-                TotalPrecioVenta = decimal.Parse(tx_valor.Text),
-                TotalValorVenta = decimal.Parse(tx_bruto.Text),
-                TotalDescuentos = 0,
-                TotalOtrosCargos = 0,
-                TotalAnticipos = 0,
-                TotalPago = decimal.Parse(tx_impMedios.Text),
-                PendientePago = 0,
-                EnviarCorreo = false,
-                FormatoPDF = 0,
-                IdRepositorio = 0,                                  // que va aca?
-                VistaDocumento = "",
-                Sucursal = int.Parse(tx_codSuc.Text),
-                Usuario = usuaDni,                               // Program.vg_nuse
-                Vendedor = tx_dat_idven.Text,
-                VendedorNombre = tx_nomVen.Text,
-                CanalVenta = "2",
-                AlojamientoPaisDocEmisor = "",
-                AlojamientoNumeroDocIdentidad = "",
-                AlojamientoNombreRazonSocial = "",
-                AlojamientoTipoDocIdentidadCodigo = "",
-                PaisResidencia = "",
-                FechaConsumo = null,
-                DiasPermanencia = 0,
-                Peso = 0,
-                PesoTotal = 0,
-                Bultos = int.Parse(tx_totcant.Text),
-                MotivoTrasladoDescripcion = "",
-                MotivoTrasladoCodigo = "01",
-                ModalidadTrasladoCodigo = "",
-                FechaTraslado = null,
-                TransportistaNumeroDocIdentidad = "",
-                TransportistaNombreRazonSocial = "",
-                TransportistaTipoDocIdentidadCodigo = "",
-                ConductorTipoDocIdentidadCodigo = "",
-                PlacaVehiculo = "",
-                ConductorNumeroDocIdentidad = "",
-                UbigeoLlegada = "",
-                DireccionLlegada = "",
-                NOMBRE_UBIGEOLLEGADA = "",
-                UbigeoPartida = "",
-                DireccionPartida = "",
-                NOMBRE_UBIGEOPARTIDA = "",
-                Anticipo = false,
-                EstadoContingencia = false,
-                Baja = 0,
-                Leyenda = (rb_tbienes.Checked == true) ? "0" : (tx_dat_cDet.Text != "") ? "1" : "0",
-                MotivoBaja = tx_coment.Text,          //"Anulación",  13/01/2024
-                OrigenSistema = 0,
-                TipoPrecio = 0,
-                Ubigeo = tx_dir_ubigpe.Text,
-                Estado = 0,
-                DocAdicionalCodigo = 0,
-                DocAdicionalDetalle = "",
-                PagosMultiples = false,
-                ListaDetalles = aaa,
-                ListaAnticipos = { },
-                ListaCuotas = { },
-                ListaGuias = { },
-                ListaMovimientos = bbb,
-                ListaDocumentosRelacionados = { },
-                ListaCondicionesComerciales = { }
-            };
-            string cabeza = JsonConvert.SerializeObject(obj_anu);
+                // *********************     agregamos el motivo de la baja al json obtenido en la recuperación previa *************************
+                dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                jsonObj["MotivoBaja"] = tx_coment.Text;
+                //jsonObj[189] = tx_coment.Text;
+                string cabeza = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                // ***************************************     enviamos el json       *******************************************************
+                string token = conex_token();
+                string host = rut_panula;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "PUT";
+                httpWebRequest.Headers.Add("Authorization", "bearer " + token);
 
-            string token = conex_token();
-            // ANULA el comprobante
-            // string host = "https://wsventas-exp.rapifac.com/v0/comprobantes/anular";
-            string host = rut_panula;
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "PUT";
-            httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(cabeza);
-                System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(cabeza);
+                    System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", cabeza);
+                }
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    retorna = true;    // 12/01/2024
+                }
             }
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            else
             {
-                var result = streamReader.ReadToEnd();
-                //MessageBox.Show(result.ToString());
-                //retorna = (bool.Parse(result.ToString()) == true) ? true : false;     marca como anulado pero acá no se como leerlo
-                retorna =  true;    // 12/01/2024
+                MessageBox.Show("Error recuperando comprobante" + Environment.NewLine + 
+                    "no se puede completar la anulación", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                retorna = false;
             }
 
             return retorna;
         }
-        private bool Jala_oc_Rapifac()                                              // jala comprobante de rapifac
+        private string Jala_oc_Rapifac(string id, string tipoDocumento, string serie, int correlativo, int detalles, int adicionales, int pagos)   // ok 14/02/2024                                           // jala comprobante de rapifac en base al Id
         {
-            bool retorna = false;
-            /*      // NO NECESITAMOS ESTO ... 10/08/2022
+            string retorna = "";
+            /*
+            id: El id del comprobante que se desea recuperar
+            tipoDocumento: El tipo de documento correspondiente al comprobante que se desea recuperar
+            serie: La serie del documento que deseamos recuperar, puede ser cadena vacia si se tiene el id
+            correlativo: El correlativo correspondiente al comprobante que se desea recuperar, puede ser 0 si se tiene el id
+            detalles: Bandera que determina si se desea recuperar los detalles del comprobante, parametro opcional
+                0 sin detalles del comprobante
+                1 con detalles del comrobante, valor por defecto si no se establece el parametro ...PARA RETORNO AL STOCK = 1
+            adicionales: Bandera que determina si se desea recuperar los adicionales del comprobante, parametro opcional
+                0 sin datos adicionales de comprobante
+                1 con datos adicionales de comprobante, valor por defecto si no se establece el parametro
+            pagos: Bandera que determina si se desea recuperar los movimientos del comprobante
+                0 sin datos de movimientos, valor por defecto si no se establece el parametro
+                1 con datos de movimientos
+            */
+            // ***************  obtiene el comprobante desde rapifac  ****************************
             string token = conex_token();
-            // obtiene el comprobante desde rapifac
-            string host = "https://wsventas-exp.rapifac.com/v0/comprobantes";
+            // "https://wsventas-exp.rapifac.com/v0/comprobantes";
+            //string host = rut_recupera + "?Id=" + id + "&TipoDocumento=" + tipoDocumento + "&Serie=" + serie + "&Correlativo=" + correlativo + 
+            //    "&TipoDocumentoSig=" + "&Detalles=" + detalles + "&Adicionales=" + adicionales + "&Pagos=" + pagos;     
+            string host = rut_recupera + "?Id=" + id + "&TipoDocumento=" + tipoDocumento + "&Serie=" + serie + "&Correlativo=" + correlativo +
+                "&Detalles=" + detalles + "&Adicionales=" + adicionales + "&Pagos=" + pagos;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
             httpWebRequest.ContentType = "application/json";        // , text/javascript, 
             httpWebRequest.Method = "GET";
             httpWebRequest.Headers.Add("Authorization", "bearer " + token);
-            // .... para jalar es necesario el ID y ademas serie y numero?
-            // no se podría jalar solo con la serie y numero ??
-            */
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                {
+                    //System.IO.File.WriteAllText(@"c:\temp\" + cmb_tipo.Text + tx_serie.Text + tx_corre.Text + "-" + "anulado_" + (DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString()) + ".json", result);
+                    retorna = result;
+                }
+            }
+
             return retorna;
         }
         #endregion
